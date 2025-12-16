@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Storage Test</title>
+</head>
+<body>
+    <h1>Review Storage Test</h1>
+    <div id="output"></div>
+    
+    <script>
+        // Test localStorage functionality
+        function testReviewStorage() {
+            const output = document.getElementById('output');
+            
+            // Clear existing reviews
+            localStorage.removeItem('local_reviews');
+            
+            // Create a test review
+            const testReview = {
+                id: 'test_123',
+                college_id: 'college_TEST001',
+                user_id: 'user_123',
+                rating: 5,
+                review_text: 'This is a test review',
+                faculty_rating: 4,
+                infrastructure_rating: 5,
+                placements_rating: 4,
+                helpful_votes: 0,
+                verified: false,
+                created_at: new Date().toISOString(),
+                collegeCode: 'TEST001',
+                author: 'Test User'
+            };
+            
+            // Save to localStorage
+            const existingReviews = JSON.parse(localStorage.getItem('local_reviews') || '[]');
+            existingReviews.push(testReview);
+            localStorage.setItem('local_reviews', JSON.stringify(existingReviews));
+            
+            // Read back from localStorage
+            const savedReviews = JSON.parse(localStorage.getItem('local_reviews') || '[]');
+            
+            output.innerHTML = `
+                <h2>Test Results:</h2>
+                <p><strong>Reviews saved:</strong> ${savedReviews.length}</p>
+                <p><strong>Test review found:</strong> ${savedReviews.find(r => r.id === 'test_123') ? 'Yes' : 'No'}</p>
+                <p><strong>College code:</strong> ${savedReviews[0]?.collegeCode || 'Not found'}</p>
+                <p><strong>Review text:</strong> ${savedReviews[0]?.review_text || 'Not found'}</p>
+                <h3>All Reviews:</h3>
+                <pre>${JSON.stringify(savedReviews, null, 2)}</pre>
+            `;
+        }
+        
+        // Run test when page loads
+        testReviewStorage();
+    </script>
+</body>
+</html>

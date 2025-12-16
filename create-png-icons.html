@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create PNG Icons for KCET Coded</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5;
+        }
+        .icon { 
+            margin: 20px; 
+            display: inline-block; 
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        canvas { 
+            border: 1px solid #ddd; 
+            border-radius: 4px;
+        }
+        .download-btn {
+            display: block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .download-btn:hover {
+            background: #2563eb;
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 KCET Coded - PNG Icon Generator</h1>
+    
+    <div class="instructions">
+        <strong>Instructions:</strong>
+        <ol>
+            <li>Right-click on each icon below</li>
+            <li>Select "Save image as..."</li>
+            <li>Save with the exact filename shown (e.g., icon-96x96.png)</li>
+            <li>Replace the existing files in your public folder</li>
+        </ol>
+    </div>
+    
+    <div id="icons"></div>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(1, '#1d4ed8');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Rounded corners
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.2);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('KC', size / 2, size / 2);
+            
+            return canvas;
+        }
+        
+        const sizes = [96, 144, 192, 512];
+        const container = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const div = document.createElement('div');
+            div.className = 'icon';
+            div.innerHTML = `<h3>${size}x${size} PNG Icon</h3>`;
+            
+            const canvas = createIcon(size);
+            div.appendChild(canvas);
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon-${size}x${size}.png`;
+            link.textContent = `Download icon-${size}x${size}.png`;
+            link.className = 'download-btn';
+            
+            div.appendChild(link);
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Simple PNG Icons</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .icon { margin: 20px; display: inline-block; text-align: center; }
+        canvas { border: 1px solid #ddd; }
+        .download-btn { display: block; margin-top: 10px; padding: 8px 16px; background: #3b82f6; color: white; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Create Simple PNG Icons</h1>
+    <div id="icons"></div>
+    <script>
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Blue gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(1, '#1d4ed8');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Rounded corners
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.2);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // White "KC" text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('KC', size / 2, size / 2);
+            
+            return canvas;
+        }
+        
+        const sizes = [96, 144, 192, 512];
+        const container = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const div = document.createElement('div');
+            div.className = 'icon';
+            div.innerHTML = `<h3>${size}x${size}</h3>`;
+            
+            const canvas = createIcon(size);
+            div.appendChild(canvas);
+            
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `icon-${size}x${size}.png`;
+            link.textContent = `Download icon-${size}x${size}.png`;
+            link.className = 'download-btn';
+            
+            div.appendChild(link);
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
