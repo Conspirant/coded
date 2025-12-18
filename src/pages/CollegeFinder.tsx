@@ -529,22 +529,7 @@ const CollegeFinder = () => {
   }
 
 
-  // Simulated progressive loading while data is fetched and normalized
-  useEffect(() => {
-    if (!loading) return
-    setProgress(0)
-    // Pick a target duration for perceived loading time
-    const start = Date.now()
-    const targetMs = Math.floor(4500 + Math.random() * 2500) // 4.5s - 7s
-    setSecondsLeft(Math.ceil(targetMs / 1000))
-    const id = setInterval(() => {
-      setProgress((p) => Math.min(90, p + Math.random() * 8 + 2))
-      const elapsed = Date.now() - start
-      const remainingMs = Math.max(0, targetMs - elapsed)
-      setSecondsLeft(Math.ceil(remainingMs / 1000))
-    }, 300)
-    return () => clearInterval(id)
-  }, [loading])
+
 
   // Helpful rotating tips to keep users engaged
   const loadingTips: string[] = [
@@ -580,7 +565,7 @@ const CollegeFinder = () => {
         let response: Response | null = null
         let dataSource = ''
         for (const url of urls) {
-          const r = await fetch(url, { cache: 'no-store' })
+          const r = await fetch(url)
           if (r.ok) {
             response = r
             dataSource = url
@@ -871,25 +856,16 @@ const CollegeFinder = () => {
       })
 
       // Filter data based on user criteria
-      // IMPORTANT: For college admission, we want colleges where cutoff_rank > userRank
-      // This means the college accepts students with worse ranks (higher numbers)
+      // Show colleges where cutoff_rank >= userRank (colleges the user is eligible for)
+      // If rank is 69918, show colleges with cutoff 69918, 69919, 70000, 100000, 200000, etc.
       let filteredData = cutoffs.filter(cutoff => {
         const yearMatch = cutoff.year === selectedYear
         const roundMatch = selectedRound === 'ALL' || cutoff.round === selectedRound
         const categoryMatch = userCategory === 'ALL' || cutoff.category === userCategory
-        const rankEligible = cutoff.cutoff_rank > userRank
-        const rankInRange = cutoff.cutoff_rank >= minRank && cutoff.cutoff_rank <= maxRank
+        // Only show colleges where user is eligible (cutoff rank >= user's rank)
+        const isEligible = cutoff.cutoff_rank >= userRank
 
-        // Debug: Log any Sri Sairam entries that don't match
-        if (cutoff.institute.toLowerCase().includes('sri sairam')) {
-          console.log(`Sri Sairam entry - Course: ${cutoff.course}, Cutoff: ${cutoff.cutoff_rank}, User Rank: ${userRank}, Year: ${cutoff.year}, Round: ${cutoff.round}, Category: ${cutoff.category}`)
-          console.log(`  - Year match: ${yearMatch}, Round match: ${roundMatch}, Category match: ${categoryMatch}, Rank eligible: ${rankEligible}, Rank in range: ${rankInRange}`)
-          if (!yearMatch || !roundMatch || !categoryMatch || !rankEligible || !rankInRange) {
-            console.log(`  - FILTERED OUT: Year: ${yearMatch}, Round: ${roundMatch}, Category: ${categoryMatch}, Rank: ${rankEligible}, Range: ${rankInRange}`)
-          }
-        }
-
-        return yearMatch && roundMatch && categoryMatch && rankEligible && rankInRange
+        return yearMatch && roundMatch && categoryMatch && isEligible
       })
 
       // Debug: Log some sample data to understand what's being filtered
@@ -1007,26 +983,39 @@ const CollegeFinder = () => {
       // Note: eligibleOnly filter removed - now automatically shows only colleges where user has a chance
       // (cutoff_rank > userRank means better chances of admission)
 
-      // Simply map the data without safety levels - just show all eligible colleges
+      // Map data - all shown colleges are eligible (filtered above)
       const matchesWithScores = filteredData.map(cutoff => {
         return {
           ...cutoff,
-          matchScore: 100, // All shown colleges are eligible
+          matchScore: 100,
           safetyLevel: 'Eligible' as const
         }
       })
 
+      // Deduplicate results based on unique combination of key fields
+      const seen = new Set<string>()
+      const deduplicatedMatches = matchesWithScores.filter(match => {
+        const key = `${match.institute_code}|${match.course}|${match.category}|${match.year}|${match.round}|${match.cutoff_rank}`
+        if (seen.has(key)) {
+          return false
+        }
+        seen.add(key)
+        return true
+      })
+
+      console.log(`Deduplication: ${matchesWithScores.length} -> ${deduplicatedMatches.length} entries`)
+
       // Sort by cutoff rank based on user preference
       // Ascending: shows colleges with cutoff ranks closest to user rank first (default)
       // Descending: shows colleges with highest cutoff ranks first
-      matchesWithScores.sort((a, b) => {
+      deduplicatedMatches.sort((a, b) => {
         return sortOrder === 'asc'
           ? a.cutoff_rank - b.cutoff_rank
           : b.cutoff_rank - a.cutoff_rank
       })
 
       // Show all matches (no limit)
-      setMatches(matchesWithScores)
+      setMatches(deduplicatedMatches)
       // Publish to shared store for Analytics
       finderStore.setState({
         userRank,
@@ -1036,10 +1025,10 @@ const CollegeFinder = () => {
         selectedInstitute,
         selectedCourses,
         locationFilter,
-        matches: matchesWithScores,
+        matches: deduplicatedMatches,
       })
 
-      console.log(`Search completed. Found ${matchesWithScores.length} matches, showing top 50`)
+      console.log(`Search completed. Found ${deduplicatedMatches.length} unique matches`)
 
     } catch (error) {
       console.error('Error finding colleges:', error)
@@ -1054,11 +1043,14 @@ const CollegeFinder = () => {
   }
 
   const getSafetyColor = (level: string) => {
-    return 'bg-green-100 text-green-800' // All eligible colleges are green
+    if (level === 'Eligible') {
+      return 'bg-green-100 text-green-800'
+    }
+    return 'bg-red-100 text-red-800' // Not Eligible
   }
 
   const getMatchColor = (score: number) => {
-    return 'text-green-600' // All eligible colleges are green
+    return score >= 100 ? 'text-green-600' : 'text-red-600'
   }
 
   // Helper function to get category display name
@@ -1448,12 +1440,13 @@ const CollegeFinder = () => {
                   </div>
                 </div>
 
-                {/* Search Button */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 sm:col-span-2 lg:col-span-3">
+                {/* Search Button & Actions - Mobile Optimized */}
+                <div className="flex flex-col gap-3 sm:col-span-2 lg:col-span-3">
                   <Button
                     onClick={findColleges}
                     disabled={searching || !userCategory || !selectedYear || !selectedRound}
-                    className="flex-1"
+                    className="w-full sm:w-auto"
+                    size="lg"
                   >
                     {searching ? (
                       <>
@@ -1468,181 +1461,187 @@ const CollegeFinder = () => {
                     )}
                   </Button>
 
-                  {/* Sort Order Controls */}
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor="sort-order" className="text-sm font-medium whitespace-nowrap">
-                      Sort by:
-                    </Label>
-                    <Select value={sortOrder} onValueChange={(value: 'asc' | 'desc') => setSortOrder(value)}>
-                      <SelectTrigger className="w-36">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="asc">
-                          <div className="flex items-center gap-2">
-                            <ChevronUp className="h-4 w-4" />
-                            Ascending (Low to High)
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="desc">
-                          <div className="flex items-center gap-2">
-                            <ChevronDown className="h-4 w-4" />
-                            Descending (High to Low)
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {/* Sort & Action Controls - Wrap on mobile */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+                      <Label htmlFor="sort-order" className="text-xs sm:text-sm font-medium whitespace-nowrap">
+                        Sort:
+                      </Label>
+                      <Select value={sortOrder} onValueChange={(value: 'asc' | 'desc') => setSortOrder(value)}>
+                        <SelectTrigger className="w-full sm:w-36 text-xs sm:text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="asc">
+                            <div className="flex items-center gap-2">
+                              <ChevronUp className="h-4 w-4" />
+                              <span className="hidden sm:inline">Ascending</span>
+                              <span className="sm:hidden">Asc</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="desc">
+                            <div className="flex items-center gap-2">
+                              <ChevronDown className="h-4 w-4" />
+                              <span className="hidden sm:inline">Descending</span>
+                              <span className="sm:hidden">Desc</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setUserRank(50000)
-                        setUserCategory("")
-                        setSelectedYear("")
-                        setSelectedRound("")
-                        setSelectedInstitute("")
-                        setSelectedCourses([])
-                        setLocationFilter("")
-                        setMinRank(1)
-                        setMaxRank(300000)
-                        setMatches([])
-                        setCollegeSearchTerm("")
-                        finderStore.setState({
-                          userRank: 50000,
-                          userCategory: '',
-                          selectedYear: '',
-                          selectedRound: '',
-                          selectedInstitute: '',
-                          selectedCourses: [],
-                          locationFilter: '',
-                          matches: [],
-                        })
-                      }}
-                      className="px-3"
-                      title="Clear all filters"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={loadFromXLSX}
-                      className="px-3"
-                      title="Load from XLSX files"
-                    >
-                      <FileSpreadsheet className="h-4 w-4" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => {
+                          setUserRank(50000)
+                          setUserCategory("")
+                          setSelectedYear("")
+                          setSelectedRound("")
+                          setSelectedInstitute("")
+                          setSelectedCourses([])
+                          setLocationFilter("")
+                          setMinRank(1)
+                          setMaxRank(300000)
+                          setMatches([])
+                          setCollegeSearchTerm("")
+                          finderStore.setState({
+                            userRank: 50000,
+                            userCategory: '',
+                            selectedYear: '',
+                            selectedRound: '',
+                            selectedInstitute: '',
+                            selectedCourses: [],
+                            locationFilter: '',
+                            matches: [],
+                          })
+                        }}
+                        className="h-9 w-9"
+                        title="Clear all filters"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={loadFromXLSX}
+                        className="h-9 w-9"
+                        title="Load from XLSX files"
+                      >
+                        <FileSpreadsheet className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
 
 
-              {/* Course Selection - searchable multi-select */}
-              <div className="mt-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <Label className="text-base font-medium">Select Courses (Optional)</Label>
-                    <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200">
-                      BETA
-                    </Badge>
+                {/* Course Selection - searchable multi-select */}
+                <div className="mt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-base font-medium">Select Courses (Optional)</Label>
+                      <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200">
+                        BETA
+                      </Badge>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                            <Info className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80">
+                          <div className="space-y-2">
+                            <h4 className="font-medium text-orange-800">Course Selection Beta</h4>
+                            <p className="text-sm text-muted-foreground">
+                              This feature is still in development and may have some issues:
+                            </p>
+                            <ul className="text-sm text-muted-foreground space-y-1 ml-4">
+                              <li>• Some courses may not be properly mapped</li>
+                              <li>• Course matching might be inconsistent</li>
+                              <li>• Data accuracy may vary</li>
+                            </ul>
+                            <p className="text-xs text-muted-foreground">
+                              We're working to improve course mapping and data accuracy.
+                            </p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    {selectedCourses.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setSelectedCourses([])}
+                        className="text-xs self-start sm:self-auto"
+                      >
+                        <Trash2 className="h-3 w-3 mr-1" />
+                        Clear All
+                      </Button>
+                    )}
+                  </div>
+                  <div className="mt-2">
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                          <Info className="h-4 w-4 text-muted-foreground" />
+                        <Button variant="outline" className="w-full justify-between">
+                          {selectedCourses.length > 0 ? `${selectedCourses.length} selected` : 'Search & select courses'}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-80">
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-orange-800">Course Selection Beta</h4>
-                          <p className="text-sm text-muted-foreground">
-                            This feature is still in development and may have some issues:
-                          </p>
-                          <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-                            <li>• Some courses may not be properly mapped</li>
-                            <li>• Course matching might be inconsistent</li>
-                            <li>• Data accuracy may vary</li>
-                          </ul>
-                          <p className="text-xs text-muted-foreground">
-                            We're working to improve course mapping and data accuracy.
-                          </p>
-                        </div>
+                      <PopoverContent className="p-0 w-[min(700px,90vw)]">
+                        <Command>
+                          <CommandInput placeholder="Search courses..." />
+                          <CommandEmpty>No courses found.</CommandEmpty>
+                          <CommandList>
+                            <CommandGroup>
+                              {availableCourses.map((course) => {
+                                const isSelected = selectedCourses.includes(course)
+                                const courseCode = getCourseCode(course)
+                                return (
+                                  <CommandItem
+                                    key={course}
+                                    value={course}
+                                    onSelect={() => {
+                                      if (isSelected) {
+                                        setSelectedCourses(selectedCourses.filter(c => c !== course))
+                                      } else {
+                                        setSelectedCourses([...selectedCourses, course])
+                                      }
+                                    }}
+                                  >
+                                    <Check className={`mr-2 h-4 w-4 ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
+                                    <div className="flex items-center gap-2">
+                                      {courseCode && (
+                                        <Badge variant="secondary" className="text-xs font-mono">
+                                          {courseCode}
+                                        </Badge>
+                                      )}
+                                      <span className="truncate">{course}</span>
+                                    </div>
+                                  </CommandItem>
+                                )
+                              })}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
                       </PopoverContent>
                     </Popover>
-                  </div>
-                  {selectedCourses.length > 0 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setSelectedCourses([])}
-                      className="text-xs self-start sm:self-auto"
-                    >
-                      <Trash2 className="h-3 w-3 mr-1" />
-                      Clear All
-                    </Button>
-                  )}
-                </div>
-                <div className="mt-2">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-between">
-                        {selectedCourses.length > 0 ? `${selectedCourses.length} selected` : 'Search & select courses'}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-0 w-[min(700px,90vw)]">
-                      <Command>
-                        <CommandInput placeholder="Search courses..." />
-                        <CommandEmpty>No courses found.</CommandEmpty>
-                        <CommandList>
-                          <CommandGroup>
-                            {availableCourses.map((course) => {
-                              const isSelected = selectedCourses.includes(course)
-                              const courseCode = getCourseCode(course)
-                              return (
-                                <CommandItem
-                                  key={course}
-                                  value={course}
-                                  onSelect={() => {
-                                    if (isSelected) {
-                                      setSelectedCourses(selectedCourses.filter(c => c !== course))
-                                    } else {
-                                      setSelectedCourses([...selectedCourses, course])
-                                    }
-                                  }}
-                                >
-                                  <Check className={`mr-2 h-4 w-4 ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
-                                  <div className="flex items-center gap-2">
-                                    {courseCode && (
-                                      <Badge variant="secondary" className="text-xs font-mono">
-                                        {courseCode}
-                                      </Badge>
-                                    )}
-                                    <span className="truncate">{course}</span>
-                                  </div>
-                                </CommandItem>
-                              )
-                            })}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  {selectedCourses.length > 0 && (
-                    <div className="mt-2 text-sm text-muted-foreground">
-                      <div className="flex flex-wrap gap-1">
-                        {selectedCourses.map(course => {
-                          const courseCode = getCourseCode(course)
-                          return (
-                            <span key={course} className="text-xs bg-muted px-2 py-1 rounded">
-                              {courseCode ? `${courseCode}: ${course}` : course}
-                            </span>
-                          )
-                        })}
+                    {selectedCourses.length > 0 && (
+                      <div className="mt-2 text-sm text-muted-foreground">
+                        <div className="flex flex-wrap gap-1">
+                          {selectedCourses.map(course => {
+                            const courseCode = getCourseCode(course)
+                            return (
+                              <span key={course} className="text-xs bg-muted px-2 py-1 rounded">
+                                {courseCode ? `${courseCode}: ${course}` : course}
+                              </span>
+                            )
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

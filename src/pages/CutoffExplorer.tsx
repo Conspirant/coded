@@ -7,11 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Search, Filter, Upload, FileSpreadsheet, AlertCircle, ChevronDown, ChevronUp } from "lucide-react"
+import { Search, Filter, Upload, FileSpreadsheet, AlertCircle, ChevronDown, ChevronUp, Eye } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { XLSXLoader } from "@/lib/xlsx-loader"
 import { COURSES, COURSE_CODE_TO_NAME } from "@/lib/courses"
+import { getPdfUrl, getPdfUrlWithPage } from "@/lib/pdf-url-mapper"
 
 // Types for the cutoff data
 interface CutoffData {
@@ -57,7 +58,7 @@ const CutoffExplorer = () => {
   const [xlsxLoading, setXlsxLoading] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const isMobile = useIsMobile()
-  
+
   // Keep filters open by default on mobile
   useEffect(() => {
     if (isMobile) {
@@ -71,31 +72,31 @@ const CutoffExplorer = () => {
     setLoading(true)
     try {
       console.log('Loading cutoff data from local JSON file...')
-      
+
       // Try multiple data sources with fallback
       let response = await fetch('/data/kcet_cutoffs_consolidated.json', { cache: 'no-store' })
       let dataSource = 'data/kcet_cutoffs_consolidated.json'
-      
+
       if (!response.ok) {
         // Try root consolidated
         response = await fetch('/kcet_cutoffs.json', { cache: 'no-store' })
         dataSource = 'kcet_cutoffs.json'
-        
+
         if (!response.ok) {
           // Try public directory
           response = await fetch('/public/data/kcet_cutoffs_consolidated.json', { cache: 'no-store' })
           dataSource = 'public/data/kcet_cutoffs_consolidated.json'
-          
+
           if (!response.ok) {
             // Try the 2025 data file
             response = await fetch('/kcet_cutoffs2025.json', { cache: 'no-store' })
             dataSource = 'kcet_cutoffs2025.json'
-            
+
             if (!response.ok) {
               // Try the new Round 3 2025 specific data
               response = await fetch('/kcet_cutoffs_round3_2025.json', { cache: 'no-store' })
               dataSource = 'kcet_cutoffs_round3_2025.json'
-              
+
               if (!response.ok) {
                 throw new Error(`Failed to load data from all sources: ${response.status} ${response.statusText}`)
               }
@@ -103,12 +104,12 @@ const CutoffExplorer = () => {
           }
         }
       }
-      
+
       console.log(`Loading data from: ${dataSource}`)
-      
+
       const rawData = await response.json()
       console.log('Raw data structure:', Object.keys(rawData))
-      
+
       // Handle different data structures
       let data: CutoffResponse
       if (!rawData.cutoffs && Array.isArray(rawData)) {
@@ -117,15 +118,15 @@ const CutoffExplorer = () => {
       } else {
         data = rawData
       }
-      
+
       console.log('Loaded cutoff data:', data.cutoffs.length, 'records')
       console.log('First record:', data.cutoffs[0])
-      
+
       setAllCutoffs(data.cutoffs)
-      
+
       // Extract unique values from the data
       const years = [...new Set(data.cutoffs.map(item => item.year))].sort((a, b) => b.localeCompare(a))
-      
+
       // Filter institutes to only E001 to E314
       const allInstitutes = [...new Set(data.cutoffs.map(item => item.institute))].sort()
       const filteredInstitutes = allInstitutes.filter(inst => {
@@ -136,17 +137,17 @@ const CutoffExplorer = () => {
         }
         return false
       })
-      
+
       const categories = [...new Set(data.cutoffs.map(item => item.category))].sort()
       const rounds = [...new Set(data.cutoffs.map(item => item.round))].sort()
-      
+
       console.log('Available institutes:', filteredInstitutes.length, filteredInstitutes.slice(0, 10))
-      
+
       setAvailableYears(years)
       setAvailableInstitutes(filteredInstitutes)
       setAvailableCategories(['ALL', ...categories])
       setAvailableRounds(['ALL', ...rounds])
-      
+
       // Set default year to the most recent year
       if (years.length > 0) {
         setSelectedYear(years[0])
@@ -157,7 +158,7 @@ const CutoffExplorer = () => {
       if (rounds.length > 0) {
         setSelectedRound('ALL')
       }
-      
+
       setCutoffs(data.cutoffs.slice(0, 200)) // Show first 200 records initially
     } catch (error: any) {
       console.error('Error loading cutoff data:', error)
@@ -182,7 +183,7 @@ const CutoffExplorer = () => {
     setXlsxLoading(true)
     try {
       const result = await XLSXLoader.loadAllXLSXFiles()
-      
+
       // Convert XLSX data to match existing format
       const convertedData: CutoffData[] = result.cutoffs.map(item => ({
         institute: item.institute || '',
@@ -195,10 +196,10 @@ const CutoffExplorer = () => {
       }))
 
       setAllCutoffs(convertedData)
-      
+
       // Extract unique values from the data
       const years = [...new Set(convertedData.map(item => item.year))].sort((a, b) => b.localeCompare(a))
-      
+
       // Filter institutes to only E001 to E314
       const allInstitutes = [...new Set(convertedData.map(item => item.institute))].sort()
       const filteredInstitutes = allInstitutes.filter(inst => {
@@ -209,15 +210,15 @@ const CutoffExplorer = () => {
         }
         return false
       })
-      
+
       const categories = [...new Set(convertedData.map(item => item.category))].sort()
       const rounds = [...new Set(convertedData.map(item => item.round))].sort()
-      
+
       setAvailableYears(years)
       setAvailableInstitutes(filteredInstitutes)
       setAvailableCategories(['ALL', ...categories])
       setAvailableRounds(['ALL', ...rounds])
-      
+
       // Set default year to the most recent year
       if (years.length > 0) {
         setSelectedYear(years[0])
@@ -228,9 +229,9 @@ const CutoffExplorer = () => {
       if (rounds.length > 0) {
         setSelectedRound('ALL')
       }
-      
+
       setCutoffs(convertedData.slice(0, 200)) // Show first 200 records initially
-      
+
       toast({
         title: "Success",
         description: `Loaded ${convertedData.length} records from XLSX files`,
@@ -250,7 +251,7 @@ const CutoffExplorer = () => {
   // Filter data based on current filters
   const filterData = () => {
     console.log('Filtering data with:', { selectedYear, selectedCategory, selectedCourse, selectedInstitute, selectedRound, searchQuery })
-    
+
     let filteredData = allCutoffs
 
     // Filter by year
@@ -275,7 +276,7 @@ const CutoffExplorer = () => {
 
     // Filter by search query
     if (searchQuery) {
-      filteredData = filteredData.filter(item => 
+      filteredData = filteredData.filter(item =>
         item.institute?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.course?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.institute_code?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -353,6 +354,30 @@ const CutoffExplorer = () => {
     }
   }
 
+  // Handler to open PDF for a cutoff entry
+  const handleViewPdf = async (cutoff: CutoffData) => {
+    // Get PDF URL with exact page number
+    const pdfUrl = await getPdfUrlWithPage(cutoff.year, cutoff.round, cutoff.institute_code);
+
+    if (!pdfUrl) {
+      toast({
+        title: "PDF Not Available",
+        description: `No PDF available for ${cutoff.year} ${cutoff.round}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Open PDF in new tab at the exact page
+    window.open(pdfUrl, '_blank');
+
+    // Show toast with info
+    toast({
+      title: "PDF Opened",
+      description: `Opening page with ${cutoff.institute_code} cutoffs`,
+    });
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
@@ -373,8 +398,8 @@ const CutoffExplorer = () => {
               <div className="text-sm text-orange-800">
                 <p className="font-medium mb-1">Important Disclaimer</p>
                 <p>
-                  Please cross-check all cutoff data with the official KCET PDFs from KEA website. 
-                  Our filtering system might miss an entry or two, so always verify critical information 
+                  Please cross-check all cutoff data with the official KCET PDFs from KEA website.
+                  Our filtering system might miss an entry or two, so always verify critical information
                   from the original source documents.
                 </p>
               </div>
@@ -626,8 +651,13 @@ const CutoffExplorer = () => {
                             {cutoff.cutoff_rank?.toLocaleString()}
                           </TableCell>
                           <TableCell className="text-center">
-                            <Button variant="ghost" size="sm">
-                              {/* <Eye className="h-4 w-4" /> */}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleViewPdf(cutoff)}
+                              title="View PDF source"
+                            >
+                              <Eye className="h-4 w-4" />
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -656,7 +686,7 @@ const CutoffExplorer = () => {
                             <div className="text-xs text-muted-foreground">Cutoff Rank</div>
                           </div>
                         </div>
-                        
+
                         {/* Course Info */}
                         <div className="bg-muted/50 rounded-lg p-3">
                           <div className="font-medium text-base">{COURSE_CODE_TO_NAME[cutoff.course] || cutoff.course}</div>
@@ -674,6 +704,15 @@ const CutoffExplorer = () => {
                           <Badge variant="secondary" className="text-xs px-2 py-1">
                             {cutoff.year}
                           </Badge>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewPdf(cutoff)}
+                            className="ml-auto"
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View PDF
+                          </Button>
                         </div>
 
                         {/* Additional Info */}
@@ -704,10 +743,10 @@ const CutoffExplorer = () => {
                     Showing {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, stats.total)} of {stats.total}
                   </div>
                   <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setPage(Math.max(1, page - 1))} 
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(Math.max(1, page - 1))}
                       disabled={page === 1}
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
@@ -717,10 +756,10 @@ const CutoffExplorer = () => {
                     <div className="flex items-center px-3 py-2 text-sm font-medium bg-background border rounded-md min-h-[44px]">
                       Page {page}
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setPage(page * pageSize < stats.total ? page + 1 : page)} 
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(page * pageSize < stats.total ? page + 1 : page)}
                       disabled={page * pageSize >= stats.total}
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
