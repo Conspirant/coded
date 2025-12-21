@@ -34,13 +34,9 @@ export class PDFParser {
   private static collegeStartX = 450;
 
   static async parseWithFallback(file: File): Promise<ParsedOption[]> {
-    console.log('🚀 Starting Anchor & Content-Based PDF parsing...');
-
     try {
       const arrayBuffer = await file.arrayBuffer();
       const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
-      console.log(`📄 PDF loaded: ${pdf.numPages} pages`);
 
       const allOptions: ParsedOption[] = [];
       let pendingOption: any = null;
@@ -113,7 +109,6 @@ export class PDFParser {
 
       if (pendingOption) this.finalizeOption(pendingOption, allOptions);
 
-      console.log(`✅ Parsed ${allOptions.length} valid options`);
       return allOptions;
 
     } catch (error) {
