@@ -37,7 +37,7 @@ interface CutoffResponse {
 }
 
 const CutoffExplorer = () => {
-
+  console.log('CutoffExplorer component rendering')
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([])
   const [loading, setLoading] = useState(true)
@@ -71,6 +71,7 @@ const CutoffExplorer = () => {
   const loadCutoffData = async () => {
     setLoading(true)
     try {
+      console.log('Loading cutoff data from local JSON file...')
 
       // Try multiple data sources with fallback
       let response = await fetch('/data/kcet_cutoffs_consolidated.json', { cache: 'no-store' })
@@ -104,18 +105,22 @@ const CutoffExplorer = () => {
         }
       }
 
+      console.log(`Loading data from: ${dataSource}`)
+
       const rawData = await response.json()
-      )
+      console.log('Raw data structure:', Object.keys(rawData))
 
       // Handle different data structures
       let data: CutoffResponse
       if (!rawData.cutoffs && Array.isArray(rawData)) {
-
+        console.log('Data is a direct array, wrapping in response format')
         data = { cutoffs: rawData, metadata: {} } as any
       } else {
         data = rawData
       }
 
+      console.log('Loaded cutoff data:', data.cutoffs.length, 'records')
+      console.log('First record:', data.cutoffs[0])
 
       setAllCutoffs(data.cutoffs)
 
@@ -136,7 +141,7 @@ const CutoffExplorer = () => {
       const categories = [...new Set(data.cutoffs.map(item => item.category))].sort()
       const rounds = [...new Set(data.cutoffs.map(item => item.round))].sort()
 
-      )
+      console.log('Available institutes:', filteredInstitutes.length, filteredInstitutes.slice(0, 10))
 
       setAvailableYears(years)
       setAvailableInstitutes(filteredInstitutes)
@@ -245,6 +250,7 @@ const CutoffExplorer = () => {
 
   // Filter data based on current filters
   const filterData = () => {
+    console.log('Filtering data with:', { selectedYear, selectedCategory, selectedCourse, selectedInstitute, selectedRound, searchQuery })
 
     let filteredData = allCutoffs
 
@@ -296,7 +302,7 @@ const CutoffExplorer = () => {
     // Pagination
     const start = (page - 1) * pageSize
     const end = start + pageSize
-
+    console.log('Filtered data:', filteredData.length, 'records')
     setCutoffs(filteredData.slice(start, end))
   }
 
