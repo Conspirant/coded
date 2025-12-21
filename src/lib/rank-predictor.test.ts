@@ -1,22 +1,22 @@
 import { describe, test, expect } from 'vitest'
-import { predictKCETRank, getPercentile, calculatePercentile, getRankAnalysis, getCollegeSuggestions } from './rank-predictor'
+import { predictKCETRank, getPercentile, calculatePercentile, getRankAnalysis, getCollegeSuggestions, getTopCollegesForRank } from './rank-predictor'
 
 // Test the rank prediction logic
 describe('Rank Predictor Logic', () => {
   test('should calculate rank correctly for real data point', () => {
     // Real data point: KCET 71 + 86% boards = rank 69,918
     const result = predictKCETRank(71, 86)
-    
+
     // Should be close to 69,918
     expect(result.medium).toBeCloseTo(69918, -3) // Within 1000
-    expect(result.composite).toBeCloseTo(0.6 * (71/180*100) + 0.4 * 86, 1)
+    expect(result.composite).toBeCloseTo(0.6 * (71 / 180 * 100) + 0.4 * 86, 1)
   })
 
   test('should calculate rank with adjusted weight correctly', () => {
     // Test case: KCET 140/180 (77.78%) + PUC 94% 
     const result = predictKCETRank(140, 94)
-    
-    expect(result.composite).toBeCloseTo(0.6 * (140/180*100) + 0.4 * 94, 1)
+
+    expect(result.composite).toBeCloseTo(0.6 * (140 / 180 * 100) + 0.4 * 94, 1)
     expect(result.medium).toBeGreaterThan(0)
     expect(result.low).toBeLessThan(result.medium)
     expect(result.high).toBeGreaterThan(result.medium)
@@ -26,7 +26,7 @@ describe('Rank Predictor Logic', () => {
     // Perfect score
     const perfect = predictKCETRank(180, 100)
     expect(perfect.medium).toBe(1)
-    
+
     // Minimum score
     const minimum = predictKCETRank(0, 0)
     expect(minimum.medium).toBeGreaterThan(180000)
@@ -53,9 +53,22 @@ describe('Rank Predictor Logic', () => {
   test('should suggest colleges based on rank and category', () => {
     const generalCollege = getCollegeSuggestions(500, 'general')
     expect(generalCollege.name).toContain('MSRIT')
-    
+
     const obcCollege = getCollegeSuggestions(2000, 'obc')
     expect(obcCollege.name).toContain('MSRIT')
+  })
+
+  test('should return dynamic college suggestions from data', () => {
+    // Mock cutoff data
+    const mockData = [
+      { institute: 'Review College', cutoff_rank: 5000, category: 'GM', course: 'CSE', year: '2024', round: '1', institute_code: 'E001' },
+      { institute: 'Test College', cutoff_rank: 10000, category: 'GM', course: 'ECE', year: '2024', round: '1', institute_code: 'E002' },
+      { institute: 'Far College', cutoff_rank: 50000, category: 'GM', course: 'ME', year: '2024', round: '1', institute_code: 'E003' }
+    ]
+
+    const result = getTopCollegesForRank(8000, 'GM', mockData)
+    expect(result.length).toBeGreaterThan(0)
+    expect(result[0].institute).toBe('Test College')
   })
 })
 

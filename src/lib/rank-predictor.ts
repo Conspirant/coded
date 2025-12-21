@@ -295,3 +295,43 @@ export const getCollegeSuggestions = (rank: number, category: string) => {
   const suggestions = colleges[category as keyof typeof colleges] || colleges.general
   return suggestions.find(s => rank <= s.rank) || { name: 'Other colleges', branch: 'All branches' }
 }
+
+/**
+ * Get top college suggestions dynamically from actual cutoff data
+ * @param rank User's predicted rank
+ * @param category User's category
+ * @param cutoutData Array of CutoffData objects
+ * @param limit Number of suggestions to return (default 5)
+ */
+export const getTopCollegesForRank = (
+  rank: number,
+  category: string,
+  cutoffData: any[],
+  limit = 5
+) => {
+  if (!cutoffData || cutoffData.length === 0) return []
+
+  // Filter for valid cutoffs within range (e.g. within 120% of rank or simply next available)
+  // We want colleges where the user has a chance, so cutoff rank >= user rank
+  const matches = cutoffData.filter(c =>
+    c.category.toLowerCase() === category.toLowerCase() &&
+    c.cutoff_rank >= rank &&
+    c.cutoff_rank <= rank * 1.5 // Reasonable range
+  )
+
+  // Sort by cutoff rank (closest to user rank first, ascending)
+  matches.sort((a, b) => a.cutoff_rank - b.cutoff_rank)
+
+  // Remove duplicates (same college different course) if we just want college names
+  const uniqueColleges = new Set()
+  const result = []
+
+  for (const m of matches) {
+    if (!uniqueColleges.has(m.institute) && uniqueColleges.size < limit) {
+      uniqueColleges.add(m.institute)
+      result.push(m)
+    }
+  }
+
+  return result
+}

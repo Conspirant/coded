@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,8 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Slider } from "@/components/ui/slider"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Search, MapPin, GraduationCap, TrendingUp, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3 } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { Search, MapPin, GraduationCap, TrendingUp, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3, Download, Bookmark, Scale, X } from "lucide-react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { XLSXLoader } from "@/lib/xlsx-loader"
@@ -18,6 +18,7 @@ import { finderStore } from "@/store/finderStore"
 import { loadSettings } from '@/lib/settings'
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
+import { normalizeCourse, getUniqueCourses, isSameCourse } from "@/lib/course-normalizer"
 
 interface CutoffData {
   institute: string
@@ -58,8 +59,52 @@ interface CollegeMatch {
   round: string
   matchScore: number
   safetyLevel: 'Eligible'
+  admissionProbability: 'High' | 'Moderate' | 'Borderline' | 'Exact'
+  marginPercent: number
 }
 
+
+const Sparkline = ({ data }: { data: number[] }) => {
+  if (data.length < 2) return null
+  const height = 24
+  const width = 60
+  const min = Math.min(...data)
+  const max = Math.max(...data)
+  const range = max - min || 1
+
+  // Normalize points (invert Y so lower rank/better is higher)
+  const points = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * width
+    const y = ((d - min) / range) * height
+    return `${x},${y}`
+  }).join(' ')
+
+  return (
+    <div className="flex flex-col items-center select-none" title={`Trend: ${data.join(' → ')}`}>
+      <div className="relative h-6 w-[60px]">
+        <svg width={width} height={height} className="overflow-visible stroke-primary/80 fill-none stroke-2">
+          <polyline points={points} vectorEffect="non-scaling-stroke" />
+        </svg>
+        {/* Dots for points */}
+        {data.map((d, i) => {
+          const x = (i / (data.length - 1)) * width
+          const y = ((d - min) / range) * height
+          return (
+            <div
+              key={i}
+              className="absolute h-1.5 w-1.5 bg-primary rounded-full transform -translate-x-1/2 -translate-y-1/2"
+              style={{ left: x, top: y }}
+            />
+          )
+        })}
+      </div>
+      <div className="text-[9px] text-muted-foreground flex justify-between w-full px-0.5 mt-1 font-mono">
+        <span>'23</span>
+        <span>'25</span>
+      </div>
+    </div>
+  )
+}
 const CollegeFinder = () => {
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [matches, setMatches] = useState<CollegeMatch[]>([])
@@ -94,6 +139,118 @@ const CollegeFinder = () => {
   const isMobile = useIsMobile()
   const { toast } = useToast()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+
+  // Bookmarked colleges (persisted to localStorage)
+  const [bookmarks, setBookmarks] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem('kcet_bookmarks')
+      return saved ? new Set(JSON.parse(saved)) : new Set()
+    } catch {
+      return new Set()
+    }
+  })
+
+  // Toggle bookmark for a college
+  const toggleBookmark = (key: string) => {
+    setBookmarks(prev => {
+      const next = new Set(prev)
+      if (next.has(key)) {
+        next.delete(key)
+      } else {
+        next.add(key)
+      }
+      localStorage.setItem('kcet_bookmarks', JSON.stringify([...next]))
+      return next
+    })
+  }
+
+  // Trend Analysis
+  const trendIndex = useMemo(() => {
+    const map = new Map<string, { year: number, rank: number }[]>()
+    if (cutoffs.length === 0) return map
+
+    cutoffs.forEach(c => {
+      const key = `${c.institute_code}-${c.course}-${c.category}`
+      if (!map.has(key)) map.set(key, [])
+      map.get(key)!.push({ year: parseInt(c.year) || 0, rank: c.cutoff_rank })
+    })
+
+    for (const list of map.values()) {
+      list.sort((a, b) => a.year - b.year)
+    }
+    return map
+  }, [cutoffs])
+
+  const getTrendData = (match: CollegeMatch) => {
+    const key = `${match.institute_code}-${match.course}-${match.category}`
+    const list = trendIndex.get(key)
+    if (!list || list.length < 2) return []
+    return list.map(l => l.rank)
+  }
+
+  // Compare Mode State
+  const [compareList, setCompareList] = useState<CollegeMatch[]>([])
+  const [showCompareModal, setShowCompareModal] = useState(false)
+
+  const toggleCompare = (match: CollegeMatch) => {
+    setCompareList(prev => {
+      const exists = prev.find(p => p.institute_code === match.institute_code && p.course === match.course)
+      if (exists) {
+        return prev.filter(p => !(p.institute_code === match.institute_code && p.course === match.course))
+      }
+      if (prev.length >= 3) {
+        toast({ title: "Compare limit reached", description: "You can compare up to 3 colleges at a time" })
+        return prev
+      }
+      return [...prev, match]
+    })
+  }
+
+  // Export results to CSV
+  const exportToCSV = () => {
+    if (matches.length === 0) {
+      toast({ title: "No results to export", variant: "destructive" })
+      return
+    }
+
+    const headers = ['Institute', 'Code', 'Course', 'Category', 'Cutoff Rank', 'Year', 'Round']
+    const rows = matches.map(m => [
+      `"${m.institute}"`,
+      m.institute_code,
+      `"${m.course}"`,
+      m.category,
+      m.cutoff_rank,
+      m.year,
+      m.round
+    ])
+
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `kcet_colleges_rank_${userRank}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+
+    toast({ title: "Exported!", description: `${matches.length} results saved to CSV` })
+  }
+
+  // Read rank from URL params (from RankPredictor "Find Colleges" button)
+  useEffect(() => {
+    const rankFromUrl = searchParams.get('rank')
+    if (rankFromUrl) {
+      const rank = parseInt(rankFromUrl, 10)
+      if (!isNaN(rank) && rank > 0 && rank <= 300000) {
+        setUserRank(rank)
+        toast({
+          title: "Rank Pre-filled",
+          description: `Searching for colleges with rank ${rank.toLocaleString()}`,
+        })
+      }
+    }
+  }, [searchParams])
 
   // Mapping: course codes to canonical names (normalized display) - EXACT MATCHING
   const courseCodeToName: Record<string, string> = {
@@ -482,50 +639,31 @@ const CollegeFinder = () => {
     const cleanedText = text.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim()
 
     // Step 2: Extract the course code (usually 2 letters at the start)
-    // Pattern: "AI Artificial Intelligence" or "CS Computers" or "CY CS- Cyber Security"
     const codeMatch = cleanedText.match(/^([A-Z]{2})\s/)
     const code = codeMatch ? codeMatch[1] : null
 
-    // Step 3: If we have a code and it's in our mapping, use the mapped name
+    // Step 3: If we have a code and it's in our legacy mapping, use it
     if (code && courseCodeToName[code]) {
       return courseCodeToName[code]
     }
 
-    // Step 4: Try full text matching against the mapping values
+    // Step 4: Use the new pattern-based normalizer (handles year-specific variations)
+    const normalized = normalizeCourse(cleanedText)
+    if (normalized !== cleanedText) {
+      return normalized
+    }
+
+    // Step 5: Try full text matching against legacy mapping values
     const cleanedLower = cleanedText.toLowerCase()
-    for (const [mapCode, name] of Object.entries(courseCodeToName)) {
+    for (const [, name] of Object.entries(courseCodeToName)) {
       const nameLower = name.toLowerCase()
       if (nameLower === cleanedLower) {
         return name
       }
     }
 
-    // Step 5: Try matching without the code prefix
-    if (code) {
-      const textWithoutCode = cleanedText.substring(code.length).trim()
-      // Remove common separators like "- " at the start
-      const cleanName = textWithoutCode.replace(/^[-:\s]+/, '').trim()
-
-      // Check if this cleaned version matches any mapping
-      for (const [mapCode, name] of Object.entries(courseCodeToName)) {
-        if (name.toLowerCase() === cleanName.toLowerCase()) {
-          return name
-        }
-      }
-
-      // If no match, return the cleaned version (without code prefix)
-      if (cleanName.length > 0) {
-        // Capitalize first letter of each word for proper display
-        return cleanName.split(' ').map(word =>
-          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        ).join(' ')
-      }
-    }
-
-    // Step 6: Fallback - return cleaned text with proper capitalization
-    return cleanedText.split(' ').map(word =>
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    ).join(' ')
+    // Step 6: Fallback to normalized result
+    return normalized
   }
 
 
@@ -666,7 +804,12 @@ const CollegeFinder = () => {
           : [...new Set(normalizedCutoffs.map(item => item.year))].sort((a, b) => b.localeCompare(a))
         const categories = processedData.metadata?.detected_categories ? [...processedData.metadata.detected_categories] : [...new Set(normalizedCutoffs.map(item => item.category))]
         categories.sort()
-        const courses = processedData.metadata?.auto_detected_courses ? [...processedData.metadata.auto_detected_courses.map(c => mapCourseName(c))] : [...new Set(normalizedCutoffs.map(item => item.course))]
+        // Populate course options - use getUniqueCourses to deduplicate year-specific variations
+        const rawCourses = processedData.metadata?.auto_detected_courses
+          ? [...processedData.metadata.auto_detected_courses]
+          : [...new Set(normalizedCutoffs.map(item => item.course))]
+        // Apply normalization and deduplication
+        const courses = getUniqueCourses(rawCourses)
         courses.sort()
 
         // Debug: Log some course names to see what we're working with
@@ -858,9 +1001,14 @@ const CollegeFinder = () => {
       // Filter data based on user criteria
       // Show colleges where cutoff_rank >= userRank (colleges the user is eligible for)
       // If rank is 69918, show colleges with cutoff 69918, 69919, 70000, 100000, 200000, etc.
+
+      // Use exact category matching - no equivalents
+      // When user selects 3AG, show ONLY 3AG entries, not 3AR, 3AK, etc.
+
       let filteredData = cutoffs.filter(cutoff => {
         const yearMatch = cutoff.year === selectedYear
         const roundMatch = selectedRound === 'ALL' || cutoff.round === selectedRound
+        // Exact category match only
         const categoryMatch = userCategory === 'ALL' || cutoff.category === userCategory
         // Only show colleges where user is eligible (cutoff rank >= user's rank)
         const isEligible = cutoff.cutoff_rank >= userRank
@@ -909,32 +1057,23 @@ const CollegeFinder = () => {
       console.log(`Total entries for category ${userCategory}, year ${selectedYear}, round ${selectedRound}:`, allMatchingEntries.length)
       console.log('Sample entries:', allMatchingEntries.slice(0, 5))
 
-      // Filter by selected courses - ULTRA ACCURATE MATCHING
+      // Filter by selected courses - SMART MATCHING ACROSS YEAR VARIATIONS
       if (selectedCourses.length > 0) {
         filteredData = filteredData.filter(cutoff => {
-          // Normalize both the cutoff course and selected courses for comparison
-          const cutoffCourseNormalized = cutoff.course.toLowerCase().trim()
-          const selectedCoursesNormalized = selectedCourses.map(c => c.toLowerCase().trim())
-
-          // Try exact match first
-          if (selectedCoursesNormalized.includes(cutoffCourseNormalized)) {
-            return true
+          // Use the new isSameCourse function for pattern-based matching
+          // This handles year-specific variations like:
+          // "Computer Science And Engineering" (2023) vs "COMPUTER SCIENCE AND ENGINEERING" (2024)
+          for (const selectedCourse of selectedCourses) {
+            if (isSameCourse(cutoff.course, selectedCourse)) {
+              return true
+            }
           }
 
-          // Try clean match (remove line breaks and extra spaces)
-          const cutoffCourseClean = cutoff.course.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase()
-          const selectedCoursesClean = selectedCourses.map(c => c.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase())
-
-          if (selectedCoursesClean.includes(cutoffCourseClean)) {
-            return true
-          }
-
-          // Try matching by course codes
+          // Fallback: Try matching by course codes
           const cutoffCourseCode = getCourseCode(cutoff.course)
           if (cutoffCourseCode) {
             const selectedCourseCodes = selectedCourses.map(c => getCourseCode(c)).filter(code => code)
             if (selectedCourseCodes.includes(cutoffCourseCode)) {
-              console.log(`Course code match: ${cutoff.course} (${cutoffCourseCode}) matches selected courses`)
               return true
             }
           }
@@ -983,12 +1122,33 @@ const CollegeFinder = () => {
       // Note: eligibleOnly filter removed - now automatically shows only colleges where user has a chance
       // (cutoff_rank > userRank means better chances of admission)
 
+      // Helper function to calculate admission probability based on margin
+      const calculateAdmissionProbability = (cutoffRank: number, userRank: number): { probability: 'High' | 'Moderate' | 'Borderline' | 'Exact', marginPercent: number } => {
+        if (cutoffRank === userRank) {
+          return { probability: 'Exact', marginPercent: 0 }
+        }
+        const margin = cutoffRank - userRank
+        const marginPercent = (margin / userRank) * 100
+
+        if (marginPercent > 20) {
+          return { probability: 'High', marginPercent }
+        } else if (marginPercent > 5) {
+          return { probability: 'Moderate', marginPercent }
+        } else {
+          return { probability: 'Borderline', marginPercent }
+        }
+      }
+
       // Map data - all shown colleges are eligible (filtered above)
-      const matchesWithScores = filteredData.map(cutoff => {
+      // Calculate admission probability based on margin between cutoff and user rank
+      const matchesWithScores: CollegeMatch[] = filteredData.map(cutoff => {
+        const { probability, marginPercent } = calculateAdmissionProbability(cutoff.cutoff_rank, userRank)
         return {
           ...cutoff,
           matchScore: 100,
-          safetyLevel: 'Eligible' as const
+          safetyLevel: 'Eligible' as const,
+          admissionProbability: probability,
+          marginPercent: Math.round(marginPercent * 10) / 10 // Round to 1 decimal
         }
       })
 
@@ -1051,6 +1211,38 @@ const CollegeFinder = () => {
 
   const getMatchColor = (score: number) => {
     return score >= 100 ? 'text-green-600' : 'text-red-600'
+  }
+
+  // Helper function to get admission probability badge color
+  const getAdmissionProbabilityColor = (probability: string) => {
+    switch (probability) {
+      case 'High':
+        return 'bg-green-100 text-green-800 border-green-200'
+      case 'Moderate':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'Borderline':
+        return 'bg-orange-100 text-orange-800 border-orange-200'
+      case 'Exact':
+        return 'bg-purple-100 text-purple-800 border-purple-200'
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200'
+    }
+  }
+
+  // Helper function to get admission probability icon
+  const getAdmissionProbabilityIcon = (probability: string) => {
+    switch (probability) {
+      case 'High':
+        return '✅'
+      case 'Moderate':
+        return '⚠️'
+      case 'Borderline':
+        return '🔶'
+      case 'Exact':
+        return '🎯'
+      default:
+        return '❓'
+    }
   }
 
   // Helper function to get category display name
@@ -1340,6 +1532,34 @@ const CollegeFinder = () => {
                   />
                   <p className="text-xs text-muted-foreground">
                     <strong>Tip:</strong> Colleges with cutoff ranks <strong>higher than your rank</strong> are your best chances for admission.
+                  </p>
+                </div>
+                {/* What If Slider */}
+                <div className="space-y-4 pt-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <Label htmlFor="rank-slider" className="text-muted-foreground flex items-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      What-If Slider
+                    </Label>
+                    <span className="text-muted-foreground font-mono">
+                      ±20% Adjustment
+                    </span>
+                  </div>
+                  <Slider
+                    id="rank-slider"
+                    min={1}
+                    max={300000}
+                    step={100}
+                    value={[userRank]}
+                    onValueChange={(val) => {
+                      const newRank = val[0]
+                      setUserRank(newRank)
+                      finderStore.setState({ userRank: newRank })
+                    }}
+                    className="py-1 cursor-pointer"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Drag to instantly see how your options change with a better/worse rank.
                   </p>
                 </div>
 
@@ -1648,79 +1868,33 @@ const CollegeFinder = () => {
           </CardContent>
         </Card>
 
-        {/* Analytics */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Analytics
-            </CardTitle>
-            <div className="text-sm text-muted-foreground">
-              Consolidated from JSON data{metadata?.last_updated ? ` • Last updated ${metadata.last_updated}` : ''}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4">
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={() => {
-                  // Ensure latest state is in store then navigate SPA
-                  finderStore.setState({
-                    userRank,
-                    userCategory,
-                    selectedYear,
-                    selectedRound,
-                    selectedInstitute,
-                    selectedCourses,
-                    locationFilter,
-                    matches,
-                  })
-                  navigate('/analytics')
-                }}
-              >
-                <BarChart3 className="h-4 w-4" />
-                View Analytics
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              <div className="p-4 rounded-md border">
-                <div className="text-xs text-muted-foreground">Total Entries</div>
-                <div className="text-xl font-semibold">{analytics.totalEntries.toLocaleString()}</div>
-              </div>
-              <div className="p-4 rounded-md border">
-                <div className="text-xs text-muted-foreground">Institutes</div>
-                <div className="text-xl font-semibold">{analytics.totalInstitutes.toLocaleString()}</div>
-              </div>
-              <div className="p-4 rounded-md border">
-                <div className="text-xs text-muted-foreground">Courses</div>
-                <div className="text-xl font-semibold">{analytics.totalCourses.toLocaleString()}</div>
-              </div>
-              <div className="p-4 rounded-md border">
-                <div className="text-xs text-muted-foreground">Categories</div>
-                <div className="text-xl font-semibold">{analytics.totalCategories.toLocaleString()}</div>
-              </div>
-              <div className="p-4 rounded-md border col-span-2 sm:col-span-3 lg:col-span-1">
-                <div className="text-xs text-muted-foreground">Years Covered</div>
-                <div className="text-sm font-medium truncate" title={analytics.yearsCovered.join(', ')}>
-                  {analytics.yearsCovered.slice(0, 4).join(', ')}{analytics.yearsCovered.length > 4 ? '…' : ''}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Results */}
         {matches.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <GraduationCap className="h-5 w-5" />
-                College Matches ({matches.length} found)
-              </CardTitle>
-              <div className="text-sm text-muted-foreground space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <CardTitle className="flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5" />
+                  College Matches ({matches.length} found)
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  {bookmarks.size > 0 && (
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      <Bookmark className="h-3 w-3" />
+                      {bookmarks.size} bookmarked
+                    </Badge>
+                  )}
+                  <Button variant="outline" size="sm" onClick={exportToCSV} className="flex items-center gap-2">
+                    <Download className="h-4 w-4" />
+                    Export CSV
+                  </Button>
+                </div>
+              </div>
+
+              <div className="text-sm text-muted-foreground space-y-2 mt-4">
                 <p>
-                  <strong>How to read results:</strong> Colleges are shown where the cutoff rank is <strong>higher than your rank ({userRank.toLocaleString()})</strong>.
+                  <strong>How to read results:</strong> Colleges are shown where the cutoff rank is <strong>≥ your rank ({userRank.toLocaleString()})</strong>.
                 </p>
               </div>
 
@@ -1791,6 +1965,7 @@ const CollegeFinder = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                            <TableHead className="w-10"></TableHead>
                             <TableHead>College</TableHead>
                             <TableHead>Course</TableHead>
                             <TableHead>Category</TableHead>
@@ -1804,115 +1979,141 @@ const CollegeFinder = () => {
                                 )}
                               </div>
                             </TableHead>
-                            <TableHead>Match Score</TableHead>
-                            <TableHead>Safety Level</TableHead>
                             <TableHead>Year</TableHead>
                             <TableHead>Round</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {filteredMatches.map((match, index) => (
-                            <TableRow key={`${match.institute_code}-${match.course}-${index}`}>
-                              <TableCell>
-                                <div>
-                                  <div className="font-medium">{match.institute}</div>
-                                  <div className="text-sm text-muted-foreground">
-                                    {match.institute_code}
+                          {filteredMatches.map((match, index) => {
+                            const bookmarkKey = `${match.institute_code}-${match.course}-${match.category}`
+                            const isBookmarked = bookmarks.has(bookmarkKey)
+                            return (
+                              <TableRow key={`${match.institute_code}-${match.course}-${index}`}>
+                                <TableCell className="w-24">
+                                  <div className="flex items-center gap-1">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 w-8 p-0"
+                                      onClick={() => toggleBookmark(bookmarkKey)}
+                                      title="Bookmark"
+                                    >
+                                      <Star className={`h-4 w-4 ${isBookmarked ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className={`h-8 w-8 p-0 ${compareList.some(c => c.institute_code === match.institute_code && c.course === match.course) ? 'bg-primary/10 text-primary' : ''}`}
+                                      onClick={() => toggleCompare(match)}
+                                      title="Compare"
+                                    >
+                                      <Scale className="h-4 w-4" />
+                                    </Button>
                                   </div>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <div>
-                                  <div className="font-medium">{match.course}</div>
-                                  {getCourseCode(match.course) && (
-                                    <div className="text-sm text-muted-foreground font-mono">
-                                      {getCourseCode(match.course)}
+                                </TableCell>
+                                <TableCell>
+                                  <div>
+                                    <div className="font-medium">{match.institute}</div>
+                                    <div className="text-sm text-muted-foreground">
+                                      {match.institute_code}
                                     </div>
-                                  )}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="outline">{match.category}</Badge>
-                              </TableCell>
-                              <TableCell className="font-mono font-semibold">
-                                {match.cutoff_rank.toLocaleString()}
-                              </TableCell>
-                              <TableCell>
-                                <div className={`font-semibold ${getMatchColor(match.matchScore)}`}>
-                                  {match.matchScore}%
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge className={getSafetyColor(match.safetyLevel)}>
-                                  {match.safetyLevel}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="outline">
-                                  {match.year}
-                                </Badge>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="outline">
-                                  {getRoundDisplayName(match.round)}
-                                </Badge>
-                              </TableCell>
-                            </TableRow>
-                          ))}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <div>
+                                    <div className="font-medium">{match.course}</div>
+                                    {getCourseCode(match.course) && (
+                                      <div className="text-sm text-muted-foreground font-mono">
+                                        {getCourseCode(match.course)}
+                                      </div>
+                                    )}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <Badge variant="outline">{match.category}</Badge>
+                                </TableCell>
+                                <TableCell>
+                                  <div className="font-mono font-semibold">
+                                    {match.cutoff_rank.toLocaleString()}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  <Badge variant="outline">
+                                    {match.year}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell>
+                                  <Badge variant="outline">
+                                    {getRoundDisplayName(match.round)}
+                                  </Badge>
+                                </TableCell>
+                              </TableRow>
+                            )
+                          })}
                         </TableBody>
                       </Table>
                     </div>
 
                     {/* Mobile Cards */}
                     <div className="lg:hidden space-y-3">
-                      {filteredMatches.map((match, index) => (
-                        <Card key={`${match.institute_code}-${match.course}-${index}`} className="p-4">
-                          <div className="space-y-3">
-                            <div>
-                              <div className="font-medium text-lg">{match.institute}</div>
-                              <div className="text-sm text-muted-foreground">
-                                {match.institute_code}
-                              </div>
-                            </div>
-
-                            <div>
-                              <div className="font-medium">{match.course}</div>
-                              {getCourseCode(match.course) && (
-                                <div className="text-sm text-muted-foreground font-mono">
-                                  {getCourseCode(match.course)}
+                      {filteredMatches.map((match, index) => {
+                        const bookmarkKey = `${match.institute_code}-${match.course}-${match.category}`
+                        const isBookmarked = bookmarks.has(bookmarkKey)
+                        return (
+                          <Card key={`${match.institute_code}-${match.course}-${index}`} className="p-4">
+                            <div className="space-y-3">
+                              <div className="flex items-start justify-between">
+                                <div>
+                                  <div className="font-medium text-lg">{match.institute}</div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {match.institute_code}
+                                  </div>
                                 </div>
-                              )}
-                            </div>
+                                <div className="flex items-center gap-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 w-8 p-0 flex-shrink-0"
+                                    onClick={() => toggleBookmark(bookmarkKey)}
+                                  >
+                                    <Star className={`h-5 w-5 ${isBookmarked ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={`h-8 w-8 p-0 flex-shrink-0 ${compareList.some(c => c.institute_code === match.institute_code && c.course === match.course) ? 'bg-primary/10 text-primary' : ''}`}
+                                    onClick={() => toggleCompare(match)}
+                                  >
+                                    <Scale className="h-5 w-5" />
+                                  </Button>
+                                </div>
+                              </div>
 
-                            <div className="flex flex-wrap gap-2">
-                              <Badge variant="outline">{match.category}</Badge>
-                              <Badge variant="outline">{match.year}</Badge>
-                              <Badge variant="outline">{getRoundDisplayName(match.round)}</Badge>
-                            </div>
+                              <div>
+                                <div className="font-medium">{match.course}</div>
+                                {getCourseCode(match.course) && (
+                                  <div className="text-sm text-muted-foreground font-mono">
+                                    {getCourseCode(match.course)}
+                                  </div>
+                                )}
+                              </div>
 
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-muted-foreground">Cutoff Rank:</span>
-                              <span className="font-mono font-semibold text-lg">
-                                {match.cutoff_rank.toLocaleString()}
-                              </span>
-                            </div>
+                              <div className="flex flex-wrap gap-2">
+                                <Badge variant="outline">{match.category}</Badge>
+                                <Badge variant="outline">{match.year}</Badge>
+                                <Badge variant="outline">{getRoundDisplayName(match.round)}</Badge>
+                              </div>
 
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-muted-foreground">Match Score:</span>
-                              <div className={`font-semibold ${getMatchColor(match.matchScore)}`}>
-                                {match.matchScore}%
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm text-muted-foreground">Cutoff Rank:</span>
+                                <span className="font-mono font-semibold text-lg">
+                                  {match.cutoff_rank.toLocaleString()}
+                                </span>
                               </div>
                             </div>
-
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-muted-foreground">Safety Level:</span>
-                              <Badge className={getSafetyColor(match.safetyLevel)}>
-                                {match.safetyLevel}
-                              </Badge>
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
+                          </Card>
+                        )
+                      })}
                     </div>
                   </div>
                 )
@@ -1930,6 +2131,137 @@ const CollegeFinder = () => {
               <p className="text-muted-foreground">Try adjusting your search criteria or rank range</p>
             </CardContent>
           </Card>
+        )}
+        {/* Comparison Floating Bar */}
+        {compareList.length > 0 && (
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4 z-50">
+            <div className="bg-primary text-primary-foreground p-4 rounded-xl shadow-2xl flex items-center justify-between border border-primary/20 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <div className="bg-white/20 p-2 rounded-lg">
+                  <Scale className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-semibold">{compareList.length} Selected</p>
+                  <p className="text-xs opacity-80">Max 3 colleges</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setCompareList([])}
+                  className="h-8 px-2 bg-white/10 hover:bg-white/20 border-0 text-white"
+                >
+                  Clear
+                </Button>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="h-8 font-semibold shadow-md"
+                  onClick={() => setShowCompareModal(true)}
+                >
+                  Compare Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Comparison Modal Overlay */}
+        {showCompareModal && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="w-full max-w-5xl bg-card border rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+              <div className="p-4 border-b flex items-center justify-between bg-muted/30">
+                <div className="flex items-center gap-2">
+                  <Scale className="h-5 w-5 text-primary" />
+                  <h3 className="font-semibold text-lg">College Comparison</h3>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setShowCompareModal(false)}>
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="overflow-auto p-6">
+                <div className="grid grid-cols-[150px_repeat(auto-fit,minmax(250px,1fr))] gap-4 min-w-[800px]">
+                  {/* Labels Column */}
+                  <div className="space-y-4 pt-14 font-medium text-muted-foreground text-sm">
+                    <div className="h-24 flex items-center">College Name</div>
+                    <div className="h-10 flex items-center">Cutoff Rank</div>
+                    <div className="h-10 flex items-center">Course</div>
+                    <div className="h-10 flex items-center">Category</div>
+                    <div className="h-10 flex items-center">Match Score</div>
+                    <div className="h-10 flex items-center">Safety</div>
+                    <div className="h-10 flex items-center">Year/Round</div>
+                  </div>
+
+                  {/* College Columns */}
+                  {compareList.map((college, i) => (
+                    <div key={i} className="space-y-4 bg-muted/10 p-4 rounded-xl border relative">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 h-6 w-6 text-muted-foreground hover:text-destructive"
+                        onClick={() => toggleCompare(college)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+
+                      <div className="h-10 flex items-center justify-center">
+                        <Badge variant="outline" className="bg-background">Choice #{i + 1}</Badge>
+                      </div>
+
+                      <div className="h-24 flex items-center font-semibold text-lg leading-tight">
+                        {college.institute}
+                        <span className="block text-xs font-normal text-muted-foreground ml-1">({college.institute_code})</span>
+                      </div>
+
+                      <div className="h-10 flex items-center text-2xl font-bold font-mono text-primary">
+                        {college.cutoff_rank.toLocaleString()}
+                      </div>
+
+                      <div className="h-10 flex items-center font-medium truncate" title={college.course}>
+                        {college.course}
+                      </div>
+
+                      <div className="h-10 flex items-center">
+                        <Badge variant="secondary">{college.category}</Badge>
+                      </div>
+
+                      <div className="h-10 flex items-center">
+                        <div className={`font-bold ${getMatchColor(college.matchScore)}`}>
+                          {college.matchScore}% Match
+                        </div>
+                      </div>
+
+                      <div className="h-10 flex items-center">
+                        <Badge className={getSafetyColor(college.safetyLevel)}>
+                          {college.safetyLevel}
+                        </Badge>
+                      </div>
+
+                      <div className="h-10 flex items-center text-sm text-muted-foreground">
+                        {college.year} • {getRoundDisplayName(college.round)}
+                      </div>
+                    </div>
+                  ))}
+
+                  {compareList.length < 3 && (
+                    <div className="space-y-4 p-4 rounded-xl border border-dashed flex flex-col items-center justify-center text-muted-foreground bg-muted/5">
+                      <Scale className="h-10 w-10 opacity-20 mb-2" />
+                      <p>Add another college</p>
+                      <Button variant="outline" size="sm" onClick={() => setShowCompareModal(false)}>
+                        Browse List
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-4 border-t bg-muted/20 flex justify-end">
+                <Button onClick={() => setShowCompareModal(false)}>Done</Button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
