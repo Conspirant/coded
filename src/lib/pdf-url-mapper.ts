@@ -21,7 +21,7 @@ async function loadPageIndex(): Promise<void> {
             if (response.ok) {
                 const data = await response.json();
                 pageIndex = data.index || {};
-                .length, 'PDFs');
+                console.log('📄 PDF page index loaded:', Object.keys(pageIndex).length, 'PDFs');
             } else {
                 console.warn('⚠️ Could not load PDF page index');
                 pageIndex = {};

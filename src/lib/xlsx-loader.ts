@@ -49,11 +49,13 @@ export class XLSXLoader {
 
     for (const filePath of xlsxFiles) {
       try {
+        console.log(`Loading XLSX file: ${filePath}`)
         const data = await this.loadFromServer(filePath)
         allCutoffs.push(...data.cutoffs)
         processedFiles.push(filePath)
         totalEntries += data.cutoffs.length
-        } catch (error) {
+        console.log(`Successfully loaded ${data.cutoffs.length} records from ${filePath}`)
+      } catch (error) {
         console.warn(`Failed to load ${filePath}:`, error)
         // Continue with other files even if one fails
       }
@@ -79,15 +81,20 @@ export class XLSXLoader {
     // Process each sheet
     for (const sheetName of workbook.SheetNames) {
       try {
+        console.log(`Processing sheet: ${sheetName}`)
         const worksheet = workbook.Sheets[sheetName]
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][]
         
         if (jsonData.length === 0) {
+          console.log(`Sheet ${sheetName} is empty, skipping`)
           continue
         }
 
+        console.log(`Sheet ${sheetName} has ${jsonData.length} rows`)
+        
         // Extract data from this sheet
         const sheetData = this.extractCutoffData(jsonData, source, sheetName)
+        console.log(`Extracted ${sheetData.length} records from sheet ${sheetName}`)
         cutoffs.push(...sheetData)
         
       } catch (error) {
@@ -338,12 +345,14 @@ export class XLSXLoader {
    * Extract college info from sheet data
    */
   private static extractCollegeInfoFromSheet(jsonData: any[][], source: string): { name: string; code: string } | null {
+    console.log(`Looking for college info in ${source}, sheet has ${jsonData.length} rows`)
+    
     // First, try to find college info in the first few rows
     for (let i = 0; i < Math.min(10, jsonData.length); i++) {
       const row = jsonData[i]
       if (!row) continue
       
-      ) // Show first 3 cells for debugging
+      console.log(`Row ${i}:`, row.slice(0, 3)) // Show first 3 cells for debugging
       
       for (let j = 0; j < row.length; j++) {
         const cellValue = String(row[j] || '').trim()
@@ -354,6 +363,7 @@ export class XLSXLoader {
         if (collegeMatch) {
           const code = collegeMatch[1]
           const name = collegeMatch[2].trim()
+          console.log(`Found college: ${code} - ${name}`)
           return { code, name }
         }
         
@@ -362,7 +372,7 @@ export class XLSXLoader {
         if (directMatch) {
           const code = directMatch[1]
           const name = directMatch[2].trim()
-          : ${code} - ${name}`)
+          console.log(`Found college (direct): ${code} - ${name}`)
           return { code, name }
         }
         
@@ -371,7 +381,7 @@ export class XLSXLoader {
         if (codeMatch) {
           const code = codeMatch[1]
           const name = cellValue.replace(code, '').trim()
-          : ${code} - ${name}`)
+          console.log(`Found college (code only): ${code} - ${name}`)
           return { code, name }
         }
       }
@@ -392,6 +402,7 @@ export class XLSXLoader {
       const firstCell = String(row[0] || '').trim().toLowerCase()
       if (firstCell.includes('course name') || firstCell.includes('course') || 
           firstCell.includes('branch') || firstCell.includes('branch name')) {
+        console.log(`Found header row at index ${i}`)
         return i
       }
     }

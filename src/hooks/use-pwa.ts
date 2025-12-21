@@ -64,8 +64,10 @@ export function usePWA() {
       const choiceResult = await installPrompt.userChoice;
       
       if (choiceResult.outcome === 'accepted') {
-        } else {
-        }
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
       
       setInstallPrompt(null);
       setIsInstallable(false);
