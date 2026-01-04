@@ -255,16 +255,16 @@ export async function sendMessage(
         try {
             // Fetch
             const data = await fetchCutoffData(onStatusUpdate);
+            onStatusUpdate(`Loaded ${data.length} records. Scanning...`);
 
             // Search
-            onStatusUpdate("Scanning for relevant info...");
             const relevantRecords = searchRelevantData(userMessage, data);
 
             if (relevantRecords.length > 0) {
                 contextData = `\n\nREAL DATA CONTEXT (Use this to answer): \n${JSON.stringify(relevantRecords, null, 2)}`;
-                onStatusUpdate(`Found ${relevantRecords.length} relevant records...`);
+                onStatusUpdate(`Found ${relevantRecords.length} matches for "${userMessage.substring(0, 15)}..."`);
             } else {
-                onStatusUpdate("No specific records found, using general knowledge...");
+                onStatusUpdate("No matching Cutoff data found.");
             }
         } catch (e) {
             console.error("RAG failed:", e);
