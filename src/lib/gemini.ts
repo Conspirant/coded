@@ -66,6 +66,14 @@ Response Guidelines:
 
 **IMPORTANT**: If you are provided with "Context Data" from the official database, USE IT. It contains real cutoff ranks. Cite the specific years and ranks from the data. If the data doesn't contain the exact answer, say so.`;
 
+// Keywords to ignore in search
+const STOP_WORDS = new Set([
+    'can', 'i', 'get', 'for', 'rank', 'and', 'category', 'cat', 'college', 'in', 'the', 'a', 'an', 'is',
+    'what', 'how', 'best', 'top', 'list', 'cutoff', 'cutoffs', 'seat', 'seats', 'round',
+    'admission', 'engineering', 'branch', 'course', 'quota', 'bangalore', 'mysore', 'karnataka',
+    'available', 'possible', 'chances', 'tell', 'me', 'about', 'vs', 'better'
+]);
+
 async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
     if (cachedData) return cachedData;
     if (isFetching) {
@@ -126,41 +134,58 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
 }
 
 function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
-    const terms = query.toLowerCase().split(' ').filter(t => t.length > 2);
-    if (terms.length === 0) return [];
+    // Clean query and remove stop words
+    const terms = query.toLowerCase()
+        .replace(/[?.,!-]/g, ' ')
+        .split(/\s+/)
+        .filter(t => t.length > 1 && !STOP_WORDS.has(t) && !/^\d+$/.test(t));
+
+    // Extract explicit rank if present
+    const rankMatch = query.match(/(\d{3,6})/); // numbers 100-999999
 
     // College codes regex (E001, E123 etc)
     const codeMatch = query.toUpperCase().match(/E\d{3}/);
     const targetCode = codeMatch ? codeMatch[0] : null;
 
-    // Filter strategy:
-    // 1. If code exists, strict filter by code
-    // 2. Otherwise score based on keyword matches
+    if (terms.length === 0 && !targetCode && !rankMatch) return [];
+
+    console.log("Search terms:", terms, "Code:", targetCode, "Rank:", rankMatch);
 
     return data.filter(item => {
         // Strict code match if present
         if (targetCode && item.institute_code !== targetCode) return false;
 
         let score = 0;
-        const text = `${item.institute} ${item.course} ${item.category} ${item.year} ${item.round}`.toLowerCase();
+        const itemText = `${item.institute} ${item.course} ${item.category} ${item.institute_code} ${item.year}`.toLowerCase();
 
         // Keywords matching
         for (const term of terms) {
-            if (text.includes(term)) score += 1;
+            if (itemText.includes(term)) score += 1;
+        }
+
+        // Boost if category matches exactly
+        const queryCategory = query.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+        if (queryCategory && item.category.toLowerCase() === queryCategory[0].toLowerCase()) {
+            score += 2;
         }
 
         // Boost for recent years
-        if (item.year === '2024') score += 0.5;
-        if (item.year === '2025') score += 0.5;
+        if (item.year === '2024') score += 1;
+        if (item.year === '2025') score += 2;
 
-        return score >= Math.max(2, terms.length - 1); // Threshold
+        // If target code is present, include it regardless of other scores
+        if (targetCode) return true;
+
+        // Dynamic threshold
+        // e.g. "sai vidya" -> 2 terms -> need 1 match
+        const requiredScore = Math.max(1, Math.floor(terms.length * 0.5));
+        return score >= requiredScore;
     })
         .sort((a, b) => {
-            // Sort by year (desc) then score (implied by filter, but we might want explicit logic here if we calculated score for all)
-            // Here strictly sorting by year desc for relevance
+            // Sort by year (desc)
             return b.year.localeCompare(a.year);
         })
-        .slice(0, 40); // Limit to top 40 records to save tokens
+        .slice(0, 50);
 }
 
 async function tryModel(
