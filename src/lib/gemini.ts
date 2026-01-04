@@ -3,7 +3,6 @@
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const DATA_URL = '/data/kcet_cutoffs_consolidated.json';
 
 // Primary and fallback models (in order of preference)
 const MODELS = [
@@ -29,11 +28,6 @@ interface CutoffEntry {
     cutoff_rank: number;
     year: string;
     round: string;
-}
-
-interface CutoffData {
-    cutoffs: CutoffEntry[];
-    metadata: any;
 }
 
 // Cache for the heavy dataset
@@ -75,56 +69,69 @@ const STOP_WORDS = new Set([
 ]);
 
 async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
-    if (cachedData) return cachedData;
+    if (cachedData && cachedData.length > 0) return cachedData;
     if (isFetching) {
         // Wait for existing fetch
         while (isFetching) {
             await new Promise(r => setTimeout(r, 100));
-            if (cachedData) return cachedData;
+            if (cachedData && cachedData.length > 0) return cachedData;
         }
     }
 
     isFetching = true;
-    onStatus("Downloading 200k+ records from database...");
+    const allData: CutoffEntry[] = [];
 
     try {
-        // Try multiple paths just in case
-        const paths = [
-            '/data/kcet_cutoffs_consolidated.json',
-            '/public/data/kcet_cutoffs_consolidated.json',
-            '/kcet_cutoffs_consolidated.json'
-        ];
+        // Parallel loading of years
+        const files = ['2023', '2024', '2025'];
 
-        let response: Response | null = null;
-        for (const path of paths) {
+        onStatus(`Initializing data download (${files.length} files)...`);
+
+        const promises = files.map(async (year) => {
             try {
-                const res = await fetch(path);
-                if (res.ok) {
-                    response = res;
-                    break;
+                // Try multiple paths just in case
+                const paths = [
+                    `/data/cutoffs-${year}.json`,
+                    `/public/data/cutoffs-${year}.json`,
+                    `/cutoffs-${year}.json`
+                ];
+
+                let response: Response | null = null;
+                for (const path of paths) {
+                    try {
+                        const res = await fetch(path);
+                        if (res.ok) {
+                            response = res;
+                            break;
+                        }
+                    } catch (e) {
+                        continue;
+                    }
                 }
+
+                if (!response) {
+                    console.warn(`Could not load ${year} data`);
+                    return [];
+                }
+
+                const json = await response.json();
+                return Array.isArray(json) ? json : (json.cutoffs || []);
             } catch (e) {
-                continue;
+                console.error(`Error loading ${year}:`, e);
+                return [];
             }
+        });
+
+        const results = await Promise.all(promises);
+        results.forEach(yearData => allData.push(...yearData));
+
+        cachedData = allData;
+
+        if (allData.length === 0) {
+            throw new Error("No data could be loaded from any file");
         }
 
-        if (!response) {
-            throw new Error("Failed to load cutoff data file");
-        }
-
-        onStatus("Processing data...");
-        const json = await response.json();
-
-        // Handle different structures
-        if (Array.isArray(json)) {
-            cachedData = json;
-        } else if (json.cutoffs && Array.isArray(json.cutoffs)) {
-            cachedData = json.cutoffs;
-        } else {
-            cachedData = [];
-        }
-
-        return cachedData || [];
+        return allData;
     } catch (error) {
         console.error("Data fetch error:", error);
         return [];
@@ -138,7 +145,7 @@ function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
     const terms = query.toLowerCase()
         .replace(/[?.,!-]/g, ' ')
         .split(/\s+/)
-        .filter(t => t.length > 1 && !STOP_WORDS.has(t) && !/^\d+$/.test(t));
+        .filter(t => t.length > 1 && !STOP_WORDS.has(t));
 
     // Extract explicit rank if present
     const rankMatch = query.match(/(\d{3,6})/); // numbers 100-999999
@@ -213,7 +220,7 @@ async function tryModel(
         const errorBody = await response.text().catch(() => 'No error body');
         console.error(`Model ${model} failed - Status: ${status}, Body: ${errorBody}`);
 
-        if (status === 429 || status === 404 || status === 503) {
+        if (status === 429 || status === 404 || status === 503 || status === 524) { // Added 524 for timeouts
             return { success: false, shouldRetry: true };
         }
 
