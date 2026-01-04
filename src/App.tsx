@@ -17,7 +17,10 @@ import Planner from "./pages/Planner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Reviews from "./pages/Reviews";
 import InfoCentre from "./pages/InfoCentre";
+<<<<<<< HEAD
 import Materials from "./pages/Materials";
+=======
+>>>>>>> 82408278e254f3eb73dbf3a79636d6dcc595fabc
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,7 +53,10 @@ const App = () => (
             <Route path="/documents" element={<Documents />} />
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/info-centre" element={<InfoCentre />} />
+<<<<<<< HEAD
             <Route path="/materials" element={<Materials />} />
+=======
+>>>>>>> 82408278e254f3eb73dbf3a79636d6dcc595fabc
             {/* More routes will be added here */}
             <Route path="*" element={<NotFound />} />
           </Routes>
