@@ -67,7 +67,8 @@ async function tryModel(
 
     if (!response.ok) {
         const status = response.status;
-        console.warn(`Model ${model} failed with status ${status}`);
+        const errorBody = await response.text().catch(() => 'No error body');
+        console.error(`Model ${model} failed - Status: ${status}, Body: ${errorBody}`);
 
         // Retry with fallback for rate limits (429) or model not found (404)
         if (status === 429 || status === 404 || status === 503) {
