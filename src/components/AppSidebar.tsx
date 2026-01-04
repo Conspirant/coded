@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Gamepad2 } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Gamepad2, Bot } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: Home },
+  { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
   { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
   { title: "College Finder", url: "/college-finder", icon: Target },
@@ -83,6 +84,11 @@ export function AppSidebar() {
                         {state !== "collapsed" && (
                           <div className="flex items-center gap-2 flex-1 min-w-0">
                             <span className="truncate">{item.title}</span>
+                            {(item as any).isAI && (
+                              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1.5 py-0.5">
+                                AI
+                              </Badge>
+                            )}
                             {item.underDevelopment && (
                               <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700 text-xs px-1.5 py-0.5">
                                 Beta
