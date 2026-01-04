@@ -3,6 +3,7 @@
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const DATA_URL = '/data/kcet_cutoffs_consolidated.json';
 
 // Primary and fallback models (in order of preference)
 const MODELS = [
@@ -18,6 +19,26 @@ export interface Message {
     content: string;
     timestamp: Date;
 }
+
+// Data interfaces
+interface CutoffEntry {
+    institute: string;
+    institute_code: string;
+    course: string;
+    category: string;
+    cutoff_rank: number;
+    year: string;
+    round: string;
+}
+
+interface CutoffData {
+    cutoffs: CutoffEntry[];
+    metadata: any;
+}
+
+// Cache for the heavy dataset
+let cachedData: CutoffEntry[] | null = null;
+let isFetching = false;
 
 const SYSTEM_PROMPT = `You are KCET Coded AI - an expert counselor for Karnataka CET (KCET) engineering admissions. You help students with:
 
@@ -43,7 +64,104 @@ Response Guidelines:
 - If unsure, say so honestly and suggest checking official KEA website
 - Use emojis sparingly to be friendly 🎓
 
-Keep responses focused and under 300 words unless the question requires detailed explanation.`;
+**IMPORTANT**: If you are provided with "Context Data" from the official database, USE IT. It contains real cutoff ranks. Cite the specific years and ranks from the data. If the data doesn't contain the exact answer, say so.`;
+
+async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
+    if (cachedData) return cachedData;
+    if (isFetching) {
+        // Wait for existing fetch
+        while (isFetching) {
+            await new Promise(r => setTimeout(r, 100));
+            if (cachedData) return cachedData;
+        }
+    }
+
+    isFetching = true;
+    onStatus("Downloading 200k+ records from database...");
+
+    try {
+        // Try multiple paths just in case
+        const paths = [
+            '/data/kcet_cutoffs_consolidated.json',
+            '/public/data/kcet_cutoffs_consolidated.json',
+            '/kcet_cutoffs_consolidated.json'
+        ];
+
+        let response: Response | null = null;
+        for (const path of paths) {
+            try {
+                const res = await fetch(path);
+                if (res.ok) {
+                    response = res;
+                    break;
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+
+        if (!response) {
+            throw new Error("Failed to load cutoff data file");
+        }
+
+        onStatus("Processing data...");
+        const json = await response.json();
+
+        // Handle different structures
+        if (Array.isArray(json)) {
+            cachedData = json;
+        } else if (json.cutoffs && Array.isArray(json.cutoffs)) {
+            cachedData = json.cutoffs;
+        } else {
+            cachedData = [];
+        }
+
+        return cachedData || [];
+    } catch (error) {
+        console.error("Data fetch error:", error);
+        return [];
+    } finally {
+        isFetching = false;
+    }
+}
+
+function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
+    const terms = query.toLowerCase().split(' ').filter(t => t.length > 2);
+    if (terms.length === 0) return [];
+
+    // College codes regex (E001, E123 etc)
+    const codeMatch = query.toUpperCase().match(/E\d{3}/);
+    const targetCode = codeMatch ? codeMatch[0] : null;
+
+    // Filter strategy:
+    // 1. If code exists, strict filter by code
+    // 2. Otherwise score based on keyword matches
+
+    return data.filter(item => {
+        // Strict code match if present
+        if (targetCode && item.institute_code !== targetCode) return false;
+
+        let score = 0;
+        const text = `${item.institute} ${item.course} ${item.category} ${item.year} ${item.round}`.toLowerCase();
+
+        // Keywords matching
+        for (const term of terms) {
+            if (text.includes(term)) score += 1;
+        }
+
+        // Boost for recent years
+        if (item.year === '2024') score += 0.5;
+        if (item.year === '2025') score += 0.5;
+
+        return score >= Math.max(2, terms.length - 1); // Threshold
+    })
+        .sort((a, b) => {
+            // Sort by year (desc) then score (implied by filter, but we might want explicit logic here if we calculated score for all)
+            // Here strictly sorting by year desc for relevance
+            return b.year.localeCompare(a.year);
+        })
+        .slice(0, 40); // Limit to top 40 records to save tokens
+}
 
 async function tryModel(
     model: string,
@@ -70,7 +188,6 @@ async function tryModel(
         const errorBody = await response.text().catch(() => 'No error body');
         console.error(`Model ${model} failed - Status: ${status}, Body: ${errorBody}`);
 
-        // Retry with fallback for rate limits (429) or model not found (404)
         if (status === 429 || status === 404 || status === 503) {
             return { success: false, shouldRetry: true };
         }
@@ -93,21 +210,54 @@ async function tryModel(
 
 export async function sendMessage(
     userMessage: string,
-    conversationHistory: Message[]
+    conversationHistory: Message[],
+    onStatusUpdate?: (status: string) => void
 ): Promise<string> {
     if (!OPENROUTER_API_KEY) {
         throw new Error('OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your .env file.');
     }
 
+    // RAG Logic: Check if we need real data
+    let contextData = "";
+    const lowerMsg = userMessage.toLowerCase();
+    const needsData = lowerMsg.includes('cutoff') ||
+        lowerMsg.includes('rank') ||
+        lowerMsg.includes('college') ||
+        lowerMsg.includes('seat') ||
+        /E\d{3}/i.test(userMessage);
+
+    if (needsData && onStatusUpdate) {
+        try {
+            // Fetch
+            const data = await fetchCutoffData(onStatusUpdate);
+
+            // Search
+            onStatusUpdate("Scanning for relevant info...");
+            const relevantRecords = searchRelevantData(userMessage, data);
+
+            if (relevantRecords.length > 0) {
+                contextData = `\n\nREAL DATA CONTEXT (Use this to answer): \n${JSON.stringify(relevantRecords, null, 2)}`;
+                onStatusUpdate(`Found ${relevantRecords.length} relevant records...`);
+            } else {
+                onStatusUpdate("No specific records found, using general knowledge...");
+            }
+        } catch (e) {
+            console.error("RAG failed:", e);
+            // Continue without data context
+        }
+    }
+
     // Build messages array
     const messages = [
-        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'system', content: SYSTEM_PROMPT + contextData },
         ...conversationHistory.slice(-10).map(msg => ({
             role: msg.role === 'user' ? 'user' : 'assistant',
             content: msg.content
         })),
         { role: 'user', content: userMessage }
     ];
+
+    if (onStatusUpdate) onStatusUpdate("AI is thinking...");
 
     // Try each model in order
     for (let i = 0; i < MODELS.length; i++) {
@@ -125,13 +275,12 @@ export async function sendMessage(
                 throw new Error(`API request failed`);
             }
 
-            // Continue to next model
             console.log(`Falling back to next model...`);
+            if (onStatusUpdate) onStatusUpdate(`Trying alternative AI model...`);
         } catch (error) {
             if (error instanceof Error && error.message.includes('API key')) {
                 throw error;
             }
-            // Continue to next model
             console.warn(`Error with model ${model}:`, error);
         }
     }

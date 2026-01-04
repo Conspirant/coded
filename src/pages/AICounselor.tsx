@@ -119,6 +119,8 @@ const AICounselor = () => {
         }
     }, []);
 
+    const [status, setStatus] = useState<string>("");
+
     // Smooth auto-scroll to bottom when new messages arrive
     useEffect(() => {
         if (scrollAreaRef.current) {
@@ -130,7 +132,7 @@ const AICounselor = () => {
                 });
             }
         }
-    }, [messages, isLoading]);
+    }, [messages, isLoading, status]);
 
     // Focus input on load
     useEffect(() => {
@@ -143,6 +145,7 @@ const AICounselor = () => {
 
         setError(null);
         setInput("");
+        setStatus("");
 
         const userMessage: Message = {
             role: 'user',
@@ -154,7 +157,9 @@ const AICounselor = () => {
         setIsLoading(true);
 
         try {
-            const response = await sendMessage(textToSend, messages);
+            const response = await sendMessage(textToSend, messages, (newStatus) => {
+                setStatus(newStatus);
+            });
 
             const assistantMessage: Message = {
                 role: 'assistant',
@@ -168,6 +173,7 @@ const AICounselor = () => {
             setError(err instanceof Error ? err.message : 'Failed to get response');
         } finally {
             setIsLoading(false);
+            setStatus("");
             inputRef.current?.focus();
         }
     };
@@ -304,10 +310,17 @@ const AICounselor = () => {
                                     <Bot className="h-3.5 w-3.5 md:h-4 md:w-4 text-white" />
                                 </div>
                                 <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                                    <div className="flex items-center gap-1.5">
-                                        <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
-                                        <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
-                                        <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
+                                            <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
+                                            <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
+                                        </div>
+                                        {status && (
+                                            <span className="text-xs text-muted-foreground animate-fade-in-up">
+                                                {status}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
