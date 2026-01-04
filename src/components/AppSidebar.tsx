@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Gamepad2 } from "lucide-react"
-=======
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info } from "lucide-react"
->>>>>>> 82408278e254f3eb73dbf3a79636d6dcc595fabc
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -26,10 +22,8 @@ const menuItems = [
   { title: "Documents", url: "/documents", icon: FileText },
   { title: "Reviews", url: "/reviews", icon: Star },
   { title: "Info Centre", url: "/info-centre", icon: Info },
-<<<<<<< HEAD
   { title: "Materials", url: "/materials", icon: Book },
-=======
->>>>>>> 82408278e254f3eb73dbf3a79636d6dcc595fabc
+  { title: "The Loadout", url: "/loadout", icon: Gamepad2 },
   { title: "Mock Simulator", url: "/mock-simulator", icon: Shuffle, underDevelopment: true },
   { title: "College Compare", url: "/college-compare", icon: GitCompare, underDevelopment: true },
   { title: "Planner", url: "/planner", icon: ClipboardList, underDevelopment: true },
