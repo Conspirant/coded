@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Gamepad2 } from "lucide-react"
 =======
 import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info } from "lucide-react"
 >>>>>>> 82408278e254f3eb73dbf3a79636d6dcc595fabc
