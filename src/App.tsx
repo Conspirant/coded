@@ -19,6 +19,7 @@ import Reviews from "./pages/Reviews";
 import InfoCentre from "./pages/InfoCentre";
 import Materials from "./pages/Materials";
 import Loadout from "./pages/Loadout";
+// Vercel build fix trigger
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
