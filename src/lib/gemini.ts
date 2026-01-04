@@ -4,10 +4,13 @@
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Primary and fallback models
+// Primary and fallback models (in order of preference)
 const MODELS = [
-    'nvidia/nemotron-3-nano-30b-a3b:free',
-    'mistralai/devstral-2512:free',
+    'google/gemini-2.0-flash-exp:free',
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'qwen/qwen-2.5-72b-instruct:free',
+    'nvidia/llama-3.1-nemotron-70b-instruct:free',
+    'mistralai/mistral-small-3.1-24b-instruct:free',
 ];
 
 export interface Message {
