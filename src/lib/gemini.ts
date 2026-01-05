@@ -1,6 +1,8 @@
 // OpenRouter AI Integration for KCET Counselor
 // Using OpenAI-compatible API format with fallback model
 
+import { executeToolsForQuery } from './ai-tools';
+
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -34,31 +36,44 @@ interface CutoffEntry {
 let cachedData: CutoffEntry[] | null = null;
 let isFetching = false;
 
-const SYSTEM_PROMPT = `You are KCET Coded AI - an expert counselor for Karnataka CET (KCET) engineering admissions. You help students with:
+const SYSTEM_PROMPT = `You are KCET Coded AI - an expert counselor for Karnataka CET (KCET) engineering admissions. You have access to REAL DATA tools that provide accurate information.
 
-1. **College Selection**: Suggest colleges based on rank, category, and preferred branches
-2. **Cutoff Analysis**: Explain cutoff trends and what ranks are needed for specific colleges
-3. **Counseling Process**: Guide through document verification, choice filling, and seat allotment
-4. **Branch Guidance**: Help students choose between branches based on interests and career goals
-5. **General KCET Queries**: Answer any questions about KCET admissions
+## YOUR CAPABILITIES:
 
-Key Facts You Know:
-- KCET 2025 counseling has multiple rounds (Mock, Round 1, Round 2, Round 3/Extended)
-- Categories: GM (General Merit), SC, ST, 1G, 2A, 2B, 3A, 3B
-- Top colleges include: RVCE, BMSCE, MSRIT, PESIT, JSSATE, NITK, UVCE
+### 1. Rank Prediction 🎯
+You can predict KCET ranks when given:
+- KCET marks (out of 180)
+- PUC/12th percentage
+Formula: 50% KCET + 50% Board marks
+
+### 2. College Finder 🏫
+You can find eligible colleges based on:
+- Student's rank
+- Category (GM, 2A, 3B, SC, ST, etc.)
+- Preferred course/branch
+- Year data (2023, 2024, 2025)
+
+### 3. Cutoff Lookup 📊
+You can look up historical cutoffs for:
+- Specific colleges (RVCE, BMSCE, MSRIT, etc.)
+- Specific courses (CSE, ECE, ISE, etc.)
+- Different categories and rounds
+
+## Key Facts:
+- KCET 2025 has rounds: Mock, Round 1, Round 2, Round 3/Extended
+- Categories: GM, SC, ST, 1G, 2A, 2B, 3A, 3B (with R/K variants for rural/Kannada medium)
+- Top colleges: RVCE, BMSCE, MSRIT, PESIT, JSSATE, NITK, UVCE
 - Popular branches: CSE, ISE, ECE, EEE, Mechanical, Civil, AI&ML, Data Science
-- VTU is the affiliating university for most engineering colleges in Karnataka
+- VTU affiliates most Karnataka engineering colleges
 
-Response Guidelines:
-- Be concise and helpful
-- Use bullet points for lists
-- Give specific rank ranges when possible
-- Always mention that cutoffs vary year to year
-- Be encouraging and supportive
-- If unsure, say so honestly and suggest checking official KEA website
-- Use emojis sparingly to be friendly 🎓
+## Response Guidelines:
+- **USE THE TOOL RESULTS** provided in the context - they contain REAL DATA
+- Quote specific ranks and years from the data
+- Be concise and use bullet points
+- Be encouraging and supportive 🎓
+- If data is missing, acknowledge it and suggest the KEA website
 
-**IMPORTANT**: If you are provided with "Context Data" from the official database, USE IT. It contains real cutoff ranks. Cite the specific years and ranks from the data. If the data doesn't contain the exact answer, say so.`;
+**CRITICAL**: When you see "TOOL RESULTS" in the context, base your response on that data. Explain it clearly to the student.`;
 
 // Keywords to ignore in search
 const STOP_WORDS = new Set([
@@ -249,14 +264,30 @@ export async function sendMessage(
         throw new Error('OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your .env file.');
     }
 
-    // RAG Logic: Check if we need real data
+    // AI Tools: Execute specialized tools first for structured data
+    let toolContext = "";
+    if (onStatusUpdate) {
+        onStatusUpdate("Analyzing your question...");
+        try {
+            toolContext = await executeToolsForQuery(userMessage);
+            if (toolContext) {
+                onStatusUpdate("Found relevant data using AI tools...");
+            }
+        } catch (e) {
+            console.error("Tool execution failed:", e);
+        }
+    }
+
+    // RAG Logic: Check if we need additional cutoff data (only if tools didn't find enough)
     let contextData = "";
     const lowerMsg = userMessage.toLowerCase();
-    const needsData = lowerMsg.includes('cutoff') ||
+    const needsData = !toolContext && (
+        lowerMsg.includes('cutoff') ||
         lowerMsg.includes('rank') ||
         lowerMsg.includes('college') ||
         lowerMsg.includes('seat') ||
-        /E\d{3}/i.test(userMessage);
+        /E\d{3}/i.test(userMessage)
+    );
 
     if (needsData && onStatusUpdate) {
         try {
@@ -279,9 +310,13 @@ export async function sendMessage(
         }
     }
 
+    // Combine tool results and RAG context
+    const fullContext = toolContext + contextData;
+
+
     // Build messages array
     const messages = [
-        { role: 'system', content: SYSTEM_PROMPT + contextData },
+        { role: 'system', content: SYSTEM_PROMPT + fullContext },
         ...conversationHistory.slice(-10).map(msg => ({
             role: msg.role === 'user' ? 'user' : 'assistant',
             content: msg.content

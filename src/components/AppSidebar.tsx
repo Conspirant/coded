@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Gamepad2, Bot } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -15,7 +15,6 @@ import { Badge } from "@/components/ui/badge"
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: Home },
-  { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
   { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
   { title: "College Finder", url: "/college-finder", icon: Target },
@@ -24,10 +23,10 @@ const menuItems = [
   { title: "Reviews", url: "/reviews", icon: Star },
   { title: "Info Centre", url: "/info-centre", icon: Info },
   { title: "Materials", url: "/materials", icon: Book },
-  { title: "The Loadout", url: "/loadout", icon: Gamepad2 },
   { title: "Mock Simulator", url: "/mock-simulator", icon: Shuffle, underDevelopment: true },
   { title: "College Compare", url: "/college-compare", icon: GitCompare, underDevelopment: true },
   { title: "Planner", url: "/planner", icon: ClipboardList, underDevelopment: true },
+  { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Reddit Community", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
 ]
 

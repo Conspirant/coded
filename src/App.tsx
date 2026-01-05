@@ -18,7 +18,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Reviews from "./pages/Reviews";
 import InfoCentre from "./pages/InfoCentre";
 import Materials from "./pages/Materials";
-import Loadout from "./pages/Loadout";
 import AICounselor from "./pages/AICounselor";
 // Vercel build fix trigger
 import NotFound from "./pages/NotFound";
@@ -54,7 +53,6 @@ const App = () => (
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/info-centre" element={<InfoCentre />} />
             <Route path="/materials" element={<Materials />} />
-            <Route path="/loadout" element={<Loadout />} />
             <Route path="/ai-counselor" element={<AICounselor />} />
             {/* More routes will be added here */}
             <Route path="*" element={<NotFound />} />
