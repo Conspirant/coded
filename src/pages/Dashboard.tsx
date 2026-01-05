@@ -297,48 +297,88 @@ const Dashboard = () => {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-purple-200 dark:border-purple-700">
-                          <th className="text-left py-2 px-2 text-purple-800 dark:text-purple-200">Date</th>
-                          <th className="text-left py-2 px-2 text-purple-800 dark:text-purple-200">Day</th>
-                          <th className="text-left py-2 px-2 text-purple-800 dark:text-purple-200">Time</th>
-                          <th className="text-left py-2 px-2 text-purple-800 dark:text-purple-200">Subject</th>
-                          <th className="text-left py-2 px-2 text-purple-800 dark:text-purple-200">Marks</th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-purple-700 dark:text-purple-300">
-                        <tr className="border-b border-purple-100 dark:border-purple-800">
-                          <td className="py-2 px-2" rowSpan={2}>23-04-2026</td>
-                          <td className="py-2 px-2" rowSpan={2}>Thursday</td>
-                          <td className="py-2 px-2">10:30 AM - 11:50 AM</td>
-                          <td className="py-2 px-2">Physics</td>
-                          <td className="py-2 px-2">60</td>
-                        </tr>
-                        <tr className="border-b border-purple-100 dark:border-purple-800">
-                          <td className="py-2 px-2">2:30 PM - 3:50 PM</td>
-                          <td className="py-2 px-2">Chemistry</td>
-                          <td className="py-2 px-2">60</td>
-                        </tr>
-                        <tr className="border-b border-purple-100 dark:border-purple-800">
-                          <td className="py-2 px-2" rowSpan={2}>24-04-2026</td>
-                          <td className="py-2 px-2" rowSpan={2}>Friday</td>
-                          <td className="py-2 px-2">10:30 AM - 11:50 AM</td>
-                          <td className="py-2 px-2">Mathematics</td>
-                          <td className="py-2 px-2">60</td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 px-2">2:30 PM - 3:50 PM</td>
-                          <td className="py-2 px-2">Biology</td>
-                          <td className="py-2 px-2">60</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  {/* Exam Schedule Responsive Grid */}
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {/* Day 1 */}
+                    <div className="bg-white dark:bg-slate-900 rounded-lg border border-purple-200 dark:border-purple-800 overflow-hidden">
+                      <div className="bg-purple-100 dark:bg-purple-900/50 p-3 flex justify-between items-center border-b border-purple-200 dark:border-purple-800">
+                        <div className="font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                          <span className="text-lg">23</span>
+                          <div className="flex flex-col leading-none text-xs">
+                            <span>APRIL</span>
+                            <span>2026</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Thursday</Badge>
+                      </div>
+                      <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                        <div className="p-3 flex items-center gap-3">
+                          <div className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">
+                            MORNING
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800 dark:text-slate-200">Physics</div>
+                            <div className="text-xs text-slate-500">10:30 AM - 11:50 AM • 60 Marks</div>
+                          </div>
+                        </div>
+                        <div className="p-3 flex items-center gap-3">
+                          <div className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">
+                            AFTERNOON
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800 dark:text-slate-200">Chemistry</div>
+                            <div className="text-xs text-slate-500">2:30 PM - 3:50 PM • 60 Marks</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Day 2 */}
+                    <div className="bg-white dark:bg-slate-900 rounded-lg border border-purple-200 dark:border-purple-800 overflow-hidden">
+                      <div className="bg-purple-100 dark:bg-purple-900/50 p-3 flex justify-between items-center border-b border-purple-200 dark:border-purple-800">
+                        <div className="font-bold text-purple-900 dark:text-purple-100 flex items-center gap-2">
+                          <span className="text-lg">24</span>
+                          <div className="flex flex-col leading-none text-xs">
+                            <span>APRIL</span>
+                            <span>2026</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Friday</Badge>
+                      </div>
+                      <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                        <div className="p-3 flex items-center gap-3">
+                          <div className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">
+                            MORNING
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800 dark:text-slate-200">Mathematics</div>
+                            <div className="text-xs text-slate-500">10:30 AM - 11:50 AM • 60 Marks</div>
+                          </div>
+                        </div>
+                        <div className="p-3 flex items-center gap-3">
+                          <div className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded min-w-[60px] text-center">
+                            AFTERNOON
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-800 dark:text-slate-200">Biology</div>
+                            <div className="text-xs text-slate-500">2:30 PM - 3:50 PM • 60 Marks</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="mt-3 text-xs text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900 p-2 rounded">
-                    <strong>Kannada Language Test:</strong> 22-04-2026 (Wednesday) | 10:30 AM - 11:30 AM | For border area candidates only | Max Marks: 50
+                  <div className="mt-3 flex items-center gap-2 text-xs text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg border border-purple-200 dark:border-purple-800/50">
+                    <div className="bg-purple-200 dark:bg-purple-800 p-1 rounded">
+                      <div className="font-bold text-center leading-none">
+                        <div className="text-[10px]">APR</div>
+                        <div className="text-sm">22</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-semibold">Kannada Language Test</div>
+                      <div className="opacity-80">For Horanadu & Gadinadu Kannadiga candidates only (4th Session)</div>
+                    </div>
                   </div>
                 </div>
 
