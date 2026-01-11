@@ -38,7 +38,7 @@ export function Layout({ children }: LayoutProps) {
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header - Mobile Optimized */}
-          <header className="h-14 sm:h-16 border-b bg-background/70 backdrop-blur-xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40">
+          <header className="h-14 sm:h-16 border-b bg-background/70 backdrop-blur-xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 shadow-sm">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
               <SidebarTrigger />
               <div className="flex flex-col min-w-0">

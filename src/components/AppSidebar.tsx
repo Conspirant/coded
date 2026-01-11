@@ -74,7 +74,7 @@ export function AppSidebar() {
                         }}
                         className={({ isActive }) =>
                           `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors text-sidebar-foreground ${isActive
-                            ? "bg-primary text-primary-foreground font-medium"
+                            ? "bg-primary text-primary-foreground font-medium shadow-md shadow-primary/25"
                             : "hover:bg-accent hover:text-accent-foreground"
                           }`
                         }
@@ -84,7 +84,7 @@ export function AppSidebar() {
                           <div className="flex items-center gap-2 flex-1 min-w-0">
                             <span className="truncate">{item.title}</span>
                             {(item as any).isAI && (
-                              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1.5 py-0.5">
+                              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1.5 py-0.5 shadow-sm">
                                 AI
                               </Badge>
                             )}
