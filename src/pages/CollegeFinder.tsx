@@ -2181,8 +2181,76 @@ const CollegeFinder = () => {
                 </Button>
               </div>
 
-              <div className="overflow-auto p-6">
-                <div className="grid grid-cols-[150px_repeat(auto-fit,minmax(250px,1fr))] gap-4 min-w-[800px]">
+              <div className="overflow-auto p-4 md:p-6">
+                {/* Mobile: Stacked Cards */}
+                <div className="md:hidden space-y-4">
+                  {compareList.map((college, i) => (
+                    <div key={i} className="bg-muted/10 p-4 rounded-xl border relative">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-destructive"
+                        onClick={() => toggleCompare(college)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+
+                      <Badge variant="outline" className="bg-background mb-3">Choice #{i + 1}</Badge>
+
+                      <div className="space-y-3">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">College</div>
+                          <div className="font-semibold text-lg leading-tight">
+                            {college.institute}
+                            <span className="text-xs font-normal text-muted-foreground ml-1">({college.institute_code})</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="text-xs text-muted-foreground mb-1">Cutoff Rank</div>
+                            <div className="text-2xl font-bold font-mono text-primary">
+                              {college.cutoff_rank.toLocaleString()}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-muted-foreground mb-1">Match</div>
+                            <div className={`font-bold text-lg ${getMatchColor(college.matchScore)}`}>
+                              {college.matchScore}%
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Course</div>
+                          <div className="font-medium text-sm">{college.course}</div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary">{college.category}</Badge>
+                          <Badge className={getSafetyColor(college.safetyLevel)}>
+                            {college.safetyLevel}
+                          </Badge>
+                          <Badge variant="outline">{college.year}</Badge>
+                          <Badge variant="outline">{getRoundDisplayName(college.round)}</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {compareList.length < 3 && (
+                    <div className="p-6 rounded-xl border border-dashed flex flex-col items-center justify-center text-muted-foreground bg-muted/5">
+                      <Scale className="h-8 w-8 opacity-20 mb-2" />
+                      <p className="text-sm">Add another college</p>
+                      <Button variant="outline" size="sm" className="mt-2" onClick={() => setShowCompareModal(false)}>
+                        Browse List
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Desktop: Side-by-side Grid */}
+                <div className="hidden md:grid grid-cols-[150px_repeat(auto-fit,minmax(250px,1fr))] gap-4">
                   {/* Labels Column */}
                   <div className="space-y-4 pt-14 font-medium text-muted-foreground text-sm">
                     <div className="h-24 flex items-center">College Name</div>
