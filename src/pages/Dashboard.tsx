@@ -18,6 +18,7 @@ import {
   ExternalLink
 } from "lucide-react"
 import { Link } from "react-router-dom"
+import CountdownTimer from "@/components/CountdownTimer"
 
 interface DataStats {
   totalRecords: number
@@ -238,34 +239,8 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {/* YouTube Video - First Item */}
-            <a href="https://youtu.be/5gdCJ0yo8uc?si=fpklluR2TCVw6X5U" target="_blank" rel="noreferrer" className="block group">
-              <div className="relative overflow-hidden rounded-none border-2 border-foreground/30 bg-card shadow-[6px_6px_0_0_rgba(0,0,0,0.35)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,0.12)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-                <img
-                  src="/images/kea-ugcet-2025-thumbnail.png"
-                  alt="KEA Third Round UG CET Counseling Update - YouTube Video"
-                  className="w-full h-[180px] object-cover group-hover:scale-[1.02] transition-transform"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <div className="flex items-center gap-2 text-xs text-white/80">
-                    <span className="px-2 py-0.5 bg-red-600/80">YouTube</span>
-                    <span className="opacity-80">Latest Update</span>
-                  </div>
-                  <h3 className="mt-1 text-white text-lg font-extrabold leading-snug tracking-tight">
-                    KEA Third Round UG CET Counseling Update (By Prasanna Sir)
-                  </h3>
-                </div>
-              </div>
-            </a>
+            {/* CET 2026 Countdown Timer */}
+            <CountdownTimer />
 
             {/* CET 2026 Exam Dates Summary */}
             <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
