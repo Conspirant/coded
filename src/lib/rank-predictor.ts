@@ -1,30 +1,42 @@
-// KCET 2025 Rank Analysis - Enhanced prediction table based on comprehensive data
-export const kcet2025RankTable = [
-  // Top performers (95-100%)
-  { score: 96.22, rank: 81 },
-  { score: 94.06, rank: 308 },
-  { score: 90.00, rank: 1245 },
-  { score: 85.00, rank: 3804 },
-  { score: 80.00, rank: 8500 },
-
-  // Mid-range performers (70-80%)
-  { score: 75.00, rank: 16000 },
-  { score: 70.00, rank: 30000 },
-
-  // Real data point: KCET 95 + 89% PUC = Rank ~25,000
-  { score: 67.3, rank: 25000 }, // KCET 95/180 (52.78%) + PUC 89% = 67.3% composite
-
-  { score: 65.00, rank: 50000 },
-  { score: 60.00, rank: 80000 },
-
-  // Real data point: KCET 72 + 85% PUC = Rank 69,918
-  { score: 58.0, rank: 69918 }, // KCET 72/180 (40%) + PUC 85% = 58% composite
-
-  // Lower performers (50-60%)
-  { score: 50.00, rank: 155000 },
-  { score: 40.00, rank: 235000 },
-  { score: 35.00, rank: 259000 }
+// KCET 2025 Rank Analysis - Calibrated with real scraped data
+// 2025 Calibrated Rank Table - EXACT data from scraped results
+// Aggregate % (50% KCET + 50% Board) -> Rank mapping
+const calibratedRankTable2025 = [
+  { agg: 96.22, rank: 81 },
+  { agg: 94.89, rank: 188 },
+  { agg: 93.89, rank: 332 },
+  { agg: 92.5, rank: 575 },
+  { agg: 90.5, rank: 1106 },
+  { agg: 88.89, rank: 1696 },
+  { agg: 87.61, rank: 2236 },
+  { agg: 86.5, rank: 2801 },
+  { agg: 85, rank: 3804 },
+  { agg: 84, rank: 4300 },
+  { agg: 82.5, rank: 5891 },
+  { agg: 80.61, rank: 7995 },
+  { agg: 79, rank: 10251 },
+  { agg: 78.28, rank: 11349 },
+  { agg: 77, rank: 13445 },
+  { agg: 75.5, rank: 16328 },
+  { agg: 74, rank: 18500 },
+  { agg: 72.56, rank: 22974 },
+  { agg: 71, rank: 26500 },
+  { agg: 70, rank: 29500 },
+  { agg: 68, rank: 35000 },
+  { agg: 66, rank: 41000 },
+  { agg: 64, rank: 50000 },
+  { agg: 62.6, rank: 70000 },
+  { agg: 60, rank: 80000 },
+  { agg: 50, rank: 150000 },
+  { agg: 45, rank: 197000 },
+  { agg: 40, rank: 235000 },
+  { agg: 35, rank: 258000 },
+  { agg: 30, rank: 280000 }
 ]
+
+// Legacy exports for backward compatibility
+export const kcet2025RankTable = calibratedRankTable2025.map(item => ({ score: item.agg, rank: item.rank }))
+export const rankTable = kcet2025RankTable
 
 // Rank gap analysis by aggregate band
 export const rankGapAnalysis = [
@@ -53,9 +65,6 @@ export const cutoffEstimates2025 = [
   { targetRank: "Top 100,000", expectedAggregate: "57%+" }
 ]
 
-// Legacy rank table for backward compatibility
-export const rankTable = kcet2025RankTable
-
 // Historical trend data
 export const trendData = {
   2022: [1, 150, 1200, 1800, 3500, 7000, 13000, 25000, 40000, 55000, 70000, 85000, 110000, 140000, 170000],
@@ -68,6 +77,7 @@ export interface RankPrediction {
   medium: number
   high: number
   composite: number
+  kcetPct: number
   percentile?: string
   rankBand?: string
   competitionLevel?: string
@@ -80,96 +90,55 @@ export interface RankAnalysis {
   improvementPotential: string
 }
 
-// KCET 2025 Rank Analysis - Official KEA Formula
-// Official formula: Final Score = [(KCET Score / 180) * 50] + [(Board PCM / 300) * 50]
-// Source: Karnataka Examinations Authority (KEA)
+// Linear interpolation function - EXACT logic from the HTML file
+function interpolateRank(agg: number): number {
+  // If aggregate is higher than the highest in table, return top rank
+  if (agg >= calibratedRankTable2025[0].agg) return 1
+  // If aggregate is lower than the lowest in table, return bottom rank
+  if (agg <= calibratedRankTable2025[calibratedRankTable2025.length - 1].agg) return 300000
 
-// Realistic rank prediction using official KCET formula
+  // Linear interpolation between data points
+  for (let i = 0; i < calibratedRankTable2025.length - 1; i++) {
+    if (agg <= calibratedRankTable2025[i].agg && agg > calibratedRankTable2025[i + 1].agg) {
+      const ratio = (calibratedRankTable2025[i].agg - agg) /
+        (calibratedRankTable2025[i].agg - calibratedRankTable2025[i + 1].agg)
+      return Math.round(
+        calibratedRankTable2025[i].rank +
+        ratio * (calibratedRankTable2025[i + 1].rank - calibratedRankTable2025[i].rank)
+      )
+    }
+  }
+
+  return agg > calibratedRankTable2025[0].agg ? 1 : 300000
+}
+
+// KCET Rank Prediction using EXACT 2025 calibrated data with interpolation
+// Formula: Aggregate % = ((KCET/180) * 100 + Board%) / 2
 export const predictKCETRank = (cet: number, puc: number): RankPrediction => {
-  try {
-    // Official KCET formula: 50% KCET + 50% Board
-    // KCET is out of 180, Board PCM is entered as percentage (assume 300 max marks)
-    const kcetComponent = (cet / 180) * 50  // 50% weightage for KCET
-    const boardComponent = (puc / 100) * 50  // 50% weightage for Board (puc is already %)
-    const compositeScore = kcetComponent + boardComponent  // Final score out of 100
+  // Calculate KCET percentage and aggregate (50% KCET + 50% Board)
+  const kcetPct = (cet / 180) * 100
+  const aggPct = (kcetPct + puc) / 2
 
-    if (isNaN(compositeScore) || compositeScore < 0 || compositeScore > 100) {
-      throw new Error('Please enter valid marks (KCET: 0-180, PUC: 0-100%)')
-    }
+  if (isNaN(aggPct) || cet < 0 || cet > 180 || puc < 0 || puc > 100) {
+    throw new Error('Please enter valid marks (KCET: 0-180, PUC: 0-100%)')
+  }
 
-    // Rank prediction using calibrated curves
-    // Based on KCET 2024 actual data patterns:
-    // - KCET 72 + PUC 85% (composite 62.5%) → Rank ~69,000 (verified)
-    // - 175+ marks → Top 100 ranks
-    // - 155-174 → Top 1000 ranks  
-    // Total candidates: ~2,60,000
-    let predictedRank: number
+  // Get rank using linear interpolation (exact HTML logic)
+  const predictedRank = interpolateRank(aggPct)
 
-    if (compositeScore >= 97) {
-      // Top 50 - Elite (KCET 175+ with 95%+ board)
-      predictedRank = Math.max(1, Math.round(50 - (compositeScore - 97) * 16))
-    } else if (compositeScore >= 95) {
-      // Ranks 50-200
-      predictedRank = Math.round(50 + (97 - compositeScore) * 75)
-    } else if (compositeScore >= 92) {
-      // Ranks 200-800
-      predictedRank = Math.round(200 + (95 - compositeScore) * 200)
-    } else if (compositeScore >= 88) {
-      // Ranks 800-2000
-      predictedRank = Math.round(800 + (92 - compositeScore) * 300)
-    } else if (compositeScore >= 83) {
-      // Ranks 2000-5000
-      predictedRank = Math.round(2000 + (88 - compositeScore) * 600)
-    } else if (compositeScore >= 78) {
-      // Ranks 5000-12000
-      predictedRank = Math.round(5000 + (83 - compositeScore) * 1400)
-    } else if (compositeScore >= 73) {
-      // Ranks 12000-25000
-      predictedRank = Math.round(12000 + (78 - compositeScore) * 2600)
-    } else if (compositeScore >= 68) {
-      // Ranks 25000-40000
-      predictedRank = Math.round(25000 + (73 - compositeScore) * 3000)
-    } else if (compositeScore >= 62) {
-      // Ranks 40000-70000 (calibrated: KCET 72 + PUC 85% = 62.5% → 69918)
-      // For 62.5%: 40000 + (68-62.5)*5440 = 40000 + 29920 = 69920 ✓
-      predictedRank = Math.round(40000 + (68 - compositeScore) * 5440)
-    } else if (compositeScore >= 57) {
-      // Ranks 70000-100000
-      predictedRank = Math.round(72700 + (62 - compositeScore) * 5460)
-    } else if (compositeScore >= 52) {
-      // Ranks 100000-135000
-      predictedRank = Math.round(100000 + (57 - compositeScore) * 7000)
-    } else if (compositeScore >= 47) {
-      // Ranks 135000-175000
-      predictedRank = Math.round(135000 + (52 - compositeScore) * 8000)
-    } else if (compositeScore >= 40) {
-      // Ranks 175000-230000
-      predictedRank = Math.round(175000 + (47 - compositeScore) * 7857)
-    } else {
-      // Below 40%
-      predictedRank = Math.round(230000 + (40 - compositeScore) * 1500)
-    }
+  // Variance range: -3000 to +5000 (category/competition variance)
+  const low = Math.max(1, predictedRank - 3000)
+  const high = Math.min(300000, predictedRank + 5000)
 
-    // Cap at maximum realistic rank
-    predictedRank = Math.min(predictedRank, 260000)
-
-    // Variance: ±3% for precision
-    const variancePercent = 0.03
-    const variance = Math.max(100, Math.round(predictedRank * variancePercent))
-    const low = Math.max(1, predictedRank - variance)
-    const high = Math.min(260000, predictedRank + variance)
-
-    return {
-      low,
-      medium: predictedRank,
-      high,
-      composite: compositeScore,
-      percentile: calculatePercentile(predictedRank),
-      rankBand: getRankBand(predictedRank),
-      competitionLevel: getCompetitionLevel(compositeScore)
-    }
-  } catch (error) {
-    throw new Error(error instanceof Error ? error.message : 'Error calculating rank')
+  return {
+    low,
+    medium: predictedRank,
+    high,
+    composite: aggPct,
+    kcetPct,
+    percentile: calculatePercentile(predictedRank),
+    rankBand: getRankBand(predictedRank),
+    competitionLevel: getCompetitionLevel(aggPct)
   }
 }
 
@@ -303,6 +272,53 @@ export const getCollegeSuggestions = (rank: number, category: string) => {
  * @param cutoutData Array of CutoffData objects
  * @param limit Number of suggestions to return (default 5)
  */
+// Predict 2026 rank based on 2025 prediction with adjustment for expected competition increase
+// Typically competition increases by ~3-5% year-over-year
+export const predict2026Rank = (rank2025: number): number => {
+  // 2026 prediction: slight rank shift due to expected higher competition
+  // Lower ranks see higher absolute shift, top ranks stay similar
+  let adjustmentFactor: number
+
+  if (rank2025 <= 500) {
+    // Top performers - minimal change
+    adjustmentFactor = 1.02
+  } else if (rank2025 <= 5000) {
+    // High performers - small change
+    adjustmentFactor = 1.03
+  } else if (rank2025 <= 30000) {
+    // Mid-range - moderate change
+    adjustmentFactor = 1.04
+  } else if (rank2025 <= 100000) {
+    // Lower-mid range - slightly more change
+    adjustmentFactor = 1.05
+  } else {
+    // Lower ranks - compression at bottom
+    adjustmentFactor = 1.03
+  }
+
+  const predicted2026 = Math.round(rank2025 * adjustmentFactor)
+  return Math.min(predicted2026, 270000) // Cap at estimated 2026 total candidates
+}
+
+export interface Rank2026Prediction extends RankPrediction {
+  rank2025: number
+  rank2026: number
+  yearOverYearChange: number
+}
+
+// Enhanced prediction that returns both 2025 and 2026 ranks
+export const predictKCETRankBothYears = (cet: number, puc: number): Rank2026Prediction => {
+  const prediction2025 = predictKCETRank(cet, puc)
+  const rank2026 = predict2026Rank(prediction2025.medium)
+
+  return {
+    ...prediction2025,
+    rank2025: prediction2025.medium,
+    rank2026,
+    yearOverYearChange: Math.round(((rank2026 - prediction2025.medium) / prediction2025.medium) * 100)
+  }
+}
+
 export const getTopCollegesForRank = (
   rank: number,
   category: string,

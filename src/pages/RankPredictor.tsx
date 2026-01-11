@@ -10,6 +10,7 @@ import { Calculator, TrendingUp, Target, AlertCircle, Download, FileText, BarCha
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
 import {
+  predictKCETRankBothYears,
   predictKCETRank,
   getPercentile,
   calculatePercentile,
@@ -17,7 +18,8 @@ import {
   getCollegeSuggestions,
   getRankGapAnalysis,
   getCutoffEstimates,
-  type RankPrediction
+  type RankPrediction,
+  type Rank2026Prediction
 } from "@/lib/rank-predictor"
 import { validateKCETMarks, validatePUCPercentage } from "@/lib/security"
 
@@ -101,14 +103,15 @@ const ConfidenceGauge = ({ low, medium, high }: { low: number; medium: number; h
 const RankPredictor = () => {
   const [kcetMarks, setKcetMarks] = useState(90)
   const [pucPercentage, setPucPercentage] = useState(60)
-  const [prediction, setPrediction] = useState<RankPrediction | null>(null)
+  const [prediction, setPrediction] = useState<Rank2026Prediction | null>(null)
   const [activeTab, setActiveTab] = useState("predictor")
   const [savedResults, setSavedResults] = useState<any[]>([])
   const { toast } = useToast()
   const navigate = useNavigate()
 
   // Animated rank display
-  const animatedRank = useAnimatedCounter(prediction?.medium || 0, 400)
+  const animatedRank2025 = useAnimatedCounter(prediction?.rank2025 || 0, 400)
+  const animatedRank2026 = useAnimatedCounter(prediction?.rank2026 || 0, 400)
 
   // Load saved results from localStorage
   useEffect(() => {
@@ -134,7 +137,7 @@ const RankPredictor = () => {
     }
 
     try {
-      const rankData = predictKCETRank(kcetMarks, pucPercentage)
+      const rankData = predictKCETRankBothYears(kcetMarks, pucPercentage)
       setPrediction(rankData)
     } catch (error) {
       setPrediction(null)
@@ -167,7 +170,7 @@ const RankPredictor = () => {
   // Navigate to College Finder with predicted rank
   const findColleges = () => {
     if (!prediction) return
-    navigate(`/college-finder?rank=${prediction.medium}`)
+    navigate(`/college-finder?rank=${prediction.rank2026}`)
   }
 
   const downloadPNG = () => {
@@ -245,7 +248,7 @@ const RankPredictor = () => {
         </div>
         <div className="space-y-2">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">
-            KCET 2025 Rank Predictor
+            KCET 2026 Rank Predictor
           </h1>
           <p className="text-muted-foreground">
             Real-time rank prediction based on official KEA formula
@@ -386,23 +389,54 @@ const RankPredictor = () => {
             </div>
 
             {/* Results Card */}
-            <div className="lg:sticky lg:top-4">
+            <div className="lg:sticky lg:top-4 space-y-4">
+              {/* 2025 Historical Rank Card */}
+              <Card className="border-2 border-amber-500/20 bg-card">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/30">
+                      2025 Data
+                    </Badge>
+                    <h3 className="text-sm font-medium text-muted-foreground">Your 2025 Rank</h3>
+                  </div>
+                  <div className="py-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                    <div className="text-3xl font-bold tabular-nums tracking-tight text-amber-600">
+                      {prediction ? animatedRank2025.toLocaleString() : '---'}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">Based on 2025 calibrated data</div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* 2026 Predicted Rank Card */}
               <Card className="border-2 border-primary/20 bg-card">
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-lg font-semibold mb-4 text-foreground">Your Predicted Rank</h3>
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Badge className="bg-primary/10 text-primary border-primary/30">
+                      2026 Predicted
+                    </Badge>
+                    <Sparkles className="h-4 w-4 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-foreground">Your 2026 Predicted Rank</h3>
 
-                  {/* Main rank display - dark theme */}
-                  <div className="py-6 mb-4 rounded-xl bg-muted/50">
-                    <div className="text-6xl font-bold mb-1 tabular-nums tracking-tight text-primary">
-                      {prediction ? animatedRank.toLocaleString() : '---'}
+                  {/* Main rank display */}
+                  <div className="py-6 mb-4 rounded-xl bg-gradient-to-br from-primary/10 to-indigo-500/10 border border-primary/20">
+                    <div className="text-5xl font-bold mb-1 tabular-nums tracking-tight text-primary">
+                      {prediction ? animatedRank2026.toLocaleString() : '---'}
                     </div>
-                    <div className="text-sm text-muted-foreground">Predicted Rank</div>
+                    <div className="text-sm text-muted-foreground">Predicted Rank for KCET 2026</div>
+                    {prediction && (
+                      <div className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/10 text-red-600 text-xs">
+                        <TrendingUp className="h-3 w-3" />
+                        +{prediction.yearOverYearChange}% vs 2025
+                      </div>
+                    )}
                   </div>
 
                   {prediction && (
                     <div className="space-y-3 text-sm">
                       <div className="flex justify-between py-2 border-b border-border">
-                        <span className="text-muted-foreground">Range</span>
+                        <span className="text-muted-foreground">2025 Range</span>
                         <span className="font-semibold text-foreground">{prediction.low.toLocaleString()} – {prediction.high.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between py-2 border-b border-border">
@@ -419,7 +453,9 @@ const RankPredictor = () => {
                           {prediction.rankBand}
                         </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-4">Based on ~2,60,000 KCET 2025 candidates</p>
+                      <p className="text-xs text-muted-foreground mt-4">
+                        2026 prediction based on ~2,70,000 expected candidates (+3-5% competition increase)
+                      </p>
                     </div>
                   )}
 
