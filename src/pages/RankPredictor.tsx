@@ -370,22 +370,6 @@ const RankPredictor = () => {
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
-              {prediction && (
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={findColleges}
-                    className="flex-1 h-12 text-base bg-gradient-to-r from-primary to-indigo-500 hover:from-primary/90 hover:to-indigo-500/90"
-                  >
-                    <Search className="h-5 w-5 mr-2" />
-                    Find Colleges for Rank {prediction.medium.toLocaleString()}
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                  <Button onClick={saveResult} variant="outline" className="h-12">
-                    Save Result
-                  </Button>
-                </div>
-              )}
             </div>
 
             {/* Results Card */}
@@ -466,6 +450,23 @@ const RankPredictor = () => {
               </Card>
             </div>
           </div>
+
+          {/* Quick Actions - Full Width at Bottom */}
+          {prediction && (
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <Button
+                onClick={findColleges}
+                className="flex-1 h-12 text-base bg-gradient-to-r from-primary to-indigo-500 hover:from-primary/90 hover:to-indigo-500/90"
+              >
+                <Search className="h-5 w-5 mr-2" />
+                Find Colleges for Rank {prediction.rank2026.toLocaleString()}
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+              <Button onClick={saveResult} variant="outline" className="h-12">
+                Save Result
+              </Button>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="breakdown" className="space-y-6">
