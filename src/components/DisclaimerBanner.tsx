@@ -1,23 +1,45 @@
-import React from 'react';
+import { useState } from 'react';
+import { AlertCircle, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const DisclaimerBanner = () => {
+export const DisclaimerBanner = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  if (!isVisible) return null;
+
   return (
-    <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-900 p-4 mb-6 rounded">
-      <div className="flex">
-        <div className="flex-shrink-0">
-          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-        </div>
-        <div className="ml-3">
-          <p className="text-sm font-medium">
-            <strong>Disclaimer:</strong> This is a mock simulation tool for educational purposes only. 
-            Actual allotment results may vary. Always refer to official KEA guidelines and cutoff data.
-          </p>
-        </div>
-      </div>
+    <div className="fixed bottom-4 right-4 z-[100] max-w-md w-[calc(100%-2rem)]">
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="relative overflow-hidden rounded-xl border border-white/10 bg-black/60 backdrop-blur-md shadow-2xl p-4 before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/10 before:to-purple-500/10 before:pointer-events-none"
+          >
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-full bg-amber-500/10 border border-amber-500/20 shrink-0 mt-0.5">
+                <AlertCircle className="h-4 w-4 text-amber-500" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-semibold text-white/90">Verification Required</h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  This tool uses historical data for reference only. Actual allotments may vary. Please verify all information with official KEA/CET Cell documents before decision making.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsVisible(false)}
+                className="text-muted-foreground hover:text-white transition-colors shrink-0"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Animated sheen effect */}
+            <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
-
-export default DisclaimerBanner;

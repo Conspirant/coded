@@ -25,6 +25,8 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+import { DisclaimerBanner } from "./components/DisclaimerBanner";
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -36,6 +38,7 @@ const App = () => (
           v7_relativeSplatPath: true
         }}
       >
+        <DisclaimerBanner />
         <Routes>
           {/* Homepage without sidebar layout */}
           <Route path="/" element={<Homepage />} />
