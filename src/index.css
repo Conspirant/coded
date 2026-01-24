@@ -9,7 +9,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -67,7 +67,7 @@ All colors MUST be HSL.
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
-    
+
     /* Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.1);
     --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
@@ -145,12 +145,10 @@ All colors MUST be HSL.
     background-image:
       radial-gradient(circle at 1px 1px, hsl(var(--bg-grid-color)) 1px, transparent 0),
       radial-gradient(circle at 1px 1px, hsl(var(--bg-grid-color)) 1px, transparent 0),
-      linear-gradient(
-        180deg,
+      linear-gradient(180deg,
         transparent 0%,
         hsl(var(--primary) / 0.015) 50%,
-        transparent 100%
-      );
+        transparent 100%);
     background-size: 24px 24px, 24px 24px, 100% 100%;
     background-position: 0 0, 12px 12px, 0 0;
     position: relative;
@@ -183,4 +181,102 @@ All colors MUST be HSL.
   .glow-button {
     box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
   }
+}
+
+/* Homepage floating animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+
+  50% {
+    transform: translateY(-10px) translateX(-10px);
+  }
+
+  75% {
+    transform: translateY(-30px) translateX(5px);
+  }
+}
+
+@keyframes float-delayed {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  25% {
+    transform: translateY(-15px) translateX(-15px);
+  }
+
+  50% {
+    transform: translateY(-25px) translateX(10px);
+  }
+
+  75% {
+    transform: translateY(-5px) translateX(-5px);
+  }
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(-40px) translateX(20px);
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 10s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Gradient animation for text */
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Grid pattern for stats section */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Radial gradient background */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
 }

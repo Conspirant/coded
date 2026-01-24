@@ -57,6 +57,7 @@ const MockSimulator = () => {
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
+  const [currentStep, setCurrentStep] = useState(1) // 1: Profile, 2: Choices, 3: Results
 
   // Available options
   const [availableYears, setAvailableYears] = useState<string[]>([])
@@ -239,6 +240,25 @@ const MockSimulator = () => {
     c.code.toLowerCase().includes(collegeSearch.toLowerCase())
   ).slice(0, 20)
 
+  // Update available branches when college is selected
+  useEffect(() => {
+    if (newCollegeCode && cutoffs.length > 0) {
+      const branches = cutoffs
+        .filter(c => c.institute_code === newCollegeCode)
+        .map(c => c.course)
+
+      const uniqueBranches = [...new Set(branches)].sort()
+      setAvailableBranches(uniqueBranches)
+
+      // Reset branch selection if current branch is not in new list
+      if (newBranchCode && !uniqueBranches.includes(newBranchCode)) {
+        setNewBranchCode("")
+      }
+    } else {
+      setAvailableBranches([])
+    }
+  }, [newCollegeCode, cutoffs])
+
   // Add preference
   const addPreference = () => {
     if (!newCollegeCode || !newBranchCode) {
@@ -363,13 +383,15 @@ const MockSimulator = () => {
 
     switch (level) {
       case 'safe':
-        return <Badge className="bg-green-500 hover:bg-green-600">Safe</Badge>
+        return <Badge className="bg-green-500/10 text-green-500 border-green-500/20 hover:bg-green-500/20">Safe</Badge>
       case 'moderate':
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600">Moderate</Badge>
+        return <Badge className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20 hover:bg-yellow-500/20">Likely</Badge>
       case 'risky':
-        return <Badge className="bg-red-500 hover:bg-red-600">Risky</Badge>
+        return <Badge className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20">Risky</Badge>
       default:
-        return <Badge variant="outline">Unknown</Badge>
+        // Show N/A if data is missing, rather than scary "Unknown"
+        // Also add tooltip if possible, but for now just N/A
+        return <Badge variant="outline" className="text-muted-foreground border-white/10" title="No cutoff data for this year/category">N/A</Badge>
     }
   }
 
@@ -490,42 +512,74 @@ const MockSimulator = () => {
             </CardContent>
           </Card>
 
+          {/* Progress Stepper (Mobile/Compact) */}
+          <div className="hidden lg:block mb-6">
+            <div className="relative pl-4 border-l-2 border-muted space-y-8">
+              <div className={`relative ${currentStep >= 1 ? 'text-primary' : 'text-muted-foreground'}`}>
+                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 1 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
+                <p className="font-medium text-sm">Profile</p>
+                <p className="text-xs text-muted-foreground">Rank & Details</p>
+              </div>
+              <div className={`relative ${currentStep >= 2 ? 'text-primary' : 'text-muted-foreground'}`}>
+                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 2 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
+                <p className="font-medium text-sm">Choices</p>
+                <p className="text-xs text-muted-foreground">Add Preferences</p>
+              </div>
+              <div className={`relative ${currentStep >= 3 ? 'text-primary' : 'text-muted-foreground'}`}>
+                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 3 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
+                <p className="font-medium text-sm">Simulation</p>
+                <p className="text-xs text-muted-foreground">Seat Allotment</p>
+              </div>
+            </div>
+          </div>
+
           {/* Add Preference */}
-          <Card>
+          <Card className="border-white/10 bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <Plus className="h-24 w-24" />
+            </div>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5" />
+                <Plus className="h-5 w-5 text-primary" />
                 Add Preference
               </CardTitle>
               <CardDescription>
-                Build your preference list in order of priority
+                Search and add colleges to your priority list.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 relative z-10">
               <div className="space-y-2">
-                <Label>Search College</Label>
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Label>College</Label>
+                <div className="relative group">
+                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <Input
-                    className="pl-8"
-                    placeholder="Search by name or code..."
+                    className="pl-9 bg-black/20 border-white/10 focus:ring-primary/50"
+                    placeholder="Type college name or code..."
                     value={collegeSearch}
-                    onChange={(e) => setCollegeSearch(e.target.value)}
+                    onChange={(e) => {
+                      setCollegeSearch(e.target.value)
+                      if (!e.target.value && newCollegeCode) {
+                        setNewCollegeCode("")
+                        setNewBranchCode("")
+                      }
+                    }}
                   />
                 </div>
-                {collegeSearch && filteredColleges.length > 0 && (
-                  <div className="border rounded-md max-h-40 overflow-y-auto">
+                {collegeSearch && !newCollegeCode && filteredColleges.length > 0 && (
+                  <div className="border border-white/10 bg-black/80 backdrop-blur-md rounded-md max-h-60 overflow-y-auto absolute w-[calc(100%-3rem)] z-50 shadow-2xl">
                     {filteredColleges.map(college => (
                       <div
                         key={college.code}
-                        className="px-3 py-2 hover:bg-muted cursor-pointer text-sm"
+                        className="px-3 py-3 hover:bg-primary/20 cursor-pointer text-sm border-b border-white/5 last:border-0"
                         onClick={() => {
                           setNewCollegeCode(college.code)
-                          setCollegeSearch(college.name)
+                          setCollegeSearch(`${college.code} - ${college.name}`)
                         }}
                       >
-                        <span className="font-medium">{college.code}</span>
-                        <span className="text-muted-foreground ml-2">{college.name}</span>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-primary">{college.code}</span>
+                          <span className="text-white/80">{college.name}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -533,22 +587,22 @@ const MockSimulator = () => {
               </div>
 
               <div className="space-y-2">
-                <Label>Branch</Label>
-                <Select value={newBranchCode} onValueChange={setNewBranchCode}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select branch" />
+                <Label>Branch {newCollegeCode && availableBranches.length > 0 && `(${availableBranches.length})`}</Label>
+                <Select value={newBranchCode} onValueChange={setNewBranchCode} disabled={!newCollegeCode}>
+                  <SelectTrigger className="bg-black/20 border-white/10">
+                    <SelectValue placeholder={!newCollegeCode ? "Select college first" : "Select branch"} />
                   </SelectTrigger>
                   <SelectContent>
-                    {availableBranches.slice(0, 50).map(branch => (
+                    {availableBranches.map(branch => (
                       <SelectItem key={branch} value={branch}>{branch}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <Button onClick={addPreference} className="w-full">
+              <Button onClick={addPreference} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" disabled={!newCollegeCode || !newBranchCode}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add to Preferences
+                Add Preference
               </Button>
             </CardContent>
           </Card>
@@ -582,26 +636,27 @@ const MockSimulator = () => {
                   <p className="text-sm">Add colleges to start simulating</p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                   {preferences.map((pref, index) => (
                     <div
                       key={pref.id}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors group"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="font-bold text-lg text-primary w-8">#{pref.priority}</span>
-                        <div>
-                          <p className="font-medium text-sm">{pref.collegeName}</p>
-                          <p className="text-xs text-muted-foreground">{pref.branchName}</p>
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <span className="font-bold text-lg text-primary w-8 shrink-0">#{pref.priority}</span>
+                        <div className="min-w-0">
+                          <p className="font-medium text-sm truncate pr-2" title={pref.collegeName}>{pref.collegeName}</p>
+                          <p className="text-xs text-muted-foreground truncate" title={pref.branchName}>{pref.branchName} <span className="opacity-50">({pref.collegeCode})</span></p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0">
                         {getSafetyBadge(pref)}
                         <Button
                           variant="ghost"
                           size="icon"
                           onClick={() => movePreference(pref.id, 'up')}
                           disabled={index === 0}
+                          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <ArrowUp className="h-4 w-4" />
                         </Button>
@@ -610,6 +665,7 @@ const MockSimulator = () => {
                           size="icon"
                           onClick={() => movePreference(pref.id, 'down')}
                           disabled={index === preferences.length - 1}
+                          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <ArrowDown className="h-4 w-4" />
                         </Button>
@@ -617,7 +673,7 @@ const MockSimulator = () => {
                           variant="ghost"
                           size="icon"
                           onClick={() => removePreference(pref.id)}
-                          className="text-red-500 hover:text-red-600"
+                          className="h-8 w-8 text-red-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -702,43 +758,42 @@ const MockSimulator = () => {
                     )}
                   </TabsContent>
 
-                  <TabsContent value="rounds">
-                    <div className="space-y-3">
-                      {simulationResult.roundResults.map((round) => (
-                        <div
-                          key={round.round}
-                          className={`p-4 border rounded-lg ${round.allottedCollege
-                            ? 'border-green-500 bg-green-50 dark:bg-green-950'
-                            : 'border-gray-200'
-                            }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              {round.allottedCollege ? (
-                                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                              ) : (
-                                <XCircle className="h-5 w-5 text-gray-400" />
-                              )}
-                              <span className="font-medium">{round.round}</span>
-                            </div>
-                            {round.allottedCollege && (
-                              <Badge className="bg-green-500">
-                                Preference #{round.allottedPreferenceNumber}
-                              </Badge>
+                  <TabsContent value="rounds" className="mt-4">
+                    <div className="relative space-y-0 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                      {simulationResult.roundResults.map((round, i) => (
+                        <div key={round.round} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active mb-8 last:mb-0">
+                          {/* Icon */}
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-slate-900 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                            {round.allottedCollege ? (
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <XCircle className="h-5 w-5 text-red-500" />
                             )}
                           </div>
-                          {round.allottedCollege ? (
-                            <div className="mt-2 ml-8">
-                              <p className="font-medium">{round.allottedCollege.collegeName}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {round.allottedCollege.branchName} • Cutoff: {round.cutoffRank?.toLocaleString()}
-                              </p>
+
+                          {/* Card */}
+                          <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg">
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="font-bold text-white/90">{round.round}</div>
+                              <Badge variant={round.allottedCollege ? 'default' : 'outline'} className={round.allottedCollege ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'text-muted-foreground'}>
+                                {round.allottedCollege ? 'Allotted' : 'Not Allotted'}
+                              </Badge>
                             </div>
-                          ) : (
-                            <p className="mt-2 ml-8 text-sm text-muted-foreground">
-                              No eligible preference in this round
-                            </p>
-                          )}
+                            {round.allottedCollege ? (
+                              <div className="space-y-1">
+                                <div className="font-semibold text-lg text-primary">{round.allottedCollege.collegeName}</div>
+                                <div className="text-sm text-white/70">{round.allottedCollege.branchName}</div>
+                                <div className="flex gap-2 mt-2">
+                                  <Badge variant="outline" className="text-xs">Pref #{round.allottedPreferenceNumber}</Badge>
+                                  <Badge variant="outline" className="text-xs">Cutoff: {round.cutoffRank?.toLocaleString()}</Badge>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-muted-foreground">
+                                No seat allotted in this round based on your priorities.
+                              </p>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>

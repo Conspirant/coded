@@ -4,6 +4,8 @@
  */
 
 // Types
+import { normalizeCourse, getCanonicalCourseKey } from './course-normalizer';
+
 export interface PreferenceOption {
     id: string;
     collegeCode: string;
@@ -69,23 +71,6 @@ export interface SimulationInput {
 }
 
 /**
- * Clean and normalize course name for matching
- * Removes newlines, collapses spaces, extracts base name
- */
-function cleanCourseName(courseName: string): string {
-    if (!courseName) return '';
-    // Remove newlines and collapse spaces
-    let cleaned = courseName.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim();
-    // Extract course code (2 letters at start) if present
-    const codeMatch = cleaned.match(/^([A-Z]{2})\s/);
-    if (codeMatch) {
-        // Return just the code for matching
-        return codeMatch[1];
-    }
-    return cleaned.toLowerCase();
-}
-
-/**
  * Extract 2-letter course code from course name or code
  */
 function extractCourseCode(course: string): string | null {
@@ -101,51 +86,48 @@ function extractCourseCode(course: string): string | null {
 
 /**
  * Find cutoff for a specific college-branch combination
- * Uses exact matching on institute_code and course code for accuracy
+ * Uses exact matching on institute_code and robust course normalization
  */
 function findCutoff(
     cutoffs: CutoffData[],
     preference: PreferenceOption
 ): CutoffData | null {
-    // Extract course code from preference branch
+    // 1. Filter by College Code first (Most reliable)
+    const collegeCutoffs = cutoffs.filter(c =>
+        c.institute_code.toUpperCase() === preference.collegeCode.toUpperCase()
+    );
+
+    if (collegeCutoffs.length === 0) return null;
+
+    // 2. Try matching by Course Code (if available in preference)
     const prefCourseCode = extractCourseCode(preference.branchCode) ||
         extractCourseCode(preference.branchName);
 
-    // Strategy 1: Exact match on institute_code and course code
     if (prefCourseCode) {
-        const exactMatch = cutoffs.find(c => {
-            const instituteMatch = c.institute_code.toUpperCase() === preference.collegeCode.toUpperCase();
-            const cutoffCourseCode = extractCourseCode(c.course);
-            const courseMatch = cutoffCourseCode === prefCourseCode;
-            return instituteMatch && courseMatch;
+        const exactCodeMatch = collegeCutoffs.find(c => {
+            const cutoffCode = extractCourseCode(c.course);
+            return cutoffCode === prefCourseCode;
         });
-        if (exactMatch) return exactMatch;
+        if (exactCodeMatch) return exactCodeMatch;
     }
 
-    // Strategy 2: Match by institute_code and cleaned course name contains
-    const cleanedPrefBranch = preference.branchName.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-    const byCodeAndName = cutoffs.find(c => {
-        const instituteMatch = c.institute_code.toUpperCase() === preference.collegeCode.toUpperCase();
-        const cleanedCutoffCourse = c.course.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-        const courseMatch = cleanedCutoffCourse.includes(cleanedPrefBranch) ||
-            cleanedPrefBranch.includes(cleanedCutoffCourse);
-        return instituteMatch && courseMatch;
-    });
-    if (byCodeAndName) return byCodeAndName;
+    // 3. Try matching by Canonical Name (Robust Normalization)
+    const prefCanonicalKey = getCanonicalCourseKey(preference.branchName);
 
-    // Strategy 3: Match by college name (fuzzy) and branch name
-    const cleanedPrefCollege = preference.collegeName.toLowerCase();
-    const byName = cutoffs.find(c => {
-        const cleanedInstitute = c.institute.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-        const cleanedCourse = c.course.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
-        const collegeMatch = cleanedInstitute.includes(cleanedPrefCollege) ||
-            cleanedPrefCollege.includes(cleanedInstitute);
-        const branchMatch = cleanedCourse.includes(cleanedPrefBranch) ||
-            cleanedPrefBranch.includes(cleanedCourse);
-        return collegeMatch && branchMatch;
+    const canonicalMatch = collegeCutoffs.find(c => {
+        const cutoffCanonicalKey = getCanonicalCourseKey(c.course);
+        return cutoffCanonicalKey === prefCanonicalKey;
     });
 
-    return byName || null;
+    if (canonicalMatch) return canonicalMatch;
+
+    // 4. Fallback: Fuzzy containment match on normalized strings
+    const prefNormalized = normalizeCourse(preference.branchName).toLowerCase();
+
+    return collegeCutoffs.find(c => {
+        const cutoffNormalized = normalizeCourse(c.course).toLowerCase();
+        return cutoffNormalized.includes(prefNormalized) || prefNormalized.includes(cutoffNormalized);
+    }) || null;
 }
 
 /**

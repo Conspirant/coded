@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -14,7 +14,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 
 const menuItems = [
-  { title: "Dashboard", url: "/", icon: Home },
+  { title: "Home", url: "/", icon: Home },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
   { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
   { title: "College Finder", url: "/college-finder", icon: Target },
@@ -29,6 +30,7 @@ const menuItems = [
   { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Reddit Community", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
 ]
+
 
 export function AppSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar()
