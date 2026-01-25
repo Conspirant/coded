@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -241,8 +242,32 @@ const Homepage = () => {
         <div className="min-h-screen bg-background overflow-hidden">
             {/* Animated Background */}
             <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-0 -left-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" />
-                <div className="absolute top-0 -right-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-delayed" />
+                <motion.div
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.2, 0.3, 0.2]
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    className="absolute top-0 -left-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1, 1.1, 1],
+                        x: [0, 20, 0],
+                        opacity: [0.2, 0.3, 0.2]
+                    }}
+                    transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1
+                    }}
+                    className="absolute top-0 -right-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
+                />
                 <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-slow" />
                 <div className="absolute bottom-40 right-20 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-float" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/5 to-transparent rounded-full" />
@@ -289,93 +314,103 @@ const Homepage = () => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-500/10 to-transparent rounded-full blur-3xl -z-10" />
 
                 <div className="max-w-4xl mx-auto text-center relative z-10">
-                    {/* Live Badge */}
-                    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/60 backdrop-blur-md border shadow-sm mb-6 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        <span className="relative flex h-2.5 w-2.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                        </span>
-                        <span className="text-sm font-medium tracking-wide">
-                            {stats.loading ? 'Syncing Data...' : `${stats.totalRecords.toLocaleString()} Verified Records Live`}
-                        </span>
-                    </div>
-
-                    {/* Headline */}
-                    <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        Find your dream <br className="hidden sm:block" />
-                        <span className="relative inline-block">
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient-x p-2">
-                                Engineering College
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {/* Live Badge */}
+                        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/60 backdrop-blur-md border shadow-sm mb-6 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                             </span>
-                            <Sparkles className="absolute -top-6 -right-8 h-10 w-10 text-yellow-400 animate-pulse hidden md:block" />
-                        </span>
-                    </h1>
+                            <span className="text-sm font-medium tracking-wide">
+                                {stats.loading ? 'Syncing Data...' : `${stats.totalRecords.toLocaleString()} Verified Records Live`}
+                            </span>
+                        </div>
 
-                    {/* Subheadline */}
-                    <p className={`text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl mx-auto mb-8 leading-relaxed transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
-                    </p>
+                        {/* Headline */}
+                        <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            Find your dream <br className="hidden sm:block" />
+                            <span className="relative inline-block">
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient-x p-2">
+                                    Engineering College
+                                </span>
+                                <Sparkles className="absolute -top-6 -right-8 h-10 w-10 text-yellow-400 animate-pulse hidden md:block" />
+                            </span>
+                        </h1>
 
-                    {/* Quick Search & Actions */}
-                    <div className={`flex flex-col items-center gap-6 max-w-2xl mx-auto mb-12 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        {/* Enhanced Search Bar */}
-                        <div className="w-full relative group transform transition-all duration-300 hover:scale-[1.01]">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-500"></div>
-                            <div className="relative flex items-center bg-background/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2">
-                                <Search className="ml-4 h-6 w-6 text-muted-foreground group-focus-within:text-blue-500 transition-colors" />
-                                <input
-                                    type="text"
-                                    placeholder="Search for a college (e.g. RVCE, PES)..."
-                                    className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-4 text-lg outline-none placeholder:text-muted-foreground/40"
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            navigate('/college-finder')
-                                        }
-                                    }}
+                        {/* Subheadline */}
+                        <p className={`text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl mx-auto mb-8 leading-relaxed transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
+                        </p>
+
+                        {/* Quick Search & Actions */}
+                        <div className={`flex flex-col items-center gap-6 max-w-2xl mx-auto mb-12 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            {/* Enhanced Search Bar */}
+                            <div className="w-full relative group transform transition-all duration-300 hover:scale-[1.01]">
+                                <motion.div
+                                    className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-25"
+                                    animate={{ opacity: [0.25, 0.6, 0.25] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                                 />
-                                <Button size="lg" className="hidden sm:flex rounded-xl px-8 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40" onClick={() => navigate('/college-finder')}>
-                                    Search
-                                </Button>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-wrap items-center justify-center gap-4">
-                            <Link to="/dashboard">
-                                <Button variant="outline" size="lg" className="h-12 px-8 rounded-xl border-2 hover:bg-muted/50 text-base font-medium transition-all hover:-translate-y-0.5">
-                                    Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Live CET 2026 Countdown */}
-                    <div className={`mt-6 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        <div className="inline-flex flex-col sm:flex-row items-center gap-6 sm:gap-12 px-8 py-5 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-2xl hover:shadow-blue-500/10 transition-all hover:-translate-y-1 group">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 group-hover:scale-110 transition-transform">
-                                    <Calendar className="h-6 w-6" />
-                                </div>
-                                <div className="text-left">
-                                    <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Next Exam</div>
-                                    <div className="text-base font-semibold text-foreground">April 23, 2026</div>
+                                <div className="relative flex items-center bg-background/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2">
+                                    <Search className="ml-4 h-6 w-6 text-muted-foreground group-focus-within:text-blue-500 transition-colors" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search for a college (e.g. RVCE, PES)..."
+                                        className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-4 text-lg outline-none placeholder:text-muted-foreground/40"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                navigate('/college-finder')
+                                            }
+                                        }}
+                                    />
+                                    <Button size="lg" className="hidden sm:flex rounded-xl px-8 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40" onClick={() => navigate('/college-finder')}>
+                                        Search
+                                    </Button>
                                 </div>
                             </div>
 
-                            <div className="hidden sm:block h-8 w-px bg-white/10"></div>
+                            <div className="flex flex-wrap items-center justify-center gap-4">
+                                <Link to="/dashboard">
+                                    <Button variant="outline" size="lg" className="h-12 px-8 rounded-xl border-2 hover:bg-muted/50 text-base font-medium transition-all hover:-translate-y-0.5">
+                                        Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
 
-                            <div className="flex gap-6 text-center">
-                                <div>
-                                    <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.days).padStart(2, '0')}</div>
-                                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Days</div>
+                        {/* Live CET 2026 Countdown */}
+                        <div className={`mt-6 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            <div className="inline-flex flex-col sm:flex-row items-center gap-6 sm:gap-12 px-8 py-5 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-2xl hover:shadow-blue-500/10 transition-all hover:-translate-y-1 group">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 group-hover:scale-110 transition-transform">
+                                        <Calendar className="h-6 w-6" />
+                                    </div>
+                                    <div className="text-left">
+                                        <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Next Exam</div>
+                                        <div className="text-base font-semibold text-foreground">April 23, 2026</div>
+                                    </div>
                                 </div>
-                                <div className="text-xl font-light text-muted-foreground/30 py-1">:</div>
-                                <div>
-                                    <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.hours).padStart(2, '0')}</div>
-                                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Hours</div>
+
+                                <div className="hidden sm:block h-8 w-px bg-white/10"></div>
+
+                                <div className="flex gap-6 text-center">
+                                    <div>
+                                        <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.days).padStart(2, '0')}</div>
+                                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Days</div>
+                                    </div>
+                                    <div className="text-xl font-light text-muted-foreground/30 py-1">:</div>
+                                    <div>
+                                        <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.hours).padStart(2, '0')}</div>
+                                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Hours</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
@@ -393,31 +428,50 @@ const Homepage = () => {
                     </div>
 
                     {/* Main Features */}
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-20">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-100px" }}
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: { staggerChildren: 0.1 }
+                            }
+                        }}
+                        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-20"
+                    >
                         {features.map((feature, i) => (
-                            <Link
+                            <motion.div
                                 key={feature.title}
-                                to={feature.href}
-                                className="group relative"
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                                }}
                             >
-                                <div className="absolute -inset-0.5 bg-gradient-to-b from-blue-500/20 to-purple-500/20 rounded-[2rem] opacity-0 group-hover:opacity-100 transition duration-500 blur-md"></div>
-                                <div className={`relative h-full p-6 rounded-[1.75rem] bg-card/50 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2`}>
-                                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                                        <feature.icon className="h-7 w-7 text-white" />
+                                <Link
+                                    to={feature.href}
+                                    className="group relative block h-full"
+                                >
+                                    <div className="absolute -inset-0.5 bg-gradient-to-b from-blue-500/20 to-purple-500/20 rounded-[2rem] opacity-0 group-hover:opacity-100 transition duration-500 blur-md"></div>
+                                    <div className={`relative h-full p-6 rounded-[1.75rem] bg-card/50 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2`}>
+                                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                                            <feature.icon className="h-7 w-7 text-white" />
+                                        </div>
+                                        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                                            {feature.title}
+                                        </h3>
+                                        <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                                            {feature.description}
+                                        </p>
+                                        <div className="absolute bottom-6 left-6 flex items-center text-xs font-bold text-primary opacity-60 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                                            OPEN TOOL <ArrowRight className="ml-2 h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                                        </div>
                                     </div>
-                                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                                        {feature.title}
-                                    </h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                                        {feature.description}
-                                    </p>
-                                    <div className="absolute bottom-6 left-6 flex items-center text-xs font-bold text-primary opacity-60 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-                                        OPEN TOOL <ArrowRight className="ml-2 h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-                                    </div>
-                                </div>
-                            </Link>
+                                </Link>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
 
                     {/* Real Data Stats Section - Dark Premium Card */}
                     <div className="relative rounded-[2rem] bg-[#0c0c0c] border border-white/10 p-8 sm:p-12 text-center sm:text-left overflow-hidden isolate shadow-2xl">
@@ -481,46 +535,70 @@ const Homepage = () => {
                 </div>
             </section>
 
-            {/* Community Section - Kept as is, but polished */}
+            {/* Community Section - Reimagined */}
             <section className="py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-8 items-center rounded-[2rem] bg-gradient-to-br from-gray-900 to-gray-800 p-8 sm:p-10 text-white overflow-hidden relative shadow-2xl">
-                        {/* Decorator */}
-                        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                    <div className="grid md:grid-cols-5 gap-6 rounded-[2.5rem] bg-gradient-to-br from-[#0F172A] to-[#1E293B] p-2 overflow-hidden relative shadow-2xl border border-white/5">
 
-                        <div className="relative z-10">
-                            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Join the Conversation</h2>
-                            <p className="text-gray-300 text-base mb-8 max-w-sm">
-                                Connect with thousands of students on Reddit. Real discussions, real doubts, real answers.
+                        {/* Left Side - The Main Hub (r/KCETCoded) */}
+                        <div className="md:col-span-3 p-8 sm:p-10 relative flex flex-col justify-center">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+
+                            <Badge variant="outline" className="w-fit mb-6 border-blue-500/30 text-blue-400 bg-blue-500/10 backdrop-blur-md px-3 py-1">
+                                Official Support Hub
+                            </Badge>
+
+                            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+                                Have questions? <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Ask r/KCETCoded</span>
+                            </h2>
+                            <p className="text-gray-400 text-lg mb-8 leading-relaxed max-w-lg">
+                                The dedicated community for this website. Report bugs, suggest features, or discuss counseling strategies directly with the developer.
                             </p>
-                            <div className="flex flex-wrap gap-3">
-                                <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer">
-                                    <Button size="lg" className="bg-[#FF4500] hover:bg-[#FF4500]/90 text-white border-none rounded-xl h-11">
-                                        <ExternalLink className="mr-2 h-4 w-4" />
-                                        r/kcet
-                                    </Button>
-                                </a>
+
+                            <div className="flex flex-wrap gap-4">
                                 <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer">
-                                    <Button size="lg" variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 rounded-xl h-11">
-                                        <Bot className="mr-2 h-4 w-4" />
-                                        r/KCETCoded
+                                    <Button size="lg" className="rounded-xl h-14 px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 text-base font-semibold transition-all hover:scale-105">
+                                        <Bot className="mr-2 h-5 w-5" />
+                                        Join r/KCETCoded
                                     </Button>
                                 </a>
                             </div>
                         </div>
 
-                        <div className="relative z-10 flex justify-center md:justify-end">
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10">
-                                    <div className="text-2xl font-bold mb-0.5">5k+</div>
-                                    <div className="text-xs text-gray-400">Community Members</div>
+                        {/* Right Side - Info & Disclaimer */}
+                        <div className="md:col-span-2 bg-white/5 rounded-[2rem] p-8 border border-white/5 flex flex-col justify-between relative overflow-hidden">
+                            {/* Decorative noise */}
+                            <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
+
+                            <div className="space-y-6 relative z-10">
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                                        <ExternalLink className="h-4 w-4 text-gray-400" />
+                                        Broader Community
+                                    </h3>
+                                    <p className="text-sm text-gray-400 mb-3">
+                                        For general KCET discussions, we also recommend checking out the largest subreddit.
+                                    </p>
+                                    <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
+                                        Visit r/kcet <ArrowRight className="ml-1 h-3 w-3" />
+                                    </a>
                                 </div>
-                                <div className="p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 translate-y-3">
-                                    <div className="text-2xl font-bold mb-0.5">24/7</div>
-                                    <div className="text-xs text-gray-400">Active Discussions</div>
+
+                                <div className="h-px bg-white/10 w-full"></div>
+
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                                        <Shield className="h-4 w-4 text-gray-400" />
+                                        Independent Project
+                                    </h3>
+                                    <p className="text-xs text-gray-500 leading-relaxed italic">
+                                        "KCET Coded" is an individual initiative built to help students. It is <strong>not affiliated</strong> with the moderation team of r/kcet. We exist as a separate entity to provide specialized tools.
+                                    </p>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
