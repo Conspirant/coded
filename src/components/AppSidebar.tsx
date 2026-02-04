@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Coffee } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -29,7 +29,7 @@ const menuItems = [
   { title: "Planner", url: "/planner", icon: ClipboardList, underDevelopment: true },
   { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Reddit Community", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
-  { title: "Buy Me a Coffee", url: "/buy-coffee", icon: Coffee, isSpecial: true },
+
 ]
 
 

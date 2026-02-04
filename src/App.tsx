@@ -22,12 +22,12 @@ import Materials from "./pages/Materials";
 import AICounselor from "./pages/AICounselor";
 // Vercel build fix trigger
 import NotFound from "./pages/NotFound";
-import BuyMeACoffee from "./pages/BuyMeACoffee";
+
 
 const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
-import { BuyMeACoffeeWidget } from "./components/BuyMeACoffeeWidget";
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -41,7 +41,7 @@ const App = () => (
         }}
       >
         <DisclaimerBanner />
-        <BuyMeACoffeeWidget />
+
         <Routes>
           {/* Homepage without sidebar layout */}
           <Route path="/" element={<Homepage />} />
@@ -66,7 +66,7 @@ const App = () => (
           <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
           <Route path="/materials" element={<Layout><Materials /></Layout>} />
           <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
-          <Route path="/buy-coffee" element={<Layout><BuyMeACoffee /></Layout>} />
+
           {/* More routes will be added here */}
           <Route path="*" element={<NotFound />} />
         </Routes>
