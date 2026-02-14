@@ -68,6 +68,46 @@ interface CollegeMatch {
   marginPercent: number
 }
 
+interface InstituteOption {
+  value: string
+  code: string
+  name: string
+  label: string
+  searchValue: string
+}
+
+const normalizeSearchText = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
+
+const compactSearchText = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, "")
+
+const buildInstituteOption = (code: string, name: string): InstituteOption => {
+  const normalizedCode = (code || "").trim().toUpperCase()
+  const normalizedName = (name || "").trim()
+  const value = normalizedCode
+    ? `code:${normalizedCode}`
+    : `name:${compactSearchText(normalizedName)}`
+  const label = normalizedCode ? `${normalizedCode} - ${normalizedName}` : normalizedName
+
+  return {
+    value,
+    code: normalizedCode,
+    name: normalizedName,
+    label,
+    searchValue: `${normalizedCode} ${normalizedName}`.trim()
+  }
+}
+
+const matchesLooseSearch = (haystack: string, query: string) => {
+  if (!query) return true
+  const normalizedQuery = normalizeSearchText(query)
+  const compactQuery = compactSearchText(query)
+  const normalizedHaystack = normalizeSearchText(haystack)
+  const compactHaystack = compactSearchText(haystack)
+  return normalizedHaystack.includes(normalizedQuery) || compactHaystack.includes(compactQuery)
+}
+
 
 const Sparkline = ({ data }: { data: number[] }) => {
   if (data.length < 2) return null
@@ -124,7 +164,7 @@ const CollegeFinder = () => {
   const [availableYears, setAvailableYears] = useState<string[]>([])
   const [availableCategories, setAvailableCategories] = useState<string[]>([])
   const [availableCourses, setAvailableCourses] = useState<string[]>([])
-  const [availableInstitutes, setAvailableInstitutes] = useState<string[]>([])
+  const [availableInstitutes, setAvailableInstitutes] = useState<InstituteOption[]>([])
   const [availableRounds, setAvailableRounds] = useState<string[]>([])
 
   // User inputs
@@ -140,6 +180,7 @@ const CollegeFinder = () => {
   const [collegeSearchTerm, setCollegeSearchTerm] = useState("")
   const [showFilters, setShowFilters] = useState(false)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [instituteDropdownOpen, setInstituteDropdownOpen] = useState(false)
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
@@ -762,16 +803,20 @@ const CollegeFinder = () => {
     return () => clearInterval(id)
   }, [loading])
 
-  // Load cutoff data from consolidated data source (kcet_cutoffs.json)
+  // Load cutoff data from available JSON sources (prefer master first).
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log('Starting to load data from consolidated data source...')
+        console.log('Starting to load cutoff data...')
         setProgress(10)
 
-        // Load from the main consolidated data source - try multiple sources (no-cache)
+        // Load from the highest-volume merged source first
         const urls = [
+          '/data/kcet_cutoffs_high_volume.json',
+          '/data/kcet_cutoffs_master.json',
           '/data/kcet_cutoffs_consolidated.json',
+          '/kcet_cutoffs_high_volume.json',
+          '/kcet_cutoffs_master.json',
           '/kcet_cutoffs.json',
           '/kcet_cutoffs_round3_2025.json',
           '/kcet_cutoffs2025.json'
@@ -892,28 +937,23 @@ const CollegeFinder = () => {
         console.log('Sample course names from data:', courses.slice(0, 10))
         console.log('Sample course names from mapping:', Object.values(courseCodeToName).slice(0, 10))
 
-        // Filter institutes to only E001-E314 and remove duplicates
-        let institutes: string[] = []
+        // Build institute options from all available data (no hard-coded code limits)
+        const instituteMap = new Map<string, InstituteOption>()
         if (processedData.metadata?.institute_names) {
-          // Use metadata institute names but filter by code range
-          const instituteEntries = Object.entries(processedData.metadata.institute_names)
-          const filteredEntries = instituteEntries.filter(([code, name]) => {
-            const codeNum = parseInt(code.replace('E', ''))
-            return codeNum >= 1 && codeNum <= 314
-          })
-          institutes = filteredEntries.map(([code, name]) => `${name} (${code})`)
-        } else {
-          // Filter from cutoff data
-          const instituteMap = new Map<string, string>()
-          normalizedCutoffs.forEach(item => {
-            const codeNum = parseInt(item.institute_code.replace('E', ''))
-            if (codeNum >= 1 && codeNum <= 314) {
-              instituteMap.set(item.institute_code, item.institute)
+          Object.entries(processedData.metadata.institute_names).forEach(([code, name]) => {
+            const option = buildInstituteOption(code, name)
+            if (option.name) {
+              instituteMap.set(option.value, option)
             }
           })
-          institutes = Array.from(instituteMap.entries()).map(([code, name]) => `${name} (${code})`)
         }
-        institutes.sort()
+        normalizedCutoffs.forEach(item => {
+          const option = buildInstituteOption(item.institute_code, item.institute)
+          if (option.name) {
+            instituteMap.set(option.value, option)
+          }
+        })
+        const institutes = Array.from(instituteMap.values()).sort((a, b) => a.label.localeCompare(b.label))
         // Rounds will be scoped per selected year; initialize using the latest year's rounds
         // Rounds should reflect the currently selected or latest year (descending years list)
         const latestYear = years[0]
@@ -956,9 +996,11 @@ const CollegeFinder = () => {
           institutes: institutes.length
         })
 
+        const loadedEntries = (processedData.metadata?.total_entries ?? normalizedCutoffs.length)
+        const sourceLabel = dataSource.replace(/^\/+/, '') || 'selected source'
         toast({
           title: "Success",
-          description: `Loaded ${data.cutoffs.length.toLocaleString()} cutoff entries from consolidated data source!`,
+          description: `Loaded ${loadedEntries.toLocaleString()} deduped cutoff entries from ${sourceLabel}.`,
         })
 
       } catch (error) {
@@ -1008,7 +1050,14 @@ const CollegeFinder = () => {
       const years = [...new Set(convertedData.map(item => item.year))].sort((a, b) => b.localeCompare(a))
       const categories = [...new Set(convertedData.map(item => item.category))].sort()
       const courses = [...new Set(convertedData.map(item => item.course))].sort()
-      const institutes = [...new Set(convertedData.map(item => item.institute))].sort()
+      const institutesMap = new Map<string, InstituteOption>()
+      convertedData.forEach(item => {
+        const option = buildInstituteOption(item.institute_code, item.institute)
+        if (option.name) {
+          institutesMap.set(option.value, option)
+        }
+      })
+      const institutes = Array.from(institutesMap.values()).sort((a, b) => a.label.localeCompare(b.label))
       const rounds = [...new Set(convertedData.map(item => item.round))].sort()
 
       setAvailableYears(years)
@@ -1060,6 +1109,10 @@ const CollegeFinder = () => {
       setSelectedRound('ALL')
     }
   }, [selectedYear, cutoffs])
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [collegeSearchTerm, sortOrder, matches.length])
 
   const findColleges = () => {
     setSearching(true)
@@ -1161,28 +1214,15 @@ const CollegeFinder = () => {
 
       // Filter by selected institute (optional)
       if (selectedInstitute) {
-        // Extract institute code from selected institute (format: "Name (E001)")
-        const selectedInstituteMatch = selectedInstitute.match(/\(([^)]+)\)/)
-        const selectedInstituteCode = selectedInstituteMatch ? selectedInstituteMatch[1] : null
-        const selectedInstituteName = selectedInstitute.replace(/\s*\([^)]+\)$/, '').trim()
+        const isCodeFilter = selectedInstitute.startsWith('code:')
+        const instituteCode = isCodeFilter ? selectedInstitute.slice(5) : ''
+        const instituteNameToken = isCodeFilter ? '' : selectedInstitute.slice(5)
 
         filteredData = filteredData.filter(cutoff => {
-          // Match by exact institute name
-          if (cutoff.institute.toLowerCase() === selectedInstituteName.toLowerCase()) {
-            return true
+          if (isCodeFilter) {
+            return cutoff.institute_code.toUpperCase() === instituteCode
           }
-
-          // Match by institute code
-          if (selectedInstituteCode && cutoff.institute_code.toLowerCase() === selectedInstituteCode.toLowerCase()) {
-            return true
-          }
-
-          // Match by partial name (fallback)
-          if (cutoff.institute.toLowerCase().includes(selectedInstituteName.toLowerCase())) {
-            return true
-          }
-
-          return false
+          return compactSearchText(cutoff.institute) === instituteNameToken
         })
         console.log(`After institute filter: ${filteredData.length} entries`)
       }
@@ -1190,7 +1230,7 @@ const CollegeFinder = () => {
       // Filter by location
       if (locationFilter) {
         filteredData = filteredData.filter(cutoff =>
-          cutoff.institute.toLowerCase().includes(locationFilter.toLowerCase())
+          matchesLooseSearch(cutoff.institute, locationFilter)
         )
         console.log(`After location filter: ${filteredData.length} entries`)
       }
@@ -1252,6 +1292,7 @@ const CollegeFinder = () => {
 
       // Show all matches (no limit)
       setMatches(deduplicatedMatches)
+      setCurrentPage(1)
       // Publish to shared store for Analytics
       finderStore.setState({
         userRank,
@@ -1450,7 +1491,7 @@ const CollegeFinder = () => {
             <div className="lg:col-span-1 max-w-2xl w-full mx-auto">
               <div className="flex items-center gap-3 mb-3 justify-start">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                <p className="text-muted-foreground">Loading college data from consolidated data source…</p>
+                <p className="text-muted-foreground">Loading college data from high-volume cutoff dataset…</p>
               </div>
 
               {/* Data Size Disclaimer */}
@@ -1552,7 +1593,7 @@ const CollegeFinder = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-500/5 to-transparent rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6 max-w-7xl">
         <div className="space-y-4 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium">
             <Sparkles className="h-3.5 w-3.5" />
@@ -1698,18 +1739,55 @@ const CollegeFinder = () => {
                 {/* Institute (Optional) */}
                 <div className="space-y-2">
                   <Label>Institute (Optional)</Label>
-                  <Select value={selectedInstitute} onValueChange={setSelectedInstitute}>
-                    <SelectTrigger className="bg-black/20 border-white/10 h-11">
-                      <SelectValue placeholder="Select institute (optional)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableInstitutes.map((inst) => (
-                        <SelectItem key={inst} value={inst}>
-                          {inst}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Popover open={instituteDropdownOpen} onOpenChange={setInstituteDropdownOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={instituteDropdownOpen}
+                        className="w-full justify-between bg-black/20 border-white/10 h-11"
+                      >
+                        {selectedInstitute
+                          ? (availableInstitutes.find(inst => inst.value === selectedInstitute)?.label ?? "Select institute")
+                          : "Search institute (optional)"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0 w-[min(700px,90vw)]">
+                      <Command>
+                        <CommandInput placeholder="Search by institute name or code..." />
+                        <CommandEmpty>No institute found.</CommandEmpty>
+                        <CommandList>
+                          <CommandGroup>
+                            <CommandItem
+                              key="all-institutes"
+                              value="all institutes"
+                              onSelect={() => {
+                                setSelectedInstitute("")
+                                setInstituteDropdownOpen(false)
+                              }}
+                            >
+                              <Check className={`mr-2 h-4 w-4 ${selectedInstitute === "" ? "opacity-100" : "opacity-0"}`} />
+                              All Institutes
+                            </CommandItem>
+                            {availableInstitutes.map((inst) => (
+                              <CommandItem
+                                key={inst.value}
+                                value={inst.searchValue}
+                                onSelect={() => {
+                                  setSelectedInstitute(inst.value)
+                                  setInstituteDropdownOpen(false)
+                                }}
+                              >
+                                <Check className={`mr-2 h-4 w-4 ${selectedInstitute === inst.value ? "opacity-100" : "opacity-0"}`} />
+                                <span className="truncate">{inst.label}</span>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 {/* Location Filter */}
@@ -1840,7 +1918,7 @@ const CollegeFinder = () => {
 
 
                 {/* Course Selection - searchable multi-select */}
-                <div className="mt-6">
+                <div className="mt-2 sm:col-span-2 lg:col-span-3">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
                       <Label className="text-base font-medium">Select Courses (Optional)</Label>
@@ -1903,7 +1981,7 @@ const CollegeFinder = () => {
                                 return (
                                   <CommandItem
                                     key={course}
-                                    value={course}
+                                    value={`${course} ${courseCode || ''}`}
                                     onSelect={() => {
                                       if (isSelected) {
                                         setSelectedCourses(selectedCourses.filter(c => c !== course))
@@ -1960,7 +2038,7 @@ const CollegeFinder = () => {
                   <GraduationCap className="h-5 w-5" />
                   College Matches ({matches.length} found)
                 </CardTitle>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   {bookmarks.size > 0 && (
                     <Badge variant="outline" className="flex items-center gap-1">
                       <Bookmark className="h-3 w-3" />
@@ -2001,15 +2079,15 @@ const CollegeFinder = () => {
               {(() => {
                 let filteredMatches = collegeSearchTerm
                   ? matches.filter(match => {
-                    const searchTerm = collegeSearchTerm.toLowerCase().trim()
+                    const searchTerm = collegeSearchTerm.trim()
 
                     // Search by college name
-                    if (match.institute.toLowerCase().includes(searchTerm)) {
+                    if (matchesLooseSearch(match.institute, searchTerm)) {
                       return true
                     }
 
                     // Search by institute code
-                    if (match.institute_code.toLowerCase().includes(searchTerm)) {
+                    if (matchesLooseSearch(match.institute_code, searchTerm)) {
                       return true
                     }
 
@@ -2019,7 +2097,7 @@ const CollegeFinder = () => {
                     }
 
                     // Search by course name
-                    if (match.course.toLowerCase().includes(searchTerm)) {
+                    if (matchesLooseSearch(match.course, searchTerm)) {
                       return true
                     }
 
@@ -2205,11 +2283,11 @@ const CollegeFinder = () => {
 
                     {/* Pagination Controls */}
                     {totalPages > 1 && (
-                      <div className="flex items-center justify-between py-4 border-t border-white/10 mt-4">
-                        <div className="text-sm text-muted-foreground">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between py-4 border-t border-white/10 mt-4">
+                        <div className="text-xs sm:text-sm text-muted-foreground">
                           Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredMatches.length)} of {filteredMatches.length} results
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 justify-center sm:justify-end">
                           <Button
                             variant="outline"
                             size="sm"

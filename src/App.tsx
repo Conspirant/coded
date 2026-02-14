@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
+import { CommandPalette } from "./components/CommandPalette";
+import { ScrollProgress } from "./components/InteractiveEffects";
+import { MobileDock, FloatingActionButton } from "./components/MobileNav";
+import { KonamiEasterEgg, KeyboardShortcutsHUD } from "./components/EasterEggs";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import RankPredictor from "./pages/RankPredictor";
@@ -22,6 +26,13 @@ import Materials from "./pages/Materials";
 import AICounselor from "./pages/AICounselor";
 // Vercel build fix trigger
 import NotFound from "./pages/NotFound";
+import DailyChallenge from "./pages/DailyChallenge";
+import CutoffClash from "./pages/CutoffClash";
+import { CollegeLayout } from "./pages/college/CollegeLayout";
+import CollegeDetail from "./pages/CollegeDetail";
+import CollegeAnalytics from "./pages/college/CollegeAnalytics";
+import CollegeCommunity from "./pages/college/CollegeCommunity";
+import CollegeList from "./pages/CollegeList";
 
 
 const queryClient = new QueryClient();
@@ -40,11 +51,16 @@ const App = () => (
           v7_relativeSplatPath: true
         }}
       >
+        <CommandPalette />
+        <KonamiEasterEgg />
+        <KeyboardShortcutsHUD />
         <DisclaimerBanner />
 
         <Routes>
-          {/* Homepage without sidebar layout */}
+          {/* Standalone pages (no sidebar) */}
           <Route path="/" element={<Homepage />} />
+          <Route path="/daily-challenge" element={<DailyChallenge />} />
+          <Route path="/cutoff-clash" element={<CutoffClash />} />
 
           {/* All other pages with sidebar layout */}
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
@@ -63,14 +79,24 @@ const App = () => (
           } />
           <Route path="/documents" element={<Layout><Documents /></Layout>} />
           <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
+          <Route path="/college-list" element={<Layout><CollegeList /></Layout>} />
           <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
           <Route path="/materials" element={<Layout><Materials /></Layout>} />
           <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
+
+          {/* College Details Section with specific layout */}
+          <Route path="/college/:collegeCode" element={<Layout><CollegeLayout /></Layout>}>
+            <Route index element={<CollegeDetail />} />
+            <Route path="analytics" element={<CollegeAnalytics />} />
+            <Route path="community" element={<CollegeCommunity />} />
+          </Route>
 
           {/* More routes will be added here */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <PWAInstallBanner />
+        <MobileDock />
+        <FloatingActionButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

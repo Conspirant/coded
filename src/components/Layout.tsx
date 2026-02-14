@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings } from "lucide-react"
+import { User, Settings, Sparkles } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -21,7 +21,6 @@ export function Layout({ children }: LayoutProps) {
   useEffect(() => {
     const s = loadSettings()
     setSettings(s)
-    // Apply on load
     applyRuntimeSettings(s)
   }, [])
 
@@ -37,33 +36,36 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Header - Mobile Optimized */}
-          <header className="h-14 sm:h-16 border-b bg-background/70 backdrop-blur-xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 shadow-sm">
+          {/* Header — Frosted Glass */}
+          <header className="h-14 sm:h-16 border-b border-white/5 bg-background/60 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
               <SidebarTrigger />
               <div className="flex flex-col min-w-0">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <h1 className="text-base sm:text-lg font-semibold text-foreground truncate">KCET Coded</h1>
-                  <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200 text-[10px] sm:text-xs px-1 sm:px-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <h1 className="text-base sm:text-lg font-bold gradient-text truncate">KCET Coded</h1>
+                  <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider">
                     BETA
                   </Badge>
                 </div>
-                <p className="text-xs sm:text-sm text-foreground/70 hidden sm:block">KCET Helping Hub</p>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">KCET Helping Hub</p>
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9" aria-label="Settings" onClick={() => setOpen(true)}>
-                    <Settings className="h-4 w-4" />
+                  <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-white/5 group" aria-label="Settings" onClick={() => setOpen(true)}>
+                    <Settings className="h-4 w-4 text-muted-foreground group-hover:text-foreground group-hover:rotate-90 transition-all duration-300" />
                   </Button>
                 </DialogTrigger>
                 <DialogContent
-                  className="sm:max-w-lg z-[100] max-h-[90vh] overflow-y-auto mx-2"
+                  className="sm:max-w-lg z-[100] max-h-[90vh] overflow-y-auto mx-2 glass-strong border-white/10"
                   aria-describedby="settings-dialog-description"
                 >
                   <DialogHeader>
-                    <DialogTitle>Settings</DialogTitle>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-indigo-400" />
+                      Settings
+                    </DialogTitle>
                     <p id="settings-dialog-description" className="sr-only">
                       Configure application settings including dashboard mode, theme preferences, and data loading options.
                     </p>
@@ -71,9 +73,9 @@ export function Layout({ children }: LayoutProps) {
                   <div className="space-y-4 sm:space-y-5">
                     {/* Theme */}
                     <div className="space-y-2">
-                      <Label>Theme</Label>
+                      <Label className="text-sm font-medium">Theme</Label>
                       <Select value={settings.theme} onValueChange={(v: any) => update({ theme: v })}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-white/5 border-white/10">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="z-[200]">
@@ -84,36 +86,28 @@ export function Layout({ children }: LayoutProps) {
                       </Select>
                     </div>
 
-                    {/* Toggles - Stack on mobile */}
+                    {/* Toggles */}
                     <div className="grid grid-cols-1 gap-3">
-                      <div className="flex items-center justify-between border rounded p-3">
-                        <Label htmlFor="compact" className="text-sm">Compact mode</Label>
-                        <Switch id="compact" checked={settings.compactMode} onCheckedChange={(v) => update({ compactMode: !!v })} />
-                      </div>
-                      <div className="flex items-center justify-between border rounded p-3">
-                        <Label htmlFor="motion" className="text-sm">Reduce animations</Label>
-                        <Switch id="motion" checked={settings.reduceMotion} onCheckedChange={(v) => update({ reduceMotion: !!v })} />
-                      </div>
-                      <div className="flex items-center justify-between border rounded p-3">
-                        <Label htmlFor="fast" className="text-sm">Fast dashboard</Label>
-                        <Switch id="fast" checked={settings.dashboardFastMode} onCheckedChange={(v) => update({ dashboardFastMode: !!v })} />
-                      </div>
-                      <div className="flex items-center justify-between border rounded p-3">
-                        <Label htmlFor="codes" className="text-sm">Show course codes</Label>
-                        <Switch id="codes" checked={settings.showCourseCodes} onCheckedChange={(v) => update({ showCourseCodes: !!v })} />
-                      </div>
-                      <div className="flex items-center justify-between border rounded p-3">
-                        <Label htmlFor="instcodes" className="text-sm">Show institute codes</Label>
-                        <Switch id="instcodes" checked={settings.showInstituteCodes} onCheckedChange={(v) => update({ showInstituteCodes: !!v })} />
-                      </div>
+                      {[
+                        { id: "compact", label: "Compact mode", key: "compactMode" as const },
+                        { id: "motion", label: "Reduce animations", key: "reduceMotion" as const },
+                        { id: "fast", label: "Fast dashboard", key: "dashboardFastMode" as const },
+                        { id: "codes", label: "Show course codes", key: "showCourseCodes" as const },
+                        { id: "instcodes", label: "Show institute codes", key: "showInstituteCodes" as const },
+                      ].map(toggle => (
+                        <div key={toggle.id} className="flex items-center justify-between rounded-xl p-3 bg-white/[0.03] border border-white/5">
+                          <Label htmlFor={toggle.id} className="text-sm">{toggle.label}</Label>
+                          <Switch id={toggle.id} checked={settings[toggle.key] as boolean} onCheckedChange={(v) => update({ [toggle.key]: !!v })} />
+                        </div>
+                      ))}
                     </div>
 
-                    {/* Defaults - Stack on very small screens */}
+                    {/* Defaults */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                       <div className="space-y-2">
                         <Label className="text-sm">Default Year</Label>
                         <Select value={settings.defaultYear || undefined} onValueChange={(v: any) => update({ defaultYear: v })}>
-                          <SelectTrigger><SelectValue placeholder="Auto" /></SelectTrigger>
+                          <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="2025">2025</SelectItem>
                             <SelectItem value="2024">2024</SelectItem>
@@ -124,7 +118,7 @@ export function Layout({ children }: LayoutProps) {
                       <div className="space-y-2">
                         <Label className="text-sm">Default Round</Label>
                         <Select value={settings.defaultRound || undefined} onValueChange={(v: any) => update({ defaultRound: v })}>
-                          <SelectTrigger><SelectValue placeholder="Auto" /></SelectTrigger>
+                          <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="R1">R1</SelectItem>
                             <SelectItem value="R2">R2</SelectItem>
@@ -136,7 +130,7 @@ export function Layout({ children }: LayoutProps) {
                       <div className="space-y-2">
                         <Label className="text-sm">Default Category</Label>
                         <Select value={settings.defaultCategory || undefined} onValueChange={(v: any) => update({ defaultCategory: v })}>
-                          <SelectTrigger><SelectValue placeholder="Auto" /></SelectTrigger>
+                          <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="GM">GM</SelectItem>
                             <SelectItem value="GMK">GMK</SelectItem>
@@ -151,14 +145,14 @@ export function Layout({ children }: LayoutProps) {
                   </div>
                 </DialogContent>
               </Dialog>
-              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
-                <User className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-white/5">
+                <User className="h-4 w-4 text-muted-foreground" />
               </Button>
             </div>
           </header>
 
-          {/* Main Content - Mobile Optimized Padding */}
-          <main className="flex-1 p-3 sm:p-4 md:p-6">
+          {/* Main Content — pb-20 for mobile dock clearance */}
+          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-24 md:pb-6">
             {children}
           </main>
         </div>

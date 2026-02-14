@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -13,7 +14,6 @@ import {
     Users,
     ExternalLink,
     Sparkles,
-    ChevronDown,
     Calendar,
     Zap,
     Shield,
@@ -21,7 +21,12 @@ import {
     Star,
     CheckCircle2,
     Bot,
-    FileText
+    FileText,
+    ChevronRight,
+    TrendingUp,
+    Database,
+    Flame,
+    Sword
 } from "lucide-react"
 
 interface DataStats {
@@ -31,6 +36,8 @@ interface DataStats {
     years: string[]
     loading: boolean
 }
+
+const HERO_WORDS = ["Dream College", "Perfect Branch", "Best Rank", "Right Seat"]
 
 const Homepage = () => {
     const navigate = useNavigate()
@@ -43,15 +50,58 @@ const Homepage = () => {
         loading: true
     })
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-    const featuresRef = useRef<HTMLElement>(null)
+    const [currentWord, setCurrentWord] = useState(0)
+    const [displayText, setDisplayText] = useState("")
+    const [isDeleting, setIsDeleting] = useState(false)
+    const heroRef = useRef<HTMLElement>(null)
 
-    // Fetch real data from the cutoffs JSON
+    const { scrollYProgress } = useScroll()
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0])
+    const heroScale = useTransform(scrollYProgress, [0, 0.25], [1, 0.95])
+
+    // Typewriter effect
+    useEffect(() => {
+        const word = HERO_WORDS[currentWord]
+        const typeSpeed = isDeleting ? 40 : 80
+        const pauseTime = isDeleting ? 200 : 2000
+
+        if (!isDeleting && displayText === word) {
+            const timeout = setTimeout(() => setIsDeleting(true), pauseTime)
+            return () => clearTimeout(timeout)
+        }
+
+        if (isDeleting && displayText === "") {
+            setIsDeleting(false)
+            setCurrentWord((prev) => (prev + 1) % HERO_WORDS.length)
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            setDisplayText(
+                isDeleting
+                    ? word.substring(0, displayText.length - 1)
+                    : word.substring(0, displayText.length + 1)
+            )
+        }, typeSpeed)
+
+        return () => clearTimeout(timeout)
+    }, [displayText, isDeleting, currentWord])
+
+    // Fetch real data
     useEffect(() => {
         setMounted(true)
 
         const loadRealStats = async () => {
             try {
-                const urls = ['/data/cutoffs-summary.json', '/data/kcet_cutoffs_consolidated.json', '/kcet_cutoffs.json']
+                const urls = [
+                    '/data/kcet_cutoffs_high_volume.json',
+                    '/data/kcet_cutoffs_master.json',
+                    '/data/kcet_cutoffs_consolidated.json',
+                    '/kcet_cutoffs_high_volume.json',
+                    '/kcet_cutoffs_master.json',
+                    '/kcet_cutoffs_consolidated.json',
+                    '/kcet_cutoffs.json'
+                ]
                 let response: Response | null = null
 
                 for (const url of urls) {
@@ -64,7 +114,6 @@ const Homepage = () => {
                 const raw = await response.json()
 
                 if (!Array.isArray(raw) && raw.totals && raw.years) {
-                    // Summary format
                     setStats({
                         totalRecords: raw.totals.records,
                         totalColleges: raw.totals.colleges,
@@ -75,7 +124,7 @@ const Homepage = () => {
                     return
                 }
 
-                // Full data format
+                const metadata = Array.isArray(raw) ? null : (raw.metadata || null)
                 const cutoffs = Array.isArray(raw) ? raw : (raw.cutoffs || raw.data || [])
                 const colleges = new Set()
                 const branches = new Set()
@@ -88,20 +137,21 @@ const Homepage = () => {
                 })
 
                 setStats({
-                    totalRecords: cutoffs.length,
-                    totalColleges: colleges.size,
-                    totalBranches: branches.size,
-                    years: Array.from(years).sort((a, b) => b.localeCompare(a)),
+                    totalRecords: metadata?.total_entries ?? cutoffs.length,
+                    totalColleges: metadata?.total_institutes ?? colleges.size,
+                    totalBranches: metadata?.total_courses ?? branches.size,
+                    years: Array.isArray(metadata?.years_covered) && metadata.years_covered.length > 0
+                        ? [...metadata.years_covered].map(String).sort((a, b) => b.localeCompare(a))
+                        : Array.from(years).sort((a, b) => b.localeCompare(a)),
                     loading: false
                 })
             } catch (error) {
                 console.error('Error loading stats:', error)
-                // Fallback values
                 setStats({
-                    totalRecords: 1400000,
-                    totalColleges: 220,
-                    totalBranches: 85,
-                    years: ['2025', '2024', '2023'],
+                    totalRecords: 0,
+                    totalColleges: 0,
+                    totalBranches: 0,
+                    years: [],
                     loading: false
                 })
             }
@@ -110,14 +160,13 @@ const Homepage = () => {
         loadRealStats()
     }, [])
 
-    // Live countdown to CET 2026
+    // Countdown
     useEffect(() => {
         const targetDate = new Date('2026-04-23T10:30:00+05:30').getTime()
 
         const updateCountdown = () => {
             const now = new Date().getTime()
             const difference = targetDate - now
-
             if (difference > 0) {
                 setCountdown({
                     days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -139,168 +188,116 @@ const Homepage = () => {
             description: "Find the perfect college based on your rank, category, and preferences with smart filtering",
             icon: Search,
             href: "/college-finder",
-            gradient: "from-blue-500 to-cyan-500",
-            shadow: "shadow-blue-500/25",
-            stats: `${stats.totalColleges}+ colleges`
+            gradient: "from-blue-500 to-cyan-400",
+            iconBg: "bg-blue-500/10",
+            large: true,
+            stat: `${stats.totalColleges.toLocaleString()} colleges`
+        },
+        {
+            title: "Daily Challenge",
+            description: "Test your KCET prep with 5 daily questions. Build your streak!",
+            icon: Flame,
+            href: "/daily-challenge",
+            gradient: "from-orange-500 to-red-500",
+            iconBg: "bg-orange-500/10",
+            large: true,
+            stat: "New Quiz Daily"
+        },
+        {
+            title: "Cutoff Clash",
+            description: "Play the Higher/Lower game with real college cutoffs. Test your knowledge!",
+            icon: Sword,
+            href: "/cutoff-clash",
+            gradient: "from-pink-500 to-rose-500",
+            iconBg: "bg-pink-500/10",
+            large: true,
+            stat: "VS Battle Mode"
         },
         {
             title: "Cutoff Explorer",
             description: "Analyze historical cutoff trends across years and rounds with interactive charts",
             icon: BarChart3,
             href: "/cutoff-explorer",
-            gradient: "from-emerald-500 to-teal-500",
-            shadow: "shadow-emerald-500/25",
-            stats: `${stats.years.length} years data`
+            gradient: "from-emerald-500 to-teal-400",
+            iconBg: "bg-emerald-500/10",
+            large: true,
+            stat: `${stats.years.length} years data`
         },
         {
             title: "Rank Predictor",
-            description: "Predict your KCET rank from your marks using calibrated 2025 data",
+            description: "Predict your KCET rank from marks using calibrated 2025 data",
             icon: Calculator,
             href: "/rank-predictor",
-            gradient: "from-purple-500 to-pink-500",
-            shadow: "shadow-purple-500/25",
-            stats: "98% accuracy"
+            gradient: "from-purple-500 to-pink-400",
+            iconBg: "bg-purple-500/10",
+            large: false,
+            stat: "98% accuracy"
         },
         {
             title: "Mock Simulator",
-            description: "Simulate the actual seat allotment process with real cutoff data",
+            description: "Simulate the actual seat allotment with real cutoff data",
             icon: Target,
             href: "/mock-simulator",
-            gradient: "from-orange-500 to-red-500",
-            shadow: "shadow-orange-500/25",
-            stats: "Live simulation"
+            gradient: "from-orange-500 to-amber-400",
+            iconBg: "bg-orange-500/10",
+            large: false,
+            stat: "Live simulation"
         }
     ]
 
     const moreFeatures = [
-        { title: "AI Counselor", description: "Get personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
+        { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
         { title: "Round Tracker", description: "Track all counseling rounds and dates", icon: Calendar, href: "/round-tracker" },
         { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" },
         { title: "College Reviews", description: "Real reviews from students", icon: Star, href: "/reviews" }
     ]
 
-
-
-    const highlights = [
-        { icon: Zap, text: "Real-time data from official KEA sources", color: "text-yellow-500" },
-        { icon: Shield, text: "100% free, no sign-up required", color: "text-green-500" },
-        { icon: Clock, text: `Updated with ${stats.years[0] || '2025'} cutoffs`, color: "text-blue-500" },
-        { icon: Users, text: "Trusted by thousands of students", color: "text-purple-500" }
+    const statItems = [
+        { value: stats.totalRecords, label: "Verified Records", icon: Database },
+        { value: stats.totalColleges, label: "Colleges", icon: GraduationCap },
+        { value: stats.totalBranches, label: "Branches", icon: TrendingUp },
     ]
-
-    const AnimatedCounter = ({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) => {
-        const [count, setCount] = useState(0)
-        const [hasAnimated, setHasAnimated] = useState(false)
-        const ref = useRef<HTMLSpanElement>(null)
-
-        useEffect(() => {
-            if (value === 0 || hasAnimated) return
-
-            const observer = new IntersectionObserver(
-                ([entry]) => {
-                    if (entry.isIntersecting && !hasAnimated) {
-                        setHasAnimated(true)
-                        const duration = 2000
-                        const steps = 60
-                        const increment = value / steps
-                        let current = 0
-                        const timer = setInterval(() => {
-                            current += increment
-                            if (current >= value) {
-                                setCount(value)
-                                clearInterval(timer)
-                            } else {
-                                setCount(Math.floor(current))
-                            }
-                        }, duration / steps)
-                    }
-                },
-                { threshold: 0.5 }
-            )
-
-            if (ref.current) observer.observe(ref.current)
-            return () => observer.disconnect()
-        }, [value, hasAnimated])
-
-        return (
-            <span ref={ref}>
-                {prefix}{count.toLocaleString()}{suffix}
-            </span>
-        )
-    }
-
-    const CountdownBox = ({ value, label }: { value: number; label: string }) => (
-        <div className="flex flex-col items-center">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
-                <span className="text-2xl sm:text-3xl font-bold text-white font-mono">{String(value).padStart(2, '0')}</span>
-            </div>
-            <span className="text-xs sm:text-sm text-muted-foreground mt-2 uppercase tracking-wider">{label}</span>
-        </div>
-    )
 
     return (
         <div className="min-h-screen bg-background overflow-hidden">
-            {/* Animated Background */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.2, 0.3, 0.2]
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                    className="absolute top-0 -left-4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-                />
-                <motion.div
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        x: [0, 20, 0],
-                        opacity: [0.2, 0.3, 0.2]
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1
-                    }}
-                    className="absolute top-0 -right-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-                />
-                <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-slow" />
-                <div className="absolute bottom-40 right-20 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-float" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/5 to-transparent rounded-full" />
+            {/* ═══ Aurora Background ═══ */}
+            <div className="fixed inset-0 -z-10">
+                <div className="absolute inset-0 animate-aurora opacity-60" />
+                <div className="absolute inset-0 bg-background/40" />
+                {/* Floating orbs */}
+                <div className="absolute top-20 left-[15%] w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float-gentle" />
+                <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-purple-500/8 rounded-full blur-3xl animate-float-gentle" style={{ animationDelay: '2s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/3 to-transparent rounded-full" />
             </div>
 
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b">
+            {/* ═══ Navigation ═══ */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-2xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 transition-transform hover:scale-105">
                                 <GraduationCap className="h-5 w-5 text-white" />
                             </div>
-                            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                            <span className="text-xl font-bold gradient-text">
                                 KCET Coded
                             </span>
-                            <Badge variant="secondary" className="bg-orange-100 text-orange-800 border-orange-200 text-xs hidden sm:inline-flex">
+                            <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-semibold tracking-wider hidden sm:inline-flex">
                                 BETA
                             </Badge>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
                             <Link to="/dashboard">
-                                <Button variant="ghost" size="sm" className="hidden sm:flex">
+                                <Button variant="ghost" size="sm" className="hidden sm:flex text-muted-foreground hover:text-foreground">
                                     Dashboard
                                 </Button>
                             </Link>
                             <Link to="/college-finder">
-                                <Button variant="ghost" size="sm" className="hidden md:flex">
+                                <Button variant="ghost" size="sm" className="hidden md:flex text-muted-foreground hover:text-foreground">
                                     College Finder
                                 </Button>
                             </Link>
                             <Link to="/dashboard">
-                                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25">
+                                <Button size="sm" className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 border-0 transition-all hover:shadow-indigo-500/30 hover:scale-[1.02]">
                                     Get Started <ArrowRight className="ml-1 h-4 w-4" />
                                 </Button>
                             </Link>
@@ -309,334 +306,488 @@ const Homepage = () => {
                 </div>
             </nav>
 
-            {/* Hero Section */}
-            <section className="relative pt-20 sm:pt-24 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-500/10 to-transparent rounded-full blur-3xl -z-10" />
+            {/* ═══ Hero Section ═══ */}
+            <motion.section
+                ref={heroRef}
+                style={{ opacity: heroOpacity, scale: heroScale }}
+                className="relative pt-28 sm:pt-36 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
+            >
+                {/* Morphing blob behind headline */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] animate-morph bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-cyan-500/10 blur-2xl -z-10" />
 
-                <div className="max-w-4xl mx-auto text-center relative z-10">
+                {/* Interactive cursor spotlight + click ripple */}
+                <CursorSpotlight containerRef={heroRef} />
+                <RippleEffect containerRef={heroRef} />
+
+                <div className="max-w-5xl mx-auto text-center relative z-10">
+                    {/* Live indicator pill */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
                     >
-                        {/* Live Badge */}
-                        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/60 backdrop-blur-md border shadow-sm mb-6 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <span className="relative flex h-2.5 w-2.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass border border-white/10 shadow-lg mb-8">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 animate-pulse-glow"></span>
                             </span>
-                            <span className="text-sm font-medium tracking-wide">
+                            <span className="text-sm font-medium text-foreground/80">
                                 {stats.loading ? 'Syncing Data...' : `${stats.totalRecords.toLocaleString()} Verified Records Live`}
                             </span>
                         </div>
+                    </motion.div>
 
-                        {/* Headline */}
-                        <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            Find your dream <br className="hidden sm:block" />
-                            <span className="relative inline-block">
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-gradient-x p-2">
-                                    Engineering College
-                                </span>
-                                <Sparkles className="absolute -top-6 -right-8 h-10 w-10 text-yellow-400 animate-pulse hidden md:block" />
+                    {/* Headline with typewriter */}
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.2 }}
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-[0.95]"
+                    >
+                        Find your <br className="hidden sm:block" />
+                        <span className="relative inline-block">
+                            <span className="gradient-text">
+                                {displayText}
                             </span>
-                        </h1>
+                            <span className="animate-blink text-indigo-400 ml-0.5 font-light">|</span>
+                        </span>
+                    </motion.h1>
 
-                        {/* Subheadline */}
-                        <p className={`text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl mx-auto mb-8 leading-relaxed transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
-                        </p>
+                    {/* Subheadline */}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.4 }}
+                        className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed"
+                    >
+                        Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
+                    </motion.p>
 
-                        {/* Quick Search & Actions */}
-                        <div className={`flex flex-col items-center gap-6 max-w-2xl mx-auto mb-12 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            {/* Enhanced Search Bar */}
-                            <div className="w-full relative group transform transition-all duration-300 hover:scale-[1.01]">
-                                <motion.div
-                                    className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-25"
-                                    animate={{ opacity: [0.25, 0.6, 0.25] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    {/* Search bar with neon glow */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="max-w-2xl mx-auto mb-8"
+                    >
+                        <div className="neon-border rounded-2xl">
+                            <div className="relative flex items-center glass-strong rounded-2xl shadow-2xl p-2 transition-all duration-300">
+                                <Search className="ml-4 h-5 w-5 text-muted-foreground" />
+                                <input
+                                    type="text"
+                                    placeholder="Search for a college (e.g. RVCE, PES)..."
+                                    className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-3 sm:py-4 text-base sm:text-lg outline-none placeholder:text-muted-foreground/40"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') navigate('/college-finder')
+                                    }}
                                 />
-                                <div className="relative flex items-center bg-background/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2">
-                                    <Search className="ml-4 h-6 w-6 text-muted-foreground group-focus-within:text-blue-500 transition-colors" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search for a college (e.g. RVCE, PES)..."
-                                        className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-4 text-lg outline-none placeholder:text-muted-foreground/40"
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                navigate('/college-finder')
-                                            }
-                                        }}
-                                    />
-                                    <Button size="lg" className="hidden sm:flex rounded-xl px-8 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40" onClick={() => navigate('/college-finder')}>
-                                        Search
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-wrap items-center justify-center gap-4">
-                                <Link to="/dashboard">
-                                    <Button variant="outline" size="lg" className="h-12 px-8 rounded-xl border-2 hover:bg-muted/50 text-base font-medium transition-all hover:-translate-y-0.5">
-                                        Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Button>
-                                </Link>
+                                <Button
+                                    size="lg"
+                                    className="hidden sm:flex rounded-xl px-8 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 transition-all hover:shadow-indigo-500/35 border-0"
+                                    onClick={() => navigate('/college-finder')}
+                                >
+                                    Search
+                                </Button>
                             </div>
                         </div>
+                    </motion.div>
 
-                        {/* Live CET 2026 Countdown */}
-                        <div className={`mt-6 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            <div className="inline-flex flex-col sm:flex-row items-center gap-6 sm:gap-12 px-8 py-5 rounded-3xl bg-white/5 backdrop-blur-lg border border-white/10 shadow-2xl hover:shadow-blue-500/10 transition-all hover:-translate-y-1 group">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2.5 rounded-xl bg-orange-500/20 text-orange-400 group-hover:scale-110 transition-transform">
-                                        <Calendar className="h-6 w-6" />
-                                    </div>
-                                    <div className="text-left">
-                                        <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Next Exam</div>
-                                        <div className="text-base font-semibold text-foreground">April 23, 2026</div>
-                                    </div>
+                    {/* Action buttons */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.6 }}
+                        className="flex flex-wrap items-center justify-center gap-4 mb-12"
+                    >
+                        <Link to="/dashboard">
+                            <Button variant="outline" size="lg" className="h-12 px-8 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-foreground transition-all hover:-translate-y-0.5 backdrop-blur-sm">
+                                Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </Link>
+                    </motion.div>
+
+                    {/* Countdown inline pills */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.7 }}
+                    >
+                        <div className="inline-flex items-center gap-4 sm:gap-6 px-6 py-4 rounded-2xl glass border border-white/5 shadow-xl">
+                            <div className="flex items-center gap-2.5">
+                                <div className="p-2 rounded-lg bg-orange-500/10">
+                                    <Calendar className="h-4 w-4 text-orange-400" />
                                 </div>
-
-                                <div className="hidden sm:block h-8 w-px bg-white/10"></div>
-
-                                <div className="flex gap-6 text-center">
-                                    <div>
-                                        <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.days).padStart(2, '0')}</div>
-                                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Days</div>
-                                    </div>
-                                    <div className="text-xl font-light text-muted-foreground/30 py-1">:</div>
-                                    <div>
-                                        <div className="text-2xl font-bold font-mono text-foreground mb-1">{String(countdown.hours).padStart(2, '0')}</div>
-                                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Hours</div>
-                                    </div>
+                                <div className="text-left hidden sm:block">
+                                    <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">CET 2026</div>
+                                    <div className="text-sm font-semibold">Apr 23</div>
                                 </div>
+                            </div>
+
+                            <div className="h-6 w-px bg-white/10" />
+
+                            <div className="flex items-center gap-3">
+                                {[
+                                    { v: countdown.days, l: "d" },
+                                    { v: countdown.hours, l: "h" },
+                                    { v: countdown.minutes, l: "m" },
+                                    { v: countdown.seconds, l: "s" },
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-baseline gap-0.5">
+                                        <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums">{String(item.v).padStart(2, '0')}</span>
+                                        <span className="text-[10px] font-bold text-muted-foreground uppercase">{item.l}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </motion.section>
 
-            {/* Features Section - Premium Cards */}
-            <section ref={featuresRef} id="features" className="py-16 px-4 sm:px-6 lg:px-8 relative">
+            {/* ═══ Stats Ticker ═══ */}
+            {!stats.loading && stats.totalRecords > 0 && (
+                <section className="py-6 border-y border-white/5 overflow-hidden relative">
+                    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
+                    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
+                    <div className="flex animate-ticker whitespace-nowrap">
+                        {[...Array(2)].map((_, dupeIdx) => (
+                            <div key={dupeIdx} className="flex items-center gap-12 px-6">
+                                {statItems.map((stat, i) => (
+                                    <div key={`${dupeIdx}-${i}`} className="flex items-center gap-3">
+                                        <stat.icon className="h-4 w-4 text-indigo-400" />
+                                        <span className="text-sm font-semibold">{stat.value.toLocaleString()}</span>
+                                        <span className="text-sm text-muted-foreground">{stat.label}</span>
+                                    </div>
+                                ))}
+                                <div className="flex items-center gap-3">
+                                    <Zap className="h-4 w-4 text-amber-400" />
+                                    <span className="text-sm text-muted-foreground">Real-time data from official KEA sources</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Shield className="h-4 w-4 text-emerald-400" />
+                                    <span className="text-sm text-muted-foreground">100% free, no sign-up required</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Clock className="h-4 w-4 text-blue-400" />
+                                    <span className="text-sm text-muted-foreground">Updated with {stats.years[0] || '2025'} cutoffs</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* ═══ Features — Bento Grid ═══ */}
+            <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-12">
-                        <Badge className="mb-4 bg-blue-500/10 text-blue-400 border-blue-500/20 px-4 py-1">Powerful Tools</Badge>
-                        <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-14"
+                    >
+                        <Badge className="mb-4 bg-indigo-500/10 text-indigo-400 border-indigo-500/20 px-4 py-1.5 text-xs font-semibold tracking-wider">
+                            POWERFUL TOOLS
+                        </Badge>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
                             Everything you need
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            We've organized millions of data points into simple, powerful tools.
+                        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+                            {stats.loading
+                                ? "We're syncing the latest verified cutoffs into simple, powerful tools."
+                                : `${stats.totalRecords.toLocaleString()} verified cutoff records organized into simple, powerful tools.`}
                         </p>
-                    </div>
+                    </motion.div>
 
-                    {/* Main Features */}
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: {
-                                opacity: 1,
-                                transition: { staggerChildren: 0.1 }
-                            }
-                        }}
-                        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-20"
-                    >
+                    {/* Bento Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16">
                         {features.map((feature, i) => (
                             <motion.div
                                 key={feature.title}
-                                variants={{
-                                    hidden: { opacity: 0, y: 20 },
-                                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-                                }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.5, delay: i * 0.1 }}
                             >
-                                <Link
-                                    to={feature.href}
-                                    className="group relative block h-full"
-                                >
-                                    <div className="absolute -inset-0.5 bg-gradient-to-b from-blue-500/20 to-purple-500/20 rounded-[2rem] opacity-0 group-hover:opacity-100 transition duration-500 blur-md"></div>
-                                    <div className={`relative h-full p-6 rounded-[1.75rem] bg-card/50 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2`}>
-                                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                                            <feature.icon className="h-7 w-7 text-white" />
+                                <Link to={feature.href} className="group block h-full">
+                                    <div className={`rainbow-border relative h-full rounded-2xl glass hover:bg-white/[0.06] transition-all duration-500 tilt-card ${feature.large ? 'p-8' : 'p-6'}`}>
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                                                <feature.icon className="h-6 w-6 text-white" />
+                                            </div>
+                                            <Badge variant="secondary" className="bg-white/5 border-white/10 text-muted-foreground text-xs">
+                                                {feature.stat}
+                                            </Badge>
                                         </div>
-                                        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                                        <h3 className={`${feature.large ? 'text-2xl' : 'text-xl'} font-bold mb-2 group-hover:text-indigo-400 transition-colors`}>
                                             {feature.title}
                                         </h3>
-                                        <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                                        <p className="text-sm text-muted-foreground leading-relaxed mb-8">
                                             {feature.description}
                                         </p>
-                                        <div className="absolute bottom-6 left-6 flex items-center text-xs font-bold text-primary opacity-60 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-                                            OPEN TOOL <ArrowRight className="ml-2 h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                                        <div className="absolute bottom-6 left-6 sm:left-8 flex items-center gap-2 text-xs font-bold text-indigo-400 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                                            OPEN TOOL <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                                         </div>
                                     </div>
                                 </Link>
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* ═══ Data Section ═══ */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <div className="relative rounded-3xl overflow-hidden glass border border-white/5 p-8 sm:p-12 shadow-2xl">
+                            {/* Background glow */}
+                            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl -z-10" />
+                            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl -z-10" />
+
+                            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+                                <div className="max-w-xl">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-5">
+                                        <Shield className="h-3.5 w-3.5" />
+                                        <span>Verified Official Data</span>
+                                    </div>
+                                    <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
+                                        Real cutoffs. <br />
+                                        <span className="gradient-text">No estimates.</span>
+                                    </h2>
+                                    <p className="text-muted-foreground mb-8 leading-relaxed">
+                                        We source our data directly from the KEA (Karnataka Examination Authority) PDF allotments. Every rank, every fee, and every seat is verified algorithmically.
+                                    </p>
+                                    <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+                                        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/5">
+                                            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                                            <span className="text-sm font-medium">Direct KEA Sources</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl glass border border-white/5">
+                                            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                                            <span className="text-sm font-medium">Updated for 2025</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
+                                    <div className="glass rounded-2xl p-6 border border-white/5 hover:border-indigo-500/20 transition-colors group">
+                                        <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-indigo-400 transition-colors">
+                                            {stats.loading ? '—' : stats.totalRecords.toLocaleString()}
+                                        </div>
+                                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Records</div>
+                                    </div>
+                                    <div className="glass rounded-2xl p-6 border border-white/5 hover:border-purple-500/20 transition-colors group">
+                                        <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-purple-400 transition-colors">
+                                            {stats.loading ? '—' : stats.totalColleges}
+                                        </div>
+                                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Colleges</div>
+                                    </div>
+                                    <div className="glass rounded-2xl p-6 border border-white/5 col-span-2 hover:border-cyan-500/20 transition-colors group">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-cyan-400 transition-colors">
+                                                    {stats.loading ? '—' : stats.years.length}
+                                                </div>
+                                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Years of Data</div>
+                                            </div>
+                                            <BarChart3 className="h-10 w-10 text-white/5 group-hover:text-white/10 transition-colors" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </motion.div>
 
-                    {/* Real Data Stats Section - Dark Premium Card */}
-                    <div className="relative rounded-[2rem] bg-[#0c0c0c] border border-white/10 p-8 sm:p-12 text-center sm:text-left overflow-hidden isolate shadow-2xl">
-                        {/* Background glow effects */}
-                        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl -z-10" />
-                        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl -z-10" />
-                        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] -z-10" />
-
-                        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 relative">
-                            <div className="max-w-xl">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-4">
-                                    <Shield className="h-3.5 w-3.5" />
-                                    <span>Verified Official Data</span>
-                                </div>
-                                <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white tracking-tight">
-                                    Real cutoffs. <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">No estimates.</span>
-                                </h2>
-                                <p className="text-base text-gray-400 mb-8 leading-relaxed">
-                                    We source our data directly from the KEA (Karnataka Examination Authority) PDF allotments. Every rank, every fee, and every seat is verified algorithmically.
-                                </p>
-                                <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
-                                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-400" />
-                                        <span className="text-sm font-medium text-gray-200">Direct KEA Sources</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                                        <CheckCircle2 className="h-4 w-4 text-green-400" />
-                                        <span className="text-sm font-medium text-gray-200">Updated for 2025</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
-                                <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                                    <div className="text-3xl font-bold mb-1 text-white tabular-nums">
-                                        {stats.loading ? '-' : (stats.totalRecords / 1000000).toFixed(1) + 'M+'}
-                                    </div>
-                                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">Records</div>
-                                </div>
-                                <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-colors">
-                                    <div className="text-3xl font-bold mb-1 text-white tabular-nums">
-                                        {stats.loading ? '-' : stats.totalColleges}
-                                    </div>
-                                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">Colleges</div>
-                                </div>
-                                <div className="bg-white/5 backdrop-blur-md rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-colors col-span-2">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <div className="text-3xl font-bold mb-1 text-white tabular-nums">
-                                                {stats.loading ? '-' : stats.years.length}
+                    {/* ═══ More Tools ═══ */}
+                    <div className="mt-14">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                            <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">More Tools</span>
+                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                        </div>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            {moreFeatures.map((item, i) => (
+                                <Link key={item.title} to={item.href}>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: i * 0.08 }}
+                                        className="group relative p-5 rounded-2xl glass border border-white/5 hover:border-indigo-500/20 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5 cursor-pointer h-full tilt-card"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500/15 transition-colors shrink-0">
+                                                <item.icon className="h-5 w-5" />
                                             </div>
-                                            <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">Years of Data</div>
+                                            <div className="min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h4 className="font-semibold text-sm group-hover:text-indigo-400 transition-colors">{item.title}</h4>
+                                                    {item.badge && (
+                                                        <Badge className="text-[10px] px-1.5 py-0 h-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-0 shadow-sm">
+                                                            {item.badge}
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                                            </div>
                                         </div>
-                                        <BarChart3 className="h-12 w-12 text-white/10" />
-                                    </div>
-                                </div>
-                            </div>
+                                    </motion.div>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Community Section - Reimagined */}
-            <section className="py-12 px-4 sm:px-6 lg:px-8">
+            {/* ═══ Community Section ═══ */}
+            <section className="py-16 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-5 gap-6 rounded-[2.5rem] bg-gradient-to-br from-[#0F172A] to-[#1E293B] p-2 overflow-hidden relative shadow-2xl border border-white/5">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="grid md:grid-cols-5 gap-0 rounded-3xl overflow-hidden glass border border-white/5 shadow-2xl"
+                    >
+                        {/* Left Side */}
+                        <div className="md:col-span-3 p-8 sm:p-12 relative">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/8 rounded-full blur-3xl" />
 
-                        {/* Left Side - The Main Hub (r/KCETCoded) */}
-                        <div className="md:col-span-3 p-8 sm:p-10 relative flex flex-col justify-center">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-
-                            <Badge variant="outline" className="w-fit mb-6 border-blue-500/30 text-blue-400 bg-blue-500/10 backdrop-blur-md px-3 py-1">
-                                Official Support Hub
+                            <Badge variant="outline" className="w-fit mb-6 border-indigo-500/20 text-indigo-400 bg-indigo-500/10 px-3 py-1.5 text-xs font-semibold tracking-wider">
+                                OFFICIAL SUPPORT HUB
                             </Badge>
 
-                            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+                            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
                                 Have questions? <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Ask r/KCETCoded</span>
+                                <span className="gradient-text">Ask r/KCETCoded</span>
                             </h2>
-                            <p className="text-gray-400 text-lg mb-8 leading-relaxed max-w-lg">
+                            <p className="text-muted-foreground text-lg mb-8 leading-relaxed max-w-lg">
                                 The dedicated community for this website. Report bugs, suggest features, or discuss counseling strategies directly with the developer.
                             </p>
 
-                            <div className="flex flex-wrap gap-4">
-                                <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer">
-                                    <Button size="lg" className="rounded-xl h-14 px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 text-base font-semibold transition-all hover:scale-105">
-                                        <Bot className="mr-2 h-5 w-5" />
-                                        Join r/KCETCoded
-                                    </Button>
-                                </a>
-                            </div>
+                            <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer">
+                                <Button size="lg" className="rounded-xl h-13 px-8 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 text-base font-semibold transition-all hover:scale-[1.02] border-0">
+                                    <Users className="mr-2 h-5 w-5" />
+                                    Join r/KCETCoded
+                                </Button>
+                            </a>
                         </div>
 
-                        {/* Right Side - Info & Disclaimer */}
-                        <div className="md:col-span-2 bg-white/5 rounded-[2rem] p-8 border border-white/5 flex flex-col justify-between relative overflow-hidden">
-                            {/* Decorative noise */}
-                            <div className="absolute inset-0 bg-noise opacity-[0.03]"></div>
-
-                            <div className="space-y-6 relative z-10">
+                        {/* Right Side */}
+                        <div className="md:col-span-2 bg-white/[0.02] p-8 border-l border-white/5 flex flex-col justify-between relative">
+                            <div className="space-y-6">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                                        <ExternalLink className="h-4 w-4 text-gray-400" />
+                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                        <ExternalLink className="h-4 w-4 text-muted-foreground" />
                                         Broader Community
                                     </h3>
-                                    <p className="text-sm text-gray-400 mb-3">
-                                        For general KCET discussions, we also recommend checking out the largest subreddit.
+                                    <p className="text-sm text-muted-foreground mb-3">
+                                        Explore additional student-run communities for broader discussions and crowd insights.
                                     </p>
-                                    <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
-                                        Visit r/kcet <ArrowRight className="ml-1 h-3 w-3" />
-                                    </a>
+                                    <div className="flex flex-col gap-2">
+                                        <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
+                                            Visit r/kcet <ArrowRight className="ml-1 h-3 w-3" />
+                                        </a>
+                                        <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
+                                            Visit r/KCETards <ArrowRight className="ml-1 h-3 w-3" />
+                                        </a>
+                                    </div>
                                 </div>
 
-                                <div className="h-px bg-white/10 w-full"></div>
+                                <div className="h-px bg-white/5 w-full" />
 
                                 <div>
-                                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                                        <Shield className="h-4 w-4 text-gray-400" />
+                                    <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                        <Shield className="h-4 w-4 text-muted-foreground" />
                                         Independent Project
                                     </h3>
-                                    <p className="text-xs text-gray-500 leading-relaxed italic">
-                                        "KCET Coded" is an individual initiative built to help students. It is <strong>not affiliated</strong> with the moderation team of r/kcet. We exist as a separate entity to provide specialized tools.
+                                    <p className="text-xs text-muted-foreground leading-relaxed italic">
+                                        "KCET Coded" is an individual initiative built to help students. We are <strong>not affiliated</strong> with Reddit or with the moderation teams of r/kcet and r/KCETards. These are independent public communities.
                                     </p>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="py-16 px-4 sm:px-6 lg:px-8 text-center">
-                <div className="max-w-3xl mx-auto">
-                    <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                        Start Your Journey Today
+            {/* ═══ CTA Section ═══ */}
+            <section className="py-24 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+                <div className="absolute inset-0 -z-10">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-radial from-indigo-500/8 to-transparent rounded-full blur-2xl" />
+                </div>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="max-w-3xl mx-auto"
+                >
+                    <h2 className="text-3xl sm:text-5xl font-bold mb-6 tracking-tight">
+                        Start Your Journey <span className="gradient-text">Today</span>
                     </h2>
-                    <p className="text-lg text-muted-foreground mb-8">
+                    <p className="text-lg text-muted-foreground mb-10">
                         No sign-ups, no fees. Just pure tools and data to help you succeed.
                     </p>
                     <Link to="/dashboard">
-                        <Button size="lg" className="h-12 px-8 text-base rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-foreground text-background">
+                        <Button size="lg" className="h-14 px-12 text-base rounded-full shadow-xl hover:shadow-2xl transition-all bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white hover:scale-105 border-0">
                             Launch Dashboard
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                     </Link>
-                </div>
+                </motion.div>
             </section>
 
-            {/* Footer */}
-            <footer className="py-12 border-t bg-muted/5">
+            {/* ═══ Footer ═══ */}
+            <footer className="relative pt-12 pb-8 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                                <GraduationCap className="h-5 w-5 text-primary-foreground" />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                        <div className="flex flex-col gap-3">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+                                    <GraduationCap className="h-5 w-5 text-white" />
+                                </div>
+                                <span className="font-bold text-lg">KCET Coded</span>
                             </div>
-                            <span className="font-bold text-lg">KCET Coded</span>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                Free, open-source tools built by students to simplify KCET counseling.
+                            </p>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                            Built by students, for students. Not affiliated with KEA.
+                        <div>
+                            <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-[0.15em]">Quick Links</h4>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Link to="/college-finder" className="text-sm text-muted-foreground hover:text-foreground transition-colors">College Finder</Link>
+                                <Link to="/cutoff-explorer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cutoff Explorer</Link>
+                                <Link to="/rank-predictor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Rank Predictor</Link>
+                                <Link to="/mock-simulator" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mock Simulator</Link>
+                                <Link to="/ai-counselor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">AI Counselor</Link>
+                                <Link to="/round-tracker" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Round Tracker</Link>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-[0.15em]">Community</h4>
+                            <div className="flex flex-col gap-2">
+                                <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/KCETCoded</a>
+                                <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/kcet</a>
+                                <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/KCETards</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="h-px bg-white/5 mb-6" />
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <p className="text-xs text-muted-foreground">
+                            © {new Date().getFullYear()} KCET Coded. Not affiliated with KEA.
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                            Built with ❤️ for Karnataka students
                         </p>
                     </div>
                 </div>
             </footer>
+            {/* Mobile dock spacer */}
+            <div className="h-20 md:hidden" />
         </div>
     )
 }

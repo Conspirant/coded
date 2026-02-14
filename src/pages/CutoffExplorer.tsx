@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,6 +35,55 @@ interface CutoffResponse {
     total_entries: number
   }
   cutoffs: CutoffData[]
+}
+
+const normalizeRound = (round: string) => {
+  const r = String(round || '').trim().toUpperCase()
+  if (r === 'R1' || r === 'ROUND 1') return 'R1'
+  if (r === 'R2' || r === 'ROUND 2') return 'R2'
+  if (r === 'R3' || r === 'ROUND 3' || r === 'EXT' || r === 'ROUND 3 EXTENDED' || r === 'ROUND 3 (EXTENDED)') return 'R3'
+  if (r === 'MOCK' || r === 'MOCK ROUND 1') return 'MOCK'
+  return r
+}
+
+const normalizeText = (text: string) =>
+  String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+
+const STOP_WORDS = new Set(['OF', 'AND', 'THE', 'FOR', 'IN', 'AT', 'TO', 'ON', 'A', 'AN'])
+
+const toInitialism = (text: string) =>
+  String(text || '')
+    .toUpperCase()
+    .replace(/[^A-Z0-9 ]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter(token => !STOP_WORDS.has(token))
+    .map(token => token[0])
+    .join('')
+
+const buildSearchBlob = (...parts: string[]) => {
+  const base = parts.filter(Boolean).join(' ')
+  const compact = normalizeText(base)
+  const initials = toInitialism(base).toLowerCase()
+  return `${base.toLowerCase()} ${compact} ${initials}`
+}
+
+const instituteCodeOrder = (code: string) => {
+  const cleaned = String(code || '').trim().toUpperCase()
+  const match = cleaned.match(/^E(\d+)$/)
+  if (match) return Number(match[1])
+  return Number.MAX_SAFE_INTEGER
+}
+
+const roundOrder = (round: string) => {
+  const r = normalizeRound(round)
+  if (r === 'MOCK') return 0
+  if (r === 'R1') return 1
+  if (r === 'R2') return 2
+  if (r === 'R3') return 3
+  return 99
 }
 
 const CutoffExplorer = () => {
@@ -73,36 +123,30 @@ const CutoffExplorer = () => {
     try {
       console.log('Loading cutoff data from local JSON file...')
 
-      // Try multiple data sources with fallback
-      let response = await fetch('/data/kcet_cutoffs_consolidated.json', { cache: 'no-store' })
-      let dataSource = 'data/kcet_cutoffs_consolidated.json'
-
-      if (!response.ok) {
-        // Try root consolidated
-        response = await fetch('/kcet_cutoffs.json', { cache: 'no-store' })
-        dataSource = 'kcet_cutoffs.json'
-
-        if (!response.ok) {
-          // Try public directory
-          response = await fetch('/public/data/kcet_cutoffs_consolidated.json', { cache: 'no-store' })
-          dataSource = 'public/data/kcet_cutoffs_consolidated.json'
-
-          if (!response.ok) {
-            // Try the 2025 data file
-            response = await fetch('/kcet_cutoffs2025.json', { cache: 'no-store' })
-            dataSource = 'kcet_cutoffs2025.json'
-
-            if (!response.ok) {
-              // Try the new Round 3 2025 specific data
-              response = await fetch('/kcet_cutoffs_round3_2025.json', { cache: 'no-store' })
-              dataSource = 'kcet_cutoffs_round3_2025.json'
-
-              if (!response.ok) {
-                throw new Error(`Failed to load data from all sources: ${response.status} ${response.statusText}`)
-              }
-            }
-          }
+      // Try multiple data sources with fallback (largest dataset first)
+      const urls = [
+        '/data/kcet_cutoffs_high_volume.json',
+        '/data/kcet_cutoffs_master.json',
+        '/data/kcet_cutoffs_consolidated.json',
+        '/kcet_cutoffs_high_volume.json',
+        '/kcet_cutoffs_master.json',
+        '/kcet_cutoffs.json',
+        '/public/data/kcet_cutoffs_consolidated.json',
+        '/kcet_cutoffs2025.json',
+        '/kcet_cutoffs_round3_2025.json',
+      ]
+      let response: Response | null = null
+      let dataSource = ''
+      for (const url of urls) {
+        const r = await fetch(url, { cache: 'no-store' })
+        if (r.ok) {
+          response = r
+          dataSource = url.replace(/^\//, '')
+          break
         }
+      }
+      if (!response) {
+        throw new Error('Failed to load data from all sources')
       }
 
       console.log(`Loading data from: ${dataSource}`)
@@ -125,32 +169,51 @@ const CutoffExplorer = () => {
       setAllCutoffs(data.cutoffs)
 
       // Extract unique values from the data
-      const years = [...new Set(data.cutoffs.map(item => item.year))].sort((a, b) => b.localeCompare(a))
+      const years = [...new Set(data.cutoffs.map(item => String(item.year)))].sort((a, b) => b.localeCompare(a))
 
-      // Filter institutes to only E001 to E314
-      const allInstitutes = [...new Set(data.cutoffs.map(item => item.institute))].sort()
-      const filteredInstitutes = allInstitutes.filter(inst => {
-        const match = inst.match(/E(\d+)/)
-        if (match) {
-          const num = parseInt(match[1])
-          return num >= 1 && num <= 314
+      // Build institute list from institute_code with stable representative names
+      const codeToNameCounts = new Map<string, Map<string, number>>()
+      data.cutoffs.forEach(item => {
+        const code = String(item.institute_code || '').trim().toUpperCase()
+        const name = String(item.institute || '').trim()
+        if (!code) return
+        if (!codeToNameCounts.has(code)) codeToNameCounts.set(code, new Map<string, number>())
+        if (name) {
+          const counts = codeToNameCounts.get(code)!
+          counts.set(name, (counts.get(name) || 0) + 1)
         }
-        return false
       })
+      const filteredInstitutes = [...codeToNameCounts.entries()]
+        .sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }))
+        .map(([code, counts]) => {
+          let bestName = code
+          let bestCount = -1
+          for (const [name, count] of counts.entries()) {
+            if (
+              count > bestCount ||
+              (count === bestCount && name.length > bestName.length) ||
+              (count === bestCount && name.length === bestName.length && name < bestName)
+            ) {
+              bestName = name
+              bestCount = count
+            }
+          }
+          return `${code} - ${bestName}`
+        })
 
       const categories = [...new Set(data.cutoffs.map(item => item.category))].sort()
-      const rounds = [...new Set(data.cutoffs.map(item => item.round))].sort()
+      const rounds = [...new Set(data.cutoffs.map(item => normalizeRound(item.round)))].sort()
 
       console.log('Available institutes:', filteredInstitutes.length, filteredInstitutes.slice(0, 10))
 
-      setAvailableYears(years)
+      setAvailableYears(['ALL', ...years])
       setAvailableInstitutes(filteredInstitutes)
       setAvailableCategories(['ALL', ...categories])
       setAvailableRounds(['ALL', ...rounds])
 
       // Set default year to the most recent year
       if (years.length > 0) {
-        setSelectedYear(years[0])
+        setSelectedYear('ALL')
       }
       if (categories.length > 0) {
         setSelectedCategory('ALL')
@@ -198,30 +261,48 @@ const CutoffExplorer = () => {
       setAllCutoffs(convertedData)
 
       // Extract unique values from the data
-      const years = [...new Set(convertedData.map(item => item.year))].sort((a, b) => b.localeCompare(a))
+      const years = [...new Set(convertedData.map(item => String(item.year)))].sort((a, b) => b.localeCompare(a))
 
-      // Filter institutes to only E001 to E314
-      const allInstitutes = [...new Set(convertedData.map(item => item.institute))].sort()
-      const filteredInstitutes = allInstitutes.filter(inst => {
-        const match = inst.match(/E(\d+)/)
-        if (match) {
-          const num = parseInt(match[1])
-          return num >= 1 && num <= 314
+      const codeToNameCounts = new Map<string, Map<string, number>>()
+      convertedData.forEach(item => {
+        const code = String(item.institute_code || '').trim().toUpperCase()
+        const name = String(item.institute || '').trim()
+        if (!code) return
+        if (!codeToNameCounts.has(code)) codeToNameCounts.set(code, new Map<string, number>())
+        if (name) {
+          const counts = codeToNameCounts.get(code)!
+          counts.set(name, (counts.get(name) || 0) + 1)
         }
-        return false
       })
+      const filteredInstitutes = [...codeToNameCounts.entries()]
+        .sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }))
+        .map(([code, counts]) => {
+          let bestName = code
+          let bestCount = -1
+          for (const [name, count] of counts.entries()) {
+            if (
+              count > bestCount ||
+              (count === bestCount && name.length > bestName.length) ||
+              (count === bestCount && name.length === bestName.length && name < bestName)
+            ) {
+              bestName = name
+              bestCount = count
+            }
+          }
+          return `${code} - ${bestName}`
+        })
 
       const categories = [...new Set(convertedData.map(item => item.category))].sort()
-      const rounds = [...new Set(convertedData.map(item => item.round))].sort()
+      const rounds = [...new Set(convertedData.map(item => normalizeRound(item.round)))].sort()
 
-      setAvailableYears(years)
+      setAvailableYears(['ALL', ...years])
       setAvailableInstitutes(filteredInstitutes)
       setAvailableCategories(['ALL', ...categories])
       setAvailableRounds(['ALL', ...rounds])
 
       // Set default year to the most recent year
       if (years.length > 0) {
-        setSelectedYear(years[0])
+        setSelectedYear('ALL')
       }
       if (categories.length > 0) {
         setSelectedCategory('ALL')
@@ -255,8 +336,8 @@ const CutoffExplorer = () => {
     let filteredData = allCutoffs
 
     // Filter by year
-    if (selectedYear) {
-      filteredData = filteredData.filter(item => item.year === selectedYear)
+    if (selectedYear && selectedYear !== 'ALL') {
+      filteredData = filteredData.filter(item => String(item.year) === String(selectedYear))
     }
 
     // Filter by category
@@ -266,20 +347,21 @@ const CutoffExplorer = () => {
 
     // Filter by institute
     if (selectedInstitute) {
-      filteredData = filteredData.filter(item => item.institute === selectedInstitute)
+      const selectedCode = selectedInstitute.split(' - ')[0]?.trim().toUpperCase()
+      filteredData = filteredData.filter(item => String(item.institute_code || '').toUpperCase() === selectedCode)
     }
 
     // Filter by round
     if (selectedRound && selectedRound !== 'ALL') {
-      filteredData = filteredData.filter(item => item.round === selectedRound)
+      filteredData = filteredData.filter(item => normalizeRound(item.round) === normalizeRound(selectedRound))
     }
 
     // Filter by search query
     if (searchQuery) {
+      const query = normalizeText(searchQuery)
       filteredData = filteredData.filter(item =>
-        item.institute?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.course?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.institute_code?.toLowerCase().includes(searchQuery.toLowerCase())
+        buildSearchBlob(item.institute, item.institute_code, item.course).includes(query) ||
+        toInitialism(item.institute).toLowerCase().includes(query)
       )
     }
 
@@ -287,6 +369,26 @@ const CutoffExplorer = () => {
     if (selectedCourse) {
       filteredData = filteredData.filter(item => item.course === selectedCourse)
     }
+
+    // Stable display order: institute code first (E001, E002...), then course/category/round/rank
+    filteredData = [...filteredData].sort((a, b) => {
+      const codeDiff = instituteCodeOrder(a.institute_code) - instituteCodeOrder(b.institute_code)
+      if (codeDiff !== 0) return codeDiff
+
+      const codeTextDiff = String(a.institute_code || '').localeCompare(String(b.institute_code || ''))
+      if (codeTextDiff !== 0) return codeTextDiff
+
+      const courseDiff = String(a.course || '').localeCompare(String(b.course || ''))
+      if (courseDiff !== 0) return courseDiff
+
+      const categoryDiff = String(a.category || '').localeCompare(String(b.category || ''))
+      if (categoryDiff !== 0) return categoryDiff
+
+      const roundDiff = roundOrder(a.round) - roundOrder(b.round)
+      if (roundDiff !== 0) return roundDiff
+
+      return Number(a.cutoff_rank || 0) - Number(b.cutoff_rank || 0)
+    })
 
     // Update stats
     const instituteSet = new Set(filteredData.map(i => i.institute_code))
@@ -345,6 +447,10 @@ const CutoffExplorer = () => {
 
   const getRoundDisplayName = (round: string) => {
     switch (round) {
+      case 'R1': return 'R1'
+      case 'R2': return 'R2'
+      case 'R3': return 'R3'
+      case 'MOCK': return 'MOCK'
       case 'Round 1': return 'Round 1'
       case 'Round 2': return 'Round 2'
       case 'Round 3': return 'Round 3'
@@ -625,7 +731,9 @@ const CutoffExplorer = () => {
                         <TableRow key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`}>
                           <TableCell>
                             <div>
-                              <div className="font-medium">{cutoff.institute}</div>
+                              <Link to={`/college/${cutoff.institute_code}`} className="font-medium hover:underline hover:text-blue-400 transition-colors">
+                                {cutoff.institute}
+                              </Link>
                               <div className="text-sm text-muted-foreground">
                                 {cutoff.institute_code}
                               </div>
@@ -674,7 +782,9 @@ const CutoffExplorer = () => {
                         {/* Header */}
                         <div className="flex justify-between items-start">
                           <div className="flex-1 min-w-0">
-                            <div className="font-semibold text-lg leading-tight">{cutoff.institute}</div>
+                            <Link to={`/college/${cutoff.institute_code}`} className="font-semibold text-lg leading-tight hover:underline hover:text-blue-400 transition-colors">
+                              {cutoff.institute}
+                            </Link>
                             <div className="text-sm text-muted-foreground mt-1">
                               {cutoff.institute_code}
                             </div>
