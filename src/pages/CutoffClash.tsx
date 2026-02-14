@@ -375,10 +375,10 @@ export default function CutoffClash() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col pt-16" ref={containerRef}>
+    <div className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col" ref={containerRef}>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-black to-black" />
 
-      <header className="absolute top-0 left-0 right-0 z-50 p-4 flex items-center justify-between bg-gradient-to-b from-black/80 to-transparent">
+      <header className="sticky top-0 left-0 right-0 z-50 p-3 sm:p-4 flex items-center justify-between bg-black/80 backdrop-blur-md border-b border-white/10">
         <Link to="/" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
           <ArrowLeft className="h-5 w-5" />
           <span className="font-semibold hidden sm:inline">Back</span>
@@ -401,7 +401,7 @@ export default function CutoffClash() {
         </div>
       </header>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white flex items-center justify-center font-black text-black text-lg sm:text-2xl shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+      <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white text-black items-center justify-center font-black text-xl shadow-[0_0_40px_rgba(255,255,255,0.3)]">
         VS
       </div>
 
@@ -429,19 +429,19 @@ export default function CutoffClash() {
               key={`left-${left.id}`}
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
-              className={`flex-1 relative flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br ${left.color}`}
+              className={`flex-1 relative flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center bg-gradient-to-br ${left.color}`}
             >
               <div className="absolute inset-0 bg-black/20" />
               <div className="relative z-10 max-w-sm">
-                <span className="inline-block px-3 py-1 rounded-full bg-black/30 border border-white/10 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md">
+                <span className="inline-block px-3 py-1 rounded-full bg-black/30 border border-white/10 text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md">
                   {left.shortName}
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 leading-tight">{left.branch}</h2>
-                <p className="text-base sm:text-lg text-white/90 mb-6 font-medium">{left.name}</p>
+                <h2 className="text-lg sm:text-2xl md:text-4xl font-black mb-2 leading-tight">{left.branch}</h2>
+                <p className="text-sm sm:text-base md:text-lg text-white/90 mb-4 sm:mb-6 font-medium">{left.name}</p>
 
-                <div className="inline-flex flex-col items-center p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10">
-                  <span className="text-sm uppercase tracking-widest text-white/60 mb-1">KCET Cutoff</span>
-                  <span className="text-4xl sm:text-5xl font-black text-amber-400 tabular-nums">
+                <div className="inline-flex flex-col items-center p-3 sm:p-4 rounded-xl bg-black/40 backdrop-blur-md border border-white/10">
+                  <span className="text-xs sm:text-sm uppercase tracking-widest text-white/60 mb-1">KCET Cutoff</span>
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-black text-amber-400 tabular-nums">
                     {left.cutoff.toLocaleString()}
                   </span>
                   <span className="text-xs text-white/50 mt-1">Rank</span>
@@ -450,38 +450,44 @@ export default function CutoffClash() {
             </motion.div>
           )}
 
+          <div className="md:hidden flex items-center justify-center py-2">
+            <div className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center font-black text-sm shadow-[0_0_24px_rgba(255,255,255,0.3)]">
+              VS
+            </div>
+          </div>
+
           {!right ? null : (
             <motion.div
               key={`right-${right.id}`}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex-1 relative flex flex-col items-center justify-center p-8 text-center bg-black"
+              className="flex-1 relative flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center bg-black"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${right.color} opacity-20`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${right.color} opacity-25`} />
               <div className="relative z-10 max-w-sm w-full">
-                <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-bold uppercase tracking-wider mb-4">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
                   {right.shortName}
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 leading-tight">{right.branch}</h2>
-                <p className="text-base sm:text-lg text-white/90 mb-8 font-medium">{right.name}</p>
+                <h2 className="text-lg sm:text-2xl md:text-4xl font-black mb-2 leading-tight">{right.branch}</h2>
+                <p className="text-sm sm:text-base md:text-lg text-white/90 mb-5 sm:mb-8 font-medium">{right.name}</p>
 
-                <div className="min-h-[160px] flex flex-col items-center justify-center">
+                <div className="min-h-[140px] sm:min-h-[160px] flex flex-col items-center justify-center">
                   {gameState === "playing" && !revealInfo ? (
-                    <div className="space-y-4 w-full max-w-xs">
-                      <p className="text-sm font-semibold uppercase tracking-widest text-white/50 mb-2">Guess Right Card</p>
+                    <div className="space-y-3 sm:space-y-4 w-full max-w-xs">
+                      <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-white/60 mb-1 sm:mb-2">Guess Right Card</p>
                       <Button
                         onClick={() => handleGuess("higher")}
-                        className="w-full py-8 text-xl font-bold bg-transparent border-2 border-white hover:bg-white hover:text-black transition-all rounded-full group"
+                        className="w-full min-h-[52px] sm:min-h-[62px] text-base sm:text-lg font-bold bg-transparent border-2 border-white hover:bg-white hover:text-black transition-all rounded-xl sm:rounded-full group"
                       >
-                        <TrendingUp className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />
+                        <TrendingUp className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                         Higher Rank
                         <span className="block text-[10px] font-normal opacity-60 ml-2">(larger number, easier)</span>
                       </Button>
                       <Button
                         onClick={() => handleGuess("lower")}
-                        className="w-full py-8 text-xl font-bold bg-transparent border-2 border-white hover:bg-white hover:text-black transition-all rounded-full group"
+                        className="w-full min-h-[52px] sm:min-h-[62px] text-base sm:text-lg font-bold bg-transparent border-2 border-white hover:bg-white hover:text-black transition-all rounded-xl sm:rounded-full group"
                       >
-                        <TrendingDown className="mr-2 h-6 w-6 group-hover:scale-110 transition-transform" />
+                        <TrendingDown className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                         Lower Rank
                         <span className="block text-[10px] font-normal opacity-60 ml-2">(smaller number, harder)</span>
                       </Button>
@@ -492,9 +498,9 @@ export default function CutoffClash() {
                       animate={{ scale: 1, opacity: 1 }}
                       className="flex flex-col items-center"
                     >
-                      <div className="inline-flex flex-col items-center p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 mb-6">
-                        <span className="text-sm uppercase tracking-widest text-white/60 mb-1">KCET Cutoff</span>
-                        <span className="text-4xl sm:text-5xl font-black text-amber-400 tabular-nums">
+                      <div className="inline-flex flex-col items-center p-3 sm:p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 mb-5 sm:mb-6">
+                        <span className="text-xs sm:text-sm uppercase tracking-widest text-white/60 mb-1">KCET Cutoff</span>
+                        <span className="text-3xl sm:text-4xl md:text-5xl font-black text-amber-400 tabular-nums">
                           {right.cutoff.toLocaleString()}
                         </span>
                         <span className="text-xs text-white/50 mt-1">Rank</span>
@@ -502,22 +508,22 @@ export default function CutoffClash() {
 
                       {gameState === "gameover" ? (
                         <div className="text-center">
-                          <div className="flex items-center justify-center gap-2 text-red-500 font-black text-2xl mb-4">
-                            <X className="h-8 w-8" />
+                          <div className="flex items-center justify-center gap-2 text-rose-400 font-black text-xl sm:text-2xl mb-3 sm:mb-4">
+                            <X className="h-6 w-6 sm:h-8 sm:w-8" />
                             GAME OVER
                           </div>
                           <p className="mb-2 text-white/80">You scored {score}.</p>
                           <p className="mb-6 text-white/60">
                             Correct answer: <span className="font-semibold uppercase">{actualAnswer}</span> rank
                           </p>
-                          <Button onClick={startNewGame} size="lg" className="rounded-full font-bold px-8 bg-white text-black hover:bg-white/90">
+                          <Button onClick={startNewGame} size="lg" className="rounded-xl sm:rounded-full font-bold px-6 sm:px-8 bg-white text-black hover:bg-white/90">
                             <RefreshCcw className="mr-2 h-4 w-4" /> Play Again
                           </Button>
                         </div>
                       ) : (
                         <div className="text-center">
-                          <div className="flex items-center justify-center gap-2 text-emerald-400 font-black text-2xl mb-2">
-                            <CheckCircle2 className="h-8 w-8" />
+                          <div className="flex items-center justify-center gap-2 text-emerald-300 font-black text-xl sm:text-2xl mb-2">
+                            <CheckCircle2 className="h-6 w-6 sm:h-8 sm:w-8" />
                             CORRECT!
                           </div>
                         </div>

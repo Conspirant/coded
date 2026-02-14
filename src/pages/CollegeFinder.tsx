@@ -807,7 +807,6 @@ const CollegeFinder = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log('Starting to load cutoff data...')
         setProgress(10)
 
         // Load from the highest-volume merged source first
@@ -834,39 +833,27 @@ const CollegeFinder = () => {
         if (!response) {
           throw new Error('Failed to load data from all sources')
         }
-        console.log(`Loading data from: ${dataSource}`)
         setProgress(35)
 
-        console.log('Response received, parsing JSON...')
         const data: CutoffResponse = await response.json()
         setProgress(55)
 
         // Handle different data structures
         let processedData = data
         if (!data.cutoffs && Array.isArray(data)) {
-          console.log('Data is a direct array')
           processedData = { cutoffs: data, metadata: {} } as any
         } else {
           processedData = data
         }
-
-        console.log('JSON parsed successfully, data structure:', {
-          metadata: processedData.metadata,
-          cutoffsLength: processedData.cutoffs?.length,
-          sampleCutoff: processedData.cutoffs?.[0],
-          dataKeys: Object.keys(processedData)
-        })
         setProgress(65)
 
         // Check if data has a different structure
         if (!processedData.cutoffs && (processedData as any).data) {
-          console.log('Data has "data" key instead of "cutoffs"')
           processedData.cutoffs = (processedData as any).data
         }
 
         // Handle case where data might be nested differently
         if (!processedData.cutoffs && (processedData as any).cutoffs_data) {
-          console.log('Data has "cutoffs_data" key')
           processedData.cutoffs = (processedData as any).cutoffs_data
         }
 
@@ -877,23 +864,6 @@ const CollegeFinder = () => {
         // Normalize data: trim strings to avoid mismatches
         const normalizedCutoffs: CutoffData[] = processedData.cutoffs.map(item => {
           const cutoffRank = Number(item.cutoff_rank ?? 0)
-
-          // Debug: Log any suspicious cutoff rank values
-          if (cutoffRank === 0 || isNaN(cutoffRank)) {
-            console.log('Suspicious cutoff rank:', item.cutoff_rank, 'for item:', item)
-          }
-
-          // Debug: Log Sri Sairam entries during normalization
-          if ((item.institute ?? '').toString().toLowerCase().includes('sri sairam')) {
-            console.log('Normalizing Sri Sairam entry:', {
-              original: item.cutoff_rank,
-              parsed: cutoffRank,
-              course: item.course,
-              category: item.category,
-              year: item.year,
-              round: item.round
-            })
-          }
 
           return {
             institute: (item.institute ?? '').toString().trim(),
@@ -906,15 +876,6 @@ const CollegeFinder = () => {
           }
         })
         setProgress(80)
-
-        // Debug: Check for Sri Sairam College in the loaded data
-        const sriSairamInData = normalizedCutoffs.filter(c =>
-          c.institute.toLowerCase().includes('sri sairam')
-        )
-        console.log('Sri Sairam entries in loaded data:', sriSairamInData.length)
-        if (sriSairamInData.length > 0) {
-          console.log('Sample Sri Sairam entries:', sriSairamInData.slice(0, 3))
-        }
 
         setCutoffs(normalizedCutoffs)
         setMetadata(processedData.metadata ?? null)
@@ -932,10 +893,6 @@ const CollegeFinder = () => {
         // Apply normalization and deduplication
         const courses = getUniqueCourses(rawCourses)
         courses.sort()
-
-        // Debug: Log some course names to see what we're working with
-        console.log('Sample course names from data:', courses.slice(0, 10))
-        console.log('Sample course names from mapping:', Object.values(courseCodeToName).slice(0, 10))
 
         // Build institute options from all available data (no hard-coded code limits)
         const instituteMap = new Map<string, InstituteOption>()
@@ -963,14 +920,6 @@ const CollegeFinder = () => {
             .map(item => item.round)
         )].sort()
 
-        console.log('Extracted unique values:', {
-          years: years.length,
-          categories: categories.length,
-          courses: courses.length,
-          institutes: institutes.length,
-          rounds: rounds.length
-        })
-
         setAvailableYears(years)
         setAvailableCategories(['ALL', ...categories])
         setAvailableCourses(courses)
@@ -986,15 +935,6 @@ const CollegeFinder = () => {
         setSelectedRound(preferredRound)
         const preferredCategory = s.defaultCategory && categories.includes(s.defaultCategory) ? s.defaultCategory : 'ALL'
         setUserCategory(preferredCategory)
-
-        console.log('Data loaded successfully:', {
-          totalEntries: processedData.cutoffs.length,
-          years: years,
-          categories: categories.slice(0, 10), // Show first 10
-          courses: courses.slice(0, 10), // Show first 10
-          rounds: rounds,
-          institutes: institutes.length
-        })
 
         const loadedEntries = (processedData.metadata?.total_entries ?? normalizedCutoffs.length)
         const sourceLabel = dataSource.replace(/^\/+/, '') || 'selected source'
@@ -1026,8 +966,6 @@ const CollegeFinder = () => {
     setLoading(true)
     setProgress(10)
     try {
-      console.log('Starting to load data from XLSX files...')
-
       const result = await XLSXLoader.loadAllXLSXFiles()
       setProgress(55)
 
@@ -1118,15 +1056,6 @@ const CollegeFinder = () => {
     setSearching(true)
 
     try {
-      console.log('Searching with criteria:', {
-        year: selectedYear,
-        round: selectedRound,
-        category: userCategory,
-        rankRange: [minRank, maxRank],
-        selectedCourses: selectedCourses.length,
-        locationFilter
-      })
-
       // Filter data based on user criteria
       // Show colleges where cutoff_rank >= userRank (colleges the user is eligible for)
       // If rank is 69918, show colleges with cutoff 69918, 69919, 70000, 100000, 200000, etc.
@@ -1144,47 +1073,6 @@ const CollegeFinder = () => {
 
         return yearMatch && roundMatch && categoryMatch && isEligible
       })
-
-      // Debug: Log some sample data to understand what's being filtered
-      console.log('Sample cutoffs before filtering:', cutoffs.slice(0, 5))
-      console.log('User rank:', userRank)
-      console.log('Selected year:', selectedYear)
-      console.log('Selected round:', selectedRound)
-      console.log('User category:', userCategory)
-      console.log('Min rank:', minRank)
-      console.log('Max rank:', maxRank)
-
-      console.log(`Initial filter result: ${filteredData.length} entries`)
-
-      // Debug: Check for Sri Sairam College specifically
-      const sriSairamEntries = cutoffs.filter(c =>
-        c.institute.toLowerCase().includes('sri sairam') &&
-        c.category === userCategory &&
-        c.year === selectedYear &&
-        (selectedRound === 'ALL' || c.round === selectedRound)
-      )
-      console.log('Sri Sairam entries found:', sriSairamEntries.length)
-      sriSairamEntries.forEach(entry => {
-        console.log(`Sri Sairam - Course: ${entry.course}, Cutoff: ${entry.cutoff_rank}, Eligible: ${entry.cutoff_rank > userRank}, Round: ${entry.round}`)
-      })
-
-      // Debug: Show ALL Sri Sairam entries regardless of criteria
-      const allSriSairamEntries = cutoffs.filter(c =>
-        c.institute.toLowerCase().includes('sri sairam')
-      )
-      console.log('ALL Sri Sairam entries in data:', allSriSairamEntries.length)
-      allSriSairamEntries.forEach(entry => {
-        console.log(`ALL Sri Sairam - Course: ${entry.course}, Cutoff: ${entry.cutoff_rank}, Category: ${entry.category}, Year: ${entry.year}, Round: ${entry.round}`)
-      })
-
-      // Also check all entries for the specific criteria
-      const allMatchingEntries = cutoffs.filter(c =>
-        c.category === userCategory &&
-        c.year === selectedYear &&
-        (selectedRound === 'ALL' || c.round === selectedRound)
-      )
-      console.log(`Total entries for category ${userCategory}, year ${selectedYear}, round ${selectedRound}:`, allMatchingEntries.length)
-      console.log('Sample entries:', allMatchingEntries.slice(0, 5))
 
       // Filter by selected courses - SMART MATCHING ACROSS YEAR VARIATIONS
       if (selectedCourses.length > 0) {
@@ -1209,7 +1097,6 @@ const CollegeFinder = () => {
 
           return false
         })
-        console.log(`After course filter: ${filteredData.length} entries`)
       }
 
       // Filter by selected institute (optional)
@@ -1224,7 +1111,6 @@ const CollegeFinder = () => {
           }
           return compactSearchText(cutoff.institute) === instituteNameToken
         })
-        console.log(`After institute filter: ${filteredData.length} entries`)
       }
 
       // Filter by location
@@ -1232,7 +1118,6 @@ const CollegeFinder = () => {
         filteredData = filteredData.filter(cutoff =>
           matchesLooseSearch(cutoff.institute, locationFilter)
         )
-        console.log(`After location filter: ${filteredData.length} entries`)
       }
 
       // Note: eligibleOnly filter removed - now automatically shows only colleges where user has a chance
@@ -1279,8 +1164,6 @@ const CollegeFinder = () => {
         return true
       })
 
-      console.log(`Deduplication: ${matchesWithScores.length} -> ${deduplicatedMatches.length} entries`)
-
       // Sort by cutoff rank based on user preference
       // Ascending: shows colleges with cutoff ranks closest to user rank first (default)
       // Descending: shows colleges with highest cutoff ranks first
@@ -1304,8 +1187,6 @@ const CollegeFinder = () => {
         locationFilter,
         matches: deduplicatedMatches,
       })
-
-      console.log(`Search completed. Found ${deduplicatedMatches.length} unique matches`)
 
     } catch (error) {
       console.error('Error finding colleges:', error)
@@ -1415,7 +1296,6 @@ const CollegeFinder = () => {
     // EXACT MATCH: Try to find the code by exact course name match
     for (const [code, name] of Object.entries(courseCodeToName)) {
       if (name.toLowerCase().trim() === normalizedCourseName) {
-        console.log(`Exact course code match: ${courseName} -> ${code}`)
         return code
       }
     }
@@ -1425,7 +1305,6 @@ const CollegeFinder = () => {
     for (const [code, name] of Object.entries(courseCodeToName)) {
       const cleanName = name.replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase()
       if (cleanName === cleanCourseName) {
-        console.log(`Clean course code match: ${courseName} -> ${code}`)
         return code
       }
     }
@@ -1447,25 +1326,12 @@ const CollegeFinder = () => {
         )
 
         if (matchingWords.length >= 2) {
-          console.log(`Partial course code match: ${courseName} -> ${code} (${matchingWords.join(', ')})`)
           return code
         }
       }
     }
 
-    console.log(`No course code found for: ${courseName}`)
     return '' // Return empty string if no code found
-  }
-
-  // Debug function to test course code matching
-  const debugCourseCodeMatching = () => {
-    console.log('=== Course Code Matching Debug ===')
-    const sampleCourses = availableCourses.slice(0, 20)
-    sampleCourses.forEach(course => {
-      const code = getCourseCode(course)
-      console.log(`Course: "${course}" -> Code: "${code}"`)
-    })
-    console.log('=== End Debug ===')
   }
 
   // Compute analytics from metadata with fallback to computed values from cutoffs

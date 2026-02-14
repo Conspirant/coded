@@ -49,7 +49,7 @@ const CountdownTimer = () => {
                 relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center
                 ${isUrgent
                     ? 'bg-gradient-to-br from-red-500 to-orange-500 shadow-lg shadow-red-500/25'
-                    : 'bg-gradient-to-br from-purple-600 to-indigo-600 shadow-lg shadow-purple-500/25'
+                    : 'bg-gradient-to-br from-slate-700 to-blue-700 shadow-lg shadow-slate-800/35'
                 }
                 transition-all duration-500
             `}>
@@ -82,16 +82,16 @@ const CountdownTimer = () => {
     }
 
     return (
-        <Card className={`overflow-hidden shadow-lg ${isUrgent ? 'shadow-red-500/10 border-red-200 dark:border-red-900/50' : 'shadow-purple-500/10 border-purple-200/50 dark:border-purple-900/30'}`}>
-            <CardContent className={`p-5 sm:p-6 ${isUrgent ? 'bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-950/30 dark:via-orange-950/30 dark:to-yellow-950/30' : 'bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-950/30 dark:via-indigo-950/30 dark:to-blue-950/30'}`}>
+        <Card className={`overflow-hidden shadow-lg ${isUrgent ? 'shadow-red-500/10 border-red-200 dark:border-red-900/50' : 'shadow-blue-900/20 border-slate-300/40 dark:border-slate-700/40'}`}>
+            <CardContent className={`p-5 sm:p-6 ${isUrgent ? 'bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-950/30 dark:via-orange-950/30 dark:to-yellow-950/30' : 'bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 dark:from-slate-900/60 dark:via-blue-950/40 dark:to-slate-900/60'}`}>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2">
-                        <div className={`p-2 rounded-lg shadow-lg ${isUrgent ? 'bg-red-500 shadow-red-500/25' : 'bg-purple-600 shadow-purple-500/25'}`}>
+                        <div className={`p-2 rounded-lg shadow-lg ${isUrgent ? 'bg-red-500 shadow-red-500/25' : 'bg-slate-700 shadow-slate-800/35'}`}>
                             <Calendar className="h-5 w-5 text-white" />
                         </div>
                         <div>
-                            <h3 className={`text-lg font-bold ${isUrgent ? 'text-red-700 dark:text-red-400' : 'text-purple-700 dark:text-purple-400'}`}>
+                            <h3 className={`text-lg font-bold ${isUrgent ? 'text-red-700 dark:text-red-400' : 'text-slate-800 dark:text-slate-200'}`}>
                                 CET 2026 Countdown
                             </h3>
                             <p className="text-xs text-muted-foreground">April 23-24, 2026</p>
@@ -107,18 +107,18 @@ const CountdownTimer = () => {
                 {/* Countdown blocks */}
                 <div className="flex items-center justify-center gap-3 sm:gap-4">
                     <TimeBlock value={timeLeft.days} label="Days" />
-                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-purple-400'} animate-pulse`}>:</span>
+                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-slate-500 dark:text-slate-400'} animate-pulse`}>:</span>
                     <TimeBlock value={timeLeft.hours} label="Hours" />
-                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-purple-400'} animate-pulse`}>:</span>
+                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-slate-500 dark:text-slate-400'} animate-pulse`}>:</span>
                     <TimeBlock value={timeLeft.minutes} label="Mins" />
-                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-purple-400'} animate-pulse hidden sm:block`}>:</span>
+                    <span className={`text-2xl font-bold ${isUrgent ? 'text-red-400' : 'text-slate-500 dark:text-slate-400'} animate-pulse hidden sm:block`}>:</span>
                     <div className="hidden sm:block">
                         <TimeBlock value={timeLeft.seconds} label="Secs" />
                     </div>
                 </div>
 
                 {/* Motivational message */}
-                <p className={`mt-4 text-center text-sm ${isUrgent ? 'text-red-600 dark:text-red-400' : 'text-purple-600 dark:text-purple-400'} font-medium`}>
+                <p className={`mt-4 text-center text-sm ${isUrgent ? 'text-red-600 dark:text-red-400' : 'text-slate-700 dark:text-slate-300'} font-medium`}>
                     {isUrgent
                         ? "🔥 Final stretch! Stay focused and keep pushing!"
                         : "📚 Every day of preparation counts. Keep going!"

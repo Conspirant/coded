@@ -286,6 +286,12 @@ const Homepage = () => {
                             </Badge>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
+                            <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer">
+                                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground px-2 sm:px-3">
+                                    <span className="hidden sm:inline">r/KCETards</span>
+                                    <ExternalLink className="h-4 w-4 sm:ml-1" />
+                                </Button>
+                            </a>
                             <Link to="/dashboard">
                                 <Button variant="ghost" size="sm" className="hidden sm:flex text-muted-foreground hover:text-foreground">
                                     Dashboard
@@ -786,8 +792,6 @@ const Homepage = () => {
                     </div>
                 </div>
             </footer>
-            {/* Mobile dock spacer */}
-            <div className="h-20 md:hidden" />
         </div>
     )
 }

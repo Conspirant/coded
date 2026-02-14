@@ -6,8 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
 import { CommandPalette } from "./components/CommandPalette";
-import { ScrollProgress } from "./components/InteractiveEffects";
-import { MobileDock, FloatingActionButton } from "./components/MobileNav";
 import { KonamiEasterEgg, KeyboardShortcutsHUD } from "./components/EasterEggs";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
@@ -95,8 +93,6 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <PWAInstallBanner />
-        <MobileDock />
-        <FloatingActionButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
