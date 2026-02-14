@@ -19,6 +19,8 @@ import { loadSettings } from '@/lib/settings'
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { normalizeCourse, getUniqueCourses, isSameCourse } from "@/lib/course-normalizer"
+import { getPdfUrlWithPage } from "@/lib/pdf-url-mapper"
+import { extractPdfPage, getTrustMeta } from "@/lib/data-trust"
 import { jsPDF } from "jspdf"
 import autoTable from "jspdf-autotable"
 
@@ -214,6 +216,27 @@ const CollegeFinder = () => {
       }
       localStorage.setItem('kcet_bookmarks', JSON.stringify([...next]))
       return next
+    })
+  }
+
+  const openSourceReference = async (match: CollegeMatch) => {
+    const pdfUrl = await getPdfUrlWithPage(match.year, match.round, match.institute_code)
+    if (!pdfUrl) {
+      toast({
+        title: "Source not available",
+        description: `No PDF mapped for ${match.year} ${match.round}.`,
+        variant: "destructive",
+      })
+      return
+    }
+
+    window.open(pdfUrl, "_blank")
+    const page = extractPdfPage(pdfUrl)
+    toast({
+      title: "Source opened",
+      description: page
+        ? `Reference page ${page} for ${match.institute_code}.`
+        : `Reference opened for ${match.institute_code}.`,
     })
   }
 
@@ -2018,6 +2041,7 @@ const CollegeFinder = () => {
                           {paginatedMatches.map((match, index) => {
                             const bookmarkKey = `${match.institute_code}-${match.course}-${match.category}`
                             const isBookmarked = bookmarks.has(bookmarkKey)
+                            const trust = getTrustMeta(match)
                             return (
                               <TableRow key={`${match.institute_code}-${match.course}-${index}`}>
                                 <TableCell className="w-24">
@@ -2039,6 +2063,15 @@ const CollegeFinder = () => {
                                       title="Compare"
                                     >
                                       <Scale className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 w-8 p-0"
+                                      onClick={() => openSourceReference(match)}
+                                      title="Open source reference"
+                                    >
+                                      <FileText className="h-4 w-4" />
                                     </Button>
                                   </div>
                                 </TableCell>
@@ -2062,6 +2095,11 @@ const CollegeFinder = () => {
                                 </TableCell>
                                 <TableCell>
                                   <Badge variant="outline">{match.category}</Badge>
+                                  <div className="mt-1">
+                                    <Badge variant="outline" className={`text-[9px] px-1.5 py-0.5 ${trust.className}`}>
+                                      {trust.label}
+                                    </Badge>
+                                  </div>
                                 </TableCell>
                                 <TableCell>
                                   <div className="font-mono font-semibold">
@@ -2090,6 +2128,7 @@ const CollegeFinder = () => {
                       {paginatedMatches.map((match, index) => {
                         const bookmarkKey = `${match.institute_code}-${match.course}-${match.category}`
                         const isBookmarked = bookmarks.has(bookmarkKey)
+                        const trust = getTrustMeta(match)
                         return (
                           <Card key={`${match.institute_code}-${match.course}-${index}`} className="p-4">
                             <div className="space-y-3">
@@ -2117,6 +2156,14 @@ const CollegeFinder = () => {
                                   >
                                     <Scale className="h-5 w-5" />
                                   </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 w-8 p-0 flex-shrink-0"
+                                    onClick={() => openSourceReference(match)}
+                                  >
+                                    <FileText className="h-5 w-5" />
+                                  </Button>
                                 </div>
                               </div>
 
@@ -2133,6 +2180,9 @@ const CollegeFinder = () => {
                                 <Badge variant="outline">{match.category}</Badge>
                                 <Badge variant="outline">{match.year}</Badge>
                                 <Badge variant="outline">{getRoundDisplayName(match.round)}</Badge>
+                                <Badge variant="outline" className={`text-[9px] px-1.5 py-0.5 ${trust.className}`}>
+                                  {trust.label}
+                                </Badge>
                               </div>
 
                               <div className="flex justify-between items-center">

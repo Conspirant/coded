@@ -786,6 +786,10 @@ const Homepage = () => {
                         <p className="text-xs text-muted-foreground">
                             © {new Date().getFullYear()} KCET Coded. Not affiliated with KEA.
                         </p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+                            <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Built with ❤️ for Karnataka students
                         </p>

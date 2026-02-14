@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { XLSXLoader } from "@/lib/xlsx-loader"
 import { COURSES, COURSE_CODE_TO_NAME } from "@/lib/courses"
 import { getPdfUrl, getPdfUrlWithPage } from "@/lib/pdf-url-mapper"
+import { extractPdfPage, getTrustMeta } from "@/lib/data-trust"
 
 // Types for the cutoff data
 interface CutoffData {
@@ -477,10 +478,14 @@ const CutoffExplorer = () => {
     // Open PDF in new tab at the exact page
     window.open(pdfUrl, '_blank');
 
+    const page = extractPdfPage(pdfUrl)
+
     // Show toast with info
     toast({
       title: "PDF Opened",
-      description: `Opening page with ${cutoff.institute_code} cutoffs`,
+      description: page
+        ? `Source reference: page ${page} (${cutoff.institute_code})`
+        : `Source reference opened for ${cutoff.institute_code}`,
     });
   }
 
@@ -722,12 +727,15 @@ const CutoffExplorer = () => {
                         <TableHead>Course</TableHead>
                         <TableHead>Category</TableHead>
                         <TableHead>Round</TableHead>
+                        <TableHead className="w-[96px] px-2">Source</TableHead>
                         <TableHead className="text-right">Cutoff Rank</TableHead>
-                        <TableHead className="text-center">Actions</TableHead>
+                        <TableHead className="w-[84px] text-center">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {cutoffs.map((cutoff, index) => (
+                      {cutoffs.map((cutoff, index) => {
+                        const trust = getTrustMeta(cutoff)
+                        return (
                         <TableRow key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`}>
                           <TableCell>
                             <div>
@@ -755,28 +763,37 @@ const CutoffExplorer = () => {
                               {cutoff.round}
                             </Badge>
                           </TableCell>
+                          <TableCell className="w-[96px] px-2">
+                            <Badge variant="outline" className={`text-[10px] px-1.5 py-0.5 ${trust.className}`}>
+                              {trust.label}
+                            </Badge>
+                          </TableCell>
                           <TableCell className="text-right font-mono font-semibold">
                             {cutoff.cutoff_rank?.toLocaleString()}
                           </TableCell>
                           <TableCell className="text-center">
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="sm"
                               onClick={() => handleViewPdf(cutoff)}
-                              title="View PDF source"
+                              title="Open source reference"
+                              className="h-8 w-8 p-0"
                             >
                               <Eye className="h-4 w-4" />
+                              <span className="sr-only">Source</span>
                             </Button>
                           </TableCell>
                         </TableRow>
-                      ))}
+                      )})}
                     </TableBody>
                   </Table>
                 </div>
 
                 {/* Mobile Cards */}
                 <div className="lg:hidden space-y-4">
-                  {cutoffs.map((cutoff, index) => (
+                  {cutoffs.map((cutoff, index) => {
+                    const trust = getTrustMeta(cutoff)
+                    return (
                     <Card key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`} className="p-4 hover:shadow-md transition-shadow">
                       <div className="space-y-4">
                         {/* Header */}
@@ -814,6 +831,9 @@ const CutoffExplorer = () => {
                           <Badge variant="secondary" className="text-xs px-2 py-1">
                             {cutoff.year}
                           </Badge>
+                          <Badge variant="outline" className={`text-[10px] px-1.5 py-0.5 ${trust.className}`}>
+                            {trust.label}
+                          </Badge>
                           <Button
                             variant="outline"
                             size="sm"
@@ -821,7 +841,7 @@ const CutoffExplorer = () => {
                             className="ml-auto"
                           >
                             <Eye className="h-4 w-4 mr-1" />
-                            View PDF
+                            Source
                           </Button>
                         </div>
 
@@ -844,7 +864,7 @@ const CutoffExplorer = () => {
                         )}
                       </div>
                     </Card>
-                  ))}
+                  )})}
                 </div>
 
                 {/* Pagination */}

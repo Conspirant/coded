@@ -26,11 +26,14 @@ import AICounselor from "./pages/AICounselor";
 import NotFound from "./pages/NotFound";
 import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
+import CETNews from "./pages/CETNews";
 import { CollegeLayout } from "./pages/college/CollegeLayout";
 import CollegeDetail from "./pages/CollegeDetail";
 import CollegeAnalytics from "./pages/college/CollegeAnalytics";
 import CollegeCommunity from "./pages/college/CollegeCommunity";
 import CollegeList from "./pages/CollegeList";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 
 
 const queryClient = new QueryClient();
@@ -80,6 +83,7 @@ const App = () => (
           <Route path="/college-list" element={<Layout><CollegeList /></Layout>} />
           <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
           <Route path="/materials" element={<Layout><Materials /></Layout>} />
+          <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
           <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
 
           {/* College Details Section with specific layout */}
@@ -90,6 +94,8 @@ const App = () => (
           </Route>
 
           {/* More routes will be added here */}
+          <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
+          <Route path="/terms" element={<Layout><Terms /></Layout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <PWAInstallBanner />

@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -26,6 +26,7 @@ const mainItems = [
 
 const toolItems = [
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
+  { title: "CET News", url: "/cet-news", icon: Newspaper },
   { title: "Documents", url: "/documents", icon: FileText },
   { title: "Reviews", url: "/reviews", icon: Star },
   { title: "Info Centre", url: "/info-centre", icon: Info },

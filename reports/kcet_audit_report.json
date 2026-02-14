@@ -1,0 +1,50 @@
+{
+  "master_total_rows": 167303,
+  "master_unique_keys": 167303,
+  "source_unique_keys": 167303,
+  "xlsx_source_rows": 104200,
+  "pdf_source_rows": 63103,
+  "missing_in_master_count": 0,
+  "extra_in_master_count": 0,
+  "xlsx_file_stats": {
+    "kcet-2023-round1-cutoffs.xlsx": {
+      "rows": 14853
+    },
+    "kcet-2023-round2-cutoffs.xlsx": {
+      "rows": 14096
+    },
+    "kcet-2023-round3(extended)-cutoffs.xlsx": {
+      "rows": 11153
+    },
+    "kcet-2024-mock-round1-cutoffs.xlsx": {
+      "rows": 18524
+    },
+    "kcet-2024-round1-cutoffs.xlsx": {
+      "rows": 18583
+    },
+    "kcet-2024-round2-cutoffs.xlsx": {
+      "rows": 16604
+    },
+    "kcet-2024-round3(extended)-cutoffs.xlsx": {
+      "rows": 10387
+    }
+  },
+  "pdf_file_stats": {
+    "kcet-2025-mock-round1-cutoffs.pdf": {
+      "rows": 18709
+    },
+    "kcet-2025-round1-cutoffs.pdf": {
+      "rows": 18873
+    },
+    "kcet-2025-round2-cutoffs.pdf": {
+      "rows": 14572
+    },
+    "kcet-2025-round3-cutoffs.pdf": {
+      "rows": 10949
+    }
+  },
+  "missing_by_college_top50": [],
+  "extra_by_college_top50": [],
+  "missing_samples": [],
+  "extra_samples": []
+}
