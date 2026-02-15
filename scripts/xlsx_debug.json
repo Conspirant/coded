@@ -1,0 +1,284 @@
+[
+  {
+    "file": "public/kcet-2024-round1-cutoffs.xlsx",
+    "sheets": 51,
+    "details": [
+      {
+        "name": "Table 1",
+        "rows": 54,
+        "cols": 27,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E001",
+            "text": "ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2024\u00a0-\u00a0R1\u00a0(\u00a0PROV\u00a0)\u00a0\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) E001\u00a0\u00a0U 30-AUG-24\u00a012:09\u00a0AM"
+          },
+          {
+            "row": 12,
+            "code": "E002",
+            "text": "E002\u00a0\u00a0S\u00a0K\u00a0S\u00a0J\u00a0T\u00a0Institute\u00a0of\u00a0Engineering.\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 19,
+            "code": "E003",
+            "text": "E003\u00a0\u00a0B\u00a0M\u00a0S\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Basavanagudi,Bangalore"
+          },
+          {
+            "row": 27,
+            "code": "E004",
+            "text": "E004\u00a0\u00a0Dr.\u00a0Ambedkar\u00a0Institute\u00a0Of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 40,
+            "code": "E005",
+            "text": "E005\u00a0\u00a0R.\u00a0V.\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 13,
+            "count": 24
+          },
+          {
+            "row": 20,
+            "count": 24
+          },
+          {
+            "row": 28,
+            "count": 24
+          },
+          {
+            "row": 41,
+            "count": 24
+          }
+        ]
+      },
+      {
+        "name": "Table 2",
+        "rows": 57,
+        "cols": 27,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E005",
+            "text": "ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2024\u00a0-\u00a0R1\u00a0(\u00a0PROV\u00a0)\u00a0\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) E005\u00a0\u00a0R 30-AUG-24\u00a012:09\u00a0AM"
+          },
+          {
+            "row": 14,
+            "code": "E006",
+            "text": "E006\u00a0\u00a0M\u00a0S\u00a0Ramaiah\u00a0Institute\u00a0of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 42,
+            "code": "E007",
+            "text": "E007\u00a0\u00a0Dayananda\u00a0Sagar\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 15,
+            "count": 24
+          },
+          {
+            "row": 43,
+            "count": 24
+          }
+        ]
+      },
+      {
+        "name": "Table 3",
+        "rows": 56,
+        "cols": 27,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E007",
+            "text": "ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2024\u00a0-\u00a0R1\u00a0(\u00a0PROV\u00a0)\u00a0\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) E007\u00a0\u00a0D 30-AUG-24\u00a012:09\u00a0AM"
+          },
+          {
+            "row": 17,
+            "code": "E008",
+            "text": "E008\u00a0\u00a0Bangalore\u00a0Institute\u00a0of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 38,
+            "code": "E009",
+            "text": "E009\u00a0\u00a0P\u00a0E\u00a0S\u00a0University\u00a0(Ring\u00a0Road\u00a0Campus)\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 47,
+            "code": "E011",
+            "text": "E011\u00a0\u00a0M\u00a0V\u00a0J\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 18,
+            "count": 24
+          },
+          {
+            "row": 39,
+            "count": 24
+          },
+          {
+            "row": 48,
+            "count": 24
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "public/kcet-2023-round1-cutoffs.xlsx",
+    "sheets": 44,
+    "details": [
+      {
+        "name": "Table 1",
+        "rows": 54,
+        "cols": 27,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E001",
+            "text": "ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2023\u00a0-\u00a01st\u00a0ROUND\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) E001\u00a0\u00a0Univ 17-AUG-23\u00a008:44\u00a0PM"
+          },
+          {
+            "row": 11,
+            "code": "E002",
+            "text": "E002\u00a0\u00a0S\u00a0K\u00a0S\u00a0J\u00a0T\u00a0Institute\u00a0of\u00a0Engineering.\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 18,
+            "code": "E003",
+            "text": "E003\u00a0\u00a0B\u00a0M\u00a0S\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Basavanagudi,Bangalore"
+          },
+          {
+            "row": 26,
+            "code": "E004",
+            "text": "E004\u00a0\u00a0Dr.\u00a0Ambedkar\u00a0Institute\u00a0Of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 39,
+            "code": "E005",
+            "text": "E005\u00a0\u00a0R.\u00a0V.\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 12,
+            "count": 24
+          },
+          {
+            "row": 19,
+            "count": 24
+          },
+          {
+            "row": 27,
+            "count": 24
+          },
+          {
+            "row": 40,
+            "count": 24
+          }
+        ]
+      },
+      {
+        "name": "Table 2",
+        "rows": 57,
+        "cols": 28,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E005",
+            "text": "E005\u00a0\u00a0R.\u00a0V.\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2023\u00a0-\u00a01st\u00a0ROUND\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) 17-A"
+          },
+          {
+            "row": 11,
+            "code": "E006",
+            "text": "E006\u00a0\u00a0M\u00a0S\u00a0Ramaiah\u00a0Institute\u00a0of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 36,
+            "code": "E007",
+            "text": "E007\u00a0\u00a0Dayananda\u00a0Sagar\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 12,
+            "count": 24
+          },
+          {
+            "row": 37,
+            "count": 24
+          }
+        ]
+      },
+      {
+        "name": "Table 3",
+        "rows": 56,
+        "cols": 27,
+        "college_rows": [
+          {
+            "row": 1,
+            "code": "E007",
+            "text": "ENGINEERING\u00a0CUTOFF\u00a0RANK\u00a0OF\u00a0CET-2023\u00a0-\u00a01st\u00a0ROUND\u00a0ALLOTMENT\u00a0(\u00a0GENERAL\u00a0) E007\u00a0\u00a0Daya 17-AUG-23\u00a008:44\u00a0PM"
+          },
+          {
+            "row": 11,
+            "code": "E008",
+            "text": "E008\u00a0\u00a0Bangalore\u00a0Institute\u00a0of\u00a0Technology\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 32,
+            "code": "E009",
+            "text": "E009\u00a0\u00a0P\u00a0E\u00a0S\u00a0University\u00a0(Ring\u00a0Road\u00a0Campus)\u00a0\u00a0Bangalore"
+          },
+          {
+            "row": 40,
+            "code": "E011",
+            "text": "E011\u00a0\u00a0M\u00a0V\u00a0J\u00a0College\u00a0of\u00a0Engineering\u00a0\u00a0Bangalore"
+          }
+        ],
+        "category_rows": [
+          {
+            "row": 2,
+            "count": 24
+          },
+          {
+            "row": 12,
+            "count": 24
+          },
+          {
+            "row": 33,
+            "count": 24
+          },
+          {
+            "row": 41,
+            "count": 24
+          }
+        ]
+      }
+    ]
+  }
+]

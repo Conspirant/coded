@@ -1,0 +1,55 @@
+﻿Sheet: Table 1, rows=54, cols=27
+r1: [c1]ENGINEERINGáCUTOFFáRANKáOFáCET-2024á-áR1á(áPROVá)ááALLOTMENT
+r2: [c2]1G|[c3]1K|[c4]1R|[c5]2AG
+r3: [c1]AI Artificial Intelligence|[c2]9684|[c3]--|[c4]--|[c5]7993
+r4: (empty)
+r5: [c1]AR Architecture|[c2]265|[c3]--|[c4]--|[c5]457
+r6: [c1]CE Civil|[c2]69263|[c3]--|[c4]--|[c5]73001
+r7: [c1]CS Computers|[c2]7386|[c3]--|[c4]8647|[c5]6525
+r8: [c1]EC Electronics|[c2]10362|[c3]--|[c4]17032|[c5]11077
+r9: [c1]EE Electrical|[c2]29282|[c3]51745|[c4]34616|[c5]27775
+r10: [c1]IE Info.Science|[c2]8105|[c3]--|[c4]--|[c5]7779
+r11: [c1]ME Mechanical|[c2]62351|[c3]--|[c4]62431|[c5]71359
+r12: [c1]E002ááSáKáSáJáTáInstituteáofáEngineering.ááBangalore
+r13: [c2]1G|[c3]1K|[c4]1R|[c5]2AG
+r14: [c1]CE Civil|[c2]96044|[c3]--|[c4]--|[c5]100810
+r15: [c1]CS Computers|[c2]17352|[c3]--|[c4]17847|[c5]21675
+r16: [c1]EC Electronics|[c2]35951|[c3]--|[c4]--|[c5]33200
+r17: [c1]ST Silk Tech.|[c2]162078|[c3]--|[c4]--|[c5]141129
+r18: [c1]TX Textiles|[c2]150513|[c3]--|[c4]170257|[c5]166614
+r19: [c1]E003ááBáMáSáCollegeáofáEngineeringááBasavanagudi,Bangalore
+r20: [c2]1G|[c3]1K|[c4]1R|[c5]2AG
+r21: [c1]CE Civil|[c2]56425|[c3]--|[c4]--|[c5]47288
+r22: [c1]EC Electronics|[c2]8026|[c3]--|[c4]11264|[c5]5022
+r23: [c1]EE Electrical|[c2]8704|[c3]--|[c4]31018|[c5]18276
+r24: [c1]IM Ind. Engg. Mgmt.|[c2]32227|[c3]--|[c4]--|[c5]51961
+r25: (empty)
+r26: [c1]ME Mechanical|[c2]27614|[c3]--|[c4]--|[c5]38582
+r27: [c1]E004ááDr.áAmbedkaráInstituteáOfáTechnologyááBangalore
+r28: [c2]1G|[c3]1K|[c4]1R|[c5]2AG
+r29: [c1]CE Civil|[c2]122228|[c3]--|[c4]--|[c5]108083
+r30: [c1]CS Computers|[c2]13904|[c3]20322|[c4]--|[c5]12216
+r31: [c1]EC Electronics|[c2]25626|[c3]--|[c4]--|[c5]24881
+r32: [c1]EE Electrical|[c2]47309|[c3]--|[c4]58473|[c5]39832
+r33: [c1]EI Elec. Inst. Engg|[c2]53528|[c3]--|[c4]74970|[c5]60597
+r34: (empty)
+r35: [c1]ET Elec. Telecommn. Engg.|[c2]41390|[c3]--|[c4]--|[c5]48937
+r36: (empty)
+r37: [c1]IM Ind. Engg. Mgmt.|[c2]66342|[c3]--|[c4]--|[c5]71835
+r38: (empty)
+r39: [c1]ME Mechanical|[c2]112406|[c3]--|[c4]122309|[c5]102503
+r40: [c1]E005ááR.áV.áCollegeáofáEngineeringááBangalore
+r41: [c2]1G|[c3]1K|[c4]1R|[c5]2AG
+r42: [c1]AI Artificial Intelligence|[c2]--|[c3]--|[c4]--|[c5]--
+r43: (empty)
+r44: [c1]BT Bio Technology|[c2]19438|[c3]--|[c4]--|[c5]12939
+r45: [c1]CA CS (AI, Machine Learning)|[c2]1387|[c3]--|[c4]--|[c5]1348
+r46: (empty)
+r47: [c1]CE Civil|[c2]27080|[c3]--|[c4]--|[c5]23186
+r48: [c1]CH Chemical|[c2]--|[c3]43342|[c4]--|[c5]16779
+r49: [c1]CS Computers|[c2]636|[c3]--|[c4]3282|[c5]938
+r50: [c1]CY CS- Cyber Security|[c2]1652|[c3]--|[c4]--|[c5]1901
+r51: (empty)
+r52: [c1]DS Comp. Sc. Engg- Data Sc.|[c2]1566|[c3]--|[c4]--|[c5]1598
+r53: (empty)
+r54: [c1]EC Electronics|[c2]2679|[c3]--|[c4]--|[c5]2665
