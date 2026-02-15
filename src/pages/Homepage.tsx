@@ -26,7 +26,8 @@ import {
     TrendingUp,
     Database,
     Flame,
-    Sword
+    Sword,
+    MapPin,
 } from "lucide-react"
 
 interface DataStats {
@@ -746,6 +747,111 @@ const Homepage = () => {
                 </motion.div>
             </section>
 
+            {/* ═══ Coded Labs Section ═══ */}
+            <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black relative border-t border-white/5">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-black to-black" />
+                <div className="max-w-7xl mx-auto relative z-10">
+                    <div className="text-center mb-12">
+                        <Badge variant="outline" className="mb-4 text-xs font-mono tracking-widest border-purple-500/30 text-purple-400 bg-purple-500/5">
+                            EXPERIMENTAL FEATURES
+                        </Badge>
+                        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                            Coded <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Labs</span>
+                        </h2>
+                        <p className="text-muted-foreground max-w-2xl mx-auto">
+                            Unique tools you won't find anywhere else. Testing new ideas to solve old problems.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Squad Finder Card */}
+                        <Link to="/squad-finder" className="group relative p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all hover:-translate-y-1">
+                            <div className="absolute top-4 right-4">
+                                <Badge className="bg-gradient-to-r from-pink-500 to-rose-500 border-0 text-[10px] font-bold">NEW</Badge>
+                            </div>
+                            <div className="h-12 w-12 rounded-xl bg-pink-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <Users className="h-6 w-6 text-pink-400" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 group-hover:text-pink-300 transition-colors">Squad Finder</h3>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                Don't split the gang. Find colleges where <span className="text-white">all your friends</span> can get a seat together.
+                            </p>
+                            <div className="flex items-center text-xs font-medium text-pink-400">
+                                Try it out <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </Link>
+
+                        {/* Metro Mapper Card */}
+                        <Link to="/metro-mapper" className="group relative p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all hover:-translate-y-1">
+                            <div className="absolute top-4 right-4">
+                                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 border-0 text-[10px] font-bold">BETA</Badge>
+                            </div>
+                            <div className="h-12 w-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <MapPin className="h-6 w-6 text-green-400" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 group-hover:text-green-300 transition-colors">Metro Mapper</h3>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                Beat the traffic. Filter top colleges that are strictly within <span className="text-white">walking distance</span> of a Metro station.
+                                <br /><span className="text-xs text-green-500/50 mt-2 block font-mono">* Uses mock location data</span>
+                            </p>
+                            <div className="flex items-center text-xs font-medium text-green-400">
+                                View Map <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </Link>
+
+                        {/* Hidden Gems Card */}
+                        <Link to="/hidden-gems" className="group relative p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all hover:-translate-y-1">
+                            <div className="absolute top-4 right-4">
+                                <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500 border-0 text-[10px] font-bold">HOT</Badge>
+                            </div>
+                            <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <Sparkles className="h-6 w-6 text-amber-400" />
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 group-hover:text-amber-300 transition-colors">Hidden Gems</h3>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                High ROI, Low Cutoff. Our algorithm finds colleges with <span className="text-white">great placements</span> that are easier to get into.
+                                <br /><span className="text-xs text-amber-500/50 mt-2 block font-mono">* Uses mock placement data</span>
+                            </p>
+                            <div className="flex items-center text-xs font-medium text-amber-400">
+                                Reveal Gems <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══ Disclaimer Section ═══ */}
+            <section className="py-12 px-4 sm:px-6 lg:px-8 border-t border-white/5 bg-white/[0.02]">
+                <div className="max-w-4xl mx-auto">
+                    <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center p-6 rounded-2xl glass border border-white/5 bg-gradient-to-br from-indigo-500/5 to-purple-500/5">
+                        <div className="p-3 rounded-xl bg-orange-500/10 text-orange-400 shrink-0">
+                            <Shield className="h-6 w-6" />
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+                                Independent Initiative
+                                <Badge variant="outline" className="text-[10px] py-0 h-5 border-orange-500/20 text-orange-400 bg-orange-500/5">
+                                    NOT OFFICIAL KEA
+                                </Badge>
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                KCET Coded is an independent, community-driven project developed by students for students. We are <strong>NOT affiliated, associated, authorized, endorsed by, or in any way officially connected</strong> with the Karnataka Examination Authority (KEA), the Government of Karnataka, or any of their subsidiaries or affiliates.
+                            </p>
+                            <div className="pt-1">
+                                <a
+                                    href="https://cetonline.karnataka.gov.in/kea/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1"
+                                >
+                                    Visit Official KEA Website <ExternalLink className="h-3 w-3" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* ═══ Footer ═══ */}
             <footer className="relative pt-12 pb-8 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -796,7 +902,7 @@ const Homepage = () => {
                     </div>
                 </div>
             </footer>
-        </div>
+        </div >
     )
 }
 

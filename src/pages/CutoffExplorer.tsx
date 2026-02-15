@@ -727,7 +727,7 @@ const CutoffExplorer = () => {
                         <TableHead>Course</TableHead>
                         <TableHead>Category</TableHead>
                         <TableHead>Round</TableHead>
-                        <TableHead className="w-[96px] px-2">Source</TableHead>
+
                         <TableHead className="text-right">Cutoff Rank</TableHead>
                         <TableHead className="w-[84px] text-center">Actions</TableHead>
                       </TableRow>
@@ -736,55 +736,52 @@ const CutoffExplorer = () => {
                       {cutoffs.map((cutoff, index) => {
                         const trust = getTrustMeta(cutoff)
                         return (
-                        <TableRow key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`}>
-                          <TableCell>
-                            <div>
-                              <Link to={`/college/${cutoff.institute_code}`} className="font-medium hover:underline hover:text-blue-400 transition-colors">
-                                {cutoff.institute}
-                              </Link>
-                              <div className="text-sm text-muted-foreground">
-                                {cutoff.institute_code}
+                          <TableRow key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`}>
+                            <TableCell>
+                              <div>
+                                <Link to={`/college/${cutoff.institute_code}`} className="font-medium hover:underline hover:text-blue-400 transition-colors">
+                                  {cutoff.institute}
+                                </Link>
+                                <div className="text-sm text-muted-foreground">
+                                  {cutoff.institute_code}
+                                </div>
                               </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <div className="font-medium">{COURSE_CODE_TO_NAME[cutoff.course] || cutoff.course}</div>
-                              <div className="text-sm text-muted-foreground">{cutoff.course}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={getCategoryColor(cutoff.category)}>
-                              {cutoff.category?.toUpperCase()}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">
-                              {cutoff.round}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="w-[96px] px-2">
-                            <Badge variant="outline" className={`text-[10px] px-1.5 py-0.5 ${trust.className}`}>
-                              {trust.label}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right font-mono font-semibold">
-                            {cutoff.cutoff_rank?.toLocaleString()}
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleViewPdf(cutoff)}
-                              title="Open source reference"
-                              className="h-8 w-8 p-0"
-                            >
-                              <Eye className="h-4 w-4" />
-                              <span className="sr-only">Source</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      )})}
+                            </TableCell>
+                            <TableCell>
+                              <div>
+                                <div className="font-medium">{COURSE_CODE_TO_NAME[cutoff.course] || cutoff.course}</div>
+                                <div className="text-sm text-muted-foreground">{cutoff.course}</div>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={getCategoryColor(cutoff.category)}>
+                                {cutoff.category?.toUpperCase()}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">
+                                {cutoff.round}
+                              </Badge>
+                            </TableCell>
+
+                            <TableCell className="text-right font-mono font-semibold">
+                              {cutoff.cutoff_rank?.toLocaleString()}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleViewPdf(cutoff)}
+                                title="Open source reference"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">Source</span>
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
                     </TableBody>
                   </Table>
                 </div>
@@ -794,77 +791,78 @@ const CutoffExplorer = () => {
                   {cutoffs.map((cutoff, index) => {
                     const trust = getTrustMeta(cutoff)
                     return (
-                    <Card key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`} className="p-4 hover:shadow-md transition-shadow">
-                      <div className="space-y-4">
-                        {/* Header */}
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1 min-w-0">
-                            <Link to={`/college/${cutoff.institute_code}`} className="font-semibold text-lg leading-tight hover:underline hover:text-blue-400 transition-colors">
-                              {cutoff.institute}
-                            </Link>
-                            <div className="text-sm text-muted-foreground mt-1">
-                              {cutoff.institute_code}
+                      <Card key={`${cutoff.institute_code}-${cutoff.course}-${cutoff.category}-${index}`} className="p-4 hover:shadow-md transition-shadow">
+                        <div className="space-y-4">
+                          {/* Header */}
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1 min-w-0">
+                              <Link to={`/college/${cutoff.institute_code}`} className="font-semibold text-lg leading-tight hover:underline hover:text-blue-400 transition-colors">
+                                {cutoff.institute}
+                              </Link>
+                              <div className="text-sm text-muted-foreground mt-1">
+                                {cutoff.institute_code}
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-2xl font-bold text-primary">
+                                {cutoff.cutoff_rank?.toLocaleString()}
+                              </div>
+                              <div className="text-xs text-muted-foreground">Cutoff Rank</div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold text-primary">
-                              {cutoff.cutoff_rank?.toLocaleString()}
+
+                          {/* Course Info */}
+                          <div className="bg-muted/50 rounded-lg p-3">
+                            <div className="font-medium text-base">{COURSE_CODE_TO_NAME[cutoff.course] || cutoff.course}</div>
+                            <div className="text-sm text-muted-foreground">{cutoff.course}</div>
+                          </div>
+
+                          {/* Badges */}
+                          <div className="flex flex-wrap gap-2">
+                            <Badge className={`${getCategoryColor(cutoff.category)} text-xs px-2 py-1`}>
+                              {cutoff.category?.toUpperCase()}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs px-2 py-1">
+                              {cutoff.round}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs px-2 py-1">
+                              {cutoff.year}
+                            </Badge>
+                            <Badge variant="outline" className={`text-[10px] px-1.5 py-0.5 ${trust.className}`}>
+                              {trust.label}
+                            </Badge>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleViewPdf(cutoff)}
+                              className="ml-auto"
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              Source
+                            </Button>
+                          </div>
+
+                          {/* Additional Info */}
+                          {(cutoff.total_seats || cutoff.available_seats) && (
+                            <div className="grid grid-cols-2 gap-3 text-sm">
+                              {cutoff.total_seats && (
+                                <div className="text-center p-2 bg-muted/30 rounded">
+                                  <div className="font-semibold">{cutoff.total_seats}</div>
+                                  <div className="text-muted-foreground">Total Seats</div>
+                                </div>
+                              )}
+                              {cutoff.available_seats && (
+                                <div className="text-center p-2 bg-muted/30 rounded">
+                                  <div className="font-semibold">{cutoff.available_seats}</div>
+                                  <div className="text-muted-foreground">Available</div>
+                                </div>
+                              )}
                             </div>
-                            <div className="text-xs text-muted-foreground">Cutoff Rank</div>
-                          </div>
+                          )}
                         </div>
-
-                        {/* Course Info */}
-                        <div className="bg-muted/50 rounded-lg p-3">
-                          <div className="font-medium text-base">{COURSE_CODE_TO_NAME[cutoff.course] || cutoff.course}</div>
-                          <div className="text-sm text-muted-foreground">{cutoff.course}</div>
-                        </div>
-
-                        {/* Badges */}
-                        <div className="flex flex-wrap gap-2">
-                          <Badge className={`${getCategoryColor(cutoff.category)} text-xs px-2 py-1`}>
-                            {cutoff.category?.toUpperCase()}
-                          </Badge>
-                          <Badge variant="outline" className="text-xs px-2 py-1">
-                            {cutoff.round}
-                          </Badge>
-                          <Badge variant="secondary" className="text-xs px-2 py-1">
-                            {cutoff.year}
-                          </Badge>
-                          <Badge variant="outline" className={`text-[10px] px-1.5 py-0.5 ${trust.className}`}>
-                            {trust.label}
-                          </Badge>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewPdf(cutoff)}
-                            className="ml-auto"
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            Source
-                          </Button>
-                        </div>
-
-                        {/* Additional Info */}
-                        {(cutoff.total_seats || cutoff.available_seats) && (
-                          <div className="grid grid-cols-2 gap-3 text-sm">
-                            {cutoff.total_seats && (
-                              <div className="text-center p-2 bg-muted/30 rounded">
-                                <div className="font-semibold">{cutoff.total_seats}</div>
-                                <div className="text-muted-foreground">Total Seats</div>
-                              </div>
-                            )}
-                            {cutoff.available_seats && (
-                              <div className="text-center p-2 bg-muted/30 rounded">
-                                <div className="font-semibold">{cutoff.available_seats}</div>
-                                <div className="text-muted-foreground">Available</div>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </Card>
-                  )})}
+                      </Card>
+                    )
+                  })}
                 </div>
 
                 {/* Pagination */}

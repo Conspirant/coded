@@ -34,6 +34,9 @@ import CollegeCommunity from "./pages/college/CollegeCommunity";
 import CollegeList from "./pages/CollegeList";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import SquadFinder from "./pages/SquadFinder";
+import MetroMapper from "./pages/MetroMapper";
+import HiddenGems from "./pages/HiddenGems";
 
 
 const queryClient = new QueryClient();
@@ -96,6 +99,12 @@ const App = () => (
           {/* More routes will be added here */}
           <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
           <Route path="/terms" element={<Layout><Terms /></Layout>} />
+
+          {/* Coded Labs - Unique Features */}
+          <Route path="/squad-finder" element={<SquadFinder />} />
+          <Route path="/metro-mapper" element={<MetroMapper />} />
+          <Route path="/hidden-gems" element={<HiddenGems />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <PWAInstallBanner />
