@@ -1,264 +1,176 @@
-# KCET Coded - Comprehensive KCET Admission Guide
 
-A comprehensive web application for Karnataka CET (KCET) aspirants to explore college cutoffs, find suitable colleges, predict ranks, and make informed admission decisions.
+<div align="center">
 
-> **Disclaimer:** This is an independent project and is not affiliated with r/kcet community or its moderation team in any way.
+# 🧭 KCET Compass
+### The Ultimate Companion for Karnataka CET Aspirants
 
-## 🔧 Setup Instructions
+![KCET Compass Banner](https://via.placeholder.com/1200x400/0f172a/38bdf8?text=KCET+Compass)
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Supabase account (optional, for advanced features)
+[![React](https://img.shields.io/badge/React-18.3-blue?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-success.svg)]()
 
-### Installation
+[Features](#-features) • [Coded Labs](#-coded-labs) • [Hidden Tricks](#-hidden-tricks--easter-eggs) • [Installation](#-installation) • [Data Pipeline](#-data-pipeline)
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/noimnothim/kcetcode.git
-   cd kcetcode
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Environment Setup**
-   ```bash
-   # Copy the example environment file
-   cp env.example .env
-   
-   # Edit .env with your actual credentials (if using Supabase)
-   ```
-
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-### Available Scripts
-```bash
-npm run dev              # Start development server
-npm run build            # Build for production
-npm run preview          # Preview production build
-npm run test             # Run tests
-npm run test:ui          # Run tests with UI
-```
-
-## 🔒 Security & Environment Variables
-
-- **Never commit `.env` files** - They contain sensitive credentials
-- The `.env` file is already in `.gitignore` to prevent accidental commits
-- Use `env.example` as a template for your environment variables
-
-### Required Environment Variables
-
-```bash
-# Supabase Configuration (Optional)
-VITE_SUPABASE_URL=https://your-project-ref.supabase.co
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-
-# Optional: News API
-NEWS_API_KEY=your_news_api_key_here
-WEBHOOK_SECRET=your_webhook_secret_here
-```
-
-## 🚀 Features
-
-### ✅ Fully Implemented Features
-
-#### 1. **Dashboard**
-- Real-time statistics from KCET data (109,000+ records)
-- Data overview with total records, colleges, and branches
-- Year-wise and category-wise distributions
-- Quick access to all features
-- KCET News & Updates section with YouTube integration
-- CET 2026 exam schedule display
-- Reddit community links (r/kcet and r/KCETCoded)
-
-#### 2. **Rank Predictor**
-- KCET rank prediction from marks input
-- KCET marks (0-180) and PUC percentage input
-- Category-wise predictions (GM, SC, ST, 1G, 2A, 2B, 3A, 3B)
-- Confidence gauge with animated counters
-- College suggestions based on predicted rank
-- Save and manage prediction results
-- Download results as PNG
-
-#### 3. **College Finder**
-- Advanced search based on KCET rank
-- Multiple filters: category, location, course preferences, year, round
-- Admission probability indicators (High/Moderate/Borderline/Exact)
-- Sparkline trend visualization for cutoff history
-- Bookmark functionality for colleges
-- Compare selected colleges
-- Real-time filtering and sorting
-- Export results to CSV
-- XLSX file support for latest cutoff data
-
-#### 4. **Cutoff Explorer**
-- Complete cutoff data browser with 109,000+ records
-- Filter by year, category, college, branch, round
-- Real-time search functionality
-- Comprehensive data table with sorting
-- Advanced filtering options
-- Data export capabilities
-
-#### 5. **Mock Simulator**
-- Simulate seat allotment process
-- Add and manage preference list
-- Drag-and-drop preference ordering
-- Safety level indicators for each preference
-- Round-wise simulation using historical data
-- Detailed simulation results
-
-#### 6. **Option Entry Analyzer (Planner)**
-- Upload KEA Option Entry PDF
-- Automatic extraction of preferences
-- View options exactly as they appear in KEA PDF
-- Summary statistics (total options, unique colleges, unique branches)
-- Integration with Mock Simulator for analysis
-
-#### 7. **Analytics**
-- Dataset overview with entry counts
-- Live results tracking from College Finder
-- Institute, course, and category breakdowns
-- Year coverage information
-
-#### 8. **Round Tracker**
-- Counseling round tracking
-- Real-time round status updates
-- Progress tracking for each round
-- Important alerts and notifications
-- Timeline visualization
-
-#### 9. **Documents**
-- Complete document checklist for KCET counseling
-- Essential academic documents list
-- KCET/NEET related documents
-- Category-specific requirements
-- Document copy requirements
-
-#### 10. **Info Centre**
-- Educational articles about Karnataka engineering education
-- VTU affiliation history and information
-- Additional resources and links
-
-#### 11. **Engineering Loadout**
-- Fun, gamified gear recommendation system
-- Branch-specific equipment suggestions (CSE/ISE/ECE vs Mech/Civil)
-- Inventory-style UI with item inspection
-- Hostel essentials included
-
-#### 12. **Materials**
-- Study materials and resources
-- Category-organized content
-
-#### 13. **Reviews**
-- College review system
-- User-submitted reviews with ratings
-
-### 🚧 Under Development Features
-
-#### 1. **College Compare**
-- Side-by-side college comparison
-- Cutoff trends, fees, and ratings comparison
-
-#### 2. **Fee Calculator**
-- Estimate annual costs across colleges
-- Category-wise fee calculations
-
-## 📊 Data Coverage
-
-- **109,920+ records** extracted from KCET PDFs (2023-2025)
-- **Multiple years**: 2023, 2024, 2025 data with round-wise cutoffs
-- **Comprehensive colleges**: 180+ engineering colleges across Karnataka
-- **All categories**: GM, SC, ST, 1G, 2A, 2B, 3A, 3B
-- **All seat types**: Government quota with multiple rounds
-- **100+ branches**: From Computer Science to specialized engineering streams
-
-## 🛠️ Technical Stack
-
-- **Frontend**: React 18 + TypeScript + Vite
-- **UI Framework**: Tailwind CSS + shadcn/ui
-- **Data Management**: Local JSON + XLSX support + Supabase integration
-- **PDF Processing**: pdf-parse + custom extraction logic
-- **Routing**: React Router v6
-- **State Management**: Zustand + React Query + React Hooks
-- **Charts**: Recharts for data visualization
-- **Icons**: Lucide React
-
-## 📦 Project Structure
-
-```
-src/
-├── components/          # Reusable UI components
-│   ├── ui/             # shadcn/ui components
-│   └── ...             # Custom components
-├── pages/              # Page components
-│   ├── Dashboard.tsx
-│   ├── CollegeFinder.tsx
-│   ├── RankPredictor.tsx
-│   ├── MockSimulator.tsx
-│   ├── CutoffExplorer.tsx
-│   ├── Analytics.tsx
-│   ├── Planner.tsx
-│   ├── Loadout.tsx
-│   └── ...
-├── lib/                # Utility functions and helpers
-├── store/              # State management (Zustand)
-├── hooks/              # Custom React hooks
-└── data/               # Static data files
-```
-
-## 🚀 Performance Features
-
-- **Lazy Loading**: Components load on demand
-- **Data Pagination**: Large datasets are efficiently paginated
-- **Search Optimization**: Fast filtering algorithms
-- **Caching**: Local data caching for faster access
-- **Responsive Design**: Optimized for all device sizes
-- **Error Handling**: Comprehensive error boundaries
-- **Fast Mode**: Dashboard fast loading option via summary data
-
-## 🔮 Upcoming Features
-
-- [ ] **College Compare**: Side-by-side comparison
-- [ ] **Fee Calculator**: Cost estimation tools
-- [ ] **Mobile App**: React Native version
-- [ ] **Real-time Updates**: Live data synchronization
-- [ ] **Seat Matrix**: Detailed seat availability
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Karnataka Examination Authority (KEA)** for providing cutoff data
-- **shadcn/ui** for the excellent component library
-- **React Team** for the amazing framework
-- **Tailwind CSS** for the utility-first CSS framework
-- **Vite** for the fast build tool
-
-## 📞 Support
-
-For support, questions, or feature requests:
-- Join [r/KCETCoded](https://www.reddit.com/r/KCETCoded/) on Reddit
-- Create an issue on [GitHub](https://github.com/noimnothim/kcetcode/issues)
-- Email: gwakamoliyeah@gmail.com
+</div>
 
 ---
 
-*Helping students make informed decisions for their engineering future*
+## 🚀 Overview
 
-**Last Updated:** January 2026
+**KCET Compass** is a comprehensive, open-source platform designed to simplify the complex admission process for Karnataka Common Entrance Test (KCET) aspirants. From predicting your rank to simulating the counseling process, **KCET Compass** covers every step of the journey with precision and clarity.
+
+> **Disclaimer:** This is an independent project and is not affiliated with the Karnataka Examination Authority (KEA).
+
+---
+
+## ✨ Features
+
+### 🎯 Core Admission Tools
+
+| Feature | Description |
+|---------|-------------|
+| **📊 Cutoff Explorer** | Explore over **250,000+** historical cutoff records (2023-2025) across all rounds and categories. Filter by college, branch, and category with ease. |
+| **🏆 Rank Predictor** | Estimate your KCET rank based on your PCM marks and board percentages. Uses historical data trends for high accuracy. |
+| **🎓 College Finder** | Input your rank and get a tailored list of colleges you have a high chance of getting into. Includes "Safe", "Moderate", and "Ambitious" markers. |
+| **🔄 Mock Simulator** | Experience the real option entry process. Sort, add, and rearrange your college preferences in a simulated environment. |
+| **📅 Round Tracker** | Stay updated with the latest counseling schedule. Track Round 1, Round 2, and Extended Round dates seamlessly. |
+| **📝 Option Entry Analyzer** | Upload your official KEA Option Entry PDF to visualize and analyze your choices. Detect missing top colleges or illogical orderings. |
+
+### 🎮 Gamified Learning & Social
+
+*   **⚔️ Cutoff Clash**: A "Higher or Lower" style game to test your knowledge of engineering college cutoffs.
+*   **📅 Daily Challenge**: A daily quiz or task related to KCET preparation and counseling logic.
+*   **🤝 Squad Finder**: Connect with students who share your rank range and college preferences to find potential future batchmates.
+*   **💬 College Community**: Join discussions specific to each college.
+
+### 📚 Information & Resources
+
+*   **🤖 AI Counselor**: Get instant answers to your counseling queries powered by a trained AI assistant.
+*   **📰 CET News**: A dedicated news feed aggregating the latest updates from KEA and major news outlets.
+*   **📋 Documents Checklist**: An interactive checklist for all documents required during verification (Study Certificates, Income Certificates, etc.).
+*   **📖 Info Centre**: Curated articles explaining the counseling process, document verification, and reservation categories.
+*   **💾 Materials**: Access to study materials, previous year question papers, and important forms.
+*   **⭐ Reviews**: Authentic, student-submitted reviews for engineering colleges across Karnataka.
+
+### 🧪 Coded Labs (Experimental)
+
+*   **🚇 Metro Mapper**: Visualize Bangalore engineering colleges relative to Namma Metro lines to find the most commutable campuses.
+*   **💎 Hidden Gems**: AI-driven analysis to identify colleges with excellent placement stats and infrastructure that are often overlooked.
+
+---
+
+## ⌨️ Hidden Tricks & Easter Eggs
+
+We believe in making tools fun. KCET Compass is packed with hidden features:
+
+1.  **Command Palette**: Press `Ctrl + K` (or `Cmd + K`) to instantly search and navigate to any page or college.
+2.  **Keyboard Shortcuts HUD**: Press `?` anywhere to view a list of all available keyboard shortcuts.
+3.  **Konami Code**: Try entering the legendary Konami Code (`↑ ↑ ↓ ↓ ← → ← → B A`) for a surprise party mode! 🎉
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+-   **Framework:** [React 18](https://react.dev/)
+-   **Build Tool:** [Vite](https://vitejs.dev/)
+-   **Language:** [TypeScript](https://www.typescriptlang.org/)
+-   **Styling:** [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+-   **State Management:** [Zustand](https://github.com/pmndrs/zustand)
+-   **Routing:** [React Router v6](https://reactrouter.com/)
+-   **Animations:** [Framer Motion](https://www.framer.com/motion/)
+-   **Charts:** [Recharts](https://recharts.org/)
+-   **Icons:** [Lucide React](https://lucide.dev/)
+
+### Data & Backend
+-   **Python:** For complex data extraction (PDF parsing, OCR, Excel processing).
+-   **Pandas/OpenPyXL:** Data manipulation and cleaning.
+-   **Node.js:** Helper scripts for data migration and API interfacing.
+-   **Supabase:** (Optional) Backend for user analytics and live features.
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+-   **Node.js** (v18 or higher)
+-   **Python** (3.8 or higher) - *Optional, only for running data extraction scripts*
+
+### Steps
+
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/yourusername/kcet-compass.git
+    cd kcet-compass
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Start Development Server**
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 🧬 Data Pipeline
+
+Our data is the heart of the application. We use a sophisticated Python pipeline to extract, clean, and merge data from KEA's official PDF and Excel documents.
+
+### How to Regenerate Data
+
+If you need to update the dataset with new KCET results:
+
+1.  **Place Data Files:**
+    Put the KEA PDF/XLSX files in `public/cutoffs/`.
+
+2.  **Run the Extractor:**
+    ```bash
+    # Install Python dependencies
+    pip install -r requirements.txt
+    
+    # Run the comprehensive extractor
+    python scripts/extract_all_kcet_data.py
+    ```
+
+    This script will:
+    *   Extract mock, round 1, round 2, and extended round data.
+    *   Parse complex 2025 PDF layouts using `pdfplumber`.
+    *   Merge data from 2023, 2024, and 2025.
+    *   Output `public/data/kcet_extracted_all.json` (>20MB) and a CSV version.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Whether it's fixing a bug, adding a college review, or improving the rank prediction algorithm.
+
+1.  **Fork** the project.
+2.  **Create** your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  **Commit** your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  **Push** to the branch (`git push origin feature/AmazingFeature`).
+5.  **Open** a Pull Request.
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<div align="center">
+
+**Built with ❤️ for KCET Aspirants**
+
+[Report Bug](https://github.com/yourusername/kcet-compass/issues) • [Request Feature](https://github.com/yourusername/kcet-compass/issues)
+
+</div>
