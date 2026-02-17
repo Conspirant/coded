@@ -52,41 +52,20 @@ const Homepage = () => {
     })
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
     const [currentWord, setCurrentWord] = useState(0)
-    const [displayText, setDisplayText] = useState("")
-    const [isDeleting, setIsDeleting] = useState(false)
     const heroRef = useRef<HTMLElement>(null)
 
     const { scrollYProgress } = useScroll()
     const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0])
     const heroScale = useTransform(scrollYProgress, [0, 0.25], [1, 0.95])
 
-    // Typewriter effect
+    // Simple word cycling effect
     useEffect(() => {
-        const word = HERO_WORDS[currentWord]
-        const typeSpeed = isDeleting ? 40 : 80
-        const pauseTime = isDeleting ? 200 : 2000
-
-        if (!isDeleting && displayText === word) {
-            const timeout = setTimeout(() => setIsDeleting(true), pauseTime)
-            return () => clearTimeout(timeout)
-        }
-
-        if (isDeleting && displayText === "") {
-            setIsDeleting(false)
+        const interval = setInterval(() => {
             setCurrentWord((prev) => (prev + 1) % HERO_WORDS.length)
-            return
-        }
+        }, 3000)
 
-        const timeout = setTimeout(() => {
-            setDisplayText(
-                isDeleting
-                    ? word.substring(0, displayText.length - 1)
-                    : word.substring(0, displayText.length + 1)
-            )
-        }, typeSpeed)
-
-        return () => clearTimeout(timeout)
-    }, [displayText, isDeleting, currentWord])
+        return () => clearInterval(interval)
+    }, [])
 
     // Fetch real data
     useEffect(() => {
@@ -344,7 +323,7 @@ const Homepage = () => {
                         </div>
                     </motion.div>
 
-                    {/* Headline with typewriter */}
+                    {/* Headline with word cycling */}
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -352,12 +331,16 @@ const Homepage = () => {
                         className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-[0.95]"
                     >
                         Find your <br className="hidden sm:block" />
-                        <span className="relative inline-block">
-                            <span className="gradient-text">
-                                {displayText}
-                            </span>
-                            <span className="animate-blink text-indigo-400 ml-0.5 font-light">|</span>
-                        </span>
+                        <motion.span
+                            key={currentWord}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                            className="gradient-text inline-block"
+                        >
+                            {HERO_WORDS[currentWord]}
+                        </motion.span>
                     </motion.h1>
 
                     {/* Subheadline */}
