@@ -63,14 +63,14 @@ const loadReviewsFromSupabase = async (): Promise<CollegeReview[]> => {
       console.error('❌ Error loading reviews from Supabase:', reviewsError);
       return [];
     }
-    
+
     if (!reviews || reviews.length === 0) {
       return [];
     }
 
     // Get college information for each review
     const collegeIds = [...new Set(reviews.map(review => review.college_id))];
-    
+
     const { data: colleges, error: collegesError } = await supabase
       .from('colleges')
       .select('id, code, name')
@@ -113,16 +113,16 @@ const loadReviewsFromSupabase = async (): Promise<CollegeReview[]> => {
 
     return reviews.map(review => {
       const college = collegeMap.get(review.college_id);
-      
+
       const currentSessionId = getUserSessionId();
       const reviewSessionId = review.session_id;
       const reviewUserId = review.user_id;
-      
+
       // Check if this is the current user's review
       // For old reviews: check if user_id matches session_id (backward compatibility)
       // For new reviews: check if session_id matches current session
       const isCurrentUser = reviewUserId === currentSessionId || reviewSessionId === currentSessionId;
-      
+
       return {
         id: review.id,
         college_id: review.college_id,
@@ -159,7 +159,7 @@ export const loadColleges = async (): Promise<College[]> => {
       throw new Error('Failed to load colleges data');
     }
     const colleges = await response.json();
-    
+
     // Clean up college names
     return colleges.map((college: College) => ({
       ...college,
@@ -211,16 +211,16 @@ export const loadCollegeReviews = async (): Promise<CollegeReview[]> => {
 
 export const getCollegesWithReviews = async (): Promise<{ college: College; reviews: CollegeReview[] }[]> => {
   try {
-    // Load colleges from Supabase instead of JSON to ensure all colleges are available
-    const colleges = await loadCollegesFromSupabase();
+    // Always load colleges from JSON file to guarantee all 232 colleges are shown
+    const colleges = await loadColleges();
     const allReviews = await loadCollegeReviews();
-    
+
     // Create a map of college codes to college objects for faster lookup
     const collegeCodeMap = new Map();
     colleges.forEach(college => {
       collegeCodeMap.set(college.code, college);
     });
-    
+
     // Group reviews by college code
     const reviewsByCollegeCode = new Map();
     allReviews.forEach(review => {
@@ -231,17 +231,17 @@ export const getCollegesWithReviews = async (): Promise<{ college: College; revi
         reviewsByCollegeCode.get(review.collegeCode).push(review);
       }
     });
-    
+
     // Create result with colleges that have reviews
     const result = colleges.map(college => ({
       college,
       reviews: reviewsByCollegeCode.get(college.code) || []
     }));
-    
+
     // Also add any colleges that have reviews but aren't in the main colleges list
     const collegesWithReviews = Array.from(reviewsByCollegeCode.keys());
     const missingColleges = collegesWithReviews.filter(code => !collegeCodeMap.has(code));
-    
+
     if (missingColleges.length > 0) {
       // Add these colleges to the result
       missingColleges.forEach(code => {
@@ -259,7 +259,7 @@ export const getCollegesWithReviews = async (): Promise<{ college: College; revi
         }
       });
     }
-    
+
     return result;
   } catch (error) {
     console.error('Error loading colleges with reviews:', error);
@@ -280,7 +280,7 @@ export const saveReviewToSupabase = async (reviewData: {
   graduation_year?: number;
 }): Promise<CollegeReview | null> => {
   try {
-    
+
     // First, check if the college exists in the database
     let { data: collegeData, error: collegeError } = await supabase
       .from('colleges')
@@ -288,10 +288,33 @@ export const saveReviewToSupabase = async (reviewData: {
       .eq('code', reviewData.collegeCode)
       .single();
 
+    // If college doesn't exist in Supabase, auto-insert it from the local JSON data
     if (collegeError || !collegeData) {
-      console.error('College error:', collegeError);
-      // Fallback to localStorage
-      return saveToLocalStorage(reviewData);
+      console.log('College not found in Supabase, auto-inserting:', reviewData.collegeCode);
+
+      // Load the college name from local JSON
+      let collegeName = `College ${reviewData.collegeCode}`;
+      try {
+        const colleges = await loadColleges();
+        const found = colleges.find(c => c.code === reviewData.collegeCode);
+        if (found) collegeName = found.name;
+      } catch (e) {
+        console.warn('Could not load college name from JSON:', e);
+      }
+
+      // Upsert the college into Supabase
+      const { data: insertedCollege, error: insertError } = await supabase
+        .from('colleges')
+        .upsert({ code: reviewData.collegeCode, name: collegeName }, { onConflict: 'code' })
+        .select('id')
+        .single();
+
+      if (insertError || !insertedCollege) {
+        console.error('Failed to auto-insert college:', insertError);
+        return saveToLocalStorage(reviewData);
+      }
+
+      collegeData = insertedCollege;
     }
 
     // Use the user session ID for tracking user's own reviews
@@ -359,7 +382,7 @@ const saveToLocalStorage = (reviewData: {
   course?: string;
   graduation_year?: number;
 }): CollegeReview => {
-  
+
   const mockReview: CollegeReview = {
     id: `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     college_id: `college_${reviewData.collegeCode}`,
@@ -385,14 +408,14 @@ const saveToLocalStorage = (reviewData: {
   const existingReviews = JSON.parse(localStorage.getItem('local_reviews') || '[]');
   existingReviews.push(mockReview);
   localStorage.setItem('local_reviews', JSON.stringify(existingReviews));
-  
+
   return mockReview;
 };
 
 // Delete review from Supabase
 export const deleteReviewFromSupabase = async (reviewId: string): Promise<boolean> => {
   try {
-    
+
     const { error } = await supabase
       .from('college_reviews')
       .delete()
@@ -415,9 +438,9 @@ const deleteFromLocalStorage = (reviewId: string): boolean => {
   try {
     const existingReviews = JSON.parse(localStorage.getItem('local_reviews') || '[]');
     const updatedReviews = existingReviews.filter((review: CollegeReview) => review.id !== reviewId);
-    
+
     localStorage.setItem('local_reviews', JSON.stringify(updatedReviews));
-    
+
     return true;
   } catch (error) {
     console.error('Error deleting review from localStorage:', error);
@@ -430,7 +453,7 @@ export const isUserReview = (review: CollegeReview): boolean => {
   const userSessionId = getUserSessionId();
   const reviewUserId = review.user_id;
   const reviewSessionId = review.session_id;
-  
+
   // For backward compatibility: old reviews use user_id as session_id
   // For new reviews: use session_id field
   const isCurrentUser = reviewUserId === userSessionId || reviewSessionId === userSessionId;
@@ -445,7 +468,7 @@ export const deleteReview = async (reviewId: string): Promise<boolean> => {
     if (supabaseSuccess) {
       return true;
     }
-    
+
     // Fallback to localStorage
     return deleteFromLocalStorage(reviewId);
   } catch (error) {

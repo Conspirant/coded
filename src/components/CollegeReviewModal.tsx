@@ -1,18 +1,18 @@
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Star, MessageSquare, ThumbsUp, User, Calendar, CheckCircle, Trash2, AlertCircle } from "lucide-react"
+import { Star, MessageSquare, ThumbsUp, User, Calendar, CheckCircle, Trash2, Sparkles, PenLine } from "lucide-react"
 import { College, CollegeReview, saveReviewToSupabase, deleteReview, isUserReview } from "@/lib/college-service"
-import { 
-  validateReviewText, 
-  validateRating, 
-  checkRateLimit, 
-  getUserIdentifier, 
+import {
+  validateReviewText,
+  validateRating,
+  checkRateLimit,
+  getUserIdentifier,
   VALIDATION_LIMITS,
   RATE_LIMITS
 } from "@/lib/security"
@@ -26,25 +26,28 @@ interface CollegeReviewModalProps {
   onDeleteReview: (reviewId: string) => void;
 }
 
-const StarRating = ({ 
-  rating, 
-  onRatingChange, 
-  interactive = false 
-}: { 
-  rating: number; 
+const StarRating = ({
+  rating,
+  onRatingChange,
+  interactive = false,
+  size = "md"
+}: {
+  rating: number;
   onRatingChange?: (rating: number) => void;
   interactive?: boolean;
+  size?: "sm" | "md" | "lg";
 }) => {
+  const sizeMap = { sm: "h-4 w-4", md: "h-5 w-5", lg: "h-6 w-6" }
+  const starSize = sizeMap[size]
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
-          className={`h-5 w-5 ${
-            star <= rating 
-              ? "fill-yellow-400 text-yellow-400" 
-              : "text-gray-300"
-          } ${interactive ? "cursor-pointer hover:text-yellow-300" : ""}`}
+          className={`${starSize} transition-all ${star <= rating
+              ? "fill-amber-400 text-amber-400"
+              : "text-white/10"
+            } ${interactive ? "cursor-pointer hover:text-amber-300 hover:scale-110" : ""}`}
           onClick={() => interactive && onRatingChange?.(star)}
         />
       ))}
@@ -52,38 +55,54 @@ const StarRating = ({
   );
 };
 
-const CategoryRating = ({ 
-  label, 
-  rating, 
-  onRatingChange, 
-  interactive = false 
-}: { 
-  label: string; 
-  rating: number; 
-  onRatingChange?: (rating: number) => void;
-  interactive?: boolean;
-}) => {
-  return (
+const RatingBar = ({
+  label,
+  value,
+  color
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) => (
+  <div className="space-y-1.5">
     <div className="flex items-center justify-between">
-      <Label className="text-sm font-medium text-gray-300">{label}</Label>
-      <StarRating 
-        rating={rating} 
-        onRatingChange={onRatingChange}
-        interactive={interactive}
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      <span className="text-xs font-bold tabular-nums">{value.toFixed(1)}/5</span>
+    </div>
+    <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+      <div
+        className={`h-full rounded-full ${color} transition-all duration-700 ease-out`}
+        style={{ width: `${(value / 5) * 100}%` }}
       />
     </div>
-  );
-};
+  </div>
+);
 
-export const CollegeReviewModal = ({ 
-  college, 
-  reviews, 
-  isOpen, 
-  onClose, 
+const CategoryRatingInput = ({
+  label,
+  rating,
+  onRatingChange,
+}: {
+  label: string;
+  rating: number;
+  onRatingChange: (rating: number) => void;
+}) => (
+  <div className="flex items-center justify-between py-2 px-3 rounded-xl bg-white/[0.02] border border-white/5">
+    <Label className="text-sm font-medium text-muted-foreground">{label}</Label>
+    <StarRating rating={rating} onRatingChange={onRatingChange} interactive size="sm" />
+  </div>
+);
+
+export const CollegeReviewModal = ({
+  college,
+  reviews,
+  isOpen,
+  onClose,
   onAddReview,
   onDeleteReview
 }: CollegeReviewModalProps) => {
   const [showAddReview, setShowAddReview] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [newReview, setNewReview] = useState({
     rating: 0,
     review_text: "",
@@ -97,70 +116,52 @@ export const CollegeReviewModal = ({
 
   if (!college) return null;
 
-  const averageRating = reviews.length > 0 
-    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)
+  const averageRating = reviews.length > 0
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
     : 0;
 
-  const averageCategories = reviews.length > 0 ? {
-    placements: (reviews.reduce((sum, review) => sum + review.placements_rating, 0) / reviews.length).toFixed(1),
-    faculty: (reviews.reduce((sum, review) => sum + review.faculty_rating, 0) / reviews.length).toFixed(1),
-    infrastructure: (reviews.reduce((sum, review) => sum + review.infrastructure_rating, 0) / reviews.length).toFixed(1),
+  const avgCategories = reviews.length > 0 ? {
+    placements: reviews.reduce((sum, r) => sum + r.placements_rating, 0) / reviews.length,
+    faculty: reviews.reduce((sum, r) => sum + r.faculty_rating, 0) / reviews.length,
+    infrastructure: reviews.reduce((sum, r) => sum + r.infrastructure_rating, 0) / reviews.length,
   } : null;
 
   const handleSubmitReview = async () => {
-    // Check rate limiting first
     const userIdentifier = getUserIdentifier();
     const rateLimitCheck = checkRateLimit(userIdentifier, RATE_LIMITS.REVIEW_SUBMISSION);
-    
+
     if (!rateLimitCheck.allowed) {
       const resetTime = new Date(rateLimitCheck.resetTime).toLocaleTimeString();
-      alert(`Too many review submissions. Please wait until ${resetTime} before submitting another review.`);
+      alert(`Too many submissions. Please wait until ${resetTime}.`);
       return;
     }
 
-    // Validate required fields
     if (newReview.rating === 0 || !newReview.review_text) {
-      alert("Please fill in all required fields and provide a rating");
+      alert("Please provide a rating and review text.");
       return;
     }
 
-    // Validate review text
     const textValidation = validateReviewText(newReview.review_text);
-    if (!textValidation.isValid) {
-      alert(textValidation.error);
-      return;
-    }
+    if (!textValidation.isValid) { alert(textValidation.error); return; }
 
-    // Validate ratings
     const ratingValidation = validateRating(newReview.rating);
-    if (!ratingValidation.isValid) {
-      alert(ratingValidation.error);
-      return;
-    }
+    if (!ratingValidation.isValid) { alert(ratingValidation.error); return; }
 
     const facultyValidation = validateRating(newReview.faculty_rating);
-    if (!facultyValidation.isValid) {
-      alert(`Faculty rating: ${facultyValidation.error}`);
-      return;
-    }
+    if (!facultyValidation.isValid) { alert(`Faculty: ${facultyValidation.error}`); return; }
 
-    const infrastructureValidation = validateRating(newReview.infrastructure_rating);
-    if (!infrastructureValidation.isValid) {
-      alert(`Infrastructure rating: ${infrastructureValidation.error}`);
-      return;
-    }
+    const infraValidation = validateRating(newReview.infrastructure_rating);
+    if (!infraValidation.isValid) { alert(`Infrastructure: ${infraValidation.error}`); return; }
 
     const placementsValidation = validateRating(newReview.placements_rating);
-    if (!placementsValidation.isValid) {
-      alert(`Placements rating: ${placementsValidation.error}`);
-      return;
-    }
+    if (!placementsValidation.isValid) { alert(`Placements: ${placementsValidation.error}`); return; }
 
     try {
+      setSubmitting(true);
       const savedReview = await saveReviewToSupabase({
         collegeCode: college.code,
         rating: newReview.rating,
-        review_text: textValidation.sanitized, // Use sanitized text
+        review_text: textValidation.sanitized,
         faculty_rating: newReview.faculty_rating,
         infrastructure_rating: newReview.infrastructure_rating,
         placements_rating: newReview.placements_rating,
@@ -172,256 +173,317 @@ export const CollegeReviewModal = ({
       if (savedReview) {
         onAddReview(savedReview);
         setNewReview({
-          rating: 0,
-          review_text: "",
-          faculty_rating: 1,
-          infrastructure_rating: 1,
-          placements_rating: 1,
-          comment: "",
-          course: "",
-          graduation_year: new Date().getFullYear(),
+          rating: 0, review_text: "", faculty_rating: 1,
+          infrastructure_rating: 1, placements_rating: 1,
+          comment: "", course: "", graduation_year: new Date().getFullYear(),
         });
         setShowAddReview(false);
       } else {
-        console.error('Review save returned null');
-        alert("Failed to save review. Please check the console for details and try again.");
+        alert("Failed to save review. Please try again.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving review:", error);
-      alert(`Failed to save review: ${error.message || 'Unknown error'}. Please check the console for details.`);
+      alert(`Failed to save review: ${error.message || 'Unknown error'}`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleDeleteReview = async (reviewId: string) => {
-    if (!confirm("Are you sure you want to delete this review? This action cannot be undone.")) {
-      return;
-    }
+    if (!confirm("Delete this review? This cannot be undone.")) return;
 
     try {
       const success = await deleteReview(reviewId);
       if (success) {
         onDeleteReview(reviewId);
       } else {
-        alert("Failed to delete review. Please try again.");
+        alert("Failed to delete review.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting review:", error);
-      alert(`Failed to delete review: ${error.message || 'Unknown error'}. Please try again.`);
+      alert(`Failed to delete: ${error.message || 'Unknown error'}`);
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700 mx-4 sm:mx-0"
+      <DialogContent
+        className="max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-background/95 backdrop-blur-2xl border-white/10 mx-2 sm:mx-0 rounded-2xl"
         aria-describedby="college-review-modal-description"
       >
-        <DialogHeader className="space-y-3">
-          <DialogTitle className="text-lg sm:text-2xl font-bold break-words text-white leading-tight">{college.name}</DialogTitle>
-          <p id="college-review-modal-description" className="sr-only">
-            View and manage reviews for {college.name} ({college.code}). {reviews.length > 0 ? `Currently showing ${reviews.length} review${reviews.length !== 1 ? 's' : ''}.` : 'No reviews available yet.'}
-          </p>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <Badge variant="outline" className="bg-gray-700 text-gray-200 border-gray-600 w-fit">{college.code}</Badge>
-            {reviews.length > 0 && (
-              <div className="flex items-center gap-2 text-sm text-gray-300">
-                <StarRating rating={Math.round(parseFloat(averageRating.toString()))} />
-                <span className="text-xs sm:text-sm">{averageRating}/5 ({reviews.length} review{reviews.length !== 1 ? 's' : ''})</span>
-              </div>
-            )}
+        {/* ═══ Header ═══ */}
+        <DialogHeader className="space-y-4 pb-4 border-b border-white/5">
+          <div>
+            <DialogTitle className="text-lg sm:text-xl font-bold break-words leading-tight mb-2">
+              {college.name}
+            </DialogTitle>
+            <p id="college-review-modal-description" className="sr-only">
+              Reviews for {college.name} ({college.code})
+            </p>
+            <div className="flex items-center gap-3 flex-wrap">
+              <Badge variant="outline" className="font-mono text-[10px] bg-white/5 border-white/10">
+                {college.code}
+              </Badge>
+              {reviews.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <StarRating rating={Math.round(averageRating)} size="sm" />
+                  <span className="text-sm font-semibold text-amber-400">
+                    {averageRating.toFixed(1)}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    ({reviews.length} review{reviews.length !== 1 ? 's' : ''})
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </DialogHeader>
 
-        <div className="space-y-6">
-          {/* Average Ratings */}
-          {averageCategories && (
-            <Card className="bg-gray-700 border-gray-600">
-              <CardHeader>
-                <CardTitle className="text-lg text-white">Average Ratings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <CategoryRating label="Placements" rating={parseFloat(averageCategories.placements)} />
-                  <CategoryRating label="Faculty" rating={parseFloat(averageCategories.faculty)} />
-                  <CategoryRating label="Infrastructure" rating={parseFloat(averageCategories.infrastructure)} />
-                </div>
-              </CardContent>
-            </Card>
+        <div className="space-y-5 pt-2">
+          {/* ═══ Average Ratings Overview ═══ */}
+          {avgCategories && (
+            <div className="rounded-xl glass border border-white/5 p-5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+                Average Ratings
+              </h4>
+              <div className="space-y-3">
+                <RatingBar label="Placements" value={avgCategories.placements} color="bg-emerald-400" />
+                <RatingBar label="Faculty" value={avgCategories.faculty} color="bg-blue-400" />
+                <RatingBar label="Infrastructure" value={avgCategories.infrastructure} color="bg-purple-400" />
+              </div>
+            </div>
           )}
 
-            {/* Reviews Section */}
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <h3 className="text-base sm:text-lg font-semibold text-white">Reviews ({reviews.length})</h3>
-                <Button onClick={() => setShowAddReview(!showAddReview)} className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base w-full sm:w-auto">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  {showAddReview ? "Cancel" : "Add Review"}
-                </Button>
-              </div>
+          {/* ═══ Reviews Section ═══ */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+                Reviews ({reviews.length})
+              </h3>
+              <Button
+                onClick={() => setShowAddReview(!showAddReview)}
+                size="sm"
+                className={`rounded-xl text-xs font-semibold transition-all ${showAddReview
+                    ? "bg-white/10 text-muted-foreground hover:bg-white/15 border border-white/10"
+                    : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 border-0"
+                  }`}
+              >
+                {showAddReview ? (
+                  <>Cancel</>
+                ) : (
+                  <>
+                    <PenLine className="h-3.5 w-3.5 mr-1.5" />
+                    Write Review
+                  </>
+                )}
+              </Button>
+            </div>
 
-            {/* Add Review Form */}
+            {/* ═══ Add Review Form ═══ */}
             {showAddReview && (
-              <Card className="bg-gray-700 border-gray-600">
-                <CardHeader>
-                  <CardTitle className="text-white">Write a Review</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-white">Overall Rating *</Label>
-                    <StarRating 
-                      rating={newReview.rating} 
-                      onRatingChange={(rating) => setNewReview(prev => ({ ...prev, rating }))}
-                      interactive
+              <div className="rounded-xl glass border border-indigo-500/20 p-5 space-y-4">
+                <div className="flex items-center gap-2 mb-1">
+                  <Sparkles className="h-4 w-4 text-indigo-400" />
+                  <h4 className="font-semibold text-sm">Share Your Experience</h4>
+                </div>
+
+                {/* Overall Rating */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Overall Rating *
+                  </Label>
+                  <StarRating
+                    rating={newReview.rating}
+                    onRatingChange={(rating) => setNewReview(prev => ({ ...prev, rating }))}
+                    interactive
+                    size="lg"
+                  />
+                </div>
+
+                {/* Review Text */}
+                <div className="space-y-2">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Your Review *
+                  </Label>
+                  <Textarea
+                    value={newReview.review_text}
+                    onChange={(e) => setNewReview(prev => ({ ...prev, review_text: e.target.value }))}
+                    placeholder="Share your detailed experience about this college..."
+                    rows={4}
+                    maxLength={VALIDATION_LIMITS.MAX_REVIEW_LENGTH}
+                    className="rounded-xl bg-white/5 border-white/10 focus:border-indigo-500/50 focus:ring-indigo-500/20 resize-none text-sm"
+                  />
+                  <div className="text-[10px] text-muted-foreground text-right tabular-nums">
+                    {newReview.review_text.length}/{VALIDATION_LIMITS.MAX_REVIEW_LENGTH}
+                  </div>
+                </div>
+
+                {/* Course & Year */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      Course (Optional)
+                    </Label>
+                    <Input
+                      value={newReview.course}
+                      onChange={(e) => setNewReview(prev => ({ ...prev, course: e.target.value }))}
+                      placeholder="e.g., CS, ECE"
+                      maxLength={50}
+                      className="rounded-xl bg-white/5 border-white/10 focus:border-indigo-500/50 text-sm h-9"
                     />
                   </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold text-white">Your Review *</Label>
-                    <Textarea
-                      value={newReview.review_text}
-                      onChange={(e) => setNewReview(prev => ({ ...prev, review_text: e.target.value }))}
-                      placeholder="Share your detailed experience..."
-                      rows={4}
-                      maxLength={VALIDATION_LIMITS.MAX_REVIEW_LENGTH}
-                      className="border-2 border-gray-600 bg-gray-800 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                  <div className="space-y-1.5">
+                    <Label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      Grad Year (Optional)
+                    </Label>
+                    <Input
+                      type="number"
+                      value={newReview.graduation_year}
+                      onChange={(e) => setNewReview(prev => ({ ...prev, graduation_year: parseInt(e.target.value) || new Date().getFullYear() }))}
+                      min="2000"
+                      max="2035"
+                      className="rounded-xl bg-white/5 border-white/10 focus:border-indigo-500/50 text-sm h-9"
                     />
-                    <div className="text-xs text-gray-400 text-right">
-                      {newReview.review_text.length}/{VALIDATION_LIMITS.MAX_REVIEW_LENGTH} characters
-                    </div>
                   </div>
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-white text-sm">Course (Optional)</Label>
-                      <Input
-                        value={newReview.course}
-                        onChange={(e) => setNewReview(prev => ({ ...prev, course: e.target.value }))}
-                        placeholder="e.g., Computer Science"
-                        maxLength={50}
-                        className="border-2 border-gray-600 bg-gray-800 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-sm"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-white text-sm">Graduation Year (Optional)</Label>
-                      <Input
-                        type="number"
-                        value={newReview.graduation_year}
-                        onChange={(e) => setNewReview(prev => ({ ...prev, graduation_year: parseInt(e.target.value) || new Date().getFullYear() }))}
-                        placeholder="2024"
-                        min="2000"
-                        max="2030"
-                        className="border-2 border-gray-600 bg-gray-800 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-100 text-sm"
-                      />
-                    </div>
+                {/* Category Ratings */}
+                <div className="space-y-2">
+                  <Label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Category Ratings
+                  </Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <CategoryRatingInput
+                      label="Placements"
+                      rating={newReview.placements_rating}
+                      onRatingChange={(r) => setNewReview(prev => ({ ...prev, placements_rating: r }))}
+                    />
+                    <CategoryRatingInput
+                      label="Faculty"
+                      rating={newReview.faculty_rating}
+                      onRatingChange={(r) => setNewReview(prev => ({ ...prev, faculty_rating: r }))}
+                    />
+                    <CategoryRatingInput
+                      label="Infrastructure"
+                      rating={newReview.infrastructure_rating}
+                      onRatingChange={(r) => setNewReview(prev => ({ ...prev, infrastructure_rating: r }))}
+                    />
                   </div>
+                </div>
 
-                  <div className="space-y-3">
-                    <Label className="text-white text-sm">Category Ratings</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <CategoryRating 
-                        label="Placements" 
-                        rating={newReview.placements_rating} 
-                        onRatingChange={(rating) => setNewReview(prev => ({ 
-                          ...prev, 
-                          placements_rating: rating
-                        }))}
-                        interactive
-                      />
-                      <CategoryRating 
-                        label="Faculty" 
-                        rating={newReview.faculty_rating} 
-                        onRatingChange={(rating) => setNewReview(prev => ({ 
-                          ...prev, 
-                          faculty_rating: rating
-                        }))}
-                        interactive
-                      />
-                      <CategoryRating 
-                        label="Infrastructure" 
-                        rating={newReview.infrastructure_rating} 
-                        onRatingChange={(rating) => setNewReview(prev => ({ 
-                          ...prev, 
-                          infrastructure_rating: rating
-                        }))}
-                        interactive
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    <Button onClick={handleSubmitReview} className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base">Submit Review</Button>
-                    <Button variant="outline" onClick={() => setShowAddReview(false)} className="border-gray-600 text-gray-300 hover:bg-gray-600 text-sm sm:text-base">Cancel</Button>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Submit */}
+                <div className="flex gap-2 pt-1">
+                  <Button
+                    onClick={handleSubmitReview}
+                    disabled={submitting || newReview.rating === 0 || !newReview.review_text.trim()}
+                    className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 border-0 text-sm font-semibold disabled:opacity-40"
+                  >
+                    {submitting ? "Submitting..." : "Submit Review"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowAddReview(false)}
+                    className="rounded-xl border-white/10 text-muted-foreground hover:bg-white/5 text-sm"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
             )}
 
-            {/* Reviews List */}
+            {/* ═══ Reviews List ═══ */}
             {reviews.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {reviews.map((review) => (
-                  <Card key={review.id} className="border-2 border-gray-600 hover:border-blue-400 transition-colors bg-gray-700">
-                    <CardContent className="pt-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <StarRating rating={review.rating} />
-                            {review.verified && (
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                            )}
+                  <div
+                    key={review.id}
+                    className="rounded-xl glass border border-white/5 hover:border-white/10 transition-colors p-4 sm:p-5"
+                  >
+                    <div className="space-y-3">
+                      {/* Review header */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
+                            <User className="h-4 w-4 text-indigo-400" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-semibold">{review.author}</span>
+                              {review.verified && (
+                                <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                              <Calendar className="h-2.5 w-2.5" />
+                              <span>{new Date(review.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                            </div>
                           </div>
                         </div>
-                        
-                        <p className="text-gray-200 font-medium leading-relaxed">{review.review_text}</p>
-                        
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0 text-xs sm:text-sm text-gray-400">
-                          <div className="flex items-center gap-2">
-                            <User className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400 flex-shrink-0" />
-                            <span className="font-medium text-gray-300">{review.author}</span>
-                            <span className="text-gray-500 hidden sm:inline">•</span>
-                            <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400 flex-shrink-0" />
-                            <span className="text-gray-400">{new Date(review.created_at).toLocaleDateString()}</span>
+                        <StarRating rating={review.rating} size="sm" />
+                      </div>
+
+                      {/* Review content */}
+                      <p className="text-sm text-foreground/80 leading-relaxed">
+                        {review.review_text}
+                      </p>
+
+                      {/* Review footer */}
+                      <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <Star className="h-2.5 w-2.5 text-emerald-400" />
+                            Placements: {review.placements_rating}/5
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Star className="h-2.5 w-2.5 text-blue-400" />
+                            Faculty: {review.faculty_rating}/5
+                          </span>
+                          <span className="flex items-center gap-1 hidden sm:flex">
+                            <Star className="h-2.5 w-2.5 text-purple-400" />
+                            Infra: {review.infrastructure_rating}/5
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <ThumbsUp className="h-3 w-3" />
+                            <span className="font-medium">{review.helpful_votes}</span>
                           </div>
-                          <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="flex items-center gap-1">
-                              <ThumbsUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
-                              <span className="font-medium text-gray-300">{review.helpful_votes}</span>
-                            </div>
-                            {isUserReview(review) && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDeleteReview(review.id)}
-                                className="h-6 w-6 sm:h-8 sm:w-8 p-0 text-red-400 hover:text-red-300 hover:bg-red-900/20"
-                                title="Delete your review"
-                              >
-                                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                              </Button>
-                            )}
-                          </div>
+                          {isUserReview(review) && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteReview(review.id)}
+                              className="h-6 w-6 p-0 text-red-400/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg"
+                              title="Delete your review"
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          )}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 ))}
               </div>
-            ) : (
-              <Card className="bg-gray-700 border-gray-600">
-                <CardContent className="pt-6">
-                  <div className="text-center py-8">
-                    <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-white mb-2">No reviews yet</h3>
-                    <p className="text-gray-400 mb-4">
-                      Be the first to share your experience with this college!
-                    </p>
-                    <Button onClick={() => setShowAddReview(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      Write First Review
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            ) : !showAddReview ? (
+              <div className="rounded-xl glass border border-white/5 p-10 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4">
+                  <MessageSquare className="h-7 w-7 text-muted-foreground/30" />
+                </div>
+                <h3 className="font-semibold mb-1.5">No reviews yet</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Be the first to share your experience with this college!
+                </p>
+                <Button
+                  onClick={() => setShowAddReview(true)}
+                  size="sm"
+                  className="rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 border-0 text-sm font-semibold"
+                >
+                  <PenLine className="h-3.5 w-3.5 mr-1.5" />
+                  Write First Review
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       </DialogContent>

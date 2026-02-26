@@ -19,6 +19,7 @@ import Documents from "./pages/Documents";
 import Planner from "./pages/Planner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Reviews from "./pages/Reviews";
+import CollegeReviewPage from "./pages/CollegeReviewPage";
 import InfoCentre from "./pages/InfoCentre";
 import Materials from "./pages/Materials";
 import AICounselor from "./pages/AICounselor";
@@ -36,7 +37,9 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import SquadFinder from "./pages/SquadFinder";
 import MetroMapper from "./pages/MetroMapper";
+import BmtcMapper from './pages/BmtcMapper';
 import HiddenGems from "./pages/HiddenGems";
+import CollegeCutoffs from "./pages/CollegeCutoffs";
 
 
 const queryClient = new QueryClient();
@@ -83,11 +86,14 @@ const App = () => (
           } />
           <Route path="/documents" element={<Layout><Documents /></Layout>} />
           <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
-          <Route path="/college-list" element={<Layout><CollegeList /></Layout>} />
+          <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
+          <Route path="/college-list" element={<Layout><CollegeCutoffs /></Layout>} />
+          <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
           <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
           <Route path="/materials" element={<Layout><Materials /></Layout>} />
           <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
           <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
+          <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
 
           {/* College Details Section with specific layout */}
           <Route path="/college/:collegeCode" element={<Layout><CollegeLayout /></Layout>}>
@@ -103,6 +109,7 @@ const App = () => (
           {/* Coded Labs - Unique Features */}
           <Route path="/squad-finder" element={<SquadFinder />} />
           <Route path="/metro-mapper" element={<MetroMapper />} />
+          <Route path="/bmtc-mapper" element={<BmtcMapper />} />
           <Route path="/hidden-gems" element={<HiddenGems />} />
 
           <Route path="*" element={<NotFound />} />

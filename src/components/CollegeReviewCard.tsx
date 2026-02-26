@@ -1,106 +1,87 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, MessageSquare, Users, ChevronRight } from "lucide-react"
-
+import { Star, MessageSquare, ChevronRight } from "lucide-react"
 import { CollegeReview } from "@/lib/college-service"
 
 interface CollegeReviewCardProps {
-  college: {
-    code: string;
-    name: string;
-  };
-  reviews: CollegeReview[];
-  onClick?: () => void;
+  college: { code: string; name: string }
+  reviews: CollegeReview[]
+  onClick?: () => void
 }
 
-const StarRating = ({ rating }: { rating: number }) => {
-  return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          className={`h-4 w-4 ${
-            star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-          }`}
-        />
-      ))}
-    </div>
-  );
-};
+const CollegeReviewCard = ({ college, reviews, onClick }: CollegeReviewCardProps) => {
+  const avg = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0
+  const avgP = reviews.length > 0 ? reviews.reduce((s, r) => s + r.placements_rating, 0) / reviews.length : 0
+  const avgF = reviews.length > 0 ? reviews.reduce((s, r) => s + r.faculty_rating, 0) / reviews.length : 0
+  const avgI = reviews.length > 0 ? reviews.reduce((s, r) => s + r.infrastructure_rating, 0) / reviews.length : 0
 
-const CategoryRating = ({ 
-  label, 
-  rating 
-}: { 
-  label: string; 
-  rating: number; 
-}) => {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-gray-300">{label}</span>
-      <div className="flex items-center gap-1">
-        <StarRating rating={rating} />
-        <span className="text-gray-400 ml-1">{rating}/5</span>
-      </div>
-    </div>
-  );
-};
-
-export const CollegeReviewCard = ({ college, reviews, onClick }: CollegeReviewCardProps) => {
-  return (
-    <Card 
-      className="w-full cursor-pointer hover:shadow-xl transition-all duration-300 hover:border-blue-400 group bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-gray-700 hover:scale-[1.01] sm:hover:scale-[1.02]"
+    <button
+      className="group relative w-full text-left rounded-2xl glass border border-white/5 hover:border-indigo-500/20 transition-all duration-300 active:scale-[0.98] hover:shadow-lg hover:shadow-indigo-500/5 overflow-hidden"
       onClick={onClick}
     >
-      <CardHeader className="pb-3 px-4 sm:px-6">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
-            <CardTitle className="text-base sm:text-lg font-bold group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight text-white">
+      {/* Accent line */}
+      {reviews.length > 0 && (
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+      )}
+
+      <div className="p-4 sm:p-5">
+        {/* Header row */}
+        <div className="flex items-start gap-3 mb-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-[13px] sm:text-sm font-semibold group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
               {college.name}
-            </CardTitle>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-              <Badge variant="outline" className="text-xs font-semibold px-2 py-1 bg-blue-900 text-blue-300 border-blue-600 w-fit">
-                {college.code}
-              </Badge>
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
-                <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400 flex-shrink-0" />
-                <span className="font-medium">{reviews.length} review{reviews.length !== 1 ? 's' : ''}</span>
-              </div>
-            </div>
+            </h3>
           </div>
-          <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-700 group-hover:bg-gray-600 transition-colors flex-shrink-0">
-            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-white/5 group-hover:bg-indigo-500/10 transition-all flex-shrink-0">
+            <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-indigo-400 group-hover:translate-x-0.5 transform transition-all duration-200" />
           </div>
         </div>
-      </CardHeader>
-      
-      <CardContent className="pt-0 px-4 sm:px-6">
-        {reviews.length > 0 ? (
-          <div className="space-y-2 sm:space-y-3">
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
-              <div className="flex items-center gap-1">
-                <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
-                <span className="font-medium">Recent reviews available</span>
-              </div>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-400 font-medium">
-              Click to view detailed reviews and ratings
-            </p>
+
+        {/* Code + Rating inline */}
+        <div className="flex items-center gap-2 flex-wrap mb-3">
+          <Badge variant="outline" className="text-[10px] font-mono font-semibold px-2 py-0.5 bg-white/5 border-white/10 text-muted-foreground">
+            {college.code}
+          </Badge>
+          {reviews.length > 0 && (
             <div className="flex items-center gap-1">
-              <span className="text-xs sm:text-sm text-gray-300 font-medium">View reviews for details</span>
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+              <span className="text-xs font-semibold text-amber-400">{avg.toFixed(1)}</span>
             </div>
+          )}
+          <div className="flex items-center gap-1 text-[10px] text-muted-foreground ml-auto">
+            <MessageSquare className="h-3 w-3" />
+            <span className="font-medium">{reviews.length}</span>
           </div>
-        ) : (
-          <div className="text-center py-4 sm:py-6">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-3 rounded-full bg-gradient-to-br from-gray-700 to-gray-600 flex items-center justify-center">
-              <MessageSquare className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
-            </div>
-            <p className="text-xs sm:text-sm font-semibold text-gray-200 mb-1">No reviews yet</p>
-            <p className="text-xs text-gray-400">Be the first to review this college!</p>
+        </div>
+
+        {/* Mini rating bars — only if has reviews */}
+        {reviews.length > 0 && (
+          <div className="space-y-1.5">
+            {[
+              { label: "Placements", value: avgP, color: "bg-emerald-400" },
+              { label: "Faculty", value: avgF, color: "bg-blue-400" },
+              { label: "Infra", value: avgI, color: "bg-purple-400" },
+            ].map(({ label, value, color }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="text-[10px] text-muted-foreground w-16 flex-shrink-0">{label}</span>
+                <div className="h-1 rounded-full bg-white/5 overflow-hidden flex-1">
+                  <div className={`h-full rounded-full ${color}`} style={{ width: `${(value / 5) * 100}%` }} />
+                </div>
+                <span className="text-[10px] font-medium tabular-nums w-6 text-right">{value.toFixed(1)}</span>
+              </div>
+            ))}
           </div>
         )}
-      </CardContent>
-    </Card>
-  );
-};
 
+        {/* Empty state */}
+        {reviews.length === 0 && (
+          <div className="text-center py-2">
+            <p className="text-[11px] text-muted-foreground/60">Tap to write the first review</p>
+          </div>
+        )}
+      </div>
+    </button>
+  )
+}
+
+export { CollegeReviewCard }
