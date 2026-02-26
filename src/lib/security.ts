@@ -36,7 +36,7 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
  */
 export function sanitizeHtml(input: string): string {
   if (!input || typeof input !== 'string') return '';
-  
+
   return DOMPurify.sanitize(input, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'br', 'p'],
     ALLOWED_ATTR: [],
@@ -49,7 +49,7 @@ export function sanitizeHtml(input: string): string {
  */
 export function sanitizeText(input: string): string {
   if (!input || typeof input !== 'string') return '';
-  
+
   return input
     .replace(/[<>]/g, '') // Remove potential HTML tags
     .replace(/javascript:/gi, '') // Remove javascript: protocol
@@ -66,18 +66,18 @@ export function validateReviewText(text: string): { isValid: boolean; sanitized:
   }
 
   if (text.length > VALIDATION_LIMITS.MAX_REVIEW_LENGTH) {
-    return { 
-      isValid: false, 
-      sanitized: '', 
-      error: `Review text must be less than ${VALIDATION_LIMITS.MAX_REVIEW_LENGTH} characters` 
+    return {
+      isValid: false,
+      sanitized: '',
+      error: `Review text must be less than ${VALIDATION_LIMITS.MAX_REVIEW_LENGTH} characters`
     };
   }
 
   if (text.length < 10) {
-    return { 
-      isValid: false, 
-      sanitized: '', 
-      error: 'Review text must be at least 10 characters long' 
+    return {
+      isValid: false,
+      sanitized: '',
+      error: 'Review text must be at least 10 characters long'
     };
   }
 
@@ -94,9 +94,9 @@ export function validateRating(rating: number): { isValid: boolean; error?: stri
   }
 
   if (rating < VALIDATION_LIMITS.MIN_RATING || rating > VALIDATION_LIMITS.MAX_RATING) {
-    return { 
-      isValid: false, 
-      error: `Rating must be between ${VALIDATION_LIMITS.MIN_RATING} and ${VALIDATION_LIMITS.MAX_RATING}` 
+    return {
+      isValid: false,
+      error: `Rating must be between ${VALIDATION_LIMITS.MIN_RATING} and ${VALIDATION_LIMITS.MAX_RATING}`
     };
   }
 
@@ -112,9 +112,9 @@ export function validateKCETMarks(marks: number): { isValid: boolean; error?: st
   }
 
   if (marks < VALIDATION_LIMITS.MIN_MARKS || marks > VALIDATION_LIMITS.MAX_MARKS) {
-    return { 
-      isValid: false, 
-      error: `Marks must be between ${VALIDATION_LIMITS.MIN_MARKS} and ${VALIDATION_LIMITS.MAX_MARKS}` 
+    return {
+      isValid: false,
+      error: `Marks must be between ${VALIDATION_LIMITS.MIN_MARKS} and ${VALIDATION_LIMITS.MAX_MARKS}`
     };
   }
 
@@ -130,9 +130,9 @@ export function validatePUCPercentage(percentage: number): { isValid: boolean; e
   }
 
   if (percentage < VALIDATION_LIMITS.MIN_PERCENTAGE || percentage > VALIDATION_LIMITS.MAX_PERCENTAGE) {
-    return { 
-      isValid: false, 
-      error: `Percentage must be between ${VALIDATION_LIMITS.MIN_PERCENTAGE} and ${VALIDATION_LIMITS.MAX_PERCENTAGE}` 
+    return {
+      isValid: false,
+      error: `Percentage must be between ${VALIDATION_LIMITS.MIN_PERCENTAGE} and ${VALIDATION_LIMITS.MAX_PERCENTAGE}`
     };
   }
 
@@ -148,9 +148,9 @@ export function validateRank(rank: number): { isValid: boolean; error?: string }
   }
 
   if (rank < VALIDATION_LIMITS.MIN_RANK || rank > VALIDATION_LIMITS.MAX_RANK) {
-    return { 
-      isValid: false, 
-      error: `Rank must be between ${VALIDATION_LIMITS.MIN_RANK} and ${VALIDATION_LIMITS.MAX_RANK}` 
+    return {
+      isValid: false,
+      error: `Rank must be between ${VALIDATION_LIMITS.MIN_RANK} and ${VALIDATION_LIMITS.MAX_RANK}`
     };
   }
 
@@ -160,10 +160,10 @@ export function validateRank(rank: number): { isValid: boolean; error?: string }
 /**
  * Check rate limit for a given key
  */
-export function checkRateLimit(key: string, limit: typeof RATE_LIMITS.REVIEW_SUBMISSION | typeof RATE_LIMITS.GENERAL_API): { 
-  allowed: boolean; 
-  remaining: number; 
-  resetTime: number 
+export function checkRateLimit(key: string, limit: typeof RATE_LIMITS.REVIEW_SUBMISSION | typeof RATE_LIMITS.GENERAL_API): {
+  allowed: boolean;
+  remaining: number;
+  resetTime: number
 } {
   const now = Date.now();
   const stored = rateLimitMap.get(key);
@@ -224,21 +224,21 @@ export function validateCollegeCode(code: string): { isValid: boolean; sanitized
   }
 
   const sanitized = sanitizeText(code).toUpperCase();
-  
+
   if (sanitized.length < 2 || sanitized.length > 20) {
-    return { 
-      isValid: false, 
-      sanitized: '', 
-      error: 'College code must be between 2 and 20 characters' 
+    return {
+      isValid: false,
+      sanitized: '',
+      error: 'College code must be between 2 and 20 characters'
     };
   }
 
   // Allow only alphanumeric characters and common separators
   if (!/^[A-Z0-9_-]+$/.test(sanitized)) {
-    return { 
-      isValid: false, 
-      sanitized: '', 
-      error: 'College code can only contain letters, numbers, hyphens, and underscores' 
+    return {
+      isValid: false,
+      sanitized: '',
+      error: 'College code can only contain letters, numbers, hyphens, and underscores'
     };
   }
 
@@ -250,20 +250,116 @@ export function validateCollegeCode(code: string): { isValid: boolean; sanitized
  */
 export function validateCategory(category: string): { isValid: boolean; sanitized: string; error?: string } {
   const validCategories = ['1G', '2A', '2B', '3A', '3B', 'GM', 'SC', 'ST'];
-  
+
   if (!category || typeof category !== 'string') {
     return { isValid: false, sanitized: '', error: 'Category is required' };
   }
 
   const sanitized = sanitizeText(category).toUpperCase();
-  
+
   if (!validCategories.includes(sanitized)) {
-    return { 
-      isValid: false, 
-      sanitized: '', 
-      error: `Category must be one of: ${validCategories.join(', ')}` 
+    return {
+      isValid: false,
+      sanitized: '',
+      error: `Category must be one of: ${validCategories.join(', ')}`
     };
   }
 
   return { isValid: true, sanitized };
+}
+
+// ─── Spam / Profanity Filter ───────────────────────────────────
+
+/** Curated profanity list — word-boundary matched to avoid false positives */
+const PROFANITY_LIST: string[] = [
+  // English
+  'fuck', 'shit', 'ass', 'bitch', 'bastard', 'damn', 'dick', 'cunt',
+  'piss', 'cock', 'whore', 'slut', 'nigger', 'faggot', 'retard',
+  'motherfucker', 'asshole', 'bullshit', 'crap', 'dumbass', 'jackass',
+  // Transliterated Hindi/Kannada slang
+  'chutiya', 'madarchod', 'bhenchod', 'gaand', 'lund', 'randi',
+  'bhosdike', 'harami', 'saala', 'kamina', 'suwwar', 'bevda',
+  'myre', 'sule', 'bolimaga', 'naayi', 'haalu',
+];
+
+/** Build regex from word list — matches whole words only */
+const buildProfanityRegex = (): RegExp => {
+  // Escape special regex chars and join with word boundaries
+  const escaped = PROFANITY_LIST.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi');
+};
+
+const PROFANITY_REGEX = buildProfanityRegex();
+
+/** Detect URLs / links */
+const URL_REGEX = /(?:https?:\/\/|www\.)\S+|[\w.-]+\.(?:com|org|net|in|io|co|xyz|info|biz|me|dev|app|site|online|shop|store|tech|edu|gov)\b/gi;
+
+/** Detect phone numbers (Indian format) */
+const PHONE_REGEX = /(?:\+91[\s-]?)?[6-9]\d{4}[\s-]?\d{5}/g;
+
+/** Detect email addresses */
+const EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+
+/**
+ * Check text content for spam / profanity / unwanted patterns.
+ * Returns specific reasons so the UI can give clear feedback.
+ */
+export function checkSpamContent(text: string): { isSpam: boolean; reasons: string[] } {
+  if (!text || typeof text !== 'string') return { isSpam: false, reasons: [] };
+
+  const reasons: string[] = [];
+  const trimmed = text.trim();
+
+  // 1. Profanity check
+  const profanityMatches = trimmed.match(PROFANITY_REGEX);
+  if (profanityMatches && profanityMatches.length > 0) {
+    reasons.push('Contains inappropriate language');
+  }
+
+  // 2. URL / link check
+  if (URL_REGEX.test(trimmed)) {
+    reasons.push('Links and URLs are not allowed in reviews');
+  }
+
+  // 3. Phone number check
+  if (PHONE_REGEX.test(trimmed)) {
+    reasons.push('Phone numbers are not allowed in reviews');
+  }
+
+  // 4. Email check
+  if (EMAIL_REGEX.test(trimmed)) {
+    reasons.push('Email addresses are not allowed in reviews');
+  }
+
+  // 5. Excessive caps (> 60% uppercase, min 20 chars to avoid false positives)
+  if (trimmed.length >= 20) {
+    const letters = trimmed.replace(/[^a-zA-Z]/g, '');
+    const upperCount = (letters.match(/[A-Z]/g) || []).length;
+    if (letters.length > 0 && upperCount / letters.length > 0.6) {
+      reasons.push('Excessive use of capital letters — please use normal casing');
+    }
+  }
+
+  // 6. Repeated characters (5+ consecutive identical chars)
+  if (/(.)\1{4,}/i.test(trimmed)) {
+    reasons.push('Contains repeated characters — please write a genuine review');
+  }
+
+  // 7. Excessive punctuation (10+ consecutive ! or ?)
+  if (/[!?]{10,}/.test(trimmed)) {
+    reasons.push('Excessive punctuation — please tone it down');
+  }
+
+  return { isSpam: reasons.length > 0, reasons };
+}
+
+/**
+ * Censor profanity in text (for display in admin panel).
+ * Replaces matched words with asterisks while keeping first letter.
+ */
+export function censorProfanity(text: string): string {
+  if (!text) return '';
+  return text.replace(PROFANITY_REGEX, (match) => {
+    return match[0] + '*'.repeat(match.length - 1);
+  });
 }

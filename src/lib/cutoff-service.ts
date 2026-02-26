@@ -52,12 +52,12 @@ export class CutoffService {
       if (!response) {
         throw new Error('No cutoff data source available');
       }
-      
+
       const raw = await response.json();
       const dataArray: any[] = Array.isArray(raw)
         ? raw
         : (raw.cutoffs ?? raw.data ?? raw.cutoffs_data ?? []);
-      
+
       // Transform the data to match our expected format
       this.cutoffs = dataArray.map((item: any) => ({
         year: item.year || item.Year || "2024",
@@ -76,7 +76,7 @@ export class CutoffService {
       return this.cutoffs;
     } catch (error) {
       console.error('Failed to load cutoffs:', error);
-      
+
       // Return fallback data
       this.cutoffs = [
         { year: "2024", round: "Round 1", institute_code: "E001", course: "CS", category: "GM", cutoff_rank: 5000 },
@@ -86,7 +86,7 @@ export class CutoffService {
         { year: "2023", round: "Round 2", institute_code: "E001", course: "CS", category: "GM", cutoff_rank: 5200 },
         { year: "2023", round: "Round 3", institute_code: "E001", course: "CS", category: "GM", cutoff_rank: 5700 },
       ];
-      
+
       this.isLoaded = true;
       return this.cutoffs;
     }
@@ -126,7 +126,7 @@ export class CutoffService {
     await this.loadCutoffs();
 
     const results: MockAllotmentResult[] = [];
-    
+
     // Filter cutoffs based on selected year and round
     const relevantCutoffs = this.cutoffs.filter(
       c => c.year === selectedYear && c.round === selectedRound
@@ -150,7 +150,7 @@ export class CutoffService {
     // Process each user option
     for (const option of userOptions) {
       const matchingCutoffs = relevantCutoffs.filter(
-        c => 
+        c =>
           this.normalizeCode(c.institute_code) === this.normalizeCode(option.collegeCode) &&
           this.normalizeCode(c.course) === this.normalizeCode(option.branchCode) &&
           this.normalizeCode(c.category) === this.normalizeCode(userCategory)
@@ -235,5 +235,11 @@ export class CutoffService {
       minCutoff: Math.min(...relevantCutoffs.map(c => c.cutoff_rank)),
       maxCutoff: Math.max(...relevantCutoffs.map(c => c.cutoff_rank))
     };
+  }
+
+  /** Allow admin panel to push merged data without re-fetching from network */
+  static refreshFromAdmin(entries: CutoffData[]): void {
+    this.cutoffs = entries;
+    this.isLoaded = true;
   }
 }

@@ -44,7 +44,7 @@ const MORE_ITEMS = [
     { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
-    { icon: Building2, label: "Colleges", href: "/college-list" },
+    { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
     { icon: Bell, label: "Rounds", href: "/round-tracker" },
     { icon: FileText, label: "Documents", href: "/documents" },
     { icon: Star, label: "Reviews", href: "/reviews" },

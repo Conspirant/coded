@@ -40,6 +40,7 @@ import MetroMapper from "./pages/MetroMapper";
 import BmtcMapper from './pages/BmtcMapper';
 import HiddenGems from "./pages/HiddenGems";
 import CollegeCutoffs from "./pages/CollegeCutoffs";
+import AdminCutoffs from "./pages/AdminCutoffs";
 
 
 const queryClient = new QueryClient();
@@ -111,6 +112,9 @@ const App = () => (
           <Route path="/metro-mapper" element={<MetroMapper />} />
           <Route path="/bmtc-mapper" element={<BmtcMapper />} />
           <Route path="/hidden-gems" element={<HiddenGems />} />
+
+          {/* Admin (hidden from nav, direct URL only) */}
+          <Route path="/admin" element={<AdminCutoffs />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

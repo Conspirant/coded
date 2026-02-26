@@ -6,10 +6,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Slider } from "@/components/ui/slider"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Search, MapPin, GraduationCap, TrendingUp, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3, Download, Bookmark, Scale, X, Sparkles, Filter, SlidersHorizontal } from "lucide-react"
+import { Search, MapPin, GraduationCap, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3, Download, Bookmark, Scale, X, Sparkles, Filter, SlidersHorizontal } from "lucide-react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -177,8 +176,6 @@ const CollegeFinder = () => {
   const [selectedInstitute, setSelectedInstitute] = useState("")
   const [selectedCourses, setSelectedCourses] = useState<string[]>([])
   const [locationFilter, setLocationFilter] = useState("")
-  const [minRank, setMinRank] = useState<number>(1)
-  const [maxRank, setMaxRank] = useState<number>(300000)
   const [collegeSearchTerm, setCollegeSearchTerm] = useState("")
   const [showFilters, setShowFilters] = useState(false)
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
@@ -1545,34 +1542,6 @@ const CollegeFinder = () => {
                     <strong>Tip:</strong> Colleges with cutoff ranks <strong>higher than your rank</strong> are your best chances for admission.
                   </p>
                 </div>
-                {/* What If Slider */}
-                <div className="space-y-4 pt-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <Label htmlFor="rank-slider" className="text-muted-foreground flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3" />
-                      What-If Slider
-                    </Label>
-                    <span className="text-muted-foreground font-mono">
-                      ±20% Adjustment
-                    </span>
-                  </div>
-                  <Slider
-                    id="rank-slider"
-                    min={1}
-                    max={300000}
-                    step={100}
-                    value={[userRank]}
-                    onValueChange={(val) => {
-                      const newRank = val[0]
-                      setUserRank(newRank)
-                      finderStore.setState({ userRank: newRank })
-                    }}
-                    className="py-1 cursor-pointer"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Drag to instantly see how your options change with a better/worse rank.
-                  </p>
-                </div>
 
                 {/* Category */}
                 <div className="space-y-2">
@@ -1691,23 +1660,6 @@ const CollegeFinder = () => {
                   />
                 </div>
 
-                {/* Rank Range */}
-                <div className="space-y-2">
-                  <Label>Rank Range: {minRank.toLocaleString()} - {maxRank.toLocaleString()}</Label>
-                  <div className="space-y-4">
-                    <Slider
-                      value={[minRank, maxRank]}
-                      onValueChange={([min, max]) => {
-                        setMinRank(min)
-                        setMaxRank(max)
-                      }}
-                      max={300000}
-                      min={1}
-                      step={1000}
-                      className="w-full"
-                    />
-                  </div>
-                </div>
 
                 {/* Search Button & Actions - Mobile Optimized */}
                 <div className="flex flex-col gap-3 sm:col-span-2 lg:col-span-3">
@@ -1771,8 +1723,6 @@ const CollegeFinder = () => {
                           setSelectedInstitute("")
                           setSelectedCourses([])
                           setLocationFilter("")
-                          setMinRank(1)
-                          setMaxRank(300000)
                           setMatches([])
                           setCollegeSearchTerm("")
                           finderStore.setState({

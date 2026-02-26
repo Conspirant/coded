@@ -375,66 +375,108 @@ def extract_2025_from_pdfs() -> Tuple[List[dict], dict]:
 
         with pdfplumber.open(pdf_path) as pdf:
             page_count = len(pdf.pages)
+            last_cat_coords: Dict[str, float] = {}
 
             for page in pdf.pages:
-                headers = extract_college_headers_from_pdf_page(page)
-                # Carry forward the last visible college header on this page
-                # even if this page has no table (common in some 2025 PDFs).
-                if headers:
-                    last_header = max(headers, key=lambda h: h["top"])
-                    current_code = last_header["code"]
-                    current_name = last_header["name"]
+                words = page.extract_words(keep_blank_chars=False) or []
+                
+                rows: Dict[float, List[dict]] = {}
+                for w in words:
+                    y = round(w['top'], 1)
+                    matched_y = None
+                    for existing_y in rows:
+                        if abs(existing_y - y) <= 2.0:
+                            matched_y = existing_y
+                            break
+                    if matched_y is None:
+                        matched_y = y
+                        rows[matched_y] = []
+                    rows[matched_y].append(w)
+                    
+                sorted_ys = sorted(rows.keys())
+                
+                for y in sorted_ys:
+                    row_words = sorted(rows[y], key=lambda x: x['x0'])
+                    text_full = " ".join([w['text'] for w in row_words])
+                    text_clean = clean_text(text_full)
 
-                tables = page.find_tables() or []
-
-                for table in tables:
-                    table_top = table.bbox[1] if table.bbox else 0
-                    candidates = [h for h in headers if h["top"] < table_top]
-                    if candidates:
-                        nearest = max(candidates, key=lambda h: h["top"])
-                        current_code = nearest["code"]
-                        current_name = nearest["name"]
+                    # 1. College Header
+                    m = re.search(
+                        r'College\s*:?\s*[\(\[]?([A-Z0-9]{3,6})[\)\]]?\s*(.*)',
+                        text_clean,
+                        re.IGNORECASE
+                    )
+                    if m:
+                        c = m.group(1).strip()
+                        n = m.group(2).strip()
+                        n = re.sub(r'^[\(\)]+|[\(\)]+$', '', n).strip()
+                        if len(c) >= 3 and re.match(r'^E\d', c):
+                            current_code = c
+                            current_name = n
+                            last_cat_coords = {}
+                            continue
 
                     if not current_code or not current_name:
                         continue
 
-                    table_rows = table.extract() or []
-                    if not table_rows:
+                    # 2. Category Header Row
+                    upper_words = [w['text'].upper().strip() for w in row_words]
+                    cat_count = sum(1 for w in upper_words if w in CATEGORY_CODES)
+                    
+                    if cat_count >= 5 or (('COURSE' in text_clean.upper() or 'BRANCH' in text_clean.upper()) and cat_count >= 3):
+                        cat_coords = {}
+                        for w in row_words:
+                            text = w['text'].upper().strip()
+                            if text in CATEGORY_CODES:
+                                center_x = (w['x0'] + w['x1']) / 2.0
+                                cat_coords[text] = center_x
+                        if cat_coords:
+                            last_cat_coords = cat_coords
                         continue
 
-                    category_map: Dict[int, str] = {}
-                    header_row_idx = -1
-                    for row_idx, row_values in enumerate(table_rows[:12]):
-                        row_list = list(row_values) if row_values else []
-                        detected = extract_category_map(row_list)
-                        if len(detected) >= 8:
-                            category_map = detected
-                            header_row_idx = row_idx
-                            break
+                    # 3. Data Row
+                    if not last_cat_coords:
+                        continue
+                        
+                    min_cat_x = min(last_cat_coords.values())
+                    
+                    course_words = [w for w in row_words if w['x1'] < min_cat_x - 10]
+                    data_words = [w for w in row_words if w['x1'] >= min_cat_x - 10]
 
-                    if header_row_idx < 0 or not category_map:
+                    if not course_words:
                         continue
 
-                    for row_values in table_rows[header_row_idx + 1 :]:
-                        row_list = list(row_values) if row_values else []
-                        course_original = raw_text(row_list[0] if row_list else "")
-                        course_check = clean_text(course_original)
-                        if not course_original or not course_check or looks_like_non_course(course_check):
+                    course_raw = raw_text(" ".join([w['text'] for w in course_words]))
+                    course_check = clean_text(course_raw)
+
+                    if not course_raw or not course_check or looks_like_non_course(course_check):
+                        continue
+                    if 'Course' in course_raw and 'GM' not in course_raw:
+                        continue
+
+                    for w in data_words:
+                        val = w['text'].strip()
+                        rank = parse_rank(val)
+                        if rank is None:
                             continue
-
-                        for col_idx, category in category_map.items():
-                            if col_idx >= len(row_list):
-                                continue
-                            rank = parse_rank(row_list[col_idx])
-                            if rank is None:
-                                continue
-
+                            
+                        center_x = (w['x0'] + w['x1']) / 2.0
+                        closest_cat = None
+                        min_dist = float('inf')
+                        
+                        for cat, cat_x in last_cat_coords.items():
+                            dist = abs(cat_x - center_x)
+                            if dist < min_dist:
+                                min_dist = dist
+                                closest_cat = cat
+                                
+                        if closest_cat and min_dist < 40:
                             results.append(
                                 {
                                     "institute": current_name,
                                     "institute_code": current_code,
-                                    "course": course_original,
-                                    "category": category,
+                                    "course": course_raw,
+                                    "category": closest_cat,
                                     "cutoff_rank": rank,
                                     "year": "2025",
                                     "round": round_value,

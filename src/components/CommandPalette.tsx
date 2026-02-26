@@ -45,7 +45,7 @@ const COMMANDS: CommandItem[] = [
     { id: "college-finder", title: "College Finder", description: "Find colleges by rank", icon: Target, href: "/college-finder", keywords: ["college", "find", "search", "rank"], category: "main" },
     { id: "cutoff-explorer", title: "Cutoff Explorer", description: "Analyze cutoff trends", icon: BarChart3, href: "/cutoff-explorer", keywords: ["cutoff", "explore", "trends", "analyze"], category: "main" },
     { id: "rank-predictor", title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", keywords: ["rank", "predict", "marks", "score"], category: "main" },
-    { id: "college-list", title: "College Directory", description: "Browse all colleges", icon: Building2, href: "/college-list", keywords: ["college", "directory", "list", "browse"], category: "main" },
+    { id: "college-cutoffs", title: "College Cutoffs", description: "View cutoff matrix for all colleges", icon: Building2, href: "/college-cutoffs", keywords: ["college", "cutoffs", "matrix", "browse"], category: "main" },
     { id: "mock-simulator", title: "Mock Simulator", description: "Simulate seat allotment", icon: Shuffle, href: "/mock-simulator", keywords: ["mock", "simulate", "allotment", "seat"], category: "tools" },
     { id: "round-tracker", title: "Round Tracker", description: "Counseling round dates", icon: Bell, href: "/round-tracker", keywords: ["round", "track", "counseling", "dates"], category: "tools" },
     { id: "documents", title: "Documents Guide", description: "Required documents checklist", icon: FileText, href: "/documents", keywords: ["documents", "checklist", "guide"], category: "tools" },

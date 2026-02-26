@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,14 +8,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
     Star, MessageSquare, ArrowLeft, Share2, User, Calendar,
-    CheckCircle, Trash2, Sparkles, PenLine, ThumbsUp
+    CheckCircle, Trash2, Sparkles, PenLine, ThumbsUp, Flag, ShieldAlert, AlertTriangle, X
 } from "lucide-react"
 import {
     loadColleges, loadCollegeReviews, saveReviewToSupabase,
-    deleteReview, isUserReview, College, CollegeReview
+    deleteReview, isUserReview, reportReview, College, CollegeReview
 } from "@/lib/college-service"
 import {
-    validateReviewText, validateRating, checkRateLimit,
+    validateReviewText, validateRating, checkRateLimit, checkSpamContent,
     getUserIdentifier, VALIDATION_LIMITS, RATE_LIMITS
 } from "@/lib/security"
 
@@ -64,6 +64,10 @@ const CollegeReviewPage = () => {
     const [loading, setLoading] = useState(true)
     const [showAddReview, setShowAddReview] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+    const [spamError, setSpamError] = useState<string[] | null>(null)
+    const [reportingId, setReportingId] = useState<string | null>(null)
+    const [reportedIds, setReportedIds] = useState<Set<string>>(new Set())
+    const [reportSuccess, setReportSuccess] = useState<string | null>(null)
     const [newReview, setNewReview] = useState({
         rating: 0, review_text: "", faculty_rating: 1,
         infrastructure_rating: 1, placements_rating: 1,
@@ -102,12 +106,18 @@ const CollegeReviewPage = () => {
     }
 
     const handleSubmit = async () => {
+        setSpamError(null)
         const uid = getUserIdentifier()
         const rl = checkRateLimit(uid, RATE_LIMITS.REVIEW_SUBMISSION)
         if (!rl.allowed) { alert(`Too many submissions. Wait until ${new Date(rl.resetTime).toLocaleTimeString()}.`); return }
         if (!newReview.rating || !newReview.review_text.trim()) { alert("Please provide a rating and review text."); return }
         const tv = validateReviewText(newReview.review_text); if (!tv.isValid) { alert(tv.error); return }
         const rv = validateRating(newReview.rating); if (!rv.isValid) { alert(rv.error); return }
+
+        // ── Spam filter ──
+        const spam = checkSpamContent(newReview.review_text)
+        if (spam.isSpam) { setSpamError(spam.reasons); return }
+
         try {
             setSubmitting(true)
             const saved = await saveReviewToSupabase({
@@ -125,6 +135,18 @@ const CollegeReviewPage = () => {
             } else { alert("Failed to save review.") }
         } catch (e: any) { alert(`Error: ${e.message || "Unknown"}`) }
         finally { setSubmitting(false) }
+    }
+
+    const handleReport = async (reviewId: string, reason: 'spam' | 'offensive' | 'fake' | 'other') => {
+        const success = await reportReview(reviewId, reason)
+        if (success) {
+            setReportedIds(prev => new Set(prev).add(reviewId))
+            setReportSuccess(reviewId)
+            setTimeout(() => setReportSuccess(null), 3000)
+        } else {
+            alert("Failed to report. Please try again.")
+        }
+        setReportingId(null)
     }
 
     const handleDelete = async (id: string) => {
@@ -281,6 +303,27 @@ const CollegeReviewPage = () => {
                             </div>
                         </div>
 
+                        {/* ── Spam Error Alert ── */}
+                        <AnimatePresence>
+                            {spamError && (
+                                <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                                    className="rounded-xl bg-red-500/10 border border-red-500/20 p-3 space-y-1.5">
+                                    <div className="flex items-center gap-2 text-red-400">
+                                        <ShieldAlert className="h-4 w-4 flex-shrink-0" />
+                                        <span className="text-xs font-semibold">Review blocked by safety filter</span>
+                                        <button onClick={() => setSpamError(null)} className="ml-auto p-0.5 hover:bg-red-500/20 rounded">
+                                            <X className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                    <ul className="space-y-0.5 pl-6">
+                                        {spamError.map((r, i) => (
+                                            <li key={i} className="text-[11px] text-red-300/80 list-disc">{r}</li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                         {/* Submit — full width on mobile */}
                         <div className="flex flex-col sm:flex-row gap-2 pt-1">
                             <Button onClick={handleSubmit} disabled={submitting || !newReview.rating || !newReview.review_text.trim()}
@@ -291,6 +334,14 @@ const CollegeReviewPage = () => {
                                 className="rounded-xl border-white/10 text-muted-foreground hover:bg-white/5 text-sm h-11 w-full sm:w-auto">
                                 Cancel
                             </Button>
+                        </div>
+
+                        {/* Safety notice */}
+                        <div className="flex items-start gap-2 rounded-lg bg-emerald-500/5 border border-emerald-500/10 p-2.5">
+                            <ShieldAlert className="h-3.5 w-3.5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                            <p className="text-[10px] text-emerald-300/70 leading-relaxed">
+                                Your review is checked for spam, profanity, and inappropriate content before submission. No personal data is collected — reviews are fully anonymous.
+                            </p>
                         </div>
                     </motion.div>
                 )}
@@ -338,12 +389,58 @@ const CollegeReviewPage = () => {
                                         <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                                             <ThumbsUp className="h-3 w-3" /><span className="font-medium">{review.helpful_votes}</span>
                                         </div>
-                                        {isUserReview(review) && (
-                                            <Button variant="ghost" size="sm" onClick={() => handleDelete(review.id)}
-                                                className="h-8 px-2 text-red-400/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg text-[10px]">
-                                                <Trash2 className="h-3 w-3 mr-1" />Delete
-                                            </Button>
-                                        )}
+                                        <div className="flex items-center gap-1">
+                                            {/* Report button (not for own reviews) */}
+                                            {!isUserReview(review) && (
+                                                <div className="relative">
+                                                    {reportedIds.has(review.id) || reportSuccess === review.id ? (
+                                                        <span className="flex items-center gap-1 text-[10px] text-amber-400/70 px-2 py-1">
+                                                            <CheckCircle className="h-3 w-3" />Reported
+                                                        </span>
+                                                    ) : (
+                                                        <>
+                                                            <Button variant="ghost" size="sm"
+                                                                onClick={() => setReportingId(reportingId === review.id ? null : review.id)}
+                                                                className="h-8 px-2 text-muted-foreground/50 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg text-[10px]">
+                                                                <Flag className="h-3 w-3 mr-1" />Report
+                                                            </Button>
+                                                            {/* Report dropdown */}
+                                                            <AnimatePresence>
+                                                                {reportingId === review.id && (
+                                                                    <motion.div
+                                                                        initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                                                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                                                        exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                                                                        className="absolute right-0 bottom-full mb-1 z-50 w-44 rounded-xl glass border border-white/10 shadow-xl shadow-black/30 p-1.5 space-y-0.5">
+                                                                        <p className="text-[10px] font-semibold text-muted-foreground px-2 py-1">Report as:</p>
+                                                                        {[
+                                                                            { key: 'spam' as const, label: '🚫 Spam', desc: 'Irrelevant or promotional' },
+                                                                            { key: 'offensive' as const, label: '⚠️ Offensive', desc: 'Hateful or abusive' },
+                                                                            { key: 'fake' as const, label: '🤥 Fake Review', desc: 'Misleading or false' },
+                                                                            { key: 'other' as const, label: '📋 Other', desc: 'Other reason' },
+                                                                        ].map(opt => (
+                                                                            <button key={opt.key}
+                                                                                onClick={() => handleReport(review.id, opt.key)}
+                                                                                className="w-full text-left rounded-lg px-2.5 py-1.5 hover:bg-white/5 transition-colors">
+                                                                                <div className="text-[11px] font-medium">{opt.label}</div>
+                                                                                <div className="text-[9px] text-muted-foreground/60">{opt.desc}</div>
+                                                                            </button>
+                                                                        ))}
+                                                                    </motion.div>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            )}
+                                            {/* Delete button (own reviews only) */}
+                                            {isUserReview(review) && (
+                                                <Button variant="ghost" size="sm" onClick={() => handleDelete(review.id)}
+                                                    className="h-8 px-2 text-red-400/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg text-[10px]">
+                                                    <Trash2 className="h-3 w-3 mr-1" />Delete
+                                                </Button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>

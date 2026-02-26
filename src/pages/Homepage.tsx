@@ -28,6 +28,7 @@ import {
     Flame,
     Sword,
     MapPin,
+    Bus,
 } from "lucide-react"
 
 interface DataStats {
@@ -775,10 +776,29 @@ const Homepage = () => {
                             <h3 className="text-xl font-bold mb-2 group-hover:text-green-300 transition-colors">Metro Mapper</h3>
                             <p className="text-sm text-muted-foreground mb-4">
                                 Beat the traffic. Filter top colleges that are strictly within <span className="text-white">walking distance</span> of a Metro station.
-                                <br /><span className="text-xs text-green-500/50 mt-2 block font-mono">* Uses mock location data</span>
+                                <br /><span className="text-xs text-green-500/50 mt-2 block font-mono">✓ Verified distances from Google Maps</span>
                             </p>
                             <div className="flex items-center text-xs font-medium text-green-400">
                                 View Map <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                            </div>
+                        </Link>
+
+                        {/* BMTC Route Mapper Card */}
+                        <Link to="/bmtc-mapper" className="block group">
+                            <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all duration-300 h-full relative overflow-hidden flex flex-col items-start hover:border-blue-500/30">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all"></div>
+                                <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(59,130,246,0.3)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] border border-blue-500/30">
+                                    <Bus className="h-5 w-5 text-blue-400" />
+                                </div>
+                                <Badge variant="secondary" className="mb-3 bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px] uppercase tracking-wider font-semibold">Public Transit</Badge>
+                                <h3 className="text-xl font-bold mb-2 group-hover:text-blue-300 transition-colors">BMTC Bus Mapper</h3>
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    Navigate like a local. Find which <span className="text-white">BMTC bus routes</span> and transport hubs connect to top engineering colleges.
+                                    <br /><span className="text-xs text-blue-500/50 mt-2 block font-mono">✓ Verified 2024-2025 routes</span>
+                                </p>
+                                <div className="flex items-center text-xs font-medium text-blue-400">
+                                    Find Routes <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                                </div>
                             </div>
                         </Link>
 
@@ -793,7 +813,7 @@ const Homepage = () => {
                             <h3 className="text-xl font-bold mb-2 group-hover:text-amber-300 transition-colors">Hidden Gems</h3>
                             <p className="text-sm text-muted-foreground mb-4">
                                 High ROI, Low Cutoff. Our algorithm finds colleges with <span className="text-white">great placements</span> that are easier to get into.
-                                <br /><span className="text-xs text-amber-500/50 mt-2 block font-mono">* Uses mock placement data</span>
+                                <br /><span className="text-xs text-amber-500/50 mt-2 block font-mono">✓ Real placement data from official sources</span>
                             </p>
                             <div className="flex items-center text-xs font-medium text-amber-400">
                                 Reveal Gems <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform" />

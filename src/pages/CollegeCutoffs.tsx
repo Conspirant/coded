@@ -1,10 +1,9 @@
 import { useState, useEffect, useMemo } from "react"
+import React from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, ChevronDown, ChevronUp, Building2, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ChevronDown, ChevronUp, Building2, Search, Grid3X3 } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { COURSE_CODE_TO_NAME } from "@/lib/courses"
 
 // Types for the cutoff data
 interface CutoffData {
@@ -19,33 +18,47 @@ interface CutoffData {
     available_seats?: number
 }
 
-// Category options with display names
-const CATEGORIES = [
-    { value: "GM", label: "GM - General Merit" },
-    { value: "1G", label: "1G - Category 1" },
-    { value: "2AG", label: "2AG - Category 2A" },
-    { value: "2BG", label: "2BG - Category 2B" },
-    { value: "3AG", label: "3AG - Category 3A" },
-    { value: "3BG", label: "3BG - Category 3B" },
-    { value: "SCG", label: "SCG - Scheduled Caste" },
-    { value: "STG", label: "STG - Scheduled Tribe" },
-]
+// Ordered categories matching the official KEA format
+const ORDERED_CATS = ['1G', '1K', '1R', '2AG', '2AK', '2AR', '2BG', '2BK', '2BR', '3AG', '3AK', '3AR', '3BG', '3BK', '3BR', 'GM', 'GMK', 'GMR', 'SCG', 'SCK', 'SCR', 'STG', 'STK', 'STR']
 
-const TYPE_OPTIONS = [
-    { value: "General", label: "General" },
-    { value: "Rural", label: "Rural" },
-    { value: "Kannada", label: "Kannada Medium" },
-    { value: "Hyderabad-K", label: "Hyderabad-Karnataka" },
-]
+const TYPE_FILTERS: Record<string, string[]> = {
+    "All": ORDERED_CATS,
+    "General": ['1G', '2AG', '2BG', '3AG', '3BG', 'GM', 'SCG', 'STG'],
+    "Kannada": ['1K', '2AK', '2BK', '3AK', '3BK', 'GMK', 'SCK', 'STK'],
+    "Rural": ['1R', '2AR', '2BR', '3AR', '3BR', 'GMR', 'SCR', 'STR'],
+}
 
-// Helper to clean course names - preserves exact course name from JSON, just fixes spacing issues
+// Category colors
+const getCategoryColor = (cat: string) => {
+    switch (cat?.toUpperCase()) {
+        case 'GM': return 'bg-blue-500/15 text-blue-400 border-blue-500/20'
+        case 'GMK': return 'bg-blue-500/15 text-blue-300 border-blue-500/20'
+        case 'GMR': return 'bg-sky-500/15 text-sky-400 border-sky-500/20'
+        case 'SCG': return 'bg-green-500/15 text-green-400 border-green-500/20'
+        case 'SCK': return 'bg-green-500/15 text-green-300 border-green-500/20'
+        case 'SCR': return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20'
+        case 'STG': return 'bg-purple-500/15 text-purple-400 border-purple-500/20'
+        case 'STK': return 'bg-purple-500/15 text-purple-300 border-purple-500/20'
+        case 'STR': return 'bg-violet-500/15 text-violet-400 border-violet-500/20'
+        case '1G': return 'bg-red-500/15 text-red-400 border-red-500/20'
+        case '1K': return 'bg-red-500/15 text-red-300 border-red-500/20'
+        case '1R': return 'bg-rose-500/15 text-rose-400 border-rose-500/20'
+        case '2AG': return 'bg-orange-500/15 text-orange-400 border-orange-500/20'
+        case '2AK': case '2AR': return 'bg-orange-500/15 text-orange-300 border-orange-500/20'
+        case '2BG': return 'bg-yellow-500/15 text-yellow-400 border-yellow-500/20'
+        case '2BK': case '2BR': return 'bg-yellow-500/15 text-yellow-300 border-yellow-500/20'
+        case '3AG': return 'bg-pink-500/15 text-pink-400 border-pink-500/20'
+        case '3AK': case '3AR': return 'bg-pink-500/15 text-pink-300 border-pink-500/20'
+        case '3BG': return 'bg-indigo-500/15 text-indigo-400 border-indigo-500/20'
+        case '3BK': case '3BR': return 'bg-indigo-500/15 text-indigo-300 border-indigo-500/20'
+        default: return 'bg-gray-500/15 text-gray-400 border-gray-500/20'
+    }
+}
+
+// --- Clean course name ---
 const cleanCourseName = (course: string): string => {
     if (!course) return course
-
-    // Just clean up extra spaces, preserve original casing and format
     let cleaned = course.trim().replace(/\s+/g, ' ')
-
-    // Fix known broken words from PDF extraction (spacing issues)
     cleaned = cleaned
         .replace(/Communicatio\s*n/gi, 'Communication')
         .replace(/D\s*ata/gi, 'Data')
@@ -58,271 +71,202 @@ const cleanCourseName = (course: string): string => {
         .replace(/Intelligenc\s*e/gi, 'Intelligence')
         .replace(/Machin\s*e/gi, 'Machine')
         .replace(/Learnin\s*g/gi, 'Learning')
-
     return cleaned
 }
 
-// Helper to create a normalized key for grouping (case-insensitive)
-const getCourseKey = (course: string): string => {
-    return cleanCourseName(course).toLowerCase().trim()
-}
+const getCourseKey = (course: string): string => cleanCourseName(course).toLowerCase().trim()
 
-// Helper to normalize round names for display
 const normalizeRound = (round: string): string => {
     const r = round.toUpperCase()
-    // EXT = Extended Round (Round 3)
     if (r === "EXT" || r.includes("R3") || r.includes("EXTENDED") || r.includes("ROUND 3")) return "R3"
     if (r === "R2" || r.includes("ROUND 2")) return "R2"
-    // R1 and MOCK are both considered R1 (first round)
     if (r === "R1" || r === "MOCK" || r.includes("ROUND 1")) return "R1"
     return round
 }
 
-interface CollegeCardProps {
+// ─── College Matrix Card ────────────────────────────────────
+interface CollegeMatrixProps {
     collegeCode: string
     collegeName: string
     cutoffs: CutoffData[]
-    selectedCategory: string
+    selectedYear: string
+    selectedRound: string
     selectedType: string
+    selectedCategory: string
     isExpanded: boolean
     onToggle: () => void
-    years: string[]
 }
 
-const CollegeCard = ({
+const CollegeMatrix = ({
     collegeCode,
     collegeName,
     cutoffs,
-    selectedCategory,
+    selectedYear,
+    selectedRound,
     selectedType,
+    selectedCategory,
     isExpanded,
     onToggle,
-    years
-}: CollegeCardProps) => {
-    // Process data for table display
-    const tableData = useMemo(() => {
-        // Filter by category
-        let filtered = cutoffs.filter(c => {
-            const cat = c.category?.toUpperCase() || ""
-            return cat.startsWith(selectedCategory.toUpperCase().replace('G', '')) || cat === selectedCategory.toUpperCase()
-        })
+}: CollegeMatrixProps) => {
+    const matrixData = useMemo(() => {
+        // Filter cutoffs for the selected year & round
+        const filtered = cutoffs.filter(c =>
+            c.year === selectedYear &&
+            normalizeRound(c.round) === selectedRound
+        )
 
-        // Group by course key (case-insensitive) to consolidate duplicates with different casing
-        const courseMap = new Map<string, {
-            courseKey: string,
-            displayName: string,
-            records: CutoffData[]
-        }>()
-
-        filtered.forEach(record => {
-            const key = getCourseKey(record.course)
-            const cleanedName = cleanCourseName(record.course)
+        // Build lookup: courseKey -> { displayName, catMap: { category -> rank } }
+        const courseMap = new Map<string, { display: string; cats: Map<string, number> }>()
+        for (const entry of filtered) {
+            const key = getCourseKey(entry.course)
             if (!courseMap.has(key)) {
-                courseMap.set(key, {
-                    courseKey: key,
-                    displayName: cleanedName, // Use cleaned original name for display
-                    records: []
-                })
+                courseMap.set(key, { display: cleanCourseName(entry.course), cats: new Map() })
             }
-            courseMap.get(key)!.records.push(record)
+            const existing = courseMap.get(key)!.cats.get(entry.category)
+            // Keep the best (lowest) rank if duplicates
+            if (!existing || entry.cutoff_rank < existing) {
+                courseMap.get(key)!.cats.set(entry.category, entry.cutoff_rank)
+            }
+        }
+
+        const sortedCourses = [...courseMap.entries()]
+            .sort(([, a], [, b]) => a.display.localeCompare(b.display))
+
+        // Determine which categories to show
+        let typeCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
+        // If a specific category is chosen, narrow to just that
+        if (selectedCategory !== 'ALL') {
+            typeCats = typeCats.filter(c => c === selectedCategory)
+        }
+        const activeCats = typeCats.filter(cat => {
+            for (const [, course] of courseMap) {
+                if (course.cats.has(cat)) return true
+            }
+            return false
         })
 
-        // Build table data from grouped courses
-        const rows = Array.from(courseMap.values())
-            .sort((a, b) => a.displayName.localeCompare(b.displayName))
-            .map(({ displayName, records }) => {
-                const firstRecord = records[0]
+        return { sortedCourses, activeCats, totalEntries: filtered.length }
+    }, [cutoffs, selectedYear, selectedRound, selectedType, selectedCategory])
 
-                // Build year data
-                const yearData: Record<string, { seats?: number, R3?: number, R2?: number, R1?: number }> = {}
-
-                years.forEach(year => {
-                    const yearRecords = records.filter(c => c.year === year)
-                    yearData[year] = {
-                        seats: yearRecords[0]?.total_seats,
-                        R3: undefined,
-                        R2: undefined,
-                        R1: undefined
-                    }
-
-                    yearRecords.forEach(record => {
-                        const roundKey = normalizeRound(record.round)
-                        if (roundKey === "R3") yearData[year].R3 = record.cutoff_rank
-                        if (roundKey === "R2") yearData[year].R2 = record.cutoff_rank
-                        if (roundKey === "R1") yearData[year].R1 = record.cutoff_rank
-                    })
-                })
-
-                return {
-                    course: displayName,
-                    seats: firstRecord?.total_seats,
-                    yearData
-                }
-            })
-
-        return rows
-    }, [cutoffs, selectedCategory, years])
+    const { sortedCourses, activeCats, totalEntries } = matrixData
 
     return (
-        <div className="bg-[#0f1d32] border border-[#1e3a5f] rounded-lg overflow-hidden mb-4">
-            {/* College Header - Clickable */}
+        <div className="bg-card/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden mb-4 transition-all hover:border-white/10">
+            {/* College Header */}
             <button
                 onClick={onToggle}
-                className="w-full px-4 py-3 flex items-center justify-between hover:bg-[#1e3a5f]/50 transition-colors"
+                className="w-full px-4 py-3.5 flex items-center justify-between hover:bg-white/[0.02] transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded bg-[#1e3a5f] flex items-center justify-center flex-shrink-0">
-                        <Building2 className="h-4 w-4 text-blue-400" />
+                    <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0">
+                        <Building2 className="h-4.5 w-4.5 text-indigo-400" />
                     </div>
                     <div className="text-left">
-                        <h3 className="text-white font-semibold">
-                            {collegeCode} - {collegeName}
+                        <h3 className="text-white font-semibold text-sm sm:text-base">
+                            <span className="font-mono text-indigo-400 mr-2">{collegeCode}</span>
+                            {collegeName}
                         </h3>
                     </div>
                 </div>
-                {isExpanded ? (
-                    <ChevronUp className="h-5 w-5 text-gray-400" />
-                ) : (
-                    <ChevronDown className="h-5 w-5 text-gray-400" />
-                )}
+                <div className="flex items-center gap-3">
+                    {totalEntries > 0 && (
+                        <span className="text-xs text-muted-foreground hidden sm:block">
+                            {sortedCourses.length} courses · {totalEntries} entries
+                        </span>
+                    )}
+                    {isExpanded
+                        ? <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                        : <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                    }
+                </div>
             </button>
 
-            {/* Expanded Content */}
+            {/* Expanded Matrix */}
             {isExpanded && (
-                <div className="border-t border-[#1e3a5f]">
-                    {/* College Link & Info */}
-                    <div className="px-4 py-3 border-b border-[#1e3a5f]/50">
-                        <a
-                            href={`https://www.google.com/search?q=${encodeURIComponent(collegeName + " official website")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-yellow-500 hover:text-yellow-400 text-sm flex items-center gap-1"
-                        >
-                            Search for official website
-                            <ExternalLink className="h-3 w-3" />
-                        </a>
-                    </div>
-
-                    {/* Cutoff Table */}
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                            <thead>
-                                <tr className="border-b border-[#1e3a5f]">
-                                    <th className="text-left py-3 px-4 text-gray-400 font-medium bg-[#0a1628]" rowSpan={2}>
-                                        Course
-                                    </th>
-                                    <th className="text-center py-2 px-2 text-gray-400 font-medium bg-[#0a1628]" rowSpan={2}>
-                                        Seats
-                                    </th>
-                                    {years.map((year, idx) => (
-                                        <th
-                                            key={year}
-                                            colSpan={4}
-                                            className={`text-center py-2 px-2 font-medium ${idx === 1 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-[#0a1628] text-gray-400'
-                                                }`}
-                                        >
-                                            {selectedCategory} - {year} Cutoffs
+                <div className="border-t border-white/5">
+                    {sortedCourses.length === 0 ? (
+                        <div className="text-center py-10 text-muted-foreground">
+                            <Grid3X3 className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                            <p className="text-sm">No data for {selectedYear} {selectedRound}</p>
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs font-mono border-collapse">
+                                <thead>
+                                    <tr className="bg-white/[0.03]">
+                                        <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground border-b border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 min-w-[200px] text-sm">
+                                            Course
                                         </th>
-                                    ))}
-                                </tr>
-                                <tr className="border-b border-[#1e3a5f] bg-[#0a1628]">
-                                    {years.map((year, idx) => (
-                                        <React.Fragment key={`header-${year}`}>
-                                            <th className={`text-center py-2 px-2 text-xs ${idx === 1 ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-500'
-                                                }`}>
-                                                Seats
+                                        {activeCats.map(cat => (
+                                            <th key={cat} className="px-1 py-2 text-center border-b border-white/5 min-w-[62px]">
+                                                <Badge className={`${getCategoryColor(cat)} text-[9px] px-1.5 font-bold`}>{cat}</Badge>
                                             </th>
-                                            <th className={`text-center py-2 px-2 text-xs ${idx === 1 ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-500'
-                                                }`}>
-                                                R3
-                                            </th>
-                                            <th className={`text-center py-2 px-2 text-xs ${idx === 1 ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-500'
-                                                }`}>
-                                                R2
-                                            </th>
-                                            <th className={`text-center py-2 px-2 text-xs ${idx === 1 ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-500'
-                                                }`}>
-                                                R1
-                                            </th>
-                                        </React.Fragment>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tableData.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={2 + years.length * 4} className="text-center py-8 text-gray-500">
-                                            No cutoff data found for the selected category
-                                        </td>
+                                        ))}
                                     </tr>
-                                ) : (
-                                    tableData.map((row, rowIdx) => (
+                                </thead>
+                                <tbody>
+                                    {sortedCourses.map(([, course], rowIdx) => (
                                         <tr
-                                            key={row.course}
-                                            className={`border-b border-[#1e3a5f]/50 hover:bg-[#1e3a5f]/30 transition-colors ${rowIdx % 2 === 0 ? 'bg-[#0a1628]/50' : ''
-                                                }`}
+                                            key={course.display}
+                                            className={`${rowIdx % 2 === 0 ? 'bg-white/[0.01]' : ''} hover:bg-white/[0.04] transition-colors`}
                                         >
-                                            <td className="py-3 px-4">
-                                                <div className="text-yellow-500 font-medium">
-                                                    {row.course}
-                                                </div>
+                                            <td className="px-3 py-2 font-semibold text-sm border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 whitespace-nowrap text-foreground">
+                                                {course.display}
                                             </td>
-                                            <td className="text-center py-3 px-2 text-white font-medium">
-                                                {row.seats || '-'}
-                                            </td>
-                                            {years.map((year, idx) => {
-                                                const data = row.yearData[year] || {}
-                                                const isHighlighted = idx === 1
+                                            {activeCats.map(cat => {
+                                                const rank = course.cats.get(cat)
                                                 return (
-                                                    <React.Fragment key={`${row.course}-${year}`}>
-                                                        <td className={`text-center py-3 px-2 font-mono text-sm ${isHighlighted ? 'bg-yellow-500/5' : ''
-                                                            } ${data.seats ? 'text-white' : 'text-gray-600'}`}>
-                                                            {data.seats || '-'}
-                                                        </td>
-                                                        <td className={`text-center py-3 px-2 font-mono text-sm ${isHighlighted ? 'bg-yellow-500/5' : ''
-                                                            } ${data.R3 ? 'text-yellow-400' : 'text-gray-600'}`}>
-                                                            {data.R3?.toLocaleString() || '-'}
-                                                        </td>
-                                                        <td className={`text-center py-3 px-2 font-mono text-sm ${isHighlighted ? 'bg-yellow-500/5' : ''
-                                                            } ${data.R2 ? 'text-white' : 'text-gray-600'}`}>
-                                                            {data.R2?.toLocaleString() || '-'}
-                                                        </td>
-                                                        <td className={`text-center py-3 px-2 font-mono text-sm ${isHighlighted ? 'bg-yellow-500/5' : ''
-                                                            } ${data.R1 ? 'text-white' : 'text-gray-600'}`}>
-                                                            {data.R1?.toLocaleString() || '-'}
-                                                        </td>
-                                                    </React.Fragment>
+                                                    <td
+                                                        key={cat}
+                                                        className={`px-1 py-2 text-center border-white/5 ${rank
+                                                            ? 'text-foreground'
+                                                            : 'text-muted-foreground/20'
+                                                            }`}
+                                                        title={rank
+                                                            ? `${course.display} / ${cat} = ${rank.toLocaleString()}`
+                                                            : `No data for ${course.display} / ${cat}`
+                                                        }
+                                                    >
+                                                        {rank ? rank.toLocaleString() : '--'}
+                                                    </td>
                                                 )
                                             })}
                                         </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
     )
 }
 
-import React from "react"
-
+// ─── Main Page ──────────────────────────────────────────────
 const CollegeCutoffs = () => {
     const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([])
     const [loading, setLoading] = useState(true)
-    const [selectedCategory, setSelectedCategory] = useState("GM")
+    const [selectedYear, setSelectedYear] = useState("2025")
+    const [selectedRound, setSelectedRound] = useState("R1")
     const [selectedType, setSelectedType] = useState("General")
+    const [selectedCategory, setSelectedCategory] = useState("ALL")
     const [expandedColleges, setExpandedColleges] = useState<Set<string>>(new Set())
     const [searchQuery, setSearchQuery] = useState("")
     const [years, setYears] = useState<string[]>([])
+    const [rounds, setRounds] = useState<string[]>([])
 
     // Load cutoff data
     useEffect(() => {
         const loadData = async () => {
             setLoading(true)
             try {
-                const urls = ['/data/kcet_cutoffs_master.json', '/data/kcet_cutoffs_consolidated.json', '/kcet_cutoffs.json']
+                const urls = [
+                    '/data/kcet_cutoffs_high_volume.json',
+                    '/data/kcet_cutoffs_master.json',
+                    '/data/kcet_cutoffs_consolidated.json',
+                    '/kcet_cutoffs.json',
+                ]
                 let response: Response | null = null
 
                 for (const url of urls) {
@@ -339,9 +283,14 @@ const CollegeCutoffs = () => {
 
                 setAllCutoffs(cutoffs)
 
-                // Extract unique years
+                // Extract unique years & rounds
                 const uniqueYears = [...new Set(cutoffs.map(c => c.year))].sort((a, b) => b.localeCompare(a))
-                setYears(uniqueYears.slice(0, 3)) // Show last 3 years
+                const uniqueRounds = [...new Set(cutoffs.map(c => normalizeRound(c.round)))].sort()
+                setYears(uniqueYears)
+                setRounds(uniqueRounds)
+
+                // Default to latest year
+                if (uniqueYears.length > 0) setSelectedYear(uniqueYears[0])
             } catch (error) {
                 console.error('Error loading data:', error)
             } finally {
@@ -352,113 +301,157 @@ const CollegeCutoffs = () => {
         loadData()
     }, [])
 
-    // Get unique colleges
+    // Build college list
     const colleges = useMemo(() => {
-        const collegeMap = new Map<string, { code: string, name: string, cutoffs: CutoffData[] }>()
+        // Pick the most frequent name per institute_code
+        const collegeNames = new Map<string, Map<string, number>>()
+        allCutoffs.forEach(c => {
+            if (!c.institute_code) return
+            const code = c.institute_code.trim().toUpperCase()
+            const name = (c.institute || '').trim()
+            if (!name) return
+            if (!collegeNames.has(code)) collegeNames.set(code, new Map())
+            const counts = collegeNames.get(code)!
+            counts.set(name, (counts.get(name) || 0) + 1)
+        })
+
+        const collegeMap = new Map<string, { code: string; name: string; cutoffs: CutoffData[] }>()
 
         allCutoffs.forEach(cutoff => {
-            const code = cutoff.institute_code
+            const code = cutoff.institute_code?.trim().toUpperCase()
             if (!code) return
-
-            // Filter to E001-E314
+            // Only E001-E999
             const match = code.match(/E(\d+)/)
             if (!match) return
-            const num = parseInt(match[1])
-            if (num < 1 || num > 314) return
 
             if (!collegeMap.has(code)) {
-                collegeMap.set(code, {
-                    code,
-                    name: cutoff.institute,
-                    cutoffs: []
-                })
+                // Get best name
+                let bestName = code
+                const names = collegeNames.get(code)
+                if (names) {
+                    let bestCount = -1
+                    for (const [n, count] of names) {
+                        if (count > bestCount) { bestName = n; bestCount = count }
+                    }
+                }
+                collegeMap.set(code, { code, name: bestName, cutoffs: [] })
             }
             collegeMap.get(code)!.cutoffs.push(cutoff)
         })
 
-        // Convert to array and sort by code
-        let colleges = Array.from(collegeMap.values()).sort((a, b) => a.code.localeCompare(b.code))
+        let list = Array.from(collegeMap.values())
+            .sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
 
-        // Filter by search query
+        // Filter by search
         if (searchQuery) {
-            const query = searchQuery.toLowerCase()
-            colleges = colleges.filter(c =>
-                c.code.toLowerCase().includes(query) ||
-                c.name.toLowerCase().includes(query)
+            const q = searchQuery.toLowerCase()
+            list = list.filter(c =>
+                c.code.toLowerCase().includes(q) ||
+                c.name.toLowerCase().includes(q)
             )
         }
 
-        return colleges
+        return list
     }, [allCutoffs, searchQuery])
 
     const toggleCollege = (code: string) => {
         setExpandedColleges(prev => {
             const next = new Set(prev)
-            if (next.has(code)) {
-                next.delete(code)
-            } else {
-                next.add(code)
-            }
+            if (next.has(code)) next.delete(code)
+            else next.add(code)
             return next
         })
     }
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0a1628] flex items-center justify-center">
-                <div className="text-white text-lg">Loading college cutoffs...</div>
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center space-y-3">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500 mx-auto" />
+                    <p className="text-muted-foreground">Loading cutoff data...</p>
+                </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-[#0a1628]">
-            {/* Header */}
-            <div className="bg-[#0f1d32] border-b border-[#1e3a5f] px-4 py-4 sticky top-0 z-10">
-                <div className="max-w-[1400px] mx-auto">
-                    <h1 className="text-2xl font-bold text-white mb-4">College Cutoffs</h1>
+        <div className="min-h-screen bg-background">
+            {/* Sticky Header */}
+            <div className="bg-background/80 backdrop-blur-xl border-b border-white/5 px-4 py-4 sticky top-0 z-20">
+                <div className="max-w-[1600px] mx-auto">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <Grid3X3 className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                            <h1 className="text-xl sm:text-2xl font-bold">College Cutoff Matrix</h1>
+                            <p className="text-xs text-muted-foreground">
+                                Courses × Categories — official KEA format
+                            </p>
+                        </div>
+                        {colleges.length > 0 && (
+                            <Badge className="ml-auto bg-white/5 text-muted-foreground border-white/10 text-xs">
+                                {colleges.length} colleges
+                            </Badge>
+                        )}
+                    </div>
 
                     {/* Filters */}
-                    <div className="flex flex-wrap gap-4 items-center">
+                    <div className="flex flex-wrap items-end gap-3">
                         {/* Search */}
-                        <div className="relative flex-1 min-w-[200px] max-w-md">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <Input
-                                placeholder="Search colleges..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 bg-[#1e3a5f] border-[#2e4a6f] text-white placeholder:text-gray-500"
-                            />
+                        <div className="flex-1 min-w-[200px] max-w-sm">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder="Search colleges..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10 bg-white/5 border-white/10 h-10"
+                                />
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-400 text-sm">Category:</span>
-                            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                <SelectTrigger className="w-[180px] bg-[#1e3a5f] border-[#2e4a6f] text-white">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="bg-[#1e3a5f] border-[#2e4a6f]">
-                                    {CATEGORIES.map(cat => (
-                                        <SelectItem key={cat.value} value={cat.value} className="text-white hover:bg-[#2e4a6f]">
-                                            {cat.label}
-                                        </SelectItem>
-                                    ))}
+                        {/* Year */}
+                        <div className="w-28">
+                            <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Year</label>
+                            <Select value={selectedYear} onValueChange={setSelectedYear}>
+                                <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    {years.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-400 text-sm">Type:</span>
-                            <Select value={selectedType} onValueChange={setSelectedType}>
-                                <SelectTrigger className="w-[140px] bg-[#1e3a5f] border-[#2e4a6f] text-white">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent className="bg-[#1e3a5f] border-[#2e4a6f]">
-                                    {TYPE_OPTIONS.map(type => (
-                                        <SelectItem key={type.value} value={type.value} className="text-white hover:bg-[#2e4a6f]">
-                                            {type.label}
-                                        </SelectItem>
-                                    ))}
+                        {/* Round */}
+                        <div className="w-28">
+                            <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Round</label>
+                            <Select value={selectedRound} onValueChange={setSelectedRound}>
+                                <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    {rounds.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Category Type */}
+                        <div className="w-32">
+                            <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Cat. Type</label>
+                            <Select value={selectedType} onValueChange={(v) => { setSelectedType(v); setSelectedCategory('ALL') }}>
+                                <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    {Object.keys(TYPE_FILTERS).map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Specific Category */}
+                        <div className="w-28">
+                            <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Category</label>
+                            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
+                                <SelectContent className="max-h-64">
+                                    <SelectItem value="ALL">All</SelectItem>
+                                    {(TYPE_FILTERS[selectedType] || ORDERED_CATS).map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -467,29 +460,28 @@ const CollegeCutoffs = () => {
             </div>
 
             {/* College List */}
-            <div className="max-w-[1400px] mx-auto p-4">
-                <div className="text-sm text-gray-500 mb-4">
-                    Showing {colleges.length} colleges
-                </div>
-
-                {colleges.map(college => (
-                    <CollegeCard
-                        key={college.code}
-                        collegeCode={college.code}
-                        collegeName={college.name}
-                        cutoffs={college.cutoffs}
-                        selectedCategory={selectedCategory}
-                        selectedType={selectedType}
-                        isExpanded={expandedColleges.has(college.code)}
-                        onToggle={() => toggleCollege(college.code)}
-                        years={years}
-                    />
-                ))}
-
-                {colleges.length === 0 && (
-                    <div className="text-center py-12 text-gray-500">
-                        No colleges found matching your search
+            <div className="max-w-[1600px] mx-auto p-4">
+                {colleges.length === 0 ? (
+                    <div className="text-center py-16 text-muted-foreground">
+                        <Building2 className="h-10 w-10 mx-auto mb-3 opacity-20" />
+                        <p className="font-medium">No colleges found</p>
+                        <p className="text-xs mt-1">Try a different search</p>
                     </div>
+                ) : (
+                    colleges.map(college => (
+                        <CollegeMatrix
+                            key={college.code}
+                            collegeCode={college.code}
+                            collegeName={college.name}
+                            cutoffs={college.cutoffs}
+                            selectedYear={selectedYear}
+                            selectedRound={selectedRound}
+                            selectedType={selectedType}
+                            selectedCategory={selectedCategory}
+                            isExpanded={expandedColleges.has(college.code)}
+                            onToggle={() => toggleCollege(college.code)}
+                        />
+                    ))
                 )}
             </div>
         </div>

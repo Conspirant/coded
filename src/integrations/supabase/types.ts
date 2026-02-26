@@ -143,6 +143,7 @@ export type Database = {
           rating: number | null
           review_text: string | null
           session_id: string | null
+          status: string | null
           user_id: string | null
           verified: boolean | null
         }
@@ -157,6 +158,7 @@ export type Database = {
           rating?: number | null
           review_text?: string | null
           session_id?: string | null
+          status?: string | null
           user_id?: string | null
           verified?: boolean | null
         }
@@ -171,6 +173,7 @@ export type Database = {
           rating?: number | null
           review_text?: string | null
           session_id?: string | null
+          status?: string | null
           user_id?: string | null
           verified?: boolean | null
         }
@@ -424,6 +427,44 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      review_reports: {
+        Row: {
+          id: string
+          review_id: string
+          session_id: string
+          reason: string
+          description: string | null
+          status: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          review_id: string
+          session_id: string
+          reason: string
+          description?: string | null
+          status?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          review_id?: string
+          session_id?: string
+          reason?: string
+          description?: string | null
+          status?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "college_reviews"
             referencedColumns: ["id"]
           },
         ]

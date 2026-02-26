@@ -13,7 +13,8 @@ CATEGORY_MAPPING = {
     '3BG': '3BG', '3BK': '3BK', '3BR': '3BR',
     'GM': 'GM', 'GMK': 'GMK', 'GMR': 'GMR',
     'SCG': 'SCG', 'SCK': 'SCK', 'SCR': 'SCR',
-    'STG': 'STG', 'STK': 'STK', 'STR': 'STR'
+    'STG': 'STG', 'STK': 'STK', 'STR': 'STR',
+    'GMP': 'GMP', 'NRI': 'NRI', 'OPN': 'OPN', 'OTH': 'OTH'
 }
 
 def parse_filename(filename):
@@ -89,6 +90,14 @@ def extract_from_pdf(pdf_path):
                     code = match.group(1)
                     name = match.group(2)
                     college_headers.append({'top': top, 'code': code, 'name': name})
+
+            # Important: carry current college even for pages without tables.
+            # Some PDFs have college header on one page and table on the next.
+            if college_headers:
+                last_header = max(college_headers, key=lambda x: x['top'])
+                current_college_code = last_header['code']
+                current_college_name = last_header['name']
+                current_location = clean_location(current_college_name)
             
             # 2. Find Tables
             tables = page.find_tables()

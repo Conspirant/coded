@@ -12,11 +12,12 @@ import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { AdminCutoffService, AdminCutoffEntry } from "@/lib/admin-cutoff-service"
+import AdminReviewModeration from "@/components/AdminReviewModeration"
 import {
     ShieldCheck, Plus, Download, Upload, Undo2, Trash2, Search,
     Edit3, Save, X, FileJson, FileSpreadsheet, Copy, RefreshCw,
     AlertTriangle, CheckCircle2, Database, Clock, Filter, ChevronLeft,
-    ChevronRight, Lock, ArrowUpDown, RotateCcw, Zap, Grid3X3
+    ChevronRight, Lock, ArrowUpDown, RotateCcw, Zap, Grid3X3, MessageSquare
 } from "lucide-react"
 
 const ADMIN_PASS = "kcetadmin2026"
@@ -963,6 +964,9 @@ const AdminCutoffs = () => {
                             <TabsTrigger value="deleted" className="data-[state=active]:bg-red-500/20 data-[state=active]:text-red-400">
                                 Deleted ({stats.deleted})
                             </TabsTrigger>
+                            <TabsTrigger value="reviews" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
+                                <MessageSquare className="h-3.5 w-3.5 mr-1" /> Reviews
+                            </TabsTrigger>
                         </TabsList>
                     </Tabs>
 
@@ -1021,6 +1025,9 @@ const AdminCutoffs = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* ───────────── REVIEWS MODERATION TAB ───────────── */}
+                {selectedTab === 'reviews' && <AdminReviewModeration />}
 
                 {/* ───────────── MATRIX VIEW ───────────── */}
                 {selectedTab === 'matrix' && (() => {

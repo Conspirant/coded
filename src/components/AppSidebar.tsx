@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -20,7 +20,7 @@ const mainItems = [
   { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
   { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
   { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
-  { title: "College Directory", url: "/college-list", icon: Building2 },
+  { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
   { title: "College Finder", url: "/college-finder", icon: Target },
 ]
 

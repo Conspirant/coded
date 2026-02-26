@@ -342,9 +342,8 @@ def extract_pdf_file(pdf_path, year, round_val):
     """
     Extract cutoff data from a KCET PDF.
     
-    KEY FIX: Tracks current_college across pages:
-    if a college header appears on page N but its table starts on page N+1,
-    the college state is properly carried over.
+    KEY FIX: Tracks current_college across pages and uses pure coordinate-based
+    extraction (X, Y) instead of find_tables() to prevent cell shifting.
     """
     results = []
 
@@ -352,27 +351,41 @@ def extract_pdf_file(pdf_path, year, round_val):
         total_pages = len(pdf.pages)
         current_code = None
         current_name = None
-        last_cat_indices = {}
+        last_cat_coords = {}
 
         for page_idx, page in enumerate(pdf.pages):
             if page_idx % 25 == 0:
-                print(f"     Page {page_idx}/{total_pages}...")
+                print(f"     Page {page_idx + 1}/{total_pages}...")
 
-            # 1. Find college headers on this page
-            words = page.extract_words(keep_blank_chars=True)
-            lines = {}
+            words = page.extract_words(keep_blank_chars=False)
+            if not words:
+                continue
+                
+            # Group words by Y coordinate (with 2.0 pt tolerance)
+            rows = {}
             for w in words:
-                top = round(w['top'])
-                if top not in lines:
-                    lines[top] = []
-                lines[top].append(w['text'])
+                y = round(w['top'], 1)
+                matched_y = None
+                for existing_y in rows:
+                    if abs(existing_y - y) <= 2.0:
+                        matched_y = existing_y
+                        break
+                if matched_y is None:
+                    matched_y = y
+                    rows[matched_y] = []
+                rows[matched_y].append(w)
+                
+            sorted_ys = sorted(rows.keys())
+            
+            for y in sorted_ys:
+                row_words = sorted(rows[y], key=lambda x: x['x0'])
+                text_full = " ".join([w['text'] for w in row_words])
+                text_clean = clean(text_full)
 
-            college_headers = []
-            for top in sorted(lines.keys()):
-                line_text = " ".join(lines[top])
+                # 1. College Header
                 m = re.search(
                     r'College\s*:?\s*[\(\[]?([A-Z0-9]{3,6})[\)\]]?\s*(.*)',
-                    line_text,
+                    text_clean,
                     re.IGNORECASE
                 )
                 if m:
@@ -380,97 +393,80 @@ def extract_pdf_file(pdf_path, year, round_val):
                     n = m.group(2).strip()
                     n = re.sub(r'^[\(\)]+|[\(\)]+$', '', n).strip()
                     if len(c) >= 3 and re.match(r'^E\d', c):
-                        college_headers.append({'top': top, 'code': c, 'name': n})
-
-            # 2. Process tables
-            tables = page.find_tables()
-
-            if tables:
-                for table_obj in tables:
-                    table_top = table_obj.bbox[1]
-
-                    # Find closest college header ABOVE this table
-                    candidates = [h for h in college_headers if h['top'] < table_top]
-                    if candidates:
-                        best = max(candidates, key=lambda x: x['top'])
-                        current_code = best['code']
-                        current_name = best['name']
-                        last_cat_indices = {}
-
-                    if not current_code:
+                        current_code = c
+                        current_name = n
+                        last_cat_coords = {}
                         continue
 
-                    table_data = table_obj.extract()
-                    if not table_data:
+                if not current_code:
+                    continue
+
+                # 2. Category Header Row
+                upper_words = [w['text'].upper().strip() for w in row_words]
+                cat_count = sum(1 for w in upper_words if w in ALL_CATEGORIES)
+                
+                if cat_count >= 5 or (('COURSE' in text_clean.upper() or 'BRANCH' in text_clean.upper()) and cat_count >= 3):
+                    cat_coords = {}
+                    for w in row_words:
+                        text = w['text'].upper().strip()
+                        if text in ALL_CATEGORIES:
+                            center_x = (w['x0'] + w['x1']) / 2.0
+                            cat_coords[text] = center_x
+                    if cat_coords:
+                        last_cat_coords = cat_coords
+                    continue
+
+                # 3. Data Row
+                if not last_cat_coords:
+                    continue
+                    
+                min_cat_x = min(last_cat_coords.values())
+                
+                course_words = [w for w in row_words if w['x1'] < min_cat_x - 10]
+                data_words = [w for w in row_words if w['x1'] >= min_cat_x - 10]
+
+                if not course_words:
+                    continue
+
+                course_raw = " ".join([w['text'] for w in course_words])
+                course_raw = clean_course_name(course_raw)
+
+                if not course_raw:
+                    continue
+                if course_raw.upper() in ('COURSE', 'BRANCH', 'PROGRAMME', 'COURSE NAME', '--', '-', ''):
+                    continue
+                if re.match(r'^[\d\s\-\.]+$', course_raw):
+                    continue
+                if 'Course' in course_raw and 'GM' not in course_raw:
+                    continue
+
+                for w in data_words:
+                    val = w['text'].strip()
+                    rank = parse_cutoff(val)
+                    if rank is None:
                         continue
-
-                    cat_indices = {}
-
-                    for row in table_data:
-                        if row is None:
-                            continue
-                        cleaned_row = [clean_course_name(str(c)) if c else '' for c in row]
-                        row_upper = [c.upper().strip() for c in cleaned_row]
-
-                        # Detect category header row
-                        cat_count = sum(1 for c in row_upper if c in ALL_CATEGORIES)
-                        if cat_count >= 5:
-                            cat_indices = {}
-                            for idx, cell in enumerate(row_upper):
-                                if cell in ALL_CATEGORIES:
-                                    cat_indices[cell] = idx
-                            last_cat_indices = cat_indices
-                            continue
-
-                        # Also handle "Course Name" + some categories
-                        row_text = ' '.join(row_upper)
-                        if ('COURSE' in row_text or 'BRANCH' in row_text) and cat_count >= 3:
-                            cat_indices = {}
-                            for idx, cell in enumerate(row_upper):
-                                if cell in ALL_CATEGORIES:
-                                    cat_indices[cell] = idx
-                            last_cat_indices = cat_indices
-                            continue
-
-                        active_cats = cat_indices if cat_indices else last_cat_indices
-                        if not active_cats:
-                            continue
-
-                        # Process data row
-                        if len(row) == 0 or row[0] is None:
-                            continue
-                        course_raw = clean_course_name(str(row[0]))
-                        if not course_raw:
-                            continue
-                        if course_raw.upper() in ('COURSE', 'BRANCH', 'PROGRAMME', 'COURSE NAME', '--', '-', ''):
-                            continue
-                        if re.match(r'^[\d\s\-\.]+$', course_raw):
-                            continue
-                        if 'Course' in course_raw and 'GM' not in course_raw:
-                            continue
-
-                        for cat, idx in active_cats.items():
-                            if idx >= len(row):
-                                continue
-                            rank = parse_cutoff(row[idx])
-                            if rank is None:
-                                continue
-                            results.append({
-                                'institute': current_name,
-                                'institute_code': current_code,
-                                'course': course_raw,
-                                'category': cat,
-                                'cutoff_rank': rank,
-                                'year': year,
-                                'round': round_val,
-                            })
-            else:
-                # No tables on page — carry college header to next page
-                if college_headers:
-                    last_header = max(college_headers, key=lambda x: x['top'])
-                    current_code = last_header['code']
-                    current_name = last_header['name']
-                    last_cat_indices = {}
+                        
+                    center_x = (w['x0'] + w['x1']) / 2.0
+                    closest_cat = None
+                    min_dist = float('inf')
+                    
+                    for cat, cat_x in last_cat_coords.items():
+                        dist = abs(cat_x - center_x)
+                        if dist < min_dist:
+                            min_dist = dist
+                            closest_cat = cat
+                            
+                    # Tolerate up to ~35 points of horizontal drift
+                    if closest_cat and min_dist < 40:
+                        results.append({
+                            'institute': current_name,
+                            'institute_code': current_code,
+                            'course': course_raw,
+                            'category': closest_cat,
+                            'cutoff_rank': rank,
+                            'year': year,
+                            'round': round_val,
+                        })
 
     return results
 

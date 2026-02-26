@@ -77,10 +77,10 @@ export const CollegeLayout = () => {
             <div className="bg-[#0f1d32] border-b border-[#1e3a5f] px-4 py-6 shadow-md z-10">
                 <div className="max-w-[1600px] mx-auto w-full">
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
-                        <Link to="/college-list" className="hover:text-white transition-colors">
+                        <Link to="/college-cutoffs" className="hover:text-white transition-colors">
                             <ArrowLeft className="h-4 w-4" />
                         </Link>
-                        <span>College Directory</span>
+                        <span>College Cutoffs</span>
                         <span>/</span>
                         <span className="text-white">{collegeCode}</span>
                     </div>

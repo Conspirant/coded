@@ -477,3 +477,226 @@ export const deleteReview = async (reviewId: string): Promise<boolean> => {
     return deleteFromLocalStorage(reviewId);
   }
 };
+
+// ─── Review Report & Moderation ─────────────────────────────────
+
+export interface ReviewReport {
+  id: string;
+  review_id: string;
+  session_id: string;
+  reason: 'spam' | 'offensive' | 'fake' | 'other';
+  description?: string;
+  status: 'pending' | 'reviewed' | 'dismissed';
+  created_at: string;
+  // Joined fields for admin display
+  review?: CollegeReview;
+}
+
+/** Report a review */
+export const reportReview = async (
+  reviewId: string,
+  reason: 'spam' | 'offensive' | 'fake' | 'other',
+  description?: string
+): Promise<boolean> => {
+  try {
+    const sessionId = getUserSessionId();
+    const { error } = await supabase
+      .from('review_reports')
+      .insert({
+        review_id: reviewId,
+        session_id: sessionId,
+        reason,
+        description: description || null,
+      });
+
+    if (error) {
+      console.error('Error reporting review:', error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Error reporting review:', error);
+    return false;
+  }
+};
+
+/** Check if current user already reported a specific review */
+export const hasUserReported = async (reviewId: string): Promise<boolean> => {
+  try {
+    const sessionId = getUserSessionId();
+    const { data, error } = await supabase
+      .from('review_reports')
+      .select('id')
+      .eq('review_id', reviewId)
+      .eq('session_id', sessionId)
+      .limit(1);
+
+    if (error) return false;
+    return (data?.length || 0) > 0;
+  } catch {
+    return false;
+  }
+};
+
+/** Get all review reports (for admin) */
+export const getReviewReports = async (): Promise<ReviewReport[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('review_reports')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error loading review reports:', error);
+      return [];
+    }
+    return (data || []) as ReviewReport[];
+  } catch (error) {
+    console.error('Error loading review reports:', error);
+    return [];
+  }
+};
+
+/** Moderate a review — update its status (visible / hidden / flagged) */
+export const moderateReview = async (
+  reviewId: string,
+  status: 'visible' | 'hidden' | 'flagged'
+): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('college_reviews')
+      .update({ status })
+      .eq('id', reviewId);
+
+    if (error) {
+      console.error('Error moderating review:', error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Error moderating review:', error);
+    return false;
+  }
+};
+
+/** Dismiss a report */
+export const dismissReport = async (reportId: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('review_reports')
+      .update({ status: 'dismissed' })
+      .eq('id', reportId);
+
+    if (error) {
+      console.error('Error dismissing report:', error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Error dismissing report:', error);
+    return false;
+  }
+};
+
+/** Mark report as reviewed */
+export const markReportReviewed = async (reportId: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('review_reports')
+      .update({ status: 'reviewed' })
+      .eq('id', reportId);
+
+    if (error) {
+      console.error('Error updating report:', error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error('Error updating report:', error);
+    return false;
+  }
+};
+
+/** Get all reviews for admin (including hidden ones) */
+export const getAllReviewsForAdmin = async (): Promise<CollegeReview[]> => {
+  try {
+    const { data: reviews, error } = await supabase
+      .from('college_reviews')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error || !reviews) return [];
+
+    const collegeIds = [...new Set(reviews.map(r => r.college_id))];
+    const { data: colleges } = await supabase
+      .from('colleges')
+      .select('id, code, name')
+      .in('id', collegeIds);
+
+    const collegeMap = new Map<string, { code: string; name: string }>();
+    colleges?.forEach(c => collegeMap.set(c.id, { code: c.code, name: c.name }));
+
+    return reviews.map(r => {
+      const college = collegeMap.get(r.college_id);
+      return {
+        id: r.id,
+        college_id: r.college_id,
+        user_id: r.user_id,
+        session_id: r.session_id,
+        rating: r.rating || 0,
+        review_text: r.review_text || '',
+        faculty_rating: r.faculty_rating || 1,
+        infrastructure_rating: r.infrastructure_rating || 1,
+        placements_rating: r.placements_rating || 1,
+        helpful_votes: r.helpful_votes || 0,
+        verified: r.verified || false,
+        created_at: r.created_at || new Date().toISOString(),
+        collegeCode: college?.code || 'UNKNOWN',
+        collegeName: college?.name || 'Unknown College',
+        author: 'Anonymous',
+        status: r.status || 'visible',
+      };
+    });
+  } catch (error) {
+    console.error('Error loading admin reviews:', error);
+    return [];
+  }
+};
+
+/** Get review stats for admin dashboard */
+export const getReviewStats = async (): Promise<{
+  totalReviews: number;
+  pendingReports: number;
+  hiddenReviews: number;
+  flaggedReviews: number;
+}> => {
+  try {
+    const { count: totalReviews } = await supabase
+      .from('college_reviews')
+      .select('*', { count: 'exact', head: true });
+
+    const { count: pendingReports } = await supabase
+      .from('review_reports')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending');
+
+    const { count: hiddenReviews } = await supabase
+      .from('college_reviews')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'hidden');
+
+    const { count: flaggedReviews } = await supabase
+      .from('college_reviews')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'flagged');
+
+    return {
+      totalReviews: totalReviews || 0,
+      pendingReports: pendingReports || 0,
+      hiddenReviews: hiddenReviews || 0,
+      flaggedReviews: flaggedReviews || 0,
+    };
+  } catch {
+    return { totalReviews: 0, pendingReports: 0, hiddenReviews: 0, flaggedReviews: 0 };
+  }
+};
