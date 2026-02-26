@@ -25,6 +25,7 @@ export interface CollegeReview {
   course?: string;
   graduation_year?: number;
   helpful?: number;
+  status?: string;
 }
 
 import { supabase } from "@/integrations/supabase/client";
