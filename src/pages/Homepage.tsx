@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { motion, useScroll, useTransform } from "framer-motion"
@@ -241,6 +242,10 @@ const Homepage = () => {
 
     return (
         <div className="min-h-screen bg-background overflow-hidden">
+            <SEO
+                title="Home"
+                description="Your comprehensive guide to KCET admissions with verified cutoff data, rank prediction, and smart college finder."
+            />
             {/* ═══ Aurora Background ═══ */}
             <div className="fixed inset-0 -z-10">
                 <div className="absolute inset-0 animate-aurora opacity-60" />

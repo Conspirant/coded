@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -241,6 +242,11 @@ const RankPredictor = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-8">
+      <SEO
+        title="Rank Predictor"
+        description="Predict your KCET 2026 rank accurately based on historical cutoff data and your PUC scores."
+        url="https://kcet-coded.vercel.app/rank-predictor"
+      />
       {/* Header */}
       <div className="text-center space-y-4 py-6">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/20 to-indigo-500/20 rounded-2xl">

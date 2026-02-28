@@ -1,0 +1,123 @@
+{
+  "dataset_path": "public/data/kcet_cutoffs_htmlcuto_full.json",
+  "generated_at": "2026-02-27T14:14:13.437984+00:00",
+  "core": {
+    "total_rows": 153836,
+    "duplicate_rows": 0,
+    "invalid_rank_rows": 0
+  },
+  "source_coverage": [
+    {
+      "file": "kcet-2023-round1-cutoffs.html",
+      "size_bytes": 6395836,
+      "is_empty": false,
+      "detected_pages": 44
+    },
+    {
+      "file": "kcet-2023-round2-cutoffs.html",
+      "size_bytes": 6532960,
+      "is_empty": false,
+      "detected_pages": 45
+    },
+    {
+      "file": "kcet-2023-round3(extended)-cutoffs.html",
+      "size_bytes": 6840325,
+      "is_empty": false,
+      "detected_pages": 45
+    },
+    {
+      "file": "kcet-2024-mock-round1-cutoffs.html",
+      "size_bytes": 7138810,
+      "is_empty": false,
+      "detected_pages": 51
+    },
+    {
+      "file": "kcet-2024-round1-cutoffs.html",
+      "size_bytes": 7122649,
+      "is_empty": false,
+      "detected_pages": 51
+    },
+    {
+      "file": "kcet-2024-round2-cutoffs.html",
+      "size_bytes": 7200637,
+      "is_empty": false,
+      "detected_pages": 51
+    },
+    {
+      "file": "kcet-2024-round3(extended)-cutoffs.html",
+      "size_bytes": 8067209,
+      "is_empty": false,
+      "detected_pages": 51
+    },
+    {
+      "file": "kcet-2025-mock-round1-cutoffs.html",
+      "size_bytes": 11537721,
+      "is_empty": false,
+      "detected_pages": 96
+    },
+    {
+      "file": "kcet-2025-round1-cutoffs.html",
+      "size_bytes": 11537503,
+      "is_empty": false,
+      "detected_pages": 96
+    },
+    {
+      "file": "kcet-2025-round2-cutoffs.html",
+      "size_bytes": 3635001,
+      "is_empty": false,
+      "detected_pages": 0
+    },
+    {
+      "file": "kcet-2025-round3-cutoffs.html",
+      "size_bytes": 3642098,
+      "is_empty": false,
+      "detected_pages": 0
+    }
+  ],
+  "counts": {
+    "by_year_round": {
+      "2023-R1": 13483,
+      "2023-R2": 12752,
+      "2023-R3": 10237,
+      "2024-MOCK": 15922,
+      "2024-R1": 15981,
+      "2024-R2": 13920,
+      "2024-R3": 8938,
+      "2025-MOCK": 18716,
+      "2025-R1": 18880,
+      "2025-R2": 14303,
+      "2025-R3": 10704
+    },
+    "colleges_2025": 229,
+    "courses_2025": 187
+  },
+  "reconciliation": {
+    "expected_rows": 153836,
+    "dataset_rows": 153836,
+    "missing_rows": 0,
+    "extra_rows": 0,
+    "missing_examples": [],
+    "extra_examples": []
+  },
+  "sanity": {
+    "presidency_2025": {
+      "R1": 253,
+      "R2": 240,
+      "R3": 213,
+      "MOCK": 251
+    }
+  },
+  "anomalies": {
+    "unknown_categories_by_year": {},
+    "suspicious_courses_top": [
+      [
+        "ZW COMP. SCE. AND",
+        72
+      ],
+      [
+        "ZR COMP.SCE.AND",
+        45
+      ]
+    ]
+  }
+}

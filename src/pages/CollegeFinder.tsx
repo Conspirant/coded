@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -1366,7 +1367,12 @@ const CollegeFinder = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pb-20 md:pb-0">
+        <SEO
+          title="College Finder"
+          description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
+          url="https://kcet-coded.vercel.app/college-finder"
+        />
         <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
           <div className="space-y-2">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">College Finder</h1>
@@ -1472,6 +1478,11 @@ const CollegeFinder = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <SEO
+        title="College Finder"
+        description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
+        url="https://kcet-coded.vercel.app/college-finder"
+      />
       {/* Animated Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute top-0 -left-4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float" />

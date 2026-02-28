@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -491,6 +492,11 @@ const CutoffExplorer = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Cutoff Explorer"
+        description="Explore and analyze KCET cutoff data across varying years, colleges, and categories with interactive charts."
+        url="https://kcet-coded.vercel.app/cutoff-explorer"
+      />
       <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>

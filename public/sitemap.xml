@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://kcet-coded.vercel.app/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/rank-predictor</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/cutoff-explorer</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/college-finder</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/mock-simulator</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/college-compare</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/cet-news</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/info-centre</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/materials</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/documents</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/ai-counselor</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/college-cutoffs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/squad-finder</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/metro-mapper</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/hidden-gems</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/daily-challenge</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kcet-coded.vercel.app/cutoff-clash</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+</urlset>

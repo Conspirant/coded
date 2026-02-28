@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
@@ -49,79 +50,81 @@ import { DisclaimerBanner } from "./components/DisclaimerBanner";
 
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true
-        }}
-      >
-        <CommandPalette />
-        <KonamiEasterEgg />
-        <KeyboardShortcutsHUD />
-        <DisclaimerBanner />
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true
+          }}
+        >
+          <CommandPalette />
+          <KonamiEasterEgg />
+          <KeyboardShortcutsHUD />
+          <DisclaimerBanner />
 
-        <Routes>
-          {/* Standalone pages (no sidebar) */}
-          <Route path="/" element={<Homepage />} />
-          <Route path="/daily-challenge" element={<DailyChallenge />} />
-          <Route path="/cutoff-clash" element={<CutoffClash />} />
+          <Routes>
+            {/* Standalone pages (no sidebar) */}
+            <Route path="/" element={<Homepage />} />
+            <Route path="/daily-challenge" element={<DailyChallenge />} />
+            <Route path="/cutoff-clash" element={<CutoffClash />} />
 
-          {/* All other pages with sidebar layout */}
-          <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/rank-predictor" element={<Layout><RankPredictor /></Layout>} />
-          <Route path="/cutoff-explorer" element={<Layout><CutoffExplorer /></Layout>} />
-          <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
-          <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
-          <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
-          <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
-          <Route path="/planner" element={
-            <Layout>
-              <ErrorBoundary>
-                <Planner />
-              </ErrorBoundary>
-            </Layout>
-          } />
-          <Route path="/documents" element={<Layout><Documents /></Layout>} />
-          <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
-          <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
-          <Route path="/college-list" element={<Layout><CollegeCutoffs /></Layout>} />
-          <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
-          <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
-          <Route path="/materials" element={<Layout><Materials /></Layout>} />
-          <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
-          <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
-          <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
+            {/* All other pages with sidebar layout */}
+            <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+            <Route path="/rank-predictor" element={<Layout><RankPredictor /></Layout>} />
+            <Route path="/cutoff-explorer" element={<Layout><CutoffExplorer /></Layout>} />
+            <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
+            <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
+            <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
+            <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
+            <Route path="/planner" element={
+              <Layout>
+                <ErrorBoundary>
+                  <Planner />
+                </ErrorBoundary>
+              </Layout>
+            } />
+            <Route path="/documents" element={<Layout><Documents /></Layout>} />
+            <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
+            <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
+            <Route path="/college-list" element={<Layout><CollegeCutoffs /></Layout>} />
+            <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
+            <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
+            <Route path="/materials" element={<Layout><Materials /></Layout>} />
+            <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
+            <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
+            <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
 
-          {/* College Details Section with specific layout */}
-          <Route path="/college/:collegeCode" element={<Layout><CollegeLayout /></Layout>}>
-            <Route index element={<CollegeDetail />} />
-            <Route path="analytics" element={<CollegeAnalytics />} />
-            <Route path="community" element={<CollegeCommunity />} />
-          </Route>
+            {/* College Details Section with specific layout */}
+            <Route path="/college/:collegeCode" element={<Layout><CollegeLayout /></Layout>}>
+              <Route index element={<CollegeDetail />} />
+              <Route path="analytics" element={<CollegeAnalytics />} />
+              <Route path="community" element={<CollegeCommunity />} />
+            </Route>
 
-          {/* More routes will be added here */}
-          <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
-          <Route path="/terms" element={<Layout><Terms /></Layout>} />
+            {/* More routes will be added here */}
+            <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
+            <Route path="/terms" element={<Layout><Terms /></Layout>} />
 
-          {/* Coded Labs - Unique Features */}
-          <Route path="/squad-finder" element={<SquadFinder />} />
-          <Route path="/metro-mapper" element={<MetroMapper />} />
-          <Route path="/bmtc-mapper" element={<BmtcMapper />} />
-          <Route path="/hidden-gems" element={<HiddenGems />} />
+            {/* Coded Labs - Unique Features */}
+            <Route path="/squad-finder" element={<SquadFinder />} />
+            <Route path="/metro-mapper" element={<MetroMapper />} />
+            <Route path="/bmtc-mapper" element={<BmtcMapper />} />
+            <Route path="/hidden-gems" element={<HiddenGems />} />
 
-          {/* Admin (hidden from nav, direct URL only) */}
-          <Route path="/admin" element={<AdminCutoffs />} />
+            {/* Admin (hidden from nav, direct URL only) */}
+            <Route path="/admin" element={<AdminCutoffs />} />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <PWAInstallBanner />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <PWAInstallBanner />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -57,6 +58,11 @@ export default function CETNews() {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="CET News"
+        description="Official notices, updates, and news regarding KCET admissions, counseling, and exams."
+        url="https://kcet-coded.vercel.app/cet-news"
+      />
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
