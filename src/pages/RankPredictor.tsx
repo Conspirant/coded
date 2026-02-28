@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Calculator, TrendingUp, Target, AlertCircle, Download, FileText, BarChart3, PieChart, LineChart, Crown, Shield, Info, Sparkles, Search, ArrowRight } from "lucide-react"
+import { Calculator, TrendingUp, Target, AlertCircle, Download, FileText, BarChart3, PieChart, LineChart as LineChartIcon, Crown, Shield, Info, Sparkles, Search, ArrowRight, Database, Table } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts"
 import {
   predictKCETRankBothYears,
   predictKCETRank,
@@ -19,6 +20,8 @@ import {
   getCollegeSuggestions,
   getRankGapAnalysis,
   getCutoffEstimates,
+  kcet2025RankTable,
+  rankGapAnalysis,
   type RankPrediction,
   type Rank2026Prediction
 } from "@/lib/rank-predictor"
@@ -259,29 +262,44 @@ const RankPredictor = () => {
           <p className="text-muted-foreground">
             Real-time rank prediction based on official KEA formula
           </p>
+          <div className="flex justify-center pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setActiveTab("methodology")}
+              className="group text-xs border-primary/20 hover:border-primary/50 bg-primary/5 hover:bg-primary/10 transition-all font-medium"
+            >
+              <Database className="h-3.5 w-3.5 mr-1.5 text-primary group-hover:scale-110 transition-transform" />
+              View Prediction Data & Methodology
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 p-1 bg-muted/50 dark:bg-muted/30 rounded-xl">
-          <TabsTrigger value="predictor" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+        <TabsList className="flex flex-wrap justify-center gap-1 w-full bg-muted/50 dark:bg-muted/30 rounded-xl p-1 h-auto">
+          <TabsTrigger value="predictor" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
             <Calculator className="h-4 w-4" />
             <span className="hidden sm:inline">Predictor</span>
           </TabsTrigger>
-          <TabsTrigger value="breakdown" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-            <PieChart className="h-4 w-4" />
-            <span className="hidden sm:inline">Breakdown</span>
+          <TabsTrigger value="methodology" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
+            <Database className="h-4 w-4" />
+            <span className="hidden sm:inline">Data</span>
           </TabsTrigger>
-          <TabsTrigger value="analysis" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+          <TabsTrigger value="analysis" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
             <BarChart3 className="h-4 w-4" />
             <span className="hidden sm:inline">Analysis</span>
           </TabsTrigger>
-          <TabsTrigger value="progress" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-            <LineChart className="h-4 w-4" />
+          <TabsTrigger value="breakdown" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
+            <PieChart className="h-4 w-4" />
+            <span className="hidden sm:inline">Breakdown</span>
+          </TabsTrigger>
+          <TabsTrigger value="progress" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
+            <LineChartIcon className="h-4 w-4" />
             <span className="hidden sm:inline">History</span>
           </TabsTrigger>
-          <TabsTrigger value="disclaimer" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+          <TabsTrigger value="disclaimer" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
             <Shield className="h-4 w-4" />
             <span className="hidden sm:inline">Info</span>
           </TabsTrigger>
@@ -693,6 +711,270 @@ const RankPredictor = () => {
           )}
         </TabsContent>
 
+        <TabsContent value="methodology" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="text-center space-y-2 mb-8 mt-4">
+            <h2 className="text-2xl font-bold tracking-tight">Prediction Methodology & Data</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Our predictor strictly models actual KCET 2025 outcome distribution to provide highly accurate 2026 estimates based on historical competition drop-off rates and category shifts.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-3xl">
+            <div className="p-4 rounded-xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-indigo-950/20 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
+              <div className="flex items-start gap-3 sm:gap-4 flex-col sm:flex-row">
+                <div className="p-2 sm:p-2.5 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg shrink-0 mt-1 sm:mt-0">
+                  <Database className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <div className="flex-1 space-y-2">
+                  <h3 className="font-semibold text-indigo-900 dark:text-indigo-200 text-sm sm:text-base leading-tight">Data Sources & Credits</h3>
+                  <div className="text-xs sm:text-sm text-indigo-800/80 dark:text-indigo-300 space-y-2">
+                    <p className="leading-relaxed">
+                      All datasets, trend points, and aggregate curves used across this predictor are carefully curated from community-driven analysis.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-2 mt-2">
+                      <a
+                        href="https://www.reddit.com/r/kcet/comments/1kug2p6/kcet_2025_complete_analysis/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center text-indigo-700 dark:text-indigo-400 font-medium hover:underline hover:text-indigo-600 transition-colors w-full sm:w-auto"
+                      >
+                        <FileText className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" />
+                        Original Reddit Analysis Post
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-indigo-200 dark:border-indigo-800/50 flex flex-wrap gap-x-6 gap-y-2 text-xs sm:text-sm">
+                <span className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 shrink-0">
+                  Special thanks to
+                  <a
+                    href="https://reddit.com/u/Ok_Tackle1731"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 hover:underline"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-1 pb-[1px] text-[10px] shrink-0">u/</span>
+                    Ok_Tackle1731
+                  </a>
+                </span>
+                <span className="hidden sm:inline-block text-slate-300 dark:text-slate-600 shrink-0">•</span>
+                <span className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 shrink-0">
+                  Raw data provided by
+                  <a
+                    href="https://reddit.com/u/Upbeat-Sign-7525"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center font-medium text-orange-600 dark:text-orange-400 hover:text-orange-500 hover:underline"
+                  >
+                    <span className="w-4 h-4 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-1 pb-[1px] text-[10px] shrink-0">u/</span>
+                    Upbeat-Sign-7525
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Graphs Section */}
+          <Card className="border-2 border-primary/10 overflow-hidden">
+            <CardHeader className="bg-muted/30 border-b border-border/50">
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <LineChartIcon className="h-5 w-5" />
+                Aggregate Percentage vs Rank Curve
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <Tabs defaultValue="250k" className="space-y-6">
+                <div className="flex justify-center">
+                  <TabsList className="grid grid-cols-3 w-full max-w-md bg-muted/50">
+                    <TabsTrigger value="250k" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">All Candidates</TabsTrigger>
+                    <TabsTrigger value="100k" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white">Top 1 Lakh</TabsTrigger>
+                    <TabsTrigger value="50k" className="data-[state=active]:bg-teal-500 data-[state=active]:text-white">Top 50,000</TabsTrigger>
+                  </TabsList>
+                </div>
+
+                <TabsContent value="250k">
+                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={kcet2025RankTable} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
+                        <XAxis
+                          dataKey="score"
+                          type="number"
+                          domain={['dataMin - 2', 'dataMax + 2']}
+                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
+                          tickFormatter={(v) => `${v}%`}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <YAxis
+                          dataKey="rank"
+                          domain={[0, 280000]}
+                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
+                          reversed={true}
+                          tickFormatter={(v) => v.toLocaleString()}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <RechartsTooltip
+                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
+                          labelFormatter={(label) => `Aggregate: ${label}%`}
+                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
+                        />
+                        <Line type="monotone" dataKey="rank" stroke="var(--theme-primary, #f59e0b)" strokeWidth={3} dot={{ r: 2, fill: "var(--theme-primary, #f59e0b)", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1500} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="100k">
+                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={kcet2025RankTable.filter(d => d.rank <= 100000)} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
+                        <XAxis
+                          dataKey="score"
+                          type="number"
+                          domain={['dataMin - 1', 'dataMax + 1']}
+                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
+                          tickFormatter={(v) => `${v}%`}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <YAxis
+                          dataKey="rank"
+                          domain={[0, 100000]}
+                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
+                          reversed={true}
+                          tickFormatter={(v) => v.toLocaleString()}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <RechartsTooltip
+                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
+                          labelFormatter={(label) => `Aggregate: ${label}%`}
+                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
+                        />
+                        <Line type="monotone" dataKey="rank" stroke="#6366f1" strokeWidth={3} dot={{ r: 2.5, fill: "#6366f1", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1000} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="50k">
+                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={kcet2025RankTable.filter(d => d.rank <= 50000)} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
+                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
+                        <XAxis
+                          dataKey="score"
+                          type="number"
+                          domain={['dataMin - 1', 'dataMax + 1']}
+                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
+                          tickFormatter={(v) => `${v}%`}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <YAxis
+                          dataKey="rank"
+                          domain={[0, 50000]}
+                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
+                          reversed={true}
+                          tickFormatter={(v) => v.toLocaleString()}
+                          tick={{ fill: 'currentColor', opacity: 0.7 }}
+                        />
+                        <RechartsTooltip
+                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
+                          labelFormatter={(label) => `Aggregate: ${label}%`}
+                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
+                        />
+                        <Line type="monotone" dataKey="rank" stroke="#14b8a6" strokeWidth={3} dot={{ r: 3, fill: "#14b8a6", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1000} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Tables Section */}
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader className="pb-3 border-b border-border/50">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <div className="p-2 bg-indigo-500/10 rounded-lg">
+                    <Target className="h-4 w-4 text-indigo-500" />
+                  </div>
+                  Target Rank Estimates
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-muted/50">
+                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Target Rank</th>
+                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Expected Aggregate</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/50">
+                      {getCutoffEstimates().map((row, i) => (
+                        <tr key={i} className="transition-colors hover:bg-muted/30">
+                          <td className="p-3.5 font-medium">{row.targetRank}</td>
+                          <td className="p-3.5">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                              {row.expectedAggregate}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader className="pb-3 border-b border-border/50">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <div className="p-2 bg-emerald-500/10 rounded-lg">
+                    <Table className="h-4 w-4 text-emerald-500" />
+                  </div>
+                  Rank Gap by Aggregate
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-muted/50">
+                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Band</th>
+                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Rank Range</th>
+                        <th className="text-right font-medium p-3.5 text-muted-foreground border-b border-border/50">Drop / 1%</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/50">
+                      {rankGapAnalysis.map((row, i) => (
+                        <tr key={i} className="transition-colors hover:bg-muted/30">
+                          <td className="p-3.5 font-medium whitespace-nowrap">{row.range}</td>
+                          <td className="p-3.5 text-muted-foreground whitespace-nowrap">{row.rankRange}</td>
+                          <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400 font-medium">
+                            {row.candidatesPer1Percent}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="flex justify-center pb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-sm font-medium">
+              <Info className="h-4 w-4" />
+              Data calibrated exclusively for KCET predictions tracking ~2.59L aspirants
+            </div>
+          </div>
+        </TabsContent>
+
         <TabsContent value="progress" className="space-y-6">
           {savedResults.length > 0 ? (
             <div className="space-y-4">
@@ -734,7 +1016,7 @@ const RankPredictor = () => {
           ) : (
             <Card>
               <CardContent className="p-8 text-center">
-                <LineChart className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <LineChartIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No Predictions Saved</h3>
                 <p className="text-muted-foreground">Click "Save Result" to track your predictions!</p>
               </CardContent>

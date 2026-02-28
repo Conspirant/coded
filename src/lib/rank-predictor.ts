@@ -3,35 +3,18 @@
 // Aggregate % (50% KCET + 50% Board) -> Rank mapping
 const calibratedRankTable2025 = [
   { agg: 96.22, rank: 81 },
-  { agg: 94.89, rank: 188 },
-  { agg: 93.89, rank: 332 },
-  { agg: 92.5, rank: 575 },
-  { agg: 90.5, rank: 1106 },
-  { agg: 88.89, rank: 1696 },
-  { agg: 87.61, rank: 2236 },
-  { agg: 86.5, rank: 2801 },
-  { agg: 85, rank: 3804 },
-  { agg: 84, rank: 4300 },
-  { agg: 82.5, rank: 5891 },
-  { agg: 80.61, rank: 7995 },
-  { agg: 79, rank: 10251 },
-  { agg: 78.28, rank: 11349 },
-  { agg: 77, rank: 13445 },
-  { agg: 75.5, rank: 16328 },
-  { agg: 74, rank: 18500 },
-  { agg: 72.56, rank: 22974 },
-  { agg: 71, rank: 26500 },
-  { agg: 70, rank: 29500 },
-  { agg: 68, rank: 35000 },
-  { agg: 66, rank: 41000 },
-  { agg: 64, rank: 50000 },
-  { agg: 62.6, rank: 70000 },
-  { agg: 60, rank: 80000 },
-  { agg: 50, rank: 150000 },
-  { agg: 45, rank: 197000 },
-  { agg: 40, rank: 235000 },
-  { agg: 35, rank: 258000 },
-  { agg: 30, rank: 280000 }
+  { agg: 94.06, rank: 308 },
+  { agg: 90.00, rank: 1245 },
+  { agg: 85.00, rank: 3804 },
+  { agg: 80.00, rank: 8500 },
+  { agg: 75.00, rank: 16000 },
+  { agg: 70.00, rank: 30000 },
+  { agg: 65.00, rank: 50000 },
+  { agg: 60.00, rank: 80000 },
+  { agg: 50.00, rank: 155000 },
+  { agg: 40.00, rank: 235000 },
+  { agg: 35.00, rank: 259000 },
+  { agg: 30.00, rank: 280000 }
 ]
 
 // Legacy exports for backward compatibility
@@ -40,18 +23,16 @@ export const rankTable = kcet2025RankTable
 
 // Rank gap analysis by aggregate band
 export const rankGapAnalysis = [
-  { range: "95-100%", rankRange: "1-200", candidatesPer1Percent: "20-30" },
-  { range: "90-95%", rankRange: "200-1,200", candidatesPer1Percent: "200-300" },
-  { range: "85-90%", rankRange: "1,200-3,000", candidatesPer1Percent: "350-400" },
-  { range: "80-85%", rankRange: "3,000-8,000", candidatesPer1Percent: "1,000" },
-  { range: "75-80%", rankRange: "8,000-16,000", candidatesPer1Percent: "1,500" },
-  { range: "70-75%", rankRange: "16,000-30,000", candidatesPer1Percent: "2,800" },
-  { range: "65-70%", rankRange: "25,000-50,000", candidatesPer1Percent: "5,000" },
-  { range: "60-65%", rankRange: "50,000-80,000", candidatesPer1Percent: "6,000" },
-  { range: "55-60%", rankRange: "70,000-80,000", candidatesPer1Percent: "2,000-3,000" },
-  { range: "50-55%", rankRange: "80,000-1,55,000", candidatesPer1Percent: "15,000" },
-  { range: "40-50%", rankRange: "1,55,000-2,35,000", candidatesPer1Percent: "8,000" },
-  { range: "30-40%", rankRange: "2,35,000-2,59,000", candidatesPer1Percent: "10,000" }
+  { range: "95-100%", rankRange: "1-200", candidatesPer1Percent: "~20-30" },
+  { range: "90-95%", rankRange: "200-1,200", candidatesPer1Percent: "~200-300" },
+  { range: "85-90%", rankRange: "1,200-3,000", candidatesPer1Percent: "~350-400" },
+  { range: "80-85%", rankRange: "3,000-8,000", candidatesPer1Percent: "~1,000" },
+  { range: "75-80%", rankRange: "8,000-16,000", candidatesPer1Percent: "~1,500" },
+  { range: "70-75%", rankRange: "16,000-30,000", candidatesPer1Percent: "~2,800" },
+  { range: "60-70%", rankRange: "30,000-75,000", candidatesPer1Percent: "~4,000-5,000" },
+  { range: "50-60%", rankRange: "75,000-1,55,000", candidatesPer1Percent: "~8,000-9,000" },
+  { range: "40-50%", rankRange: "1,55,000-2,35,000", candidatesPer1Percent: "~8,000" },
+  { range: "30-40%", rankRange: "2,35,000-2,59,000", candidatesPer1Percent: "~10,000" }
 ]
 
 // Cutoff estimates for 2025
@@ -193,7 +174,7 @@ export const getPercentile = (composite: number): string => {
 }
 
 export const calculatePercentile = (rank: number): string => {
-  const totalCandidates = 260000 // Updated based on KCET 2025 data
+  const totalCandidates = 259000 // Updated based on KCET 2025 data
   const percentile = ((totalCandidates - rank) / totalCandidates * 100).toFixed(2)
   return `${percentile}%`
 }
