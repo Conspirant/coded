@@ -2016,24 +2016,7 @@ const CollegeFinder = () => {
                                     >
                                       <Star className={`h-4 w-4 ${isBookmarked ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
                                     </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className={`h-8 w-8 p-0 ${compareList.some(c => c.institute_code === match.institute_code && c.course === match.course) ? 'bg-primary/10 text-primary' : ''}`}
-                                      onClick={() => toggleCompare(match)}
-                                      title="Compare"
-                                    >
-                                      <Scale className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-8 w-8 p-0"
-                                      onClick={() => openSourceReference(match)}
-                                      title="Open source reference"
-                                    >
-                                      <FileText className="h-4 w-4" />
-                                    </Button>
+
                                   </div>
                                 </TableCell>
                                 <TableCell>
@@ -2109,22 +2092,7 @@ const CollegeFinder = () => {
                                   >
                                     <Star className={`h-5 w-5 ${isBookmarked ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
                                   </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className={`h-8 w-8 p-0 flex-shrink-0 ${compareList.some(c => c.institute_code === match.institute_code && c.course === match.course) ? 'bg-primary/10 text-primary' : ''}`}
-                                    onClick={() => toggleCompare(match)}
-                                  >
-                                    <Scale className="h-5 w-5" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="h-8 w-8 p-0 flex-shrink-0"
-                                    onClick={() => openSourceReference(match)}
-                                  >
-                                    <FileText className="h-5 w-5" />
-                                  </Button>
+
                                 </div>
                               </div>
 
