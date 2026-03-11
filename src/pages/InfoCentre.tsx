@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -50,6 +51,12 @@ const VTUvsAutonomousSection = () => {
 
   return (
     <Card className="border-2 border-violet-400/30 shadow-xl">
+      <SEO
+        title="KCET Info Centre – Eligibility, Fees, Exam Pattern & FAQs"
+        description="Everything you need to know about KCET 2026 — eligibility criteria, exam pattern, fee structure, important dates, syllabus, reservation policies & frequently asked questions."
+        url="https://kcet-coded2.vercel.app/info-centre"
+        keywords="KCET eligibility, KCET exam pattern, KCET fee structure, KCET 2026 syllabus, KCET reservation policy, KCET FAQ, KEA rules, KCET important dates"
+      />
       <CardHeader className="bg-gradient-to-r from-violet-500/10 to-indigo-500/10 border-b">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-violet-500/20 rounded-lg">

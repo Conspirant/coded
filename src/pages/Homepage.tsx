@@ -243,8 +243,10 @@ const Homepage = () => {
     return (
         <div className="min-h-screen bg-background overflow-hidden">
             <SEO
-                title="Home"
-                description="Your comprehensive guide to KCET admissions with verified cutoff data, rank prediction, and smart college finder."
+                title="KCET Coded – Free KCET 2026 Tools: Rank Predictor, Cutoffs & College Finder"
+                description="KCET Coded is the #1 free platform for KCET 2026 aspirants. Predict your rank, explore college-wise cutoffs (2023-2025), find engineering colleges, simulate mock allotments & get AI counseling — all 100% free."
+                url="https://kcet-coded2.vercel.app"
+                keywords="KCET 2026, KCET tools, free KCET resources, KCET helping hub, Karnataka CET tools, KCET rank predictor, KCET cutoff 2025"
             />
             {/* ═══ Aurora Background ═══ */}
             <div className="fixed inset-0 -z-10">

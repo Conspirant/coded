@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -134,6 +135,12 @@ const RoundTracker = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="KCET 2026 Counseling Round Tracker – Dates, Deadlines & Alerts"
+        description="Track all KCET 2026 counseling rounds, deadlines, and important dates. Get real-time updates on Round 1, Round 2, Round 3, fee payment dates, and document verification schedules."
+        url="https://kcet-coded2.vercel.app/round-tracker"
+        keywords="KCET counseling rounds, KCET 2026 counseling dates, KCET round 1 date, KCET round 2 date, KCET round 3, KEA counseling schedule, KCET admission deadlines"
+      />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Round Tracker & Alerts</h1>
         <p className="text-foreground/70">Stay updated with KCET counseling rounds and notifications</p>

@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -140,6 +141,12 @@ const Planner = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="KCET 2026 College Planner – Manage Your Preference List"
+        description="Organize your KCET 2026 counseling preference list efficiently. Upload and manage your college choices, plan your options, and export directly to the mock simulator."
+        url="https://kcet-coded2.vercel.app/planner"
+        keywords="KCET study planner, KCET preparation plan, KCET 2026 study schedule, KCET counseling planner, KCET preference list planner"
+      />
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">

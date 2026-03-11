@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
@@ -376,6 +377,12 @@ export default function CutoffClash() {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col" ref={containerRef}>
+      <SEO
+        title="Cutoff Clash – KCET Higher or Lower Cutoff Game"
+        description="Play the Cutoff Clash game! Guess which KCET college has a higher or lower cutoff rank. Test your knowledge of Karnataka engineering college cutoffs in this fun game."
+        url="https://kcet-coded2.vercel.app/cutoff-clash"
+        keywords="KCET cutoff game, KCET higher lower game, KCET cutoff quiz, KCET college cutoff comparison"
+      />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-black to-black" />
 
       <header className="sticky top-0 left-0 right-0 z-50 p-3 sm:p-4 flex items-center justify-between bg-black/80 backdrop-blur-md border-b border-white/10">

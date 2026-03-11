@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -82,6 +83,12 @@ const HiddenGems = () => {
 
     return (
         <div className="min-h-screen bg-black text-white p-4 sm:p-8 font-sans selection:bg-amber-500/30">
+      <SEO
+        title="KCET Hidden Gems – Underrated Engineering Colleges in Karnataka"
+        description="Discover underrated engineering colleges in Karnataka with excellent placements & faculty at lower cutoff ranks. These hidden gems are often overlooked by KCET aspirants."
+        url="https://kcet-coded2.vercel.app/hidden-gems"
+        keywords="underrated KCET colleges, hidden gem colleges Karnataka, best value engineering colleges, low cutoff good colleges KCET"
+      />
             <div className="max-w-6xl mx-auto space-y-8">
 
                 {/* Header */}

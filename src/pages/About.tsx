@@ -37,7 +37,8 @@ const About = () => {
             <SEO
                 title="About"
                 description="Learn about KCET Coded — a free, open-source platform built by a fellow KCET aspirant to help students navigate counseling with real data and powerful tools."
-                url="https://kcet-coded.vercel.app/about"
+                url="https://kcet-coded2.vercel.app/about"
+        keywords="about KCET Coded, KCET tools website, free KCET platform"
             />
 
             {/* Header */}

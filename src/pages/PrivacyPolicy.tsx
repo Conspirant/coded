@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Shield, Lock, Eye, FileText, Globe, Server } from "lucide-react"
@@ -7,6 +8,11 @@ const PrivacyPolicy = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-8">
+      <SEO
+        title="Privacy Policy"
+        description="Privacy policy for KCET Coded. Learn how we handle your data, what information we collect, and your privacy rights."
+        url="https://kcet-coded2.vercel.app/privacy"
+      />
             {/* Header */}
             <div className="text-center space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight">Privacy Policy</h1>

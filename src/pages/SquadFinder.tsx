@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -200,6 +201,12 @@ const SquadFinder = () => {
 
     return (
         <div className="min-h-screen bg-black text-white p-4 sm:p-8 font-sans selection:bg-indigo-500/30">
+      <SEO
+        title="KCET Squad Finder – Find Colleges Where Friends Can Go Together"
+        description="Don't split the gang! Enter your friends' KCET ranks and find colleges where everyone can get a seat together. Unique squad-matching tool for KCET aspirants."
+        url="https://kcet-coded2.vercel.app/squad-finder"
+        keywords="KCET squad finder, KCET group college finder, KCET friends same college, study group finder KCET"
+      />
             <div className="max-w-4xl mx-auto space-y-8">
 
                 {/* Header */}

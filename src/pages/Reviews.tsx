@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
@@ -62,6 +63,12 @@ const Reviews = () => {
   if (loading) {
     return (
       <div className="space-y-4 px-1">
+      <SEO
+        title="KCET College Reviews – Real Student Experiences & Ratings"
+        description="Read honest reviews from real KCET students about engineering colleges in Karnataka. Compare placements, campus life, faculty & infrastructure before choosing your college."
+        url="https://kcet-coded2.vercel.app/reviews"
+        keywords="KCET college reviews, engineering college reviews Karnataka, student reviews KCET colleges, college placement reviews, campus life reviews"
+      />
         <div className="rounded-2xl glass border border-white/5 p-5 sm:p-8">
           <div className="animate-pulse space-y-4">
             <div className="h-7 bg-white/5 rounded-lg w-48"></div>

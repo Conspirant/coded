@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Link } from "react-router-dom"
@@ -441,6 +442,12 @@ const DailyChallenge = () => {
 
     return (
         <div className="min-h-screen bg-background relative overflow-hidden">
+      <SEO
+        title="KCET Daily Challenge – Free Daily Quiz for KCET 2026"
+        description="Test your KCET preparation with 5 new questions every day! Build your streak, track your score & compete with other KCET 2026 aspirants — free daily practice quiz."
+        url="https://kcet-coded2.vercel.app/daily-challenge"
+        keywords="KCET daily quiz, KCET practice questions, KCET 2026 mock test, KCET daily challenge, KCET preparation quiz"
+      />
             {/* Aurora background */}
             <div className="fixed inset-0 -z-10">
                 <div className="absolute inset-0 animate-aurora opacity-40" />

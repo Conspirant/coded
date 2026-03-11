@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -171,6 +172,12 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 animate-scale-in">
+      <SEO
+        title="KCET 2026 Dashboard – Counseling Tools & Cutoff Data"
+        description="Your KCET 2026 dashboard with rank predictor, college finder, cutoff explorer, mock simulator, daily challenges & counseling round tracker. All tools in one place — 100% free."
+        url="https://kcet-coded2.vercel.app/dashboard"
+        keywords="KCET dashboard, KCET tools, KCET 2026 counseling, KCET exam schedule, CET 2026 dates, KCET preparation tools"
+      />
       {/* ═══ Welcome Banner ═══ */}
       <div className="relative rounded-2xl overflow-hidden glass border border-white/5 p-6 sm:p-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10" />

@@ -61,7 +61,8 @@ export default function CETNews() {
       <SEO
         title="CET News"
         description="Official notices, updates, and news regarding KCET admissions, counseling, and exams."
-        url="https://kcet-coded.vercel.app/cet-news"
+        url="https://kcet-coded2.vercel.app/cet-news"
+        keywords="KCET news, KCET 2026 updates, KEA notifications, KCET counseling news, KCET result news, KCET exam updates"
       />
       <div className="flex items-start justify-between gap-4">
         <div>

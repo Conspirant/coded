@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -30,6 +31,12 @@ const MetroMapper = () => {
 
     return (
         <div className="min-h-screen bg-black text-white p-4 sm:p-8 font-sans selection:bg-green-500/30">
+      <SEO
+        title="KCET Metro Mapper – Engineering Colleges Near Bangalore Metro"
+        description="Find top engineering colleges in Bangalore within walking distance of Namma Metro stations. Filter by metro line, distance & cutoff ranks."
+        url="https://kcet-coded2.vercel.app/metro-mapper"
+        keywords="engineering colleges near Bangalore metro, colleges near metro station, Namma Metro colleges, KCET metro colleges"
+      />
             <div className="max-w-5xl mx-auto space-y-8">
 
                 {/* Header */}

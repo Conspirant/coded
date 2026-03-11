@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import React from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -152,6 +153,12 @@ const CollegeMatrix = ({
 
     return (
         <div className="bg-card/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden mb-4 transition-all hover:border-white/10">
+      <SEO
+        title="KCET College Cutoffs 2023-2025 – Branch & Category Wise"
+        description="View complete KCET college cutoffs for 2023, 2024 & 2025 — branch-wise and category-wise. Compare GM, OBC, SC, ST cutoff ranks for all engineering colleges in Karnataka."
+        url="https://kcet-coded2.vercel.app/college-cutoffs"
+        keywords="KCET college cutoffs, KCET branch wise cutoff, KCET category wise cutoff, KCET 2025 cutoff, KCET 2024 cutoff, KCET GM cutoff, KCET OBC cutoff"
+      />
             {/* College Header */}
             <button
                 onClick={onToggle}

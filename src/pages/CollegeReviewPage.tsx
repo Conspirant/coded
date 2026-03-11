@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
@@ -36,6 +37,12 @@ const StarRating = ({
     const gap = size === "lg" ? "gap-1.5" : "gap-0.5"
     return (
         <div className={`flex items-center ${gap}`}>
+      <SEO
+        title="College Review – KCET Engineering College Reviews & Ratings"
+        description="Detailed student reviews, ratings, and experiences for this KCET engineering college. Read about placements, faculty quality, campus facilities, and hostel life."
+        url="https://kcet-coded2.vercel.app/reviews"
+        keywords="KCET college review, student review, college ratings, placements, campus life, faculty review"
+      />
             {[1, 2, 3, 4, 5].map(i => (
                 <Star key={i}
                     className={`${s} transition-all ${i <= rating ? "fill-amber-400 text-amber-400" : "text-white/15"} ${interactive ? "cursor-pointer hover:text-amber-300 active:scale-125" : ""}`}

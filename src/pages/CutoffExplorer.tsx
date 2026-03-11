@@ -495,7 +495,8 @@ const CutoffExplorer = () => {
       <SEO
         title="Cutoff Explorer"
         description="Explore and analyze KCET cutoff data across varying years, colleges, and categories with interactive charts."
-        url="https://kcet-coded.vercel.app/cutoff-explorer"
+        url="https://kcet-coded2.vercel.app/cutoff-explorer"
+        keywords="KCET cutoff explorer, KCET cutoff trends, KCET cutoff analysis, KCET year wise cutoff, KCET cutoff comparison, KCET 2025 cutoff list"
       />
       <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

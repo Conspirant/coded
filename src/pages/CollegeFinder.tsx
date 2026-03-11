@@ -1371,7 +1371,8 @@ const CollegeFinder = () => {
         <SEO
           title="College Finder"
           description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
-          url="https://kcet-coded.vercel.app/college-finder"
+          url="https://kcet-coded2.vercel.app/college-finder"
+        keywords="KCET college finder, find colleges by rank, KCET 2026 colleges, best engineering colleges for my rank, KCET rank wise college list"
         />
         <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
           <div className="space-y-2">
@@ -1481,7 +1482,7 @@ const CollegeFinder = () => {
       <SEO
         title="College Finder"
         description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
-        url="https://kcet-coded.vercel.app/college-finder"
+        url="https://kcet-coded2.vercel.app/college-finder"
       />
       {/* Animated Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">

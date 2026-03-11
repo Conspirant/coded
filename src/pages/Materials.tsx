@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,12 @@ const Materials = () => {
 
     return (
         <div className="container mx-auto p-6 space-y-8 max-w-7xl animate-fade-in">
+      <SEO
+        title="KCET 2026 Study Materials – PYQs, Notes & Resources"
+        description="Free KCET 2026 study materials including previous year papers (PYQs), chapter-wise notes, important formulas & preparation resources for Physics, Chemistry & Maths."
+        url="https://kcet-coded2.vercel.app/materials"
+        keywords="KCET study materials, KCET previous year papers, KCET PYQ, KCET notes, KCET preparation resources, KCET 2026 syllabus"
+      />
             <div className="flex flex-col gap-2">
                 <h1 className="text-3xl font-bold tracking-tight">Materials & Resources</h1>
                 <p className="text-muted-foreground">

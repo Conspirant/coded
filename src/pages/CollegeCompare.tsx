@@ -1,9 +1,16 @@
+import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Construction, Clock, Scale } from "lucide-react"
 
 const CollegeCompare = () => {
   return (
     <div className="space-y-6">
+      <SEO
+        title="Compare KCET Engineering Colleges Side by Side"
+        description="Compare two or more KCET engineering colleges side by side — cutoffs, branches, placements, fees & locations. Make an informed college choice for KCET 2026 counseling."
+        url="https://kcet-coded2.vercel.app/college-compare"
+        keywords="compare KCET colleges, college comparison tool, KCET college vs college, engineering college comparison Karnataka"
+      />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">College Compare</h1>
         <p className="text-muted-foreground">Contrast colleges side-by-side with cutoffs, fees, and ratings</p>

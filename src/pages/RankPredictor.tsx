@@ -278,9 +278,19 @@ const RankPredictor = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-8">
       <SEO
-        title="Rank Predictor"
-        description="Predict your KCET 2026 rank accurately based on historical cutoff data and your PUC scores."
-        url="https://kcet-coded.vercel.app/rank-predictor"
+        title="KCET 2026 Rank Predictor – Predict Your Rank from Marks (Free)"
+        description="Predict your KCET 2026 rank from marks instantly using 3 years of historical data. Enter your Physics, Chemistry & Maths marks to get your estimated rank and college suggestions. 100% free, no sign-up."
+        url="https://kcet-coded2.vercel.app/rank-predictor"
+        keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction, predict KCET rank from marks, KCET expected rank, 76 marks in KCET rank, 100 marks in KCET rank"
+        jsonLd={{
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "How to predict KCET rank from marks?", "acceptedAnswer": { "@type": "Answer", "text": "Enter your Physics, Chemistry, and Maths KCET marks in the Rank Predictor tool. It uses 3 years of historical data (2023-2025) to estimate your rank based on the official KEA formula." }},
+            { "@type": "Question", "name": "What is the rank for 76 marks in KCET?", "acceptedAnswer": { "@type": "Answer", "text": "76 marks in KCET typically corresponds to a rank around 50,000-70,000 depending on exam difficulty. Use the Rank Predictor for a more accurate year-specific prediction." }},
+            { "@type": "Question", "name": "What rank is needed for CSE in RVCE KCET?", "acceptedAnswer": { "@type": "Answer", "text": "For CSE at RVCE, you typically need a KCET rank under 700 (GM category). The cutoff varies by year — check the Cutoff Explorer for exact historical data." }},
+            { "@type": "Question", "name": "Is KCET rank based only on CET marks?", "acceptedAnswer": { "@type": "Answer", "text": "No, KCET rank is based on CET marks (50%) + qualifying exam marks (50% of 12th/PUC PCM). Our predictor factors in both components." }}
+          ]
+        }}
       />
       {/* Header */}
       <div className="text-center space-y-4 py-6">

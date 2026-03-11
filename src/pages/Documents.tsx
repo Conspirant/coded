@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
@@ -144,6 +145,12 @@ const Documents = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="KCET 2026 Documents Checklist – Complete List for Counseling"
+        description="Complete checklist of documents required for KCET 2026 counseling and admission. Includes academic documents, KCET admit card, category certificates, identity proofs & more — with copy counts."
+        url="https://kcet-coded2.vercel.app/documents"
+        keywords="KCET documents required, KCET counseling documents, KCET admission documents list, KCET 2026 document checklist, KEA counseling documents, KCET category certificate"
+      />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Documents</h1>
         <p className="text-foreground/70">Complete list of documents required for KCET/UG-NEET 2025 admission process.</p>

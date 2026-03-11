@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertTriangle, FileCheck, Scale, Info, Construction } from "lucide-react"
@@ -7,6 +8,11 @@ const Terms = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-8">
+      <SEO
+        title="Terms of Service"
+        description="Terms of service for KCET Coded. Read our terms and conditions for using the platform, tools, and data."
+        url="https://kcet-coded2.vercel.app/terms"
+      />
             {/* Header */}
             <div className="text-center space-y-4">
                 <h1 className="text-4xl font-bold tracking-tight">Terms of Service</h1>

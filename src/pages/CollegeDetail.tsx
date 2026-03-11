@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo } from "react"
 import { useParams } from "react-router-dom"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -407,6 +408,12 @@ const CollegeDetail = () => {
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
+      <SEO
+        title="College Details – KCET Cutoffs, Branches & Reviews"
+        description="View detailed information about this engineering college — KCET cutoff ranks, available branches, seat count, historical cutoff trends, student reviews & placement data."
+        url="https://kcet-coded2.vercel.app/college"
+        keywords="KCET college details, college cutoff ranks, branch wise cutoff, college placement data, KCET college information"
+      />
                 <div className="text-white text-lg">Loading cutoff data...</div>
             </div>
         )

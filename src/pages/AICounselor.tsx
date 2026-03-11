@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -204,6 +205,12 @@ const AICounselor = () => {
 
     return (
         <>
+            <SEO
+                title="KCET AI Counselor – Free Personalized College Guidance"
+                description="Get personalized KCET 2026 college counseling powered by AI. Ask questions about colleges, cutoffs, branch selection, placements & get instant guidance — completely free."
+                url="https://kcet-coded2.vercel.app/ai-counselor"
+                keywords="KCET AI counselor, KCET college guidance, KCET counseling help, KCET branch selection, KCET college suggestions"
+            />
             {/* Disclaimer Dialog */}
             <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
                 <DialogContent className="sm:max-w-lg">

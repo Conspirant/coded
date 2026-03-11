@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -416,6 +417,12 @@ const MockSimulator = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="KCET Mock Allotment Simulator 2026 – Simulate Seat Allotment"
+        description="Simulate your KCET 2026 seat allotment using real historical cutoff data. Enter your rank, add college preferences, and see which seat you'd get in each counseling round — free mock simulator."
+        url="https://kcet-coded2.vercel.app/mock-simulator"
+        keywords="KCET mock allotment, KCET seat simulator, KCET 2026 seat allotment, KCET counseling simulator, mock counseling KCET, KCET preference list"
+      />
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">

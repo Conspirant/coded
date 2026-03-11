@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -91,6 +92,12 @@ const CollegeList = () => {
 
     return (
         <div className="min-h-screen bg-background">
+      <SEO
+        title="KCET Engineering Colleges List – All Karnataka Colleges"
+        description="Complete list of engineering colleges in Karnataka under KCET 2026 counseling. Browse all colleges with codes, locations, branches offered & historical cutoff data."
+        url="https://kcet-coded2.vercel.app/college-list"
+        keywords="KCET college list, engineering colleges Karnataka, all KCET colleges, Karnataka engineering colleges list, KEA college codes"
+      />
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                     <div>
