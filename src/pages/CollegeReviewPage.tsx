@@ -7,6 +7,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+import {
     Star, MessageSquare, ArrowLeft, Share2, User, Calendar,
     CheckCircle, Trash2, Sparkles, PenLine, ThumbsUp, Flag, ShieldAlert, AlertTriangle, X
 } from "lucide-react"
@@ -73,6 +80,20 @@ const CollegeReviewPage = () => {
         infrastructure_rating: 1, placements_rating: 1,
         comment: "", course: "", graduation_year: new Date().getFullYear(),
     })
+    const [showSharePopup, setShowSharePopup] = useState(false)
+
+    const handlePopupShare = async () => {
+        const url = window.location.origin
+        const text = "Help build the biggest student-driven review database for KCET! Share your college experience on KCET Coded."
+
+        if (navigator.share) {
+            try { await navigator.share({ title: 'KCET Coded - College Reviews', text, url }) } catch { }
+        } else {
+            await navigator.clipboard.writeText(`${text} ${url}`)
+            alert("Link copied to clipboard! Share it with your friends.")
+        }
+        setShowSharePopup(false)
+    }
 
     useEffect(() => {
         const load = async () => {
@@ -132,6 +153,7 @@ const CollegeReviewPage = () => {
                 setReviews(prev => [saved, ...prev])
                 setNewReview({ rating: 0, review_text: "", faculty_rating: 1, infrastructure_rating: 1, placements_rating: 1, comment: "", course: "", graduation_year: new Date().getFullYear() })
                 setShowAddReview(false)
+                setShowSharePopup(true)
             } else { alert("Failed to save review.") }
         } catch (e: any) { alert(`Error: ${e.message || "Unknown"}`) }
         finally { setSubmitting(false) }
@@ -460,6 +482,29 @@ const CollegeReviewPage = () => {
                     </div>
                 ) : null}
             </motion.div>
+            {/* Share Post-Review Popup */}
+            <Dialog open={showSharePopup} onOpenChange={setShowSharePopup}>
+                <DialogContent className="sm:max-w-md glass border-indigo-500/20">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-xl">
+                            <Sparkles className="h-5 w-5 text-indigo-400" />
+                            Thank You for Your Review!
+                        </DialogTitle>
+                        <DialogDescription className="text-sm pt-2 text-foreground/80 leading-relaxed">
+                            To help us build the most comprehensive database for KCET students, please <strong>share this website with your circle of friends</strong> so we can accumulate as many helpful reviews as possible!
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex flex-col gap-3 mt-4">
+                        <Button onClick={handlePopupShare} className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 border-0 h-12 text-base">
+                            <Share2 className="h-5 w-5 mr-2" />
+                            Share with Friends
+                        </Button>
+                        <Button variant="outline" onClick={() => setShowSharePopup(false)} className="w-full border-white/10 text-muted-foreground hover:bg-white/5 h-10">
+                            Maybe Later
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

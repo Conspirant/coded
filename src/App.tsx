@@ -42,12 +42,13 @@ import BmtcMapper from './pages/BmtcMapper';
 import HiddenGems from "./pages/HiddenGems";
 import CollegeCutoffs from "./pages/CollegeCutoffs";
 import AdminCutoffs from "./pages/AdminCutoffs";
+import About from "./pages/About";
+import FeatureRequest from "./pages/FeatureRequest";
 
 
 const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
-
 
 const App = () => (
   <HelmetProvider>
@@ -108,6 +109,8 @@ const App = () => (
             {/* More routes will be added here */}
             <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
             <Route path="/terms" element={<Layout><Terms /></Layout>} />
+            <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
 
             {/* Coded Labs - Unique Features */}
             <Route path="/squad-finder" element={<SquadFinder />} />

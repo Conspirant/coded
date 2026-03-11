@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck, Lightbulb } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -34,6 +34,7 @@ const toolItems = [
   { title: "Mock Simulator", url: "/mock-simulator", icon: Shuffle, underDevelopment: true },
   { title: "College Compare", url: "/college-compare", icon: GitCompare, underDevelopment: true },
   { title: "Planner", url: "/planner", icon: ClipboardList, underDevelopment: true },
+  { title: "Feature Request", url: "/request-feature", icon: Lightbulb },
 ]
 
 const specialItems = [

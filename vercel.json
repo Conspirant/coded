@@ -56,7 +56,7 @@
       "destination": "/ads.txt"
     },
     {
-      "source": "/((?!ads\\.txt).*)",
+      "source": "/((?!ads\\.txt|api/).*)",
       "destination": "/index.html"
     }
   ]

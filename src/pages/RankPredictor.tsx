@@ -6,8 +6,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Calculator, TrendingUp, Target, AlertCircle, Download, FileText, BarChart3, PieChart, LineChart as LineChartIcon, Crown, Shield, Info, Sparkles, Search, ArrowRight, Database, Table } from "lucide-react"
+import { Crown, Calculator, Database, Target, TrendingUp, AlertTriangle, ChevronRight, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, SlidersHorizontal, ArrowRight, RotateCcw, Info, Shield, Sparkles, Table, Share2, Download, FileText, AlertCircle } from 'lucide-react'
+import { AdminFeedbackService } from "@/lib/admin-feedback-service"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts"
@@ -117,6 +126,11 @@ const RankPredictor = () => {
   const animatedRank2025 = useAnimatedCounter(prediction?.rank2025 || 0, 400)
   const animatedRank2026 = useAnimatedCounter(prediction?.rank2026 || 0, 400)
 
+  const [feedbackRank, setFeedbackRank] = useState("")
+  const [feedbackKcet, setFeedbackKcet] = useState("")
+  const [feedbackPuc, setFeedbackPuc] = useState("")
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
+
   // Load saved results from localStorage
   useEffect(() => {
     try {
@@ -169,6 +183,24 @@ const RankPredictor = () => {
       title: "Result Saved!",
       description: `Rank ${prediction.medium.toLocaleString()} saved to history`,
     })
+  }
+
+  const shareResult = async () => {
+    if (!prediction) return
+    const title = 'My KCET 2026 Rank Prediction'
+    const text = `I just predicted my KCET 2026 rank: ${prediction.medium.toLocaleString()}! Check out where you stand on KCET Coded.`
+    const shareUrl = `${window.location.origin}/api/share?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(`Predicted Rank: ${prediction.medium.toLocaleString()}`)}&path=/rank-predictor`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url: shareUrl })
+      } catch (e) {
+        console.error("Error sharing:", e)
+      }
+    } else {
+      await navigator.clipboard.writeText(`${text} ${shareUrl}`)
+      toast({ title: "Link Copied!", description: "Prediction copied to clipboard. Share it with your friends!" })
+    }
   }
 
   // Navigate to College Finder with predicted rank
@@ -262,7 +294,7 @@ const RankPredictor = () => {
           <p className="text-muted-foreground">
             Real-time rank prediction based on official KEA formula
           </p>
-          <div className="flex justify-center pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Button
               variant="outline"
               size="sm"
@@ -272,6 +304,65 @@ const RankPredictor = () => {
               <Database className="h-3.5 w-3.5 mr-1.5 text-primary group-hover:scale-110 transition-transform" />
               View Prediction Data & Methodology
             </Button>
+
+            <Dialog open={showFeedbackDialog} onOpenChange={setShowFeedbackDialog}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="group text-xs border-amber-500/20 hover:border-amber-500/50 bg-amber-500/5 hover:bg-amber-500/10 transition-all font-medium text-amber-700 dark:text-amber-400">
+                  <Target className="h-3.5 w-3.5 mr-1.5 text-amber-500 group-hover:scale-110 transition-transform" />
+                  2025 Aspirant? Share Your Rank
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Help Improve the Predictor!</DialogTitle>
+                  <DialogDescription>
+                    Were you a KCET 2025 aspirant? Share your actual rank and scores to help us refine our prediction model for the 2026 batch.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="actualRank">Actual 2025 Rank</Label>
+                    <Input id="actualRank" placeholder="e.g. 4500" type="number" value={feedbackRank} onChange={e => setFeedbackRank(e.target.value)} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="kcetMarks">KCET Marks (out of 180)</Label>
+                      <Input id="kcetMarks" placeholder="e.g. 110" type="number" value={feedbackKcet} onChange={e => setFeedbackKcet(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pucMarks">PUC PCM (%)</Label>
+                      <Input id="pucMarks" placeholder="e.g. 95" type="number" value={feedbackPuc} onChange={e => setFeedbackPuc(e.target.value)} />
+                    </div>
+                  </div>
+                  <Button className="w-full mt-4" onClick={(e) => {
+                    if (!feedbackRank || !feedbackKcet || !feedbackPuc) {
+                      toast({ title: "Incomplete", description: "Please fill all fields to share your rank.", variant: "destructive" });
+                      return;
+                    }
+                    const payload = {
+                      actual_rank: parseInt(feedbackRank) || 0,
+                      kcet_marks: parseInt(feedbackKcet) || 0,
+                      puc_marks: parseFloat(feedbackPuc) || 0
+                    };
+                    if (payload.kcet_marks > 180 || payload.puc_marks > 100) {
+                      toast({ title: "Invalid Values", description: "Marks must be valid (KCET < 180, PUC < 100).", variant: "destructive" });
+                      return;
+                    }
+                    AdminFeedbackService.addFeedback(payload);
+                    toast({
+                      title: "Thanks for your feedback! 🚀",
+                      description: "Your data helps future aspirants. Best of luck for your college journey!",
+                    });
+                    
+                    // Reset and Close
+                    setFeedbackRank(""); setFeedbackKcet(""); setFeedbackPuc("");
+                    setShowFeedbackDialog(false);
+                  }}>
+                    Submit Data
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>
@@ -486,9 +577,15 @@ const RankPredictor = () => {
                 Find Colleges for Rank {prediction.rank2026.toLocaleString()}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
-              <Button onClick={saveResult} variant="outline" className="h-12">
-                Save Result
-              </Button>
+              <div className="flex gap-3 sm:w-auto w-full">
+                <Button onClick={shareResult} className="flex-1 sm:flex-none h-12 bg-green-600 hover:bg-green-700 text-white border-0 shadow-lg shadow-green-500/20">
+                  <Share2 className="h-5 w-5 mr-2" />
+                  Share Result
+                </Button>
+                <Button onClick={saveResult} variant="outline" className="flex-1 sm:flex-none h-12">
+                  Save Result
+                </Button>
+              </div>
             </div>
           )}
         </TabsContent>
@@ -571,7 +668,11 @@ const RankPredictor = () => {
                 </CardContent>
               </Card>
 
-              <div className="flex gap-4 justify-center">
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Button onClick={shareResult} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white border-0 shadow-lg shadow-green-500/20">
+                  <Share2 className="h-4 w-4" />
+                  Share Result
+                </Button>
                 <Button onClick={downloadPNG} variant="outline" className="flex items-center gap-2">
                   <Download className="h-4 w-4" />
                   Download Rank Card

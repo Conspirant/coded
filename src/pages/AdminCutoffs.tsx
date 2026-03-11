@@ -13,11 +13,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { AdminCutoffService, AdminCutoffEntry } from "@/lib/admin-cutoff-service"
 import AdminReviewModeration from "@/components/AdminReviewModeration"
+import AdminFeedbackView from "@/components/AdminFeedbackView"
+import AdminFeatureRequestsView from "@/components/AdminFeatureRequestsView"
 import {
     ShieldCheck, Plus, Download, Upload, Undo2, Trash2, Search,
     Edit3, Save, X, FileJson, FileSpreadsheet, Copy, RefreshCw,
     AlertTriangle, CheckCircle2, Database, Clock, Filter, ChevronLeft,
-    ChevronRight, Lock, ArrowUpDown, RotateCcw, Zap, Grid3X3, MessageSquare
+    ChevronRight, Lock, ArrowUpDown, RotateCcw, Zap, Grid3X3, MessageSquare, LineChart, Lightbulb
 } from "lucide-react"
 
 const ADMIN_PASS = "kcetadmin2026"
@@ -967,6 +969,12 @@ const AdminCutoffs = () => {
                             <TabsTrigger value="reviews" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
                                 <MessageSquare className="h-3.5 w-3.5 mr-1" /> Reviews
                             </TabsTrigger>
+                            <TabsTrigger value="feedback" className="data-[state=active]:bg-pink-500/20 data-[state=active]:text-pink-400">
+                                <LineChart className="h-3.5 w-3.5 mr-1" /> 2025 Feedback
+                            </TabsTrigger>
+                            <TabsTrigger value="requests" className="data-[state=active]:bg-cyan-500/20 data-[state=active]:text-cyan-400">
+                                <Lightbulb className="h-3.5 w-3.5 mr-1" /> Features
+                            </TabsTrigger>
                         </TabsList>
                     </Tabs>
 
@@ -1028,6 +1036,12 @@ const AdminCutoffs = () => {
 
                 {/* ───────────── REVIEWS MODERATION TAB ───────────── */}
                 {selectedTab === 'reviews' && <AdminReviewModeration />}
+
+                {/* ───────────── 2025 FEEDBACK TAB ───────────── */}
+                {selectedTab === 'feedback' && <AdminFeedbackView />}
+
+                {/* ───────────── FEATURE REQUESTS TAB ───────────── */}
+                {selectedTab === 'requests' && <AdminFeatureRequestsView />}
 
                 {/* ───────────── MATRIX VIEW ───────────── */}
                 {selectedTab === 'matrix' && (() => {
@@ -1336,8 +1350,8 @@ const AdminCutoffs = () => {
                     )
                 })()}
 
-                {/* Data Table (hidden when matrix view is active) */}
-                {selectedTab !== 'matrix' && <Card className="glass border-white/5">
+                {/* Data Table (hidden when matrix view or other special tabs are active) */}
+                {['all', 'changes', 'deleted'].includes(selectedTab) && <Card className="glass border-white/5">
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
                             <Table>
