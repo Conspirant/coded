@@ -31,6 +31,6 @@
       "@/pages/*": ["./src/pages/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "api"],
   "types": ["vitest/globals"]
 }
