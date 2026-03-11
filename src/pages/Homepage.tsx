@@ -248,12 +248,12 @@ const Homepage = () => {
             />
             {/* ═══ Aurora Background ═══ */}
             <div className="fixed inset-0 -z-10">
-                <div className="absolute inset-0 animate-aurora opacity-60" />
+                <div className="absolute inset-0 animate-aurora opacity-60 hidden md:block" />
                 <div className="absolute inset-0 bg-background/40" />
                 {/* Floating orbs */}
-                <div className="absolute top-20 left-[15%] w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float-gentle" />
-                <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-purple-500/8 rounded-full blur-3xl animate-float-gentle" style={{ animationDelay: '2s' }} />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/3 to-transparent rounded-full" />
+                <div className="absolute top-20 left-[15%] w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float-gentle hidden md:block" />
+                <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-purple-500/8 rounded-full blur-3xl animate-float-gentle hidden md:block" style={{ animationDelay: '2s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-primary/3 to-transparent rounded-full hidden md:block" />
             </div>
 
             {/* ═══ Navigation ═══ */}
@@ -305,11 +305,13 @@ const Homepage = () => {
                 className="relative pt-28 sm:pt-36 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
             >
                 {/* Morphing blob behind headline */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] animate-morph bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-cyan-500/10 blur-2xl -z-10" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] animate-morph bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-cyan-500/10 blur-2xl -z-10 hidden md:block" />
 
                 {/* Interactive cursor spotlight + click ripple */}
-                <CursorSpotlight containerRef={heroRef} />
-                <RippleEffect containerRef={heroRef} />
+                <div className="hidden md:block">
+                    <CursorSpotlight containerRef={heroRef} />
+                    <RippleEffect containerRef={heroRef} />
+                </div>
 
                 <div className="max-w-5xl mx-auto text-center relative z-10">
                     {/* Live indicator pill */}
@@ -539,8 +541,8 @@ const Homepage = () => {
                     >
                         <div className="relative rounded-3xl overflow-hidden glass border border-white/5 p-8 sm:p-12 shadow-2xl">
                             {/* Background glow */}
-                            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl -z-10" />
-                            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl -z-10" />
+                            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl -z-10 hidden md:block" />
+                            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-purple-500/8 rounded-full blur-3xl -z-10 hidden md:block" />
 
                             <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
                                 <div className="max-w-xl">
@@ -567,26 +569,26 @@ const Homepage = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
-                                    <div className="glass rounded-2xl p-6 border border-white/5 hover:border-indigo-500/20 transition-colors group">
-                                        <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-indigo-400 transition-colors">
+                                <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full lg:w-auto">
+                                    <div className="glass rounded-2xl p-4 sm:p-6 border border-white/5 hover:border-indigo-500/20 transition-colors group">
+                                        <div className="text-2xl sm:text-3xl font-bold mb-1 tabular-nums group-hover:text-indigo-400 transition-colors">
                                             {stats.loading ? '—' : stats.totalRecords.toLocaleString()}
                                         </div>
-                                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Records</div>
+                                        <div className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">Records</div>
                                     </div>
-                                    <div className="glass rounded-2xl p-6 border border-white/5 hover:border-purple-500/20 transition-colors group">
-                                        <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-purple-400 transition-colors">
+                                    <div className="glass rounded-2xl p-4 sm:p-6 border border-white/5 hover:border-purple-500/20 transition-colors group">
+                                        <div className="text-2xl sm:text-3xl font-bold mb-1 tabular-nums group-hover:text-purple-400 transition-colors">
                                             {stats.loading ? '—' : stats.totalColleges}
                                         </div>
-                                        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Colleges</div>
+                                        <div className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">Colleges</div>
                                     </div>
-                                    <div className="glass rounded-2xl p-6 border border-white/5 col-span-2 hover:border-cyan-500/20 transition-colors group">
+                                    <div className="glass rounded-2xl p-4 sm:p-6 border border-white/5 col-span-2 hover:border-cyan-500/20 transition-colors group">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <div className="text-3xl font-bold mb-1 tabular-nums group-hover:text-cyan-400 transition-colors">
+                                                <div className="text-2xl sm:text-3xl font-bold mb-1 tabular-nums group-hover:text-cyan-400 transition-colors">
                                                     {stats.loading ? '—' : stats.years.length}
                                                 </div>
-                                                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Years of Data</div>
+                                                <div className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">Years of Data</div>
                                             </div>
                                             <BarChart3 className="h-10 w-10 text-white/5 group-hover:text-white/10 transition-colors" />
                                         </div>
@@ -603,7 +605,7 @@ const Homepage = () => {
                             <span className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">More Tools</span>
                             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                         </div>
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             {moreFeatures.map((item, i) => (
                                 <Link key={item.title} to={item.href}>
                                     <motion.div

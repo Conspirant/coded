@@ -29,10 +29,7 @@ import NotFound from "./pages/NotFound";
 import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
 import CETNews from "./pages/CETNews";
-import { CollegeLayout } from "./pages/college/CollegeLayout";
 import CollegeDetail from "./pages/CollegeDetail";
-import CollegeAnalytics from "./pages/college/CollegeAnalytics";
-import CollegeCommunity from "./pages/college/CollegeCommunity";
 import CollegeList from "./pages/CollegeList";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
@@ -99,12 +96,10 @@ const App = () => (
             <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
             <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
 
-            {/* College Details Section with specific layout */}
-            <Route path="/college/:collegeCode" element={<Layout><CollegeLayout /></Layout>}>
-              <Route index element={<CollegeDetail />} />
-              <Route path="analytics" element={<CollegeAnalytics />} />
-              <Route path="community" element={<CollegeCommunity />} />
-            </Route>
+            <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
+
+            {/* College Details Section */}
+            <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
 
             {/* More routes will be added here */}
             <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
