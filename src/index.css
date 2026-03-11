@@ -367,6 +367,20 @@
   will-change: border-radius, transform;
 }
 
+/* Custom Animations */
+@keyframes bounce-horizontal {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-25%);
+  }
+}
+
+.animate-bounce-horizontal {
+  animation: bounce-horizontal 1.5s infinite;
+}
+
 /* Shimmer slide */
 @keyframes shimmer-slide {
   0% {

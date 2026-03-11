@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type AppSettings } from '@/lib/settings'
+import { SidebarHint } from './SidebarHint'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -38,9 +39,10 @@ export function Layout({ children }: LayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header — Frosted Glass */}
           <header className="h-14 sm:h-16 border-b border-white/5 bg-background/60 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40">
-            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 relative">
               <SidebarTrigger />
-              <div className="flex flex-col min-w-0">
+              <SidebarHint />
+              <div className="flex flex-col min-w-0 ml-1">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <h1 className="text-base sm:text-lg font-bold gradient-text truncate">KCET Coded</h1>
                   <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider">
