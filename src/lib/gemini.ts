@@ -255,6 +255,32 @@ async function tryModel(
     return { success: true, content: data.choices[0].message.content, shouldRetry: false };
 }
 
+async function tryNvidiaModel(
+    messages: Array<{ role: string; content: string }>
+): Promise<{ success: boolean; content?: string }> {
+    try {
+        const response = await fetch('/api/nvidia-chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages }),
+        });
+
+        if (!response.ok) {
+            console.warn(`NVIDIA proxy returned ${response.status}`);
+            return { success: false };
+        }
+
+        const data = await response.json();
+        if (data.content) {
+            return { success: true, content: data.content };
+        }
+        return { success: false };
+    } catch (error) {
+        console.warn('NVIDIA model failed:', error);
+        return { success: false };
+    }
+}
+
 export async function sendMessage(
     userMessage: string,
     conversationHistory: Message[],
@@ -326,7 +352,19 @@ export async function sendMessage(
 
     if (onStatusUpdate) onStatusUpdate("AI is thinking...");
 
-    // Try each model in order
+    // Try NVIDIA Nemotron first (primary model)
+    console.log('Trying primary model: NVIDIA Nemotron-3 Super 120B');
+    if (onStatusUpdate) onStatusUpdate("Using NVIDIA Nemotron (primary)...");
+
+    const nvidiaResult = await tryNvidiaModel(messages);
+    if (nvidiaResult.success && nvidiaResult.content) {
+        return nvidiaResult.content;
+    }
+
+    console.log('NVIDIA model unavailable, falling back to OpenRouter models...');
+    if (onStatusUpdate) onStatusUpdate('Trying alternative AI model...');
+
+    // Fallback: Try each OpenRouter model in order
     for (let i = 0; i < MODELS.length; i++) {
         const model = MODELS[i];
         console.log(`Trying model: ${model}`);

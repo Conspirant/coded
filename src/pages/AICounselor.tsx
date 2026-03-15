@@ -229,6 +229,7 @@ const AICounselor = () => {
                             <div className="bg-muted/50 rounded-lg p-3 space-y-2">
                                 <p className="font-medium text-foreground">Currently powered by:</p>
                                 <ul className="list-disc list-inside text-muted-foreground space-y-1 text-xs">
+                                    <li><strong>NVIDIA Nemotron-3 Super 120B</strong> (Primary)</li>
                                     <li>Google Gemini 2.0 Flash</li>
                                     <li>Meta Llama 3.3 70B Instruct</li>
                                     <li>Qwen 2.5 72B Instruct</li>
