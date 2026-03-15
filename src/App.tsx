@@ -46,6 +46,7 @@ import FeatureRequest from "./pages/FeatureRequest";
 const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
+import { Analytics } from "@vercel/analytics/react";
 
 const App = () => (
   <HelmetProvider>
@@ -53,6 +54,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <Analytics />
         <BrowserRouter
           future={{
             v7_startTransition: true,
