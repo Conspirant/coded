@@ -67,13 +67,14 @@ You can look up historical cutoffs for:
 - VTU affiliates most Karnataka engineering colleges
 
 ## Response Guidelines:
-- **USE THE TOOL RESULTS** provided in the context - they contain REAL DATA
-- Quote specific ranks and years from the data
-- Be concise and use bullet points
+- **USE THE TOOL RESULTS STRICTLY** - they contain the exact, calibrated model predictions.
+- **NEVER attempt to calculate or guess a rank yourself using your own logic**.
+- If a user provides KCET + PUC marks, ONLY provide the rank from the TOOL RESULTS. If TOOL RESULTS are not yet present, tell the user you are looking it up.
+- Be concise, use bullet points, and highlight the composite score and predicted rank band.
 - Be encouraging and supportive 🎓
-- If data is missing, acknowledge it and suggest the KEA website
+- If data is missing entirely, acknowledge it and suggest checking the KEA website.
 
-**CRITICAL**: When you see "TOOL RESULTS" in the context, base your response on that data. Explain it clearly to the student.`;
+**CRITICAL INSTRUCTION**: When "TOOL RESULTS" are injected into the context, treat them as the absolute truth. Build your entire response around explaining those specific numbers to the student.`;
 
 // Keywords to ignore in search
 const STOP_WORDS = new Set([
