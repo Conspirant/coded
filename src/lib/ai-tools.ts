@@ -304,13 +304,17 @@ export function parseQueryForTools(query: string): {
     };
 
     // Extract KCET marks (e.g., "kcet 120", "120 marks", "got 120 in kcet", "72/180 in kcet")
-    const kcetMarksMatch = query.match(/(?:kcet|cet)\s*(?:marks?|score)?\s*(?:of|is|:)?\s*(\d{1,3})(?:\s*\/\s*180)?/i) ||
-        query.match(/(\d{1,3})(?:\s*\/\s*180)?\s*(?:marks?|score)?\s*(?:in|for)?\s*(?:kcet|cet)/i) ||
-        query.match(/(?:got|scored|have)\s*(\d{1,3})(?:\s*\/\s*180)?\s*(?:marks?|in kcet)?/i);
+    // Priority: handle "X/180" format first (common format like "72/180")
+    const kcetSlashMatch = query.match(/(\d{1,3})\s*\/\s*180/i);
+    const kcetMarksMatch = kcetSlashMatch ||
+        query.match(/(?:kcet|cet)\s*(?:marks?|score)?[:\s]*(?:of|is|:)?\s*(\d{1,3})(?!\s*\/\s*\d)/i) ||
+        query.match(/(\d{1,3})\s*(?:marks?|score)\s*(?:in|for)?\s*(?:kcet|cet)/i) ||
+        query.match(/(?:got|scored|have|getting)\s*(\d{1,3})\s*(?:marks?|in kcet|in cet)/i);
 
-    // Extract PUC percentage (e.g., "puc 85%", "85% in puc", "board 85.5")
-    const pucMatch = query.match(/(?:puc|board|12th|class 12|hsc)\s*(?:percentage|%|marks?)?\s*(?:of|is|:)?\s*(\d{1,3}(?:\.\d+)?)(?:\s*%)?/i) ||
-        query.match(/(\d{1,3}(?:\.\d+)?)\s*%?\s*(?:in|for)?\s*(?:puc|board|12th)/i);
+    // Extract PUC percentage (e.g., "puc 85%", "85% in puc", "board 85", "85 in puc")
+    const pucMatch = query.match(/(?:puc|board|12th|class 12|hsc)\s*(?:percentage|%|marks?)?\s*(?:of|is|:)?\s*(\d{1,3})(?:\s*%)?/i) ||
+        query.match(/(\d{1,3})\s*%\s*(?:in|for)?\s*(?:puc|board|12th)/i) ||
+        query.match(/(\d{1,3})\s*(?:in|for)\s*(?:puc|board|12th)/i);
 
     // Extract rank (e.g., "rank 15000", "15000 rank", "got 15000")
     const rankMatch = query.match(/(?:rank|kcet rank)\s*(?:of|is|:)?\s*(\d{3,6})/i) ||
@@ -354,8 +358,8 @@ export function parseQueryForTools(query: string): {
     // Determine which tools are needed
     if (kcetMarksMatch && pucMatch) {
         result.needsRankPrediction = true;
-        result.kcetMarks = parseFloat(kcetMarksMatch[1]);
-        result.pucPercentage = parseFloat(pucMatch[1]);
+        result.kcetMarks = parseInt(kcetMarksMatch[1]);
+        result.pucPercentage = parseInt(pucMatch[1]);
     }
 
     if (rankMatch || result.needsRankPrediction) {

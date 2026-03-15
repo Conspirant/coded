@@ -44,7 +44,7 @@ const SYSTEM_PROMPT = `You are KCET Coded AI - an expert counselor for Karnataka
 You can predict KCET ranks when given:
 - KCET marks (out of 180)
 - PUC/12th percentage
-Formula: 50% KCET + 50% Board marks
+Formula: Composite Score = (KCET marks / 180 × 100 + PUC%) / 2
 
 ### 2. College Finder 🏫
 You can find eligible colleges based on:
@@ -59,22 +59,56 @@ You can look up historical cutoffs for:
 - Specific courses (CSE, ECE, ISE, etc.)
 - Different categories and rounds
 
+## CALIBRATED RANK TABLE (2025 REAL DATA — ALWAYS USE THIS):
+Use linear interpolation between these data points for rank prediction:
+| Composite % | Rank   |
+|-------------|--------|
+| 96.22%      | 81     |
+| 94.06%      | 308    |
+| 90.00%      | 1,245  |
+| 85.00%      | 3,804  |
+| 80.00%      | 8,500  |
+| 75.00%      | 16,000 |
+| 70.00%      | 30,000 |
+| 65.00%      | 50,000 |
+| 60.00%      | 80,000 |
+| 50.00%      | 1,55,000 |
+| 40.00%      | 2,35,000 |
+| 35.00%      | 2,59,000 |
+| 30.00%      | 2,80,000 |
+
+Variance range: predicted rank ± 3,000 to 5,000 (due to category/competition variance).
+
+## COLLEGE SUGGESTIONS BY RANK (General Merit):
+| Rank Range   | Colleges                         | Branches              |
+|--------------|----------------------------------|-----------------------|
+| ≤ 200        | RVCE, BMSCE, IISc                | CSE, ECE, EEE         |
+| ≤ 1,200      | MSRIT, PESIT, BMSIT              | CSE, ECE, ISE         |
+| ≤ 3,000      | SIT, NMIT, DSCE                  | CSE, ECE, ME          |
+| ≤ 8,000      | CIT, SJCE, UVCE                  | All branches          |
+| ≤ 16,000     | Regional top colleges            | All branches          |
+| ≤ 30,000     | Private reputed colleges         | All branches          |
+| ≤ 70,000     | Regional engineering colleges    | All branches          |
+| ≤ 1,00,000   | Private engineering colleges     | All branches          |
+
 ## Key Facts:
 - KCET 2025 has rounds: Mock, Round 1, Round 2, Round 3/Extended
 - Categories: GM, SC, ST, 1G, 2A, 2B, 3A, 3B (with R/K variants for rural/Kannada medium)
 - Top colleges: RVCE, BMSCE, MSRIT, PESIT, JSSATE, NITK, UVCE
 - Popular branches: CSE, ISE, ECE, EEE, Mechanical, Civil, AI&ML, Data Science
 - VTU affiliates most Karnataka engineering colleges
+- Total candidates (2025): ~2,59,000
 
 ## Response Guidelines:
-- **USE THE TOOL RESULTS STRICTLY** - they contain the exact, calibrated model predictions.
-- **NEVER attempt to calculate or guess a rank yourself using your own logic**.
-- If a user provides KCET + PUC marks, ONLY provide the rank from the TOOL RESULTS. If TOOL RESULTS are not yet present, tell the user you are looking it up.
-- Be concise, use bullet points, and highlight the composite score and predicted rank band.
+- **ALWAYS use the CALIBRATED RANK TABLE above** for rank predictions — NEVER use your own training data
+- When predicting ranks: show Composite Score calculation, then interpolate from the table
+- **USE THE TOOL RESULTS** provided in the context - they contain REAL DATA from the website
+- Quote specific ranks and years from the data
+- Be concise and use bullet points
 - Be encouraging and supportive 🎓
-- If data is missing entirely, acknowledge it and suggest checking the KEA website.
+- If data is missing, acknowledge it and suggest the KEA website
 
-**CRITICAL INSTRUCTION**: When "TOOL RESULTS" are injected into the context, treat them as the absolute truth. Build your entire response around explaining those specific numbers to the student.`;
+**CRITICAL**: When you see "TOOL RESULTS" in the context, base your response on that data. Explain it clearly to the student. For rank predictions, ALWAYS use the calibrated table above — do NOT make up your own rank estimates.`;
 
 // Keywords to ignore in search
 const STOP_WORDS = new Set([
@@ -293,43 +327,47 @@ export async function sendMessage(
 
     // AI Tools: Execute specialized tools first for structured data
     let toolContext = "";
-    if (onStatusUpdate) {
-        onStatusUpdate("Analyzing your question...");
-        try {
-            toolContext = await executeToolsForQuery(userMessage);
-            if (toolContext) {
-                onStatusUpdate("Found relevant data using AI tools...");
-            }
-        } catch (e) {
-            console.error("Tool execution failed:", e);
+    if (onStatusUpdate) onStatusUpdate("Analyzing your question...");
+    try {
+        toolContext = await executeToolsForQuery(userMessage);
+        if (toolContext && onStatusUpdate) {
+            onStatusUpdate("Found relevant data using AI tools...");
         }
+    } catch (e) {
+        console.error("Tool execution failed:", e);
     }
 
-    // RAG Logic: Check if we need additional cutoff data (only if tools didn't find enough)
+    // RAG Logic: Also fetch cutoff data for data-heavy queries (complements tool results)
     let contextData = "";
     const lowerMsg = userMessage.toLowerCase();
-    const needsData = !toolContext && (
+    const needsData = (
         lowerMsg.includes('cutoff') ||
         lowerMsg.includes('rank') ||
         lowerMsg.includes('college') ||
         lowerMsg.includes('seat') ||
-        /E\d{3}/i.test(userMessage)
+        lowerMsg.includes('branch') ||
+        lowerMsg.includes('marks') ||
+        lowerMsg.includes('kcet') ||
+        lowerMsg.includes('predict') ||
+        /E\d{3}/i.test(userMessage) ||
+        /\d{3,6}/.test(userMessage)
     );
 
-    if (needsData && onStatusUpdate) {
+    if (needsData) {
         try {
+            const statusFn = onStatusUpdate || (() => {});
             // Fetch
-            const data = await fetchCutoffData(onStatusUpdate);
-            onStatusUpdate(`Loaded ${data.length} records. Scanning...`);
+            const data = await fetchCutoffData(statusFn);
+            if (onStatusUpdate) onStatusUpdate(`Loaded ${data.length} records. Scanning...`);
 
             // Search
             const relevantRecords = searchRelevantData(userMessage, data);
 
             if (relevantRecords.length > 0) {
-                contextData = `\n\nREAL DATA CONTEXT (Use this to answer): \n${JSON.stringify(relevantRecords, null, 2)}`;
-                onStatusUpdate(`Found ${relevantRecords.length} matches for "${userMessage.substring(0, 15)}..."`);
+                contextData = `\n\nREAL CUTOFF DATA FROM WEBSITE (Use this to answer): \n${JSON.stringify(relevantRecords, null, 2)}`;
+                if (onStatusUpdate) onStatusUpdate(`Found ${relevantRecords.length} matches for "${userMessage.substring(0, 15)}..."`);
             } else {
-                onStatusUpdate("No matching Cutoff data found.");
+                if (onStatusUpdate) onStatusUpdate("No matching cutoff data found.");
             }
         } catch (e) {
             console.error("RAG failed:", e);

@@ -34,10 +34,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         temperature: 1,
         top_p: 0.95,
         max_tokens: 16384,
-        extra_body: {
-          chat_template_kwargs: { enable_thinking: true },
-          reasoning_budget: 16384,
-        },
+        chat_template_kwargs: { enable_thinking: true },
+        reasoning_budget: 16384,
         stream: true,
       }),
     });
