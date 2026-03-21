@@ -38,9 +38,10 @@ import MetroMapper from "./pages/MetroMapper";
 import BmtcMapper from './pages/BmtcMapper';
 import HiddenGems from "./pages/HiddenGems";
 import CollegeCutoffs from "./pages/CollegeCutoffs";
-import AdminCutoffs from "./pages/AdminCutoffs";
 import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
+import PYQTest from "./pages/PYQTest";
+import AdminHub from "./pages/AdminHub";
 
 
 const queryClient = new QueryClient();
@@ -108,6 +109,7 @@ const App = () => (
             <Route path="/terms" element={<Layout><Terms /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
+            <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
 
             {/* Coded Labs - Unique Features */}
             <Route path="/squad-finder" element={<SquadFinder />} />
@@ -116,7 +118,7 @@ const App = () => (
             <Route path="/hidden-gems" element={<HiddenGems />} />
 
             {/* Admin (hidden from nav, direct URL only) */}
-            <Route path="/admin" element={<AdminCutoffs />} />
+            <Route path="/admin" element={<AdminHub />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>

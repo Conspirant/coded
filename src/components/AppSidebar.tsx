@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck, Lightbulb } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck, Lightbulb, BookOpenCheck } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -22,6 +22,7 @@ const mainItems = [
   { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
   { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
   { title: "College Finder", url: "/college-finder", icon: Target },
+  { title: "PYQ Practice", url: "/pyq-test", icon: BookOpenCheck, isNew: true },
 ]
 
 const toolItems = [
@@ -94,6 +95,11 @@ function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
               {item.underDevelopment && (
                 <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 bg-amber-500/10 text-amber-400 border-amber-500/20">
                   Beta
+                </Badge>
+              )}
+              {item.isNew && (
+                <Badge className="text-[9px] px-1.5 py-0 h-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 shadow-sm shadow-emerald-500/20">
+                  New
                 </Badge>
               )}
             </div>

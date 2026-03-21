@@ -199,3 +199,37 @@ CREATE INDEX IF NOT EXISTS idx_seat_matrix_college    ON public.seat_matrix(coll
 CREATE INDEX IF NOT EXISTS idx_reviews_college        ON public.college_reviews(college_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_created        ON public.college_reviews(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_colleges_code          ON public.colleges(code);
+
+-- ━━━ PYQ QUESTIONS ━━━
+
+CREATE TABLE IF NOT EXISTS public.pyq_questions (
+    id             UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    subject        TEXT DEFAULT 'Physics',
+    chapter        TEXT NOT NULL,
+    chapter_number INTEGER NOT NULL,
+    question       TEXT NOT NULL,
+    options        JSONB NOT NULL,
+    correct_answer INTEGER NOT NULL,
+    year           INTEGER NOT NULL,
+    explanation    TEXT,
+    image_url      TEXT,
+    needs_image    BOOLEAN DEFAULT FALSE,
+    option_images  JSONB DEFAULT '["", "", "", ""]'::jsonb,
+    created_at     TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.pyq_questions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Anyone can view pyq_questions" ON public.pyq_questions;
+DROP POLICY IF EXISTS "Anyone can insert pyq_questions" ON public.pyq_questions;
+DROP POLICY IF EXISTS "Anyone can update pyq_questions" ON public.pyq_questions;
+DROP POLICY IF EXISTS "Anyone can delete pyq_questions" ON public.pyq_questions;
+
+CREATE POLICY "Anyone can view pyq_questions" ON public.pyq_questions FOR SELECT USING (true);
+CREATE POLICY "Anyone can insert pyq_questions" ON public.pyq_questions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Anyone can update pyq_questions" ON public.pyq_questions FOR UPDATE USING (true);
+CREATE POLICY "Anyone can delete pyq_questions" ON public.pyq_questions FOR DELETE USING (true);
+
+CREATE INDEX IF NOT EXISTS idx_pyq_chapter ON public.pyq_questions(chapter_number);
+CREATE INDEX IF NOT EXISTS idx_pyq_year    ON public.pyq_questions(year);
+CREATE INDEX IF NOT EXISTS idx_pyq_subject ON public.pyq_questions(subject);
