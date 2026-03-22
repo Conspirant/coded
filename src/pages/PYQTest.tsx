@@ -15,6 +15,7 @@ import {
   TimerReset,
   Trophy,
   XCircle,
+  AlertCircle,
 } from "lucide-react";
 import {
   SUBJECTS,
@@ -209,6 +210,17 @@ const PYQTest = () => {
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
             Practice previous year questions from the database. Questions are managed through the admin panel and updates go live instantly.
           </p>
+          <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 max-w-2xl">
+            <div className="flex gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+              <div className="space-y-1 text-left">
+                <p className="text-sm font-medium text-amber-500">Sorry, work in progress!</p>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  The questions are still being added and the correct answers haven't been marked yet. Please do cooperate and understand. I am trying to add the questions as quickly as possible.
+                </p>
+              </div>
+            </div>
+          </div>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button onClick={startQuickQuiz} className="rounded-xl" disabled={isFetchingQuestions}>
               {isFetchingQuestions ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <TimerReset className="mr-2 h-4 w-4" />}
