@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -23,8 +23,10 @@ import {
     CornerDownLeft,
     Flame,
     Sword,
-    Newspaper
+    Newspaper,
+    ShieldCheck
 } from "lucide-react"
+import { useExamMode } from "@/contexts/ExamModeContext"
 
 interface CommandItem {
     id: string
@@ -44,6 +46,7 @@ const COMMANDS: CommandItem[] = [
     { id: "dashboard", title: "Dashboard", description: "Overview & stats", icon: LayoutDashboard, href: "/dashboard", keywords: ["dashboard", "overview", "stats"], category: "main" },
     { id: "college-finder", title: "College Finder", description: "Find colleges by rank", icon: Target, href: "/college-finder", keywords: ["college", "find", "search", "rank"], category: "main" },
     { id: "cutoff-explorer", title: "Cutoff Explorer", description: "Analyze cutoff trends", icon: BarChart3, href: "/cutoff-explorer", keywords: ["cutoff", "explore", "trends", "analyze"], category: "main" },
+    { id: "comedk-explorer", title: "COMEDK Explorer", description: "Browse COMEDK cutoffs with source PDFs", icon: ShieldCheck, href: "/comedk-explorer", keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"], category: "main" },
     { id: "rank-predictor", title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", keywords: ["rank", "predict", "marks", "score"], category: "main" },
     { id: "college-cutoffs", title: "College Cutoffs", description: "View cutoff matrix for all colleges", icon: Building2, href: "/college-cutoffs", keywords: ["college", "cutoffs", "matrix", "browse"], category: "main" },
     { id: "mock-simulator", title: "Mock Simulator", description: "Simulate seat allotment", icon: Shuffle, href: "/mock-simulator", keywords: ["mock", "simulate", "allotment", "seat"], category: "tools" },
@@ -66,11 +69,59 @@ export function CommandPalette() {
     const navigate = useNavigate()
     const inputRef = useRef<HTMLInputElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
+    const { examMode } = useExamMode()
+
+    const commands = useMemo(() => {
+        return COMMANDS
+            .filter((cmd) => cmd.id !== "comedk-explorer")
+            .map((cmd) => {
+            if (cmd.id === "cutoff-explorer") {
+                return examMode === "COMEDK"
+                    ? {
+                        ...cmd,
+                        title: "COMEDK Explorer",
+                        description: "Browse COMEDK cutoffs with source PDFs",
+                        keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"],
+                    }
+                    : {
+                        ...cmd,
+                        title: "Cutoff Explorer",
+                        description: "Analyze KCET cutoff trends",
+                        keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
+                    }
+            }
+
+            if (cmd.id === "rank-predictor") {
+                return examMode === "COMEDK"
+                    ? {
+                        ...cmd,
+                        title: "COMEDK Rank Predictor",
+                        description: "Predict COMEDK rank from marks",
+                        keywords: ["comedk", "rank", "predict", "marks", "score"],
+                    }
+                    : cmd
+            }
+
+            if (cmd.id === "kcetards") {
+                return examMode === "COMEDK"
+                    ? {
+                        ...cmd,
+                        title: "r/COMEDK",
+                        description: "Open COMEDK community",
+                        href: "https://www.reddit.com/r/comedk/",
+                        keywords: ["comedk", "reddit", "community", "discussion"],
+                    }
+                    : cmd
+            }
+
+            return cmd
+        })
+    }, [examMode])
 
     // Filter commands
     const filtered = query.trim() === ""
-        ? COMMANDS
-        : COMMANDS.filter(cmd =>
+        ? commands
+        : commands.filter(cmd =>
             cmd.title.toLowerCase().includes(query.toLowerCase()) ||
             cmd.description.toLowerCase().includes(query.toLowerCase()) ||
             cmd.keywords.some(k => k.includes(query.toLowerCase()))

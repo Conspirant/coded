@@ -6,8 +6,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
-
-# Google
+Disallow: /data/
 User-agent: Googlebot
 Allow: /
 

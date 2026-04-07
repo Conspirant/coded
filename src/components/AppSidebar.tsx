@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, ShieldCheck, Lightbulb, BookOpenCheck } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -12,18 +12,31 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Badge } from "@/components/ui/badge"
+import { useExamMode } from "@/contexts/ExamModeContext"
 
-const mainItems = [
-  { title: "Home", url: "/", icon: Home },
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
-  { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
-  { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
-  { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
-  { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
-  { title: "College Finder", url: "/college-finder", icon: Target },
-  { title: "PYQ Practice", url: "/pyq-test", icon: BookOpenCheck, isNew: true },
-]
+const getMainItems = (examMode: "KCET" | "COMEDK") => {
+  if (examMode === "COMEDK") {
+    return [
+      { title: "Home", url: "/", icon: Home },
+      { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+      { title: "COMEDK Predictor", url: "/rank-predictor", icon: Calculator, isNew: true },
+      { title: "COMEDK Explorer", url: "/cutoff-explorer", icon: ShieldCheck, isNew: true },
+      { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
+      { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
+    ]
+  }
+
+  return [
+    { title: "Home", url: "/", icon: Home },
+    { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+    { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
+    { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
+    { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
+    { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
+    { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
+    { title: "College Finder", url: "/college-finder", icon: Target },
+  ]
+}
 
 const toolItems = [
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
@@ -38,11 +51,16 @@ const toolItems = [
   { title: "Feature Request", url: "/request-feature", icon: Lightbulb },
 ]
 
-const specialItems = [
+const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
   { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
-  { title: "r/KCETards", url: "https://www.reddit.com/r/KCETards/", icon: ExternalLink, external: true },
-]
+  {
+    title: examMode === "COMEDK" ? "r/COMEDK" : "r/KCETards",
+    url: examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/" : "https://www.reddit.com/r/KCETards/",
+    icon: ExternalLink,
+    external: true
+  },
+])
 
 function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
   item: any
@@ -112,6 +130,9 @@ function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
 
 export function AppSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar()
+  const { examMode } = useExamMode()
+  const mainItems = getMainItems(examMode)
+  const specialItems = getSpecialItems(examMode)
 
   return (
     <Sidebar className={`${state === "collapsed" ? "w-14" : "w-64"} border-r border-white/5`} collapsible="icon">
@@ -120,7 +141,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="px-3 mb-1">
             {state !== "collapsed" && (
-              <span className="text-xs font-bold gradient-text tracking-[0.12em] uppercase">KCET Coded</span>
+              <span className="text-xs font-bold gradient-text tracking-[0.12em] uppercase">{examMode === "COMEDK" ? "COMEDK Mode" : "KCET Coded"}</span>
             )}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -168,7 +189,9 @@ export function AppSidebar() {
             </SidebarMenu>
             {state !== "collapsed" && (
               <p className="px-3 pt-2 text-[10px] leading-relaxed text-muted-foreground/70">
-                Community links are independent. KCET Coded is not affiliated with Reddit, r/kcet, or r/KCETards.
+                {examMode === "COMEDK"
+                  ? "Community links are independent. KCET Coded is not affiliated with Reddit or r/comedk."
+                  : "Community links are independent. KCET Coded is not affiliated with Reddit, r/kcet, or r/KCETards."}
               </p>
             )}
           </SidebarGroupContent>

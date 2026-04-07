@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "extract:cutoffs": "node scripts/extract-cutoffs.mjs",
+    "extract:comedk": "node scripts/extract-comedk-cutoffs.mjs",
     "move:xlsx": "node scripts/move-xlsx-to-public.mjs",
     "fetch:news": "node scripts/fetch-news.mjs",
     "fetch:news:advanced": "node scripts/fetch-news-advanced.mjs",

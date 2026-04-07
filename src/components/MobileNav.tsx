@@ -26,39 +26,78 @@ import {
     Sword,
     ExternalLink
 } from "lucide-react"
+import { useExamMode } from "@/contexts/ExamModeContext"
 
 /* ═══════════════════════════════════════════════════
    MOBILE DOCK — iOS-style bottom navigation
    Shows on screens < 768px, replaces sidebar
    ═══════════════════════════════════════════════════ */
 
-const DOCK_ITEMS = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: Search, label: "Finder", href: "/college-finder" },
-    { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
-    { icon: Calculator, label: "Predict", href: "/rank-predictor" },
-]
+interface DockItem {
+    icon: any
+    label: string
+    href: string
+}
 
-const MORE_ITEMS = [
-    { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
-    { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-    { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
-    { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
-    { icon: Bell, label: "Rounds", href: "/round-tracker" },
-    { icon: FileText, label: "Documents", href: "/documents" },
-    { icon: Star, label: "Reviews", href: "/reviews" },
-    { icon: Info, label: "Info", href: "/info-centre" },
-    { icon: Book, label: "Materials", href: "/materials" },
-    { icon: Bot, label: "AI Counsel", href: "/ai-counselor" },
-    { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
-    { icon: Shuffle, label: "Mock Sim", href: "/mock-simulator" },
-]
+interface MoreItem extends DockItem {
+    external?: boolean
+}
+
+const getDockItems = (examMode: "KCET" | "COMEDK"): DockItem[] =>
+    examMode === "COMEDK"
+        ? [
+            { icon: Home, label: "Home", href: "/" },
+            { icon: LayoutDashboard, label: "Dash", href: "/dashboard" },
+            { icon: BarChart3, label: "COMEDK", href: "/cutoff-explorer" },
+            { icon: Calculator, label: "Predict", href: "/rank-predictor" },
+        ]
+        : [
+            { icon: Home, label: "Home", href: "/" },
+            { icon: Search, label: "Finder", href: "/college-finder" },
+            { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
+            { icon: Calculator, label: "Predict", href: "/rank-predictor" },
+        ]
+
+const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
+    if (examMode === "COMEDK") {
+        return [
+            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
+            { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
+            { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+            { icon: Bell, label: "Rounds", href: "/round-tracker" },
+            { icon: FileText, label: "Documents", href: "/documents" },
+            { icon: Star, label: "Reviews", href: "/reviews" },
+            { icon: Info, label: "Info", href: "/info-centre" },
+            { icon: Book, label: "Materials", href: "/materials" },
+            { icon: Bot, label: "AI Counsel", href: "/ai-counselor" },
+            { icon: ExternalLink, label: "r/COMEDK", href: "https://www.reddit.com/r/comedk/", external: true },
+        ]
+    }
+
+    return [
+        { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
+        { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
+        { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+        { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
+        { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
+        { icon: Bell, label: "Rounds", href: "/round-tracker" },
+        { icon: FileText, label: "Documents", href: "/documents" },
+        { icon: Star, label: "Reviews", href: "/reviews" },
+        { icon: Info, label: "Info", href: "/info-centre" },
+        { icon: Book, label: "Materials", href: "/materials" },
+        { icon: Bot, label: "AI Counsel", href: "/ai-counselor" },
+        { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
+        { icon: Shuffle, label: "Mock Sim", href: "/mock-simulator" },
+    ]
+}
 
 export function MobileDock() {
     const [moreOpen, setMoreOpen] = useState(false)
     const location = useLocation()
     const sheetRef = useRef<HTMLDivElement>(null)
+    const { examMode } = useExamMode()
+    const dockItems = getDockItems(examMode)
+    const moreItems = getMoreItems(examMode)
 
     // Close sheet on route change
     useEffect(() => {
@@ -117,7 +156,7 @@ export function MobileDock() {
 
                                 {/* Grid of tools */}
                                 <div className="grid grid-cols-4 gap-2 px-4">
-                                    {MORE_ITEMS.map((item, i) => (
+                                    {moreItems.map((item, i) => (
                                         item.external ? (
                                             <a
                                                 key={item.href + i}
@@ -172,7 +211,7 @@ export function MobileDock() {
                 {/* Frosted bar */}
                 <div className="mx-3 mb-3 rounded-2xl glass-strong border border-white/10 shadow-2xl shadow-black/30">
                     <div className="flex items-center justify-around px-2 py-1.5">
-                        {DOCK_ITEMS.map((item) => (
+                        {dockItems.map((item) => (
                             <DockIcon key={item.href} item={item} />
                         ))}
                         {/* More button */}
@@ -199,7 +238,7 @@ export function MobileDock() {
     )
 }
 
-function DockIcon({ item }: { item: typeof DOCK_ITEMS[0] }) {
+function DockIcon({ item }: { item: DockItem }) {
     const location = useLocation()
     const isActive = item.href === "/"
         ? location.pathname === "/"
@@ -235,16 +274,26 @@ function DockIcon({ item }: { item: typeof DOCK_ITEMS[0] }) {
    FLOATING ACTION BUTTON — radial quick actions
    ═══════════════════════════════════════════════════ */
 
-const FAB_ACTIONS = [
-    { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
-    { icon: Search, label: "Find College", href: "/college-finder", color: "from-blue-500 to-cyan-400" },
-    { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
-    { icon: Bot, label: "AI Counselor", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
-]
+const getFabActions = (examMode: "KCET" | "COMEDK") =>
+    examMode === "COMEDK"
+        ? [
+            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
+            { icon: BarChart3, label: "COMEDK Explorer", href: "/cutoff-explorer", color: "from-amber-500 to-orange-500" },
+            { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
+            { icon: Bot, label: "AI Counselor", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+        ]
+        : [
+            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
+            { icon: Search, label: "Find College", href: "/college-finder", color: "from-blue-500 to-cyan-400" },
+            { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
+            { icon: Bot, label: "AI Counselor", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+        ]
 
 export function FloatingActionButton() {
     const [open, setOpen] = useState(false)
     const location = useLocation()
+    const { examMode } = useExamMode()
+    const fabActions = getFabActions(examMode)
 
     // Hide on homepage (it has its own CTA)
     if (location.pathname === "/") return null
@@ -264,7 +313,7 @@ export function FloatingActionButton() {
                         />
 
                         {/* Action items */}
-                        {FAB_ACTIONS.map((action, i) => (
+                        {fabActions.map((action, i) => (
                             <motion.div
                                 key={action.href}
                                 initial={{ opacity: 0, y: 20, scale: 0.5 }}

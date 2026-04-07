@@ -119,6 +119,8 @@ const RankPredictor = () => {
   const [prediction, setPrediction] = useState<Rank2026Prediction | null>(null)
   const [activeTab, setActiveTab] = useState("predictor")
   const [savedResults, setSavedResults] = useState<any[]>([])
+  const [boardMarksMode, setBoardMarksMode] = useState(false)
+  const [boardMarksTotal, setBoardMarksTotal] = useState(180)
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -449,28 +451,95 @@ const RankPredictor = () => {
 
                     {/* PUC Input */}
                     <div className="space-y-3">
-                      <Label className="text-base font-medium">PUC PCM Percentage</Label>
-                      <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
-                        <div className="text-4xl font-bold text-primary">{pucPercentage}%</div>
-                        <div className="text-sm text-muted-foreground">Board Marks (PCM)</div>
+                      <div className="flex items-center justify-between">
+                        <Label className="text-base font-medium">PUC PCM Board Marks</Label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!boardMarksMode) {
+                              // Switching to total marks mode — initialize from current percentage
+                              setBoardMarksTotal(Math.round(pucPercentage * 3))
+                            } else {
+                              // Switching back to percentage — sync from total
+                              setPucPercentage(Math.round((boardMarksTotal / 300) * 100))
+                            }
+                            setBoardMarksMode(!boardMarksMode)
+                          }}
+                          className="relative inline-flex h-6 w-[7.5rem] items-center rounded-full border border-white/10 bg-muted/50 p-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                        >
+                          <span
+                            className={`absolute left-0.5 flex h-5 w-[3.5rem] items-center justify-center rounded-full text-[10px] font-semibold transition-all duration-300 ease-in-out ${
+                              boardMarksMode
+                                ? "translate-x-[3.75rem] bg-primary text-primary-foreground shadow-lg"
+                                : "translate-x-0 bg-primary text-primary-foreground shadow-lg"
+                            }`}
+                          >
+                            {boardMarksMode ? "Total" : "%"}
+                          </span>
+                          <span className={`absolute left-2 text-[10px] font-medium transition-opacity duration-200 ${boardMarksMode ? "opacity-50" : "opacity-0"}`}>%</span>
+                          <span className={`absolute right-2 text-[10px] font-medium transition-opacity duration-200 ${boardMarksMode ? "opacity-0" : "opacity-50"}`}>Total</span>
+                        </button>
                       </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={pucPercentage}
-                        onChange={(e) => setPucPercentage(Number(e.target.value))}
-                        className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
-                      />
-                      <Input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={pucPercentage}
-                        onChange={(e) => setPucPercentage(Math.min(100, Math.max(0, Number(e.target.value))))}
-                        className="text-center font-mono"
-                        placeholder="Enter exact percentage"
-                      />
+
+                      {boardMarksMode ? (
+                        /* ─── Total Marks Mode ─── */
+                        <>
+                          <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
+                            <div className="text-4xl font-bold text-primary">{boardMarksTotal}</div>
+                            <div className="text-sm text-muted-foreground">out of 300 ({((boardMarksTotal / 300) * 100).toFixed(1)}%)</div>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="300"
+                            value={boardMarksTotal}
+                            onChange={(e) => {
+                              const total = Number(e.target.value)
+                              setBoardMarksTotal(total)
+                              setPucPercentage(Math.round((total / 300) * 100))
+                            }}
+                            className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
+                          />
+                          <Input
+                            type="number"
+                            min="0"
+                            max="300"
+                            value={boardMarksTotal}
+                            onChange={(e) => {
+                              const total = Math.min(300, Math.max(0, Number(e.target.value)))
+                              setBoardMarksTotal(total)
+                              setPucPercentage(Math.round((total / 300) * 100))
+                            }}
+                            className="text-center font-mono"
+                            placeholder="Enter PCM total marks"
+                          />
+                        </>
+                      ) : (
+                        /* ─── Percentage Mode ─── */
+                        <>
+                          <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
+                            <div className="text-4xl font-bold text-primary">{pucPercentage}%</div>
+                            <div className="text-sm text-muted-foreground">Board Marks (PCM)</div>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={pucPercentage}
+                            onChange={(e) => setPucPercentage(Number(e.target.value))}
+                            className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
+                          />
+                          <Input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={pucPercentage}
+                            onChange={(e) => setPucPercentage(Math.min(100, Math.max(0, Number(e.target.value))))}
+                            className="text-center font-mono"
+                            placeholder="Enter exact percentage"
+                          />
+                        </>
+                      )}
                     </div>
                   </div>
 

@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type AppSettings } from '@/lib/settings'
 import { SidebarHint } from './SidebarHint'
+import { useExamMode } from "@/contexts/ExamModeContext"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -18,6 +19,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings)
   const [open, setOpen] = useState(false)
+  const { examMode, setExamMode } = useExamMode()
 
   useEffect(() => {
     const s = loadSettings()
@@ -48,11 +50,41 @@ export function Layout({ children }: LayoutProps) {
                   <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider">
                     BETA
                   </Badge>
+                  <Badge variant="outline" className={examMode === "COMEDK" ? "border-amber-500/40 text-amber-400 bg-amber-500/10" : "border-indigo-500/40 text-indigo-400 bg-indigo-500/10"}>
+                    {examMode}
+                  </Badge>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">KCET Helping Hub</p>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">{examMode === "COMEDK" ? "COMEDK Environment" : "KCET Helping Hub"}</p>
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
+              <div className="hidden md:inline-flex relative h-8 w-[9.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
+                <span
+                  className={`absolute left-0.5 h-7 w-[4.5rem] rounded-full transition-all duration-300 ease-in-out ${
+                    examMode === "COMEDK"
+                      ? "translate-x-[4.5rem] bg-amber-500 shadow-lg shadow-amber-500/25"
+                      : "translate-x-0 bg-indigo-500 shadow-lg shadow-indigo-500/25"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setExamMode("KCET")}
+                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${
+                    examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  KCET
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExamMode("COMEDK")}
+                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${
+                    examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  COMEDK
+                </button>
+              </div>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9 hover:bg-white/5 group" aria-label="Settings" onClick={() => setOpen(true)}>
@@ -73,6 +105,37 @@ export function Layout({ children }: LayoutProps) {
                     </p>
                   </DialogHeader>
                   <div className="space-y-4 sm:space-y-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Exam Mode</Label>
+                      <div className="relative inline-flex h-9 w-[10.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
+                        <span
+                          className={`absolute left-0.5 h-8 w-[5rem] rounded-full transition-all duration-300 ease-in-out ${
+                            examMode === "COMEDK"
+                              ? "translate-x-[5rem] bg-amber-500 shadow-lg shadow-amber-500/25"
+                              : "translate-x-0 bg-indigo-500 shadow-lg shadow-indigo-500/25"
+                          }`}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setExamMode("KCET")}
+                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
+                            examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          KCET
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setExamMode("COMEDK")}
+                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
+                            examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          COMEDK
+                        </button>
+                      </div>
+                    </div>
+
                     {/* Theme */}
                     <div className="space-y-2">
                       <Label className="text-sm font-medium">Theme</Label>
@@ -153,8 +216,8 @@ export function Layout({ children }: LayoutProps) {
             </div>
           </header>
 
-          {/* Main Content — pb-20 for mobile dock clearance */}
-          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-24 md:pb-6">
+          {/* Main Content */}
+          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-6">
             {children}
           </main>
         </div>

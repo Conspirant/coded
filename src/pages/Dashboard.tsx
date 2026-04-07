@@ -14,17 +14,21 @@ import {
   ExternalLink,
   Calendar,
   Users,
+  Bell,
   ArrowRight,
   Sparkles,
   Clock,
   ChevronRight,
   Database,
   Flame,
-  Sword
+  Sword,
+  ShieldCheck,
+  FileText
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import CountdownTimer from "@/components/CountdownTimer"
 import { Badge } from "@/components/ui/badge"
+import { useExamMode } from "@/contexts/ExamModeContext"
 
 interface DataStats {
   totalRecords: number
@@ -46,19 +50,25 @@ const getGreeting = () => {
 const Dashboard = () => {
   const [stats, setStats] = useState<DataStats | null>(null)
   const [loading, setLoading] = useState(true)
+  const { examMode, setExamMode } = useExamMode()
 
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const urls = [
-          '/data/kcet_cutoffs_high_volume.json',
-          '/data/kcet_cutoffs_master.json',
-          '/data/kcet_cutoffs_consolidated.json',
-          '/kcet_cutoffs_high_volume.json',
-          '/kcet_cutoffs_master.json',
-          '/kcet_cutoffs_consolidated.json',
-          '/kcet_cutoffs.json'
-        ]
+        const urls = examMode === "COMEDK"
+          ? [
+            '/data/comedk_cutoffs.json',
+            '/comedk_cutoffs.json'
+          ]
+          : [
+            '/data/kcet_cutoffs_high_volume.json',
+            '/data/kcet_cutoffs_master.json',
+            '/data/kcet_cutoffs_consolidated.json',
+            '/kcet_cutoffs_high_volume.json',
+            '/kcet_cutoffs_master.json',
+            '/kcet_cutoffs_consolidated.json',
+            '/kcet_cutoffs.json'
+          ]
         let response: Response | null = null
         for (const url of urls) {
           const r = await fetch(url, { cache: 'no-store' })
@@ -68,7 +78,7 @@ const Dashboard = () => {
 
         const raw = await response.json()
 
-        if (!Array.isArray(raw) && raw.totals && raw.years && raw.categories) {
+        if (examMode !== "COMEDK" && !Array.isArray(raw) && raw.totals && raw.years && raw.categories) {
           const sortedYears: { [key: string]: number } = {}
           Object.keys(raw.years).sort((a, b) => b.localeCompare(a)).forEach(y => { sortedYears[y] = raw.years[y] })
           setStats({
@@ -126,7 +136,7 @@ const Dashboard = () => {
 
         setStats({
           totalRecords: metadata?.total_entries ?? cutoffs.length,
-          totalColleges: metadata?.total_institutes ?? colleges.size,
+          totalColleges: metadata?.total_colleges ?? metadata?.total_institutes ?? colleges.size,
           totalBranches: metadata?.total_courses ?? branches.size,
           years: sortedYears,
           categories,
@@ -141,16 +151,29 @@ const Dashboard = () => {
     }
 
     loadStats()
-  }, [])
+  }, [examMode])
 
-  const quickActions = [
-    { title: "Daily Challenge", description: "5-question daily quiz", icon: Flame, href: "/daily-challenge", gradient: "from-orange-500 to-red-500", glow: "shadow-orange-500/15" },
-    { title: "Cutoff Clash", description: "Higher or Lower game", icon: Sword, href: "/cutoff-clash", gradient: "from-pink-500 to-rose-500", glow: "shadow-pink-500/15" },
-    { title: "Find Colleges", description: "Search based on your rank", icon: Search, href: "/college-finder", gradient: "from-blue-500 to-cyan-400", glow: "shadow-blue-500/15" },
-    { title: "Cutoff Explorer", description: "Analyze cutoff trends", icon: BarChart3, href: "/cutoff-explorer", gradient: "from-emerald-500 to-teal-400", glow: "shadow-emerald-500/15" },
-    { title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", gradient: "from-purple-500 to-pink-400", glow: "shadow-purple-500/15" },
-    { title: "Mock Simulator", description: "Simulate seat allotment", icon: Target, href: "/mock-simulator", gradient: "from-orange-500 to-amber-400", glow: "shadow-orange-500/15" }
-  ]
+  const explorerAction = examMode === "KCET"
+    ? { title: "KCET Explorer", description: "Analyze KCET cutoff trends", icon: BarChart3, href: "/cutoff-explorer", gradient: "from-emerald-500 to-teal-400", glow: "shadow-emerald-500/15" }
+    : { title: "COMEDK Explorer", description: "Browse GM, HKR, KKR cutoffs", icon: ShieldCheck, href: "/cutoff-explorer", gradient: "from-amber-500 to-orange-500", glow: "shadow-amber-500/15" }
+
+  const quickActions = examMode === "COMEDK"
+    ? [
+      { title: "Daily Challenge", description: "5-question daily quiz", icon: Flame, href: "/daily-challenge", gradient: "from-orange-500 to-red-500", glow: "shadow-orange-500/15" },
+      { title: "Cutoff Clash", description: "Higher or Lower game", icon: Sword, href: "/cutoff-clash", gradient: "from-pink-500 to-rose-500", glow: "shadow-pink-500/15" },
+      explorerAction,
+      { title: "COMEDK Predictor", description: "Predict COMEDK rank from marks", icon: Calculator, href: "/rank-predictor", gradient: "from-purple-500 to-pink-400", glow: "shadow-purple-500/15" },
+      { title: "Round Tracker", description: "Track counseling rounds", icon: Bell, href: "/round-tracker", gradient: "from-sky-500 to-cyan-400", glow: "shadow-sky-500/15" },
+      { title: "Documents", description: "Counseling checklist", icon: FileText, href: "/documents", gradient: "from-slate-500 to-zinc-400", glow: "shadow-slate-500/15" },
+    ]
+    : [
+      { title: "Daily Challenge", description: "5-question daily quiz", icon: Flame, href: "/daily-challenge", gradient: "from-orange-500 to-red-500", glow: "shadow-orange-500/15" },
+      { title: "Cutoff Clash", description: "Higher or Lower game", icon: Sword, href: "/cutoff-clash", gradient: "from-pink-500 to-rose-500", glow: "shadow-pink-500/15" },
+      { title: "Find Colleges", description: "Search based on your rank", icon: Search, href: "/college-finder", gradient: "from-blue-500 to-cyan-400", glow: "shadow-blue-500/15" },
+      explorerAction,
+      { title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", gradient: "from-purple-500 to-pink-400", glow: "shadow-purple-500/15" },
+      { title: "Mock Simulator", description: "Simulate seat allotment", icon: Target, href: "/mock-simulator", gradient: "from-orange-500 to-amber-400", glow: "shadow-orange-500/15" }
+    ]
 
   const statCards = [
     { label: "Total Records", value: stats?.totalRecords, icon: Database, gradient: "from-indigo-500 to-blue-500" },
@@ -173,12 +196,16 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 animate-scale-in">
       <SEO
-        title="KCET 2026 Dashboard – Counseling Tools & Cutoff Data"
-        description="Your KCET 2026 dashboard with rank predictor, college finder, cutoff explorer, mock simulator, daily challenges & counseling round tracker. All tools in one place — 100% free."
+        title={examMode === "COMEDK" ? "COMEDK Dashboard â€“ Predictor & Cutoff Tools" : "KCET 2026 Dashboard â€“ Counseling Tools & Cutoff Data"}
+        description={examMode === "COMEDK"
+          ? "Your COMEDK dashboard with rank predictor and cutoff explorer powered by community + PDF data."
+          : "Your KCET 2026 dashboard with rank predictor, college finder, cutoff explorer, mock simulator, daily challenges & counseling round tracker. All tools in one place â€” 100% free."}
         url="https://kcet-coded2.vercel.app/dashboard"
-        keywords="KCET dashboard, KCET tools, KCET 2026 counseling, KCET exam schedule, CET 2026 dates, KCET preparation tools"
+        keywords={examMode === "COMEDK"
+          ? "COMEDK dashboard, COMEDK rank predictor, COMEDK marks vs rank, COMEDK cutoff explorer"
+          : "KCET dashboard, KCET tools, KCET 2026 counseling, KCET exam schedule, CET 2026 dates, KCET preparation tools"}
       />
-      {/* ═══ Welcome Banner ═══ */}
+      {/* â•â•â• Welcome Banner â•â•â• */}
       <div className="relative rounded-2xl overflow-hidden glass border border-white/5 p-6 sm:p-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/6 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3 -z-10" />
@@ -190,9 +217,9 @@ const Dashboard = () => {
           </Badge>
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1">
-          {getGreeting()} 👋
+          {getGreeting()}
         </h1>
-        <p className="text-muted-foreground">Your comprehensive guide to KCET admissions</p>
+        <p className="text-muted-foreground">{examMode === "COMEDK" ? "Your COMEDK planning environment" : "Your comprehensive guide to KCET admissions"}</p>
       </div>
 
       {/* Disclaimer */}
@@ -203,9 +230,42 @@ const Dashboard = () => {
       </div>
 
       {/* Countdown Timer */}
-      <CountdownTimer />
+      {examMode === "KCET" ? <CountdownTimer /> : null}
 
-      {/* ═══ Quick Actions ═══ */}
+      {/* â•â•â• Quick Actions â•â•â• */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl glass border border-white/5 p-4">
+        <div>
+          <p className="text-sm font-semibold">Cutoff Explorer Mode</p>
+          <p className="text-xs text-muted-foreground">Choose which exam explorer opens from dashboard shortcuts.</p>
+        </div>
+        <div className="relative inline-flex h-9 w-[10.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
+          <span
+            className={`absolute left-0.5 h-8 w-[5rem] rounded-full transition-all duration-300 ease-in-out ${
+              examMode === "COMEDK"
+                ? "translate-x-[5rem] bg-amber-500 shadow-lg shadow-amber-500/25"
+                : "translate-x-0 bg-indigo-500 shadow-lg shadow-indigo-500/25"
+            }`}
+          />
+          <button
+            type="button"
+            onClick={() => setExamMode("KCET")}
+            className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
+              examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            KCET
+          </button>
+          <button
+            type="button"
+            onClick={() => setExamMode("COMEDK")}
+            className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
+              examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            COMEDK
+          </button>
+        </div>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {quickActions.map((action) => (
           <Link key={action.title} to={action.href} className="group">
@@ -225,7 +285,8 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* ═══ CET 2026 Schedule — Timeline ═══ */}
+      {/* â•â•â• CET 2026 Schedule â€” Timeline â•â•â• */}
+      {examMode === "KCET" ? (
       <div className="rounded-2xl glass border border-white/5 overflow-hidden">
         <div className="px-6 py-5 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -260,7 +321,7 @@ const Dashboard = () => {
               </div>
               <div className="glass rounded-xl border border-white/5 overflow-hidden">
                 <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                  <span className="font-semibold text-sm">Day 1 • April 23</span>
+                  <span className="font-semibold text-sm">Day 1 â€¢ April 23</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Thursday</span>
                 </div>
                 <div className="divide-y divide-white/5">
@@ -268,14 +329,14 @@ const Dashboard = () => {
                     <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-bold">AM</Badge>
                     <div>
                       <div className="font-medium text-sm">Physics</div>
-                      <div className="text-xs text-muted-foreground">10:30 – 11:50 • 60 Marks</div>
+                      <div className="text-xs text-muted-foreground">10:30 â€“ 11:50 â€¢ 60 Marks</div>
                     </div>
                   </div>
                   <div className="p-3.5 flex items-center gap-3">
                     <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px] font-bold">PM</Badge>
                     <div>
                       <div className="font-medium text-sm">Chemistry</div>
-                      <div className="text-xs text-muted-foreground">2:30 – 3:50 • 60 Marks</div>
+                      <div className="text-xs text-muted-foreground">2:30 â€“ 3:50 â€¢ 60 Marks</div>
                     </div>
                   </div>
                 </div>
@@ -289,7 +350,7 @@ const Dashboard = () => {
               </div>
               <div className="glass rounded-xl border border-white/5 overflow-hidden">
                 <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                  <span className="font-semibold text-sm">Day 2 • April 24</span>
+                  <span className="font-semibold text-sm">Day 2 â€¢ April 24</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Friday</span>
                 </div>
                 <div className="divide-y divide-white/5">
@@ -297,14 +358,14 @@ const Dashboard = () => {
                     <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-bold">AM</Badge>
                     <div>
                       <div className="font-medium text-sm">Mathematics</div>
-                      <div className="text-xs text-muted-foreground">10:30 – 11:50 • 60 Marks</div>
+                      <div className="text-xs text-muted-foreground">10:30 â€“ 11:50 â€¢ 60 Marks</div>
                     </div>
                   </div>
                   <div className="p-3.5 flex items-center gap-3">
                     <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px] font-bold">PM</Badge>
                     <div>
                       <div className="font-medium text-sm">Biology</div>
-                      <div className="text-xs text-muted-foreground">2:30 – 3:50 • 60 Marks</div>
+                      <div className="text-xs text-muted-foreground">2:30 â€“ 3:50 â€¢ 60 Marks</div>
                     </div>
                   </div>
                 </div>
@@ -319,7 +380,20 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ═══ Reddit Communities ═══ */}
+      ) : (
+        <Card className="border-amber-300/40 bg-amber-50/70 dark:bg-amber-950/15">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-amber-500" />
+              COMEDK Mode Active
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>Dashboard shortcuts, cutoff explorer, and rank predictor are now switched to COMEDK.</p>
+            <p>Switch back to KCET anytime from the exam toggle in the header.</p>
+          </CardContent>
+        </Card>
+      )}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="glass rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all tilt-card">
           <div className="p-5 flex items-center justify-between">
@@ -328,12 +402,12 @@ const Dashboard = () => {
                 <span className="text-white font-bold text-sm">r/</span>
               </div>
               <div>
-                <h3 className="font-semibold">KCET Community</h3>
-                <p className="text-sm text-muted-foreground">Discussions & answers</p>
+                <h3 className="font-semibold">{examMode === "COMEDK" ? "COMEDK Community" : "KCET Community"}</h3>
+                <p className="text-sm text-muted-foreground">{examMode === "COMEDK" ? "Marks-vs-rank discussions" : "Discussions & answers"}</p>
               </div>
             </div>
             <Button asChild variant="outline" size="sm" className="gap-1.5 border-white/10 hover:bg-white/5">
-              <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer">
+              <a href={examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/" : "https://www.reddit.com/r/kcet/"} target="_blank" rel="noopener noreferrer">
                 Visit <ExternalLink className="h-3 w-3" />
               </a>
             </Button>
@@ -347,12 +421,12 @@ const Dashboard = () => {
                 <span className="text-white font-bold text-sm">r/</span>
               </div>
               <div>
-                <h3 className="font-semibold">KCETards</h3>
-                <p className="text-sm text-muted-foreground">Student discussions</p>
+                <h3 className="font-semibold">{examMode === "COMEDK" ? "COMEDK Trends" : "KCETards"}</h3>
+                <p className="text-sm text-muted-foreground">{examMode === "COMEDK" ? "Community updates & comments" : "Student discussions"}</p>
               </div>
             </div>
             <Button asChild variant="outline" size="sm" className="gap-1.5 border-white/10 hover:bg-white/5">
-              <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer">
+              <a href={examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/comments/1l66im4/marks_vs_rank_2025/" : "https://www.reddit.com/r/KCETards/"} target="_blank" rel="noopener noreferrer">
                 Visit <ExternalLink className="h-3 w-3" />
               </a>
             </Button>
@@ -366,8 +440,8 @@ const Dashboard = () => {
                 <span className="text-white font-bold text-sm">r/</span>
               </div>
               <div>
-                <h3 className="font-semibold">KCET Coded</h3>
-                <p className="text-sm text-muted-foreground">Website feedback</p>
+                <h3 className="font-semibold">{examMode === "COMEDK" ? "KCET Coded" : "KCET Coded"}</h3>
+                <p className="text-sm text-muted-foreground">{examMode === "COMEDK" ? "Project feedback" : "Website feedback"}</p>
               </div>
             </div>
             <Button asChild variant="outline" size="sm" className="gap-1.5 border-white/10 hover:bg-white/5">
@@ -379,10 +453,12 @@ const Dashboard = () => {
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        Note: KCET Coded is independent and not affiliated with Reddit, r/kcet, or r/KCETards moderation teams.
+        {examMode === "COMEDK"
+          ? "Note: KCET Coded is independent and not affiliated with Reddit or r/comedk moderation teams."
+          : "Note: KCET Coded is independent and not affiliated with Reddit, r/kcet, or r/KCETards moderation teams."}
       </p>
 
-      {/* ═══ Data Stats ═══ */}
+      {/* â•â•â• Data Stats â•â•â• */}
       {stats && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {statCards.map((card) => (
@@ -403,7 +479,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* ═══ Year-wise & Category Data ═══ */}
+      {/* â•â•â• Year-wise & Category Data â•â•â• */}
       {stats && (
         <div className="grid gap-6 md:grid-cols-2">
           <div className="glass rounded-2xl border border-white/5">

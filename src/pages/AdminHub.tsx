@@ -14,7 +14,7 @@ import {
     ShieldCheck, Lock, AlertTriangle, Database, BookOpenCheck,
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
-    BarChart3, MessageSquare, Lightbulb, Star, Settings
+    BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -22,6 +22,7 @@ import AdminCutoffsPage from "./AdminCutoffs"
 import AdminReviewModeration from "@/components/AdminReviewModeration"
 import AdminFeedbackView from "@/components/AdminFeedbackView"
 import AdminFeatureRequestsView from "@/components/AdminFeatureRequestsView"
+import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 
 const ADMIN_PASS = "kcetadmin2026"
 const AUTH_KEY = "kcet_admin_auth"
@@ -767,6 +768,7 @@ function AdminPYQSection() {
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
+    { id: "ai-extractor", label: "AI Extractor", icon: BrainCircuit },
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
@@ -828,6 +830,7 @@ export default function AdminHub() {
                 {/* Content */}
                 <main className="flex-1 p-6 md:p-8 max-w-7xl">
                     {activeSection === "pyq" && <AdminPYQSection />}
+                    {activeSection === "ai-extractor" && <AdminAIExtractor />}
                     {activeSection === "cutoffs" && <AdminCutoffsPage />}
                     {activeSection === "reviews" && <AdminReviewModeration />}
                     {activeSection === "feedback" && <AdminFeedbackView />}

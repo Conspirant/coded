@@ -48,6 +48,27 @@
           "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
         }
       ]
+    },
+    {
+      "source": "/data/:path*.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://kcet-coded2.vercel.app"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store, max-age=0"
+        }
+      ]
     }
   ],
   "rewrites": [
