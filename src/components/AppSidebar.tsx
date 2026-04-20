@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -53,6 +53,7 @@ const toolItems = [
 
 const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
   { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
+  { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
   { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
   {
     title: examMode === "COMEDK" ? "r/COMEDK" : "r/KCETards",
@@ -60,6 +61,7 @@ const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
     icon: ExternalLink,
     external: true
   },
+  { title: "Support Us ❤️", url: "/donate", icon: Heart },
 ])
 
 function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {

@@ -8,7 +8,7 @@ export const DisclaimerBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] max-w-md w-[calc(100%-2rem)]">
+    <div className="fixed bottom-4 left-4 z-[100] max-w-md w-[calc(100%-6rem)] sm:w-auto">
       <AnimatePresence>
         {isVisible && (
           <motion.div

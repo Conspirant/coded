@@ -10,7 +10,18 @@ import {
   COMEDK_2025_COMMUNITY_POINTS,
   getComedkKeyEstimates,
   predictComedkRankFromMarks,
+  getShiftAnalytics,
+  ComedkShift,
+  COMEDK_SHIFTS,
 } from "@/lib/comedk-rank-predictor";
+
+const SHIFT_LABELS: Record<ComedkShift, string> = {
+  "10s1": "10th May - Shift 1",
+  "10s2": "10th May - Shift 2",
+  "10s3": "10th May - Shift 3",
+  "25may": "25th May",
+  "unknown": "I Don't Know / Blend All",
+};
 
 const clampMarks = (value: number) => {
   if (!Number.isFinite(value)) return 0;
@@ -19,9 +30,11 @@ const clampMarks = (value: number) => {
 
 const ComedkRankPredictor = () => {
   const [marks, setMarks] = useState(90);
+  const [shift, setShift] = useState<ComedkShift>("unknown");
 
-  const prediction = useMemo(() => predictComedkRankFromMarks(marks), [marks]);
-  const keyEstimates = useMemo(() => getComedkKeyEstimates(), []);
+  const prediction = useMemo(() => predictComedkRankFromMarks(marks, shift), [marks, shift]);
+  const keyEstimates = useMemo(() => getComedkKeyEstimates(shift), [shift]);
+  const analytics = useMemo(() => getShiftAnalytics(marks), [marks]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 pb-8">
@@ -70,6 +83,25 @@ const ComedkRankPredictor = () => {
                 value={marks}
                 onChange={(event) => setMarks(clampMarks(Number(event.target.value)))}
               />
+              
+              <div className="space-y-3 pt-4 border-t">
+                <Label>Select your exam shift</Label>
+                <div className="flex flex-wrap gap-2">
+                  {COMEDK_SHIFTS.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setShift(s)}
+                      className={`px-3 py-1.5 rounded-md text-sm transition-colors border ${
+                        shift === s 
+                          ? "bg-amber-500 text-white border-amber-600 font-medium" 
+                          : "bg-transparent text-muted-foreground hover:bg-amber-50 dark:hover:bg-amber-950"
+                      }`}
+                    >
+                      {SHIFT_LABELS[s]}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
@@ -92,6 +124,25 @@ const ComedkRankPredictor = () => {
               <Badge variant="outline">Estimated Percentile: {prediction.percentile}</Badge>
               <Badge variant="outline">Nearby Samples Used: {prediction.nearbySampleCount}</Badge>
             </div>
+
+            {shift !== "unknown" && (
+              <div className="mt-4 rounded-xl border border-amber-300/40 bg-amber-50/50 p-4 dark:bg-amber-950/20 text-sm">
+                <div className="flex items-start gap-2">
+                  <TrendingUp className="mt-0.5 h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  <div>
+                    <span className="font-semibold text-amber-900 dark:text-amber-200">Shift Insight: </span>
+                    <span className="text-muted-foreground">
+                      {shift === analytics.hardest 
+                        ? "You took the hardest shift! Your rank gets a massive boost relative to the average." 
+                        : shift === analytics.easiest 
+                          ? "You took the easiest shift. The rank competition is slightly higher for the same marks." 
+                          : "Your shift was moderately difficult, sitting near the general average curve."
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 

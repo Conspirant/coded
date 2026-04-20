@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
+import { DonationButton } from "./components/DonationButton";
 import { CommandPalette } from "./components/CommandPalette";
 import { KonamiEasterEgg, KeyboardShortcutsHUD } from "./components/EasterEggs";
 import Homepage from "./pages/Homepage";
@@ -43,6 +44,7 @@ import CollegeCutoffs from "./pages/CollegeCutoffs";
 import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
+import Donate from "./pages/Donate";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 
@@ -125,6 +127,7 @@ const App = () => (
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
               <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
+              <Route path="/donate" element={<Layout><Donate /></Layout>} />
 
               {/* Coded Labs - Unique Features */}
               <Route path="/squad-finder" element={<SquadFinder />} />
@@ -137,6 +140,7 @@ const App = () => (
 
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <DonationButton />
             <PWAInstallBanner />
           </BrowserRouter>
         </TooltipProvider>

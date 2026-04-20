@@ -299,7 +299,7 @@ export function FloatingActionButton() {
     if (location.pathname === "/") return null
 
     return (
-        <div className="fixed bottom-20 right-4 z-[75] md:hidden">
+        <div className="fixed bottom-20 left-4 z-[75] md:hidden">
             <AnimatePresence>
                 {open && (
                     <>
@@ -320,19 +320,19 @@ export function FloatingActionButton() {
                                 animate={{ opacity: 1, y: -(60 * (i + 1)), scale: 1 }}
                                 exit={{ opacity: 0, y: 0, scale: 0.5 }}
                                 transition={{ delay: i * 0.05, type: "spring", stiffness: 400, damping: 20 }}
-                                className="absolute bottom-0 right-0"
+                                className="absolute bottom-0 left-0"
                             >
                                 <NavLink
                                     to={action.href}
                                     onClick={() => setOpen(false)}
                                     className="flex items-center gap-2.5"
                                 >
-                                    <span className="px-3 py-1.5 rounded-lg glass-strong border border-white/10 text-xs font-medium shadow-lg whitespace-nowrap">
-                                        {action.label}
-                                    </span>
                                     <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${action.color} flex items-center justify-center shadow-lg`}>
                                         <action.icon className="h-5 w-5 text-white" />
                                     </div>
+                                    <span className="px-3 py-1.5 rounded-lg glass-strong border border-white/10 text-xs font-medium shadow-lg whitespace-nowrap">
+                                        {action.label}
+                                    </span>
                                 </NavLink>
                             </motion.div>
                         ))}
