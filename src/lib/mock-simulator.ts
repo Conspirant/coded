@@ -85,49 +85,78 @@ function extractCourseCode(course: string): string | null {
 }
 
 /**
- * Find cutoff for a specific college-branch combination
+ * Get all eligible categories for a user's category (e.g. 2AR is eligible for 2AR, 2AG, GMR, GM)
+ */
+export function getEligibleCategories(userCategory: string): string[] {
+    const categories = new Set<string>();
+    categories.add(userCategory);
+
+    // Everyone is eligible for General Merit
+    if (userCategory !== 'GM') {
+        categories.add('GM');
+    }
+
+    // Handle Kannada medium (K) fallback to General (G) and GMK
+    if (userCategory.endsWith('K')) {
+        const baseClass = userCategory.slice(0, -1);
+        categories.add(baseClass + 'G'); // E.g., 2AK -> 2AG
+        categories.add('GMK'); // E.g., 2AK -> GMK
+    }
+
+    // Handle Rural (R) fallback to General (G) and GMR
+    if (userCategory.endsWith('R')) {
+        const baseClass = userCategory.slice(0, -1);
+        categories.add(baseClass + 'G'); // E.g., 2AR -> 2AG
+        categories.add('GMR'); // E.g., 2AR -> GMR
+    }
+
+    return Array.from(categories);
+}
+
+/**
+ * Find all cutoffs for a specific college-branch combination
  * Uses exact matching on institute_code and robust course normalization
  */
-function findCutoff(
+function findCutoffsForPreference(
     cutoffs: CutoffData[],
     preference: PreferenceOption
-): CutoffData | null {
+): CutoffData[] {
     // 1. Filter by College Code first (Most reliable)
     const collegeCutoffs = cutoffs.filter(c =>
         c.institute_code.toUpperCase() === preference.collegeCode.toUpperCase()
     );
 
-    if (collegeCutoffs.length === 0) return null;
+    if (collegeCutoffs.length === 0) return [];
 
     // 2. Try matching by Course Code (if available in preference)
     const prefCourseCode = extractCourseCode(preference.branchCode) ||
         extractCourseCode(preference.branchName);
 
     if (prefCourseCode) {
-        const exactCodeMatch = collegeCutoffs.find(c => {
+        const exactCodeMatches = collegeCutoffs.filter(c => {
             const cutoffCode = extractCourseCode(c.course);
             return cutoffCode === prefCourseCode;
         });
-        if (exactCodeMatch) return exactCodeMatch;
+        if (exactCodeMatches.length > 0) return exactCodeMatches;
     }
 
     // 3. Try matching by Canonical Name (Robust Normalization)
     const prefCanonicalKey = getCanonicalCourseKey(preference.branchName);
 
-    const canonicalMatch = collegeCutoffs.find(c => {
+    const canonicalMatches = collegeCutoffs.filter(c => {
         const cutoffCanonicalKey = getCanonicalCourseKey(c.course);
         return cutoffCanonicalKey === prefCanonicalKey;
     });
 
-    if (canonicalMatch) return canonicalMatch;
+    if (canonicalMatches.length > 0) return canonicalMatches;
 
     // 4. Fallback: Fuzzy containment match on normalized strings
     const prefNormalized = normalizeCourse(preference.branchName).toLowerCase();
 
-    return collegeCutoffs.find(c => {
+    return collegeCutoffs.filter(c => {
         const cutoffNormalized = normalizeCourse(c.course).toLowerCase();
         return cutoffNormalized.includes(prefNormalized) || prefNormalized.includes(cutoffNormalized);
-    }) || null;
+    });
 }
 
 /**
@@ -139,9 +168,9 @@ export function checkEligibility(
     preferenceNumber: number,
     cutoffs: CutoffData[]
 ): EligibilityDetail {
-    const cutoff = findCutoff(cutoffs, preference);
+    const matchedCutoffs = findCutoffsForPreference(cutoffs, preference);
 
-    if (!cutoff) {
+    if (matchedCutoffs.length === 0) {
         return {
             preference,
             preferenceNumber,
@@ -151,16 +180,21 @@ export function checkEligibility(
         };
     }
 
-    const isEligible = cutoff.cutoff_rank > userRank;
+    // Find the best possible cutoff (highest number = easiest to get)
+    const bestCutoffRank = Math.max(...matchedCutoffs.map(c => c.cutoff_rank));
+    const bestCutoffDetails = matchedCutoffs.find(c => c.cutoff_rank === bestCutoffRank);
+
+    // Eligible if userRank is less than or equal to the cutoff
+    const isEligible = bestCutoffRank >= userRank;
 
     return {
         preference,
         preferenceNumber,
-        cutoffRank: cutoff.cutoff_rank,
+        cutoffRank: bestCutoffRank,
         isEligible,
         reason: isEligible
-            ? `Eligible! Your rank (${userRank.toLocaleString()}) is better than cutoff (${cutoff.cutoff_rank.toLocaleString()})`
-            : `Not eligible. Cutoff rank (${cutoff.cutoff_rank.toLocaleString()}) is better than your rank (${userRank.toLocaleString()})`
+            ? `Eligible! Your rank (${userRank.toLocaleString()}) is better than cutoff (${bestCutoffRank.toLocaleString()}) under ${bestCutoffDetails?.category}`
+            : `Not eligible. Best cutoff rank (${bestCutoffRank.toLocaleString()}) under ${bestCutoffDetails?.category} is better than your rank (${userRank.toLocaleString()})`
     };
 }
 
@@ -281,14 +315,16 @@ export function simulateAllotment(
         rounds.push('Round 1', 'Round 2', 'Round 3');
     }
 
+    const eligibleCategories = getEligibleCategories(category);
+
     const roundResults: RoundResult[] = [];
 
     for (const round of rounds) {
-        // Filter cutoffs for this specific round, year, and category
+        // Filter cutoffs for this specific round, year, and eligible categories
         const roundCutoffs = cutoffs.filter(c =>
             c.year === year &&
             c.round === round &&
-            c.category === category
+            eligibleCategories.includes(c.category)
         );
 
         const result = simulateRound(userRank, preferences, roundCutoffs, round);
@@ -320,19 +356,23 @@ export function getPreferenceSafetyLevel(
     year: string,
     category: string
 ): 'safe' | 'moderate' | 'risky' | 'unknown' {
+    const eligibleCategories = getEligibleCategories(category);
+
     // Get cutoffs across all rounds for this year/category
     const relevantCutoffs = cutoffs.filter(c =>
-        c.year === year && c.category === category
+        c.year === year && eligibleCategories.includes(c.category)
     );
 
-    const cutoff = findCutoff(relevantCutoffs, preference);
+    const matchedCutoffs = findCutoffsForPreference(relevantCutoffs, preference);
 
-    if (!cutoff) return 'unknown';
+    if (matchedCutoffs.length === 0) return 'unknown';
 
-    const margin = cutoff.cutoff_rank - userRank;
+    const bestCutoffRank = Math.max(...matchedCutoffs.map(c => c.cutoff_rank));
+
+    const margin = bestCutoffRank - userRank;
     const marginPercent = (margin / userRank) * 100;
 
-    if (margin <= 0) return 'risky'; // User rank is worse than cutoff
+    if (margin < 0) return 'risky'; // User rank is worse than cutoff
     if (marginPercent > 20) return 'safe'; // Good margin
     if (marginPercent > 5) return 'moderate'; // Some margin
     return 'risky'; // Very close

@@ -593,7 +593,7 @@ const RankPredictor = () => {
                     <Badge className="bg-primary/10 text-primary border-primary/30">
                       2026 Predicted
                     </Badge>
-                    <Sparkles className="h-4 w-4 text-primary" />
+                    <Sparkles className="h-4 w-[6px] text-primary" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2 text-foreground">Your 2026 Predicted Rank</h3>
 
@@ -606,7 +606,7 @@ const RankPredictor = () => {
                     {prediction && (
                       <div className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/10 text-red-600 text-xs">
                         <TrendingUp className="h-3 w-3" />
-                        +{prediction.yearOverYearChange}% vs 2025
+                        Delta {prediction.yearOverYearChange > 0 ? "+" : ""}{prediction.yearOverYearChange}% vs 2025
                       </div>
                     )}
                   </div>
@@ -632,7 +632,7 @@ const RankPredictor = () => {
                         </Badge>
                       </div>
                       <p className="text-xs text-muted-foreground mt-4">
-                        2026 prediction based on ~2,70,000 expected candidates (+3-5% competition increase)
+                        2026 estimate uses a difficulty normalization coefficient with participation drift calibration.
                       </p>
                     </div>
                   )}

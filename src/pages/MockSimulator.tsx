@@ -828,7 +828,7 @@ const MockSimulator = () => {
                               {simulationResult.roundResults.map(r => {
                                 const detail = r.eligibilityDetails.find(d => d.preference.id === pref.id)
                                 return (
-                                  <TableCell key={r.round} className="text-center">
+                                  <TableCell key={r.round} className="text-center" title={detail?.reason}>
                                     {detail?.isEligible ? (
                                       <CheckCircle2 className="h-4 w-4 text-green-500 mx-auto" />
                                     ) : (
