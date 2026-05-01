@@ -16,8 +16,127 @@ import {
     Zap,
     Shield,
     CheckCircle2,
+    Activity,
+    Globe,
+    HardDrive,
+    Cpu,
+    MemoryStick,
+    Database,
+    BarChart3,
 } from "lucide-react"
 import { motion } from "framer-motion"
+
+/* ─── Resource usage data (update periodically from Vercel dashboard) ─── */
+const USAGE_DATA = [
+    {
+        label: "Web Analytics Events",
+        used: "25K",
+        limit: "50K",
+        percent: 50,
+        icon: BarChart3,
+        color: "#818cf8", // indigo
+    },
+    {
+        label: "Fast Data Transfer",
+        used: "42.92 GB",
+        limit: "100 GB",
+        percent: 43,
+        icon: Globe,
+        color: "#38bdf8", // sky
+    },
+    {
+        label: "Edge Requests",
+        used: "235K",
+        limit: "1M",
+        percent: 24,
+        icon: Activity,
+        color: "#34d399", // emerald
+    },
+    {
+        label: "Fluid Active CPU",
+        used: "2m 3s",
+        limit: "4h",
+        percent: 1,
+        icon: Cpu,
+        color: "#a78bfa", // violet
+    },
+    {
+        label: "Edge Request CPU Duration",
+        used: "21s",
+        limit: "1h",
+        percent: 1,
+        icon: Clock,
+        color: "#f472b6", // pink
+    },
+    {
+        label: "Fluid Provisioned Memory",
+        used: "1.7 GB-Hrs",
+        limit: "360 GB-Hrs",
+        percent: 0.5,
+        icon: MemoryStick,
+        color: "#fb923c", // orange
+    },
+    {
+        label: "Function Invocations",
+        used: "329",
+        limit: "1M",
+        percent: 0.03,
+        icon: Zap,
+        color: "#facc15", // yellow
+    },
+    {
+        label: "ISR Reads",
+        used: "236",
+        limit: "1M",
+        percent: 0.02,
+        icon: Database,
+        color: "#2dd4bf", // teal
+    },
+    {
+        label: "Fast Origin Transfer",
+        used: "2.2 MB",
+        limit: "10 GB",
+        percent: 0.02,
+        icon: HardDrive,
+        color: "#c084fc", // purple
+    },
+]
+
+/* ─── Mini circular progress ring ─── */
+const UsageRing = ({ percent, color, size = 28 }: { percent: number; color: string; size?: number }) => {
+    const stroke = 3
+    const radius = (size - stroke) / 2
+    const circumference = 2 * Math.PI * radius
+    const offset = circumference - (Math.min(percent, 100) / 100) * circumference
+
+    return (
+        <svg width={size} height={size} className="shrink-0 -rotate-90">
+            <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={stroke}
+                className="text-white/[0.06]"
+            />
+            <motion.circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={color}
+                strokeWidth={stroke}
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                initial={{ strokeDashoffset: circumference }}
+                whileInView={{ strokeDashoffset: offset }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+            />
+        </svg>
+    )
+}
 
 const DISCORD_INVITE = "https://discord.gg/QZcjtJKjYJ"
 
@@ -132,6 +251,66 @@ const Donate = () => {
                                 </div>
                             ))}
                         </div>
+                    </CardContent>
+                </Card>
+            </motion.div>
+
+            {/* ═══ Live Resource Usage ═══ */}
+            <motion.div {...fadeUp}>
+                <Card className="border-2 border-sky-500/15 bg-gradient-to-br from-sky-500/[0.03] to-indigo-500/[0.03] overflow-hidden relative">
+                    <div className="absolute -top-24 -left-24 w-72 h-72 bg-sky-500/[0.04] rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-indigo-500/[0.04] rounded-full blur-3xl pointer-events-none" />
+
+                    <CardContent className="p-6 sm:p-8 space-y-5 relative">
+                        {/* Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div className="flex items-center gap-2.5">
+                                <div className="p-2 rounded-lg bg-sky-500/10">
+                                    <Server className="h-4 w-4 text-sky-400" />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-bold">Live Resource Usage</h2>
+                                    <p className="text-[11px] text-muted-foreground">Vercel Free Tier — Last 30 days</p>
+                                </div>
+                            </div>
+                            <Badge variant="secondary" className="bg-sky-500/10 border-sky-500/20 text-sky-300 text-[10px] w-fit">
+                                <span className="relative flex h-1.5 w-1.5 mr-1.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-sky-400" />
+                                </span>
+                                Free Tier
+                            </Badge>
+                        </div>
+
+                        {/* Usage list */}
+                        <div className="divide-y divide-white/[0.04] rounded-xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                            {USAGE_DATA.map((item, i) => (
+                                <motion.div
+                                    key={item.label}
+                                    className="flex items-center gap-3 px-4 py-3 hover:bg-white/[0.02] transition-colors"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                                >
+                                    <UsageRing percent={item.percent} color={item.color} />
+                                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                        <item.icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60 hidden sm:block" />
+                                        <span className="text-sm text-foreground/90 truncate">{item.label}</span>
+                                    </div>
+                                    <span className="text-sm tabular-nums text-muted-foreground whitespace-nowrap ml-auto">
+                                        <span className="text-foreground/80 font-medium">{item.used}</span>
+                                        <span className="text-muted-foreground/50"> / {item.limit}</span>
+                                    </span>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Footer note */}
+                        <p className="text-[11px] text-muted-foreground/60 text-center leading-relaxed">
+                            These are real limits from our Vercel free tier. During peak counseling rounds, traffic can spike 10×.
+                            <br className="hidden sm:block" /> Your support helps us upgrade before we hit these walls.
+                        </p>
                     </CardContent>
                 </Card>
             </motion.div>
