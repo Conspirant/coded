@@ -44,6 +44,7 @@ import CollegeCutoffs from "./pages/CollegeCutoffs";
 import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
+import CutoffTrends from "./pages/CutoffTrends";
 import Donate from "./pages/Donate";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
@@ -95,6 +96,7 @@ const App = () => (
               <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
               <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
               <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
+              <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />

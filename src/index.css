@@ -608,6 +608,41 @@ body.party-mode {
 }
 
 /* ═══════════════════════════════════════════════════
+   MOBILE PERFORMANCE
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  /* Reduce blur on mobile — biggest GPU bottleneck */
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-strong {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Disable floating animations on mobile for smoothness */
+  .animate-float,
+  .animate-float-delayed,
+  .animate-float-slow,
+  .animate-morph {
+    animation: none !important;
+  }
+
+  /* Disable hover effects that cause repaints */
+  .tilt-card:hover {
+    transform: none;
+  }
+
+  /* Smoother scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
    SCROLLBAR STYLING
    ═══════════════════════════════════════════════════ */
 

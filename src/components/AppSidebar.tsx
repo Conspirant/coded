@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -35,6 +35,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
     { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
     { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
     { title: "College Finder", url: "/college-finder", icon: Target },
+    { title: "Cutoff Trends", url: "/cutoff-trends", icon: TrendingUp, isNew: true },
   ]
 }
 

@@ -66,7 +66,7 @@ export class CutoffService {
         course: item.course || item.branch_code || item.Course || "",
         category: item.category || item.Category || "GM",
         cutoff_rank: parseInt(item.cutoff_rank || item.cutoffRank || "0") || 0,
-        college_name: item.college_name || item.collegeName || "",
+        college_name: item.college_name || item.collegeName || item.institute || "",
         branch_name: item.branch_name || item.branchName || "",
         total_seats: parseInt(item.total_seats || item.totalSeats || "0") || 0,
         available_seats: parseInt(item.available_seats || item.availableSeats || "0") || 0,

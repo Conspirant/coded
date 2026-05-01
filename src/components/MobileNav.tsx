@@ -24,7 +24,8 @@ import {
     Command,
     Flame,
     Sword,
-    ExternalLink
+    ExternalLink,
+    TrendingUp
 } from "lucide-react"
 import { useExamMode } from "@/contexts/ExamModeContext"
 
@@ -80,6 +81,7 @@ const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
         { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
         { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
         { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
+        { icon: TrendingUp, label: "Trends", href: "/cutoff-trends" },
         { icon: Bell, label: "Rounds", href: "/round-tracker" },
         { icon: FileText, label: "Documents", href: "/documents" },
         { icon: Star, label: "Reviews", href: "/reviews" },
