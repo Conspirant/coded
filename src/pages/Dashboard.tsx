@@ -26,6 +26,7 @@ import {
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
+import AdUnit from "@/components/AdUnit"
 
 interface DataStats {
   totalRecords: number
@@ -437,6 +438,9 @@ const Dashboard = () => {
           ? "Note: KCET Coded is independent and not affiliated with Reddit or r/comedk moderation teams."
           : "Note: KCET Coded is independent and not affiliated with Reddit, r/kcet, or r/KCETards moderation teams."}
       </p>
+
+      {/* In-feed Ad */}
+      <AdUnit />
 
       {/* â•â•â• Data Stats â•â•â• */}
       {stats && (
