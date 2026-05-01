@@ -17,16 +17,13 @@ import {
   Bell,
   ArrowRight,
   Sparkles,
-  Clock,
   ChevronRight,
   Database,
   Flame,
-  Sword,
   ShieldCheck,
   FileText
 } from "lucide-react"
 import { Link } from "react-router-dom"
-import CountdownTimer from "@/components/CountdownTimer"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 
@@ -167,12 +164,12 @@ const Dashboard = () => {
       { title: "Documents", description: "Counseling checklist", icon: FileText, href: "/documents", gradient: "from-slate-500 to-zinc-400", glow: "shadow-slate-500/15" },
     ]
     : [
-      { title: "Daily Challenge", description: "5-question daily quiz", icon: Flame, href: "/daily-challenge", gradient: "from-orange-500 to-red-500", glow: "shadow-orange-500/15" },
-      { title: "Cutoff Clash", description: "Higher or Lower game", icon: Sword, href: "/cutoff-clash", gradient: "from-pink-500 to-rose-500", glow: "shadow-pink-500/15" },
       { title: "Find Colleges", description: "Search based on your rank", icon: Search, href: "/college-finder", gradient: "from-blue-500 to-cyan-400", glow: "shadow-blue-500/15" },
       explorerAction,
       { title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", gradient: "from-purple-500 to-pink-400", glow: "shadow-purple-500/15" },
-      { title: "Mock Simulator", description: "Simulate seat allotment", icon: Target, href: "/mock-simulator", gradient: "from-orange-500 to-amber-400", glow: "shadow-orange-500/15" }
+      { title: "Cutoff Trends", description: "YOY cutoff rank trends", icon: TrendingUp, href: "/cutoff-trends", gradient: "from-indigo-500 to-violet-400", glow: "shadow-indigo-500/15" },
+      { title: "Mock Simulator", description: "Simulate seat allotment", icon: Target, href: "/mock-simulator", gradient: "from-orange-500 to-amber-400", glow: "shadow-orange-500/15" },
+      { title: "Daily Challenge", description: "5-question daily quiz", icon: Flame, href: "/daily-challenge", gradient: "from-orange-500 to-red-500", glow: "shadow-orange-500/15" },
     ]
 
   const statCards = [
@@ -219,7 +216,7 @@ const Dashboard = () => {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1">
           {getGreeting()}
         </h1>
-        <p className="text-muted-foreground">{examMode === "COMEDK" ? "Your COMEDK planning environment" : "Your comprehensive guide to KCET admissions"}</p>
+        <p className="text-muted-foreground">{examMode === "COMEDK" ? "Your COMEDK planning environment" : "CET 2026 is done! Get ready for counseling."}</p>
       </div>
 
       {/* Disclaimer */}
@@ -229,10 +226,102 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* Countdown Timer */}
-      {examMode === "KCET" ? <CountdownTimer /> : null}
+      {/* ═══ Post-Exam Counseling Status ═══ */}
+      {examMode === "KCET" ? (
+      <div className="rounded-2xl glass border border-white/5 overflow-hidden">
+        <div className="px-6 py-5 border-b border-white/5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-500/20">
+              <Calendar className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-lg">CET 2026 — What's Next</h2>
+              <p className="text-xs text-muted-foreground">Exam completed ✓ • Counseling pipeline</p>
+            </div>
+          </div>
+          <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] font-bold">COMPLETED</Badge>
+        </div>
 
-      {/* â•â•â• Quick Actions â•â•â• */}
+        <div className="p-6">
+          <div className="relative pl-8 space-y-6">
+            {/* Timeline line */}
+            <div className="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-emerald-500/50 via-indigo-500/30 to-transparent" />
+
+            {/* CET Exam Done */}
+            <div className="relative">
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <span className="text-[10px] font-bold text-white">✓</span>
+              </div>
+              <div className="glass rounded-xl border border-emerald-500/20 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-sm text-emerald-400">CET 2026 Exam</span>
+                  <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">Apr 23-24</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Physics, Chemistry, Math & Biology — Completed ✓</p>
+              </div>
+            </div>
+
+            {/* Results */}
+            <div className="relative">
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 animate-pulse">
+                <span className="text-[10px] font-bold text-white">⏳</span>
+              </div>
+              <div className="glass rounded-xl border border-amber-500/20 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-sm text-amber-400">Results & Rank Announcement</span>
+                  <span className="text-[10px] text-amber-400 uppercase tracking-wider font-semibold">May (Expected)</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Answer keys, results, and rank cards — Use our Rank Predictor to estimate!</p>
+              </div>
+            </div>
+
+            {/* Counseling */}
+            <div className="relative">
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500/30 to-purple-500/30 flex items-center justify-center border border-white/10">
+                <span className="text-[10px] font-bold text-white/40">3</span>
+              </div>
+              <div className="glass rounded-xl border border-white/5 px-4 py-3 opacity-60">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-sm">Counseling Rounds</span>
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Jun-Jul</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">Document verification, option entry, and seat allotment</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <Link to="/rank-predictor" className="flex-1">
+              <Button className="w-full gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg shadow-indigo-500/20">
+                <Calculator className="h-4 w-4" />
+                Predict Your Rank
+              </Button>
+            </Link>
+            <Link to="/college-finder" className="flex-1">
+              <Button variant="outline" className="w-full gap-2 border-white/10 hover:bg-white/5">
+                <Search className="h-4 w-4" />
+                Find Colleges
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+      ) : (
+        <Card className="border-amber-300/40 bg-amber-50/70 dark:bg-amber-950/15">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-amber-500" />
+              COMEDK Mode Active
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>Dashboard shortcuts, cutoff explorer, and rank predictor are now switched to COMEDK.</p>
+            <p>Switch back to KCET anytime from the exam toggle in the header.</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ═══ Quick Actions ═══ */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl glass border border-white/5 p-4">
         <div>
           <p className="text-sm font-semibold">Cutoff Explorer Mode</p>
@@ -285,115 +374,6 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* â•â•â• CET 2026 Schedule â€” Timeline â•â•â• */}
-      {examMode === "KCET" ? (
-      <div className="rounded-2xl glass border border-white/5 overflow-hidden">
-        <div className="px-6 py-5 border-b border-white/5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/20">
-              <Calendar className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <h2 className="font-semibold text-lg">CET 2026 Exam Schedule</h2>
-              <p className="text-xs text-muted-foreground">Official KEA examination dates</p>
-            </div>
-          </div>
-          <a
-            href="https://cetonline.karnataka.gov.in/kea/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:text-indigo-400 transition-colors flex items-center gap-1"
-          >
-            KEA <ExternalLink className="h-3 w-3" />
-          </a>
-        </div>
-
-        <div className="p-6">
-          {/* Timeline */}
-          <div className="relative pl-8 space-y-8">
-            {/* Timeline line */}
-            <div className="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-indigo-500/50 via-purple-500/30 to-transparent" />
-
-            {/* Day 1 */}
-            <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                <span className="text-[10px] font-bold text-white">1</span>
-              </div>
-              <div className="glass rounded-xl border border-white/5 overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                  <span className="font-semibold text-sm">Day 1 â€¢ April 23</span>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Thursday</span>
-                </div>
-                <div className="divide-y divide-white/5">
-                  <div className="p-3.5 flex items-center gap-3">
-                    <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-bold">AM</Badge>
-                    <div>
-                      <div className="font-medium text-sm">Physics</div>
-                      <div className="text-xs text-muted-foreground">10:30 â€“ 11:50 â€¢ 60 Marks</div>
-                    </div>
-                  </div>
-                  <div className="p-3.5 flex items-center gap-3">
-                    <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px] font-bold">PM</Badge>
-                    <div>
-                      <div className="font-medium text-sm">Chemistry</div>
-                      <div className="text-xs text-muted-foreground">2:30 â€“ 3:50 â€¢ 60 Marks</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Day 2 */}
-            <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <span className="text-[10px] font-bold text-white">2</span>
-              </div>
-              <div className="glass rounded-xl border border-white/5 overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                  <span className="font-semibold text-sm">Day 2 â€¢ April 24</span>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Friday</span>
-                </div>
-                <div className="divide-y divide-white/5">
-                  <div className="p-3.5 flex items-center gap-3">
-                    <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-bold">AM</Badge>
-                    <div>
-                      <div className="font-medium text-sm">Mathematics</div>
-                      <div className="text-xs text-muted-foreground">10:30 â€“ 11:50 â€¢ 60 Marks</div>
-                    </div>
-                  </div>
-                  <div className="p-3.5 flex items-center gap-3">
-                    <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px] font-bold">PM</Badge>
-                    <div>
-                      <div className="font-medium text-sm">Biology</div>
-                      <div className="text-xs text-muted-foreground">2:30 â€“ 3:50 â€¢ 60 Marks</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 text-sm text-muted-foreground p-3.5 rounded-xl glass border border-white/5">
-            <Clock className="inline h-3.5 w-3.5 mr-1.5 text-indigo-400" />
-            <span className="font-medium text-foreground">Apr 22:</span> Kannada Language Test (Horanadu & Gadinadu candidates)
-          </div>
-        </div>
-      </div>
-
-      ) : (
-        <Card className="border-amber-300/40 bg-amber-50/70 dark:bg-amber-950/15">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-amber-500" />
-              COMEDK Mode Active
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2 text-sm text-muted-foreground">
-            <p>Dashboard shortcuts, cutoff explorer, and rank predictor are now switched to COMEDK.</p>
-            <p>Switch back to KCET anytime from the exam toggle in the header.</p>
-          </CardContent>
-        </Card>
-      )}
       <div className="grid gap-4 md:grid-cols-3">
         <div className="glass rounded-2xl border border-white/5 hover:border-orange-500/20 transition-all tilt-card">
           <div className="p-5 flex items-center justify-between">
