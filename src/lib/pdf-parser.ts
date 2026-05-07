@@ -217,14 +217,24 @@ export class PDFParser {
 
     let cleanCourse = fullCourseName
       .replace(/One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Lakh|Thousand|Hundred|Rs\.|Rupees|and\s+Ten|and\s+Four/gi, '')
+      .replace(/Downloaded\s+Date:.*$/gi, '')
+      .replace(/KARNATAKA\s+EXAMINATIONS\s+AUTHORITY.*$/gi, '')
+      .replace(/ADMISSION\s+TO\s+UGCET.*$/gi, '')
+      .replace(/Page\s+\d+\s*\/\s*\d+.*$/gi, '')
       .replace(/\s+/g, ' ').trim();
 
     // Fallback
-    if (!cleanCourse || cleanCourse.length < 3) cleanCourse = this.getBranchName(branchCode);
+    if (!cleanCourse || cleanCourse.length < 3 || this.looksLikeDocumentChrome(cleanCourse)) {
+      cleanCourse = this.getBranchName(branchCode);
+    }
 
     // College cleanup
     let cleanCollege = fullCollegeName
       .replace(/One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Lakh|Thousand|Hundred|Rs\.|Rupees|and\s+Ten|and\s+Four/gi, '')
+      .replace(/Downloaded\s+Date:.*$/gi, '')
+      .replace(/KARNATAKA\s+EXAMINATIONS\s+AUTHORITY.*$/gi, '')
+      .replace(/ADMISSION\s+TO\s+UGCET.*$/gi, '')
+      .replace(/Page\s+\d+\s*\/\s*\d+.*$/gi, '')
       .replace(/\s+/g, ' ').trim();
 
     if (!cleanCollege) cleanCollege = `College ${collegeCode}`;
@@ -245,17 +255,43 @@ export class PDFParser {
 
   private static getBranchName(code: string): string {
     const names: Record<string, string> = {
+      'AD': 'Artificial Intelligence and Data Science',
+      'BG': 'Artificial Intelligence and Data Science',
       'AI': 'Artificial Intelligence and Machine Learning',
+      'AM': 'Computer Science (AI & Machine Learning)',
       'CS': 'Computer Science and Engineering',
-      'CA': 'Computer Science (AI)',
+      'CA': 'Computer Science (AI & Machine Learning)',
+      'CF': 'Computer Science (Artificial Intelligence)',
       'CY': 'Computer Science (Cyber Security)',
+      'BX': 'Computer Science (Cyber Security)',
+      'DC': 'Computer Science (Data Science)',
       'DS': 'Computer Science (Data Science)',
+      'BF': 'Computer Science (Data Science)',
+      'BW': 'Computer Science and Engineering',
+      'BZ': 'Computer Science (Data Science)',
+      'DL': 'Computer Science and Engineering',
+      'LG': 'Computer Science and Engineering',
+      'LD': 'Computer Science (Data Science)',
       'EC': 'Electronics and Communication Engineering',
+      'BB': 'Electronics and Communication Engineering',
+      'EE': 'Electrical and Electronics Engineering',
+      'BJ': 'Electrical and Electronics Engineering',
+      'IE': 'Information Science and Engineering',
+      'IS': 'Information Science and Engineering',
+      'CU': 'Information Science and Engineering',
+      'LH': 'Information Science and Engineering',
       'ME': 'Mechanical Engineering',
+      'DB': 'Mechanical Engineering',
       'CE': 'Civil Engineering',
-      'BT': 'Biotechnology'
+      'BP': 'Civil Engineering',
+      'BT': 'Biotechnology',
+      'BM': 'Biomedical Engineering'
     };
     return names[code] || `${code} Engineering`;
+  }
+
+  private static looksLikeDocumentChrome(text: string): boolean {
+    return /Downloaded\s+Date|KARNATAKA\s+EXAMINATIONS|ADMISSION\s+TO\s+UGCET|OPTIONS\s+LIST|Page\s+\d+\s*\/\s*\d+/i.test(text);
   }
 
   private static extractLocation(text: string): string {

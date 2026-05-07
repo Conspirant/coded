@@ -127,7 +127,9 @@ const Planner = () => {
         branchCode: opt.branchCode,
         collegeName: opt.collegeName,
         branchName: opt.branchName,
-        priority: opt.priority
+        priority: opt.priority,
+        courseFee: opt.courseFee,
+        collegeCourse: opt.collegeCourse
       }))
     ));
 

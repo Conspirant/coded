@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import {
   Play,
   Plus,
@@ -29,9 +30,11 @@ import {
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { loadSettings } from "@/lib/settings"
+import { normalizeCourseName } from "@/lib/course-normalization"
 import {
   simulateAllotment,
   getAvailableRounds,
+  getEligibleCategories,
   getPreferenceSafetyLevel,
   type PreferenceOption,
   type CutoffData,
@@ -53,12 +56,12 @@ interface CutoffResponse {
 
 const MockSimulator = () => {
   const { toast } = useToast()
+  const preferencePageSize = 10
 
   // Data state
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
-  const [currentStep, setCurrentStep] = useState(1) // 1: Profile, 2: Choices, 3: Results
 
   // Available options
   const [availableYears, setAvailableYears] = useState<string[]>([])
@@ -77,13 +80,73 @@ const MockSimulator = () => {
 
   // Preference building
   const [preferences, setPreferences] = useState<PreferenceOption[]>([])
+  const [preferencePage, setPreferencePage] = useState(1)
   const [newCollegeCode, setNewCollegeCode] = useState<string>("")
   const [newBranchCode, setNewBranchCode] = useState<string>("")
   const [collegeSearch, setCollegeSearch] = useState<string>("")
+  const [courseSearch, setCourseSearch] = useState<string>("")
+  const [isCollegeDropdownOpen, setIsCollegeDropdownOpen] = useState(false)
+  const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false)
 
   // Simulation results
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null)
   const [isSimulating, setIsSimulating] = useState(false)
+  const [isResultsOpen, setIsResultsOpen] = useState(false)
+
+  const getCourseCode = (course: string) => {
+    const cleaned = (course || '').replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim()
+    const codeMatch = cleaned.match(/^([A-Z]{2})[\s-]/)
+    if (codeMatch) return codeMatch[1]
+    if (/^[A-Z]{2,3}$/.test(cleaned)) return cleaned
+    return cleaned.slice(0, 3).toUpperCase()
+  }
+
+  const getCollegeCourseCode = (pref: PreferenceOption) => {
+    if (pref.collegeCourse) return pref.collegeCourse
+    const college = (pref.collegeCode || '').replace(/\s+/g, '').toUpperCase()
+    const course = getCourseCode(pref.branchCode || pref.branchName)
+    return `${college}${course}`
+  }
+
+  const branchesByCollege = useMemo(() => {
+    const branchMap = new Map<string, string[]>()
+    const dedupe = new Map<string, Set<string>>()
+
+    cutoffs.forEach(cutoff => {
+      const code = cutoff.institute_code
+      if (!code || !cutoff.course) return
+
+      if (!dedupe.has(code)) {
+        dedupe.set(code, new Set<string>())
+      }
+
+      const seen = dedupe.get(code)!
+      if (!seen.has(cutoff.course)) {
+        seen.add(cutoff.course)
+      }
+    })
+
+    dedupe.forEach((courses, code) => {
+      branchMap.set(code, Array.from(courses).sort())
+    })
+
+    return branchMap
+  }, [cutoffs])
+
+  const eligibleCategories = useMemo(() => (
+    userCategory ? getEligibleCategories(userCategory) : []
+  ), [userCategory])
+
+  const safetyCutoffs = useMemo(() => (
+    cutoffs.filter(cutoff =>
+      cutoff.year === selectedYear &&
+      eligibleCategories.includes(cutoff.category)
+    )
+  ), [cutoffs, selectedYear, eligibleCategories])
+
+  const simulationCutoffs = useMemo(() => (
+    selectedYear ? cutoffs.filter(cutoff => cutoff.year === selectedYear) : cutoffs
+  ), [cutoffs, selectedYear])
 
   // Update available rounds when year changes
   useEffect(() => {
@@ -236,29 +299,65 @@ const MockSimulator = () => {
   }, [toast])
 
   // Filter colleges based on search
-  const filteredColleges = availableColleges.filter(c =>
-    c.name.toLowerCase().includes(collegeSearch.toLowerCase()) ||
-    c.code.toLowerCase().includes(collegeSearch.toLowerCase())
-  ).slice(0, 20)
+  const filteredColleges = useMemo(() => {
+    const query = collegeSearch.trim().toLowerCase()
+
+    if (!query || newCollegeCode) {
+      return availableColleges.slice(0, 30)
+    }
+
+    return availableColleges.filter(c =>
+      c.name.toLowerCase().includes(query) ||
+      c.code.toLowerCase().includes(query)
+    ).slice(0, 30)
+  }, [availableColleges, collegeSearch, newCollegeCode])
+
+  const filteredBranches = useMemo(() => {
+    const query = courseSearch.trim().toLowerCase()
+    const source = newCollegeCode ? availableBranches : []
+
+    if (!query) {
+      return source.slice(0, 30)
+    }
+
+    return source.filter(branch => {
+      const normalized = normalizeCourseName(branch)
+      return (
+        branch.toLowerCase().includes(query) ||
+        normalized.toLowerCase().includes(query)
+      )
+    }).slice(0, 30)
+  }, [availableBranches, courseSearch, newCollegeCode])
+
+  const totalPreferencePages = Math.max(1, Math.ceil(preferences.length / preferencePageSize))
+  const preferencePageStart = (preferencePage - 1) * preferencePageSize
+  const visiblePreferences = useMemo(
+    () => preferences.slice(preferencePageStart, preferencePageStart + preferencePageSize),
+    [preferences, preferencePageStart, preferencePageSize]
+  )
+
+  useEffect(() => {
+    if (preferencePage > totalPreferencePages) {
+      setPreferencePage(totalPreferencePages)
+    }
+  }, [preferencePage, totalPreferencePages])
 
   // Update available branches when college is selected
   useEffect(() => {
-    if (newCollegeCode && cutoffs.length > 0) {
-      const branches = cutoffs
-        .filter(c => c.institute_code === newCollegeCode)
-        .map(c => c.course)
-
-      const uniqueBranches = [...new Set(branches)].sort()
+    if (newCollegeCode) {
+      const uniqueBranches = branchesByCollege.get(newCollegeCode) ?? []
       setAvailableBranches(uniqueBranches)
 
       // Reset branch selection if current branch is not in new list
       if (newBranchCode && !uniqueBranches.includes(newBranchCode)) {
         setNewBranchCode("")
+        setCourseSearch("")
       }
     } else {
       setAvailableBranches([])
+      setCourseSearch("")
     }
-  }, [newCollegeCode, cutoffs])
+  }, [newCollegeCode, branchesByCollege, newBranchCode])
 
   // Add preference
   const addPreference = () => {
@@ -279,7 +378,7 @@ const MockSimulator = () => {
       collegeCode: newCollegeCode,
       branchCode: newBranchCode,
       collegeName: college.name,
-      branchName: newBranchCode,
+      branchName: normalizeCourseName(newBranchCode),
       priority: preferences.length + 1
     }
 
@@ -287,6 +386,9 @@ const MockSimulator = () => {
     setNewCollegeCode("")
     setNewBranchCode("")
     setCollegeSearch("")
+    setCourseSearch("")
+    setIsCollegeDropdownOpen(false)
+    setIsCourseDropdownOpen(false)
 
     toast({
       title: "Preference Added",
@@ -344,8 +446,9 @@ const MockSimulator = () => {
         preferences
       }
 
-      const result = simulateAllotment(input, cutoffs)
+      const result = simulateAllotment(input, simulationCutoffs)
       setSimulationResult(result)
+      setIsResultsOpen(true)
       setIsSimulating(false)
 
       // Find result for selected round
@@ -379,8 +482,21 @@ const MockSimulator = () => {
   }
 
   // Get safety badge for a preference
+  const visiblePreferenceSafety = useMemo(() => {
+    const levels = new Map<string, ReturnType<typeof getPreferenceSafetyLevel>>()
+
+    visiblePreferences.forEach(pref => {
+      levels.set(
+        pref.id,
+        getPreferenceSafetyLevel(userRank, pref, safetyCutoffs, selectedYear, userCategory)
+      )
+    })
+
+    return levels
+  }, [visiblePreferences, userRank, safetyCutoffs, selectedYear, userCategory])
+
   const getSafetyBadge = (pref: PreferenceOption) => {
-    const level = getPreferenceSafetyLevel(userRank, pref, cutoffs, selectedYear, userCategory)
+    const level = visiblePreferenceSafety.get(pref.id) ?? 'unknown'
 
     switch (level) {
       case 'safe':
@@ -390,11 +506,18 @@ const MockSimulator = () => {
       case 'risky':
         return <Badge className="bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20">Risky</Badge>
       default:
-        // Show N/A if data is missing, rather than scary "Unknown"
-        // Also add tooltip if possible, but for now just N/A
-        return <Badge variant="outline" className="text-muted-foreground border-white/10" title="No cutoff data for this year/category">N/A</Badge>
+        return <Badge variant="outline" className="text-muted-foreground border-white/10" title="No matching cutoff data found for this branch in the selected year/category">No data</Badge>
     }
   }
+
+  const focusedRoundResult = simulationResult?.roundResults.find(r => r.round === selectedRound)
+  const focusedOutcome = focusedRoundResult?.allottedCollege
+    ? {
+      round: focusedRoundResult.round,
+      college: focusedRoundResult.allottedCollege,
+      preferenceNumber: focusedRoundResult.allottedPreferenceNumber ?? 0
+    }
+    : simulationResult?.summary.bestOutcome
 
   if (loading) {
     return (
@@ -423,55 +546,51 @@ const MockSimulator = () => {
         url="https://kcet-coded2.vercel.app/mock-simulator"
         keywords="KCET mock allotment, KCET seat simulator, KCET 2026 seat allotment, KCET counseling simulator, mock counseling KCET, KCET preference list"
       />
-      {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <Target className="h-8 w-8 text-primary" />
-          Mock Simulator
-        </h1>
-        <p className="text-muted-foreground">
-          Simulate KCET seat allotment based on your rank and preferences using historical data
-        </p>
-      </div>
+      <div className="space-y-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div className="space-y-1">
+            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+              <Target className="h-8 w-8 text-primary" />
+              Mock Simulator
+            </h1>
+            <p className="text-muted-foreground">
+              Set your rank profile, build the option-entry sheet, then simulate the selected round.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="border-white/10">
+              {cutoffs.length.toLocaleString()} records
+            </Badge>
+            <Button
+              onClick={runSimulation}
+              disabled={preferences.length === 0 || isSimulating}
+            >
+              <Play className="h-4 w-4 mr-2" />
+              {isSimulating ? 'Simulating...' : 'Run Simulation'}
+            </Button>
+          </div>
+        </div>
 
-      {/* Info Alert */}
-      <Alert>
-        <Info className="h-4 w-4" />
-        <AlertTitle>How it works</AlertTitle>
-        <AlertDescription>
-          Enter your rank, category, and add college preferences in order of priority.
-          The simulator will check each preference against historical cutoffs and show
-          which college you'd likely get in each counseling round.
-        </AlertDescription>
-      </Alert>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Inputs */}
-        <div className="lg:col-span-1 space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <GraduationCap className="h-5 w-5" />
-                Your Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+        <Card className="border-white/10 bg-muted/20">
+          <CardContent className="p-4">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <div className="space-y-2">
-                <Label htmlFor="rank">Your KCET Rank</Label>
+                <Label htmlFor="rank">Rank</Label>
                 <Input
                   id="rank"
                   type="number"
                   value={userRank}
                   onChange={(e) => setUserRank(parseInt(e.target.value) || 0)}
-                  placeholder="Enter your rank"
+                  placeholder="Enter rank"
                   min={1}
+                  className="h-10 font-mono"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
+                <Label>Category</Label>
                 <Select value={userCategory} onValueChange={setUserCategory}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -483,9 +602,9 @@ const MockSimulator = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="year">Reference Year</Label>
+                <Label>Year</Label>
                 <Select value={selectedYear} onValueChange={setSelectedYear}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue placeholder="Select year" />
                   </SelectTrigger>
                   <SelectContent>
@@ -497,13 +616,13 @@ const MockSimulator = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="round">Target Round</Label>
+                <Label>Round</Label>
                 <Select
                   value={selectedRound}
                   onValueChange={setSelectedRound}
                   disabled={!selectedYear || availableRounds.length === 0}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-10">
                     <SelectValue placeholder={availableRounds.length === 0 ? "Select year first" : "Select round"} />
                   </SelectTrigger>
                   <SelectContent>
@@ -512,199 +631,262 @@ const MockSimulator = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
-                  Shows results exactly for this round
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Progress Stepper (Mobile/Compact) */}
-          <div className="hidden lg:block mb-6">
-            <div className="relative pl-4 border-l-2 border-muted space-y-8">
-              <div className={`relative ${currentStep >= 1 ? 'text-primary' : 'text-muted-foreground'}`}>
-                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 1 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
-                <p className="font-medium text-sm">Profile</p>
-                <p className="text-xs text-muted-foreground">Rank & Details</p>
-              </div>
-              <div className={`relative ${currentStep >= 2 ? 'text-primary' : 'text-muted-foreground'}`}>
-                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 2 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
-                <p className="font-medium text-sm">Choices</p>
-                <p className="text-xs text-muted-foreground">Add Preferences</p>
-              </div>
-              <div className={`relative ${currentStep >= 3 ? 'text-primary' : 'text-muted-foreground'}`}>
-                <span className={`absolute -left-[21px] top-1 h-3 w-3 rounded-full border-2 ${currentStep >= 3 ? 'bg-primary border-primary' : 'bg-background border-muted'}`} />
-                <p className="font-medium text-sm">Simulation</p>
-                <p className="text-xs text-muted-foreground">Seat Allotment</p>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          {/* Add Preference */}
-          <Card className="border-white/10 bg-white/5 backdrop-blur-xl shadow-xl overflow-hidden relative">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <Plus className="h-24 w-24" />
-            </div>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5 text-primary" />
-                Add Preference
-              </CardTitle>
-              <CardDescription>
-                Search and add colleges to your priority list.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 relative z-10">
-              <div className="space-y-2">
-                <Label>College</Label>
-                <div className="relative group">
-                  <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                  <Input
-                    className="pl-9 bg-black/20 border-white/10 focus:ring-primary/50"
-                    placeholder="Type college name or code..."
-                    value={collegeSearch}
-                    onChange={(e) => {
-                      setCollegeSearch(e.target.value)
-                      if (!e.target.value && newCollegeCode) {
-                        setNewCollegeCode("")
-                        setNewBranchCode("")
-                      }
-                    }}
-                  />
-                </div>
-                {collegeSearch && !newCollegeCode && filteredColleges.length > 0 && (
-                  <div className="border border-white/10 bg-black/80 backdrop-blur-md rounded-md max-h-60 overflow-y-auto absolute w-[calc(100%-3rem)] z-50 shadow-2xl">
-                    {filteredColleges.map(college => (
-                      <div
-                        key={college.code}
-                        className="px-3 py-3 hover:bg-primary/20 cursor-pointer text-sm border-b border-white/5 last:border-0"
-                        onClick={() => {
-                          setNewCollegeCode(college.code)
-                          setCollegeSearch(`${college.code} - ${college.name}`)
+        <Card className="overflow-visible border-white/10 bg-background/95 shadow-xl">
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table className="min-w-[920px]">
+                <TableHeader>
+                  <TableRow className="bg-muted/60 hover:bg-muted/60">
+                    <TableHead colSpan={7} className="h-auto px-5 py-4">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-lg font-semibold text-foreground">Option Entry Simulator Sheet</p>
+                          <p className="text-sm font-normal text-muted-foreground">
+                            Search institution and course here, then add rows in option-entry order.
+                          </p>
+                        </div>
+                        <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">
+                          {preferences.length} options
+                        </Badge>
+                      </div>
+                    </TableHead>
+                  </TableRow>
+                  <TableRow className="bg-card hover:bg-card">
+                    <TableHead colSpan={3} className="w-[380px]">Institution Search</TableHead>
+                    <TableHead colSpan={3} className="w-[420px]">Course Search</TableHead>
+                    <TableHead className="w-[120px]">Add</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="align-top bg-muted/20 hover:bg-muted/20">
+                    <TableCell colSpan={3} className="relative">
+                      <Search className="absolute left-5 top-5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        className="h-10 pl-9"
+                        placeholder="Institution name or code"
+                        value={collegeSearch}
+                        onChange={(e) => {
+                          setCollegeSearch(e.target.value)
+                          if (newCollegeCode) {
+                            setNewCollegeCode("")
+                            setNewBranchCode("")
+                            setCourseSearch("")
+                          }
+                          setIsCollegeDropdownOpen(true)
                         }}
+                        onFocus={() => setIsCollegeDropdownOpen(true)}
+                        onBlur={() => window.setTimeout(() => setIsCollegeDropdownOpen(false), 120)}
+                      />
+                      {isCollegeDropdownOpen && !newCollegeCode && filteredColleges.length > 0 && (
+                        <div className="absolute left-4 right-4 top-14 z-50 max-h-72 overflow-y-auto rounded-md border border-white/10 bg-popover shadow-2xl">
+                          {filteredColleges.map(college => (
+                            <button
+                              key={college.code}
+                              type="button"
+                              className="w-full border-b border-white/5 px-3 py-3 text-left text-sm last:border-0 hover:bg-primary/10"
+                              onMouseDown={(e) => {
+                                e.preventDefault()
+                                setNewCollegeCode(college.code)
+                                setNewBranchCode("")
+                                setCourseSearch("")
+                                setCollegeSearch(`${college.code} - ${college.name}`)
+                                setIsCollegeDropdownOpen(false)
+                                setIsCourseDropdownOpen(true)
+                              }}
+                            >
+                              <span className="block font-mono font-bold text-primary">{college.code}</span>
+                              <span className="block text-foreground/80">{college.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell colSpan={3} className="relative">
+                      <Search className="absolute left-5 top-5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        className="h-10 pl-9"
+                        placeholder={newCollegeCode ? "Course name or code" : "Select institution first"}
+                        value={courseSearch}
+                        disabled={!newCollegeCode}
+                        onChange={(e) => {
+                          setCourseSearch(e.target.value)
+                          setNewBranchCode("")
+                          setIsCourseDropdownOpen(true)
+                        }}
+                        onFocus={() => newCollegeCode && setIsCourseDropdownOpen(true)}
+                        onBlur={() => window.setTimeout(() => setIsCourseDropdownOpen(false), 120)}
+                      />
+                      {isCourseDropdownOpen && newCollegeCode && !newBranchCode && filteredBranches.length > 0 && (
+                        <div className="absolute left-4 right-4 top-14 z-50 max-h-72 overflow-y-auto rounded-md border border-white/10 bg-popover shadow-2xl">
+                          {filteredBranches.map(branch => {
+                            const normalized = normalizeCourseName(branch)
+                            return (
+                              <button
+                                key={branch}
+                                type="button"
+                                className="w-full border-b border-white/5 px-3 py-3 text-left text-sm last:border-0 hover:bg-primary/10"
+                                onMouseDown={(e) => {
+                                  e.preventDefault()
+                                  setNewBranchCode(branch)
+                                  setCourseSearch(normalized)
+                                  setIsCourseDropdownOpen(false)
+                                }}
+                              >
+                                <span className="block font-medium text-foreground">{normalized}</span>
+                                {normalized !== branch && (
+                                  <span className="block text-xs text-muted-foreground">{branch}</span>
+                                )}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={addPreference}
+                        disabled={!newCollegeCode || !newBranchCode}
+                        size="sm"
+                        className="w-full"
                       >
-                        <div className="flex flex-col">
-                          <span className="font-bold text-primary">{college.code}</span>
-                          <span className="text-white/80">{college.name}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add
+                      </Button>
+                    </TableCell>
+                  </TableRow>
 
-              <div className="space-y-2">
-                <Label>Branch {newCollegeCode && availableBranches.length > 0 && `(${availableBranches.length})`}</Label>
-                <Select value={newBranchCode} onValueChange={setNewBranchCode} disabled={!newCollegeCode}>
-                  <SelectTrigger className="bg-black/20 border-white/10">
-                    <SelectValue placeholder={!newCollegeCode ? "Select college first" : "Select branch"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableBranches.map(branch => (
-                      <SelectItem key={branch} value={branch}>{branch}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  <TableRow className="bg-muted/60 hover:bg-muted/60">
+                    <TableHead>Optn. No</TableHead>
+                    <TableHead>College Course</TableHead>
+                    <TableHead>Course Name</TableHead>
+                    <TableHead>Course Fee per Annum(Rs)</TableHead>
+                    <TableHead>College Name</TableHead>
+                    <TableHead>Safety</TableHead>
+                    <TableHead>Controls</TableHead>
+                  </TableRow>
 
-              <Button onClick={addPreference} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" disabled={!newCollegeCode || !newBranchCode}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Preference
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Column - Preferences & Results */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Preference List */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Your Preferences ({preferences.length})
+                  {preferences.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                        <Target className="mx-auto mb-3 h-10 w-10 opacity-50" />
+                        Add an institution and normalized course above to start building the option-entry list.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    visiblePreferences.map((pref, index) => {
+                      const globalIndex = preferencePageStart + index
+                      return (
+                      <TableRow key={pref.id} className="group">
+                        <TableCell className="font-mono text-lg font-bold text-primary">
+                          {pref.priority}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="rounded-full border-white/10 px-3 py-1 font-mono text-xs font-bold text-foreground">
+                            {getCollegeCourseCode(pref)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <p className="max-w-[360px] font-semibold uppercase leading-snug" title={pref.branchName}>
+                            {normalizeCourseName(pref.branchName || pref.branchCode)}
+                          </p>
+                        </TableCell>
+                        <TableCell className="font-mono font-medium text-muted-foreground">
+                          {pref.courseFee && pref.courseFee !== 'Not specified' ? pref.courseFee : 'Not listed'}
+                        </TableCell>
+                        <TableCell>
+                          <p className="max-w-[360px] font-semibold leading-snug" title={pref.collegeName}>
+                            {pref.collegeName}
+                          </p>
+                        </TableCell>
+                        <TableCell>{getSafetyBadge(pref)}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => movePreference(pref.id, 'up')}
+                              disabled={globalIndex === 0}
+                              className="h-8 w-8"
+                              title="Move up"
+                            >
+                              <ArrowUp className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => movePreference(pref.id, 'down')}
+                              disabled={globalIndex === preferences.length - 1}
+                              className="h-8 w-8"
+                              title="Move down"
+                            >
+                              <ArrowDown className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removePreference(pref.id)}
+                              className="h-8 w-8 text-red-500 hover:text-red-600"
+                              title="Remove"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )})
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+            {preferences.length > preferencePageSize && (
+              <div className="flex flex-col gap-3 border-t border-white/10 px-5 py-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+                <span>
+                  Showing {preferencePageStart + 1}-{Math.min(preferencePageStart + preferencePageSize, preferences.length)} of {preferences.length} options
                 </span>
-                <Button
-                  onClick={runSimulation}
-                  disabled={preferences.length === 0 || isSimulating}
-                  size="sm"
-                >
-                  <Play className="h-4 w-4 mr-2" />
-                  {isSimulating ? 'Simulating...' : 'Run Simulation'}
-                </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {preferences.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Target className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                  <p>No preferences added yet</p>
-                  <p className="text-sm">Add colleges to start simulating</p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPreferencePage(page => Math.max(1, page - 1))}
+                    disabled={preferencePage === 1}
+                  >
+                    Previous
+                  </Button>
+                  <Badge variant="outline" className="border-white/10">
+                    {preferencePage} / {totalPreferencePages}
+                  </Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPreferencePage(page => Math.min(totalPreferencePages, page + 1))}
+                    disabled={preferencePage === totalPreferencePages}
+                  >
+                    Next
+                  </Button>
                 </div>
-              ) : (
-                <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                  {preferences.map((pref, index) => (
-                    <div
-                      key={pref.id}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors group"
-                    >
-                      <div className="flex items-center gap-3 overflow-hidden">
-                        <span className="font-bold text-lg text-primary w-8 shrink-0">#{pref.priority}</span>
-                        <div className="min-w-0">
-                          <p className="font-medium text-sm truncate pr-2" title={pref.collegeName}>{pref.collegeName}</p>
-                          <p className="text-xs text-muted-foreground truncate" title={pref.branchName}>{pref.branchName} <span className="opacity-50">({pref.collegeCode})</span></p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        {getSafetyBadge(pref)}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => movePreference(pref.id, 'up')}
-                          disabled={index === 0}
-                          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <ArrowUp className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => movePreference(pref.id, 'down')}
-                          disabled={index === preferences.length - 1}
-                          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <ArrowDown className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removePreference(pref.id)}
-                          className="h-8 w-8 text-red-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-          {/* Simulation Results */}
+        <Dialog open={isResultsOpen} onOpenChange={setIsResultsOpen}>
           {simulationResult && (
-            <Card className="border-primary">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+            <DialogContent className="max-h-[88vh] max-w-5xl overflow-y-auto border-primary/30">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-primary" />
                   Simulation Results
-                </CardTitle>
-                <CardDescription>
+                </DialogTitle>
+                <DialogDescription>
                   Based on {selectedYear} cutoffs for {userCategory} category at rank {userRank.toLocaleString()}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </DialogDescription>
+              </DialogHeader>
+              <div>
                 <Tabs defaultValue="summary">
                   <TabsList className="mb-4">
                     <TabsTrigger value="summary">Summary</TabsTrigger>
@@ -713,19 +895,20 @@ const MockSimulator = () => {
                   </TabsList>
 
                   <TabsContent value="summary">
-                    {simulationResult.summary.bestOutcome ? (
+                    {focusedOutcome ? (
                       <div className="space-y-4">
                         <Alert className="border-green-500 bg-green-50 dark:bg-green-950">
                           <CheckCircle2 className="h-4 w-4 text-green-600" />
-                          <AlertTitle className="text-green-700 dark:text-green-300">Best Possible Outcome</AlertTitle>
+                          <AlertTitle className="text-green-700 dark:text-green-300">
+                            {focusedRoundResult ? `${selectedRound} Outcome` : 'Best Possible Outcome'}
+                          </AlertTitle>
                           <AlertDescription className="text-green-600 dark:text-green-400">
-                            <strong>{simulationResult.summary.bestOutcome.college.collegeName}</strong>
+                            <strong>{focusedOutcome.college.collegeName}</strong>
                             <br />
-                            {simulationResult.summary.bestOutcome.college.branchName}
+                            {focusedOutcome.college.branchName}
                             <br />
                             <span className="text-sm">
-                              Preference #{simulationResult.summary.bestOutcome.preferenceNumber} •
-                              Best in {simulationResult.summary.bestOutcome.round}
+                              Preference #{focusedOutcome.preferenceNumber} - {focusedRoundResult ? `Selected round ${focusedOutcome.round}` : `Best in ${focusedOutcome.round}`}
                             </span>
                           </AlertDescription>
                         </Alert>
@@ -739,9 +922,9 @@ const MockSimulator = () => {
                           </div>
                           <div className="p-4 border rounded-lg">
                             <p className="text-2xl font-bold text-primary">
-                              #{simulationResult.summary.bestOutcome.preferenceNumber}
+                              #{focusedOutcome.preferenceNumber}
                             </p>
-                            <p className="text-sm text-muted-foreground">Best Preference</p>
+                            <p className="text-sm text-muted-foreground">{focusedRoundResult ? 'Selected Round Pref' : 'Best Preference'}</p>
                           </div>
                           <div className="p-4 border rounded-lg">
                             <p className="text-2xl font-bold text-primary">
@@ -844,13 +1027,14 @@ const MockSimulator = () => {
                     </div>
                   </TabsContent>
                 </Tabs>
-              </CardContent>
-            </Card>
+              </div>
+            </DialogContent>
           )}
-        </div>
+        </Dialog>
       </div>
     </div>
   )
 }
 
 export default MockSimulator
+

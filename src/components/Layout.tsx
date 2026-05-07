@@ -217,8 +217,25 @@ export function Layout({ children }: LayoutProps) {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-6">
-            {children}
+          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-6 flex flex-col min-h-[calc(100vh-4rem)]">
+            <div className="flex-1">
+              {children}
+            </div>
+            
+            {/* Minimalist Creator Credit */}
+            <div className="mt-8 pt-4 border-t border-white/5 text-center w-full">
+              <p className="text-[11px] text-muted-foreground/60 tracking-wide">
+                Created by & if any queries contact{' '}
+                <a 
+                  href="https://www.reddit.com/user/Elegant_Compote9073/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
+                >
+                  u/Elegant_Compote9073
+                </a>
+              </p>
+            </div>
           </main>
         </div>
       </div>

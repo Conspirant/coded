@@ -306,6 +306,19 @@ const RankPredictor = () => {
           <p className="text-muted-foreground">
             Real-time rank prediction based on official KEA formula
           </p>
+          <div className="flex justify-center mt-2 mb-2">
+            <p className="text-[11px] text-muted-foreground/60 tracking-wide">
+              Created by & if any queries contact{' '}
+              <a 
+                href="https://www.reddit.com/user/Elegant_Compote9073/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
+              >
+                u/Elegant_Compote9073
+              </a>
+            </p>
+          </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Button
               variant="outline"

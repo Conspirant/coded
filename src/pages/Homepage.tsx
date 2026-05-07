@@ -1,6 +1,6 @@
 import { SEO } from "@/components/SEO"
 import { useState, useEffect, useRef, useCallback } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
 import { Button } from "@/components/ui/button"
@@ -44,7 +44,6 @@ interface DataStats {
 const HERO_WORDS = ["Dream College", "Perfect Branch", "Best Rank", "Right Seat"]
 
 const Homepage = () => {
-    const navigate = useNavigate()
     const [mounted, setMounted] = useState(false)
     const [stats, setStats] = useState<DataStats>({
         totalRecords: 0,
@@ -53,7 +52,6 @@ const Homepage = () => {
         years: [],
         loading: true
     })
-    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
     const [currentWord, setCurrentWord] = useState(0)
     const heroRef = useRef<HTMLElement>(null)
 
@@ -141,28 +139,6 @@ const Homepage = () => {
         }
 
         loadRealStats()
-    }, [])
-
-    // Countdown
-    useEffect(() => {
-        const targetDate = new Date('2026-04-23T10:30:00+05:30').getTime()
-
-        const updateCountdown = () => {
-            const now = new Date().getTime()
-            const difference = targetDate - now
-            if (difference > 0) {
-                setCountdown({
-                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((difference % (1000 * 60)) / 1000)
-                })
-            }
-        }
-
-        updateCountdown()
-        const interval = setInterval(updateCountdown, 1000)
-        return () => clearInterval(interval)
     }, [])
 
     const features = [
@@ -371,82 +347,57 @@ const Homepage = () => {
                         Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
                     </motion.p>
 
-                    {/* Search bar with neon glow */}
+                    {/* Minimal action cluster */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
-                        className="max-w-2xl mx-auto mb-8"
+                        className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-5"
                     >
-                        <div className="neon-border rounded-2xl">
-                            <div className="relative flex items-center glass-strong rounded-2xl shadow-2xl p-2 transition-all duration-300">
-                                <Search className="ml-4 h-5 w-5 text-muted-foreground" />
-                                <input
-                                    type="text"
-                                    placeholder="Search for a college (e.g. RVCE, PES)..."
-                                    className="flex-1 bg-transparent border-none focus:ring-0 px-4 py-3 sm:py-4 text-base sm:text-lg outline-none placeholder:text-muted-foreground/40"
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') navigate('/college-finder')
-                                    }}
-                                />
-                                <Button
-                                    size="lg"
-                                    className="hidden sm:flex rounded-xl px-8 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 transition-all hover:shadow-indigo-500/35 border-0"
-                                    onClick={() => navigate('/college-finder')}
-                                >
-                                    Search
+                        <div className="flex flex-wrap items-center justify-center gap-3">
+                            <Link to="/dashboard">
+                                <Button size="lg" className="h-12 rounded-xl border-0 bg-white px-7 font-semibold text-slate-950 shadow-lg shadow-white/10 transition-all hover:-translate-y-0.5 hover:bg-white/90">
+                                    Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
-                            </div>
+                            </Link>
+                            <Link to="/college-finder">
+                                <Button variant="outline" size="lg" className="h-12 rounded-xl border-white/10 bg-white/5 px-6 text-foreground backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/10">
+                                    Find Colleges
+                                </Button>
+                            </Link>
+                            <Link to="/rank-predictor">
+                                <Button variant="ghost" size="lg" className="h-12 rounded-xl px-6 text-muted-foreground transition-all hover:-translate-y-0.5 hover:bg-white/5 hover:text-foreground">
+                                    Predict Rank
+                                </Button>
+                            </Link>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">No sign-up</span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">2023-2025 cutoffs</span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">Free tools</span>
                         </div>
                     </motion.div>
 
-                    {/* Action buttons */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.6 }}
-                        className="flex flex-wrap items-center justify-center gap-4 mb-12"
+                        className="mx-auto grid max-w-3xl grid-cols-1 gap-3 text-left sm:grid-cols-3"
                     >
-                        <Link to="/dashboard">
-                            <Button variant="outline" size="lg" className="h-12 px-8 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-foreground transition-all hover:-translate-y-0.5 backdrop-blur-sm">
-                                Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                        </Link>
-                    </motion.div>
-
-                    {/* Countdown inline pills */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.7 }}
-                    >
-                        <div className="inline-flex items-center gap-4 sm:gap-6 px-6 py-4 rounded-2xl glass border border-white/5 shadow-xl">
-                            <div className="flex items-center gap-2.5">
-                                <div className="p-2 rounded-lg bg-orange-500/10">
-                                    <Calendar className="h-4 w-4 text-orange-400" />
-                                </div>
-                                <div className="text-left hidden sm:block">
-                                    <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">CET 2026</div>
-                                    <div className="text-sm font-semibold">Apr 23</div>
-                                </div>
-                            </div>
-
-                            <div className="h-6 w-px bg-white/10" />
-
-                            <div className="flex items-center gap-3">
-                                {[
-                                    { v: countdown.days, l: "d" },
-                                    { v: countdown.hours, l: "h" },
-                                    { v: countdown.minutes, l: "m" },
-                                    { v: countdown.seconds, l: "s" },
-                                ].map((item, i) => (
-                                    <div key={i} className="flex items-baseline gap-0.5">
-                                        <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums">{String(item.v).padStart(2, '0')}</span>
-                                        <span className="text-[10px] font-bold text-muted-foreground uppercase">{item.l}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        {[
+                            { icon: BarChart3, label: "Explore cutoffs", href: "/cutoff-explorer" },
+                            { icon: Calculator, label: "Estimate rank", href: "/rank-predictor" },
+                            { icon: Target, label: "Simulate allotment", href: "/mock-simulator" },
+                        ].map((item) => (
+                            <Link key={item.label} to={item.href} className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-semibold text-foreground/85 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]">
+                                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.06] text-indigo-300 transition-colors group-hover:text-cyan-300">
+                                    <item.icon className="h-4 w-4" />
+                                </span>
+                                <span className="flex-1">{item.label}</span>
+                                <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+                            </Link>
+                        ))}
                     </motion.div>
                 </div>
             </motion.section>
@@ -893,7 +844,7 @@ const Homepage = () => {
             {/* ═══ Footer ═══ */}
             <footer className="relative pt-12 pb-8 border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center gap-2">
                                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
@@ -925,6 +876,17 @@ const Homepage = () => {
                                 <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/KCETards</a>
                             </div>
                         </div>
+                        <div>
+                            <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-[0.15em]">Creator</h4>
+                            <div className="flex flex-col gap-2">
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    Built independently by a student to make counseling simpler for everyone.
+                                </p>
+                                <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center mt-1">
+                                    Contact u/Elegant_Compote9073 <ArrowRight className="ml-1 h-3 w-3" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div className="h-px bg-white/5 mb-6" />
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -938,8 +900,16 @@ const Homepage = () => {
                                 <Heart className="h-3 w-3" /> Donate
                             </Link>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Built with ❤️ for Karnataka students
+                        <p className="text-[11px] text-muted-foreground/60 tracking-wide text-center sm:text-right">
+                            Created by & if any queries contact{' '}
+                            <a 
+                                href="https://www.reddit.com/user/Elegant_Compote9073/" 
+                                target="_blank" 
+                                rel="noreferrer"
+                                className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
+                            >
+                                u/Elegant_Compote9073
+                            </a>
                         </p>
                     </div>
                 </div>

@@ -93,6 +93,43 @@ describe('Mock Simulator - Eligibility Check', () => {
         expect(result.cutoffRank).toBeNull()
         expect(result.reason).toContain('No cutoff data')
     })
+
+    test('should match DS branch code to OCR-spaced CSE data science cutoff', () => {
+        const preference = createPreference('1', 'E173', 'DS', 'Sai Vidya Institute of Technology', 'Computer Science (Data Science)', 1)
+        const roundCutoffs: CutoffData[] = [
+            { institute: 'Sai Vidya Institute of Technology', institute_code: 'E173', course: 'COMPUTER SCIENCE AND ENGINEERING', category: 'GM', cutoff_rank: 52195, year: '2025', round: 'R2' },
+            { institute: 'Sai Vidya Institute of Technology', institute_code: 'E173', course: 'COMPUTER SCIENCE AND ENGINEERING(D ATA SCIENCE)', category: 'GM', cutoff_rank: 75442, year: '2025', round: 'R2' },
+            { institute: 'Sai Vidya Institute of Technology', institute_code: 'E173', course: 'INFORMATION SCIENCE AND ENGINEERING', category: 'GM', cutoff_rank: 77284, year: '2025', round: 'R2' },
+        ]
+
+        const result = checkEligibility(69918, preference, 1, roundCutoffs)
+        expect(result.isEligible).toBe(true)
+        expect(result.cutoffRank).toBe(75442)
+    })
+
+    test('should keep BW-like CSE options on core CSE instead of drifting to data science', () => {
+        const preference = createPreference('1', 'E141', 'BW', 'PES University', 'B TECH IN COMPUTER SCIENCE ENGINEERING', 1)
+        const roundCutoffs: CutoffData[] = [
+            { institute: 'PES University', institute_code: 'E141', course: 'COMPUTER SCIENCE AND ENGINEERING', category: 'GM', cutoff_rank: 12000, year: '2025', round: 'R1' },
+            { institute: 'PES University', institute_code: 'E141', course: 'COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)', category: 'GM', cutoff_rank: 18000, year: '2025', round: 'R1' },
+        ]
+
+        const result = checkEligibility(15000, preference, 1, roundCutoffs)
+        expect(result.isEligible).toBe(false)
+        expect(result.cutoffRank).toBe(12000)
+    })
+
+    test('should match CA-like AIML options to the AIML branch', () => {
+        const preference = createPreference('1', 'E275', 'CA', 'R V Institute Of Technology and Management', 'CS - AI & MACHINE LEARNING', 1)
+        const roundCutoffs: CutoffData[] = [
+            { institute: 'R V Institute Of Technology and Management', institute_code: 'E275', course: 'COMPUTER SCIENCE AND ENGINEERING', category: 'GM', cutoff_rank: 68000, year: '2025', round: 'R1' },
+            { institute: 'R V Institute Of Technology and Management', institute_code: 'E275', course: 'COMPUTER SCIENCE AND ENGG(ARTIFICIA L INTELLIGENCE AND MACHINE LEARNING)', category: 'GM', cutoff_rank: 74500, year: '2025', round: 'R1' },
+        ]
+
+        const result = checkEligibility(70000, preference, 1, roundCutoffs)
+        expect(result.isEligible).toBe(true)
+        expect(result.cutoffRank).toBe(74500)
+    })
 })
 
 describe('Mock Simulator - Full Simulation', () => {

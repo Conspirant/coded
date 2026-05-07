@@ -49,6 +49,32 @@ export const CANONICAL_COURSES = {
 
 // Patterns to match course variations - uses regex for flexibility
 const COURSE_PATTERNS: Array<{ pattern: RegExp; canonical: string }> = [
+    // Normalized app display labels
+    {
+        pattern: /^CS\s*[-–]\s*(AI|ARTIFICIAL\s+INTELLIGENCE)\s*&?\s*(ML|MACHINE\s+LEARNING)$/i,
+        canonical: CANONICAL_COURSES.CSE_AIML
+    },
+    {
+        pattern: /^CS\s*[-–]\s*DATA\s+SCIENCE$/i,
+        canonical: CANONICAL_COURSES.CSE_DS
+    },
+    {
+        pattern: /^CS\s*[-–]\s*CYBER\s+SECURITY$/i,
+        canonical: CANONICAL_COURSES.CSE_CYBER
+    },
+    {
+        pattern: /^COMPUTER\s+SCIENCE\s*&\s*ENGINEERING$/i,
+        canonical: CANONICAL_COURSES.CSE
+    },
+    {
+        pattern: /^INFORMATION\s+SCIENCE$/i,
+        canonical: CANONICAL_COURSES.ISE
+    },
+    {
+        pattern: /^ELECTRONICS\s*&\s*COMMUNICATION$/i,
+        canonical: CANONICAL_COURSES.ECE
+    },
+
     // Computer Science and Engineering (all variations)
     {
         pattern: /^(CS\s+)?COMPUTER\s+SCIENCE\s+(AND|&)?\s*ENGINEERING$/i,
@@ -84,6 +110,10 @@ const COURSE_PATTERNS: Array<{ pattern: RegExp; canonical: string }> = [
     },
     {
         pattern: /^DATA\s+SCIENCE/i,
+        canonical: CANONICAL_COURSES.CSE_DS
+    },
+    {
+        pattern: /B\.?\s*TECH\s+IN\s+COMPUTER\s+SCIENCE\s+AND\s+ENGINEERING\s*\(?DATA\s+SCIENCE\)?/i,
         canonical: CANONICAL_COURSES.CSE_DS
     },
 
@@ -153,6 +183,16 @@ const COURSE_PATTERNS: Array<{ pattern: RegExp; canonical: string }> = [
     {
         pattern: /^INFORMATION\s+SCIENCE\s+(AND|&)?\s*ENGINEERING$/i,
         canonical: CANONICAL_COURSES.ISE
+    },
+
+    // B.Tech option-entry names without short codes
+    {
+        pattern: /B\.?\s*TECH\s+IN\s+COMPUTER\s+SCIENCE\s+(AND\s+)?ENGINEERING$/i,
+        canonical: CANONICAL_COURSES.CSE
+    },
+    {
+        pattern: /B\.?\s*TECH\s+IN\s+COMPUTER\s+SCIENCE$/i,
+        canonical: CANONICAL_COURSES.CSE
     },
 
     // Information Technology
@@ -240,6 +280,15 @@ export function normalizeCourse(rawCourse: string): string {
     const cleaned = rawCourse
         .replace(/[\r\n]/g, ' ')
         .replace(/\s+/g, ' ')
+        .replace(/\bD\s+ATA\b/gi, 'DATA')
+        .replace(/\bDAT\s+A\b/gi, 'DATA')
+        .replace(/\bARTIFICIA\s+L\b/gi, 'ARTIFICIAL')
+        .replace(/\bARTI\s+FICIAL\b/gi, 'ARTIFICIAL')
+        .replace(/\bARTI\s+FICAL\b/gi, 'ARTIFICIAL')
+        .replace(/\bCOMMUNICATIO\s+N\b/gi, 'COMMUNICATION')
+        .replace(/\bINTERNE\s+T\b/gi, 'INTERNET')
+        .replace(/\bBLO\s+CK\b/gi, 'BLOCK')
+        .replace(/\bCLOU\s+D\b/gi, 'CLOUD')
         .trim();
 
     if (!cleaned) return rawCourse;
