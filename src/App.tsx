@@ -53,6 +53,7 @@ import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
+import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Analytics } from "@vercel/analytics/react";
 
 const ExamAwareCutoffExplorer = () => {
@@ -83,6 +84,7 @@ const App = () => (
             <KonamiEasterEgg />
             <KeyboardShortcutsHUD />
             <DisclaimerBanner />
+            <ResourceLimitModal />
 
             <Routes>
               {/* Standalone pages (no sidebar) */}
