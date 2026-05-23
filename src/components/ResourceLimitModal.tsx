@@ -75,13 +75,22 @@ export const ResourceLimitModal = () => {
     ? location.pathname.slice(0, -1) 
     : location.pathname;
 
-  // Add /donate to allowed paths so user can access the donation page
+  // Set of exact match paths that are lightweight and allowed
+  const allowedExact = new Set([
+    '', '/', '/rank-predictor', '/admin', '/donate',
+    '/daily-challenge', '/cutoff-clash', '/cet-news',
+    '/about', '/privacy', '/terms', '/reviews',
+    '/documents', '/materials', '/info-centre',
+    '/squad-finder', '/metro-mapper', '/bmtc-mapper',
+    '/hidden-gems', '/college-list', '/college-cutoffs'
+  ]);
+
+  // Prefix checks for sub-routes
+  const allowedPrefixes = ['/reviews/', '/college/'];
+
   const isAllowed = 
-    cleanPath === '' || 
-    cleanPath === '/' || 
-    cleanPath === '/rank-predictor' || 
-    cleanPath === '/admin' || 
-    cleanPath === '/donate';
+    allowedExact.has(cleanPath) || 
+    allowedPrefixes.some(prefix => cleanPath.startsWith(prefix));
 
   // If path is allowed or already unlocked, do not show the blocking overlay
   if (isAllowed || unlocked) return null;
@@ -251,6 +260,27 @@ export const ResourceLimitModal = () => {
           <p className="text-[10px] text-muted-foreground/60 mt-2 leading-relaxed">
             Enter the beta access key to bypass the temporary service block and test early features.
           </p>
+
+          <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-white/5">
+            <span className="text-[10px] text-muted-foreground self-center">Don't have a key?</span>
+            <a 
+              href="https://discord.gg/QZcjtJKjYJ" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 hover:underline transition-all"
+            >
+              Request on Discord →
+            </a>
+            <span className="text-[10px] text-muted-foreground/45 self-center">•</span>
+            <a 
+              href="https://www.reddit.com/user/Elegant_Compote9073/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-orange-400 hover:text-orange-300 hover:underline transition-all"
+            >
+              Reddit DM Developer →
+            </a>
+          </div>
         </div>
 
         {/* Resource Usage Dashboard */}
