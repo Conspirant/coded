@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -11,6 +11,9 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type AppSettings } from '@/lib/settings'
 import { SidebarHint } from './SidebarHint'
 import { useExamMode } from "@/contexts/ExamModeContext"
+import { Input } from "@/components/ui/input"
+import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState } from "@/lib/unlock"
+import { toast } from "sonner"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -20,6 +23,37 @@ export function Layout({ children }: LayoutProps) {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings)
   const [open, setOpen] = useState(false)
   const { examMode, setExamMode } = useExamMode()
+  const [unlocked, setUnlocked] = useState(isUnlocked)
+  const [settingsKey, setSettingsKey] = useState("")
+  const [showSettingsKey, setShowSettingsKey] = useState(false)
+
+  useEffect(() => {
+    return subscribeToUnlockState(setUnlocked)
+  }, [])
+
+  const handleSettingsUnlock = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!settingsKey.trim()) {
+      toast.error("Please enter an access key.")
+      return
+    }
+    const success = validateAndUnlock(settingsKey)
+    if (success) {
+      toast.success("Successfully unlocked all premium features!", {
+        description: "You now have full access to early tools."
+      })
+      setSettingsKey("")
+    } else {
+      toast.error("Invalid access key. Please try again.")
+    }
+  }
+
+  const handleLockFeatures = () => {
+    lockFeatures()
+    toast.info("All premium features are now locked.", {
+      description: "Access restriction has been re-enabled."
+    })
+  }
 
   useEffect(() => {
     const s = loadSettings()
@@ -206,6 +240,64 @@ export function Layout({ children }: LayoutProps) {
                           </SelectContent>
                         </Select>
                       </div>
+                    </div>
+
+                    {/* Access Key Section */}
+                    <div className="border-t border-white/5 pt-4 mt-2">
+                      <Label className="text-sm font-semibold text-slate-200 block mb-2">Access Key Configuration</Label>
+                      {unlocked ? (
+                        <div className="flex items-center justify-between rounded-xl p-3 bg-emerald-500/5 border border-emerald-500/10">
+                          <div className="flex items-center gap-2">
+                            <div className="p-1 rounded-full bg-emerald-500/10">
+                              <CheckCircle className="h-4 w-4 text-emerald-400 animate-pulse" />
+                            </div>
+                            <div>
+                              <span className="text-xs font-bold text-emerald-400 block">Premium Access Active</span>
+                              <span className="text-[10px] text-muted-foreground">All features unlocked.</span>
+                            </div>
+                          </div>
+                          <Button 
+                            onClick={handleLockFeatures} 
+                            variant="outline" 
+                            size="sm" 
+                            className="h-8 text-xs border-rose-500/20 text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 rounded-lg shrink-0"
+                          >
+                            <Lock className="h-3 w-3 mr-1" />
+                            Lock Features
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <form onSubmit={handleSettingsUnlock} className="flex gap-2">
+                            <div className="relative flex-1">
+                              <Input
+                                type={showSettingsKey ? "text" : "password"}
+                                placeholder="Enter Access Key..."
+                                value={settingsKey}
+                                onChange={(e) => setSettingsKey(e.target.value)}
+                                className="bg-white/5 border-white/10 focus:border-amber-500/50 rounded-lg h-9 text-xs font-mono pr-8 shadow-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setShowSettingsKey(!showSettingsKey)}
+                                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                              >
+                                {showSettingsKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                              </button>
+                            </div>
+                            <Button
+                              type="submit"
+                              className="bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs h-9 px-3 rounded-lg shadow-sm flex items-center gap-1 shrink-0"
+                            >
+                              <Unlock className="h-3.5 w-3.5" />
+                              Unlock
+                            </Button>
+                          </form>
+                          <p className="text-[10px] text-muted-foreground">
+                            Unlock the College Predictor, AI Counselor, and other tools early.
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </DialogContent>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   AlertTriangle, 
@@ -16,16 +16,59 @@ import {
   ChevronUp,
   MessageSquare,
   Home,
-  Heart
+  Heart,
+  Key,
+  Eye,
+  EyeOff,
+  Unlock,
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
+import { isUnlocked, validateAndUnlock, subscribeToUnlockState } from '@/lib/unlock';
+import { toast } from 'sonner';
 
 export const ResourceLimitModal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showDetailedMetrics, setShowDetailedMetrics] = useState(false);
+  const [unlocked, setUnlocked] = useState(isUnlocked);
+  const [accessKeyInput, setAccessKeyInput] = useState('');
+  const [showKey, setShowKey] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+
+  useEffect(() => {
+    return subscribeToUnlockState(setUnlocked);
+  }, []);
+
+  const handleUnlockSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg('');
+    setSuccessMsg('');
+
+    if (!accessKeyInput.trim()) {
+      setErrorMsg('Please enter an access key.');
+      return;
+    }
+
+    const success = validateAndUnlock(accessKeyInput);
+    if (success) {
+      setSuccessMsg('Access granted! Unlocking features...');
+      toast.success('Successfully unlocked all premium features!', {
+        description: 'You now have full access to early tools.'
+      });
+      setAccessKeyInput('');
+    } else {
+      setErrorMsg('Invalid access key. Please check and try again.');
+      toast.error('Unlock failed', {
+        description: 'The access key you entered is incorrect.'
+      });
+    }
+  };
 
   // Define allowed paths
   const cleanPath = location.pathname.endsWith('/') && location.pathname.length > 1 
@@ -40,8 +83,8 @@ export const ResourceLimitModal = () => {
     cleanPath === '/admin' || 
     cleanPath === '/donate';
 
-  // If path is allowed, do not show the blocking overlay
-  if (isAllowed) return null;
+  // If path is allowed or already unlocked, do not show the blocking overlay
+  if (isAllowed || unlocked) return null;
 
   // Resource metrics based on user image
   const primaryMetrics = [
@@ -138,6 +181,76 @@ export const ResourceLimitModal = () => {
               <strong>Resource Management Note:</strong> The primary objective of temporarily suspending these services is to prevent unnecessary consumption of our hosted server resources prior to the active counselling period. If you require early access to specific features, please feel free to reach out to the developer. Thank you for your support and understanding.
             </p>
           </div>
+        </div>
+
+        {/* Access Key Section */}
+        <div className="bg-white/[0.02] border border-white/10 hover:border-amber-500/25 transition-all duration-300 rounded-xl p-4 sm:p-5 mb-6 relative z-10 shadow-lg shadow-black/40">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-1 rounded-md bg-amber-500/10">
+              <Key className="h-4 w-4 text-amber-400 animate-pulse" />
+            </div>
+            <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+              Unlock Blocked Features
+            </span>
+          </div>
+          
+          <form onSubmit={handleUnlockSubmit} className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                type={showKey ? "text" : "password"}
+                placeholder="Enter Access Key..."
+                value={accessKeyInput}
+                onChange={(e) => {
+                  setAccessKeyInput(e.target.value);
+                  if (errorMsg) setErrorMsg('');
+                }}
+                className="bg-black/40 border-white/15 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl h-10 pr-10 font-mono text-sm placeholder:font-sans transition-all shadow-none w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowKey(!showKey)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+              >
+                {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+            <Button
+              type="submit"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-black font-bold text-xs h-10 px-4 rounded-xl shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 transition-all flex items-center gap-1.5 shrink-0"
+            >
+              <Unlock className="h-3.5 w-3.5" />
+              Unlock
+            </Button>
+          </form>
+          
+          <AnimatePresence>
+            {errorMsg && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-[11px] text-rose-400 mt-2 font-medium flex items-center gap-1"
+              >
+                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
+                {errorMsg}
+              </motion.p>
+            )}
+            {successMsg && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-[11px] text-emerald-400 mt-2 font-medium flex items-center gap-1 animate-pulse"
+              >
+                <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                {successMsg}
+              </motion.p>
+            )}
+          </AnimatePresence>
+          
+          <p className="text-[10px] text-muted-foreground/60 mt-2 leading-relaxed">
+            Enter the beta access key to bypass the temporary service block and test early features.
+          </p>
         </div>
 
         {/* Resource Usage Dashboard */}
