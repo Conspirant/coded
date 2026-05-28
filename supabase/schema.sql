@@ -233,3 +233,23 @@ CREATE POLICY "Anyone can delete pyq_questions" ON public.pyq_questions FOR DELE
 CREATE INDEX IF NOT EXISTS idx_pyq_chapter ON public.pyq_questions(chapter_number);
 CREATE INDEX IF NOT EXISTS idx_pyq_year    ON public.pyq_questions(year);
 CREATE INDEX IF NOT EXISTS idx_pyq_subject ON public.pyq_questions(subject);
+
+-- ━━━ USER SUGGESTIONS ━━━
+
+CREATE TABLE IF NOT EXISTS public.user_suggestions (
+    id          UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    suggestion  TEXT NOT NULL,
+    created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.user_suggestions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Anyone can insert suggestions" ON public.user_suggestions;
+CREATE POLICY "Anyone can insert suggestions" ON public.user_suggestions FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone can view suggestions" ON public.user_suggestions;
+CREATE POLICY "Anyone can view suggestions" ON public.user_suggestions FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Anyone can delete suggestions" ON public.user_suggestions;
+CREATE POLICY "Anyone can delete suggestions" ON public.user_suggestions FOR DELETE USING (true);
+

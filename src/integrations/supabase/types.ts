@@ -562,6 +562,24 @@ export type Database = {
         }
         Relationships: []
       }
+      user_suggestions: {
+        Row: {
+          id: string
+          suggestion: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          suggestion: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          suggestion?: string
+          created_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

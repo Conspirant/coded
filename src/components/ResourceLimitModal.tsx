@@ -30,6 +30,8 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isUnlocked, validateAndUnlock, subscribeToUnlockState } from '@/lib/unlock';
 import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
+import { AdminSuggestionsService } from '@/lib/admin-suggestions-service';
 
 export const ResourceLimitModal = () => {
   const location = useLocation();
@@ -44,6 +46,39 @@ export const ResourceLimitModal = () => {
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked);
   }, []);
+
+  const [suggestionInput, setSuggestionInput] = useState('');
+  const [isSubmittingSuggestion, setIsSubmittingSuggestion] = useState(false);
+  const [suggestionError, setSuggestionError] = useState('');
+  const [suggestionSuccess, setSuggestionSuccess] = useState('');
+
+  const handleSuggestionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSuggestionError('');
+    setSuggestionSuccess('');
+
+    if (!suggestionInput.trim()) {
+      setSuggestionError('Please enter a suggestion or doubt.');
+      return;
+    }
+
+    setIsSubmittingSuggestion(true);
+    const result = await AdminSuggestionsService.addSuggestion(suggestionInput.trim());
+    setIsSubmittingSuggestion(false);
+
+    if (result.success) {
+      setSuggestionSuccess('Thank you! Your message has been sent to the admin dashboard.');
+      toast.success('Submitted successfully!', {
+        description: 'Thank you for your feedback!'
+      });
+      setSuggestionInput('');
+    } else {
+      setSuggestionError(result.error || 'Failed to submit. Please try again.');
+      toast.error('Submission failed', {
+        description: 'An error occurred while saving your suggestion.'
+      });
+    }
+  };
 
   const handleUnlockSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,10 +201,10 @@ export const ResourceLimitModal = () => {
           </div>
           <div className="space-y-1">
             <Badge variant="outline" className="border-amber-500/30 text-amber-400 bg-amber-500/5 font-semibold text-[9px] sm:text-[10px] tracking-wider uppercase px-2.5 py-0.5">
-              Service Notice: Resource Limit Approaching
+              Service Notice: Hosting Resources Normalizing
             </Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white mt-1">
-              Temporary Feature Suspension
+              Hosting Status & Launch Update
             </h2>
           </div>
         </div>
@@ -177,19 +212,85 @@ export const ResourceLimitModal = () => {
         {/* Explanatory Description */}
         <div className="text-xs sm:text-sm text-slate-300 leading-relaxed text-center space-y-3 mb-6 max-w-xl mx-auto relative z-10">
           <p className="font-semibold text-slate-200">
-            We sincerely apologize for any inconvenience caused.
+            THANK YOU TO ALL THE USERS FOR THEIR PATIENCE.
           </p>
           <p>
-            Secondary features, including the <strong>College Predictor</strong> (College Finder), the <strong>AI Counselor</strong>, and other tools, will be fully reactivated and made available once the official results are declared or the counselling phase begins.
+            We are pleased to inform you that our hosting server resources are currently returning to normal. We sincerely thank every single one of you for showing interest in using our website, whether it is the <strong>College Predictor (College by Rank)</strong>, the <strong>Rank Predictor</strong>, or any other feature.
           </p>
-          <p className="text-amber-200/90 font-semibold">
-            Currently, only the <strong className="text-white underline decoration-amber-400 decoration-2 underline-offset-4">Rank Predictor</strong> remains active and fully operational.
+          <p>
+            This project took approximately 12 months and the orchestration of around 20 machine learning models to take shape, and we are overwhelmed by the number of people showing interest by requesting access keys. We are extremely grateful for your response and are dedicated to continuing this project, even though visitor traffic temporarily reduced following the shutdown.
+          </p>
+          <p className="text-amber-200/95 font-semibold">
+            Rest assured, the website will be fully functional and open to all aspirants from Monday, 01/06/2026 (June 1st, 2026).
           </p>
           <div className="text-[11px] sm:text-xs text-slate-300/90 bg-white/[0.02] border border-white/5 rounded-lg p-3.5 mt-3 text-left">
             <p className="text-center sm:text-left leading-relaxed">
-              <strong>Resource Management Note:</strong> The primary objective of temporarily suspending these services is to prevent unnecessary consumption of our hosted server resources prior to the active counselling period. If you require early access to specific features, please feel free to reach out to the developer. Thank you for your support and understanding.
+              Until then, users with an active access key can continue to use and test the features, which grants our team the valuable time needed to optimize the platform. If you need an access key, please do contact us—we try to reply as quickly as possible.
             </p>
           </div>
+        </div>
+
+        {/* Suggestions & Doubts Input Section */}
+        <div className="bg-white/[0.02] border border-white/10 hover:border-indigo-500/25 transition-all duration-300 rounded-xl p-4 sm:p-5 mb-6 relative z-10 shadow-lg shadow-black/40">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="p-1 rounded-md bg-indigo-500/10">
+              <MessageSquare className="h-4 w-4 text-indigo-400 animate-pulse" />
+            </div>
+            <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+              Suggestions & Doubts
+            </span>
+          </div>
+
+          <p className="text-[11px] sm:text-xs text-slate-300/90 mb-3 text-left leading-relaxed">
+            Until the official publication, if you have any suggestions, improvements, or doubts, please write them below. Your feedback will be sent directly to our admin dashboard.
+          </p>
+          
+          <form onSubmit={handleSuggestionSubmit} className="space-y-3">
+            <Textarea
+              placeholder="Write your suggestion or doubt here..."
+              value={suggestionInput}
+              onChange={(e) => {
+                setSuggestionInput(e.target.value);
+                if (suggestionError) setSuggestionError('');
+              }}
+              className="bg-black/40 border-white/15 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl min-h-[90px] text-sm placeholder:text-muted-foreground/60 transition-all resize-none shadow-none w-full"
+            />
+            
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                disabled={isSubmittingSuggestion}
+                className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-xs h-9 px-4 rounded-xl shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center gap-1.5 shrink-0"
+              >
+                {isSubmittingSuggestion ? 'Submitting...' : 'Submit Message'}
+              </Button>
+            </div>
+          </form>
+          
+          <AnimatePresence>
+            {suggestionError && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-[11px] text-rose-400 mt-2 font-medium flex items-center gap-1"
+              >
+                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
+                {suggestionError}
+              </motion.p>
+            )}
+            {suggestionSuccess && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="text-[11px] text-emerald-400 mt-2 font-medium flex items-center gap-1 animate-pulse"
+              >
+                <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                {suggestionSuccess}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Access Key Section */}

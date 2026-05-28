@@ -22,6 +22,7 @@ import AdminCutoffsPage from "./AdminCutoffs"
 import AdminReviewModeration from "@/components/AdminReviewModeration"
 import AdminFeedbackView from "@/components/AdminFeedbackView"
 import AdminFeatureRequestsView from "@/components/AdminFeatureRequestsView"
+import AdminSuggestionsView from "@/components/AdminSuggestionsView"
 import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 
 const ADMIN_PASS = "kcetadmin2026"
@@ -772,6 +773,7 @@ const ADMIN_SECTIONS = [
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
+    { id: "suggestions", label: "Suggestions & Doubts", icon: ClipboardPaste },
     { id: "features", label: "Feature Requests", icon: Lightbulb },
 ] as const
 
@@ -834,6 +836,7 @@ export default function AdminHub() {
                     {activeSection === "cutoffs" && <AdminCutoffsPage />}
                     {activeSection === "reviews" && <AdminReviewModeration />}
                     {activeSection === "feedback" && <AdminFeedbackView />}
+                    {activeSection === "suggestions" && <AdminSuggestionsView />}
                     {activeSection === "features" && <AdminFeatureRequestsView />}
                 </main>
             </div>
