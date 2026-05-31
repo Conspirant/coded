@@ -223,10 +223,11 @@ export function getEligibleCategories(userCategory: string): string[] {
  */
 function findCutoffsForPreference(
     cutoffs: CutoffData[],
-    preference: PreferenceOption
+    preference: PreferenceOption,
+    prefetchedCollegeCutoffs?: CutoffData[]
 ): CutoffData[] {
     // 1. Filter by College Code first (Most reliable)
-    const collegeCutoffs = cutoffs.filter(c =>
+    const collegeCutoffs = prefetchedCollegeCutoffs ?? cutoffs.filter(c =>
         c.institute_code.toUpperCase() === preference.collegeCode.toUpperCase()
     );
 
@@ -275,9 +276,10 @@ export function checkEligibility(
     userRank: number,
     preference: PreferenceOption,
     preferenceNumber: number,
-    cutoffs: CutoffData[]
+    cutoffs: CutoffData[],
+    prefetchedCollegeCutoffs?: CutoffData[]
 ): EligibilityDetail {
-    const matchedCutoffs = findCutoffsForPreference(cutoffs, preference);
+    const matchedCutoffs = findCutoffsForPreference(cutoffs, preference, prefetchedCollegeCutoffs);
 
     if (matchedCutoffs.length === 0) {
         return {
@@ -320,10 +322,22 @@ function simulateRound(
     let allottedCollege: PreferenceOption | null = null;
     let allottedPreferenceNumber: number | null = null;
     let allottedCutoffRank: number | null = null;
+    const cutoffsByCollege = new Map<string, CutoffData[]>();
+
+    cutoffs.forEach(cutoff => {
+        const key = cutoff.institute_code.toUpperCase();
+        const bucket = cutoffsByCollege.get(key);
+        if (bucket) {
+            bucket.push(cutoff);
+        } else {
+            cutoffsByCollege.set(key, [cutoff]);
+        }
+    });
 
     for (let i = 0; i < preferences.length; i++) {
         const preference = preferences[i];
-        const eligibility = checkEligibility(userRank, preference, i + 1, cutoffs);
+        const collegeCutoffs = cutoffsByCollege.get(preference.collegeCode.toUpperCase()) ?? [];
+        const eligibility = checkEligibility(userRank, preference, i + 1, cutoffs, collegeCutoffs);
         eligibilityDetails.push(eligibility);
 
         // First eligible preference becomes the allotment

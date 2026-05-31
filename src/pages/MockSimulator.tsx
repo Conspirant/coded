@@ -11,8 +11,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Reorder } from "framer-motion"
+import { jsPDF } from "jspdf"
+import autoTable from "jspdf-autotable"
 import {
   Play,
+  FileDown,
   Plus,
   Trash2,
   ArrowUp,
@@ -26,7 +30,11 @@ import {
   TrendingUp,
   GraduationCap,
   Search,
-  Settings
+  Settings,
+  GripVertical,
+  Sparkles,
+  HelpCircle,
+  AlertTriangle
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { loadSettings } from "@/lib/settings"
@@ -52,6 +60,44 @@ interface CutoffResponse {
     auto_detected_courses?: string[]
   }
   cutoffs: CutoffData[]
+}
+
+const COURSE_CODE_RULES: Array<[RegExp, string]> = [
+  [/CYBER\s*SECURITY/i, "CY"],
+  [/DATA\s*SCIENCE|DAT\s*A\s*SCIENCE|D\s*ATA\s*SCIENCE/i, "DS"],
+  [/ARTIFICIAL\s+INTELLIGENCE.*MACHINE\s+LEARNING|ARTIFICIA\s*L\s+INTELLIGENCE.*MACHINE\s+LEARNING|\bAI\s*&?\s*ML\b/i, "AI"],
+  [/ARTIFICIAL\s+INTELLIGENCE/i, "AI"],
+  [/INFORMATION\s+SCIENCE/i, "IS"],
+  [/INFORMATION\s+TECHNOLOGY/i, "IT"],
+  [/ELECTRONICS.*COMMUNICATION|COMMUNICATIO\s*N/i, "EC"],
+  [/ELECTRICAL.*ELECTRONICS/i, "EE"],
+  [/COMPUTER\s+SCIENCE.*ENGINEERING|COMPUTER\s+SCIENCE.*ENGG|\bCS\s+COMPUTERS\b/i, "CS"],
+  [/MECHANICAL/i, "ME"],
+  [/CIVIL/i, "CE"],
+  [/BIO\s*-?\s*TECHNOLOGY|BIOTECH/i, "BT"],
+  [/BIO\s*-?\s*MEDICAL/i, "BM"],
+  [/AERONAUTICAL/i, "AE"],
+  [/AEROSPACE/i, "SE"],
+  [/ROBOTICS/i, "RA"],
+  [/AUTOMOBILE|AUTOMOTIVE/i, "AU"],
+  [/CHEMICAL/i, "CH"],
+]
+
+const COLLEGE_QUALITY_SCORES: Record<string, number> = {
+  E005: 99, // RV College of Engineering
+  E004: 98, // BMS College of Engineering
+  E006: 97, // M S Ramaiah Institute of Technology
+  E023: 96, // PES University
+  E001: 95, // UVCE
+  E021: 93, // JSS / SJCE Mysuru
+  E007: 92, // Bangalore Institute of Technology
+  E011: 91, // Dayananda Sagar College of Engineering
+  E012: 89, // Sir M Visvesvaraya Institute of Technology
+  E013: 88, // NIE Mysuru
+  E019: 87, // Siddaganga Institute of Technology
+  E017: 84, // Sri Siddhartha Institute of Technology
+  E173: 73, // Sai Vidya Institute of Technology
+  E255: 62, // GITAM off-campus Bengaluru
 }
 
 const MockSimulator = () => {
@@ -88,24 +134,320 @@ const MockSimulator = () => {
   const [isCollegeDropdownOpen, setIsCollegeDropdownOpen] = useState(false)
   const [isCourseDropdownOpen, setIsCourseDropdownOpen] = useState(false)
 
+  // Choice Filler state
+  const [isFillerOpen, setIsFillerOpen] = useState(false)
+  const [selectedBranches, setSelectedBranches] = useState<string[]>(["CS & Allied"])
+  const [fillerStrategy, setFillerStrategy] = useState<string>("dream_first")
+  const [fillerLimit, setFillerLimit] = useState<string>("30")
+  const [isGeneratingChoices, setIsGeneratingChoices] = useState(false)
+  const [generationStatus, setGenerationStatus] = useState<string>("")
+  const [generationDetail, setGenerationDetail] = useState<string>("")
+
   // Simulation results
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null)
   const [isSimulating, setIsSimulating] = useState(false)
   const [isResultsOpen, setIsResultsOpen] = useState(false)
+  const requiredProfileMissing = userRank <= 0 || !userCategory || !selectedYear || !selectedRound
+
+  // Choice Filler list generator
+  const generateChoices = async () => {
+    if (requiredProfileMissing) {
+      toast({
+        title: "Complete your rank profile",
+        description: "Enter your rank, then choose category and round to move forward.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    setIsGeneratingChoices(true)
+    setGenerationStatus("Reading your profile")
+    setGenerationDetail(`Rank ${userRank.toLocaleString()} | ${userCategory} | ${selectedYear} ${selectedRound}`)
+
+    const eligibleCats = getEligibleCategories(userCategory)
+    const requestedLimit = Math.max(5, parseInt(fillerLimit, 10) || 5)
+    const getQualityScore = (collegeCode: string, collegeName: string, cutoff: number) => {
+      const codeScore = COLLEGE_QUALITY_SCORES[collegeCode] ?? 0
+      const name = collegeName.toLowerCase()
+      const nameScore =
+        name.includes("autonomous") ? 4 :
+        name.includes("university") ? 3 :
+        name.includes("institute of technology") ? 2 :
+        name.includes("college of engineering") ? 1 : 0
+      const demandProxy = Math.max(0, 30 - Math.log10(Math.max(cutoff, 1)) * 4)
+      return codeScore || Math.round(45 + nameScore + demandProxy)
+    }
+    const getBranchScore = (course: string) => {
+      const normalized = normalizeCourseName(course).toLowerCase()
+      if (normalized.includes("computer science & engineering") || normalized.includes("computer science and engineering")) return 12
+      if (normalized.includes("data science")) return 11
+      if (normalized.includes("ai") || normalized.includes("artificial intelligence") || normalized.includes("machine learning")) return 10
+      if (normalized.includes("information science")) return 9
+      if (normalized.includes("cyber")) return 8
+      if (normalized.includes("electronics")) return 6
+      return 3
+    }
+    const yearCutoffs = cutoffs.filter(c => 
+      c.year === selectedYear && 
+      c.round === selectedRound &&
+      eligibleCats.includes(c.category)
+    )
+    setGenerationStatus("Filtering cutoff records")
+    setGenerationDetail(`Found ${yearCutoffs.length.toLocaleString()} rows for your category fallbacks in ${selectedRound}.`)
+
+    if (yearCutoffs.length === 0) {
+      toast({
+        title: "No Data Available",
+        description: "No cutoff data found for the selected year and category.",
+        variant: "destructive"
+      })
+      setIsGeneratingChoices(false)
+      setGenerationStatus("")
+      setGenerationDetail("")
+      return
+    }
+
+    const choiceMap = new Map<string, {
+      collegeCode: string
+      collegeName: string
+      branchCode: string
+      branchName: string
+      cutoff: number
+      category: string
+      qualityScore: number
+      id: string
+    }>()
+
+    yearCutoffs.forEach(c => {
+      const key = `${c.institute_code}-${c.course}`
+      let matches = false
+      const courseLower = c.course.toLowerCase()
+      
+      if (selectedBranches.includes("CS & Allied")) {
+        if (courseLower.includes("computer") || courseLower.includes("cs") || courseLower.includes("artificial") || 
+            courseLower.includes("data science") || courseLower.includes("information science") || courseLower.includes("ise") || 
+            courseLower.includes("is") || courseLower.includes("cyber") || courseLower.includes("software") || 
+            courseLower.includes("machine learning") || courseLower.includes("ai") || courseLower.includes("ml") || 
+            courseLower.includes("iot")) {
+          matches = true
+        }
+      }
+      if (selectedBranches.includes("Electronics & Electrical")) {
+        if (courseLower.includes("electronics") || courseLower.includes("ec") || courseLower.includes("electrical") || 
+            courseLower.includes("ee") || courseLower.includes("telecommunication") || courseLower.includes("instrumentation") ||
+            courseLower.includes("ei")) {
+          matches = true
+        }
+      }
+      if (selectedBranches.includes("Mechanical & Allied")) {
+        if (courseLower.includes("mechanical") || courseLower.includes("me") || courseLower.includes("aerospace") || 
+            courseLower.includes("aeronautical") || courseLower.includes("automobile") || courseLower.includes("robotics")) {
+          matches = true
+        }
+      }
+      if (selectedBranches.includes("Civil & Allied")) {
+        if (courseLower.includes("civil") || courseLower.includes("cv") || courseLower.includes("environmental")) {
+          matches = true
+        }
+      }
+      if (selectedBranches.includes("Biotech & Allied")) {
+        if (courseLower.includes("biotech") || courseLower.includes("bio") || courseLower.includes("chemical") || courseLower.includes("bt")) {
+          matches = true
+        }
+      }
+
+      if (!matches) return
+
+      const existing = choiceMap.get(key)
+      if (!existing || c.cutoff_rank > existing.cutoff) {
+        choiceMap.set(key, {
+          collegeCode: c.institute_code,
+          collegeName: c.institute,
+          branchCode: c.course,
+          branchName: normalizeCourseName(c.course),
+          cutoff: c.cutoff_rank,
+          category: c.category,
+          qualityScore: getQualityScore(c.institute_code, c.institute, c.cutoff_rank),
+          id: `${c.institute_code}-${c.course}`.replace(/\s+/g, ' ')
+        })
+      }
+    })
+
+    const allChoices = Array.from(choiceMap.values())
+    setGenerationStatus("Building candidate pool")
+    setGenerationDetail(`Matched ${allChoices.length.toLocaleString()} college-course options for ${selectedBranches.join(", ")}.`)
+
+    if (allChoices.length === 0) {
+      toast({
+        title: "No Matching Options",
+        description: "No options found matching your selected branch categories.",
+        variant: "destructive"
+      })
+      setIsGeneratingChoices(false)
+      setGenerationStatus("")
+      setGenerationDetail("")
+      return
+    }
+
+    const byQualityThenCutoff = (a: typeof allChoices[number], b: typeof allChoices[number]) => (
+      b.qualityScore - a.qualityScore || a.cutoff - b.cutoff
+    )
+    let selectedChoices = allChoices
+
+    if (fillerStrategy === "dream_first") {
+      setGenerationStatus("Ranking by quality tiers")
+      setGenerationDetail("Sorting dream, realistic, and safer backups by college strength and cutoff fit.")
+      const limit = requestedLimit
+      const dreamChoices = allChoices
+        .filter(choice => choice.cutoff < userRank)
+        .sort(byQualityThenCutoff)
+      const realisticChoices = allChoices
+        .filter(choice => choice.cutoff >= userRank)
+        .sort(byQualityThenCutoff)
+      const saferChoices = allChoices
+        .filter(choice => choice.cutoff >= userRank + 15000)
+        .sort(byQualityThenCutoff)
+      const closestChoices = [...allChoices].sort((a, b) => (
+        Math.abs(a.cutoff - userRank) - Math.abs(b.cutoff - userRank) ||
+        b.qualityScore - a.qualityScore
+      ))
+      const picked = new Map<string, typeof allChoices[number]>()
+      const addChoices = (choices: typeof allChoices, targetSize: number) => {
+        choices.forEach(choice => {
+          if (picked.size >= targetSize) return
+          picked.set(`${choice.collegeCode}-${choice.branchCode}`, choice)
+        })
+      }
+
+      const dreamCount = Math.min(Math.max(6, Math.floor(limit * 0.35)), Math.max(0, limit - 1))
+      const safeCount = Math.min(Math.max(5, Math.floor(limit * 0.15)), saferChoices.length)
+      addChoices(dreamChoices, dreamCount)
+      addChoices(realisticChoices, Math.max(dreamCount, limit - safeCount))
+      addChoices(saferChoices, limit)
+      addChoices(closestChoices, limit)
+      selectedChoices = Array.from(picked.values())
+    } else if (fillerStrategy === "probability_centric") {
+      setGenerationStatus("Ranking realistic choices")
+      setGenerationDetail("Putting reachable colleges first, then sorting by college quality and cutoff distance.")
+      const eligible = allChoices
+        .filter(choice => choice.cutoff >= userRank)
+        .sort((a, b) => b.qualityScore - a.qualityScore || Math.abs(a.cutoff - userRank) - Math.abs(b.cutoff - userRank))
+      const missed = allChoices
+        .filter(choice => choice.cutoff < userRank)
+        .sort((a, b) => b.qualityScore - a.qualityScore || Math.abs(a.cutoff - userRank) - Math.abs(b.cutoff - userRank))
+      selectedChoices = [...eligible, ...missed]
+    } else if (fillerStrategy === "ai_lister") {
+      setGenerationStatus("Preparing AI candidate shortlist")
+      setGenerationDetail("Creating a compact shortlist with college, branch, cutoff, and quality signals.")
+      const localAiOrder = [...allChoices].sort((a, b) => {
+        const score = (choice: typeof allChoices[number]) => {
+          const cutoffFit = choice.cutoff >= userRank
+            ? Math.max(0, 24 - Math.abs(choice.cutoff - userRank) / 4000)
+            : Math.max(-20, (choice.cutoff - userRank) / 2500)
+          return choice.qualityScore * 12 + getBranchScore(choice.branchName) * 5 + cutoffFit
+        }
+        return score(b) - score(a)
+      })
+      selectedChoices = localAiOrder
+
+      try {
+        const aiPool = localAiOrder.slice(0, Math.max(80, Math.min(localAiOrder.length, requestedLimit * 2)))
+        setGenerationStatus("Asking Nemotron AI")
+        setGenerationDetail(`Sending ${aiPool.length.toLocaleString()} shortlisted options for placement/infra/faculty-aware ordering.`)
+        const response = await fetch('/api/ai-lister', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            rank: userRank,
+            category: userCategory,
+            year: selectedYear,
+            round: selectedRound,
+            branches: selectedBranches,
+            limit: Math.min(requestedLimit, aiPool.length),
+            candidates: aiPool.map(choice => ({
+              id: choice.id,
+              collegeCode: choice.collegeCode,
+              collegeName: choice.collegeName,
+              branchName: choice.branchName,
+              cutoff: choice.cutoff,
+              category: choice.category,
+              qualityScore: choice.qualityScore,
+            })),
+          }),
+        })
+
+        if (response.ok) {
+          setGenerationStatus("Reading AI response")
+          setGenerationDetail("Validating the AI order and merging any missing backup options.")
+          const data = await response.json() as { orderedIds?: string[] }
+          const aiIds = Array.isArray(data.orderedIds) ? data.orderedIds : []
+          const byId = new Map(aiPool.map(choice => [choice.id, choice]))
+          const used = new Set<string>()
+          const aiChoices = aiIds
+            .map(id => byId.get(id))
+            .filter((choice): choice is typeof aiPool[number] => {
+              if (!choice?.id || used.has(choice.id)) return false
+              used.add(choice.id)
+              return true
+            })
+          selectedChoices = [...aiChoices, ...localAiOrder.filter(choice => !choice.id || !used.has(choice.id))]
+        } else {
+          setGenerationStatus("Using local fallback")
+          setGenerationDetail("Nemotron did not respond successfully, so the local quality model is finishing the list.")
+          toast({
+            title: "AI Lister fallback used",
+            description: "Nemotron was unavailable, so the local quality model created the list.",
+          })
+        }
+      } catch {
+        setGenerationStatus("Using local fallback")
+        setGenerationDetail("Nemotron could not be reached, so the local quality model is finishing the list.")
+        toast({
+          title: "AI Lister fallback used",
+          description: "Nemotron could not be reached, so the local quality model created the list.",
+        })
+      }
+    }
+
+    setGenerationStatus("Applying generated list")
+    setGenerationDetail(`Adding ${Math.min(requestedLimit, selectedChoices.length).toLocaleString()} options to your sheet.`)
+    const finalChoices = selectedChoices.slice(0, requestedLimit)
+    const newPrefs: PreferenceOption[] = finalChoices.map((c, idx) => ({
+      id: `pref-filler-${Date.now()}-${idx}`,
+      collegeCode: c.collegeCode,
+      branchCode: c.branchCode,
+      collegeName: c.collegeName,
+      branchName: c.branchName,
+      priority: idx + 1
+    }))
+
+    setPreferences(newPrefs)
+    setPreferencePage(1)
+    setIsFillerOpen(false)
+
+    toast({
+      title: "Priority Options Generated! ⚡",
+      description: `Auto-generated ${newPrefs.length} choices for ${selectedRound}, with realistic and safer backups included.`
+    })
+    setIsGeneratingChoices(false)
+    setGenerationStatus("")
+    setGenerationDetail("")
+  }
 
   const getCourseCode = (course: string) => {
     const cleaned = (course || '').replace(/[\r\n]/g, ' ').replace(/\s+/g, ' ').trim()
-    const codeMatch = cleaned.match(/^([A-Z]{2})[\s-]/)
+    const codeMatch = cleaned.match(/^([A-Z]{2})(?:\s|-)/)
     if (codeMatch) return codeMatch[1]
-    if (/^[A-Z]{2,3}$/.test(cleaned)) return cleaned
-    return cleaned.slice(0, 3).toUpperCase()
+    if (/^[A-Z]{2}$/.test(cleaned)) return cleaned
+    const rule = COURSE_CODE_RULES.find(([pattern]) => pattern.test(cleaned))
+    return rule?.[1] ?? ""
   }
 
   const getCollegeCourseCode = (pref: PreferenceOption) => {
-    if (pref.collegeCourse) return pref.collegeCourse
+    if (pref.collegeCourse && !/[A-Z]\d{3}[A-Z]{3,}/.test(pref.collegeCourse)) return pref.collegeCourse
     const college = (pref.collegeCode || '').replace(/\s+/g, '').toUpperCase()
     const course = getCourseCode(pref.branchCode || pref.branchName)
-    return `${college}${course}`
+    return course ? `${college}${course}` : college
   }
 
   const branchesByCollege = useMemo(() => {
@@ -113,6 +455,7 @@ const MockSimulator = () => {
     const dedupe = new Map<string, Set<string>>()
 
     cutoffs.forEach(cutoff => {
+      if (selectedYear && cutoff.year !== selectedYear) return
       const code = cutoff.institute_code
       if (!code || !cutoff.course) return
 
@@ -131,11 +474,34 @@ const MockSimulator = () => {
     })
 
     return branchMap
-  }, [cutoffs])
+  }, [cutoffs, selectedYear])
 
   const eligibleCategories = useMemo(() => (
     userCategory ? getEligibleCategories(userCategory) : []
   ), [userCategory])
+
+  const totalPreferencePages = Math.max(1, Math.ceil(preferences.length / preferencePageSize))
+  const preferencePageStart = (preferencePage - 1) * preferencePageSize
+  const visiblePreferences = useMemo(
+    () => preferences.slice(preferencePageStart, preferencePageStart + preferencePageSize),
+    [preferences, preferencePageStart, preferencePageSize]
+  )
+
+  const reorderVisiblePreferences = (newVisibleOrder: PreferenceOption[]) => {
+    const updated = [...preferences]
+    updated.splice(preferencePageStart, newVisibleOrder.length, ...newVisibleOrder)
+    setPreferences(updated.map((p, i) => ({ ...p, priority: i + 1 })))
+  }
+
+  const pdfPreferenceRows = useMemo(() => (
+    preferences.map(pref => [
+      pref.priority.toString(),
+      getCollegeCourseCode(pref),
+      normalizeCourseName(pref.branchName || pref.branchCode),
+      pref.collegeName,
+      pref.courseFee && pref.courseFee !== 'Not specified' ? pref.courseFee : 'Not listed'
+    ])
+  ), [preferences])
 
   const safetyCutoffs = useMemo(() => (
     cutoffs.filter(cutoff =>
@@ -147,6 +513,60 @@ const MockSimulator = () => {
   const simulationCutoffs = useMemo(() => (
     selectedYear ? cutoffs.filter(cutoff => cutoff.year === selectedYear) : cutoffs
   ), [cutoffs, selectedYear])
+
+  // Priority warnings for strategic choice filling order
+  const priorityWarnings = useMemo(() => {
+    const warnings = new Map<string, string>()
+    if (visiblePreferences.length < 2) return warnings
+
+    const prefCutoffs = visiblePreferences.map(pref => {
+      const collegeCutoffs = cutoffs.filter(c => 
+        c.institute_code.toUpperCase() === pref.collegeCode.toUpperCase() &&
+        c.year === selectedYear &&
+        eligibleCategories.includes(c.category)
+      )
+      
+      let matchedCutoff: number | null = null
+      if (collegeCutoffs.length > 0) {
+        const cleanPrefCourse = (pref.branchCode || pref.branchName).toLowerCase().replace(/[^a-z0-9]/g, '')
+        const matched = collegeCutoffs.filter(c => {
+          const cleanCutoffCourse = c.course.toLowerCase().replace(/[^a-z0-9]/g, '')
+          return cleanCutoffCourse.includes(cleanPrefCourse) || cleanPrefCourse.includes(cleanCutoffCourse)
+        })
+        if (matched.length > 0) {
+          matchedCutoff = Math.max(...matched.map(c => c.cutoff_rank))
+        } else {
+          matchedCutoff = Math.max(...collegeCutoffs.map(c => c.cutoff_rank))
+        }
+      }
+
+      return {
+        id: pref.id,
+        collegeName: pref.collegeName,
+        branchName: pref.branchName,
+        cutoff: matchedCutoff
+      }
+    })
+
+    for (let i = 0; i < prefCutoffs.length; i++) {
+      const itemI = prefCutoffs[i]
+      if (itemI.cutoff === null) continue
+
+      for (let j = i + 1; j < prefCutoffs.length; j++) {
+        const itemJ = prefCutoffs[j]
+        if (itemJ.cutoff === null) continue
+
+        if (itemJ.cutoff < itemI.cutoff - 1500) {
+          warnings.set(
+            itemJ.id,
+            `Strategic alert: this option has a harder historical cutoff (${itemJ.cutoff.toLocaleString()}) than option #${preferencePageStart + i + 1} (${itemI.collegeName} - ${itemI.branchName}, cutoff ${itemI.cutoff.toLocaleString()}). If you prefer this college/course, move it above the easier option so higher-priority allotment chances are not wasted. Keep easier backup choices below it.`
+          )
+        }
+      }
+    }
+
+    return warnings
+  }, [visiblePreferences, cutoffs, selectedYear, eligibleCategories, preferencePageStart])
 
   // Update available rounds when year changes
   useEffect(() => {
@@ -329,13 +749,6 @@ const MockSimulator = () => {
     }).slice(0, 30)
   }, [availableBranches, courseSearch, newCollegeCode])
 
-  const totalPreferencePages = Math.max(1, Math.ceil(preferences.length / preferencePageSize))
-  const preferencePageStart = (preferencePage - 1) * preferencePageSize
-  const visiblePreferences = useMemo(
-    () => preferences.slice(preferencePageStart, preferencePageStart + preferencePageSize),
-    [preferences, preferencePageStart, preferencePageSize]
-  )
-
   useEffect(() => {
     if (preferencePage > totalPreferencePages) {
       setPreferencePage(totalPreferencePages)
@@ -421,6 +834,15 @@ const MockSimulator = () => {
 
   // Run simulation
   const runSimulation = () => {
+    if (requiredProfileMissing) {
+      toast({
+        title: "Complete your rank profile",
+        description: "Enter your rank, then choose category and round to move forward.",
+        variant: "destructive"
+      })
+      return
+    }
+
     if (preferences.length === 0) {
       toast({
         title: "No Preferences",
@@ -519,6 +941,140 @@ const MockSimulator = () => {
     }
     : simulationResult?.summary.bestOutcome
 
+  const downloadSimulationPdf = () => {
+    if (preferences.length === 0) {
+      toast({
+        title: "No options to export",
+        description: "Add preferences or generate choices before downloading the PDF.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    const doc = new jsPDF({ orientation: "landscape" })
+    const pageWidth = doc.internal.pageSize.getWidth()
+    const pageHeight = doc.internal.pageSize.getHeight()
+    const now = new Date()
+    const selectedRoundResult = simulationResult?.roundResults.find(r => r.round === selectedRound)
+    const selectedOutcome = selectedRoundResult?.allottedCollege
+    const bestOutcome = simulationResult?.summary.bestOutcome
+
+    const addFooter = () => {
+      const pages = doc.getNumberOfPages()
+      for (let page = 1; page <= pages; page += 1) {
+        doc.setPage(page)
+        doc.setFontSize(8)
+        doc.setTextColor(115, 123, 140)
+        doc.text("KCET Coded Mock Simulator - verify final decisions with official KEA data.", 14, pageHeight - 9)
+        doc.text(`Page ${page} of ${pages}`, pageWidth - 36, pageHeight - 9)
+      }
+    }
+
+    doc.setFillColor(20, 25, 43)
+    doc.rect(0, 0, pageWidth, 42, "F")
+    doc.setFillColor(99, 102, 241)
+    doc.roundedRect(14, 10, 42, 8, 4, 4, "F")
+    doc.setFillColor(14, 165, 233)
+    doc.roundedRect(50, 10, 30, 8, 4, 4, "F")
+    doc.setTextColor(255, 255, 255)
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(23)
+    doc.text("KCET Mock Allotment Report", 14, 27)
+    doc.setFont("helvetica", "normal")
+    doc.setFontSize(9)
+    doc.text(`Generated ${now.toLocaleDateString()} ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`, pageWidth - 78, 16)
+    doc.text("Desktop mode recommended for editing large option lists.", pageWidth - 96, 24)
+
+    const cardY = 52
+    const cards = [
+      ["Rank", userRank > 0 ? userRank.toLocaleString() : "Not set"],
+      ["Category", userCategory || "Not set"],
+      ["Year / Round", `${selectedYear || "Not set"} / ${selectedRound || "Not set"}`],
+      ["Options", preferences.length.toLocaleString()]
+    ]
+
+    cards.forEach(([label, value], index) => {
+      const x = 14 + index * 68
+      doc.setFillColor(index === 0 ? 238 : 248, index === 0 ? 242 : 250, index === 0 ? 255 : 252)
+      doc.roundedRect(x, cardY, 58, 24, 3, 3, "F")
+      doc.setTextColor(90, 97, 117)
+      doc.setFontSize(8)
+      doc.setFont("helvetica", "bold")
+      doc.text(label, x + 5, cardY + 8)
+      doc.setTextColor(20, 25, 43)
+      doc.setFontSize(13)
+      doc.text(value, x + 5, cardY + 18)
+    })
+
+    doc.setFillColor(selectedOutcome ? 220 : bestOutcome ? 235 : 254, selectedOutcome ? 252 : bestOutcome ? 245 : 226, selectedOutcome ? 231 : bestOutcome ? 255 : 226)
+    doc.roundedRect(14, 85, pageWidth - 28, 27, 3, 3, "F")
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(12)
+    doc.setTextColor(20, 25, 43)
+    doc.text(selectedOutcome ? `${selectedRound} Outcome` : bestOutcome ? "Best Possible Outcome" : "No Seat Allotted Yet", 20, 96)
+    doc.setFont("helvetica", "normal")
+    doc.setFontSize(9)
+    const outcomeText = selectedOutcome
+      ? `${selectedOutcome.collegeName} - ${normalizeCourseName(selectedOutcome.branchName || selectedOutcome.branchCode)}`
+      : bestOutcome
+        ? `${bestOutcome.college.collegeName} - ${normalizeCourseName(bestOutcome.college.branchName || bestOutcome.college.branchCode)}`
+        : simulationResult
+          ? "No option matched historical cutoff data for this profile."
+          : "Run the simulation to include round-wise allotment results."
+    doc.text(doc.splitTextToSize(outcomeText, pageWidth - 44), 20, 105)
+
+    autoTable(doc, {
+      startY: 122,
+      head: [["Opt", "College Course", "Course", "College", "Fee"]],
+      body: pdfPreferenceRows,
+      theme: "striped",
+      headStyles: { fillColor: [99, 102, 241], textColor: 255, fontStyle: "bold" },
+      alternateRowStyles: { fillColor: [245, 247, 251] },
+      styles: { fontSize: 7.4, cellPadding: 2.2, overflow: "linebreak", valign: "middle" },
+      columnStyles: {
+        0: { cellWidth: 13, halign: "center" },
+        1: { cellWidth: 28 },
+        2: { cellWidth: 68 },
+        3: { cellWidth: 132 },
+        4: { cellWidth: 26 }
+      },
+      margin: { left: 14, right: 14 }
+    })
+
+    const afterPrefsY = ((doc as unknown as { lastAutoTable?: { finalY: number } }).lastAutoTable?.finalY ?? 122) + 10
+    if (simulationResult?.roundResults.length) {
+      autoTable(doc, {
+        startY: afterPrefsY,
+        head: [["Round", "Allotted Preference", "College", "Course", "Cutoff"]],
+        body: simulationResult.roundResults.map(round => [
+          round.round,
+          round.allottedPreferenceNumber ? `#${round.allottedPreferenceNumber}` : "None",
+          round.allottedCollege?.collegeName || "No allotment",
+          round.allottedCollege ? normalizeCourseName(round.allottedCollege.branchName || round.allottedCollege.branchCode) : "-",
+          round.cutoffRank ? round.cutoffRank.toLocaleString() : "-"
+        ]),
+        theme: "grid",
+        headStyles: { fillColor: [14, 165, 233], textColor: 255, fontStyle: "bold" },
+        styles: { fontSize: 7.4, cellPadding: 2.1, overflow: "linebreak" },
+        columnStyles: {
+          0: { cellWidth: 25 },
+          1: { cellWidth: 34 },
+          2: { cellWidth: 128 },
+          3: { cellWidth: 72 },
+          4: { cellWidth: 22, halign: "right" }
+        },
+        margin: { left: 14, right: 14 }
+      })
+    }
+
+    addFooter()
+    doc.save(`kcet_mock_simulation_rank_${userRank || "profile"}.pdf`)
+    toast({
+      title: "PDF downloaded",
+      description: "Your mock simulation report is ready."
+    })
+  }
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -557,10 +1113,19 @@ const MockSimulator = () => {
               Set your rank profile, build the option-entry sheet, then simulate the selected round.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge variant="outline" className="border-white/10">
               {cutoffs.length.toLocaleString()} records
             </Badge>
+            <Button
+              variant="outline"
+              onClick={downloadSimulationPdf}
+              disabled={preferences.length === 0}
+              className="border-primary/30 text-primary hover:bg-primary/10"
+            >
+              <FileDown className="h-4 w-4 mr-2" />
+              Download PDF
+            </Button>
             <Button
               onClick={runSimulation}
               disabled={preferences.length === 0 || isSimulating}
@@ -570,6 +1135,14 @@ const MockSimulator = () => {
             </Button>
           </div>
         </div>
+
+        <Alert className="border-sky-500/25 bg-sky-500/10 text-sky-100">
+          <Info className="h-4 w-4" />
+          <AlertTitle>Best on desktop</AlertTitle>
+          <AlertDescription>
+            The simulator works best on a desktop screen or mobile desktop mode, especially while editing large option lists. It stays smoother on low-end devices by rendering the option list in small pages and optimizing the simulation path.
+          </AlertDescription>
+        </Alert>
 
         <Card className="border-white/10 bg-muted/20">
           <CardContent className="p-4">
@@ -639,30 +1212,41 @@ const MockSimulator = () => {
         <Card className="overflow-visible border-white/10 bg-background/95 shadow-xl">
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <Table className="min-w-[920px]">
+              <Table className="min-w-[1000px]">
                 <TableHeader>
                   <TableRow className="bg-muted/60 hover:bg-muted/60">
-                    <TableHead colSpan={7} className="h-auto px-5 py-4">
+                    <TableHead colSpan={8} className="h-auto px-5 py-4">
                       <div className="flex items-center justify-between gap-4">
                         <div>
                           <p className="text-lg font-semibold text-foreground">Option Entry Simulator Sheet</p>
                           <p className="text-sm font-normal text-muted-foreground">
-                            Search institution and course here, then add rows in option-entry order.
+                            Search institution and course here, then add rows in option-entry order. Drag rows using the handles to reorder.
                           </p>
                         </div>
-                        <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">
-                          {preferences.length} options
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-primary/30 text-primary hover:bg-primary/10"
+                            onClick={() => setIsFillerOpen(true)}
+                          >
+                            <Sparkles className="h-4 w-4 mr-2" />
+                            Smart Choice Filler
+                          </Button>
+                          <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">
+                            {preferences.length} options
+                          </Badge>
+                        </div>
                       </div>
                     </TableHead>
                   </TableRow>
                   <TableRow className="bg-card hover:bg-card">
                     <TableHead colSpan={3} className="w-[380px]">Institution Search</TableHead>
-                    <TableHead colSpan={3} className="w-[420px]">Course Search</TableHead>
+                    <TableHead colSpan={4} className="w-[420px]">Course Search</TableHead>
                     <TableHead className="w-[120px]">Add</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <tbody>
                   <TableRow className="align-top bg-muted/20 hover:bg-muted/20">
                     <TableCell colSpan={3} className="relative">
                       <Search className="absolute left-5 top-5 h-4 w-4 text-muted-foreground" />
@@ -706,7 +1290,7 @@ const MockSimulator = () => {
                         </div>
                       )}
                     </TableCell>
-                    <TableCell colSpan={3} className="relative">
+                    <TableCell colSpan={4} className="relative">
                       <Search className="absolute left-5 top-5 h-4 w-4 text-muted-foreground" />
                       <Input
                         className="h-10 pl-9"
@@ -761,92 +1345,124 @@ const MockSimulator = () => {
                   </TableRow>
 
                   <TableRow className="bg-muted/60 hover:bg-muted/60">
+                    <TableHead className="w-[40px]"></TableHead>
                     <TableHead>Optn. No</TableHead>
                     <TableHead>College Course</TableHead>
                     <TableHead>Course Name</TableHead>
-                    <TableHead>Course Fee per Annum(Rs)</TableHead>
+                    <TableHead className="hidden xl:table-cell">Course Fee per Annum(Rs)</TableHead>
                     <TableHead>College Name</TableHead>
                     <TableHead>Safety</TableHead>
                     <TableHead>Controls</TableHead>
                   </TableRow>
+                </tbody>
 
-                  {preferences.length === 0 ? (
+                {preferences.length === 0 ? (
+                  <tbody>
                     <TableRow>
-                      <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                      <TableCell colSpan={8} className="h-32 text-center text-muted-foreground">
                         <Target className="mx-auto mb-3 h-10 w-10 opacity-50" />
                         Add an institution and normalized course above to start building the option-entry list.
                       </TableCell>
                     </TableRow>
-                  ) : (
-                    visiblePreferences.map((pref, index) => {
-                      const globalIndex = preferencePageStart + index
+                  </tbody>
+                ) : (
+                  <Reorder.Group
+                    values={visiblePreferences}
+                    onReorder={reorderVisiblePreferences}
+                    as="tbody"
+                  >
+                    {visiblePreferences.map((pref, pageIndex) => {
+                      const index = preferencePageStart + pageIndex
+                      const warning = priorityWarnings.get(pref.id)
                       return (
-                      <TableRow key={pref.id} className="group">
-                        <TableCell className="font-mono text-lg font-bold text-primary">
-                          {pref.priority}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="rounded-full border-white/10 px-3 py-1 font-mono text-xs font-bold text-foreground">
-                            {getCollegeCourseCode(pref)}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <p className="max-w-[360px] font-semibold uppercase leading-snug" title={pref.branchName}>
-                            {normalizeCourseName(pref.branchName || pref.branchCode)}
-                          </p>
-                        </TableCell>
-                        <TableCell className="font-mono font-medium text-muted-foreground">
-                          {pref.courseFee && pref.courseFee !== 'Not specified' ? pref.courseFee : 'Not listed'}
-                        </TableCell>
-                        <TableCell>
-                          <p className="max-w-[360px] font-semibold leading-snug" title={pref.collegeName}>
-                            {pref.collegeName}
-                          </p>
-                        </TableCell>
-                        <TableCell>{getSafetyBadge(pref)}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => movePreference(pref.id, 'up')}
-                              disabled={globalIndex === 0}
-                              className="h-8 w-8"
-                              title="Move up"
-                            >
-                              <ArrowUp className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => movePreference(pref.id, 'down')}
-                              disabled={globalIndex === preferences.length - 1}
-                              className="h-8 w-8"
-                              title="Move down"
-                            >
-                              <ArrowDown className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => removePreference(pref.id)}
-                              className="h-8 w-8 text-red-500 hover:text-red-600"
-                              title="Remove"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )})
-                  )}
-                </TableBody>
+                        <Reorder.Item
+                          key={pref.id}
+                          value={pref}
+                          as="tr"
+                          className="group border-b border-white/5 hover:bg-muted/10 transition-colors"
+                        >
+                          <TableCell className="cursor-grab active:cursor-grabbing text-muted-foreground select-none">
+                            <GripVertical className="h-4 w-4 opacity-40 group-hover:opacity-100 transition-opacity" />
+                          </TableCell>
+                          <TableCell className="font-mono text-lg font-bold text-primary">
+                            {pref.priority}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="rounded-full border-white/10 px-3 py-1 font-mono text-xs font-bold text-foreground">
+                              {getCollegeCourseCode(pref)}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <p className="max-w-[300px] font-semibold uppercase leading-snug line-clamp-2" title={pref.branchName}>
+                                {normalizeCourseName(pref.branchName || pref.branchCode)}
+                              </p>
+                              {warning && (
+                                <div className="mt-2 max-w-[320px] rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-amber-300">
+                                  <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide">
+                                    <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                                    Order note
+                                  </div>
+                                  <p className="mt-1 text-xs font-medium leading-relaxed text-amber-100/90">
+                                    {warning}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden font-mono font-medium text-muted-foreground xl:table-cell">
+                            {pref.courseFee && pref.courseFee !== 'Not specified' ? pref.courseFee : 'Not listed'}
+                          </TableCell>
+                          <TableCell>
+                            <p className="max-w-[280px] font-semibold leading-snug line-clamp-3" title={pref.collegeName}>
+                              {pref.collegeName}
+                            </p>
+                          </TableCell>
+                          <TableCell>{getSafetyBadge(pref)}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => movePreference(pref.id, 'up')}
+                                disabled={index === 0}
+                                className="h-8 w-8"
+                                title="Move up"
+                              >
+                                <ArrowUp className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => movePreference(pref.id, 'down')}
+                                disabled={index === preferences.length - 1}
+                                className="h-8 w-8"
+                                title="Move down"
+                              >
+                                <ArrowDown className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => removePreference(pref.id)}
+                                className="h-8 w-8 text-red-500 hover:text-red-600"
+                                title="Remove"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </Reorder.Item>
+                      )
+                    })}
+                  </Reorder.Group>
+                )}
               </Table>
             </div>
             {preferences.length > preferencePageSize && (
               <div className="flex flex-col gap-3 border-t border-white/10 px-5 py-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                 <span>
-                  Showing {preferencePageStart + 1}-{Math.min(preferencePageStart + preferencePageSize, preferences.length)} of {preferences.length} options
+                  Showing {preferencePageStart + 1}-{Math.min(preferencePageStart + visiblePreferences.length, preferences.length)} of {preferences.length} options
                 </span>
                 <div className="flex items-center gap-2">
                   <Button
@@ -857,9 +1473,9 @@ const MockSimulator = () => {
                   >
                     Previous
                   </Button>
-                  <Badge variant="outline" className="border-white/10">
+                  <span className="font-mono text-xs">
                     {preferencePage} / {totalPreferencePages}
-                  </Badge>
+                  </span>
                   <Button
                     variant="outline"
                     size="sm"
@@ -874,14 +1490,196 @@ const MockSimulator = () => {
           </CardContent>
         </Card>
 
+        <Dialog open={isFillerOpen} onOpenChange={setIsFillerOpen}>
+          <DialogContent className="flex max-h-[88vh] max-w-3xl flex-col overflow-hidden border-primary/30 bg-background p-0 text-foreground">
+            <DialogHeader className="shrink-0 border-b border-white/10 px-6 py-4">
+              <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+                <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                Smart Choice Filler
+              </DialogTitle>
+              <DialogDescription>
+                Auto-generate a strategic priority list matching your rank, category, round, preferred branches, and college quality signals.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-6 py-4">
+              {requiredProfileMissing && (
+                <Alert className="border-amber-500/30 bg-amber-500/10 text-amber-200">
+                  <Info className="h-4 w-4" />
+                  <AlertTitle>Rank profile required</AlertTitle>
+                  <AlertDescription>
+                    Enter your rank, then choose category and round to move forward.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <Alert className="border-sky-500/25 bg-sky-500/10 text-sky-100">
+                <Info className="h-4 w-4" />
+                <AlertTitle>Smart Choice guidance and disclaimer</AlertTitle>
+                <div className="mt-2 space-y-3 text-sm leading-relaxed text-sky-50/90">
+                  <p>
+                    This filler uses your rank, category, year, round, selected branch streams, maximum option count, historical cutoff matches, course fit, and college-quality signals to build the option-entry list.
+                  </p>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div>
+                      <strong className="text-sky-50">Branch streams:</strong> filters the courses before ranking, so only your selected fields are added.
+                    </div>
+                    <div>
+                      <strong className="text-sky-50">Maximum options:</strong> adds the exact count you choose when enough matching choices exist.
+                    </div>
+                    <div>
+                      <strong className="text-sky-50">Quality-first:</strong> groups dream, realistic, and safe choices, then puts stronger colleges higher in each group.
+                    </div>
+                    <div>
+                      <strong className="text-sky-50">Realistic first:</strong> starts with choices closer to your rank, while still prioritizing college quality over tiny cutoff differences.
+                    </div>
+                    <div className="md:col-span-2">
+                      <strong className="text-sky-50">AI Quality Lister:</strong> sends a compact shortlisted set to Nemotron AI for placement, infrastructure, faculty, reputation, branch demand, and cutoff-fit ordering. If the API is slow or unavailable, it falls back to the local quality model.
+                    </div>
+                  </div>
+                  <p className="text-sky-100/75">
+                    This is guidance, not an official KEA result or a guarantee of seat allotment, placements, faculty quality, or infrastructure. Verify final choices with official KEA data and current college sources. Best used on desktop or mobile desktop mode for large lists.
+                  </p>
+                </div>
+              </Alert>
+
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold">1. Select Target Branch Streams</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {[
+                    { id: "CS & Allied", name: "Computer Science & Allied (CSE, AIML, AI, DS, CSBS, Cybersecurity)" },
+                    { id: "Electronics & Electrical", name: "Electronics & Electrical (ECE, EEE, EIE, Telecom)" },
+                    { id: "Mechanical & Allied", name: "Mechanical & Allied (Mechanical, Aerospace, Robotics)" },
+                    { id: "Civil & Allied", name: "Civil & Allied (Civil, Environmental)" },
+                    { id: "Biotech & Allied", name: "Biotech & Chemical" }
+                  ].map(category => {
+                    const isChecked = selectedBranches.includes(category.id)
+                    return (
+                      <button
+                        key={category.id}
+                        onClick={() => {
+                          if (isChecked) {
+                            setSelectedBranches(selectedBranches.filter(b => b !== category.id))
+                          } else {
+                            setSelectedBranches([...selectedBranches, category.id])
+                          }
+                        }}
+                        className={`flex items-start gap-3 p-3 rounded-lg border text-left text-sm transition-all hover:bg-muted/50 ${
+                          isChecked
+                            ? "border-primary bg-primary/5 text-foreground font-medium shadow-md shadow-primary/5"
+                            : "border-white/10 bg-transparent text-muted-foreground"
+                        }`}
+                      >
+                        <div className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                          isChecked ? "border-primary bg-primary text-primary-foreground" : "border-white/20"
+                        }`}>
+                          {isChecked && <Plus className="h-3 w-3 stroke-[3]" />}
+                        </div>
+                        <span>{category.name}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">2. Strategy & Rule</Label>
+                  <Select value={fillerStrategy} onValueChange={setFillerStrategy}>
+                    <SelectTrigger className="h-10 border-white/10">
+                      <SelectValue placeholder="Select strategy" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="dream_first">
+                        Quality-first Tier Order
+                      </SelectItem>
+                      <SelectItem value="probability_centric">
+                        Realistic Cutoffs First
+                      </SelectItem>
+                      <SelectItem value="ai_lister">
+                        AI Quality Lister
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {fillerStrategy === "dream_first" 
+                      ? "Quality-first: ranks stronger colleges first inside dream, realistic, and safe groups."
+                      : fillerStrategy === "probability_centric"
+                        ? "Realistic-first: starts with colleges you can realistically get, ranked by quality before cutoff closeness."
+                        : "AI Lister: uses web-informed college quality, branch demand, and cutoff fit to build a stronger order."}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">3. Maximum Options to Add</Label>
+                  <div className="flex items-center gap-3">
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      value={fillerLimit}
+                      onChange={(e) => setFillerLimit(e.target.value.replace(/\D/g, ""))}
+                      placeholder="195"
+                      className="h-10 w-28 border-white/10 font-mono"
+                    />
+                    <span className="text-sm text-muted-foreground">colleges & courses</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Generates exactly the number you choose when enough matching options are available. The page stays smooth by rendering the list in small pages.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 text-xs text-amber-500 flex gap-2">
+                <Info className="h-4 w-4 shrink-0 mt-0.5" />
+                <div>
+                  <strong>Tip:</strong> Quality-first order uses a curated college-strength score plus cutoff fit. You can still move rows manually if your personal preference differs.
+                </div>
+              </div>
+
+              {isGeneratingChoices && (
+                <div className="rounded-lg border border-primary/30 bg-primary/10 p-4">
+                  <div className="flex items-start gap-3">
+                    <Sparkles className="mt-0.5 h-5 w-5 shrink-0 animate-pulse text-primary" />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-foreground">{generationStatus || "Generating options"}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{generationDetail || "Preparing the best option-entry order..."}</p>
+                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-background/70">
+                        <div className="h-full w-1/2 animate-pulse rounded-full bg-primary" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex shrink-0 justify-end gap-3 border-t border-white/10 px-6 py-4">
+              <Button variant="ghost" onClick={() => setIsFillerOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={generateChoices} disabled={selectedBranches.length === 0 || isGeneratingChoices} className="bg-primary hover:bg-primary/95 text-primary-foreground font-semibold">
+                {isGeneratingChoices ? "Generating..." : "Generate Choices"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         <Dialog open={isResultsOpen} onOpenChange={setIsResultsOpen}>
           {simulationResult && (
             <DialogContent className="max-h-[88vh] max-w-5xl overflow-y-auto border-primary/30">
               <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-primary" />
-                  Simulation Results
-                </DialogTitle>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <DialogTitle className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-primary" />
+                    Simulation Results
+                  </DialogTitle>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={downloadSimulationPdf}
+                    className="border-primary/30 text-primary hover:bg-primary/10"
+                  >
+                    <FileDown className="h-4 w-4 mr-2" />
+                    Download PDF
+                  </Button>
+                </div>
                 <DialogDescription>
                   Based on {selectedYear} cutoffs for {userCategory} category at rank {userRank.toLocaleString()}
                 </DialogDescription>
