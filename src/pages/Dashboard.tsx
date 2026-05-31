@@ -28,6 +28,7 @@ import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import AdUnit from "@/components/AdUnit"
+import { ThankYouBanner } from "@/components/ThankYouBanner"
 
 interface DataStats {
   totalRecords: number
@@ -204,7 +205,8 @@ const Dashboard = () => {
           ? "COMEDK dashboard, COMEDK rank predictor, COMEDK marks vs rank, COMEDK cutoff explorer"
           : "KCET dashboard, KCET tools, KCET 2026 counseling, KCET exam schedule, CET 2026 dates, KCET preparation tools"}
       />
-      {/* â•â•â• Welcome Banner â•â•â• */}
+      <ThankYouBanner />
+      {/* ═══ Welcome Banner ═══ */}
       <div className="relative rounded-2xl overflow-hidden glass border border-white/5 p-6 sm:p-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/6 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3 -z-10" />

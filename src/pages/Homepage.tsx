@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import { Link } from "react-router-dom"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
+import { ThankYouBanner } from "@/components/ThankYouBanner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -300,6 +301,9 @@ const Homepage = () => {
                 </div>
 
                 <div className="max-w-5xl mx-auto text-center relative z-10">
+                    <div className="max-w-3xl mx-auto text-left mb-8">
+                        <ThankYouBanner />
+                    </div>
                     {/* Live indicator pill */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}

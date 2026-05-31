@@ -11,30 +11,22 @@ const VALID_KEYS = new Set([
 ].filter(Boolean));
 
 export function isUnlocked(): boolean {
-  try {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
-  } catch {
-    return false;
-  }
+  return true; // Website is completely unlocked for all users
 }
 
 export function validateAndUnlock(key: string): boolean {
-  const normalizedKey = key.trim().toUpperCase();
-  if (VALID_KEYS.has(normalizedKey)) {
-    try {
-      localStorage.setItem(STORAGE_KEY, 'true');
-    } catch {}
-    window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
-    return true;
-  }
-  return false;
+  try {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  } catch {}
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
+  return true;
 }
 
 export function lockFeatures() {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY, 'true'); // Keep it unlocked
   } catch {}
-  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: false } }));
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
 }
 
 export function subscribeToUnlockState(callback: (unlocked: boolean) => void) {
