@@ -279,17 +279,37 @@ const Dashboard = () => {
               </div>
             </div>
 
+            {/* Document Verification */}
+            <div className="relative">
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse">
+                <span className="text-[10px] font-bold text-white">⏳</span>
+              </div>
+              <div className="glass rounded-xl border border-indigo-500/20 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-sm text-indigo-400">Document Verification</span>
+                  <span className="text-[10px] text-indigo-400 uppercase tracking-wider font-semibold">Jun (Expected)</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Upload study certificates & claim reserves. Use our{' '}
+                  <Link to="/document-verification" className="text-indigo-400 hover:underline font-semibold">
+                    Mock Verification Assistant
+                  </Link>{' '}
+                  to check your certificates beforehand!
+                </p>
+              </div>
+            </div>
+
             {/* Counseling */}
             <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500/30 to-purple-500/30 flex items-center justify-center border border-white/10">
-                <span className="text-[10px] font-bold text-white/40">3</span>
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-zinc-500/30 to-slate-500/30 flex items-center justify-center border border-white/10">
+                <span className="text-[10px] font-bold text-white/40">4</span>
               </div>
               <div className="glass rounded-xl border border-white/5 px-4 py-3 opacity-60">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-sm">Counseling Rounds</span>
+                  <span className="font-semibold text-sm">Counseling & Option Entry</span>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Jun-Jul</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">Document verification, option entry, and seat allotment</p>
+                <p className="text-xs text-muted-foreground mt-1">Option entry, mock allotments, and final college seat allotments</p>
               </div>
             </div>
           </div>

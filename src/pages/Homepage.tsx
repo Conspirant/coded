@@ -207,7 +207,7 @@ const Homepage = () => {
 
     const moreFeatures = [
         { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
-        { title: "Round Tracker", description: "Track all counseling rounds and dates", icon: Calendar, href: "/round-tracker" },
+        { title: "Mock Verification", description: "Check if your study & reserve papers are correct", icon: CheckCircle2, href: "/document-verification", badge: "New" },
         { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" },
         { title: "College Reviews", description: "Real reviews from students", icon: Star, href: "/reviews" }
     ]

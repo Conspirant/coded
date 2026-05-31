@@ -20,6 +20,7 @@ import MockSimulator from "./pages/MockSimulator";
 import RoundTracker from "./pages/RoundTracker";
 import CollegeCompare from "./pages/CollegeCompare";
 import Documents from "./pages/Documents";
+import MockVerification from "./pages/MockVerification";
 import Planner from "./pages/Planner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Reviews from "./pages/Reviews";
@@ -110,6 +111,7 @@ const App = () => (
                 </Layout>
               } />
               <Route path="/documents" element={<Layout><Documents /></Layout>} />
+              <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
               <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
               <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
               <Route path="/college-list" element={<Layout><CollegeCutoffs /></Layout>} />

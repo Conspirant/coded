@@ -43,6 +43,7 @@ const toolItems = [
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
   { title: "CET News", url: "/cet-news", icon: Newspaper },
   { title: "Documents", url: "/documents", icon: FileText },
+  { title: "Mock Verification", url: "/document-verification", icon: BookOpenCheck, isNew: true },
   { title: "Reviews", url: "/reviews", icon: Star },
   { title: "Info Centre", url: "/info-centre", icon: Info },
   { title: "Materials", url: "/materials", icon: Book },
