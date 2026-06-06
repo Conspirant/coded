@@ -179,29 +179,41 @@ export const ResultsDayHub = () => {
           </div>
 
           {/* Custom Tabs controller */}
-          <div className="flex h-9 rounded-lg border border-white/10 bg-white/5 p-1 text-muted-foreground w-fit">
-            <button
-              onClick={() => setActiveTab("check")}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
-                activeTab === "check" 
-                  ? "bg-indigo-600 text-white shadow" 
-                  : "hover:text-foreground"
-              }`}
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Button
+              onClick={() => navigate("/results")}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs h-9 px-3 rounded-lg flex items-center gap-1 hover:scale-[1.02] active:scale-95 transition-all shadow-md shadow-emerald-600/10"
             >
-              <Search className="h-3.5 w-3.5" />
-              Check Eligibility
-            </button>
-            <button
-              onClick={() => setActiveTab("share")}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
-                activeTab === "share" 
-                  ? "bg-indigo-600 text-white shadow" 
-                  : "hover:text-foreground"
-              }`}
-            >
-              <Database className="h-3.5 w-3.5" />
-              Calibrate 2027
-            </button>
+              Check Live Scorecard
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Button>
+            
+            <div className="flex h-9 rounded-lg border border-white/10 bg-white/5 p-1 text-muted-foreground w-fit">
+              <button
+                type="button"
+                onClick={() => setActiveTab("check")}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                  activeTab === "check" 
+                    ? "bg-indigo-600 text-white shadow" 
+                    : "hover:text-foreground"
+                }`}
+              >
+                <Search className="h-3.5 w-3.5" />
+                Check Eligibility
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("share")}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                  activeTab === "share" 
+                    ? "bg-indigo-600 text-white shadow" 
+                    : "hover:text-foreground"
+                }`}
+              >
+                <Database className="h-3.5 w-3.5" />
+                Calibrate 2027
+              </button>
+            </div>
           </div>
         </div>
       </CardHeader>

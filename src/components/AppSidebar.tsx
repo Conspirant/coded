@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp, Award } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -40,6 +40,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
 }
 
 const toolItems = [
+  { title: "UGCET Results", url: "/results", icon: Award, isNew: true },
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
   { title: "CET News", url: "/cet-news", icon: Newspaper },
   { title: "Documents", url: "/documents", icon: FileText },

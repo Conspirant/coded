@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 const NVIDIA_MODEL = "nvidia/nemotron-3-super-120b-a12b";
@@ -135,6 +136,262 @@ const devAiListerPlugin = (nvidiaApiKey: string): Plugin => ({
   },
 });
 
+const devCheckResultPlugin = (supabaseUrl: string, supabaseAnonKey: string): Plugin => ({
+  name: "dev-check-result-api",
+  configureServer(server) {
+    server.middlewares.use("/api/check-result", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      try {
+        const body = await readRequestBody(req);
+        const { applNo, dob } = body;
+
+        if (!applNo || !dob) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "Application number and Date of Birth are required" }));
+          return;
+        }
+
+        const cleanApplNo = applNo.trim().toUpperCase();
+        const cleanDob = dob.trim();
+
+        // Mock error for testing invalid credentials flow
+        if (cleanApplNo.startsWith('INVALID')) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({
+            error: 'Invalid Credentials',
+            message: 'Invalid Application Number or Date of Birth. Please check your credentials and try again.'
+          }));
+          return;
+        }
+
+        // Check if mock testing is requested
+        if (cleanApplNo.startsWith('TEST') || cleanApplNo === '26UG999999' || cleanApplNo.startsWith('ME082')) {
+          // Generate mock response
+          let seed = 0;
+          for (let i = 0; i < cleanApplNo.length; i++) {
+            seed += cleanApplNo.charCodeAt(i);
+          }
+          const random = () => {
+            const x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+          };
+          const mockData = {
+            name: "Simulated Student " + cleanApplNo.slice(-4),
+            regNo: cleanApplNo,
+            ranks: {
+              engineering: Math.floor(random() * 140000) + 120,
+              agriculture: Math.floor(random() * 110000) + 200,
+              veterinary: Math.floor(random() * 45000) + 50,
+              ayush: Math.floor(random() * 75000) + 80,
+              bpharma: Math.floor(random() * 95000) + 150,
+              pharmd: Math.floor(random() * 38000) + 40
+            },
+            marks: {
+              physics: Math.floor(random() * 30) + 20,
+              chemistry: Math.floor(random() * 32) + 18,
+              maths: Math.floor(random() * 35) + 15,
+              biology: Math.floor(random() * 30) + 22
+            },
+            isMock: true
+          };
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(mockData));
+          return;
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+        // Check Cache
+        const { data: cachedRow, error: cacheError } = await supabase
+          .from('ugcet_results_cache')
+          .select('results_json')
+          .eq('appl_no', cleanApplNo)
+          .eq('dob', cleanDob)
+          .single();
+
+        if (cachedRow && cachedRow.results_json) {
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(cachedRow.results_json));
+          return;
+        }
+
+        // Fetch KEA Results Portal
+        const KEA_URL = 'https://keaonline.karnataka.gov.in/ugcet_2026_result/checkresult.php';
+        const payload = new URLSearchParams();
+        payload.append('reg_no', cleanApplNo);
+        payload.append('dob', cleanDob);
+        payload.append('Submit', 'Submit');
+
+        let htmlContent = '';
+        let fetchedSuccessfully = false;
+        try {
+          const response = await fetch(KEA_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+              'Origin': 'https://keaonline.karnataka.gov.in',
+              'Referer': 'https://keaonline.karnataka.gov.in/ugcet_2026_result/checkresult.php'
+            },
+            body: payload.toString()
+          });
+
+          if (response.ok) {
+            htmlContent = await response.text();
+            fetchedSuccessfully = true;
+          }
+        } catch (fetchErr) {
+          console.warn("Local proxy to KEA failed:", fetchErr);
+        }
+
+        if (!fetchedSuccessfully) {
+          // Fallback in dev: generate test data instead of throwing connection error
+          const devMock = {
+            name: "Simulated Student " + cleanApplNo.slice(-4),
+            regNo: cleanApplNo,
+            ranks: {
+              engineering: 25410,
+              agriculture: 18450,
+              veterinary: 9840,
+              ayush: 12050,
+              bpharma: 16730,
+              pharmd: 4920
+            },
+            marks: {
+              physics: 32,
+              chemistry: 28,
+              maths: 41,
+              biology: 35
+            },
+            isMock: true,
+            _offlineFallback: true
+          };
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(devMock));
+          return;
+        }
+
+        if (htmlContent.includes('Invalid') || htmlContent.includes('not found') || htmlContent.includes('incorrect') || htmlContent.includes('Enter Correct')) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({
+            error: 'Not Found',
+            message: 'Invalid Application Number or Date of Birth entered. Please verify your details.'
+          }));
+          return;
+        }
+
+        // Parse HTML
+        const extractVal = (idPattern: string): string => {
+          const regex = new RegExp(`id=["']${idPattern}["'][^>]*>([^<]*)`, 'i');
+          const match = htmlContent.match(regex);
+          return match ? match[1].trim() : "";
+        };
+
+        let name = extractVal('lblname') || extractVal('lblvalueName') || extractVal('Name');
+        let regNo = extractVal('lblregno') || extractVal('lblRegNo') || extractVal('reg_no');
+
+        if (!name) {
+          const nameMatch = htmlContent.match(/Candidate Name[^<]*:<\/td>[^<]*<td>([^<]*)/i);
+          name = nameMatch ? nameMatch[1].trim() : "Candidate";
+        }
+        if (!regNo) {
+          const regNoMatch = htmlContent.match(/Reg[^<]*No[^<]*:<\/td>[^<]*<td>([^<]*)/i);
+          regNo = regNoMatch ? regNoMatch[1].trim() : "";
+        }
+
+        const getRank = (id: string, keyword: string): number | null => {
+          const val = extractVal(id);
+          if (val && !isNaN(parseInt(val))) return parseInt(val);
+          const regex = new RegExp(`${keyword}[^<]*<\/td>[^<]*<td>([^<]*)`, 'i');
+          const match = htmlContent.match(regex);
+          if (match) {
+            const parsed = parseInt(match[1].replace(/[^0-9]/g, ''));
+            if (!isNaN(parsed)) return parsed;
+          }
+          return null;
+        };
+
+        const engineering = getRank('lbleng', 'Engineering');
+        const agriculture = getRank('lblagri', 'Agriculture');
+        const veterinary = getRank('lblvet', 'Veterinary');
+        const ayush = getRank('lblayush', 'AYUSH');
+        const bpharma = getRank('lblpharma', 'B-Pharma');
+        const pharmd = getRank('lblpharmd', 'Pharm-D');
+
+        const getMarks = (id: string, keyword: string): number => {
+          const val = extractVal(id);
+          if (val && !isNaN(parseFloat(val))) return parseFloat(val);
+          const regex = new RegExp(`${keyword}[^<]*<\/td>[^<]*<td>([^<]*)`, 'i');
+          const match = htmlContent.match(regex);
+          if (match) {
+            const parsed = parseFloat(match[1].replace(/[^0-9.]/g, ''));
+            if (!isNaN(parsed)) return parsed;
+          }
+          return 0;
+        };
+
+        const physics = getMarks('lblphy', 'Physics');
+        const chemistry = getMarks('lblchem', 'Chemistry');
+        const maths = getMarks('lblmath', 'Mathematics');
+        const biology = getMarks('lblbio', 'Biology');
+
+        const parsedResult = {
+          name,
+          regNo,
+          ranks: { engineering, agriculture, veterinary, ayush, bpharma, pharmd },
+          marks: { physics, chemistry, maths, biology }
+        };
+
+        const hasAnyRank = Object.values(parsedResult.ranks).some(r => r !== null);
+        if (!hasAnyRank) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({
+            error: 'Invalid Credentials',
+            message: 'Invalid Application Number or Date of Birth. Please check your credentials and try again.'
+          }));
+          return;
+        }
+
+        // Cache result
+        await supabase
+          .from('ugcet_results_cache')
+          .upsert({
+            appl_no: cleanApplNo,
+            dob: cleanDob,
+            name: parsedResult.name,
+            results_json: parsedResult
+          });
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify(parsedResult));
+
+      } catch (error) {
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({
+          error: "Internal Server Error",
+          message: error instanceof Error ? error.message : "An unexpected error occurred"
+        }));
+      }
+    });
+  }
+});
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -147,6 +404,10 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       devAiListerPlugin(env.NVIDIA_API_KEY || process.env.NVIDIA_API_KEY || ""),
+      devCheckResultPlugin(
+        env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "",
+        env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ""
+      ),
     ],
     resolve: {
       alias: {
