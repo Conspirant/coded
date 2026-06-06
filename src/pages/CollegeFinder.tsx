@@ -375,20 +375,131 @@ const CollegeFinder = () => {
     toast({ title: "Exported!", description: "PDF downloaded successfully" })
   }
 
-  // Read rank from URL params (from RankPredictor "Find Colleges" button)
+  // Read rank, category, courses from URL params (from Homepage or Predictor)
   useEffect(() => {
     const rankFromUrl = searchParams.get('rank')
+    const categoryFromUrl = searchParams.get('category')
+    const coursesFromUrl = searchParams.get('courses')
+
+    let hasParam = false
+
     if (rankFromUrl) {
       const rank = parseInt(rankFromUrl, 10)
       if (!isNaN(rank) && rank > 0 && rank <= 300000) {
         setUserRank(rank)
-        toast({
-          title: "Rank Pre-filled",
-          description: `Searching for colleges with rank ${rank.toLocaleString()}`,
-        })
+        hasParam = true
       }
     }
-  }, [searchParams])
+
+    if (categoryFromUrl && availableCategories.length > 0) {
+      const matched = availableCategories.find(c => c.toUpperCase() === categoryFromUrl.toUpperCase())
+      if (matched) {
+        setUserCategory(matched)
+        hasParam = true
+      }
+    }
+
+    if (coursesFromUrl && availableCourses.length > 0) {
+      const courseCodes = coursesFromUrl.split(',').map(c => c.trim().toUpperCase())
+      const matchedCourses = availableCourses.filter(course => {
+        const code = getCourseCode(course)
+        return courseCodes.includes(code.toUpperCase())
+      })
+      if (matchedCourses.length > 0) {
+        setSelectedCourses(matchedCourses)
+        hasParam = true
+      }
+    }
+
+    // Auto-trigger search when rank is provided and data loading is completed
+    if (hasParam && !loading && cutoffs.length > 0) {
+      const timer = setTimeout(() => {
+        const activeRank = rankFromUrl ? parseInt(rankFromUrl, 10) : userRank
+        const activeCategory = (categoryFromUrl && availableCategories.find(c => c.toUpperCase() === categoryFromUrl.toUpperCase())) || userCategory
+        
+        let activeCourses = selectedCourses
+        if (coursesFromUrl && availableCourses.length > 0) {
+          const courseCodes = coursesFromUrl.split(',').map(c => c.trim().toUpperCase())
+          const matched = availableCourses.filter(course => {
+            const code = getCourseCode(course)
+            return courseCodes.includes(code.toUpperCase())
+          })
+          if (matched.length > 0) activeCourses = matched
+        }
+
+        // Perform the filter directly to show instant results!
+        const filteredData = cutoffs.filter(cutoff => {
+          const yearMatch = cutoff.year === selectedYear
+          const roundMatch = selectedRound === 'ALL' || cutoff.round === selectedRound
+          const categoryMatch = activeCategory === 'ALL' || cutoff.category === activeCategory
+          const isEligible = cutoff.cutoff_rank >= activeRank
+          return yearMatch && roundMatch && categoryMatch && isEligible
+        })
+
+        // Apply courses filter
+        let finalData = filteredData
+        if (activeCourses.length > 0) {
+          finalData = filteredData.filter(cutoff => {
+            for (const selCourse of activeCourses) {
+              if (isSameCourse(cutoff.course, selCourse)) return true
+            }
+            const cutoffCourseCode = getCourseCode(cutoff.course)
+            if (cutoffCourseCode) {
+              const selectedCourseCodes = activeCourses.map(c => getCourseCode(c)).filter(code => code)
+              if (selectedCourseCodes.includes(cutoffCourseCode)) return true
+            }
+            return false
+          })
+        }
+
+        const calculateAdmissionProbability = (cutoffRank: number, urank: number) => {
+          if (cutoffRank === urank) return { probability: 'Exact' as const, marginPercent: 0 }
+          const margin = cutoffRank - urank
+          const marginPercent = (margin / urank) * 100
+          if (marginPercent > 20) return { probability: 'High' as const, marginPercent }
+          if (marginPercent > 5) return { probability: 'Moderate' as const, marginPercent }
+          return { probability: 'Borderline' as const, marginPercent }
+        }
+
+        const matchesWithScores = finalData.map(cutoff => {
+          const { probability, marginPercent } = calculateAdmissionProbability(cutoff.cutoff_rank, activeRank)
+          return {
+            ...cutoff,
+            matchScore: 100,
+            safetyLevel: 'Eligible' as const,
+            admissionProbability: probability,
+            marginPercent: Math.round(marginPercent * 10) / 10
+          }
+        })
+
+        const seen = new Set<string>()
+        const deduplicatedMatches = matchesWithScores.filter(match => {
+          const key = `${match.institute_code}|${match.course}|${match.category}|${match.year}|${match.round}|${match.cutoff_rank}`
+          if (seen.has(key)) return false
+          seen.add(key)
+          return true
+        })
+
+        deduplicatedMatches.sort((a, b) => {
+          return sortOrder === 'asc' ? a.cutoff_rank - b.cutoff_rank : b.cutoff_rank - a.cutoff_rank
+        })
+
+        setMatches(deduplicatedMatches)
+        finderStore.setState({
+          userRank: activeRank,
+          userCategory: activeCategory,
+          matches: deduplicatedMatches,
+        })
+
+        toast({
+          title: "Search Auto-Completed",
+          description: `Found ${deduplicatedMatches.length} matching options for rank ${activeRank.toLocaleString()} (${activeCategory}).`,
+        })
+      }, 400)
+
+      return () => clearTimeout(timer)
+    }
+  }, [searchParams, loading, cutoffs.length, availableCategories.length, availableCourses.length])
 
   // Mapping: course codes to canonical names (normalized display) - EXACT MATCHING
   const courseCodeToName: Record<string, string> = {

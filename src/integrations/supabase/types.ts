@@ -580,6 +580,39 @@ export type Database = {
         }
         Relationships: []
       }
+      actual_rank_submissions: {
+        Row: {
+          id: string
+          kcet_marks: number
+          puc_aggregate: number
+          puc_board: string
+          actual_rank: number
+          category: string | null
+          year: number
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          kcet_marks: number
+          puc_aggregate: number
+          puc_board: string
+          actual_rank: number
+          category?: string | null
+          year?: number
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          kcet_marks?: number
+          puc_aggregate?: number
+          puc_board?: string
+          actual_rank?: number
+          category?: string | null
+          year?: number
+          created_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

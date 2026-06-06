@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import AdUnit from "@/components/AdUnit"
 import { ThankYouBanner } from "@/components/ThankYouBanner"
+import { ResultsDayHub } from "@/components/ResultsDayHub"
 
 interface DataStats {
   totalRecords: number
@@ -230,6 +231,13 @@ const Dashboard = () => {
         </p>
       </div>
 
+      {/* ═══ Results Day Special Hub (KCET Only) ═══ */}
+      {examMode === "KCET" && (
+        <div className="animate-scale-in">
+          <ResultsDayHub />
+        </div>
+      )}
+
       {/* ═══ Post-Exam Counseling Status ═══ */}
       {examMode === "KCET" ? (
       <div className="rounded-2xl glass border border-white/5 overflow-hidden">
@@ -240,7 +248,7 @@ const Dashboard = () => {
             </div>
             <div>
               <h2 className="font-semibold text-lg">CET 2026 — What's Next</h2>
-              <p className="text-xs text-muted-foreground">Exam completed ✓ • Counseling pipeline</p>
+              <p className="text-xs text-muted-foreground">Results Declared ✓ • Counseling pipeline</p>
             </div>
           </div>
           <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] font-bold">COMPLETED</Badge>
@@ -267,15 +275,15 @@ const Dashboard = () => {
 
             {/* Results */}
             <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 animate-pulse">
-                <span className="text-[10px] font-bold text-white">⏳</span>
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <span className="text-[10px] font-bold text-white">✓</span>
               </div>
-              <div className="glass rounded-xl border border-amber-500/20 px-4 py-3">
+              <div className="glass rounded-xl border border-emerald-500/20 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-sm text-amber-400">Results & Rank Announcement</span>
-                  <span className="text-[10px] text-amber-400 uppercase tracking-wider font-semibold">May (Expected)</span>
+                  <span className="font-semibold text-sm text-emerald-400">Results & Rank Announcement</span>
+                  <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">June 6 (Declared)</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">Answer keys, results, and rank cards — Use our Rank Predictor to estimate!</p>
+                <p className="text-xs text-muted-foreground mt-1">Official KCET 2026 rank cards are now live. Enter your rank in the portal above to check eligible options.</p>
               </div>
             </div>
 
@@ -315,10 +323,10 @@ const Dashboard = () => {
           </div>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3">
-            <Link to="/rank-predictor" className="flex-1">
+            <Link to="/mock-simulator" className="flex-1">
               <Button className="w-full gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg shadow-indigo-500/20">
-                <Calculator className="h-4 w-4" />
-                Predict Your Rank
+                <Target className="h-4 w-4" />
+                Simulate Option Entry
               </Button>
             </Link>
             <Link to="/college-finder" className="flex-1">

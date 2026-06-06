@@ -6,6 +6,7 @@ import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
 import { ThankYouBanner } from "@/components/ThankYouBanner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { ResultsDayHub } from "@/components/ResultsDayHub"
 import {
     Search,
     BarChart3,
@@ -351,11 +352,21 @@ const Homepage = () => {
                         Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
                     </motion.p>
 
-                    {/* Minimal action cluster */}
+                    {/* Results Day Special Portal */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="max-w-3xl mx-auto mb-14 text-left"
+                    >
+                        <ResultsDayHub />
+                    </motion.div>
+
+                    {/* Secondary Navigation buttons */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.5 }}
+                        transition={{ duration: 0.7, delay: 0.6 }}
                         className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-5"
                     >
                         <div className="flex flex-wrap items-center justify-center gap-3">
@@ -364,22 +375,17 @@ const Homepage = () => {
                                     Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
-                            <Link to="/college-finder">
+                            <Link to="/mock-simulator">
                                 <Button variant="outline" size="lg" className="h-12 rounded-xl border-white/10 bg-white/5 px-6 text-foreground backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/10">
-                                    Find Colleges
-                                </Button>
-                            </Link>
-                            <Link to="/rank-predictor">
-                                <Button variant="ghost" size="lg" className="h-12 rounded-xl px-6 text-muted-foreground transition-all hover:-translate-y-0.5 hover:bg-white/5 hover:text-foreground">
-                                    Predict Rank
+                                    Option entry simulator
                                 </Button>
                             </Link>
                         </div>
 
                         <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
-                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">No sign-up</span>
-                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">2023-2025 cutoffs</span>
-                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">Free tools</span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">No login required</span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">Verified KCET 2023-2025 cutoffs</span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5">Anonymous contributions</span>
                         </div>
                     </motion.div>
 

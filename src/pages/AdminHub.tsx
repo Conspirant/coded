@@ -24,6 +24,7 @@ import AdminFeedbackView from "@/components/AdminFeedbackView"
 import AdminFeatureRequestsView from "@/components/AdminFeatureRequestsView"
 import AdminSuggestionsView from "@/components/AdminSuggestionsView"
 import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
+import AdminActualRanksView from "@/components/AdminActualRanksView"
 
 const ADMIN_PASS = "kcetadmin2026"
 const AUTH_KEY = "kcet_admin_auth"
@@ -775,6 +776,7 @@ const ADMIN_SECTIONS = [
     { id: "feedback", label: "Feedback", icon: MessageSquare },
     { id: "suggestions", label: "Suggestions & Doubts", icon: ClipboardPaste },
     { id: "features", label: "Feature Requests", icon: Lightbulb },
+    { id: "actual-ranks", label: "2027 Ranks Database", icon: Database },
 ] as const
 
 type SectionId = typeof ADMIN_SECTIONS[number]["id"]
@@ -838,6 +840,7 @@ export default function AdminHub() {
                     {activeSection === "feedback" && <AdminFeedbackView />}
                     {activeSection === "suggestions" && <AdminSuggestionsView />}
                     {activeSection === "features" && <AdminFeatureRequestsView />}
+                    {activeSection === "actual-ranks" && <AdminActualRanksView />}
                 </main>
             </div>
         </div>

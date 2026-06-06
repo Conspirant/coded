@@ -1,6 +1,6 @@
 import { SEO } from "@/components/SEO"
 import { useState, useEffect, useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,6 +17,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Crown, Calculator, Database, Target, TrendingUp, AlertTriangle, ChevronRight, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, SlidersHorizontal, ArrowRight, RotateCcw, Info, Shield, Sparkles, Table, Share2, Download, FileText, AlertCircle } from 'lucide-react'
 import { AdminFeedbackService } from "@/lib/admin-feedback-service"
+import { ActualRankService } from "@/lib/actual-rank-service"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts"
@@ -35,6 +37,33 @@ import {
   type Rank2026Prediction
 } from "@/lib/rank-predictor"
 import { validateKCETMarks, validatePUCPercentage } from "@/lib/security"
+
+const KCET_CATEGORIES = [
+  { code: "GM", label: "General Merit (GM)" },
+  { code: "GMK", label: "General Merit Kannada (GMK)" },
+  { code: "GMR", label: "General Merit Rural (GMR)" },
+  { code: "1G", label: "Category 1G" },
+  { code: "1K", label: "Category 1K" },
+  { code: "1R", label: "Category 1R" },
+  { code: "2AG", label: "Category 2AG" },
+  { code: "2AK", label: "Category 2AK" },
+  { code: "2AR", label: "Category 2AR" },
+  { code: "2BG", label: "Category 2BG" },
+  { code: "2BK", label: "Category 2BK" },
+  { code: "2BR", label: "Category 2BR" },
+  { code: "3AG", label: "Category 3AG" },
+  { code: "3AK", label: "Category 3AK" },
+  { code: "3AR", label: "Category 3AR" },
+  { code: "3BG", label: "Category 3BG" },
+  { code: "3BK", label: "Category 3BK" },
+  { code: "3BR", label: "Category 3BR" },
+  { code: "SCG", label: "Scheduled Caste General (SCG)" },
+  { code: "SCK", label: "Scheduled Caste Karnataka (SCK)" },
+  { code: "SCR", label: "Scheduled Caste Rural (SCR)" },
+  { code: "STG", label: "Scheduled Tribe General (STG)" },
+  { code: "STK", label: "Scheduled Tribe Karnataka (STK)" },
+  { code: "STR", label: "Scheduled Tribe Rural (STR)" }
+]
 
 // Animated counter hook for smooth number transitions
 const useAnimatedCounter = (value: number, duration: number = 500) => {
@@ -133,6 +162,16 @@ const RankPredictor = () => {
   const [feedbackPuc, setFeedbackPuc] = useState("")
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
 
+  // KCET 2026 Declared Banner States
+  const [showShareDialog, setShowShareDialog] = useState(false)
+  const [submittedShare, setSubmittedShare] = useState(false)
+  const [shareRank, setShareRank] = useState("")
+  const [shareMarks, setShareMarks] = useState("")
+  const [sharePucAggregate, setSharePucAggregate] = useState("")
+  const [shareBoard, setShareBoard] = useState("State Board")
+  const [shareCategory, setShareCategory] = useState("GM")
+  const [isSubmittingShare, setIsSubmittingShare] = useState(false)
+
   // Load saved results from localStorage
   useEffect(() => {
     try {
@@ -163,6 +202,57 @@ const RankPredictor = () => {
       setPrediction(null)
     }
   }, [kcetMarks, pucPercentage])
+
+  const handleShareSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!shareRank || parseInt(shareRank) <= 0) {
+      toast({ title: "Validation Error", description: "Please enter your actual KCET rank.", variant: "destructive" })
+      return
+    }
+    if (!shareMarks || parseFloat(shareMarks) <= 0 || parseFloat(shareMarks) > 180) {
+      toast({ title: "Validation Error", description: "KCET marks must be between 1 and 180.", variant: "destructive" })
+      return
+    }
+    if (!sharePucAggregate || parseFloat(sharePucAggregate) <= 0 || parseFloat(sharePucAggregate) > 100) {
+      toast({ title: "Validation Error", description: "PUC/12th PCM aggregate percentage must be between 1 and 100.", variant: "destructive" })
+      return
+    }
+
+    setIsSubmittingShare(true)
+    try {
+      const res = await ActualRankService.submitRank({
+        kcet_marks: parseFloat(shareMarks),
+        puc_aggregate: parseFloat(sharePucAggregate),
+        puc_board: shareBoard,
+        actual_rank: parseInt(shareRank),
+        category: shareCategory,
+        year: 2026
+      })
+
+      if (res.success) {
+        setSubmittedShare(true)
+        toast({
+          title: "Thank You! 🎉",
+          description: "Your data has been anonymously added to the database. Good luck with counseling!",
+        })
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: res.error || "Failed to submit data.",
+          variant: "destructive"
+        })
+      }
+    } catch (err) {
+      console.error(err)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setIsSubmittingShare(false)
+    }
+  }
 
   // Save current result
   const saveResult = () => {
@@ -294,6 +384,129 @@ const RankPredictor = () => {
           ]
         }}
       />
+      {/* Results Declared Callout Box */}
+      <Card className="relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-indigo-950/40 via-emerald-950/20 to-background backdrop-blur-2xl shadow-xl rounded-2xl p-5 md:p-6 mb-2">
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-36 h-36 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0 mt-1 md:mt-0">
+              <Sparkles className="h-6 w-6 text-white animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-lg font-bold flex items-center gap-2 text-foreground">
+                KCET 2026 Results are Officially Declared! 🎉
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                Official ranks are out. Skip rank estimation and instantly check which engineering/medical colleges you qualify for using your actual rank.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0 z-10">
+            <Button
+              onClick={() => navigate("/college-finder")}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-600/20 px-5 transition-all gap-1.5 h-11"
+            >
+              <Search className="h-4 w-4" /> Check College Eligibility
+            </Button>
+            
+            <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-400 h-11">
+                  <Database className="h-4 w-4 mr-1.5 animate-pulse" /> Calibrate 2027 Predictor
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md bg-slate-950 border-white/10 text-foreground">
+                <DialogHeader>
+                  <DialogTitle className="text-lg font-bold flex items-center gap-2">
+                    <Database className="h-5 w-5 text-indigo-400" />
+                    Share Your Official Rank & Score
+                  </DialogTitle>
+                  <DialogDescription className="text-muted-foreground text-xs">
+                    Help train the 2027 predictor by sharing your official scores anonymously.
+                  </DialogDescription>
+                </DialogHeader>
+                {submittedShare ? (
+                  <div className="py-6 text-center space-y-4 animate-scale-in">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400 shadow-lg shadow-emerald-500/10">
+                      <CheckCircle2 className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-md font-bold text-foreground">Submission Received!</h3>
+                      <p className="text-xs text-muted-foreground max-w-md mx-auto">
+                        Your entry was stored anonymously. Thank you for contributing!
+                      </p>
+                    </div>
+                    <Button 
+                      onClick={() => setSubmittedShare(false)} 
+                      variant="outline" 
+                      size="sm"
+                      className="border-white/10 hover:bg-white/5"
+                    >
+                      Submit Another Record
+                    </Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleShareSubmit} className="space-y-4 py-2">
+                    <div className="grid gap-3 grid-cols-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="shareRank" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Official Rank</Label>
+                        <Input id="shareRank" type="number" required placeholder="e.g. 15430" value={shareRank} onChange={e => setShareRank(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="shareMarks" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">KCET Marks (out of 180)</Label>
+                        <Input id="shareMarks" type="number" step="0.01" required placeholder="e.g. 110" value={shareMarks} onChange={e => setShareMarks(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="sharePuc" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">PUC PCM (%)</Label>
+                        <Input id="sharePuc" type="number" step="0.01" required placeholder="e.g. 95.5" value={sharePucAggregate} onChange={e => setSharePucAggregate(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="shareBoard" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">12th Board</Label>
+                        <Select value={shareBoard} onValueChange={setShareBoard}>
+                          <SelectTrigger id="shareBoard" className="bg-black/20 border-white/10 text-xs h-9">
+                            <SelectValue placeholder="Select Board" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground">
+                            <SelectItem value="State Board">State Board (PUC)</SelectItem>
+                            <SelectItem value="CBSE">CBSE Class 12</SelectItem>
+                            <SelectItem value="ISC">ISC Class 12</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="shareCategory" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Category</Label>
+                      <Select value={shareCategory} onValueChange={setShareCategory}>
+                        <SelectTrigger id="shareCategory" className="bg-black/20 border-white/10 text-xs h-9">
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground max-h-48">
+                          {KCET_CATEGORIES.map(cat => (
+                            <SelectItem key={cat.code} value={cat.code} className="hover:bg-slate-800 text-xs">
+                              {cat.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button type="submit" disabled={isSubmittingShare} className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold gap-1.5 h-10 mt-2 text-sm text-white">
+                      {isSubmittingShare ? "Submitting..." : "Submit Anonymously"}
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </form>
+                )}
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+      </Card>
       {/* Header */}
       <div className="text-center space-y-4 py-6">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/20 to-indigo-500/20 rounded-2xl">

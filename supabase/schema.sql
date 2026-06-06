@@ -253,3 +253,29 @@ CREATE POLICY "Anyone can view suggestions" ON public.user_suggestions FOR SELEC
 DROP POLICY IF EXISTS "Anyone can delete suggestions" ON public.user_suggestions;
 CREATE POLICY "Anyone can delete suggestions" ON public.user_suggestions FOR DELETE USING (true);
 
+
+-- ━━━ ACTUAL RANK SUBMISSIONS (MARKS VS RANK VS AGGREGATE) ━━━
+
+CREATE TABLE IF NOT EXISTS public.actual_rank_submissions (
+    id             UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    kcet_marks     DECIMAL(5,2) NOT NULL,
+    puc_aggregate  DECIMAL(5,2) NOT NULL,
+    puc_board      TEXT NOT NULL,
+    actual_rank    INTEGER NOT NULL,
+    category       TEXT,
+    year           INTEGER NOT NULL DEFAULT 2026,
+    created_at     TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.actual_rank_submissions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Anyone can insert rank submissions" ON public.actual_rank_submissions;
+CREATE POLICY "Anyone can insert rank submissions" ON public.actual_rank_submissions FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Anyone can view rank submissions" ON public.actual_rank_submissions;
+CREATE POLICY "Anyone can view rank submissions" ON public.actual_rank_submissions FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Anyone can delete rank submissions" ON public.actual_rank_submissions;
+CREATE POLICY "Anyone can delete rank submissions" ON public.actual_rank_submissions FOR DELETE USING (true);
+
+
