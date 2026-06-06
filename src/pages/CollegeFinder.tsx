@@ -187,6 +187,7 @@ const CollegeFinder = () => {
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
+  const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false)
 
   const isMobile = useIsMobile()
   const { toast } = useToast()
@@ -373,6 +374,39 @@ const CollegeFinder = () => {
 
     doc.save(`kcet_colleges_rank_${userRank}.pdf`)
     toast({ title: "Exported!", description: "PDF downloaded successfully" })
+  }
+
+  const exportToCSV = () => {
+    const listToExport = showBookmarkedOnly 
+      ? matches.filter(m => bookmarks.has(`${m.institute_code}-${m.course}-${m.category}`))
+      : matches;
+      
+    if (listToExport.length === 0) {
+      toast({ title: "No results to export", variant: "destructive" })
+      return
+    }
+
+    const headers = ["Institute Name", "Institute Code", "Course Name", "Category", "Cutoff Rank", "Year", "Round"]
+    const rows = listToExport.map(m => [
+      `"${m.institute.replace(/"/g, '""')}"`,
+      `"${m.institute_code}"`,
+      `"${m.course.replace(/"/g, '""')}"`,
+      `"${m.category}"`,
+      m.cutoff_rank,
+      `"${m.year}"`,
+      `"${m.round}"`
+    ])
+
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n")
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.setAttribute("href", url)
+    link.setAttribute("download", `kcet_options_rank_${userRank}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    toast({ title: "Exported!", description: "CSV file downloaded successfully" })
   }
 
   // Read rank, category, courses from URL params (from Homepage or Predictor)
@@ -1616,10 +1650,23 @@ const CollegeFinder = () => {
           </p>
         </div>
 
-        {/* Disclaimer */}
-        <div className="max-w-4xl mb-8 bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 flex gap-3 text-sm text-orange-600 dark:text-orange-400 backdrop-blur-sm">
-          <AlertCircle className="h-5 w-5 flex-shrink-0" />
-          <p>Please cross-check all cutoff data with the official KCET PDFs. Our filtering system might miss an entry or two.</p>
+        {/* Disclaimers & Load Notices */}
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 max-w-7xl mb-8">
+          <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 flex gap-3 text-sm text-orange-600 dark:text-orange-400 backdrop-blur-sm">
+            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold mb-0.5">Verification Warning</p>
+              <p className="text-xs opacity-90">Please cross-check all cutoff data with the official KCET PDFs. Our filtering system might miss an entry or two.</p>
+            </div>
+          </div>
+          
+          <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 flex gap-3 text-sm text-indigo-300 dark:text-indigo-400 backdrop-blur-sm">
+            <Info className="h-5 w-5 flex-shrink-0 mt-0.5 text-indigo-400 animate-pulse" />
+            <div>
+              <p className="font-semibold mb-0.5">Database Loading Notice</p>
+              <p className="text-xs opacity-90">Please note that it takes a few moments to fetch and compile the comprehensive 50 MB+ cutoff database. Colleges will display in the matches section below once the database is fully parsed.</p>
+            </div>
+          </div>
         </div>
 
         {/* Search Criteria */}
@@ -2002,14 +2049,26 @@ const CollegeFinder = () => {
                 </CardTitle>
                 <div className="flex items-center gap-2 flex-wrap">
                   {bookmarks.size > 0 && (
-                    <Badge variant="outline" className="flex items-center gap-1">
-                      <Bookmark className="h-3 w-3" />
-                      {bookmarks.size} bookmarked
-                    </Badge>
+                    <Button
+                      variant={showBookmarkedOnly ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        setShowBookmarkedOnly(!showBookmarkedOnly)
+                        setCurrentPage(1)
+                      }}
+                      className={`flex items-center gap-1.5 h-9 ${showBookmarkedOnly ? "bg-amber-600 hover:bg-amber-700 text-white" : ""}`}
+                    >
+                      <Star className={`h-3.5 w-3.5 ${showBookmarkedOnly ? "fill-white text-white animate-pulse" : "text-amber-500"}`} />
+                      {showBookmarkedOnly ? "Show All Matches" : `Show Bookmarked (${bookmarks.size})`}
+                    </Button>
                   )}
-                  <Button variant="outline" size="sm" onClick={exportToPDF} className="flex items-center gap-2">
-                    <Download className="h-4 w-4" />
+                  <Button variant="outline" size="sm" onClick={exportToPDF} className="flex items-center gap-2 h-9">
+                    <FileText className="h-4 w-4 text-red-400" />
                     Export PDF
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={exportToCSV} className="flex items-center gap-2 h-9">
+                    <FileSpreadsheet className="h-4 w-4 text-emerald-400" />
+                    Export CSV
                   </Button>
                 </div>
               </div>
@@ -2039,10 +2098,17 @@ const CollegeFinder = () => {
             <CardContent>
               {/* Filter matches based on search term and apply sorting */}
               {(() => {
-                let filteredMatches = collegeSearchTerm
-                  ? matches.filter(match => {
-                    const searchTerm = collegeSearchTerm.trim()
+                let filteredMatches = matches
 
+                if (showBookmarkedOnly) {
+                  filteredMatches = filteredMatches.filter(match =>
+                    bookmarks.has(`${match.institute_code}-${match.course}-${match.category}`)
+                  )
+                }
+
+                if (collegeSearchTerm) {
+                  const searchTerm = collegeSearchTerm.trim()
+                  filteredMatches = filteredMatches.filter(match => {
                     // Search by college name
                     if (matchesLooseSearch(match.institute, searchTerm)) {
                       return true
@@ -2065,7 +2131,7 @@ const CollegeFinder = () => {
 
                     return false
                   })
-                  : matches
+                }
 
                 // Apply sorting to filtered results
                 filteredMatches = [...filteredMatches].sort((a, b) => {
