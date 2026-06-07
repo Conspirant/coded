@@ -143,6 +143,7 @@ export default function CopingZone() {
 
       if (res.success) {
         setSubmittedShare(true)
+        localStorage.setItem("hasCalibrated2027", "true")
         toast.success("Thank you! Your official data is stored anonymously to calibrate the 2027 model.")
       } else {
         toast.error(res.error || "Failed to submit data.")

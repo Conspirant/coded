@@ -57,6 +57,7 @@ const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
+import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
 import { Analytics } from "@vercel/analytics/react";
 
 const ExamAwareCutoffExplorer = () => {
@@ -88,6 +89,7 @@ const App = () => (
             <KeyboardShortcutsHUD />
             <DisclaimerBanner />
             <ResourceLimitModal />
+            <Calibrate2027Modal />
 
             <Routes>
               {/* Standalone pages (no sidebar) */}

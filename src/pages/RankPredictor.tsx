@@ -231,6 +231,7 @@ const RankPredictor = () => {
 
       if (res.success) {
         setSubmittedShare(true)
+        localStorage.setItem("hasCalibrated2027", "true")
         toast({
           title: "Thank You! 🎉",
           description: "Your data has been anonymously added to the database. Good luck with counseling!",
