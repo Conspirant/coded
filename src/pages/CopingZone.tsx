@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ActualRankService } from "@/lib/actual-rank-service"
 import { toast } from "sonner"
 import { 
   Heart, 
@@ -21,7 +23,10 @@ import {
   Info,
   ShieldCheck,
   Send,
-  HelpCircle
+  HelpCircle,
+  Database,
+  CheckCircle2,
+  SlidersHorizontal
 } from "lucide-react"
 
 // Types for floating heart animations
@@ -56,6 +61,34 @@ const PERSPECTIVES = [
   }
 ]
 
+// KCET Categories list for crowdsourcing database calibration
+const KCET_CATEGORIES = [
+  { code: "GM", label: "General Merit (GM)" },
+  { code: "GMK", label: "General Merit Kannada (GMK)" },
+  { code: "GMR", label: "General Merit Rural (GMR)" },
+  { code: "1G", label: "Category 1G" },
+  { code: "1K", label: "Category 1K" },
+  { code: "1R", label: "Category 1R" },
+  { code: "2AG", label: "Category 2AG" },
+  { code: "2AK", label: "Category 2AK" },
+  { code: "2AR", label: "Category 2AR" },
+  { code: "2BG", label: "Category 2BG" },
+  { code: "2BK", label: "Category 2BK" },
+  { code: "2BR", label: "Category 2BR" },
+  { code: "3AG", label: "Category 3AG" },
+  { code: "3AK", label: "Category 3AK" },
+  { code: "3AR", label: "Category 3AR" },
+  { code: "3BG", label: "Category 3BG" },
+  { code: "3BK", label: "Category 3BK" },
+  { code: "3BR", label: "Category 3BR" },
+  { code: "SCG", label: "Scheduled Caste General (SCG)" },
+  { code: "SCK", label: "Scheduled Caste Karnataka (SCK)" },
+  { code: "SCR", label: "Scheduled Caste Rural (SCR)" },
+  { code: "STG", label: "Scheduled Tribe General (STG)" },
+  { code: "STK", label: "Scheduled Tribe Karnataka (STK)" },
+  { code: "STR", label: "Scheduled Tribe Rural (STR)" }
+]
+
 export default function CopingZone() {
   const [hugsCount, setHugsCount] = useState<number>(693)
   const [localHugsSent, setLocalHugsSent] = useState<number>(0)
@@ -71,6 +104,56 @@ export default function CopingZone() {
   const [vents, setVents] = useState(INITIAL_VENTS)
   const [newVent, setNewVent] = useState("")
   const [ventTag, setVentTag] = useState("Student Vent")
+
+  // Calibrate 2027 Form State
+  const [shareRank, setShareRank] = useState("")
+  const [shareMarks, setShareMarks] = useState("")
+  const [sharePucAggregate, setSharePucAggregate] = useState("")
+  const [shareBoard, setShareBoard] = useState("State Board")
+  const [shareCategory, setShareCategory] = useState("GM")
+  const [isSubmittingShare, setIsSubmittingShare] = useState(false)
+  const [submittedShare, setSubmittedShare] = useState(false)
+
+  // Submit calibration rank to database
+  const handleShareSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!shareRank || parseInt(shareRank) <= 0) {
+      toast.error("Please enter your actual KCET rank.")
+      return
+    }
+    if (!shareMarks || parseFloat(shareMarks) <= 0 || parseFloat(shareMarks) > 180) {
+      toast.error("KCET marks must be between 1 and 180.")
+      return
+    }
+    if (!sharePucAggregate || parseFloat(sharePucAggregate) <= 0 || parseFloat(sharePucAggregate) > 100) {
+      toast.error("PUC/12th PCM aggregate percentage must be between 1 and 100.")
+      return
+    }
+
+    setIsSubmittingShare(true)
+    try {
+      const res = await ActualRankService.submitRank({
+        kcet_marks: parseFloat(shareMarks),
+        puc_aggregate: parseFloat(sharePucAggregate),
+        puc_board: shareBoard,
+        actual_rank: parseInt(shareRank),
+        category: shareCategory,
+        year: 2026
+      })
+
+      if (res.success) {
+        setSubmittedShare(true)
+        toast.success("Thank you! Your official data is stored anonymously to calibrate the 2027 model.")
+      } else {
+        toast.error(res.error || "Failed to submit data.")
+      }
+    } catch (err) {
+      console.error(err)
+      toast.error("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmittingShare(false)
+    }
+  }
 
   // Fetch initial hugs count & subscribe to realtime updates
   useEffect(() => {
@@ -148,6 +231,20 @@ export default function CopingZone() {
     } catch (err) {
       // Fail silently, keep count updated locally
     }
+  }
+
+  // Helpers for displaying detailed math calculation tiers in the UI
+  const getMultiplierTierLabel = (cutoff: number) => {
+    if (cutoff > 30000) return "Rank Above 30,000"
+    if (cutoff > 15000) return "Rank 15,000 - 30,000"
+    if (cutoff > 5000) return "Rank 5,000 - 15,000"
+    return "Rank Under 5,000"
+  }
+  const getMultiplierTierRange = (cutoff: number) => {
+    if (cutoff > 30000) return "1.20x to 1.40x (+20% to +40%)"
+    if (cutoff > 15000) return "1.15x to 1.30x (+15% to +30%)"
+    if (cutoff > 5000) return "1.10x to 1.20x (+10% to +20%)"
+    return "1.05x to 1.15x (+5% to +15%)"
   }
 
   // Calculate simulated cutoff expansion
@@ -353,6 +450,93 @@ export default function CopingZone() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Calibrate 2027 Predictor Card */}
+            <Card className="border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                  <Database className="h-5 w-5 text-indigo-400" />
+                  Calibrate 2027 Predictor
+                </CardTitle>
+                <CardDescription className="text-xs text-muted-foreground">
+                  Help next year's batch. Submit your official 2026 score & rank anonymously.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 pt-2 space-y-4">
+                {submittedShare ? (
+                  <div className="py-6 text-center space-y-4 animate-scale-in">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400 shadow-lg shadow-emerald-500/10">
+                      <CheckCircle2 className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-bold text-foreground">Data Submitted Anonymously!</h3>
+                      <p className="text-xs text-muted-foreground max-w-md mx-auto">
+                        Thank you for doing your part to keep our 2027 predictions highly accurate.
+                      </p>
+                    </div>
+                    <Button 
+                      onClick={() => setSubmittedShare(false)} 
+                      variant="outline" 
+                      size="sm"
+                      className="border-white/10 hover:bg-white/5 text-xs text-white"
+                    >
+                      Submit Another Record
+                    </Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleShareSubmit} className="space-y-3.5">
+                    <div className="grid gap-3 grid-cols-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="shareRank" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Official Rank</Label>
+                        <Input id="shareRank" type="number" required placeholder="e.g. 15430" value={shareRank} onChange={e => setShareRank(e.target.value)} className="bg-black/25 border-white/10 font-mono text-xs h-9 text-white" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="shareMarks" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">KCET Marks</Label>
+                        <Input id="shareMarks" type="number" step="0.01" required placeholder="e.g. 110" value={shareMarks} onChange={e => setShareMarks(e.target.value)} className="bg-black/25 border-white/10 font-mono text-xs h-9 text-white" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="sharePuc" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">PUC PCM (%)</Label>
+                        <Input id="sharePuc" type="number" step="0.01" required placeholder="e.g. 95.5" value={sharePucAggregate} onChange={e => setSharePucAggregate(e.target.value)} className="bg-black/25 border-white/10 font-mono text-xs h-9 text-white" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="shareBoard" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">12th Board</Label>
+                        <Select value={shareBoard} onValueChange={setShareBoard}>
+                          <SelectTrigger id="shareBoard" className="bg-black/25 border-white/10 text-xs h-9 text-white">
+                            <SelectValue placeholder="Select Board" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground">
+                            <SelectItem value="State Board">State (PUC)</SelectItem>
+                            <SelectItem value="CBSE">CBSE Class 12</SelectItem>
+                            <SelectItem value="ISC">ISC Class 12</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="shareCategory" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Category</Label>
+                      <Select value={shareCategory} onValueChange={setShareCategory}>
+                        <SelectTrigger id="shareCategory" className="bg-black/25 border-white/10 text-xs h-9 text-white">
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground max-h-48">
+                          {KCET_CATEGORIES.map(cat => (
+                            <SelectItem key={cat.code} value={cat.code} className="hover:bg-slate-800 text-xs">
+                              {cat.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button type="submit" disabled={isSubmittingShare} className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 font-semibold gap-1.5 h-9 mt-1 text-xs text-white">
+                      {isSubmittingShare ? "Submitting..." : "Calibrate Prediction Model"}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
+                  </form>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
           {/* RIGHT COLUMN: Calculator & Vent Wall (7 cols) */}
@@ -430,6 +614,50 @@ export default function CopingZone() {
                   </Button>
                 </form>
 
+                {/* Statistical Multiplier Matrix Table showcasing detailed logic */}
+                <div className="mt-4 p-4 border border-white/5 bg-black/15 rounded-xl space-y-3">
+                  <div className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                    <SlidersHorizontal className="h-3.5 w-3.5 text-indigo-400" />
+                    <span>Detailed Estimation Logic & Multiplier Matrix</span>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-[11px] text-left border-collapse text-slate-400">
+                      <thead>
+                        <tr className="border-b border-white/10 text-slate-300 font-medium">
+                          <th className="py-2 pr-2">Rank Bracket</th>
+                          <th className="py-2 px-2 text-center">Multiplier Shift</th>
+                          <th className="py-2 pl-2 text-right">Reasoning / Dynamics</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        <tr className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-2 pr-2 font-medium text-slate-300">Under 5,000</td>
+                          <td className="py-2 px-2 text-center text-emerald-400 font-mono font-bold">1.05x - 1.15x</td>
+                          <td className="py-2 pl-2 text-right text-[10px] text-slate-400">Minimal shift due to intense student retention in top-tier colleges.</td>
+                        </tr>
+                        <tr className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-2 pr-2 font-medium text-slate-300">5,000 - 15,000</td>
+                          <td className="py-2 px-2 text-center text-emerald-400 font-mono font-bold">1.10x - 1.20x</td>
+                          <td className="py-2 pl-2 text-right text-[10px] text-slate-400">Moderate expansion as student preferences start to diversify.</td>
+                        </tr>
+                        <tr className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-2 pr-2 font-medium text-slate-300">15,000 - 30,000</td>
+                          <td className="py-2 px-2 text-center text-emerald-400 font-mono font-bold">1.15x - 1.30x</td>
+                          <td className="py-2 pl-2 text-right text-[10px] text-slate-400">High density band shifts widely as students prioritize branch over college.</td>
+                        </tr>
+                        <tr className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-2 pr-2 font-medium text-slate-300">Above 30,000</td>
+                          <td className="py-2 px-2 text-center text-emerald-400 font-mono font-bold">1.20x - 1.40x</td>
+                          <td className="py-2 pl-2 text-right text-[10px] text-slate-400">Max expansion. High ranks stretch out widest due to board score distributions.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground leading-normal border-t border-white/5 pt-2">
+                    <strong>Logic:</strong> Ranks are stretched due to board-marks inclusion. At a constant seat capacity, cutoff ranks naturally stretch outwards (relax) to match.
+                  </div>
+                </div>
+
                 {simulatedMin !== null && simulatedMax !== null && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -458,6 +686,27 @@ export default function CopingZone() {
                           {simulatedMax.toLocaleString()}
                         </div>
                       </div>
+                    </div>
+
+                    {/* Show applied detailed mathematical parameters */}
+                    <div className="text-[11px] text-slate-300 bg-white/[0.03] border border-white/5 rounded-lg p-2.5 space-y-1">
+                      <div className="font-semibold text-emerald-400 flex items-center gap-1.5">
+                        <SlidersHorizontal className="h-3.5 w-3.5" />
+                        <span>Applied Mathematical Parameters</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-muted-foreground text-[10px] block uppercase tracking-wider">Matched Tier</span>
+                          <span className="font-semibold">{getMultiplierTierLabel(parseInt(lastYearCutoff))}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground text-[10px] block uppercase tracking-wider">Applied Multipliers</span>
+                          <span className="font-mono font-semibold text-teal-400">{getMultiplierTierRange(parseInt(lastYearCutoff))}</span>
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground leading-normal border-t border-white/5 pt-1.5 mt-1">
+                        Formula: <code>Min = Cutoff × {parseInt(lastYearCutoff) > 30000 ? "1.20" : parseInt(lastYearCutoff) > 15000 ? "1.15" : parseInt(lastYearCutoff) > 5000 ? "1.10" : "1.05"}</code> | <code>Max = Cutoff × {parseInt(lastYearCutoff) > 30000 ? "1.40" : parseInt(lastYearCutoff) > 15000 ? "1.30" : parseInt(lastYearCutoff) > 5000 ? "1.20" : "1.15"}</code>
+                      </p>
                     </div>
 
                     <p className="text-[10px] text-muted-foreground text-center leading-normal pt-1.5">
