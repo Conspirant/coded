@@ -116,7 +116,10 @@ export const Calibrate2027Modal = () => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-background/80 backdrop-blur-md grid place-items-center p-4 overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-[9999] bg-background/80 backdrop-blur-md grid place-items-center p-4 overflow-y-auto"
+      onClick={handleDismiss}
+    >
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/20 via-background/40 to-pink-950/10 pointer-events-none" />
       
       <AnimatePresence>
@@ -126,6 +129,7 @@ export const Calibrate2027Modal = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
+            onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-md bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-6 md:p-7 backdrop-blur-2xl overflow-hidden my-auto"
           >
             {/* Interactive neon corner glows */}
