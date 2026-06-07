@@ -58,7 +58,7 @@ const COMMANDS: CommandItem[] = [
     { id: "reviews", title: "College Reviews", description: "Student reviews", icon: Star, href: "/reviews", keywords: ["reviews", "feedback", "students"], category: "tools" },
     { id: "info-centre", title: "Info Centre", description: "KCET information hub", icon: Info, href: "/info-centre", keywords: ["info", "information", "centre", "hub"], category: "tools" },
     { id: "materials", title: "Study Materials", description: "Preparation resources", icon: Book, href: "/materials", keywords: ["materials", "study", "resources", "prep"], category: "tools" },
-    { id: "kcetards", title: "r/KCETards", description: "Open KCETards community", icon: ArrowRight, href: "https://www.reddit.com/r/KCETards/", keywords: ["kcetards", "reddit", "community", "discussion"], category: "tools", external: true },
+    { id: "kcet", title: "r/kcet", description: "Open KCET community", icon: ArrowRight, href: "https://www.reddit.com/r/kcet/", keywords: ["kcet", "reddit", "community", "discussion"], category: "tools", external: true },
     { id: "planner", title: "Planner", description: "Plan your admissions", icon: ClipboardList, href: "/planner", keywords: ["planner", "plan", "admissions"], category: "tools" },
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
     { id: "ai-counselor", title: "AI Counselor", description: "AI-powered guidance", icon: Bot, href: "/ai-counselor", keywords: ["ai", "counselor", "guidance", "help", "ask"], category: "ai" },
@@ -104,7 +104,7 @@ export function CommandPalette() {
                     : cmd
             }
 
-            if (cmd.id === "kcetards") {
+            if (cmd.id === "kcet") {
                 return examMode === "COMEDK"
                     ? {
                         ...cmd,

@@ -207,10 +207,10 @@ const Homepage = () => {
     ]
 
     const moreFeatures = [
+        { title: "Copium Zone", description: "Ranks are inflated, but cutoffs will expand too. Send hugs & vent.", icon: Heart, href: "/coping-zone", badge: "Live" },
         { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
         { title: "Mock Verification", description: "Check if your study & reserve papers are correct", icon: CheckCircle2, href: "/document-verification", badge: "New" },
-        { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" },
-        { title: "College Reviews", description: "Real reviews from students", icon: Star, href: "/reviews" }
+        { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" }
     ]
 
     const statItems = [
@@ -253,9 +253,9 @@ const Homepage = () => {
                             </Badge>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
-                            <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer">
                                 <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground px-2 sm:px-3">
-                                    <span className="hidden sm:inline">r/KCETards</span>
+                                    <span className="hidden sm:inline">r/KCETCoded</span>
                                     <ExternalLink className="h-4 w-4 sm:ml-1" />
                                 </Button>
                             </a>
@@ -357,9 +357,42 @@ const Homepage = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
-                        className="max-w-3xl mx-auto mb-14 text-left"
+                        className="max-w-3xl mx-auto mb-6 text-left"
                     >
                         <ResultsDayHub />
+                    </motion.div>
+
+                    {/* Coping Zone Alert Banner */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.55 }}
+                        className="max-w-3xl mx-auto mb-14"
+                    >
+                        <Link to="/coping-zone">
+                            <div className="group relative rounded-2xl border border-rose-500/20 bg-gradient-to-r from-rose-500/10 via-pink-500/5 to-indigo-500/10 p-5 text-left shadow-lg hover:shadow-rose-500/5 hover:border-rose-500/30 transition-all flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/20 shrink-0 group-hover:scale-105 transition-transform">
+                                        <Heart className="h-6 w-6 text-white fill-white animate-pulse" />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <h4 className="font-extrabold text-slate-100 flex items-center gap-2 text-sm sm:text-base">
+                                            Rank Inflation Anxiety? We feel you. 🫂
+                                            <Badge className="bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/20 font-bold text-[9px] px-2 shrink-0">
+                                                COPE HUB
+                                            </Badge>
+                                        </h4>
+                                        <p className="text-xs text-slate-300 leading-normal mt-1">
+                                            Ranks are inflated, but cutoffs will expand too. Visit the Copium Zone to calculate realistic cutoff shifts, read perspective advice, and share support.
+                                        </p>
+                                    </div>
+                                </div>
+                                <Button size="sm" variant="ghost" className="text-rose-400 group-hover:text-rose-300 gap-1 font-bold shrink-0 self-end sm:self-center">
+                                    Enter Zone
+                                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                                </Button>
+                            </div>
+                        </Link>
                     </motion.div>
 
                     {/* Secondary Navigation buttons */}
@@ -659,9 +692,6 @@ const Homepage = () => {
                                         <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
                                             Visit r/kcet <ArrowRight className="ml-1 h-3 w-3" />
                                         </a>
-                                        <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
-                                            Visit r/KCETards <ArrowRight className="ml-1 h-3 w-3" />
-                                        </a>
                                     </div>
                                 </div>
 
@@ -691,7 +721,7 @@ const Homepage = () => {
                                         Independent Project
                                     </h3>
                                     <p className="text-xs text-muted-foreground leading-relaxed italic">
-                                        "KCET Coded" is an individual initiative built to help students. We are <strong>not affiliated</strong> with Reddit or with the moderation teams of r/kcet and r/KCETards. These are independent public communities.
+                                        "KCET Coded" is an individual initiative built to help students. We are <strong>not affiliated</strong> with Reddit or with the moderation team of r/kcet. These are independent public communities.
                                     </p>
                                 </div>
                             </div>
@@ -883,7 +913,6 @@ const Homepage = () => {
                                 <a href="https://www.reddit.com/r/KCETCoded/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/KCETCoded</a>
                                 <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sm text-[#5865F2] hover:text-[#7289DA] transition-colors">Discord Server</a>
                                 <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/kcet</a>
-                                <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">r/KCETards</a>
                             </div>
                         </div>
                         <div>

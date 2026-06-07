@@ -40,6 +40,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
 }
 
 const toolItems = [
+  { title: "Copium Zone 🫂", url: "/coping-zone", icon: Heart, isNew: true },
   { title: "UGCET Results", url: "/results", icon: Award, isNew: true },
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
   { title: "CET News", url: "/cet-news", icon: Newspaper },
@@ -58,12 +59,6 @@ const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
   { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
   { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
   { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
-  {
-    title: examMode === "COMEDK" ? "r/COMEDK" : "r/KCETards",
-    url: examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/" : "https://www.reddit.com/r/KCETards/",
-    icon: ExternalLink,
-    external: true
-  },
   { title: "Support Us ❤️", url: "/donate", icon: Heart },
 ])
 
@@ -195,8 +190,8 @@ export function AppSidebar() {
             {state !== "collapsed" && (
               <p className="px-3 pt-2 text-[10px] leading-relaxed text-muted-foreground/70">
                 {examMode === "COMEDK"
-                  ? "Community links are independent. KCET Coded is not affiliated with Reddit or r/comedk."
-                  : "Community links are independent. KCET Coded is not affiliated with Reddit, r/kcet, or r/KCETards."}
+                  ? "Community links are independent. KCET Coded is not affiliated with Reddit."
+                  : "Community links are independent. KCET Coded is not affiliated with Reddit or r/kcet."}
               </p>
             )}
           </SidebarGroupContent>

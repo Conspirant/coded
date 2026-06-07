@@ -73,7 +73,7 @@ const About = () => {
                         This isn't some startup trying to sell you a "premium counseling package." It's not backed by any coaching institute. It's just one student who thought — <em>"what if I took all the publicly available data from KEA, organized it properly, and built tools that actually help?"</em>
                     </p>
                     <p>
-                        Every feature on this site was built because I personally needed it, or because someone on <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">r/KCETards</a> or <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">r/kcet</a> asked for it.
+                        Every feature on this site was built because I personally needed it, or because someone on <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">r/kcet</a> asked for it.
                     </p>
                     <div className="flex flex-wrap gap-3 pt-2">
                         <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">100% Free</Badge>
@@ -480,12 +480,6 @@ const About = () => {
                                     <Button variant="outline" size="sm" className="border-indigo-500/20 hover:bg-indigo-500/10 hover:border-indigo-500/40">
                                         <ExternalLink className="h-4 w-4 mr-2" />
                                         r/KCETCoded
-                                    </Button>
-                                </a>
-                                <a href="https://www.reddit.com/r/KCETards/" target="_blank" rel="noopener noreferrer">
-                                    <Button variant="outline" size="sm" className="border-cyan-500/20 hover:bg-cyan-500/10 hover:border-cyan-500/40">
-                                        <ExternalLink className="h-4 w-4 mr-2" />
-                                        r/KCETards
                                     </Button>
                                 </a>
                                 <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer">

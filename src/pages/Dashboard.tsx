@@ -227,7 +227,7 @@ const Dashboard = () => {
       {/* Disclaimer */}
       <div className="rounded-xl glass border border-white/5 p-4">
         <p className="text-sm text-muted-foreground">
-          <span className="text-foreground font-medium">Note:</span> This is an independent project and is not affiliated with Reddit, r/kcet, or r/KCETards moderation teams.
+          <span className="text-foreground font-medium">Note:</span> This is an independent project and is not affiliated with Reddit or r/kcet moderation teams.
         </p>
       </div>
 
@@ -433,12 +433,12 @@ const Dashboard = () => {
                 <span className="text-white font-bold text-sm">r/</span>
               </div>
               <div>
-                <h3 className="font-semibold">{examMode === "COMEDK" ? "COMEDK Trends" : "KCETards"}</h3>
+                <h3 className="font-semibold">{examMode === "COMEDK" ? "COMEDK Trends" : "KCET Community"}</h3>
                 <p className="text-sm text-muted-foreground">{examMode === "COMEDK" ? "Community updates & comments" : "Student discussions"}</p>
               </div>
             </div>
             <Button asChild variant="outline" size="sm" className="gap-1.5 border-white/10 hover:bg-white/5">
-              <a href={examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/comments/1l66im4/marks_vs_rank_2025/" : "https://www.reddit.com/r/KCETards/"} target="_blank" rel="noopener noreferrer">
+              <a href={examMode === "COMEDK" ? "https://www.reddit.com/r/comedk/comments/1l66im4/marks_vs_rank_2025/" : "https://www.reddit.com/r/kcet/"} target="_blank" rel="noopener noreferrer">
                 Visit <ExternalLink className="h-3 w-3" />
               </a>
             </Button>
@@ -467,7 +467,7 @@ const Dashboard = () => {
       <p className="text-xs text-muted-foreground">
         {examMode === "COMEDK"
           ? "Note: KCET Coded is independent and not affiliated with Reddit or r/comedk moderation teams."
-          : "Note: KCET Coded is independent and not affiliated with Reddit, r/kcet, or r/KCETards moderation teams."}
+          : "Note: KCET Coded is independent and not affiliated with Reddit or r/kcet moderation teams."}
       </p>
 
       {/* In-feed Ad */}

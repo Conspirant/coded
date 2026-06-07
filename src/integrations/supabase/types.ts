@@ -613,6 +613,21 @@ export type Database = {
         }
         Relationships: []
       }
+      coping_hugs: {
+        Row: {
+          id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

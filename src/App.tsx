@@ -49,6 +49,7 @@ import CutoffTrends from "./pages/CutoffTrends";
 import Donate from "./pages/Donate";
 import AdminHub from "./pages/AdminHub";
 import ResultChecker from "./pages/ResultChecker";
+import CopingZone from "./pages/CopingZone";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 
 
@@ -56,7 +57,6 @@ const queryClient = new QueryClient();
 
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
-import { ProxyResultsModal } from "./components/ProxyResultsModal";
 import { Analytics } from "@vercel/analytics/react";
 
 const ExamAwareCutoffExplorer = () => {
@@ -88,7 +88,6 @@ const App = () => (
             <KeyboardShortcutsHUD />
             <DisclaimerBanner />
             <ResourceLimitModal />
-            <ProxyResultsModal />
 
             <Routes>
               {/* Standalone pages (no sidebar) */}
@@ -142,6 +141,7 @@ const App = () => (
               <Route path="/metro-mapper" element={<MetroMapper />} />
               <Route path="/bmtc-mapper" element={<BmtcMapper />} />
               <Route path="/hidden-gems" element={<HiddenGems />} />
+              <Route path="/coping-zone" element={<CopingZone />} />
 
               {/* Admin (hidden from nav, direct URL only) */}
               <Route path="/admin" element={<AdminHub />} />
