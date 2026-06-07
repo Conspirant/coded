@@ -116,18 +116,40 @@ export default function AdminActualRanksView() {
                 x: xVal,
                 y: Number(item.actual_rank)
             }
-        }).filter(pt => !isNaN(pt.x) && !isNaN(pt.y))
+        }).filter(pt => !isNaN(pt.x) && !isNaN(pt.y) && pt.y > 0) // ranks must be > 0
 
         if (points.length === 0) return ""
 
         const xValues = points.map(p => p.x)
         const yValues = points.map(p => p.y)
 
-        const minX = 0
-        const maxX = xKey === "kcet_marks" ? 180 : 100
+        // 1. Dynamic X-axis bounds with padding
+        const minXVal = Math.min(...xValues)
+        const maxXVal = Math.max(...xValues)
+        const xRange = maxXVal - minXVal
+
+        const paddingPercent = 0.08
+        let minX = Math.floor(Math.max(0, minXVal - xRange * paddingPercent) / 10) * 10
+        let maxX = Math.ceil(Math.min(xKey === "kcet_marks" ? 180 : 100, maxXVal + xRange * paddingPercent) / 10) * 10
+
+        if (minX >= maxX) {
+            minX = Math.max(0, Math.floor(minXVal - 10))
+            maxX = Math.min(xKey === "kcet_marks" ? 180 : 100, Math.ceil(maxXVal + 10))
+        }
+
+        // 2. Dynamic Y-axis bounds (ranks) rounded to clean integers
         const minY = 0
         const maxRankVal = Math.max(...yValues)
-        const maxY = Math.ceil(maxRankVal / 10000) * 10000 || 10000
+        let maxY = 10000
+        if (maxRankVal > 150000) {
+            maxY = Math.ceil(maxRankVal / 50000) * 50000
+        } else if (maxRankVal > 80000) {
+            maxY = Math.ceil(maxRankVal / 20000) * 20000
+        } else if (maxRankVal > 30000) {
+            maxY = Math.ceil(maxRankVal / 10000) * 10000
+        } else {
+            maxY = Math.ceil(maxRankVal / 5000) * 5000 || 5000
+        }
 
         const getX = (xVal: number) => margin.left + ((xVal - minX) / (maxX - minX)) * chartWidth
         const getY = (yVal: number) => margin.top + (1 - (yVal - minY) / (maxY - minY)) * chartHeight
@@ -139,44 +161,53 @@ export default function AdminActualRanksView() {
         ctx.fillText(title, canvas.width / 2, 35)
 
         // Grid lines setup
-        ctx.strokeStyle = "#e2e8f0"
+        ctx.strokeStyle = "#f1f5f9"
         ctx.lineWidth = 1
         ctx.font = "11px sans-serif"
         ctx.fillStyle = "#475569"
 
-        // Draw X Ticks & Grid
-        const xTicks = 10
-        ctx.textAlign = "center"
-        for (let i = 0; i <= xTicks; i++) {
-            const xVal = minX + (i / xTicks) * (maxX - minX)
-            const cx = getX(xVal)
+        // 3. Draw clean, rounded X Ticks & Gridlines
+        const actualXRange = maxX - minX
+        let xStep = 10
+        if (actualXRange > 100) xStep = 20
+        else if (actualXRange > 50) xStep = 10
+        else if (actualXRange > 20) xStep = 5
+        else xStep = 2
 
+        const firstTick = Math.ceil(minX / xStep) * xStep
+        const lastTick = Math.floor(maxX / xStep) * xStep
+
+        ctx.textAlign = "center"
+        for (let val = firstTick; val <= lastTick; val += xStep) {
+            const cx = getX(val)
+            
             ctx.beginPath()
             ctx.moveTo(cx, margin.top)
             ctx.lineTo(cx, margin.top + chartHeight)
             ctx.stroke()
 
-            ctx.fillText(xVal.toFixed(0), cx, margin.top + chartHeight + 20)
+            ctx.fillText(val.toString(), cx, margin.top + chartHeight + 20)
         }
 
-        // Draw Y Ticks & Grid
-        const yTicks = 6
+        // 4. Draw clean, rounded Y Ticks & Gridlines
+        const yTicks = 5
+        const yStep = (maxY - minY) / yTicks
         ctx.textAlign = "right"
         for (let i = 0; i <= yTicks; i++) {
-            const yVal = minY + (i / yTicks) * (maxY - minY)
-            const cy = getY(yVal)
+            const val = minY + i * yStep
+            const cy = getY(val)
 
             ctx.beginPath()
             ctx.moveTo(margin.left, cy)
             ctx.lineTo(margin.left + chartWidth, cy)
             ctx.stroke()
 
-            ctx.fillText(yVal.toLocaleString(), margin.left - 12, cy + 4)
+            ctx.fillText(Math.round(val).toLocaleString(), margin.left - 12, cy + 4)
         }
 
-        // Axis boundary lines
-        ctx.strokeStyle = "#1e293b"
-        ctx.lineWidth = 2
+        // Solid Axis boundary lines
+        ctx.strokeStyle = "#334155"
+        ctx.lineWidth = 1.5
         ctx.beginPath()
         ctx.moveTo(margin.left, margin.top)
         ctx.lineTo(margin.left, margin.top + chartHeight)
@@ -195,36 +226,58 @@ export default function AdminActualRanksView() {
         ctx.fillText(yLabel, 0, 0)
         ctx.restore()
 
-        // Trendline (Linear Regression: y = mx + c)
+        // 5. Trendline (Exponential Regression: y = A * e^(B * x))
         if (points.length > 1) {
             const n = points.length
-            let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0
+            let sumX = 0, sumYPrime = 0, sumXYPrime = 0, sumXX = 0
             for (const p of points) {
+                const yPrime = Math.log(p.y)
                 sumX += p.x
-                sumY += p.y
-                sumXY += p.x * p.y
+                sumYPrime += yPrime
+                sumXYPrime += p.x * yPrime
                 sumXX += p.x * p.x
             }
-            const m = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX)
-            const c = (sumY - m * sumX) / n
 
-            const startX = Math.min(...xValues)
-            const endX = Math.max(...xValues)
-            const startY = m * startX + c
-            const endY = m * endX + c
+            const denom = n * sumXX - sumX * sumX
+            if (denom !== 0) {
+                const B = (n * sumXYPrime - sumX * sumYPrime) / denom
+                const lnA = (sumYPrime - B * sumX) / n
+                const A = Math.exp(lnA)
 
-            ctx.strokeStyle = "rgba(220, 38, 38, 0.7)"
-            ctx.lineWidth = 2.5
-            ctx.setLineDash([6, 6])
-            ctx.beginPath()
-            ctx.moveTo(getX(startX), getY(startY))
-            ctx.lineTo(getX(endX), getY(endY))
-            ctx.stroke()
-            ctx.setLineDash([])
+                ctx.save()
+                // Clip rendering strictly inside chart margins to prevent drawing out of bounds
+                ctx.beginPath()
+                ctx.rect(margin.left, margin.top, chartWidth, chartHeight)
+                ctx.clip()
+
+                ctx.strokeStyle = "rgba(239, 68, 68, 0.85)" // coral red curve
+                ctx.lineWidth = 2.5
+                ctx.setLineDash([5, 5])
+                ctx.beginPath()
+
+                const steps = 100
+                const startX = minX
+                const endX = maxX
+
+                for (let i = 0; i <= steps; i++) {
+                    const xVal = startX + (i / steps) * (endX - startX)
+                    const yVal = A * Math.exp(B * xVal)
+                    const cx = getX(xVal)
+                    const cy = getY(yVal)
+
+                    if (i === 0) {
+                        ctx.moveTo(cx, cy)
+                    } else {
+                        ctx.lineTo(cx, cy)
+                    }
+                }
+                ctx.stroke()
+                ctx.restore()
+            }
         }
 
-        // Scatter Points
-        ctx.fillStyle = "rgba(79, 70, 229, 0.8)"
+        // 6. Draw Premium Scatter Points
+        ctx.fillStyle = "rgba(99, 102, 241, 0.75)" // Semi-transparent Indigo fill
         for (const p of points) {
             const cx = getX(p.x)
             const cy = getY(p.y)
@@ -233,7 +286,7 @@ export default function AdminActualRanksView() {
             ctx.arc(cx, cy, 6, 0, 2 * Math.PI)
             ctx.fill()
 
-            ctx.strokeStyle = "#312e81"
+            ctx.strokeStyle = "#4338ca" // Solid indigo border
             ctx.lineWidth = 1.2
             ctx.stroke()
         }
