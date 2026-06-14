@@ -1,9 +1,44 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  PROJECT PAUSED — All routes redirect to PausedNotice page     ║
+// ║  To restore: uncomment the original App below and remove the   ║
+// ║  paused version.                                               ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
+import PausedNotice from "./pages/PausedNotice";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true
+        }}
+      >
+        <Analytics />
+        <Routes>
+          <Route path="*" element={<PausedNotice />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
+  </HelmetProvider>
+);
+
+export default App;
+
+// ═══════════════════════════════════════════════════════════════════
+// ORIGINAL APP — UNCOMMENT EVERYTHING BELOW TO RESTORE FULL SITE
+// ═══════════════════════════════════════════════════════════════════
+/*
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
 import { DonationButton } from "./components/DonationButton";
@@ -28,7 +63,6 @@ import CollegeReviewPage from "./pages/CollegeReviewPage";
 import InfoCentre from "./pages/InfoCentre";
 import Materials from "./pages/Materials";
 import AICounselor from "./pages/AICounselor";
-// Vercel build fix trigger
 import NotFound from "./pages/NotFound";
 import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
@@ -51,14 +85,9 @@ import AdminHub from "./pages/AdminHub";
 import ResultChecker from "./pages/ResultChecker";
 import CopingZone from "./pages/CopingZone";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
-
-
-const queryClient = new QueryClient();
-
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
-import { Analytics } from "@vercel/analytics/react";
 
 const ExamAwareCutoffExplorer = () => {
   const { examMode } = useExamMode();
@@ -70,7 +99,7 @@ const ExamAwareRankPredictor = () => {
   return examMode === "COMEDK" ? <ComedkRankPredictor /> : <RankPredictor />;
 };
 
-const App = () => (
+const OriginalApp = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <ExamModeProvider>
@@ -92,12 +121,9 @@ const App = () => (
             <Calibrate2027Modal />
 
             <Routes>
-              {/* Standalone pages (no sidebar) */}
               <Route path="/" element={<Homepage />} />
               <Route path="/daily-challenge" element={<DailyChallenge />} />
               <Route path="/cutoff-clash" element={<CutoffClash />} />
-
-              {/* All other pages with sidebar layout */}
               <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
               <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
               <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
@@ -107,13 +133,7 @@ const App = () => (
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
-              <Route path="/planner" element={
-                <Layout>
-                  <ErrorBoundary>
-                    <Planner />
-                  </ErrorBoundary>
-                </Layout>
-              } />
+              <Route path="/planner" element={<Layout><ErrorBoundary><Planner /></ErrorBoundary></Layout>} />
               <Route path="/documents" element={<Layout><Documents /></Layout>} />
               <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
               <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
@@ -124,30 +144,20 @@ const App = () => (
               <Route path="/materials" element={<Layout><Materials /></Layout>} />
               <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
               <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
-              <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
               <Route path="/results" element={<Layout><ResultChecker /></Layout>} />
-
-              {/* College Details Section */}
               <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
-
-              {/* More routes will be added here */}
               <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
               <Route path="/terms" element={<Layout><Terms /></Layout>} />
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
               <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
               <Route path="/donate" element={<Layout><Donate /></Layout>} />
-
-              {/* Coded Labs - Unique Features */}
               <Route path="/squad-finder" element={<SquadFinder />} />
               <Route path="/metro-mapper" element={<MetroMapper />} />
               <Route path="/bmtc-mapper" element={<BmtcMapper />} />
               <Route path="/hidden-gems" element={<HiddenGems />} />
               <Route path="/coping-zone" element={<CopingZone />} />
-
-              {/* Admin (hidden from nav, direct URL only) */}
               <Route path="/admin" element={<AdminHub />} />
-
               <Route path="*" element={<NotFound />} />
             </Routes>
             <DonationButton />
@@ -158,5 +168,4 @@ const App = () => (
     </QueryClientProvider>
   </HelmetProvider>
 );
-
-export default App;
+*/
