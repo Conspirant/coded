@@ -6,7 +6,6 @@ import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
 import { ThankYouBanner } from "@/components/ThankYouBanner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ResultsDayHub } from "@/components/ResultsDayHub"
 import {
     Search,
     BarChart3,
@@ -352,15 +351,6 @@ const Homepage = () => {
                         Free, open-source tools to check previous year cutoffs, predict your rank, and make smart choices for KCET counseling.
                     </motion.p>
 
-                    {/* Results Day Special Portal */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.5 }}
-                        className="max-w-3xl mx-auto mb-6 text-left"
-                    >
-                        <ResultsDayHub />
-                    </motion.div>
 
                     {/* Cutoff Predictor Alert Banner */}
                     <motion.div

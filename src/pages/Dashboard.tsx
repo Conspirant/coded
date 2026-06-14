@@ -29,7 +29,6 @@ import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import AdUnit from "@/components/AdUnit"
 import { ThankYouBanner } from "@/components/ThankYouBanner"
-import { ResultsDayHub } from "@/components/ResultsDayHub"
 
 interface DataStats {
   totalRecords: number
@@ -231,12 +230,6 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* ═══ Results Day Special Hub (KCET Only) ═══ */}
-      {examMode === "KCET" && (
-        <div className="animate-scale-in">
-          <ResultsDayHub />
-        </div>
-      )}
 
       {/* ═══ Post-Exam Counseling Status ═══ */}
       {examMode === "KCET" ? (
