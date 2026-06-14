@@ -162,6 +162,40 @@ export async function getAvailableRounds(): Promise<string[]> {
 /**
  * Predict the cutoff for a single college + course + category + round.
  */
+function getCourseDemandTier(normalizedCourse: string): 1 | 2 | 3 {
+  const c = normalizedCourse.toLowerCase()
+  // Hyper-demand (Tier 1)
+  if (
+    c.includes('computer') ||
+    c.includes('science') ||
+    c.includes('software') ||
+    c.includes('artificial') ||
+    c.includes('data science') ||
+    c.includes('information science') ||
+    c.includes('cyber security') ||
+    c.includes('iot') ||
+    c.includes('blockchain') ||
+    c.includes('networks')
+  ) {
+    return 1
+  }
+  // Core Tech (Tier 2)
+  if (
+    c.includes('electronics') ||
+    c.includes('electrical') ||
+    c.includes('telecommunication') ||
+    c.includes('instrumentation') ||
+    c.includes('medical')
+  ) {
+    return 2
+  }
+  // Traditional/Low-demand (Tier 3)
+  return 3
+}
+
+/**
+ * Predict the cutoff for a single college + course + category + round.
+ */
 export async function predictCutoff(
   collegeCode: string,
   course: string,
@@ -218,37 +252,78 @@ export async function predictCutoff(
 
   const dataYears = historical.length
 
+  // Find baseline stats
+  const ranks = historical.map(h => h.rank)
+  const medianRank = ranks.reduce((sum, r) => sum + r, 0) / dataYears
+
+  // Calculate Volatility Coefficient (alpha_band)
+  // Elite ranks (<5,000) are very sticky. High ranks (>50,000) fluctuate widely.
+  const alphaBand = Math.min(1.5, Math.max(0.15, medianRank / 50000))
+
+  // Determine Demand Tier (T1: Hyper-demand, T2: Stable, T3: Traditional/Low)
+  const demandTier = getCourseDemandTier(normalizedCourse)
+
   // ── Prediction ──
   let predictedCutoff: number
   let stdDev: number = 0
 
+  // Project using relative indexing where 2023 is t = 0
+  const baseYear = 2023
+  const targetT = targetYear - baseYear // e.g. 2026 -> t = 3
+
+  // Holt-like trend dampening factor to avoid infinite linear expansion
+  const trendDampening = 0.75
+
   if (dataYears === 1) {
-    // Only 1 year: use that value with a small drift
-    predictedCutoff = Math.round(historical[0].rank * 1.02) // slight inflation
-    stdDev = historical[0].rank * 0.15 // 15% uncertainty
+    // Only 1 year: use that value with a small drift based on popularity demand
+    const rawVal = historical[0].rank
+    let drift = 1.02 // default slight inflation
+    if (demandTier === 1) drift = 0.99 // hyper-demand CSE doesn't expand
+    if (demandTier === 3) drift = 1.05 // low-demand expands more
+
+    predictedCutoff = Math.round(rawVal * drift)
+    stdDev = rawVal * 0.15 * alphaBand // scale uncertainty with volatility
   } else if (dataYears === 2) {
-    // 2 years: simple weighted average (recent year weighted 60%)
-    const [older, newer] = historical
-    predictedCutoff = Math.round(older.rank * 0.4 + newer.rank * 0.6)
-    const delta = Math.abs(newer.rank - older.rank)
-    // Project the trend forward
-    const trendDirection = newer.rank - older.rank
-    predictedCutoff = Math.round(predictedCutoff + trendDirection * 0.3)
-    stdDev = delta * 0.5
+    // 2 years: t = Year - 2023
+    const t0 = parseInt(historical[0].year) - baseYear
+    const t1 = parseInt(historical[1].year) - baseYear
+    const y0 = historical[0].rank
+    const y1 = historical[1].rank
+
+    // Simple slope
+    const rawSlope = (y1 - y0) / (t1 - t0 || 1)
+
+    // Apply adjustments to slope
+    let adjustedSlope = rawSlope * alphaBand
+    if (adjustedSlope > 0 && demandTier === 1) adjustedSlope *= 0.7 // dampen CSE expansion
+    if (adjustedSlope > 0 && demandTier === 3) adjustedSlope *= 1.2 // amplify traditional expansion
+
+    // Project from latest year with dampening
+    const latestT = t1
+    const latestY = y1
+    predictedCutoff = Math.round(latestY + adjustedSlope * (targetT - latestT) * trendDampening)
+    stdDev = Math.abs(y1 - y0) * 0.5 * alphaBand
   } else {
-    // 3+ years: weighted linear regression
-    const xs = historical.map(h => parseInt(h.year))
+    // 3+ years: Weighted Linear Regression using relative years
+    const ts = historical.map(h => parseInt(h.year) - baseYear)
     const ys = historical.map(h => h.rank)
-    // Exponentially increasing weights: 1, 2, 4, 8, ...
     const weights = historical.map((_, i) => Math.pow(2, i))
 
-    const { slope, intercept } = weightedLinearRegression(xs, ys, weights)
-    stdDev = residualStdDev(xs, ys, weights, slope, intercept)
+    const { slope, intercept } = weightedLinearRegression(ts, ys, weights)
+    stdDev = residualStdDev(ts, ys, weights, slope, intercept)
 
-    predictedCutoff = Math.round(slope * targetYear + intercept)
+    // Adjust slope by volatility and demand tier
+    let adjustedSlope = slope * alphaBand
+    if (adjustedSlope > 0 && demandTier === 1) adjustedSlope *= 0.7
+    if (adjustedSlope > 0 && demandTier === 3) adjustedSlope *= 1.2
 
-    // Minimum stdDev = 5% of prediction
-    stdDev = Math.max(stdDev, predictedCutoff * 0.05)
+    // Project using damped Holt-like extrapolation from latest known year
+    const latestT = ts[ts.length - 1]
+    const latestY = ys[ys.length - 1]
+    predictedCutoff = Math.round(latestY + adjustedSlope * (targetT - latestT) * trendDampening)
+
+    // Floor standard deviation to 5% of prediction scaled by volatility
+    stdDev = Math.max(stdDev, predictedCutoff * 0.05) * alphaBand
   }
 
   // Ensure prediction is positive
