@@ -14,7 +14,8 @@ import {
     ShieldCheck, Lock, AlertTriangle, Database, BookOpenCheck,
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
-    BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit
+    BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
+    Building2
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -25,6 +26,7 @@ import AdminFeatureRequestsView from "@/components/AdminFeatureRequestsView"
 import AdminSuggestionsView from "@/components/AdminSuggestionsView"
 import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 import AdminActualRanksView from "@/components/AdminActualRanksView"
+import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
 
 const ADMIN_PASS = "kcetadmin2026"
 const AUTH_KEY = "kcet_admin_auth"
@@ -773,6 +775,7 @@ const ADMIN_SECTIONS = [
     { id: "ai-extractor", label: "AI Extractor", icon: BrainCircuit },
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
+    { id: "colleges", label: "Colleges Override", icon: Building2 },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
     { id: "suggestions", label: "Suggestions & Doubts", icon: ClipboardPaste },
     { id: "features", label: "Feature Requests", icon: Lightbulb },
@@ -841,6 +844,7 @@ export default function AdminHub() {
                     {activeSection === "suggestions" && <AdminSuggestionsView />}
                     {activeSection === "features" && <AdminFeatureRequestsView />}
                     {activeSection === "actual-ranks" && <AdminActualRanksView />}
+                    {activeSection === "colleges" && <AdminCollegeEditor />}
                 </main>
             </div>
         </div>

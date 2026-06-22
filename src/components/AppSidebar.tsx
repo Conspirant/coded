@@ -41,6 +41,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
 
 const toolItems = [
   { title: "Cutoff Predictor ⚡", url: "/cutoff-predictor", icon: Zap, isNew: true },
+  { title: "College Directory", url: "/colleges", icon: Building2, isNew: true },
   { title: "UGCET Results", url: "/results", icon: Award, isNew: true },
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },
   { title: "CET News", url: "/cet-news", icon: Newspaper },

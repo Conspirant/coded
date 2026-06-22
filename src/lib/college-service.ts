@@ -29,6 +29,7 @@ export interface CollegeReview {
 }
 
 import { supabase } from "@/integrations/supabase/client";
+import { CollegeInfo } from "@/data/collegeDatabase";
 
 // Get or create a user session ID for tracking user's own reviews
 const getUserSessionId = (): string => {
@@ -701,3 +702,48 @@ export const getReviewStats = async (): Promise<{
     return { totalReviews: 0, pendingReports: 0, hiddenReviews: 0, flaggedReviews: 0 };
   }
 };
+
+/**
+ * Merges a Supabase colleges table record over static CollegeInfo fallback data.
+ */
+export function mergeSingleCollege(staticCollege: CollegeInfo, override: any): CollegeInfo {
+  if (!override) return staticCollege;
+  
+  const fees = override.fees_structure || {};
+  const stats = override.placement_stats || {};
+  const facilities = Array.isArray(override.facilities) ? override.facilities : null;
+  
+  return {
+    ...staticCollege,
+    name: override.name || staticCollege.name,
+    shortName: override.name ? (override.name.includes('(') ? override.name.split('(')[0].trim() : override.name.substring(0, 45)) : staticCollege.shortName,
+    website: override.hasOwnProperty('website') ? override.website : staticCollege.website,
+    logoUrl: stats.logoUrl !== undefined ? stats.logoUrl : staticCollege.logoUrl,
+    city: override.location || staticCollege.city,
+    district: override.district || staticCollege.district,
+    established: override.established_year !== undefined && override.established_year !== null ? override.established_year : staticCollege.established,
+    type: override.type || staticCollege.type,
+    
+    // fees
+    feeCetQuota: fees.feeCetQuota !== undefined && fees.feeCetQuota !== null ? fees.feeCetQuota : staticCollege.feeCetQuota,
+    feeManagement: fees.feeManagement !== undefined && fees.feeManagement !== null ? fees.feeManagement : staticCollege.feeManagement,
+    
+    // placement stats & others
+    avgPackage: stats.avgPackage !== undefined && stats.avgPackage !== null ? stats.avgPackage : staticCollege.avgPackage,
+    medianPackage: stats.medianPackage !== undefined && stats.medianPackage !== null ? stats.medianPackage : staticCollege.medianPackage,
+    maxPackage: stats.maxPackage !== undefined && stats.maxPackage !== null ? stats.maxPackage : staticCollege.maxPackage,
+    minPackage: stats.minPackage !== undefined && stats.minPackage !== null ? stats.minPackage : staticCollege.minPackage,
+    placementRate: stats.placementRate !== undefined && stats.placementRate !== null ? stats.placementRate : staticCollege.placementRate,
+    topRecruiters: Array.isArray(stats.topRecruiters) ? stats.topRecruiters : staticCollege.topRecruiters,
+    tier: stats.tier || staticCollege.tier,
+    naacGrade: stats.hasOwnProperty('naacGrade') ? stats.naacGrade : staticCollege.naacGrade,
+    nbaAccredited: stats.nbaAccredited !== undefined && stats.nbaAccredited !== null ? stats.nbaAccredited : staticCollege.nbaAccredited,
+    autonomous: stats.autonomous !== undefined && stats.autonomous !== null ? stats.autonomous : staticCollege.autonomous,
+    nirfRank: stats.nirfRank !== undefined && stats.nirfRank !== null ? stats.nirfRank : staticCollege.nirfRank,
+    tags: Array.isArray(stats.tags) ? stats.tags : staticCollege.tags,
+    totalIntake: stats.totalIntake !== undefined && stats.totalIntake !== null ? stats.totalIntake : staticCollege.totalIntake,
+    
+    // facilities
+    facilities: facilities || staticCollege.facilities,
+  };
+}

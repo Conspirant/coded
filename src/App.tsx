@@ -39,7 +39,6 @@ import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
 import CETNews from "./pages/CETNews";
 import CollegeDetail from "./pages/CollegeDetail";
-import CollegeList from "./pages/CollegeList";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import SquadFinder from "./pages/SquadFinder";
@@ -47,6 +46,7 @@ import MetroMapper from "./pages/MetroMapper";
 import BmtcMapper from './pages/BmtcMapper';
 import HiddenGems from "./pages/HiddenGems";
 import CollegeCutoffs from "./pages/CollegeCutoffs";
+import CollegeInfoHub from "./pages/CollegeInfoHub";
 import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
@@ -112,7 +112,8 @@ const App = () => (
               <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
               <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
               <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
-              <Route path="/college-list" element={<Layout><CollegeCutoffs /></Layout>} />
+              <Route path="/colleges" element={<Layout><CollegeInfoHub /></Layout>} />
+              <Route path="/college-list" element={<Layout><CollegeInfoHub /></Layout>} />
               <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
               <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
               <Route path="/materials" element={<Layout><Materials /></Layout>} />

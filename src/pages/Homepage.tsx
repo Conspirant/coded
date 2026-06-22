@@ -32,6 +32,7 @@ import {
     MapPin,
     Bus,
     Heart,
+    Building2,
 } from "lucide-react"
 
 interface DataStats {
@@ -206,6 +207,7 @@ const Homepage = () => {
     ]
 
     const moreFeatures = [
+        { title: "College Directory", description: "All 232+ KCET colleges with ROI meters, placement statistics & reviews.", icon: Building2, href: "/colleges", badge: "New" },
         { title: "Cutoff Predictor", description: "Predict expected 2026 branch cutoffs with 3 years of KEA data.", icon: Zap, href: "/cutoff-predictor", badge: "New" },
         { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
         { title: "Mock Verification", description: "Check if your study & reserve papers are correct", icon: CheckCircle2, href: "/document-verification", badge: "New" },

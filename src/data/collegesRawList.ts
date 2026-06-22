@@ -1,4 +1,10 @@
-[
+// Auto-generated raw list of all 232+ KCET colleges
+export interface RawCollege {
+  code: string;
+  name: string;
+}
+
+export const RAW_COLLEGES_LIST: RawCollege[] = [
   {
     "code": "E001",
     "name": "E: University of Visvesvaraya College of Engineering  Bangalore ( PUBLIC UNIV. ) :"
@@ -1023,4 +1029,4 @@
     "code": "E315",
     "name": "VTU CONSTITUENT ENGINEERING COLLEGE - GOKAK"
   }
-]
+];
