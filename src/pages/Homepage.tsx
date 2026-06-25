@@ -208,7 +208,6 @@ const Homepage = () => {
 
     const moreFeatures = [
         { title: "College Directory", description: "All 232+ KCET colleges with ROI meters, placement statistics & reviews.", icon: Building2, href: "/colleges", badge: "New" },
-        { title: "Cutoff Predictor", description: "Predict expected 2026 branch cutoffs with 3 years of KEA data.", icon: Zap, href: "/cutoff-predictor", badge: "New" },
         { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
         { title: "Mock Verification", description: "Check if your study & reserve papers are correct", icon: CheckCircle2, href: "/document-verification", badge: "New" },
         { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" }
@@ -354,38 +353,6 @@ const Homepage = () => {
                     </motion.p>
 
 
-                    {/* Cutoff Predictor Alert Banner */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.55 }}
-                        className="max-w-3xl mx-auto mb-14"
-                    >
-                        <Link to="/cutoff-predictor">
-                            <div className="group relative rounded-2xl border border-violet-500/20 bg-gradient-to-r from-violet-500/10 via-fuchsia-500/5 to-indigo-500/10 p-5 text-left shadow-lg hover:shadow-violet-500/5 hover:border-violet-500/30 transition-all flex flex-col sm:flex-row items-center justify-between gap-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-violet-500/20 shrink-0 group-hover:scale-105 transition-transform">
-                                        <Zap className="h-6 w-6 text-white animate-pulse" />
-                                    </div>
-                                    <div className="min-w-0">
-                                        <h4 className="font-extrabold text-slate-100 flex items-center gap-2 text-sm sm:text-base">
-                                            Predict Your 2026 Cutoff Ranks! ⚡
-                                            <Badge className="bg-violet-500/20 text-violet-400 border border-violet-500/30 hover:bg-violet-500/20 font-bold text-[9px] px-2 shrink-0">
-                                                NEW FEATURE
-                                            </Badge>
-                                        </h4>
-                                        <p className="text-xs text-slate-300 leading-normal mt-1">
-                                            Use weighted linear regression on 3+ years of historical KEA cutoff data to project 2026 branch cutoffs. See trend directions, confidence bands, and check eligibility instantly.
-                                        </p>
-                                    </div>
-                                </div>
-                                <Button size="sm" variant="ghost" className="text-violet-400 group-hover:text-violet-300 gap-1 font-bold shrink-0 self-end sm:self-center">
-                                    Try Predictor
-                                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                                </Button>
-                            </div>
-                        </Link>
-                    </motion.div>
 
                     {/* Secondary Navigation buttons */}
                     <motion.div

@@ -25,7 +25,8 @@ import {
     Flame,
     Sword,
     Newspaper,
-    ShieldCheck
+    ShieldCheck,
+    Brain
 } from "lucide-react"
 import { useExamMode } from "@/contexts/ExamModeContext"
 

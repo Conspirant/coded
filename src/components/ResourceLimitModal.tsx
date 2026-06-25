@@ -118,7 +118,7 @@ export const ResourceLimitModal = () => {
     '/documents', '/materials', '/info-centre',
     '/squad-finder', '/metro-mapper', '/bmtc-mapper',
     '/hidden-gems', '/college-list', '/college-cutoffs',
-    '/results', '/dashboard'
+    '/dashboard'
   ]);
 
   // Prefix checks for sub-routes

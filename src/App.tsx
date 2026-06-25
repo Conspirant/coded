@@ -51,10 +51,8 @@ import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
 import CutoffTrends from "./pages/CutoffTrends";
-import CutoffPredictor from "./pages/CutoffPredictor";
 import Donate from "./pages/Donate";
 import AdminHub from "./pages/AdminHub";
-import ResultChecker from "./pages/ResultChecker";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
@@ -103,7 +101,6 @@ const App = () => (
               <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
               <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
               <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
-              <Route path="/cutoff-predictor" element={<Layout><CutoffPredictor /></Layout>} />
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
@@ -119,7 +116,6 @@ const App = () => (
               <Route path="/materials" element={<Layout><Materials /></Layout>} />
               <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
               <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
-              <Route path="/results" element={<Layout><ResultChecker /></Layout>} />
               <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
               <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
               <Route path="/terms" element={<Layout><Terms /></Layout>} />
