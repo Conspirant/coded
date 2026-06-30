@@ -158,28 +158,16 @@ export const DonationButton = () => {
                   continued development. Every donation, no matter how small, is deeply appreciated.
                 </p>
 
-                {/* QR Code */}
-                <div className="relative inline-block mb-4 sm:mb-5">
-                  {/* Glow behind QR */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-amber-500/20 rounded-2xl blur-xl" />
-
-                  <div className="relative p-3 sm:p-4 bg-white rounded-2xl shadow-lg shadow-black/20 border border-white/20">
-                    <img
-                      src="/images/donate-qr.png"
-                      alt="UPI QR Code for donations"
-                      className="w-40 h-40 sm:w-48 sm:h-48 object-contain mx-auto"
-                      loading="eager"
-                    />
-                  </div>
+                {/* Donate Online Button */}
+                <div className="py-2.5 sm:py-4">
+                  <Link to="/donate" onClick={handleClose}>
+                    <button className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:from-pink-600 hover:via-rose-600 hover:to-amber-600 text-white font-bold shadow-lg shadow-pink-500/25 border-0 flex items-center justify-center gap-2 transition-all duration-200 text-xs sm:text-sm">
+                      <Heart className="w-4 h-4 fill-white" />
+                      Donate Online (Cards, UPI, Netbanking)
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </Link>
                 </div>
-
-                {/* Scan instruction */}
-                <p className="text-[11px] sm:text-xs text-white/40 mb-1">
-                  Scan with any UPI app to donate
-                </p>
-                <p className="text-[10px] sm:text-[11px] text-white/25 mb-4 sm:mb-5">
-                  Google Pay • PhonePe • Paytm • BHIM
-                </p>
 
                 {/* Thank you note */}
                 <div className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">

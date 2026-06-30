@@ -106,7 +106,7 @@ const devAiListerPlugin = (nvidiaApiKey: string): Plugin => ({
           return;
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as any;
         const content = data.choices?.[0]?.message?.content ?? "";
         const jsonText = extractJson(content);
         if (!jsonText) {
@@ -392,6 +392,133 @@ const devCheckResultPlugin = (supabaseUrl: string, supabaseAnonKey: string): Plu
   }
 });
 
+const devRazorpayPlugin = (keyId: string, keySecret: string): Plugin => ({
+  name: "dev-razorpay-api",
+  configureServer(server) {
+    server.middlewares.use("/api/create-order", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      if (!keyId || !keySecret) {
+        res.statusCode = 401;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Razorpay credentials not configured in dev" }));
+        return;
+      }
+
+      try {
+        const body = await readRequestBody(req);
+        const { amount, currency = "INR", receipt } = body;
+
+        if (amount === undefined || amount === null) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "Amount is required" }));
+          return;
+        }
+
+        const numericAmount = Number(amount);
+        if (isNaN(numericAmount) || !Number.isInteger(numericAmount) || numericAmount < 100) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "Minimum amount must be 100 paise (₹1)" }));
+          return;
+        }
+
+        const Razorpay = (await import("razorpay")).default;
+        const razorpay = new Razorpay({
+          key_id: keyId,
+          key_secret: keySecret,
+        });
+
+        const order = await razorpay.orders.create({
+          amount: numericAmount,
+          currency,
+          receipt: receipt || `rcpt_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+        });
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({
+          order_id: order.id,
+          amount: order.amount,
+          currency: order.currency,
+        }));
+      } catch (error: unknown) {
+        console.error("Dev Razorpay create order error:", error);
+        const err = error as { statusCode?: number; message?: string };
+        const statusCode = err.statusCode || 500;
+        res.statusCode = statusCode;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ 
+          error: statusCode === 401 ? "Authentication failure with Razorpay API" : "Failed to create order", 
+          message: err.message || String(error),
+          details: error
+        }));
+      }
+    });
+
+    server.middlewares.use("/api/verify-payment", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      if (!keySecret) {
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Razorpay credentials not configured in dev" }));
+        return;
+      }
+
+      try {
+        const body = await readRequestBody(req);
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = body;
+
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "Missing required verification fields" }));
+          return;
+        }
+
+        const crypto = await import("crypto");
+        const generatedSignature = crypto
+          .createHmac("sha256", keySecret)
+          .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+          .digest("hex");
+
+        if (generatedSignature === razorpay_signature) {
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ success: true, message: "Payment verified successfully" }));
+        } else {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ success: false, error: "Signature mismatch" }));
+        }
+      } catch (error: unknown) {
+        console.error("Dev Razorpay verify payment error:", error);
+        const err = error as { message?: string; stack?: string };
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ 
+          error: "Failed to verify signature",
+          message: err.message || String(error),
+          stack: err.stack,
+          details: error
+        }));
+      }
+    });
+  },
+});
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -407,6 +534,10 @@ export default defineConfig(({ mode }) => {
       devCheckResultPlugin(
         env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "",
         env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ""
+      ),
+      devRazorpayPlugin(
+        env.RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID || "",
+        env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET || ""
       ),
     ],
     resolve: {

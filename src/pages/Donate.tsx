@@ -1,8 +1,12 @@
+import { useState } from "react"
 import { SEO } from "@/components/SEO"
 import { Link } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
 import {
     Heart,
     Coffee,
@@ -23,6 +27,8 @@ import {
     MemoryStick,
     Database,
     BarChart3,
+    CreditCard,
+    Loader2,
 } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -148,6 +154,160 @@ const fadeUp = {
 }
 
 const Donate = () => {
+    const { toast } = useToast()
+    const [amount, setAmount] = useState<string>("100")
+    const [isProcessing, setIsProcessing] = useState<boolean>(false)
+    const [paymentStatus, setPaymentStatus] = useState<'idle' | 'success' | 'error'>('idle')
+    const [txnDetails, setTxnDetails] = useState<{ paymentId: string; orderId: string } | null>(null)
+
+    const predefinedAmounts = [50, 100, 250, 500]
+
+    const handleRazorpayPayment = async () => {
+        const amtVal = parseFloat(amount)
+        if (isNaN(amtVal) || amtVal <= 0) {
+            toast({
+                title: "Invalid Amount",
+                description: "Please enter a valid amount to donate.",
+                variant: "destructive",
+            })
+            return
+        }
+
+        const paiseAmount = Math.round(amtVal * 100)
+        if (paiseAmount < 100) {
+            toast({
+                title: "Minimum Amount",
+                description: "The minimum donation amount is ₹1 (100 paise).",
+                variant: "destructive",
+            })
+            return
+        }
+
+        if (typeof (window as unknown as { Razorpay?: unknown }).Razorpay === 'undefined') {
+            toast({
+                title: "Razorpay SDK not loaded",
+                description: "Payment checkout script is not loaded. Please reload the page or disable content blockers.",
+                variant: "destructive",
+            })
+            return
+        }
+
+        setIsProcessing(true)
+        setPaymentStatus('idle')
+
+        try {
+            // Step 1: Create order on the backend
+            const orderRes = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: paiseAmount })
+            })
+
+            if (!orderRes.ok) {
+                const errData = (await orderRes.json().catch(() => ({}))) as { error?: string };
+                throw new Error(errData.error || `HTTP error ${orderRes.status}`)
+            }
+
+            const order = (await orderRes.json()) as { order_id: string; amount: number; currency: string }
+
+            // Step 2: Open Razorpay modal
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: "KCET Coded",
+                description: `Support KCET Coded - Donation of ₹${amtVal}`,
+                order_id: order.order_id,
+                handler: async function (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) {
+                    setIsProcessing(true)
+                    try {
+                        // Step 3: Verify signature on the backend
+                        const verifyRes = await fetch('/api/verify-payment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                            })
+                        })
+
+                        const verifyData = (await verifyRes.json().catch(() => ({}))) as { success?: boolean; error?: string }
+
+                        if (verifyRes.ok && verifyData.success) {
+                            setPaymentStatus('success')
+                            setTxnDetails({
+                                paymentId: response.razorpay_payment_id,
+                                orderId: response.razorpay_order_id,
+                            })
+                            toast({
+                                title: "Payment Successful!",
+                                description: `Thank you so much for your donation of ₹${amtVal}!`,
+                            })
+                        } else {
+                            setPaymentStatus('error')
+                            toast({
+                                title: "Verification Failed",
+                                description: verifyData.error || "Could not verify your payment signature.",
+                                variant: "destructive",
+                            })
+                        }
+                    } catch (err: unknown) {
+                        setPaymentStatus('error')
+                        const errorObj = err as Error;
+                        toast({
+                            title: "Verification Error",
+                            description: errorObj.message || "An error occurred while verifying the payment.",
+                            variant: "destructive",
+                        })
+                    } finally {
+                        setIsProcessing(false)
+                    }
+                },
+                prefill: {
+                    name: "",
+                    email: "",
+                    contact: "",
+                },
+                theme: {
+                    color: "#ec4899", // matches pink theme
+                },
+                modal: {
+                    ondismiss: function () {
+                        setIsProcessing(false)
+                        toast({
+                            title: "Payment Cancelled",
+                            description: "You closed the payment modal.",
+                        })
+                    }
+                }
+            }
+
+            const RazorpayClass = (window as unknown as { Razorpay: new (opts: unknown) => { open: () => void; on: (event: string, cb: (res: { error?: { description?: string } }) => void) => void } }).Razorpay;
+            const rzp = new RazorpayClass(options)
+            rzp.on('payment.failed', function (response: { error?: { description?: string } }) {
+                setIsProcessing(false)
+                setPaymentStatus('error')
+                toast({
+                    title: "Payment Failed",
+                    description: response.error?.description || "Razorpay payment failed.",
+                    variant: "destructive",
+                })
+            })
+
+            rzp.open()
+        } catch (err: unknown) {
+            const errorObj = err as Error;
+            console.error('Payment checkout initiation failed:', errorObj)
+            toast({
+                title: "Checkout Failed",
+                description: errorObj.message || "Could not connect to server or initiate payment.",
+                variant: "destructive",
+            })
+            setIsProcessing(false)
+        }
+    }
+
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-10">
             <SEO
@@ -315,67 +475,122 @@ const Donate = () => {
                 </Card>
             </motion.div>
 
-            {/* ═══ QR Code Section ═══ */}
-            <motion.div {...fadeUp}>
-                <Card className="overflow-hidden relative">
-                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500" />
-                    <CardContent className="p-6 sm:p-10 text-center space-y-6 relative">
-                        <div className="absolute -top-20 -right-20 w-60 h-60 bg-pink-500/8 rounded-full blur-3xl pointer-events-none" />
-                        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-amber-500/8 rounded-full blur-3xl pointer-events-none" />
+            {/* ═══ Donation Card Section ═══ */}
+            <motion.div {...fadeUp} className="max-w-md mx-auto">
+                <Card className="overflow-hidden relative flex flex-col justify-between">
+                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+                    <CardContent className="p-6 sm:p-8 space-y-6 relative flex-grow flex flex-col justify-between">
+                        <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/8 rounded-full blur-3xl pointer-events-none" />
+                        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-pink-500/8 rounded-full blur-3xl pointer-events-none" />
 
-                        <div className="flex items-center justify-center gap-2">
-                            <Sparkles className="h-4 w-4 text-amber-400" />
-                            <h2 className="text-2xl font-bold">Scan to Donate via UPI</h2>
-                            <Sparkles className="h-4 w-4 text-amber-400" />
-                        </div>
-
-                        <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                            Open any UPI app on your phone and scan the QR code below.
-                            You can donate any amount you wish — even ₹10 makes a difference.
-                        </p>
-
-                        {/* QR Code */}
-                        <div className="relative inline-block">
-                            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-amber-500/20 rounded-3xl blur-2xl" />
-                            <div className="relative p-5 bg-white rounded-3xl shadow-2xl shadow-black/20 border border-white/20">
-                                <img
-                                    src="/images/donate-qr.png"
-                                    alt="UPI QR Code for donations"
-                                    className="w-56 h-56 sm:w-64 sm:h-64 object-contain mx-auto"
-                                    loading="eager"
-                                />
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-center gap-2">
+                                <CreditCard className="h-5 w-5 text-indigo-400" />
+                                <h2 className="text-xl font-bold">Pay Online (Razorpay)</h2>
                             </div>
+
+                            <p className="text-xs text-muted-foreground max-w-md mx-auto text-center">
+                                Support us instantly using Credit/Debit Cards, Net Banking, Wallet, or UPI with secure Razorpay Checkout.
+                            </p>
                         </div>
 
-                        {/* Compatible apps */}
-                        <div className="space-y-2">
-                            <p className="text-xs text-white/40">Works with all UPI apps</p>
-                            <div className="flex items-center justify-center gap-3 flex-wrap">
-                                {["Google Pay", "PhonePe", "Paytm", "BHIM", "CRED", "Amazon Pay"].map((app) => (
-                                    <Badge
-                                        key={app}
-                                        variant="secondary"
-                                        className="bg-white/5 border-white/10 text-muted-foreground text-[10px]"
-                                    >
-                                        {app}
-                                    </Badge>
-                                ))}
+                        {/* Payment States UI */}
+                        {paymentStatus === 'success' ? (
+                            <div className="flex-grow flex flex-col items-center justify-center space-y-3 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
+                                <CheckCircle2 className="h-12 w-12 text-emerald-400 animate-bounce" />
+                                <div className="text-center">
+                                    <h3 className="font-bold text-emerald-400 text-sm">Payment Successful!</h3>
+                                    <p className="text-[11px] text-muted-foreground mt-1">Thank you for your generous support!</p>
+                                </div>
+                                {txnDetails && (
+                                    <div className="text-left w-full text-[10px] text-muted-foreground/80 space-y-1 bg-black/20 p-2.5 rounded-lg border border-white/5 font-mono">
+                                        <div className="truncate"><span className="text-white/40">Pay ID:</span> {txnDetails.paymentId}</div>
+                                        <div className="truncate"><span className="text-white/40">Ord ID:</span> {txnDetails.orderId}</div>
+                                    </div>
+                                )}
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => setPaymentStatus('idle')}
+                                    className="text-xs border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-400"
+                                >
+                                    Donate Again
+                                </Button>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="space-y-5 flex-grow flex flex-col justify-center">
+                                {/* Predefined Amounts */}
+                                <div className="space-y-2">
+                                    <Label className="text-xs text-muted-foreground">Select Amount</Label>
+                                    <div className="grid grid-cols-4 gap-2">
+                                        {predefinedAmounts.map((amt) => (
+                                            <Button
+                                                key={amt}
+                                                type="button"
+                                                variant={amount === amt.toString() ? "default" : "outline"}
+                                                onClick={() => setAmount(amt.toString())}
+                                                className={`text-xs font-semibold h-9 ${
+                                                    amount === amt.toString() 
+                                                    ? "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 border-0 text-white" 
+                                                    : "border-white/10 hover:bg-white/5"
+                                                }`}
+                                            >
+                                                ₹{amt}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Custom Amount Input */}
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="custom-amount" className="text-xs text-muted-foreground">Or Enter Custom Amount</Label>
+                                        <span className="text-[10px] text-muted-foreground/50">Min: ₹1</span>
+                                    </div>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-semibold">₹</span>
+                                        <Input
+                                            id="custom-amount"
+                                            type="number"
+                                            min="1"
+                                            value={amount}
+                                            onChange={(e) => setAmount(e.target.value)}
+                                            placeholder="Enter amount"
+                                            className="pl-7 bg-white/5 border-white/10 focus:border-indigo-500 text-sm h-10 text-foreground"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Action button */}
+                                <Button
+                                    onClick={handleRazorpayPayment}
+                                    disabled={isProcessing}
+                                    className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-bold h-11 shadow-lg shadow-indigo-500/20 border-0 transition-all duration-200 mt-2"
+                                >
+                                    {isProcessing ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <CreditCard className="mr-2 h-4 w-4" />
+                                            Pay ₹{amount || "0"} Online
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        )}
 
                         {/* Reassurance */}
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                                <span>100% goes to the project</span>
+                        <div className="flex flex-col gap-1 items-center justify-center pt-2 border-t border-white/[0.05]">
+                            <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                                <span>Instant verification & confirmation</span>
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                                <span>No minimum amount</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                                <span>Secure UPI transfer</span>
+                            <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                                <span>PCI-DSS compliant secure servers</span>
                             </div>
                         </div>
                     </CardContent>
