@@ -109,17 +109,12 @@ export const DonationButton = () => {
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Mobile drag handle */}
               <div className="flex justify-center pt-3 pb-1 sm:hidden">
                 <div className="w-10 h-1 rounded-full bg-white/20" />
               </div>
 
               {/* Top decorative gradient bar */}
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 rounded-t-2xl" />
-
-              {/* Decorative background blobs */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
               {/* Close button */}
               <button
@@ -132,59 +127,28 @@ export const DonationButton = () => {
               </button>
 
               {/* Content */}
-              <div className="relative p-5 sm:p-6 pt-4 sm:pt-8 text-center">
-                {/* Icon */}
-                <div className="flex justify-center mb-3 sm:mb-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-amber-500 rounded-full blur-xl opacity-30 animate-pulse" />
-                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/20 flex items-center justify-center">
-                      <Coffee className="w-6 h-6 sm:w-7 sm:h-7 text-pink-400" />
-                    </div>
-                  </div>
-                </div>
-
+              <div className="relative p-6 text-center space-y-6 pt-10">
                 {/* Title */}
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                <h3 className="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+                  <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
                   Support Coded
-                  <Sparkles className="w-4 h-4 text-amber-400" />
                 </h3>
 
                 {/* Message */}
-                <p className="text-xs sm:text-sm text-white/60 leading-relaxed mb-4 sm:mb-6 max-w-sm mx-auto">
-                  Coded is built with dedication and made available completely free of charge.
-                  While hosting and infrastructure are currently free-tier, they come with limitations.
-                  Your generous contribution helps us keep the platform running smoothly and motivates
-                  continued development. Every donation, no matter how small, is deeply appreciated.
+                <p className="text-xs text-white/60 leading-relaxed max-w-xs mx-auto">
+                  Coded is free, ad-free, and open to all.
+                  If the platform has helped you, consider making a small donation to help cover our hosting costs.
                 </p>
 
                 {/* Donate Online Button */}
-                <div className="py-2.5 sm:py-4">
+                <div className="pt-2">
                   <Link to="/donate" onClick={handleClose}>
-                    <button className="w-full py-2.5 sm:py-3 px-4 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:from-pink-600 hover:via-rose-600 hover:to-amber-600 text-white font-bold shadow-lg shadow-pink-500/25 border-0 flex items-center justify-center gap-2 transition-all duration-200 text-xs sm:text-sm">
-                      <Heart className="w-4 h-4 fill-white" />
-                      Donate Online (Cards, UPI, Netbanking)
+                    <button className="w-full py-2.5 px-4 rounded-xl bg-white text-black hover:bg-white/90 font-bold flex items-center justify-center gap-2 transition-all duration-200 text-sm">
+                      Donate Online
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </Link>
                 </div>
-
-                {/* Thank you note */}
-                <div className="flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                  <Heart className="w-3.5 h-3.5 text-pink-400 fill-pink-400 shrink-0" />
-                  <p className="text-[11px] sm:text-xs text-white/50">
-                    Thank you for supporting the time and effort behind Coded!
-                  </p>
-                </div>
-
-                {/* Learn more link */}
-                <Link
-                  to="/donate"
-                  onClick={handleClose}
-                  className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-pink-400 hover:text-pink-300 transition-colors"
-                >
-                  Learn why your support matters <ArrowRight className="w-3 h-3" />
-                </Link>
               </div>
 
               {/* Bottom sheen */}
