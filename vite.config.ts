@@ -106,7 +106,7 @@ const devAiListerPlugin = (nvidiaApiKey: string): Plugin => ({
           return;
         }
 
-        const data = (await response.json()) as any;
+        const data = (await response.json()) as Record<string, unknown>;
         const content = data.choices?.[0]?.message?.content ?? "";
         const jsonText = extractJson(content);
         if (!jsonText) {
