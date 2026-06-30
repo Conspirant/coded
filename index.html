@@ -2,6 +2,55 @@
 <html lang="en" class="dark">
 
 <head>
+  <script>
+    (function() {
+      const originalError = console.error;
+      const originalWarn = console.warn;
+      const ignoredTerms = [
+        "This script should only be loaded in a browser extension",
+        "Error while trying to use the following icon from the Manifest",
+        "Could not establish connection. Receiving end does not exist",
+        "Refused to get unsafe header",
+        "Permissions policy violation",
+        "devicemotion events are blocked",
+        "deviceorientation events are blocked",
+        "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT"
+      ];
+
+      function shouldIgnore(args) {
+        try {
+          const str = Array.from(args).map(arg => {
+            if (typeof arg === 'string') return arg;
+            if (arg instanceof Error) return arg.message + (arg.stack || '');
+            return JSON.stringify(arg);
+          }).join(' ');
+          return ignoredTerms.some(term => str.includes(term));
+        } catch (e) {
+          return false;
+        }
+      }
+
+      console.error = function(...args) {
+        if (shouldIgnore(args)) return;
+        originalError.apply(console, args);
+      };
+
+      console.warn = function(...args) {
+        if (shouldIgnore(args)) return;
+        originalWarn.apply(console, args);
+      };
+
+      window.addEventListener('unhandledrejection', function(event) {
+        try {
+          const reason = event.reason;
+          const msg = reason && (reason.message || String(reason));
+          if (msg && ignoredTerms.some(term => msg.includes(term))) {
+            event.preventDefault();
+          }
+        } catch (e) {}
+      });
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <meta name="google-site-verification" content="JKOV3MPzdtx10cgbg8sgK0-D6Rir8W5wlB2sLkp1oLY" />
