@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input"
 import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState } from "@/lib/unlock"
 import { toast } from "sonner"
 
+import { Logo } from "./ui/Logo"
+
 interface LayoutProps {
   children: React.ReactNode
 }
@@ -80,15 +82,14 @@ export function Layout({ children }: LayoutProps) {
               <SidebarHint />
               <div className="flex flex-col min-w-0 ml-1">
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <h1 className="text-base sm:text-lg font-bold gradient-text truncate">KCET Coded</h1>
+                  <Logo mode={examMode} iconSize={22} textSize="text-sm sm:text-base" />
                   <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider">
                     BETA
                   </Badge>
-                  <Badge variant="outline" className={examMode === "COMEDK" ? "border-amber-500/40 text-amber-400 bg-amber-500/10" : "border-indigo-500/40 text-indigo-400 bg-indigo-500/10"}>
-                    {examMode}
-                  </Badge>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">{examMode === "COMEDK" ? "COMEDK Environment" : "KCET Helping Hub"}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+                  {examMode === "COMEDK" ? "COMEDK Counseling Reference" : "KCET Counseling Reference"}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
@@ -294,7 +295,7 @@ export function Layout({ children }: LayoutProps) {
                             </Button>
                           </form>
                           <p className="text-[10px] text-muted-foreground">
-                            Unlock the College Predictor, AI Counselor, and other tools early.
+                            Access the College Predictor, Admissions Assistant, and other tools early.
                           </p>
                         </div>
                       )}

@@ -37,7 +37,7 @@ interface CommandItem {
     icon: any
     href: string
     keywords: string[]
-    category: "main" | "tools" | "ai"
+    category: "main" | "tools"
     external?: boolean
 }
 
@@ -63,7 +63,7 @@ const COMMANDS: CommandItem[] = [
     { id: "kcet", title: "r/kcet", description: "Open KCET community", icon: ArrowRight, href: "https://www.reddit.com/r/kcet/", keywords: ["kcet", "reddit", "community", "discussion"], category: "tools", external: true },
     { id: "planner", title: "Planner", description: "Plan your admissions", icon: ClipboardList, href: "/planner", keywords: ["planner", "plan", "admissions"], category: "tools" },
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
-    { id: "ai-counselor", title: "AI Counselor", description: "AI-powered guidance", icon: Bot, href: "/ai-counselor", keywords: ["ai", "counselor", "guidance", "help", "ask"], category: "ai" },
+    { id: "ai-counselor", title: "Admissions Assistant", description: "Interactive reference assistant", icon: Bot, href: "/ai-counselor", keywords: ["assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
 ]
 
 export function CommandPalette() {

@@ -287,19 +287,24 @@ const About = () => {
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                        {/* AI Counselor */}
-                        <Card className="group hover:border-purple-500/20 transition-colors">
+                        {/* Admissions Assistant */}
+                        <Card className="group hover:border-emerald-500/20 transition-colors">
                             <CardContent className="p-5 space-y-3">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center shadow-lg shrink-0">
+                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shrink-0">
                                         <Bot className="h-5 w-5 text-white" />
                                     </div>
                                     <div>
-                                        <h3 className="font-bold flex items-center gap-2">AI Counselor <Badge variant="secondary" className="text-[10px] bg-purple-500/10 text-purple-400">BETA</Badge></h3>
+                                        <h3 className="font-bold flex items-center gap-2">
+                                            Admissions Assistant{" "}
+                                            <Badge variant="secondary" className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                                                BETA
+                                            </Badge>
+                                        </h3>
                                     </div>
                                 </div>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
-                                    An AI chatbot trained on KCET knowledge that you can ask anything — "Which colleges are good for CS near Bangalore?", "Explain the KCET counseling process step by step", "Is RVCE better than MSRIT for ECE?". It uses multiple AI models (Gemini, Llama, Qwen, Nemotron, Mistral) for robust responses. Not perfect yet, but incredibly helpful for quick guidance when you don't know who to ask.
+                                    An automated reference helper designed to answer general questions about KCET counseling rules, college facilities, and branches (e.g. "Explain the counseling process step-by-step" or "Which Bangalore colleges have nearby metro access"). While helpful for initial planning, all advice should be verified against official notifications.
                                 </p>
                             </CardContent>
                         </Card>

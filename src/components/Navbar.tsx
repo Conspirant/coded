@@ -1,11 +1,12 @@
 import React from 'react';
+import { Logo } from './ui/Logo';
 
 const Navbar = () => {
   return (
-    <nav className="bg-gradient-to-r from-purple-900 to-purple-700 text-white p-4 shadow-lg">
+    <nav className="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 shadow-lg border-b border-white/5">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="text-xl font-bold">KCET Coded</div>
-        <div className="text-sm opacity-90">Mock Option Entry Planner</div>
+        <Logo mode="default" iconSize={24} textSize="text-lg" />
+        <div className="text-sm opacity-80 font-medium">Option Entry Preference List Tool</div>
       </div>
     </nav>
   );

@@ -6,6 +6,7 @@ import { CursorSpotlight, RippleEffect } from "@/components/InteractiveEffects"
 import { ThankYouBanner } from "@/components/ThankYouBanner"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Logo } from "@/components/ui/Logo"
 import {
     Search,
     BarChart3,
@@ -32,7 +33,7 @@ import {
     MapPin,
     Bus,
     Heart,
-    Building2,
+    Building2
 } from "lucide-react"
 
 interface DataStats {
@@ -208,7 +209,7 @@ const Homepage = () => {
 
     const moreFeatures = [
         { title: "College Directory", description: "All 232+ KCET colleges with ROI meters, placement statistics & reviews.", icon: Building2, href: "/colleges", badge: "New" },
-        { title: "AI Counselor", description: "Personalized guidance powered by AI", icon: Bot, href: "/ai-counselor", badge: "AI" },
+        { title: "Admissions Assistant", description: "Interactive reference Q&A for counseling", icon: Bot, href: "/ai-counselor", badge: "Beta" },
         { title: "Mock Verification", description: "Check if your study & reserve papers are correct", icon: CheckCircle2, href: "/document-verification", badge: "New" },
         { title: "Documents Guide", description: "Complete checklist for counseling", icon: FileText, href: "/documents" }
     ]
@@ -223,9 +224,9 @@ const Homepage = () => {
         <div className="min-h-screen bg-background overflow-hidden">
             <SEO
                 title="KCET Coded – Free KCET 2026 Tools: Rank Predictor, Cutoffs & College Finder"
-                description="KCET Coded is the #1 free platform for KCET 2026 aspirants. Predict your rank, explore college-wise cutoffs (2023-2025), find engineering colleges, simulate mock allotments & get AI counseling — all 100% free."
+                description="KCET Coded is an independent free platform for KCET 2026 aspirants. Predict your rank, explore college-wise cutoffs (2023-2025), find engineering colleges, simulate mock allotments & get interactive counseling assistance — all 100% free."
                 url="https://kcet-coded2.vercel.app"
-                keywords="KCET 2026, KCET tools, free KCET resources, KCET helping hub, Karnataka CET tools, KCET rank predictor, KCET cutoff 2025"
+                keywords="KCET 2026, KCET tools, free KCET resources, KCET counseling guidance, Karnataka CET tools, KCET rank predictor, KCET cutoff 2025"
             />
             {/* ═══ Aurora Background ═══ */}
             <div className="fixed inset-0 -z-10">
@@ -241,13 +242,8 @@ const Homepage = () => {
             <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-2xl border-b border-white/5">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
-                        <div className="flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 transition-transform hover:scale-105">
-                                <GraduationCap className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold gradient-text">
-                                KCET Coded
-                            </span>
+                        <div className="flex items-center gap-2">
+                            <Logo mode="default" iconSize={24} textSize="text-lg" />
                             <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px] font-semibold tracking-wider hidden sm:inline-flex">
                                 BETA
                             </Badge>
@@ -846,10 +842,7 @@ const Homepage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
-                                    <GraduationCap className="h-5 w-5 text-white" />
-                                </div>
-                                <span className="font-bold text-lg">KCET Coded</span>
+                                <Logo mode="default" iconSize={22} textSize="text-base" />
                             </div>
                             <p className="text-sm text-muted-foreground leading-relaxed">
                                 Free, open-source tools built by students to simplify KCET counseling.
@@ -862,7 +855,7 @@ const Homepage = () => {
                                 <Link to="/cutoff-explorer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cutoff Explorer</Link>
                                 <Link to="/rank-predictor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Rank Predictor</Link>
                                 <Link to="/mock-simulator" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mock Simulator</Link>
-                                <Link to="/ai-counselor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">AI Counselor</Link>
+                                <Link to="/ai-counselor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Admissions Assistant</Link>
                                 <Link to="/round-tracker" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Round Tracker</Link>
                             </div>
                         </div>

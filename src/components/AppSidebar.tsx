@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
+import { Logo } from "./ui/Logo"
 
 const getMainItems = (examMode: "KCET" | "COMEDK") => {
   if (examMode === "COMEDK") {
@@ -55,7 +56,7 @@ const toolItems = [
 ]
 
 const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
-  { title: "AI Counselor", url: "/ai-counselor", icon: Bot, isAI: true },
+  { title: "Admissions Assistant", url: "/ai-counselor", icon: Bot },
   { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
   { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
   { title: "Support Us ❤️", url: "/donate", icon: Heart },
@@ -104,11 +105,6 @@ function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
           {state !== "collapsed" && (
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <span className="truncate text-sm">{item.title}</span>
-              {item.isAI && (
-                <Badge className="text-[9px] px-1.5 py-0 h-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white border-0 shadow-sm shadow-purple-500/20">
-                  AI
-                </Badge>
-              )}
               {item.underDevelopment && (
                 <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 bg-amber-500/10 text-amber-400 border-amber-500/20">
                   Beta
@@ -138,11 +134,9 @@ export function AppSidebar() {
       <SidebarContent className="py-2">
         {/* Brand */}
         <SidebarGroup>
-          <SidebarGroupLabel className="px-3 mb-1">
-            {state !== "collapsed" && (
-              <span className="text-xs font-bold gradient-text tracking-[0.12em] uppercase">{examMode === "COMEDK" ? "COMEDK Mode" : "KCET Coded"}</span>
-            )}
-          </SidebarGroupLabel>
+          <div className="px-2.5 py-2 mb-2 flex items-center">
+            <Logo mode={examMode} showText={state !== "collapsed"} iconSize={20} textSize="text-sm font-bold" />
+          </div>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-0.5">
               {mainItems.map((item) => (

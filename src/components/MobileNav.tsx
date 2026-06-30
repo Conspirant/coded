@@ -71,7 +71,7 @@ const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
             { icon: Star, label: "Reviews", href: "/reviews" },
             { icon: Info, label: "Info", href: "/info-centre" },
             { icon: Book, label: "Materials", href: "/materials" },
-            { icon: Bot, label: "AI Counsel", href: "/ai-counselor" },
+            { icon: Bot, label: "Admissions Assistant", href: "/ai-counselor" },
             { icon: ExternalLink, label: "r/COMEDK", href: "https://www.reddit.com/r/comedk/", external: true },
         ]
     }
@@ -89,7 +89,7 @@ const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
         { icon: Star, label: "Reviews", href: "/reviews" },
         { icon: Info, label: "Info", href: "/info-centre" },
         { icon: Book, label: "Materials", href: "/materials" },
-        { icon: Bot, label: "AI Counsel", href: "/ai-counselor" },
+        { icon: Bot, label: "Admissions Assistant", href: "/ai-counselor" },
         { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
         { icon: Shuffle, label: "Mock Sim", href: "/mock-simulator" },
     ]
@@ -284,13 +284,13 @@ const getFabActions = (examMode: "KCET" | "COMEDK") =>
             { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
             { icon: BarChart3, label: "COMEDK Explorer", href: "/cutoff-explorer", color: "from-amber-500 to-orange-500" },
             { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
-            { icon: Bot, label: "AI Counselor", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+            { icon: Bot, label: "Admissions Assistant", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
         ]
         : [
             { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
             { icon: Search, label: "Find College", href: "/college-finder", color: "from-blue-500 to-cyan-400" },
             { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
-            { icon: Bot, label: "AI Counselor", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+            { icon: Bot, label: "Admissions Assistant", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
         ]
 
 export function FloatingActionButton() {

@@ -54,7 +54,7 @@ export const ThankYouBanner = () => {
               <p className="text-sm text-slate-300 leading-relaxed font-medium">
                 To show our gratitude to our amazing community, we have <strong className="text-emerald-400">completely unlocked</strong> all premium features of the website for everyone! 
                 We sincerely thank you for showing interest, sharing your feedback, and supporting this project. 
-                Enjoy the usage of the College Predictor, AI Counselor, Cutoff Explorer, and more without any limits. We hope this helps you secure your dream seat! ✨
+                Enjoy the usage of the College Predictor, Admissions Assistant, Cutoff Explorer, and more without any limits. We hope this helps you secure your dream seat! ✨
               </p>
             </div>
 

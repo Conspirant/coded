@@ -166,12 +166,6 @@ const CollegeCard = ({ college, roi }: {
                   {college.placementRate}% placed
                 </span>
               )}
-              {college.totalIntake != null && (
-                <span className="flex items-center gap-1">
-                  <Users className="h-3 w-3" />
-                  {college.totalIntake} seats
-                </span>
-              )}
             </div>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-white/50 transition-colors" />
           </div>

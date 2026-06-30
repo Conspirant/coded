@@ -206,10 +206,10 @@ const AICounselor = () => {
     return (
         <>
             <SEO
-                title="KCET AI Counselor – Free Personalized College Guidance"
-                description="Get personalized KCET 2026 college counseling powered by AI. Ask questions about colleges, cutoffs, branch selection, placements & get instant guidance — completely free."
+                title="KCET Admissions Assistant – Free Personalized College Guidance"
+                description="Get personalized guidance for KCET 2026 college counseling. Ask questions about colleges, cutoffs, branch selection, and placements — completely free."
                 url="https://kcet-coded2.vercel.app/ai-counselor"
-                keywords="KCET AI counselor, KCET college guidance, KCET counseling help, KCET branch selection, KCET college suggestions"
+                keywords="KCET counseling assistant, KCET college guidance, KCET counseling help, KCET branch selection, KCET college suggestions"
             />
             {/* Disclaimer Dialog */}
             <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
@@ -223,7 +223,7 @@ const AICounselor = () => {
                     <DialogDescription asChild>
                         <div className="space-y-4 text-sm">
                             <p className="text-foreground">
-                                This AI Counselor is still in <strong>early development</strong> and may not provide fully accurate information.
+                                This Admissions Assistant is still in <strong>early development</strong> and may not provide fully accurate information.
                             </p>
 
                             <div className="bg-muted/50 rounded-lg p-3 space-y-2">
@@ -294,9 +294,8 @@ const AICounselor = () => {
                         </div>
                         <div>
                             <h1 className="text-lg md:text-xl font-bold tracking-tight flex items-center gap-2">
-                                AI Counselor
-                                <Badge variant="secondary" className="bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 text-xs px-1.5 py-0">
-                                    <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                                Admissions Assistant
+                                <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-1.5 py-0 font-medium">
                                     Beta
                                 </Badge>
                             </h1>
@@ -459,7 +458,7 @@ const AICounselor = () => {
                         </Button>
                     </div>
                     <p className="text-[10px] md:text-xs text-muted-foreground text-center mt-2">
-                        AI responses are for guidance only. Verify with official KEA sources.
+                        Automated responses are for reference only. Always verify counseling details with official KEA notices.
                     </p>
                 </div>
             </div>
