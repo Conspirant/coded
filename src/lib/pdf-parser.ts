@@ -5,7 +5,7 @@
  * 3. Splits text based on these anchors, ensuring 100% data separation.
  */
 
-import { pdfjsLib, configurePDFJS } from './pdf-config';
+import { pdfjsLib, configurePDFJS, pdfjsWorker } from './pdf-config';
 
 configurePDFJS();
 
@@ -43,11 +43,13 @@ export class PDFParser {
       try {
         pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
       } catch (firstError) {
-        console.warn('⚠️ Standard PDF parsing failed (possibly worker loading or version error), retrying on main-thread via fake worker:', firstError);
+        console.warn('⚠️ Standard PDF parsing failed, retrying on main-thread via local fake worker:', firstError);
         
-        // Force the fake worker on the main thread by disabling workerSrc
+        // Ensure workerSrc points to the local absolute URL so that the fake worker
+        // dynamically imports the worker locally from our own origin, NOT from CDNJS!
         if (pdfjsLib.GlobalWorkerOptions) {
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+          const absoluteWorkerUrl = new URL(pdfjsWorker, window.location.origin).toString();
+          pdfjsLib.GlobalWorkerOptions.workerSrc = absoluteWorkerUrl;
         }
         
         pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;

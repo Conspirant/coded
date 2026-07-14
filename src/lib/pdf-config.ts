@@ -14,9 +14,10 @@ export function configurePDFJS() {
     console.log('📄 PDF.js version:', pdfjsLib.version);
 
     if (pdfjsLib.GlobalWorkerOptions) {
-      // First try to use the locally bundled worker via Vite ?url loader
-      pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-      console.log('📄 PDF.js worker configured locally:', pdfjsWorker);
+      // First try to use the locally bundled worker via Vite ?url loader resolved to absolute URL
+      const absoluteWorkerUrl = new URL(pdfjsWorker, window.location.origin).toString();
+      pdfjsLib.GlobalWorkerOptions.workerSrc = absoluteWorkerUrl;
+      console.log('📄 PDF.js worker configured locally (absolute):', absoluteWorkerUrl);
     }
   } catch (error) {
     console.warn('⚠️ Could not configure PDF.js locally, falling back to CDN:', error);
@@ -44,5 +45,5 @@ export function configurePDFJS() {
 }
 
 // Export configured pdfjsLib for use in other files
-export { pdfjsLib };
+export { pdfjsLib, pdfjsWorker };
 
