@@ -192,6 +192,7 @@ const MockSimulator = () => {
   const handleUploadFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
+      setIsUploadDialogOpen(true);
       await processUploadFile(files[0]);
     }
   };
