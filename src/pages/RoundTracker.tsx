@@ -29,34 +29,46 @@ const RoundTracker = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [rounds, setRounds] = useState<RoundStatus[]>([
     {
-      id: 'round1',
-      name: 'Round 1',
+      id: 'mock_round',
+      name: 'Mock Allotment & Option Entry',
       status: 'completed',
-      startDate: '2025-07-08',
-      endDate: '2025-08-15',
+      startDate: '2026-06-20',
+      endDate: '2026-07-09',
       progress: 100,
-      description: 'First round of counseling completed - Option entry: July 8-29, Final results: August 2',
-      alerts: ['All allotments have been finalized', 'Fee payment deadline has passed', 'Last date to report to colleges: August 15, 2025']
+      description: 'Choice entry and mock seat allotment window.',
+      alerts: [
+        'UGCET Option Entry was open from June 20 to June 30, 2026.',
+        'Mock Seat Allotment results were declared on July 6, 2026.',
+        'Option modification window closed on July 9, 2026, at 10:00 AM.'
+      ]
+    },
+    {
+      id: 'round1',
+      name: 'Round 1 Seat Allotment',
+      status: 'active',
+      startDate: '2026-07-13',
+      endDate: '2026-07-20',
+      progress: 60,
+      description: 'First round of seat allotment and admission process.',
+      alerts: [
+        '✅ Round 1 Provisional Seat Allotment declared on July 13, 2026.',
+        '⏰ Objection window for provisional allotment closed on July 14, 2026, at 5:00 PM.',
+        '📢 Final Round 1 Seat Allotment will be declared on July 15, 2026 (after 11:00 AM).',
+        '📋 Candidates must exercise their choices (Freeze/Slide/Float) and pay fees online after final allotment.'
+      ]
     },
     {
       id: 'round2',
       name: 'Round 2',
-      status: 'completed',
-      startDate: '2025-08-21',
-      endDate: '2025-09-04',
-      progress: 100,
-      description: 'Second round of counseling completed - Option entry: August 21-26, Final results: August 30',
-      alerts: ['Round 2 has concluded', 'Final seat allotment declared on August 30, 2025', 'Last date to report to colleges: September 4, 2025']
-    },
-    {
-      id: 'round3',
-      name: 'Round 3 (Final Results)',
-      status: 'completed',
-      startDate: '2025-09-06',
-      endDate: '2025-09-13',
-      progress: 100,
-      description: 'Final round of counseling completed - Results declared, admission process ongoing',
-      alerts: ['✅ Third Round Results Declared - Final results published for UGCET courses', '📋 Admission Process: Download Seat Confirmation Slip and report to college with originals before 13th September', '💰 Fee Details: If already paid, balance will be adjusted; if more required, pay via challan/online', '⚠️ Mandatory Reporting: Students allotted seats must join college - Penalty of 5× course fee + 4-year ban if skipped', '🎓 Engineering: Last date of admission (AICTE): 15th September - Unallotted seats will be handed over to colleges', '🩺 Medical/Dental: Admissions depend on MCC schedule (repeatedly delayed) - NMC still approving new colleges & extra seats', '🧘 AYUSH: Fresh option entry from 15–17 September - Will be clubbed with Medical & Dental in next MCC-linked round', '🚫 No Further Rounds: No additional rounds for UGCET courses - Engineering vacant seats will be used for next year DCET Lateral Entry']
+      status: 'upcoming',
+      startDate: 'TBA',
+      endDate: 'TBA',
+      progress: 0,
+      description: 'Second round of counseling and allotment.',
+      alerts: [
+        'Detailed schedule for Round 2 choice filling and allotment will be released after Round 1 concludes.',
+        'AYUSH/Medical/Dental choice updates will align with MCC guidelines.'
+      ]
     }
   ])
 
@@ -154,7 +166,7 @@ const RoundTracker = () => {
               <CheckCircle className="h-5 w-5 text-green-500" />
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Latest Completed Round</p>
-                <p className="text-2xl font-bold">Round 3</p>
+                <p className="text-2xl font-bold">Mock Allotment</p>
               </div>
             </div>
           </CardContent>
@@ -167,7 +179,7 @@ const RoundTracker = () => {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Current Status</p>
                 <p className="text-2xl font-bold text-orange-600">
-                  Admission Process
+                  Round 1 (Ongoing)
                 </p>
               </div>
             </div>
@@ -248,43 +260,31 @@ const RoundTracker = () => {
           <div className="flex items-start gap-2">
             <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
             <p className="text-sm text-orange-800">
-              <strong>✅ Round 3 Results Declared!</strong> KEA has published the final results of the 3rd round for UGCET courses (Engineering, Farm Sciences, Veterinary, Nursing, Allied Health Sciences, D. Pharma, etc.).
+              <strong>✅ Round 1 Provisional Allotment Declared!</strong> KEA has declared the provisional seat allotment for UGCET 2026 courses on July 13, 2026.
             </p>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
             <p className="text-sm text-orange-800">
-              <strong>📋 Admission Process:</strong> Students must download the Seat Confirmation Slip and report to the allotted college with all original documents before <strong>13th September</strong>.
+              <strong>⏰ Objections Window:</strong> Candidates had time until July 14, 2026 (5:00 PM) to raise objections or report discrepancies in their provisional allotment.
             </p>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
             <p className="text-sm text-orange-800">
-              <strong>⚠️ Mandatory Reporting:</strong> Students allotted seats must join the college. If they skip: Penalty of 5× course fee + 4-year ban from KEA counseling.
+              <strong>📢 Final Round 1 Seat Allotment:</strong> The final allotment result for Round 1 is scheduled for declaration on July 15, 2026 (after 11:00 AM).
             </p>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
             <p className="text-sm text-orange-800">
-              <strong>🎓 Engineering Deadlines:</strong> Last date of admission (AICTE): 15th September. After that, unallotted seats will be handed over to colleges.
+              <strong>📋 Post-Allotment Process:</strong> Candidates must log in to submit their choices (Freeze/Slide/Float), complete the fee payment, and download their admission orders.
             </p>
           </div>
           <div className="flex items-start gap-2">
             <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
             <p className="text-sm text-orange-800">
-              <strong>🩺 Medical/Dental:</strong> Admissions depend on MCC schedule (repeatedly delayed). NMC is still approving new colleges & extra seats.
-            </p>
-          </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>🧘 AYUSH Courses:</strong> Fresh option entry will open from 15–17 September. Will be clubbed with Medical & Dental allotments in the next MCC-linked round.
-            </p>
-          </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>🚫 No Further Rounds:</strong> There will be no additional rounds of counseling for UGCET and Engineering courses. Engineering vacant seats will be used for next year's DCET Lateral Entry.
+              <strong>🏫 College Reporting:</strong> Allotted candidates must report to their respective colleges along with original documents within the specified deadline after final allotment.
             </p>
           </div>
         </CardContent>
