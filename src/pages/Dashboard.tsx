@@ -282,17 +282,17 @@ const Dashboard = () => {
 
             {/* Document Verification */}
             <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse">
-                <span className="text-[10px] font-bold text-white">⏳</span>
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <span className="text-[10px] font-bold text-white">✓</span>
               </div>
-              <div className="glass rounded-xl border border-indigo-500/20 px-4 py-3">
+              <div className="glass rounded-xl border border-emerald-500/20 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-sm text-indigo-400">Document Verification</span>
-                  <span className="text-[10px] text-indigo-400 uppercase tracking-wider font-semibold">Jun (Expected)</span>
+                  <span className="font-semibold text-sm text-emerald-400">Document Verification</span>
+                  <span className="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">June (Completed)</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   Upload study certificates & claim reserves. Use our{' '}
-                  <Link to="/document-verification" className="text-indigo-400 hover:underline font-semibold">
+                  <Link to="/document-verification" className="text-emerald-400 hover:underline font-semibold">
                     Mock Verification Assistant
                   </Link>{' '}
                   to check your certificates beforehand!
@@ -302,15 +302,15 @@ const Dashboard = () => {
 
             {/* Counseling */}
             <div className="relative">
-              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-zinc-500/30 to-slate-500/30 flex items-center justify-center border border-white/10">
-                <span className="text-[10px] font-bold text-white/40">4</span>
+              <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse">
+                <span className="text-[10px] font-bold text-white">⏳</span>
               </div>
-              <div className="glass rounded-xl border border-white/5 px-4 py-3 opacity-60">
+              <div className="glass rounded-xl border border-indigo-500/20 px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-sm">Counseling & Option Entry</span>
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Jun-Jul</span>
+                  <span className="font-semibold text-sm text-indigo-400">Counseling & Option Entry</span>
+                  <span className="text-[10px] text-indigo-400 uppercase tracking-wider font-semibold">July (Ongoing)</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">Option entry, mock allotments, and final college seat allotments</p>
+                <p className="text-xs text-muted-foreground mt-1">Mock allotments and option entry closed. Round 1 seat allotment is ongoing (provisional declared July 13, final scheduled July 15).</p>
               </div>
             </div>
           </div>
