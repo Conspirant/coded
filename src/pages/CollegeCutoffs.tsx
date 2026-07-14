@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react"
 import React from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { ChevronDown, ChevronUp, Building2, Search, Grid3X3 } from "lucide-react"
+import { ChevronDown, ChevronUp, Building2, Search, Grid3X3, SlidersHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 // Types for the cutoff data
@@ -251,52 +251,92 @@ const CollegeMatrix = ({
                             <p className="text-sm">No data for {selectedYear} {selectedRound}</p>
                         </div>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-xs font-mono border-collapse">
-                                <thead>
-                                    <tr className="bg-white/[0.03]">
-                                        <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground border-b border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 min-w-[200px] text-sm">
-                                            Course
-                                        </th>
-                                        {activeCats.map(cat => (
-                                            <th key={cat} className="px-1 py-2 text-center border-b border-white/5 min-w-[62px]">
-                                                <Badge className={`${getCategoryColor(cat)} text-[9px] px-1.5 font-bold`}>{cat}</Badge>
+                        <>
+                            {/* Desktop/Tablet Table View */}
+                            <div className="hidden lg:block overflow-x-auto">
+                                <table className="w-full text-xs font-mono border-collapse">
+                                    <thead>
+                                        <tr className="bg-white/[0.03]">
+                                            <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground border-b border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 min-w-[200px] text-sm">
+                                                Course
                                             </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {sortedCourses.map(([, course], rowIdx) => (
-                                        <tr
-                                            key={course.display}
-                                            className={`${rowIdx % 2 === 0 ? 'bg-white/[0.01]' : ''} hover:bg-white/[0.04] transition-colors`}
-                                        >
-                                            <td className="px-3 py-2 font-semibold text-sm border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 whitespace-nowrap text-foreground">
-                                                {course.display}
-                                            </td>
-                                            {activeCats.map(cat => {
-                                                const rank = course.cats.get(cat)
-                                                return (
-                                                    <td
-                                                        key={cat}
-                                                        className={`px-1 py-2 text-center border-white/5 ${rank
-                                                            ? 'text-foreground'
-                                                            : 'text-muted-foreground/20'
-                                                            }`}
-                                                        title={rank
-                                                            ? `${course.display} / ${cat} = ${rank.toLocaleString()}`
-                                                            : `No data for ${course.display} / ${cat}`
-                                                        }
-                                                    >
-                                                        {rank ? rank.toLocaleString() : '--'}
-                                                    </td>
-                                                )
-                                            })}
+                                            {activeCats.map(cat => (
+                                                <th key={cat} className="px-1 py-2 text-center border-b border-white/5 min-w-[62px]">
+                                                    <Badge className={`${getCategoryColor(cat)} text-[9px] px-1.5 font-bold`}>{cat}</Badge>
+                                                </th>
+                                            ))}
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {sortedCourses.map(([, course], rowIdx) => (
+                                            <tr
+                                                key={course.display}
+                                                className={`${rowIdx % 2 === 0 ? 'bg-white/[0.01]' : ''} hover:bg-white/[0.04] transition-colors`}
+                                            >
+                                                <td className="px-3 py-2 font-semibold text-sm border-r border-white/5 sticky left-0 bg-background/95 backdrop-blur z-10 whitespace-nowrap text-foreground">
+                                                    {course.display}
+                                                </td>
+                                                {activeCats.map(cat => {
+                                                    const rank = course.cats.get(cat)
+                                                    return (
+                                                        <td
+                                                            key={cat}
+                                                            className={`px-1 py-2 text-center border-white/5 ${rank
+                                                                ? 'text-foreground'
+                                                                : 'text-muted-foreground/20'
+                                                                }`}
+                                                            title={rank
+                                                                ? `${course.display} / ${cat} = ${rank.toLocaleString()}`
+                                                                : `No data for ${course.display} / ${cat}`
+                                                            }
+                                                        >
+                                                            {rank ? rank.toLocaleString() : '--'}
+                                                        </td>
+                                                    )
+                                                })}
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Mobile list view */}
+                            <div className="lg:hidden divide-y divide-white/5">
+                                {sortedCourses.map(([, course], rowIdx) => (
+                                    <div
+                                        key={course.display}
+                                        className={`p-3 space-y-2 ${rowIdx % 2 === 0 ? 'bg-white/[0.01]' : ''}`}
+                                    >
+                                        <div className="font-semibold text-xs sm:text-sm text-slate-200 leading-relaxed">
+                                            {course.display}
+                                        </div>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {activeCats.filter(cat => course.cats.get(cat)).length === 0 ? (
+                                                <span className="text-[10px] text-muted-foreground/50 italic">No ranks for selected filters</span>
+                                            ) : (
+                                                activeCats.map(cat => {
+                                                    const rank = course.cats.get(cat)
+                                                    if (!rank) return null
+                                                    return (
+                                                        <div
+                                                            key={cat}
+                                                            className="flex items-center gap-1.5 bg-white/5 border border-white/5 rounded px-2 py-0.5"
+                                                        >
+                                                            <span className={`px-1 rounded text-[8px] font-bold border ${getCategoryColor(cat)}`}>
+                                                                {cat}
+                                                            </span>
+                                                            <span className="font-mono text-xs font-semibold text-indigo-400">
+                                                                {rank.toLocaleString()}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                })
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             )}
@@ -317,6 +357,7 @@ const CollegeCutoffs = () => {
     const [searchQuery, setSearchQuery] = useState("")
     const [years, setYears] = useState<string[]>([])
     const [rounds, setRounds] = useState<string[]>([])
+    const [showFilters, setShowFilters] = useState(false)
 
     // Load cutoff data
     useEffect(() => {
@@ -509,7 +550,7 @@ const CollegeCutoffs = () => {
     return (
         <div className="min-h-screen bg-background">
             {/* Sticky Header */}
-            <div className="bg-background/80 backdrop-blur-xl border-b border-white/5 px-4 py-4 sticky top-0 z-20">
+            <div className="bg-background/80 backdrop-blur-xl border-b border-white/5 px-4 py-4 lg:sticky lg:top-16 z-20">
                 <div className="max-w-[1600px] mx-auto">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
@@ -528,8 +569,8 @@ const CollegeCutoffs = () => {
                         )}
                     </div>
 
-                    {/* Filters */}
-                    <div className="flex flex-wrap items-end gap-3">
+                    {/* Desktop Filters */}
+                    <div className="hidden lg:flex flex-wrap items-end gap-3">
                         {/* Search */}
                         <div className="flex-1 min-w-[200px] max-w-sm">
                             <div className="relative">
@@ -600,6 +641,100 @@ const CollegeCutoffs = () => {
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
+
+                    {/* Mobile/Tablet Filters */}
+                    <div className="lg:hidden space-y-3">
+                        <div className="flex gap-2">
+                            <div className="relative flex-1">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder="Search colleges..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10 bg-white/5 border-white/10 h-10 w-full"
+                                />
+                            </div>
+                            <button
+                                onClick={() => setShowFilters(!showFilters)}
+                                className="bg-white/5 border border-white/10 hover:bg-white/10 rounded-lg h-10 px-3 flex items-center gap-2 text-white font-medium shrink-0"
+                            >
+                                <SlidersHorizontal className="h-4 w-4 text-indigo-400" />
+                                <span className="text-xs">Filters</span>
+                            </button>
+                        </div>
+
+                        {showFilters && (
+                            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/5">
+                                {/* Year */}
+                                <div className="col-span-1">
+                                    <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Year</label>
+                                    <Select value={selectedYear} onValueChange={setSelectedYear}>
+                                        <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            {years.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Round */}
+                                <div className="col-span-1">
+                                    <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Round</label>
+                                    <Select value={selectedRound} onValueChange={setSelectedRound}>
+                                        <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            {rounds.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Category Type */}
+                                <div className="col-span-1">
+                                    <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Cat. Type</label>
+                                    <Select value={selectedType} onValueChange={(v) => { setSelectedType(v); setSelectedCategory('ALL') }}>
+                                        <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            {Object.keys(TYPE_FILTERS).map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Specific Category */}
+                                <div className="col-span-1">
+                                    <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Category</label>
+                                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                        <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
+                                        <SelectContent className="max-h-64">
+                                            <SelectItem value="ALL">All</SelectItem>
+                                            {(TYPE_FILTERS[selectedType] || ORDERED_CATS).map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Sort By */}
+                                <div className="col-span-2">
+                                    <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Sort By</label>
+                                    <Select value={sortBy} onValueChange={(v: "none" | "asc" | "desc") => setSortBy(v)}>
+                                        <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="none">Default (Code)</SelectItem>
+                                            <SelectItem value="asc">Lowest to Highest</SelectItem>
+                                            <SelectItem value="desc">Highest to Lowest</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {/* Apply & Close Button */}
+                                <div className="col-span-2 pt-2">
+                                    <button
+                                        onClick={() => setShowFilters(false)}
+                                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg h-10 text-xs font-semibold flex items-center justify-center transition-colors"
+                                    >
+                                        Apply & Close
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
