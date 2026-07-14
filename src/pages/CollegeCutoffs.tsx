@@ -257,7 +257,7 @@ const CollegeCutoffs = () => {
     const [loading, setLoading] = useState(true)
     const [selectedYear, setSelectedYear] = useState("2025")
     const [selectedRound, setSelectedRound] = useState("R1")
-    const [selectedType, setSelectedType] = useState("General")
+    const [selectedType, setSelectedType] = useState("All")
     const [selectedCategory, setSelectedCategory] = useState("ALL")
     const [expandedColleges, setExpandedColleges] = useState<Set<string>>(new Set())
     const [searchQuery, setSearchQuery] = useState("")
