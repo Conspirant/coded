@@ -63,7 +63,7 @@ export function getPdfUrl(year: string, round: string): string | null {
         return null;
     }
 
-    return `/kcet-${year}-${roundSlug}-cutoffs.pdf`;
+    return `/cutoffs/kcet-${year}-${roundSlug}-cutoffs.pdf`;
 }
 
 /**

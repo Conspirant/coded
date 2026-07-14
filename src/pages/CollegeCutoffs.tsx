@@ -81,7 +81,8 @@ const normalizeRound = (round: string): string => {
     const r = round.toUpperCase()
     if (r === "EXT" || r.includes("R3") || r.includes("EXTENDED") || r.includes("ROUND 3")) return "R3"
     if (r === "R2" || r.includes("ROUND 2")) return "R2"
-    if (r === "R1" || r === "MOCK" || r.includes("ROUND 1")) return "R1"
+    if (r === "MOCK" || r.includes("MOCK")) return "MOCK"
+    if (r === "R1" || r.includes("ROUND 1")) return "R1"
     return round
 }
 
