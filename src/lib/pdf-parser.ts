@@ -38,7 +38,20 @@ export class PDFParser {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let pdf: any;
+
+      try {
+        pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      } catch (firstError) {
+        console.warn('⚠️ Standard PDF parsing failed (possibly worker loading or version error), retrying on main-thread via fake worker:', firstError);
+        
+        // Force the fake worker on the main thread by disabling workerSrc
+        if (pdfjsLib.GlobalWorkerOptions) {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+        }
+        
+        pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      }
 
       console.log(`📄 PDF loaded: ${pdf.numPages} pages`);
 
@@ -122,18 +135,69 @@ export class PDFParser {
     }
   }
 
+  private static findOptionCode(row: TextItem[]): { code: string; codeItemIndex: number; isCombined: boolean } {
+    // 1. Try concatenated format (e.g., E005CS or E005CSE or P001PH)
+    const combinedIndex = row.findIndex(i => /^[A-Z]\d{3}[A-Z]{2,4}$/i.test(i.text.trim()));
+    if (combinedIndex !== -1) {
+      const match = row[combinedIndex].text.trim().match(/[A-Z]\d{3}[A-Z]{2,4}/i);
+      if (match) {
+        return {
+          code: match[0].toUpperCase(),
+          codeItemIndex: combinedIndex,
+          isCombined: true
+        };
+      }
+    }
+
+    // 2. Try split format (e.g., E002 in one cell, CS in another)
+    const collegeIndex = row.findIndex(i => /^[A-Z]\d{3}$/i.test(i.text.trim()));
+    if (collegeIndex !== -1) {
+      const collegeItem = row[collegeIndex];
+      const collegeCode = collegeItem.text.trim().toUpperCase();
+
+      // Find a course code: exactly 2 to 4 letters, no numbers, and horizontally close to the college code
+      const courseIndex = row.findIndex((item, idx) => {
+        if (idx === collegeIndex) return false;
+        const text = item.text.trim();
+        return /^[A-Z]{2,4}$/i.test(text) && 
+               !/^[0-9]+$/.test(text) && 
+               Math.abs(item.x - collegeItem.x) < 80;
+      });
+
+      if (courseIndex !== -1) {
+        const courseCode = row[courseIndex].text.trim().toUpperCase();
+        return {
+          code: collegeCode + courseCode,
+          codeItemIndex: collegeIndex,
+          isCombined: false
+        };
+      }
+    }
+
+    return { code: '', codeItemIndex: -1, isCombined: false };
+  }
+
   private static parseRowWithAnchors(row: TextItem[]) {
     let optNo = '';
     let code = '';
     let courseName = '';
     let fee = '';
     let collegeName = '';
-    let isAnchored = false;
 
-    // 1. Find Code Anchor (E###)
-    const codeItemIndex = row.findIndex(i => /E\d{3}[A-Z]{2,3}/i.test(i.text));
-    if (codeItemIndex !== -1) {
-      code = row[codeItemIndex].text.match(/E\d{3}[A-Z]{2,3}/i)![0].toUpperCase();
+    // 1. Find Code Anchor
+    const parsed = this.findOptionCode(row);
+    code = parsed.code;
+    const codeItemIndex = parsed.codeItemIndex;
+
+    // Find course code index if it was separate
+    let courseItemIndex = -1;
+    if (code && !parsed.isCombined) {
+      const collegeIndex = codeItemIndex;
+      const collegeCode = code.substring(0, 4);
+      const courseCode = code.substring(4);
+      courseItemIndex = row.findIndex((item, idx) => {
+        return idx !== collegeIndex && item.text.trim().toUpperCase() === courseCode;
+      });
     }
 
     // 2. Find Fee Anchor (digits with comma)
@@ -146,12 +210,12 @@ export class PDFParser {
       this.feeStartX = feeX - 10; // Fee starts slightly left of its numbers
       // Also set college start slightly right of fee end (approx width of fee is 60)
       this.collegeStartX = feeX + 80;
-      isAnchored = true;
     }
 
     // 3. Assign Text Buckets based on Anchors
     for (let i = 0; i < row.length; i++) {
       if (i === codeItemIndex) continue; // Skip consumed code
+      if (courseItemIndex !== -1 && i === courseItemIndex) continue; // Skip separate course code
 
       const item = row[i];
       const x = item.x;
@@ -201,6 +265,7 @@ export class PDFParser {
       }
     }
 
+    const isAnchored = !!code;
     return { optNo, code, courseName, fee, collegeName, isAnchored };
   }
 

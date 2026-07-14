@@ -148,10 +148,10 @@ const MockSimulator = () => {
       setParseProgress(80);
 
       if (options.length === 0) {
-        setParseError("No options found in the PDF. Please check the file format.");
+        setParseError("No option codes (like E005CS) found. Ensure you are uploading a digitally generated KEA Option Entry PDF (copied from the portal), not a photo, scan, or cropped screenshot.");
         toast({
-          title: "No Options Found",
-          description: "Could not extract options from the PDF",
+          title: "No Option Codes Found",
+          description: "Ensure this is a digital PDF, not a photo or scanned copy.",
           variant: "destructive"
         });
       } else {
