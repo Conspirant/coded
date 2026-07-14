@@ -259,6 +259,7 @@ const CollegeCutoffs = () => {
     const [selectedRound, setSelectedRound] = useState("R1")
     const [selectedType, setSelectedType] = useState("All")
     const [selectedCategory, setSelectedCategory] = useState("ALL")
+    const [sortBy, setSortBy] = useState<"none" | "asc" | "desc">("none")
     const [expandedColleges, setExpandedColleges] = useState<Set<string>>(new Set())
     const [searchQuery, setSearchQuery] = useState("")
     const [years, setYears] = useState<string[]>([])
@@ -348,7 +349,6 @@ const CollegeCutoffs = () => {
         })
 
         let list = Array.from(collegeMap.values())
-            .sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
 
         // Filter by search
         if (searchQuery) {
@@ -359,8 +359,57 @@ const CollegeCutoffs = () => {
             )
         }
 
+        // Apply sorting
+        if (sortBy !== "none") {
+            const collegeRankMap = new Map<string, number>()
+            list.forEach(c => {
+                const filteredCutoffs = c.cutoffs.filter(cutoff =>
+                    cutoff.year === selectedYear &&
+                    normalizeRound(cutoff.round) === selectedRound
+                )
+                if (filteredCutoffs.length === 0) {
+                    collegeRankMap.set(c.code, sortBy === "asc" ? Infinity : -Infinity)
+                    return
+                }
+
+                let targetCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
+                if (selectedCategory !== 'ALL') {
+                    targetCats = [selectedCategory]
+                } else if (targetCats.includes('GM')) {
+                    targetCats = ['GM']
+                }
+
+                const matchingCutoffs = filteredCutoffs.filter(cutoff => targetCats.includes(cutoff.category))
+                if (matchingCutoffs.length === 0) {
+                    const typeCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
+                    const typeMatching = filteredCutoffs.filter(cutoff => typeCats.includes(cutoff.category))
+                    if (typeMatching.length > 0) {
+                        const minRank = Math.min(...typeMatching.map(cutoff => cutoff.cutoff_rank))
+                        collegeRankMap.set(c.code, minRank)
+                    } else {
+                        collegeRankMap.set(c.code, sortBy === "asc" ? Infinity : -Infinity)
+                    }
+                } else {
+                    const minRank = Math.min(...matchingCutoffs.map(cutoff => cutoff.cutoff_rank))
+                    collegeRankMap.set(c.code, minRank)
+                }
+            })
+
+            list.sort((a, b) => {
+                const rankA = collegeRankMap.get(a.code) ?? (sortBy === "asc" ? Infinity : -Infinity)
+                const rankB = collegeRankMap.get(b.code) ?? (sortBy === "asc" ? Infinity : -Infinity)
+                if (rankA === rankB) {
+                    return a.code.localeCompare(b.code, undefined, { numeric: true })
+                }
+                return sortBy === "asc" ? rankA - rankB : rankB - rankA
+            })
+        } else {
+            // Default sort: code order
+            list.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
+        }
+
         return list
-    }, [allCutoffs, searchQuery])
+    }, [allCutoffs, searchQuery, sortBy, selectedYear, selectedRound, selectedType, selectedCategory])
 
     const toggleCollege = (code: string) => {
         setExpandedColleges(prev => {
@@ -460,6 +509,19 @@ const CollegeCutoffs = () => {
                                 <SelectContent className="max-h-64">
                                     <SelectItem value="ALL">All</SelectItem>
                                     {(TYPE_FILTERS[selectedType] || ORDERED_CATS).map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Sort By */}
+                        <div className="w-36">
+                            <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Sort By</label>
+                            <Select value={sortBy} onValueChange={(v: "none" | "asc" | "desc") => setSortBy(v)}>
+                                <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="none">Default (Code)</SelectItem>
+                                    <SelectItem value="asc">Lowest to Highest</SelectItem>
+                                    <SelectItem value="desc">Highest to Lowest</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
