@@ -339,9 +339,31 @@ const CollegeCutoffs = () => {
                 if (!response) throw new Error('Failed to load data')
 
                 const rawData = await response.json()
-                const cutoffs: CutoffData[] = Array.isArray(rawData)
+                let cutoffs: CutoffData[] = Array.isArray(rawData)
                     ? rawData
                     : (rawData.cutoffs || rawData.data || [])
+
+                // Sanitize and clean up course names/records
+                cutoffs = cutoffs.filter(c => {
+                    if (!c.course) return false
+                    const courseClean = c.course.trim().toUpperCase()
+                    // Filter out garbage rows like 'SC sub' or 'SCIENCE AND ENGINEERING(DA TA SCIENCE)' with rank 5
+                    if (courseClean === 'SC SUB' || courseClean === 'SCIENCE AND ENGINEERING(DA TA SCIENCE)') {
+                        return false
+                    }
+                    // Filter out records with invalid cutoff ranks that are seat counts (like 1, 2, 5)
+                    if (c.cutoff_rank <= 100) {
+                        return false
+                    }
+                    return true
+                }).map(c => {
+                    const code = c.institute_code?.trim().toUpperCase()
+                    const courseClean = c.course.trim().toUpperCase()
+                    if (code === 'E159' && courseClean === 'COMPUTER') {
+                        return { ...c, course: 'COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)' }
+                    }
+                    return c
+                })
 
                 setAllCutoffs(cutoffs)
 
