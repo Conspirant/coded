@@ -95,6 +95,7 @@ interface CollegeMatrixProps {
     selectedRound: string
     selectedType: string
     selectedCategory: string
+    sortBy: string
     isExpanded: boolean
     onToggle: () => void
 }
@@ -107,6 +108,7 @@ const CollegeMatrix = ({
     selectedRound,
     selectedType,
     selectedCategory,
+    sortBy,
     isExpanded,
     onToggle,
 }: CollegeMatrixProps) => {
@@ -131,8 +133,59 @@ const CollegeMatrix = ({
             }
         }
 
-        const sortedCourses = [...courseMap.entries()]
-            .sort(([, a], [, b]) => a.display.localeCompare(b.display))
+        // Determine sorting value for each course
+        let sortedCourses = [...courseMap.entries()]
+        
+        if (sortBy !== "none") {
+            const courseRankMap = new Map<string, number>()
+            
+            for (const [key, course] of sortedCourses) {
+                // Find cutoff rank for the target categories
+                let targetCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
+                if (selectedCategory !== 'ALL') {
+                    targetCats = [selectedCategory]
+                } else if (targetCats.includes('GM')) {
+                    targetCats = ['GM']
+                }
+
+                // Get matching cutoff rank values for this course
+                const ranks: number[] = []
+                targetCats.forEach(cat => {
+                    const r = course.cats.get(cat)
+                    if (r) ranks.push(r)
+                })
+
+                if (ranks.length === 0) {
+                    // Fall back to any active type category rank
+                    const typeCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
+                    typeCats.forEach(cat => {
+                        const r = course.cats.get(cat)
+                        if (r) ranks.push(r)
+                    })
+                }
+
+                if (ranks.length === 0) {
+                    courseRankMap.set(key, sortBy === "asc" ? Infinity : -Infinity)
+                } else {
+                    const minRank = Math.min(...ranks)
+                    courseRankMap.set(key, minRank)
+                }
+            }
+
+            sortedCourses.sort((a, b) => {
+                const rankA = courseRankMap.get(a[0]) ?? (sortBy === "asc" ? Infinity : -Infinity)
+                const rankB = courseRankMap.get(b[0]) ?? (sortBy === "asc" ? Infinity : -Infinity)
+
+                if (rankA === rankB) {
+                    return a[1].display.localeCompare(b[1].display)
+                }
+
+                return sortBy === "asc" ? rankA - rankB : rankB - rankA
+            })
+        } else {
+            // Default alphabetical sort by course display name
+            sortedCourses.sort(([, a], [, b]) => a.display.localeCompare(b.display))
+        }
 
         // Determine which categories to show
         let typeCats = TYPE_FILTERS[selectedType] || ORDERED_CATS
@@ -148,7 +201,7 @@ const CollegeMatrix = ({
         })
 
         return { sortedCourses, activeCats, totalEntries: filtered.length }
-    }, [cutoffs, selectedYear, selectedRound, selectedType, selectedCategory])
+    }, [cutoffs, selectedYear, selectedRound, selectedType, selectedCategory, sortBy])
 
     const { sortedCourses, activeCats, totalEntries } = matrixData
 
@@ -548,6 +601,7 @@ const CollegeCutoffs = () => {
                             selectedRound={selectedRound}
                             selectedType={selectedType}
                             selectedCategory={selectedCategory}
+                            sortBy={sortBy}
                             isExpanded={expandedColleges.has(college.code)}
                             onToggle={() => toggleCollege(college.code)}
                         />
