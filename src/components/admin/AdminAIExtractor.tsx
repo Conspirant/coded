@@ -6,14 +6,11 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FileText, Loader2, BrainCircuit, CheckCircle2, ChevronRight, Save } from "lucide-react"
-import * as pdfjsLib from 'pdfjs-dist'
+import { pdfjsLib } from '@/lib/pdf-config'
 import Tesseract from 'tesseract.js'
 import { SUBJECTS, getChaptersForSubject, Subject, PYQQuestion } from "@/data/pyqQuestionBank"
 import { supabase } from "@/integrations/supabase/client"
 import { useToast } from "@/components/ui/use-toast"
-
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
 
 export function AdminAIExtractor() {
   const [file, setFile] = useState<File | null>(null)
