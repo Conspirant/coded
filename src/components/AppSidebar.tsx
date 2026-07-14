@@ -51,7 +51,6 @@ const toolItems = [
   { title: "Materials", url: "/materials", icon: Book },
   { title: "Mock Simulator", url: "/mock-simulator", icon: Shuffle, underDevelopment: true },
   { title: "College Compare", url: "/college-compare", icon: GitCompare, underDevelopment: true },
-  { title: "Planner", url: "/planner", icon: ClipboardList, underDevelopment: true },
   { title: "Feature Request", url: "/request-feature", icon: Lightbulb },
 ]
 

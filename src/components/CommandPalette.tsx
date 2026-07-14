@@ -61,7 +61,6 @@ const COMMANDS: CommandItem[] = [
     { id: "info-centre", title: "Info Centre", description: "KCET information hub", icon: Info, href: "/info-centre", keywords: ["info", "information", "centre", "hub"], category: "tools" },
     { id: "materials", title: "Study Materials", description: "Preparation resources", icon: Book, href: "/materials", keywords: ["materials", "study", "resources", "prep"], category: "tools" },
     { id: "kcet", title: "r/kcet", description: "Open KCET community", icon: ArrowRight, href: "https://www.reddit.com/r/kcet/", keywords: ["kcet", "reddit", "community", "discussion"], category: "tools", external: true },
-    { id: "planner", title: "Planner", description: "Plan your admissions", icon: ClipboardList, href: "/planner", keywords: ["planner", "plan", "admissions"], category: "tools" },
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
     { id: "ai-counselor", title: "Admissions Assistant", description: "Interactive reference assistant", icon: Bot, href: "/ai-counselor", keywords: ["assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
 ]

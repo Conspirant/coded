@@ -27,8 +27,6 @@ import RoundTracker from "./pages/RoundTracker";
 import CollegeCompare from "./pages/CollegeCompare";
 import Documents from "./pages/Documents";
 import MockVerification from "./pages/MockVerification";
-import Planner from "./pages/Planner";
-import ErrorBoundary from "./components/ErrorBoundary";
 import Reviews from "./pages/Reviews";
 import CollegeReviewPage from "./pages/CollegeReviewPage";
 import InfoCentre from "./pages/InfoCentre";
@@ -104,7 +102,6 @@ const App = () => (
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
-              <Route path="/planner" element={<Layout><ErrorBoundary><Planner /></ErrorBoundary></Layout>} />
               <Route path="/documents" element={<Layout><Documents /></Layout>} />
               <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
               <Route path="/reviews" element={<Layout><Reviews /></Layout>} />

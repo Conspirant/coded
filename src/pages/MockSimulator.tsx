@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,11 +34,15 @@ import {
   GripVertical,
   Sparkles,
   HelpCircle,
-  AlertTriangle
+  AlertTriangle,
+  Upload,
+  Loader2,
+  FileText
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { loadSettings } from "@/lib/settings"
 import { normalizeCourseName } from "@/lib/course-normalization"
+import { PDFParser, type ParsedOption } from "@/lib/pdf-parser"
 import {
   simulateAllotment,
   getAvailableRounds,
@@ -103,6 +107,128 @@ const COLLEGE_QUALITY_SCORES: Record<string, number> = {
 const MockSimulator = () => {
   const { toast } = useToast()
   const preferencePageSize = 10
+
+  // PDF Upload state
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+  const [uploadedOptions, setUploadedOptions] = useState<ParsedOption[]>([]);
+  const [isParsing, setIsParsing] = useState(false);
+  const [parseProgress, setParseProgress] = useState(0);
+  const [uploadFileName, setUploadFileName] = useState("");
+  const [parseError, setParseError] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Process uploaded PDF file
+  const processUploadFile = async (file: File) => {
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+      toast({
+        title: "Invalid File",
+        description: "Please upload a PDF file",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsParsing(true);
+    setParseProgress(10);
+    setParseError("");
+    setUploadFileName(file.name);
+
+    try {
+      setParseProgress(30);
+
+      // Parse the PDF with timeout
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('PDF parsing timed out. Please try again or check the file.')), 30000);
+      });
+
+      const parsePromise = PDFParser.parseWithFallback(file);
+      const options = await Promise.race([parsePromise, timeoutPromise]);
+
+      setParseProgress(80);
+
+      if (options.length === 0) {
+        setParseError("No options found in the PDF. Please check the file format.");
+        toast({
+          title: "No Options Found",
+          description: "Could not extract options from the PDF",
+          variant: "destructive"
+        });
+      } else {
+        setUploadedOptions(options);
+        toast({
+          title: "PDF Parsed Successfully! 🎉",
+          description: `Extracted ${options.length} options from your Option Entry PDF`
+        });
+      }
+
+      setParseProgress(100);
+    } catch (error) {
+      console.error('PDF parsing error:', error);
+      setParseError(error instanceof Error ? error.message : 'Failed to parse PDF');
+      toast({
+        title: "Parsing Error",
+        description: "Failed to parse the PDF. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setTimeout(() => setIsParsing(false), 300);
+    }
+  };
+
+  // Handle file drop for upload
+  const handleUploadDrop = useCallback(async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      setIsUploadDialogOpen(true);
+      await processUploadFile(files[0]);
+    }
+  }, []);
+
+  // Handle file input change
+  const handleUploadFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      await processUploadFile(files[0]);
+    }
+  };
+
+  // Clear uploaded data
+  const clearUploadData = () => {
+    setUploadedOptions([]);
+    setUploadFileName("");
+    setParseError("");
+    setParseProgress(0);
+  };
+
+  // Import choices into simulator preferences
+  const importUploadedChoices = () => {
+    if (uploadedOptions.length === 0) return;
+
+    setPreferences(
+      uploadedOptions.map((opt) => ({
+        id: opt.id,
+        collegeCode: opt.collegeCode,
+        branchCode: opt.branchCode,
+        collegeName: opt.collegeName,
+        branchName: opt.branchName,
+        priority: opt.priority,
+        courseFee: opt.courseFee,
+        collegeCourse: opt.collegeCourse
+      }))
+    );
+
+    setIsUploadDialogOpen(false);
+    clearUploadData();
+
+    toast({
+      title: "Preferences Loaded! 📋",
+      description: `Imported ${uploadedOptions.length} options from your PDF into the simulator sheet.`
+    });
+  };
 
   // Data state
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
@@ -1228,6 +1354,15 @@ const MockSimulator = () => {
                             variant="outline"
                             size="sm"
                             className="border-primary/30 text-primary hover:bg-primary/10"
+                            onClick={() => setIsUploadDialogOpen(true)}
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload PDF
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-primary/30 text-primary hover:bg-primary/10"
                             onClick={() => setIsFillerOpen(true)}
                           >
                             <Sparkles className="h-4 w-4 mr-2" />
@@ -1349,23 +1484,71 @@ const MockSimulator = () => {
                     <TableHead>Optn. No</TableHead>
                     <TableHead>College Course</TableHead>
                     <TableHead>Course Name</TableHead>
-                    <TableHead className="hidden xl:table-cell">Course Fee per Annum(Rs)</TableHead>
+                  <TableHead className="hidden xl:table-cell">Course Fee per Annum(Rs)</TableHead>
                     <TableHead>College Name</TableHead>
                     <TableHead>Safety</TableHead>
                     <TableHead>Controls</TableHead>
                   </TableRow>
                 </tbody>
 
-                {preferences.length === 0 ? (
-                  <tbody>
-                    <TableRow>
-                      <TableCell colSpan={8} className="h-32 text-center text-muted-foreground">
-                        <Target className="mx-auto mb-3 h-10 w-10 opacity-50" />
-                        Add an institution and normalized course above to start building the option-entry list.
-                      </TableCell>
-                    </TableRow>
-                  </tbody>
-                ) : (
+                {isParsing ? (
+                   <tbody>
+                     <TableRow>
+                       <TableCell colSpan={8} className="h-48 text-center p-8">
+                         <div className="space-y-4 max-w-md mx-auto">
+                           <Loader2 className="h-8 w-8 mx-auto animate-spin text-primary" />
+                           <div>
+                             <p className="text-sm font-medium text-foreground">Parsing {uploadFileName}...</p>
+                             <p className="text-xs text-muted-foreground">Extracting your option entries</p>
+                           </div>
+                           <Progress value={parseProgress} className="w-full h-1.5" />
+                         </div>
+                       </TableCell>
+                     </TableRow>
+                   </tbody>
+                 ) : preferences.length === 0 ? (
+                   <tbody>
+                     <TableRow>
+                       <TableCell colSpan={8} className="h-48 text-center text-muted-foreground p-8">
+                         <div className="grid md:grid-cols-2 gap-6 items-center max-w-2xl mx-auto">
+                           <div className="space-y-2 border-r border-white/10 pr-6 text-left">
+                             <h4 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+                               <Plus className="h-4 w-4 text-primary" />
+                               Option 1: Add Manually
+                             </h4>
+                             <p className="text-xs text-muted-foreground">
+                               Search for institutions and courses using the search bars above, then click 'Add' to build your preference list row-by-row.
+                             </p>
+                           </div>
+                           <div
+                             className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer ${
+                               isDragging
+                                 ? 'border-primary bg-primary/5'
+                                 : 'border-white/10 hover:border-primary/50'
+                             }`}
+                             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                             onDragLeave={() => setIsDragging(false)}
+                             onDrop={handleUploadDrop}
+                             onClick={() => fileInputRef.current?.click()}
+                           >
+                             <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                             <h4 className="text-sm font-semibold text-foreground">Option 2: Upload PDF</h4>
+                             <p className="text-xs text-muted-foreground mt-1">
+                               Drag & drop your KEA Option Entry PDF here, or click to browse.
+                             </p>
+                             <input
+                               ref={fileInputRef}
+                               type="file"
+                               accept=".pdf"
+                               onChange={handleUploadFileChange}
+                               className="hidden"
+                             />
+                           </div>
+                         </div>
+                       </TableCell>
+                     </TableRow>
+                   </tbody>
+                 ) : (
                   <Reorder.Group
                     values={visiblePreferences}
                     onReorder={reorderVisiblePreferences}
@@ -1828,6 +2011,183 @@ const MockSimulator = () => {
               </div>
             </DialogContent>
           )}
+        </Dialog>
+
+        <Dialog open={isUploadDialogOpen} onOpenChange={(open) => {
+          setIsUploadDialogOpen(open);
+          if (!open) clearUploadData();
+        }}>
+          <DialogContent className="flex max-h-[90vh] max-w-4xl flex-col overflow-hidden border-primary/30 bg-background p-0 text-foreground">
+            <DialogHeader className="shrink-0 border-b border-white/10 px-6 py-4">
+              <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+                <Upload className="h-5 w-5 text-primary" />
+                Import KEA Option Entry PDF
+              </DialogTitle>
+              <DialogDescription>
+                Upload your downloaded Option Entry PDF from the KEA portal to import your preference choices.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-6 py-4">
+              {/* Upload section */}
+              {uploadedOptions.length === 0 && !isParsing && (
+                <div
+                  className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer ${
+                    isDragging
+                      ? 'border-primary bg-primary/5'
+                      : 'border-white/10 hover:border-primary/50'
+                  }`}
+                  onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) processUploadFile(files[0]);
+                  }}
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.pdf';
+                    input.onchange = (e) => {
+                      const files = (e.target as HTMLInputElement).files;
+                      if (files && files.length > 0) processUploadFile(files[0]);
+                    };
+                    input.click();
+                  }}
+                >
+                  <Upload className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                  <h3 className="text-xl font-semibold mb-2">Drag and drop your PDF here</h3>
+                  <p className="text-muted-foreground mb-4">or click to browse from your device</p>
+                </div>
+              )}
+
+              {/* Parsing Progress */}
+              {isParsing && (
+                <div className="text-center py-12 space-y-4">
+                  <Loader2 className="h-12 w-12 mx-auto animate-spin text-primary" />
+                  <div>
+                    <p className="font-medium text-foreground">Parsing {uploadFileName}...</p>
+                    <p className="text-sm text-muted-foreground">Extracting your option entries</p>
+                  </div>
+                  <Progress value={parseProgress} className="w-full max-w-md mx-auto" />
+                </div>
+              )}
+
+              {/* Parse Error */}
+              {parseError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error Parsing PDF</AlertTitle>
+                  <AlertDescription>{parseError}</AlertDescription>
+                </Alert>
+              )}
+
+              {/* Preview of options */}
+              {uploadedOptions.length > 0 && !isParsing && (
+                <div className="space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-muted/20 border border-white/5 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      <div>
+                        <p className="font-medium text-foreground">{uploadFileName}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {uploadedOptions.length} choices successfully extracted
+                        </p>
+                      </div>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={clearUploadData}>
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Clear PDF
+                    </Button>
+                  </div>
+
+                  <div className="border border-white/10 rounded-lg overflow-hidden">
+                    <div className="max-h-72 overflow-y-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-muted/50">
+                            <TableHead className="w-20 font-bold text-center">Optn. No</TableHead>
+                            <TableHead className="w-28 font-bold">College Course</TableHead>
+                            <TableHead className="font-bold">Course Name</TableHead>
+                            <TableHead className="w-48 font-bold">Course Fee per Annum(Rs)</TableHead>
+                            <TableHead className="font-bold">College Name</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {uploadedOptions.map((option, index) => (
+                            <TableRow key={option.id} className={index % 2 === 0 ? 'bg-background' : 'bg-muted/20'}>
+                              <TableCell className="text-center font-medium">
+                                {option.priority}
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="font-mono text-xs">
+                                  {option.collegeCourse}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-sm font-medium">
+                                {option.branchName}
+                              </TableCell>
+                              <TableCell className="text-sm text-muted-foreground">
+                                {option.courseFee || 'Not specified'}
+                              </TableCell>
+                              <TableCell className="text-sm">
+                                {option.collegeName}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+
+                  {/* Summary grid */}
+                  <div className="p-4 bg-muted/30 border border-white/5 rounded-lg">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <span className="font-medium text-muted-foreground">Total Options:</span>
+                        <span className="ml-2 font-semibold text-foreground">{uploadedOptions.length}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium text-muted-foreground">Unique Colleges:</span>
+                        <span className="ml-2 font-semibold text-foreground">
+                          {new Set(uploadedOptions.map(o => o.collegeCode)).size}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-medium text-muted-foreground">Unique Branches:</span>
+                        <span className="ml-2 font-semibold text-foreground">
+                          {new Set(uploadedOptions.map(o => o.branchCode)).size}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="font-medium text-muted-foreground">First Choice:</span>
+                        <span className="ml-2 font-semibold text-foreground">
+                          {uploadedOptions[0]?.collegeCourse || 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex shrink-0 justify-end gap-3 border-t border-white/10 px-6 py-4 bg-muted/10">
+              <Button variant="ghost" onClick={() => {
+                setIsUploadDialogOpen(false);
+                clearUploadData();
+              }}>
+                Cancel
+              </Button>
+              <Button
+                onClick={importUploadedChoices}
+                disabled={uploadedOptions.length === 0 || isParsing}
+                className="bg-primary hover:bg-primary/95 text-primary-foreground font-semibold"
+              >
+                Import Choices
+              </Button>
+            </div>
+          </DialogContent>
         </Dialog>
       </div>
     </div>
