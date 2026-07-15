@@ -3,30 +3,42 @@ const EVENT_NAME = 'kcet-unlock-state-change';
 
 // Set of valid keys (case-insensitive & trimmed)
 const VALID_KEYS = new Set([
-  (import.meta.env.VITE_ACCESS_KEY || '').trim().toUpperCase(),
-  'CODED2025',
-  'CODED2026',
-  'KCETCODED',
-  'DEVELOPER'
-].filter(Boolean));
+  'COUNS2026'
+]);
+
+let globalPaywallDisabled = false;
+
+export function setGlobalPaywallDisabled(disabled: boolean) {
+  globalPaywallDisabled = disabled;
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: isUnlocked() } }));
+}
 
 export function isUnlocked(): boolean {
-  return true; // Website is completely unlocked for all users
+  if (globalPaywallDisabled) return true;
+  try {
+    return localStorage.getItem(STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
 }
 
 export function validateAndUnlock(key: string): boolean {
-  try {
-    localStorage.setItem(STORAGE_KEY, 'true');
-  } catch {}
-  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
-  return true;
+  const normalizedKey = key.trim().toUpperCase();
+  if (VALID_KEYS.has(normalizedKey)) {
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    } catch {}
+    window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
+    return true;
+  }
+  return false;
 }
 
 export function lockFeatures() {
   try {
-    localStorage.setItem(STORAGE_KEY, 'true'); // Keep it unlocked
+    localStorage.removeItem(STORAGE_KEY);
   } catch {}
-  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: isUnlocked() } }));
 }
 
 export function subscribeToUnlockState(callback: (unlocked: boolean) => void) {

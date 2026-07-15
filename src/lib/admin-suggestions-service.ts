@@ -26,6 +26,7 @@ export class AdminSuggestionsService {
             const { data, error } = await supabase
                 .from('user_suggestions')
                 .select('*')
+                .not('suggestion', 'like', 'CONFIG:%')
                 .order('created_at', { ascending: false })
             
             if (error) throw error;
@@ -53,16 +54,56 @@ export class AdminSuggestionsService {
     
     static async clearAll(): Promise<boolean> {
         try {
-            // Delete all entries safely by applying a broad filter
+            // Delete all entries safely by applying a filter that excludes config variables
             const { error } = await supabase
                 .from('user_suggestions')
                 .delete()
-                .neq('id', '00000000-0000-0000-0000-000000000000')
+                .not('suggestion', 'like', 'CONFIG:%')
             
             if (error) throw error;
             return true;
         } catch (e) {
             console.error("Error clearing suggestions from Supabase:", e);
+            return false;
+        }
+    }
+
+    static async isPaywallDisabledGlobally(): Promise<boolean> {
+        try {
+            const { data, error } = await supabase
+                .from('user_suggestions')
+                .select('suggestion')
+                .like('suggestion', 'CONFIG:premium_paywall_enabled:false')
+            
+            if (error) throw error;
+            return (data && data.length > 0);
+        } catch (e) {
+            console.error("Error checking paywall status:", e);
+            return false;
+        }
+    }
+
+    static async setPaywallDisabledGlobally(disabled: boolean): Promise<boolean> {
+        try {
+            // Delete any existing config rows first
+            const { error: delError } = await supabase
+                .from('user_suggestions')
+                .delete()
+                .like('suggestion', 'CONFIG:premium_paywall_enabled:%')
+            
+            if (delError) throw delError;
+
+            if (disabled) {
+                // Insert CONFIG:premium_paywall_enabled:false to bypass/disable paywall
+                const { error: insError } = await supabase
+                    .from('user_suggestions')
+                    .insert([{ suggestion: 'CONFIG:premium_paywall_enabled:false' }])
+                
+                if (insError) throw insError;
+            }
+            return true;
+        } catch (e) {
+            console.error("Error setting paywall status:", e);
             return false;
         }
     }

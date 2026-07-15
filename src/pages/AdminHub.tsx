@@ -28,10 +28,21 @@ import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 import AdminActualRanksView from "@/components/AdminActualRanksView"
 import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
 
-const ADMIN_PASS = "kcetadmin2026"
+import { Switch } from "@/components/ui/switch"
+import { setGlobalPaywallDisabled } from "@/lib/unlock"
+import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
+
 const AUTH_KEY = "kcet_admin_auth"
 
 import { SUBJECTS, Subject, getChaptersForSubject } from "@/data/pyqQuestionBank"
+
+async function hashPassphrase(message: string): Promise<string> {
+    const msgBuffer = new TextEncoder().encode(message)
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("")
+    return hashHex
+}
 
 // ─── Auth Gate ─────────────────────────────────────────────────
 function AdminAuthGate({ onAuth }: { onAuth: () => void }) {
@@ -41,9 +52,21 @@ function AdminAuthGate({ onAuth }: { onAuth: () => void }) {
 
     useEffect(() => { inputRef.current?.focus() }, [])
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (pass === ADMIN_PASS) {
+        const trimmedPass = pass.trim()
+        const hashedInput = await hashPassphrase(trimmedPass)
+        const envPass = import.meta.env.VITE_ADMIN_PASSPHRASE
+        
+        let isAuthorized = false
+        if (envPass) {
+            isAuthorized = trimmedPass === envPass.trim() || hashedInput === await hashPassphrase(envPass.trim())
+        } else {
+            // Default passphrase "kcetadmin2026" hashed to SHA-256
+            isAuthorized = hashedInput === "d810ebe01545b5eb232dc2415c249c815b26f351425d4a300412b1809f76cd30"
+        }
+
+        if (isAuthorized) {
             sessionStorage.setItem(AUTH_KEY, "1")
             onAuth()
         } else {
@@ -769,6 +792,91 @@ function AdminPYQSection() {
     )
 }
 
+// ─── System Settings Section ──────────────────────────────────
+function AdminSystemSettingsSection() {
+    const [paywallDisabled, setPaywallDisabled] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [saving, setSaving] = useState(false)
+    const { toast } = useToast()
+
+    useEffect(() => {
+        const fetchStatus = async () => {
+            setLoading(true)
+            const disabled = await AdminSuggestionsService.isPaywallDisabledGlobally()
+            setPaywallDisabled(disabled)
+            setLoading(false)
+        }
+        fetchStatus()
+    }, [])
+
+    const handleSave = async () => {
+        setSaving(true)
+        const success = await AdminSuggestionsService.setPaywallDisabledGlobally(paywallDisabled)
+        setSaving(false)
+        if (success) {
+            setGlobalPaywallDisabled(paywallDisabled)
+            toast({
+                title: "Settings Saved",
+                description: `Premium paywall is now ${paywallDisabled ? 'globally disabled' : 'globally enabled'}.`
+            })
+        } else {
+            toast({
+                title: "Error",
+                description: "Failed to save settings to the database.",
+                variant: "destructive"
+            })
+        }
+    }
+
+    return (
+        <div className="space-y-6 animate-in fade-in duration-300">
+            <Card className="glass border-white/5">
+                <CardHeader>
+                    <CardTitle className="text-xl flex items-center gap-2">
+                        <Settings className="h-5 w-5 text-indigo-400" />
+                        System Settings & Paywall Control
+                    </CardTitle>
+                    <CardDescription>
+                        Configure global site-wide options and access restrictions
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {loading ? (
+                        <div className="text-center py-6 text-muted-foreground">Loading settings...</div>
+                    ) : (
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01]">
+                                <div className="space-y-1">
+                                    <div className="text-sm font-semibold text-foreground flex items-center gap-2">
+                                        Disable Premium Paywall Site-Wide
+                                        <Badge variant={paywallDisabled ? "secondary" : "default"} className={paywallDisabled ? "bg-emerald-500/10 text-emerald-400" : "bg-indigo-500/10 text-indigo-400"}>
+                                            {paywallDisabled ? "Bypassed (Free)" : "Active (Premium)"}
+                                        </Badge>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground max-w-xl">
+                                        When enabled, all premium features (Mock Simulator, Cutoff Explorer, AI Counselor, etc.) will be completely free and accessible for all users without any unlock keys or payment prompts.
+                                    </p>
+                                </div>
+                                <Switch
+                                    className="data-[state=checked]:bg-emerald-500"
+                                    checked={paywallDisabled}
+                                    onCheckedChange={setPaywallDisabled}
+                                />
+                            </div>
+
+                            <div className="flex justify-end pt-2">
+                                <Button onClick={handleSave} disabled={saving} className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700">
+                                    {saving ? "Saving..." : "Save Settings"}
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
@@ -780,6 +888,7 @@ const ADMIN_SECTIONS = [
     { id: "suggestions", label: "Suggestions & Doubts", icon: ClipboardPaste },
     { id: "features", label: "Feature Requests", icon: Lightbulb },
     { id: "actual-ranks", label: "2027 Ranks Database", icon: Database },
+    { id: "settings", label: "System Settings", icon: Settings },
 ] as const
 
 type SectionId = typeof ADMIN_SECTIONS[number]["id"]
@@ -845,6 +954,7 @@ export default function AdminHub() {
                     {activeSection === "features" && <AdminFeatureRequestsView />}
                     {activeSection === "actual-ranks" && <AdminActualRanksView />}
                     {activeSection === "colleges" && <AdminCollegeEditor />}
+                    {activeSection === "settings" && <AdminSystemSettingsSection />}
                 </main>
             </div>
         </div>

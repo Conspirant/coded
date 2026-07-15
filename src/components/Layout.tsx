@@ -12,7 +12,8 @@ import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type
 import { SidebarHint } from './SidebarHint'
 import { useExamMode } from "@/contexts/ExamModeContext"
 import { Input } from "@/components/ui/input"
-import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState } from "@/lib/unlock"
+import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled } from "@/lib/unlock"
+import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
 
 import { Logo } from "./ui/Logo"
@@ -61,6 +62,16 @@ export function Layout({ children }: LayoutProps) {
     const s = loadSettings()
     setSettings(s)
     applyRuntimeSettings(s)
+
+    const checkPaywall = async () => {
+      try {
+        const disabled = await AdminSuggestionsService.isPaywallDisabledGlobally()
+        setGlobalPaywallDisabled(disabled)
+      } catch (err) {
+        console.error("Failed to check global paywall state on boot:", err)
+      }
+    }
+    checkPaywall()
   }, [])
 
   const update = (partial: Partial<AppSettings>) => {
