@@ -197,14 +197,14 @@ export const ResourceLimitModal = () => {
   if (isAllowed || unlocked) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-background/95 backdrop-blur-xl overflow-y-auto grid place-items-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-slate-950/95 backdrop-blur-xl overflow-y-auto flex flex-col items-center justify-start md:justify-center p-4 py-8 sm:py-12">
       <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950/20 via-background/40 to-emerald-950/10 pointer-events-none" />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.97, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur-2xl overflow-hidden my-auto"
+        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-5 sm:p-8 backdrop-blur-2xl overflow-visible my-auto md:my-0 flex flex-col"
       >
         {/* Glow lights */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
