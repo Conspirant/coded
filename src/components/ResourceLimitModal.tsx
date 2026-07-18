@@ -180,7 +180,7 @@ export const ResourceLimitModal = () => {
   const allowedExact = new Set([
     '', '/', '/rank-predictor', '/admin', '/donate',
     '/daily-challenge', '/cutoff-clash', '/cet-news',
-    '/about', '/privacy', '/terms', '/reviews',
+    '/about', '/privacy', '/terms', '/payment-policy', '/reviews',
     '/documents', '/materials', '/info-centre',
     '/squad-finder', '/metro-mapper', '/bmtc-mapper',
     '/hidden-gems', '/college-list', '/college-cutoffs',

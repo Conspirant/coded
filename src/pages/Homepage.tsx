@@ -887,6 +887,7 @@ const Homepage = () => {
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
                             <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+                            <Link to="/payment-policy" className="hover:text-foreground transition-colors">Payment Policy</Link>
                             <Link to="/donate" className="hover:text-pink-400 transition-colors flex items-center gap-1">
                                 <Heart className="h-3 w-3" /> Donate
                             </Link>

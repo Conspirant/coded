@@ -520,6 +520,8 @@ const About = () => {
                     <span className="text-white/10">•</span>
                     <Link to="/terms" className="text-indigo-400 hover:underline">Terms of Service</Link>
                     <span className="text-white/10">•</span>
+                    <Link to="/payment-policy" className="text-indigo-400 hover:underline">Payment Policy</Link>
+                    <span className="text-white/10">•</span>
                     <Link to="/donate" className="text-pink-400 hover:underline flex items-center gap-1">
                         <Heart className="h-3 w-3" /> Support Us
                     </Link>

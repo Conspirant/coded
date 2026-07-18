@@ -39,6 +39,7 @@ import CETNews from "./pages/CETNews";
 import CollegeDetail from "./pages/CollegeDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import PaymentPolicy from "./pages/PaymentPolicy";
 import SquadFinder from "./pages/SquadFinder";
 import MetroMapper from "./pages/MetroMapper";
 import BmtcMapper from './pages/BmtcMapper';
@@ -116,6 +117,7 @@ const App = () => (
               <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
               <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
               <Route path="/terms" element={<Layout><Terms /></Layout>} />
+              <Route path="/payment-policy" element={<Layout><PaymentPolicy /></Layout>} />
               <Route path="/about" element={<Layout><About /></Layout>} />
               <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
               <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
