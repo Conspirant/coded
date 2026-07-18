@@ -140,6 +140,14 @@ export const DonationButton = () => {
                   If the platform has helped you, consider making a small donation to help cover our hosting costs.
                 </p>
 
+                <div className="border border-white/10 bg-slate-900/50 rounded-xl p-3.5 flex flex-col items-center justify-center space-y-1 relative overflow-hidden">
+                  <div className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    amount received by people till now
+                  </div>
+                  <div className="text-xl font-bold text-white font-mono">₹30</div>
+                </div>
+
                 {/* Donate Online Button */}
                 <div className="pt-2">
                   <Link to="/donate" onClick={handleClose}>

@@ -222,6 +222,13 @@ export const ResourceLimitModal = () => {
           <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
             KCET & COMEDK Counseling Suite
           </p>
+          <div className="w-full max-w-xs mt-3 border border-white/10 bg-slate-900/50 rounded-xl p-3 flex flex-col items-center justify-center space-y-1 relative overflow-hidden">
+            <div className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              amount received by people till now
+            </div>
+            <div className="text-xl font-bold text-white font-mono">₹30</div>
+          </div>
         </div>
 
         {/* 2-Column Grid Layout for Wider, Shorter Aspect */}

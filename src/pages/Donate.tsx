@@ -188,6 +188,15 @@ const Donate = () => {
                 </p>
             </div>
 
+            {/* Funding Status Box */}
+            <div className="border border-white/10 bg-slate-900/50 rounded-xl p-4 flex flex-col items-center justify-center space-y-1 relative overflow-hidden">
+                <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    amount received by people till now
+                </div>
+                <div className="text-2xl font-bold text-white font-mono">₹30</div>
+            </div>
+
             {/* Elegant Minimal Payment Card */}
             <Card className="border border-white/10 bg-black/40 backdrop-blur-md overflow-hidden relative">
                 <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
