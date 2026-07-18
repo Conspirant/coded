@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Heart, X, Coffee, Sparkles, ArrowRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
+import { isUnlocked } from '@/lib/unlock';
 
 export const DonationButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,22 @@ export const DonationButton = () => {
   // Hide the FAB on the donate page itself (redundant there)
   const isDonatePage = location.pathname === '/donate';
 
-  // Show a gentle nudge after 60 seconds on site (once per session)
+  // Auto-trigger polite popup after 5 seconds if not paid and not already dismissed
+  useEffect(() => {
+    if (isUnlocked()) return;
+
+    const alreadyDismissed = localStorage.getItem('donation-popup-dismissed-2026') === 'true';
+    if (alreadyDismissed) return;
+
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      setShowPulse(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Show a gentle nudge pulse after 60 seconds on site (once per session)
   useEffect(() => {
     const alreadySeen = sessionStorage.getItem('donation-prompt-seen');
     if (alreadySeen) {
@@ -39,6 +55,7 @@ export const DonationButton = () => {
   };
 
   const handleClose = () => {
+    localStorage.setItem('donation-popup-dismissed-2026', 'true');
     setIsOpen(false);
   };
 
@@ -148,14 +165,20 @@ export const DonationButton = () => {
                   <div className="text-xl font-bold text-white font-mono">₹30</div>
                 </div>
 
-                {/* Donate Online Button */}
-                <div className="pt-2">
+                {/* Action Buttons */}
+                <div className="pt-2 space-y-2">
                   <Link to="/donate" onClick={handleClose}>
                     <button className="w-full py-2.5 px-4 rounded-xl bg-white text-black hover:bg-white/90 font-bold flex items-center justify-center gap-2 transition-all duration-200 text-sm">
                       Donate Online
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </Link>
+                  <button
+                    onClick={handleClose}
+                    className="w-full py-2 px-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/10 font-semibold text-white/60 hover:text-white transition-all duration-200 text-xs"
+                  >
+                    Maybe Later
+                  </button>
                 </div>
               </div>
 
