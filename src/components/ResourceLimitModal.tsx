@@ -11,7 +11,8 @@ import {
   CheckCircle,
   Home,
   ArrowRight,
-  Loader2
+  Loader2,
+  ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,134 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isUnlocked, validateAndUnlock, subscribeToUnlockState } from '@/lib/unlock';
 import { toast } from 'sonner';
+
+interface PageDetails {
+  title: string;
+  description: string;
+  benefits: string[];
+}
+
+const PAGE_INFO: Record<string, PageDetails> = {
+  '/cutoff-explorer': {
+    title: 'KCET Cutoff Explorer',
+    description: 'A deep-dive tool to search and inspect the database of official KCET cutoff ranks from previous years. It aggregates round-by-round allotment results for all colleges in Karnataka, allowing you to filter by specific quotas, course categories, and college codes.',
+    benefits: [
+      'Analyze comprehensive historical cutoff databases covering years 2023, 2024, 2025, and the latest 2026 rounds.',
+      'Filter dynamically by college type (Government, Private, Aided), course branch (CSE, ECE, ISE, etc.), and categories (GM, 2AG, 3BG, SC, ST, Rural, Kannada, etc.).',
+      'Cross-verify data trust markers directly linked to the official KEA PDF source files and page numbers where the cutoff was published.',
+      'Access detailed seat matrix data including total seats and remaining vacant seats per branch/college.'
+    ]
+  },
+  '/comedk-explorer': {
+    title: 'COMEDK Cutoff Explorer',
+    description: 'Search and analyze COMEDK UGET cutoff ranks from past counseling cycles. This dashboard aggregates final cutoff data for top engineering colleges in Karnataka participating in the COMEDK counseling process.',
+    benefits: [
+      'Access comprehensive historical COMEDK cutoff metrics covering Mock Rounds, Round 1, Round 2 (Phase 1 & Phase 2), and Round 3.',
+      'Target top colleges in Bengaluru and other cities by searching through COMEDK institute codes and course branches.',
+      'Compare opening and closing ranks for general merit and other reservation sub-categories (HKR, KMP, etc.).',
+      'Verify cutoffs against official COMEDK PDF pages to ensure absolute accuracy before filling options.'
+    ]
+  },
+  '/college-finder': {
+    title: 'College Finder & Predictor',
+    description: 'A recommendation engine that matches your rank with historical cutoff databases to show which colleges and branches you can realistically get. It sorts options by probability so you can structure your entry form.',
+    benefits: [
+      'Personalized recommendations sorted into dynamic categories: "Safe" (90%+ chance), "Target" (medium chance), and "Dream" (borderline/stretch target).',
+      'Support for dual exam modes (KCET and COMEDK) adapting filters to your specific category and ranking index.',
+      'Bookmarking utility to save target colleges directly to your personal counseling profile.',
+      'Export your tailored college match list directly into an Excel sheet or formatted PDF report.',
+      'Detailed overview of tuition fees, college location, and average packages for matched recommendations.'
+    ]
+  },
+  '/cutoff-trends': {
+    title: 'Cutoff Trends Dashboard',
+    description: 'A visual analytics dashboard displaying trends of opening and closing ranks over the years. By charting cutoffs, you can predict whether a branch is becoming more competitive or easier to get into.',
+    benefits: [
+      'Visual Recharts area charts demonstrating the year-over-year trajectory of cutoffs (2023–2026).',
+      'Multi-college comparison capabilities to chart and analyze multiple college-branch combinations simultaneously.',
+      'Spot rank inflation/deflation patterns for specific categories (e.g., GM) to avoid missing out on border colleges.',
+      'Filter trends by specific rounds (Mock, Round 1, Round 2) to see how cutoffs shift as counseling progresses.'
+    ]
+  },
+  '/mock-simulator': {
+    title: 'Mock Simulator & Choice Filler',
+    description: 'A counselor simulation tool where you can input your choice-filling priority order. The simulator runs the allotment algorithm using your preferences and historical ranks to predict which college you will get.',
+    benefits: [
+      'Build and edit an option list with up to 100 choices, utilizing drag-and-drop reordering with Framer Motion.',
+      'Import your existing option list directly by uploading an official KEA option-entry PDF report.',
+      'Run a smart allotment simulator that highlights safety level indicators (e.g., high risk, balanced, highly secure) for every choice on your list.',
+      'Export your prioritized choice list to a PDF format to print out or reference during real option entry.'
+    ]
+  },
+  '/round-tracker': {
+    title: 'Counseling Round Tracker',
+    description: 'A schedule tracking timeline showing deadlines, notification announcements, mock allotment dates, and fee payment deadlines for each counseling round.',
+    benefits: [
+      'Real-time countdown timers for ongoing choice-filling windows, fee payments, and reporting deadlines.',
+      'Detailed, step-by-step advisory alerts and guidance lists explaining what action you must take in each stage (e.g., choice selections: Freeze, Slide, Float).',
+      'Notifications of provisional results, final list releases, and objection windows.'
+    ]
+  },
+  '/college-compare': {
+    title: 'College Compare Tool',
+    description: 'A side-by-side comparison matrix for comparing multiple engineering colleges on all academic, placement, and infrastructural parameters.',
+    benefits: [
+      'Compare up to 3 colleges side-by-side across key academic, financial, and placement statistics.',
+      'Examine placement metrics such as average package, highest package, and placement percentage.',
+      'Contrast college type (government, private, aided), establishment year, location, and tier ranking.',
+      'Highlight best-performing values (highest package, lowest fees) to easily identify high-ROI choices.'
+    ]
+  },
+  '/document-verification': {
+    title: 'Mock Verification Wizard',
+    description: 'An eligibility and certificate verification advisor. It walks you through KEA guidelines to ensure your study certificates, reservations, and signatures are valid to prevent verification rejection.',
+    benefits: [
+      'Step-by-step verification checks for standard documents (SSLC Marks Card, 2nd PU Marks Card, Study Certificates).',
+      'Specific reservation verification checklists (Rural Certificate, Kannada Medium Certificate, Hyderabad-Karnataka / 371(J) quota, Caste and Income certificates).',
+      'Verification of mandatory signatures (e.g., Block Education Officer - BEO, Tahsildar) and validity formats (RD numbers).',
+      'Actionable feedback and warning indicators for mismatched student details (e.g., names, dates, categories).'
+    ]
+  },
+  '/colleges': {
+    title: 'College Directory',
+    description: 'A comprehensive library of Karnataka engineering colleges listing detailed college profiles, fee configurations, contact info, and Return on Investment (ROI) scores.',
+    benefits: [
+      'Browse comprehensive profiles for over 200+ colleges participating in KCET and COMEDK.',
+      'Access Return on Investment (ROI) scores computed by dividing average placement packages by total 4-year tuition fees.',
+      'View structural details: seat count, government vs private classification, infrastructure tags, and tier classifications.',
+      'Read reviews, placements, and campus connectivity details.'
+    ]
+  },
+  '/ai-counselor': {
+    title: 'AI Counselor (Gemini Powered)',
+    description: 'A natural language chat assistant powered by Gemini AI, fine-tuned to answer questions regarding admissions, college selections, choice-filling strategy, and documents.',
+    benefits: [
+      'Ask complex queries such as "Which is better: CSE at college A or ISE at college B?" or "How do I claim rural reservation?".',
+      'Preset quick-prompts helping you address common inquiries about fees, choice options, and documents in one click.',
+      'Receive tailored counseling strategy recommendations based on your rank, target branch, and category.'
+    ]
+  },
+  '/request-feature': {
+    title: 'Feature Request Portal',
+    description: 'A feedback board where students suggest new tools, improvements, or report bugs, enabling users to vote on updates they want to see next.',
+    benefits: [
+      'Submit feature suggestions, engineering calculators, or design improvements.',
+      'Upvote other students\' requests to influence development priority.',
+      'Stay updated with the developer\'s responses and feature status tags (e.g., planned, in progress, implemented).'
+    ]
+  },
+  '/pyq-test': {
+    title: 'PYQ Practice Test Portal',
+    description: 'An exam preparation portal containing previous years\' question banks for KCET and COMEDK. It allows users to take practice tests, identify weak areas, and check solution explanations.',
+    benefits: [
+      'Practice chapter-by-chapter previous year questions (PYQs) for KCET/COMEDK.',
+      'Configure custom quick tests (10, 20, or 30 questions) with active countdown timers.',
+      'View detailed steps and solutions for each question after completing the test.',
+      'Performance reports showing attempted questions, accuracy rates, and category statistics.'
+    ]
+  }
+};
+
 
 export const ResourceLimitModal = () => {
   const location = useLocation();
@@ -204,165 +333,214 @@ export const ResourceLimitModal = () => {
         initial={{ opacity: 0, scale: 0.97, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-5 sm:p-8 backdrop-blur-2xl overflow-visible my-auto md:my-0 flex flex-col"
+        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-5 sm:p-6 md:p-8 backdrop-blur-2xl overflow-hidden my-auto md:my-0 flex flex-col max-h-[90vh]"
       >
         {/* Glow lights */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Header */}
-        <div className="flex flex-col items-center text-center space-y-2 mb-6 relative z-10 border-b border-white/5 pb-4">
-          <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-            <Crown className="h-5 w-5" />
+        <div className="flex flex-col items-center text-center space-y-1 mb-5 relative z-10 border-b border-white/5 pb-3">
+          <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <Crown className="h-4.5 w-4.5" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mt-1 flex items-center justify-center gap-1.5">
+          <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-white mt-1 flex items-center justify-center gap-1.5">
             Unlock Premium features
             <Sparkles className="h-3.5 w-3.5 text-amber-400" />
           </h2>
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+          <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
             KCET & COMEDK Counseling Suite
           </p>
-          <div className="w-full max-w-xs mt-3 border border-white/10 bg-slate-900/50 rounded-xl p-3 flex flex-col items-center justify-center space-y-1 relative overflow-hidden">
-            <div className="flex items-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              amount received by people till now
-            </div>
-            <div className="text-xl font-bold text-white font-mono">₹30</div>
-          </div>
         </div>
 
-        {/* 2-Column Grid Layout for Wider, Shorter Aspect */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start relative z-10">
-          
-          {/* Left Column: Announcement Disclaimer */}
-          <div className="text-xs text-slate-300 leading-relaxed space-y-3 md:border-r md:border-white/5 pr-0 md:pr-8 border-b border-white/5 md:border-b-0 pb-6 md:pb-0">
-            <p className="font-bold text-white text-[13px] flex items-center gap-1.5">
-              Hosting & Scaling Announcement
-            </p>
-            <p>
-              Due to high visitor traffic, our server hosting resources are currently close to exhaustion. We are actively planning to scale up the website's core architecture to support the growing user base, which requires additional operational funds.
-            </p>
-            <p>
-              To support these costs, we have introduced a nominal **₹19** premium activation fee to unlock all advanced features.
-            </p>
-            <p className="text-slate-400">
-              Since this platform is built entirely for students, if you cannot afford this fee, we are sincerely sorry. You can still reach out to us at any time. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 font-semibold underline">Discord Server</a> or send a DM on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline">Reddit</a>, and we will gladly provide you with a free access key. If you have the means, please also consider donating to support the project further.
-            </p>
-          </div>
-
-          {/* Right Column: Payment CTA & Access Codes */}
-          <div className="space-y-4">
-            {/* Custom Amount Entry */}
-            <div className="space-y-1.5 p-3.5 rounded-xl border border-white/5 bg-white/[0.01]">
-              <label className="text-[11px] font-medium text-slate-400 block">
-                Contribution Amount (Min ₹10)
-              </label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
-                <Input
-                  type="number"
-                  min="10"
-                  value={customAmount}
-                  onChange={(e) => setCustomAmount(e.target.value)}
-                  className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pl-6 text-xs text-white"
-                  placeholder="19"
-                />
+        {/* Scrollable Content Container */}
+        <div className="overflow-y-auto pr-1 flex-1 relative z-10 space-y-4 max-h-[55vh] md:max-h-[60vh] custom-scrollbar">
+          {/* 2-Column Grid Layout for Wider, Shorter Aspect */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+            
+            {/* Left Column: Announcement Disclaimer */}
+            <div className="text-xs text-slate-300 leading-relaxed space-y-3.5 md:border-r md:border-white/5 pr-0 md:pr-8 border-b border-white/5 md:border-b-0 pb-6 md:pb-0 flex flex-col justify-start">
+              <p className="font-bold text-white text-[13px] flex items-center gap-1.5 pt-1">
+                Hosting & Scaling Announcement
+              </p>
+              <p>
+                Due to high visitor traffic, our server hosting resources are currently close to exhaustion. We are actively planning to scale up the website\'s core architecture, which requires additional operational funds.
+              </p>
+              <p>
+                To support these costs, we have introduced a nominal **₹19** premium activation fee to unlock all advanced features.
+              </p>
+              <p className="text-slate-400">
+                Since this platform is built entirely for students, if you cannot afford this fee, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 font-semibold underline">Discord Server</a> or send a DM on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline">Reddit</a>, and we will gladly provide you with a free access key. If you have the means, please also consider donating to support the project further.
+              </p>
+              
+              {/* Live Funding Status */}
+              <div className="border border-white/5 bg-slate-900/40 rounded-xl p-2.5 flex items-center justify-between text-xs relative overflow-hidden shrink-0 mt-1.5">
+                <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-wider text-slate-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Total Donations Received
+                </div>
+                <div className="text-sm font-bold text-white font-mono">₹30</div>
               </div>
-              {parseFloat(customAmount) < 10 && (
-                <p className="text-[9.5px] text-rose-400 font-medium mt-1">Amount cannot be less than ₹10</p>
-              )}
             </div>
 
-            <Button
-              onClick={handleRazorpayPayment}
-              disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 10}
-              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-xs sm:text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  <Unlock className="h-4 w-4" />
-                  Pay ₹{customAmount || '19'} to Unlock Everything
-                </>
-              )}
-            </Button>
+            {/* Right Column: Payment CTA & Access Codes */}
+            <div className="space-y-4">
+              {/* Custom Amount Entry */}
+              <div className="space-y-1.5 p-3.5 rounded-xl border border-white/5 bg-white/[0.01]">
+                <label className="text-[11px] font-medium text-slate-400 block">
+                  Contribution Amount (Min ₹10)
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
+                  <Input
+                    type="number"
+                    min="10"
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
+                    className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pl-6 text-xs text-white"
+                    placeholder="19"
+                  />
+                </div>
+                {parseFloat(customAmount) < 10 && (
+                  <p className="text-[9.5px] text-rose-400 font-medium mt-1">Amount cannot be less than ₹10</p>
+                )}
+              </div>
 
-            {/* Access Key Toggle button */}
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => setShowKeyForm(!showKeyForm)}
-                className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors underline"
+              <Button
+                onClick={handleRazorpayPayment}
+                disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 10}
+                className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-xs sm:text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
               >
-                {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
-              </button>
-            </div>
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Unlock className="h-4 w-4" />
+                    Pay ₹{customAmount || '19'} to Unlock Everything
+                  </>
+                )}
+              </Button>
 
-            {/* Collapsible Access Key Form */}
-            <AnimatePresence>
-              {showKeyForm && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
+              {/* Access Key Toggle button */}
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setShowKeyForm(!showKeyForm)}
+                  className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors underline"
                 >
-                  <form onSubmit={handleUnlockSubmit} className="pt-2.5 border-t border-white/5 space-y-2">
-                    <div className="relative flex gap-2">
-                      <div className="relative flex-1">
-                        <Input
-                          type={showKey ? "text" : "password"}
-                          placeholder="Enter Access Code..."
-                          value={accessKeyInput}
-                          onChange={(e) => {
-                            setAccessKeyInput(e.target.value);
-                            if (errorMsg) setErrorMsg('');
-                          }}
-                          className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pr-9 font-mono text-xs w-full"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowKey(!showKey)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                        >
-                          {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                        </button>
-                      </div>
-                      <Button
-                        type="submit"
-                        variant="outline"
-                        className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl px-4 shrink-0"
-                      >
-                        Redeem
-                      </Button>
-                    </div>
+                  {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
+                </button>
+              </div>
 
-                    {errorMsg && (
-                      <p className="text-[10px] text-rose-400 font-medium flex items-center gap-1">
-                        <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
-                        {errorMsg}
+              {/* Collapsible Access Key Form */}
+              <AnimatePresence>
+                {showKeyForm && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <form onSubmit={handleUnlockSubmit} className="pt-2.5 border-t border-white/5 space-y-2">
+                      <div className="relative flex gap-2">
+                        <div className="relative flex-1">
+                          <Input
+                            type={showKey ? "text" : "password"}
+                            placeholder="Enter Access Code..."
+                            value={accessKeyInput}
+                            onChange={(e) => {
+                              setAccessKeyInput(e.target.value);
+                              if (errorMsg) setErrorMsg('');
+                            }}
+                            className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pr-9 font-mono text-xs w-full"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowKey(!showKey)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                          >
+                            {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                          </button>
+                        </div>
+                        <Button
+                          type="submit"
+                          variant="outline"
+                          className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl px-4 shrink-0"
+                        >
+                          Redeem
+                        </Button>
+                      </div>
+
+                      {errorMsg && (
+                        <p className="text-[10px] text-rose-400 font-medium flex items-center gap-1">
+                          <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
+                          {errorMsg}
+                        </p>
+                      )}
+                      {successMsg && (
+                        <p className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 animate-pulse">
+                          <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                          {successMsg}
+                        </p>
+                      )}
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Page Info Callout explaining what they are paying for */}
+              <div className="border-t border-white/5 pt-4 mt-2">
+                {(() => {
+                  const pageInfo = PAGE_INFO[cleanPath] || {
+                    title: 'Premium Counselor Tool',
+                    description: 'Access advanced tools, simulator engines, comparison charts, and AI assistance.',
+                    benefits: [
+                      'Unlock all premium features site-wide',
+                      'Advanced counseling tools and AI assistance',
+                      'Simulators, visual trends, and verification check wizards'
+                    ]
+                  };
+                  return (
+                    <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-2.5 animate-in fade-in slide-in-from-top-1 shrink-0">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
+                          <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+                          {pageInfo.title}
+                        </h3>
+                        <Badge variant="secondary" className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[9px] font-semibold py-0">
+                          Premium Feature
+                        </Badge>
+                      </div>
+                      <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+                        {pageInfo.description}
                       </p>
-                    )}
-                    {successMsg && (
-                      <p className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 animate-pulse">
-                        <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
-                        {successMsg}
-                      </p>
-                    )}
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                      <div className="space-y-1.5 pt-1.5 border-t border-white/5">
+                        <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider">
+                          What you unlock in this tool:
+                        </p>
+                        <ul className="space-y-1.5 text-[11px] text-slate-300">
+                          {pageInfo.benefits.map((benefit, i) => (
+                            <li key={i} className="flex items-start gap-1.5">
+                              <span className="text-emerald-400 shrink-0 select-none font-semibold">✓</span>
+                              <span>{benefit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Footer Navigation helpers */}
-        <div className="grid grid-cols-2 gap-2.5 pt-4 mt-6 border-t border-white/5 relative z-10">
+        <div className="grid grid-cols-2 gap-2.5 pt-4 mt-6 border-t border-white/5 relative z-10 shrink-0">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
