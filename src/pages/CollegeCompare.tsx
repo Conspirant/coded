@@ -20,11 +20,14 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, 
   Tooltip as RechartsTooltip, Legend, ResponsiveContainer 
 } from "recharts"
+import { supabase } from "@/integrations/supabase/client"
+import { mergeSingleCollege } from "@/lib/college-service"
 
 const CollegeCompare = () => {
   const [selectedColleges, setSelectedColleges] = useState<CollegeInfo[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [showDropdown, setShowDropdown] = useState(false)
+  const [overrides, setOverrides] = useState<Record<string, any>>({})
 
   // Cutoffs data state
   const [cutoffData, setCutoffData] = useState<CutoffData[]>([])
@@ -49,8 +52,45 @@ const CollegeCompare = () => {
     loadData()
   }, [])
 
+  // Fetch overrides on mount
+  useEffect(() => {
+    const fetchOverrides = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('colleges')
+          .select('*')
+        if (data) {
+          const map: Record<string, any> = {}
+          data.forEach((row: any) => {
+            map[row.code.toUpperCase()] = row
+          })
+          setOverrides(map)
+        }
+      } catch (err) {
+        console.error('Error fetching college overrides in CollegeCompare:', err)
+      }
+    }
+    fetchOverrides()
+  }, [])
+
+  // Merge static database with Supabase database overrides
+  const mergedColleges = useMemo(() => {
+    return COLLEGE_DATABASE.map(c => {
+      const override = overrides[c.code.toUpperCase()]
+      return override ? mergeSingleCollege(c, override) : c
+    })
+  }, [overrides])
+
+  // Get the most up-to-date merged college info for selected colleges
+  const activeColleges = useMemo(() => {
+    return selectedColleges.map(sc => {
+      const latest = mergedColleges.find(c => c.code.toUpperCase() === sc.code.toUpperCase())
+      return latest || sc
+    })
+  }, [selectedColleges, mergedColleges])
+
   // Filter colleges based on search query, excluding already selected ones
-  const filteredColleges = COLLEGE_DATABASE.filter(college => {
+  const filteredColleges = mergedColleges.filter(college => {
     const isAlreadySelected = selectedColleges.some(s => s.code === college.code)
     const matchesSearch = 
       college.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -87,12 +127,12 @@ const CollegeCompare = () => {
 
   // Highlight the best value in a comparison row
   const getBestValueIndex = (field: keyof CollegeInfo, isLowerBetter = false) => {
-    if (selectedColleges.length < 2) return -1
+    if (activeColleges.length < 2) return -1
     
     let targetIndex = -1
     let optimalValue = isLowerBetter ? Infinity : -Infinity
 
-    selectedColleges.forEach((c, idx) => {
+    activeColleges.forEach((c, idx) => {
       const val = c[field]
       if (val === null || val === undefined || typeof val !== "number") return
 
@@ -118,7 +158,7 @@ const CollegeCompare = () => {
 
   // Map data for Recharts comparison
   const chartData = useMemo(() => {
-    return selectedColleges.map(c => {
+    return activeColleges.map(c => {
       const displayName = c.shortName || c.code || c.name;
       const truncatedName = displayName.length > 15 
         ? displayName.substring(0, 12) + "..." 
@@ -132,19 +172,19 @@ const CollegeCompare = () => {
         feeMgmt: c.feeManagement || 0
       };
     })
-  }, [selectedColleges])
+  }, [activeColleges])
 
   // Filter cutoffs for the selected colleges
   const comparedCutoffs = useMemo(() => {
-    if (selectedColleges.length === 0 || cutoffData.length === 0) return []
-    const codes = selectedColleges.map(c => c.code.toUpperCase())
+    if (activeColleges.length === 0 || cutoffData.length === 0) return []
+    const codes = activeColleges.map(c => c.code.toUpperCase())
     return cutoffData.filter(c => 
       codes.includes(c.institute_code.toUpperCase()) &&
       c.year === cutoffYear &&
       c.round === cutoffRound &&
       c.category.toUpperCase() === cutoffCategory.toUpperCase()
     )
-  }, [selectedColleges, cutoffData, cutoffYear, cutoffRound, cutoffCategory])
+  }, [activeColleges, cutoffData, cutoffYear, cutoffRound, cutoffCategory])
 
   // Helper to load cutoffs for a single college based EXACTLY on selected filters
   const getCollegeCutoffs = (collegeCode: string) => {
@@ -180,7 +220,7 @@ const CollegeCompare = () => {
         </div>
 
         {/* Clear All Button */}
-        {selectedColleges.length > 0 && (
+        {activeColleges.length > 0 && (
           <Button 
             variant="outline" 
             onClick={() => setSelectedColleges([])}
@@ -248,7 +288,7 @@ const CollegeCompare = () => {
       </div>
 
       {/* Main Comparisons */}
-      {selectedColleges.length === 0 ? (
+      {activeColleges.length === 0 ? (
         <Card className="border-dashed border-white/10 bg-slate-950/20 py-16 text-center">
           <CardContent className="space-y-4 max-w-sm mx-auto">
             <div className="mx-auto w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
@@ -266,7 +306,7 @@ const CollegeCompare = () => {
         <div className="space-y-10">
           {/* Comparison Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {selectedColleges.map((college, idx) => (
+            {activeColleges.map((college, idx) => (
               <Card key={college.code} className="border-white/10 bg-slate-900/10 backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 {/* Header highlight if best value */}
                 <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
@@ -406,7 +446,7 @@ const CollegeCompare = () => {
             ))}
 
             {/* Empty Slots */}
-            {selectedColleges.length < 3 && Array.from({ length: 3 - selectedColleges.length }).map((_, i) => (
+            {activeColleges.length < 3 && Array.from({ length: 3 - activeColleges.length }).map((_, i) => (
               <Card key={`empty-${i}`} className="border-dashed border-white/10 bg-slate-950/5 flex flex-col items-center justify-center py-20 text-center min-h-[300px]">
                 <CardContent className="space-y-2">
                   <div className="mx-auto w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
@@ -419,7 +459,7 @@ const CollegeCompare = () => {
           </div>
 
           {/* Visual Comparison Charts */}
-          {selectedColleges.length >= 2 && (
+          {activeColleges.length >= 2 && (
             <div className="space-y-6">
               <div className="border-b border-white/5 pb-4">
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -580,8 +620,8 @@ const CollegeCompare = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className={`grid grid-cols-1 md:grid-cols-${selectedColleges.length} gap-6`}>
-                {selectedColleges.map(col => {
+              <div className={`grid grid-cols-1 md:grid-cols-${activeColleges.length} gap-6`}>
+                {activeColleges.map(col => {
                   const collegeCutoffs = getCollegeCutoffs(col.code)
                   return (
                     <Card key={col.code} className="border-white/10 bg-slate-950/40 backdrop-blur-md overflow-hidden flex flex-col">
