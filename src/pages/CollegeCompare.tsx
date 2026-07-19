@@ -14,7 +14,7 @@ import {
 } from "lucide-react"
 import { COLLEGE_DATABASE, CollegeInfo } from "@/data/collegeDatabase"
 import { CutoffService, CutoffData } from "@/lib/cutoff-service"
-import { normalizeCourse } from "@/lib/course-normalizer"
+
 import { toast } from "sonner"
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, 
@@ -194,7 +194,7 @@ const CollegeCompare = () => {
       c.round === cutoffRound &&
       c.category.toUpperCase() === cutoffCategory.toUpperCase()
     ).map(c => ({
-      courseName: normalizeCourse(c.course),
+      courseName: c.course,
       rank: c.cutoff_rank
     })).sort((a, b) => a.courseName.localeCompare(b.courseName))
   }
