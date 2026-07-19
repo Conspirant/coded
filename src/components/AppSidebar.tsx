@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp, Award, Zap, Brain } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp, Award, Zap, Brain, Crown } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -14,6 +14,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import { Logo } from "./ui/Logo"
+import { useEffect, useState } from "react"
+import { isUnlocked, subscribeToUnlockState } from "@/lib/unlock"
 
 const getMainItems = (examMode: "KCET" | "COMEDK") => {
   if (examMode === "COMEDK") {
@@ -54,19 +56,59 @@ const toolItems = [
   { title: "Feature Request", url: "/request-feature", icon: Lightbulb },
 ]
 
-const getSpecialItems = (examMode: "KCET" | "COMEDK") => ([
-  { title: "Admissions Assistant", url: "/ai-counselor", icon: Bot },
-  { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
-  { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
-  { title: "Support Us ❤️", url: "/donate", icon: Heart },
-])
+const getSpecialItems = (examMode: "KCET" | "COMEDK", unlocked: boolean, onUnlockClick?: () => void) => {
+  const items = [
+    { title: "Admissions Assistant", url: "/ai-counselor", icon: Bot },
+    { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
+    { title: "r/KCETCoded", url: "https://www.reddit.com/r/KCETcoded/", icon: ExternalLink, external: true },
+  ];
+
+  if (!unlocked) {
+    items.push({
+      title: "Unlock Premium 👑",
+      onClick: onUnlockClick,
+      icon: Crown,
+      isPremiumTrigger: true
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
+  }
+
+  items.push({ title: "Support Us ❤️", url: "/donate", icon: Heart });
+  return items;
+}
 
 function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: any
   state: string
   isMobile: boolean
   setOpenMobile: (v: boolean) => void
 }) {
+  if (item.onClick) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          onClick={() => {
+            item.onClick()
+            if (isMobile) setOpenMobile(false)
+          }}
+          className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 w-full text-left group ${
+            item.isPremiumTrigger 
+              ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-bold border border-emerald-500/20" 
+              : "text-sidebar-foreground hover:bg-white/5 hover:text-foreground"
+          }`}
+        >
+          <item.icon className={`h-4 w-4 flex-shrink-0 transition-colors ${
+            item.isPremiumTrigger ? "text-emerald-400 group-hover:text-emerald-300 animate-pulse" : "text-muted-foreground group-hover:text-indigo-400"
+          }`} />
+          {state !== "collapsed" && (
+            <span className="truncate text-sm">{item.title}</span>
+          )}
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
+  }
+
   if (item.external) {
     return (
       <SidebarMenuItem>
@@ -122,11 +164,18 @@ function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
   )
 }
 
-export function AppSidebar() {
+export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
   const { state, setOpenMobile, isMobile } = useSidebar()
   const { examMode } = useExamMode()
+  const [unlocked, setUnlocked] = useState(isUnlocked())
+
+  useEffect(() => {
+    return subscribeToUnlockState(setUnlocked)
+  }, [])
+
   const mainItems = getMainItems(examMode)
-  const specialItems = getSpecialItems(examMode)
+  const specialItems = getSpecialItems(examMode, unlocked, onUnlockClick)
+
 
   return (
     <Sidebar className={`${state === "collapsed" ? "w-14" : "w-64"} border-r border-white/5`} collapsible="icon">

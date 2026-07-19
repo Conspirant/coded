@@ -1,21 +1,53 @@
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { 
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
+} from "@/components/ui/select"
+import { 
   Scale, Plus, X, Award, Shield, Check, AlertCircle, 
   MapPin, Landmark, Calendar, LandmarkIcon, Percent, 
-  IndianRupee, Briefcase, GraduationCap 
+  IndianRupee, Briefcase, GraduationCap, Loader2 
 } from "lucide-react"
 import { COLLEGE_DATABASE, CollegeInfo } from "@/data/collegeDatabase"
+import { CutoffService, CutoffData } from "@/lib/cutoff-service"
+import { normalizeCourse } from "@/lib/course-normalizer"
 import { toast } from "sonner"
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+  Tooltip as RechartsTooltip, Legend, ResponsiveContainer 
+} from "recharts"
 
 const CollegeCompare = () => {
   const [selectedColleges, setSelectedColleges] = useState<CollegeInfo[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [showDropdown, setShowDropdown] = useState(false)
+
+  // Cutoffs data state
+  const [cutoffData, setCutoffData] = useState<CutoffData[]>([])
+  const [cutoffsLoading, setCutoffsLoading] = useState(false)
+  const [cutoffYear, setCutoffYear] = useState("2026")
+  const [cutoffRound, setCutoffRound] = useState("R1")
+  const [cutoffCategory, setCutoffCategory] = useState("GM")
+
+  // Load cutoffs on mount
+  useEffect(() => {
+    const loadData = async () => {
+      setCutoffsLoading(true)
+      try {
+        const data = await CutoffService.loadCutoffs()
+        setCutoffData(data)
+      } catch (err) {
+        console.error("Error loading cutoffs in CollegeCompare:", err)
+      } finally {
+        setCutoffsLoading(false)
+      }
+    }
+    loadData()
+  }, [])
 
   // Filter colleges based on search query, excluding already selected ones
   const filteredColleges = COLLEGE_DATABASE.filter(college => {
@@ -83,6 +115,49 @@ const CollegeCompare = () => {
   const bestAvgPkgIndex = getBestValueIndex("avgPackage")
   const bestPlacementRateIndex = getBestValueIndex("placementRate")
   const lowestCetFeeIndex = getBestValueIndex("feeCetQuota", true)
+
+  // Map data for Recharts comparison
+  const chartData = useMemo(() => {
+    return selectedColleges.map(c => {
+      const displayName = c.shortName || c.code || c.name;
+      const truncatedName = displayName.length > 15 
+        ? displayName.substring(0, 12) + "..." 
+        : displayName;
+      return {
+        name: truncatedName,
+        avgPackage: c.avgPackage || 0,
+        medianPackage: c.medianPackage || 0,
+        placementRate: c.placementRate || 0,
+        feeCet: c.feeCetQuota || 0,
+        feeMgmt: c.feeManagement || 0
+      };
+    })
+  }, [selectedColleges])
+
+  // Filter cutoffs for the selected colleges
+  const comparedCutoffs = useMemo(() => {
+    if (selectedColleges.length === 0 || cutoffData.length === 0) return []
+    const codes = selectedColleges.map(c => c.code.toUpperCase())
+    return cutoffData.filter(c => 
+      codes.includes(c.institute_code.toUpperCase()) &&
+      c.year === cutoffYear &&
+      c.round === cutoffRound &&
+      c.category.toUpperCase() === cutoffCategory.toUpperCase()
+    )
+  }, [selectedColleges, cutoffData, cutoffYear, cutoffRound, cutoffCategory])
+
+  // Helper to load cutoffs for a single college based EXACTLY on selected filters
+  const getCollegeCutoffs = (collegeCode: string) => {
+    return cutoffData.filter(c => 
+      c.institute_code.toUpperCase() === collegeCode.toUpperCase() &&
+      c.year === cutoffYear &&
+      c.round === cutoffRound &&
+      c.category.toUpperCase() === cutoffCategory.toUpperCase()
+    ).map(c => ({
+      courseName: normalizeCourse(c.course),
+      rank: c.cutoff_rank
+    })).sort((a, b) => a.courseName.localeCompare(b.courseName))
+  }
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-8">
@@ -188,9 +263,9 @@ const CollegeCompare = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-          {/* Comparison Cards */}
-          <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="space-y-10">
+          {/* Comparison Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {selectedColleges.map((college, idx) => (
               <Card key={college.code} className="border-white/10 bg-slate-900/10 backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 {/* Header highlight if best value */}
@@ -341,6 +416,216 @@ const CollegeCompare = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Visual Comparison Charts */}
+          {selectedColleges.length >= 2 && (
+            <div className="space-y-6">
+              <div className="border-b border-white/5 pb-4">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Percent className="h-5 w-5 text-indigo-400" />
+                  Visual Analytics Comparison
+                </h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visual head-to-head comparison of salaries, placements, and fees.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Salary packages chart */}
+                <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Briefcase className="h-4 w-4 text-indigo-400" />
+                      Salary Packages (LPA)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-64 pt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                        <YAxis stroke="#94a3b8" fontSize={11} />
+                        <RechartsTooltip 
+                          contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 10 }} />
+                        <Bar dataKey="avgPackage" name="Average" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="medianPackage" name="Median" fill="#10b981" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Placement Rate chart */}
+                <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <Percent className="h-4 w-4 text-emerald-400" />
+                      Placement Rate (%)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-64 pt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                        <YAxis stroke="#94a3b8" fontSize={11} domain={[0, 100]} />
+                        <RechartsTooltip 
+                          contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
+                        />
+                        <Bar dataKey="placementRate" name="Placement %" fill="#14b8a6" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Fees chart */}
+                <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 text-indigo-400" />
+                      Annual Tuition Fees (Lakhs)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-64 pt-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                        <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                        <YAxis stroke="#94a3b8" fontSize={11} />
+                        <RechartsTooltip 
+                          contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 10 }} />
+                        <Bar dataKey="feeCet" name="CET Quota" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="feeMgmt" name="Management" fill="#ec4899" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* Detailed Cutoff Comparison Table */}
+          <div className="space-y-6">
+            <div className="border-b border-white/5 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-0.5">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Award className="h-5 w-5 text-indigo-400" />
+                  Branch Cutoff Comparison Matrix
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Compare exact historical cutoffs for all matching branches.
+                </p>
+              </div>
+
+              {/* Filters for cutoff matrix */}
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Year Select */}
+                <div className="w-24">
+                  <Select value={cutoffYear} onValueChange={setCutoffYear}>
+                    <SelectTrigger className="bg-slate-950/40 border-white/10 h-8.5 text-xs">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="2026" className="text-xs">2026</SelectItem>
+                      <SelectItem value="2025" className="text-xs">2025</SelectItem>
+                      <SelectItem value="2024" className="text-xs">2024</SelectItem>
+                      <SelectItem value="2023" className="text-xs">2023</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Round Select */}
+                <div className="w-28">
+                  <Select value={cutoffRound} onValueChange={setCutoffRound}>
+                    <SelectTrigger className="bg-slate-950/40 border-white/10 h-8.5 text-xs">
+                      <SelectValue placeholder="Round" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="R1" className="text-xs">Round 1</SelectItem>
+                      <SelectItem value="R2" className="text-xs">Round 2</SelectItem>
+                      <SelectItem value="R3" className="text-xs">Round 3</SelectItem>
+                      <SelectItem value="MOCK" className="text-xs">Mock Round</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Category Select */}
+                <div className="w-24">
+                  <Select value={cutoffCategory} onValueChange={setCutoffCategory}>
+                    <SelectTrigger className="bg-slate-950/40 border-white/10 h-8.5 text-xs">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="GM" className="text-xs">GM</SelectItem>
+                      <SelectItem value="GMK" className="text-xs">GMK</SelectItem>
+                      <SelectItem value="GMR" className="text-xs">GMR</SelectItem>
+                      <SelectItem value="2AG" className="text-xs">2AG</SelectItem>
+                      <SelectItem value="3BG" className="text-xs">3BG</SelectItem>
+                      <SelectItem value="SCG" className="text-xs">SCG</SelectItem>
+                      <SelectItem value="STG" className="text-xs">STG</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+                      {cutoffsLoading ? (
+              <Card className="border-white/5 bg-slate-950/20 py-16 text-center">
+                <CardContent className="flex flex-col items-center justify-center gap-2">
+                  <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />
+                  <p className="text-sm text-muted-foreground">Loading cutoff data...</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className={`grid grid-cols-1 md:grid-cols-${selectedColleges.length} gap-6`}>
+                {selectedColleges.map(col => {
+                  const collegeCutoffs = getCollegeCutoffs(col.code)
+                  return (
+                    <Card key={col.code} className="border-white/10 bg-slate-950/40 backdrop-blur-md overflow-hidden flex flex-col">
+                      <CardHeader className="bg-white/[0.02] border-b border-white/5 py-3 px-4">
+                        <CardTitle className="text-sm font-bold flex items-center justify-between text-white">
+                          <span className="truncate">{col.shortName || col.name}</span>
+                          <span className="font-mono text-xs text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                            {col.code}
+                          </span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0 flex-1 flex flex-col justify-start">
+                        {collegeCutoffs.length === 0 ? (
+                          <div className="p-8 text-center text-xs text-muted-foreground my-auto space-y-1">
+                            <AlertCircle className="h-5 w-5 mx-auto opacity-30 text-indigo-400 animate-pulse" />
+                            <p className="font-semibold text-slate-300">No matching data</p>
+                            <p className="text-[10px]">No entries matching chosen filters.</p>
+                          </div>
+                        ) : (
+                          <table className="w-full text-xs text-left border-collapse">
+                            <thead>
+                              <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-wider text-slate-400">
+                                <th className="p-3 font-semibold">Course Name</th>
+                                <th className="p-3 font-semibold text-right w-24">Cutoff</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5 font-sans">
+                              {collegeCutoffs.map((item, idx) => (
+                                <tr key={idx} className="hover:bg-white/[0.01] transition-colors">
+                                  <td className="p-3 font-medium text-slate-300">{item.courseName}</td>
+                                  <td className="p-3 text-right font-mono font-bold text-emerald-400">
+                                    {item.rank.toLocaleString()}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -379,7 +379,7 @@ export const ResourceLimitModal = () => {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Total Donations Received
                 </div>
-                <div className="text-sm font-bold text-white font-mono">₹30</div>
+                <div className="text-sm font-bold text-white font-mono">₹59</div>
               </div>
             </div>
 

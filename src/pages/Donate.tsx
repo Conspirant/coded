@@ -194,7 +194,7 @@ const Donate = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     amount received by people till now
                 </div>
-                <div className="text-2xl font-bold text-white font-mono">₹30</div>
+                <div className="text-2xl font-bold text-white font-mono">₹59</div>
             </div>
 
             {/* Elegant Minimal Payment Card */}

@@ -1146,7 +1146,7 @@ export function AdminCollegeEditor() {
                   <p className="font-semibold text-slate-300">💡 Supported CSV Formatting Rules:</p>
                   <ul className="list-disc pl-4 space-y-1">
                     <li>A header row is <strong>required</strong>, including at least a <code className="text-indigo-400 font-mono font-bold">code</code> column representing college code (e.g., E001).</li>
-                    <li>Supported attribute columns: <code className="text-emerald-400 font-mono">name</code>, <code className="text-emerald-400 font-mono">website</code>, <code className="text-emerald-400 font-mono">established_year</code>, <code className="text-emerald-400 font-mono">location</code> (city), <code className="text-emerald-400 font-mono">district</code>, <code className="text-emerald-400 font-mono">type</code>, <code className="text-emerald-400 font-mono">total_seats</code>, <code className="text-emerald-400 font-mono">fee_cet</code>, <code className="text-emerald-400 font-mono">fee_mgmt</code>, <code className="text-emerald-400 font-mono">avg_package</code>, <code className="text-emerald-400 font-mono">max_package</code>, <code className="text-emerald-400 font-mono">naac_grade</code>, <code className="text-emerald-400 font-mono">autonomous</code>, <code className="text-emerald-400 font-mono">facilities</code> (semicolon split), <code className="text-emerald-400 font-mono">tags</code> (comma split).</li>
+                    <li>Supported attribute columns: <code className="text-emerald-400 font-mono">name</code>, <code className="text-emerald-400 font-mono">website</code>, <code className="text-emerald-400 font-mono">established_year</code>, <code className="text-emerald-400 font-mono">location</code> (city), <code className="text-emerald-400 font-mono">district</code>, <code className="text-emerald-400 font-mono">type</code>, <code className="text-emerald-400 font-mono">total_seats</code>, <code className="text-emerald-400 font-mono">fee_cet</code>, <code className="text-emerald-400 font-mono">fee_mgmt</code>, <code className="text-emerald-400 font-mono">lowest_package</code>, <code className="text-emerald-400 font-mono">avg_package</code>, <code className="text-emerald-400 font-mono">median_package</code>, <code className="text-emerald-400 font-mono">max_package</code>, <code className="text-emerald-400 font-mono">placement_rate</code>, <code className="text-emerald-400 font-mono">top_recruiters</code> (comma/semicolon split), <code className="text-emerald-400 font-mono">naac_grade</code>, <code className="text-emerald-400 font-mono">nba_programs</code>, <code className="text-emerald-400 font-mono">autonomous</code>, <code className="text-emerald-400 font-mono">nirf_rank</code>, <code className="text-emerald-400 font-mono">facilities</code> (semicolon split), <code className="text-emerald-400 font-mono">tags</code> (comma split).</li>
                     <li>Columns are merged dynamically; omitting columns preserves existing override/default data.</li>
                   </ul>
                   <div className="bg-black/25 rounded-lg p-2.5 font-mono text-[10px] text-indigo-300 relative">
@@ -1238,7 +1238,7 @@ export function AdminCollegeEditor() {
                             <th className="py-2.5 px-3">Code</th>
                             <th className="py-2.5 px-3">Name</th>
                             <th className="py-2.5 px-3">Seats</th>
-                            <th className="py-2.5 px-3">Avg/Max Package</th>
+                            <th className="py-2.5 px-3">Placements & Packages</th>
                             <th className="py-2.5 px-3">CET Fees</th>
                             <th className="py-2.5 px-3 font-sans">Accreditation</th>
                           </tr>
@@ -1249,15 +1249,37 @@ export function AdminCollegeEditor() {
                             return (
                               <tr key={idx} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
                                 <td className="py-2 px-3 font-mono font-bold text-indigo-400">{row.code}</td>
-                                <td className="py-2 px-3 truncate max-w-[150px]">{row.name || staticInfo?.name || <span className="text-muted-foreground/40">—</span>}</td>
+                                <td className="py-2 px-3 truncate max-w-[150px]">
+                                  <div>{row.name || staticInfo?.name || <span className="text-muted-foreground/40">—</span>}</div>
+                                  {row.topRecruiters && row.topRecruiters.length > 0 && (
+                                    <div className="text-[9px] text-muted-foreground/75 truncate mt-0.5" title={row.topRecruiters.join(', ')}>
+                                      🚀 {row.topRecruiters.slice(0, 3).join(', ')}{row.topRecruiters.length > 3 ? '...' : ''}
+                                    </div>
+                                  )}
+                                </td>
                                 <td className="py-2 px-3 font-mono">{row.totalIntake !== undefined ? row.totalIntake : <span className="text-muted-foreground/40">—</span>}</td>
-                                <td className="py-2 px-3 font-mono">
-                                  {row.avgPackage !== undefined ? `${row.avgPackage}L` : '—'} / {row.maxPackage !== undefined ? `${row.maxPackage}L` : '—'}
+                                <td className="py-2 px-3 font-mono text-[10px]">
+                                  <div className="flex flex-col gap-0.5">
+                                    <div>
+                                      <span className="text-muted-foreground">Min/Avg/Max: </span>
+                                      {row.minPackage !== undefined ? `${row.minPackage}L` : '—'} / {row.avgPackage !== undefined ? `${row.avgPackage}L` : '—'} / {row.maxPackage !== undefined ? `${row.maxPackage}L` : '—'}
+                                    </div>
+                                    {(row.medianPackage !== undefined || row.placementRate !== undefined) && (
+                                      <div className="text-[9px] text-muted-foreground/80">
+                                        {row.medianPackage !== undefined && <span>Median: {row.medianPackage}L </span>}
+                                        {row.placementRate !== undefined && <span className="text-emerald-400 font-semibold">({row.placementRate}% Placed)</span>}
+                                      </div>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="py-2 px-3 font-mono">{row.feeCetQuota !== undefined ? `₹${row.feeCetQuota}L` : <span className="text-muted-foreground/40">—</span>}</td>
                                 <td className="py-2 px-3">
-                                  {row.naacGrade && <Badge variant="outline" className="text-[9px] px-1 bg-amber-500/10 text-amber-400 border-amber-500/25">NAAC {row.naacGrade}</Badge>}
-                                  {row.autonomous !== undefined && <Badge variant="outline" className="text-[9px] px-1 ml-1 bg-cyan-500/10 text-cyan-400 border-cyan-500/25">{row.autonomous ? 'Auto' : 'Affil'}</Badge>}
+                                  <div className="flex flex-wrap gap-1 max-w-[180px]">
+                                    {row.naacGrade && <Badge variant="outline" className="text-[9px] px-1 bg-amber-500/10 text-amber-400 border-amber-500/25">NAAC {row.naacGrade}</Badge>}
+                                    {row.autonomous !== undefined && <Badge variant="outline" className="text-[9px] px-1 bg-cyan-500/10 text-cyan-400 border-cyan-500/25">{row.autonomous ? 'Auto' : 'Affil'}</Badge>}
+                                    {row.nbaAccredited !== undefined && <Badge variant="outline" className="text-[9px] px-1 bg-purple-500/10 text-purple-400 border-purple-500/25">NBA {row.nbaAccredited}</Badge>}
+                                    {row.nirfRank !== undefined && <Badge variant="outline" className="text-[9px] px-1 bg-rose-500/10 text-rose-400 border-rose-500/25">NIRF {row.nirfRank}</Badge>}
+                                  </div>
                                 </td>
                               </tr>
                             );
@@ -1424,7 +1446,7 @@ export function AdminCollegeEditor() {
                   <p className="font-semibold text-slate-300">💡 Formatting Requirements:</p>
                   <ul className="list-disc pl-4 space-y-1">
                     <li>Header row is required, followed by a single row of values.</li>
-                    <li>Supported headers include: <code className="text-emerald-400 font-mono">name</code>, <code className="text-emerald-400 font-mono">website</code>, <code className="text-emerald-400 font-mono">established_year</code>, <code className="text-emerald-400 font-mono">city</code>, <code className="text-emerald-400 font-mono">district</code>, <code className="text-emerald-400 font-mono">type</code>, <code className="text-emerald-400 font-mono">total_seats</code>, <code className="text-emerald-400 font-mono">fee_cet</code>, <code className="text-emerald-400 font-mono">fee_mgmt</code>, <code className="text-emerald-400 font-mono">avg_package</code>, <code className="text-emerald-400 font-mono">max_package</code>, <code className="text-emerald-400 font-mono">naac_grade</code>, <code className="text-emerald-400 font-mono">autonomous</code>, <code className="text-emerald-400 font-mono">facilities</code> (semicolon split), <code className="text-emerald-400 font-mono">tags</code> (comma split).</li>
+                    <li>Supported headers include: <code className="text-emerald-400 font-mono">name</code>, <code className="text-emerald-400 font-mono">website</code>, <code className="text-emerald-400 font-mono">established_year</code>, <code className="text-emerald-400 font-mono">city</code>, <code className="text-emerald-400 font-mono">district</code>, <code className="text-emerald-400 font-mono">type</code>, <code className="text-emerald-400 font-mono">total_seats</code>, <code className="text-emerald-400 font-mono">fee_cet</code>, <code className="text-emerald-400 font-mono">fee_mgmt</code>, <code className="text-emerald-400 font-mono">lowest_package</code>, <code className="text-emerald-400 font-mono">avg_package</code>, <code className="text-emerald-400 font-mono">median_package</code>, <code className="text-emerald-400 font-mono">max_package</code>, <code className="text-emerald-400 font-mono">placement_rate</code>, <code className="text-emerald-400 font-mono">top_recruiters</code> (comma/semicolon split), <code className="text-emerald-400 font-mono">naac_grade</code>, <code className="text-emerald-400 font-mono">nba_programs</code>, <code className="text-emerald-400 font-mono">autonomous</code>, <code className="text-emerald-400 font-mono">nirf_rank</code>, <code className="text-emerald-400 font-mono">facilities</code> (semicolon split), <code className="text-emerald-400 font-mono">tags</code> (comma split).</li>
                   </ul>
                   <div className="bg-black/25 rounded-lg p-2 font-mono text-[9px] text-indigo-300">
                     name,website,established_year,total_seats,fee_cet,avg_package,max_package,naac_grade,facilities<br />

@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled } from "@/lib/unlock"
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
+import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
 
 import { Logo } from "./ui/Logo"
 
@@ -29,6 +30,7 @@ export function Layout({ children }: LayoutProps) {
   const [unlocked, setUnlocked] = useState(isUnlocked)
   const [settingsKey, setSettingsKey] = useState("")
   const [showSettingsKey, setShowSettingsKey] = useState(false)
+  const [premiumUpgradeOpen, setPremiumUpgradeOpen] = useState(false)
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked)
@@ -84,7 +86,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
+        <AppSidebar onUnlockClick={() => setPremiumUpgradeOpen(true)} />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header — Frosted Glass */}
           <header className="h-14 sm:h-16 border-b border-white/5 bg-background/60 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40">
@@ -185,7 +187,7 @@ export function Layout({ children }: LayoutProps) {
                     {/* Theme */}
                     <div className="space-y-2">
                       <Label className="text-sm font-medium">Theme</Label>
-                      <Select value={settings.theme} onValueChange={(v: any) => update({ theme: v })}>
+                      <Select value={settings.theme} onValueChange={(v: "light" | "dark" | "system") => update({ theme: v })}>
                         <SelectTrigger className="bg-white/5 border-white/10">
                           <SelectValue />
                         </SelectTrigger>
@@ -217,7 +219,7 @@ export function Layout({ children }: LayoutProps) {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                       <div className="space-y-2">
                         <Label className="text-sm">Default Year</Label>
-                        <Select value={settings.defaultYear || undefined} onValueChange={(v: any) => update({ defaultYear: v })}>
+                        <Select value={settings.defaultYear || undefined} onValueChange={(v: string) => update({ defaultYear: v })}>
                           <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="2025">2025</SelectItem>
@@ -228,7 +230,7 @@ export function Layout({ children }: LayoutProps) {
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm">Default Round</Label>
-                        <Select value={settings.defaultRound || undefined} onValueChange={(v: any) => update({ defaultRound: v })}>
+                        <Select value={settings.defaultRound || undefined} onValueChange={(v: string) => update({ defaultRound: v })}>
                           <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="R1">R1</SelectItem>
@@ -240,7 +242,7 @@ export function Layout({ children }: LayoutProps) {
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm">Default Category</Label>
-                        <Select value={settings.defaultCategory || undefined} onValueChange={(v: any) => update({ defaultCategory: v })}>
+                        <Select value={settings.defaultCategory || undefined} onValueChange={(v: string) => update({ defaultCategory: v })}>
                           <SelectTrigger className="bg-white/5 border-white/10"><SelectValue placeholder="Auto" /></SelectTrigger>
                           <SelectContent className="z-[200]">
                             <SelectItem value="GM">GM</SelectItem>
@@ -305,7 +307,20 @@ export function Layout({ children }: LayoutProps) {
                               Unlock
                             </Button>
                           </form>
-                          <p className="text-[10px] text-muted-foreground">
+                          <div className="flex gap-2 w-full mt-2 pt-2 border-t border-white/5">
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                setOpen(false);
+                                setPremiumUpgradeOpen(true);
+                              }}
+                              className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-slate-950 font-bold text-xs h-9 rounded-lg flex items-center justify-center gap-1.5"
+                            >
+                              <Crown className="h-3.5 w-3.5 fill-slate-950/20" />
+                              Unlock Premium (₹19)
+                            </Button>
+                          </div>
+                          <p className="text-[10px] text-muted-foreground mt-2">
                             Access the College Predictor, Admissions Assistant, and other tools early.
                           </p>
                         </div>
@@ -343,6 +358,7 @@ export function Layout({ children }: LayoutProps) {
           </main>
         </div>
       </div>
+      <PremiumUpgradeModal open={premiumUpgradeOpen} onOpenChange={setPremiumUpgradeOpen} />
     </SidebarProvider>
   )
 }

@@ -628,6 +628,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ugcet_results_cache: {
+        Row: {
+          appl_no: string
+          dob: string
+          name: string
+          results_json: Json
+          created_at: string | null
+        }
+        Insert: {
+          appl_no: string
+          dob: string
+          name: string
+          results_json: Json
+          created_at?: string | null
+        }
+        Update: {
+          appl_no?: string
+          dob?: string
+          name?: string
+          results_json?: Json
+          created_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
