@@ -1069,7 +1069,7 @@ function generateCollegeDetails(code: string, rawName: string, manualInfo?: Part
     autonomous = (codeNum % 7 === 0) && (type === 'Private' || type === 'Private Aided');
   }
 
-  // 4. Tier Determination
+  // 4. Initial Tier Determination
   let tier: 'Tier 1' | 'Tier 2' | 'Tier 3' | 'Tier 4' = manualInfo?.tier || 'Tier 3';
   if (!manualInfo?.tier) {
     if (type === 'Government' && codeNum < 30) {
@@ -1083,7 +1083,56 @@ function generateCollegeDetails(code: string, rawName: string, manualInfo?: Part
     }
   }
 
-  // 5. NAAC Grade
+  // 8. Placements (Move up to determine average package first)
+  let avgPackage = manualInfo?.avgPackage || null;
+  let maxPackage = manualInfo?.maxPackage || null;
+  let minPackage = manualInfo?.minPackage || null;
+  let medianPackage = manualInfo?.medianPackage || null;
+  let placementRate = manualInfo?.placementRate || null;
+
+  if (!avgPackage) {
+    if (tier === 'Tier 1') {
+      avgPackage = parseFloat((8.5 + seed * 5.0).toFixed(1));
+      maxPackage = parseFloat((30.0 + seed * 25.0).toFixed(1));
+      minPackage = parseFloat((3.5 + seed * 1.5).toFixed(1));
+    } else if (tier === 'Tier 2') {
+      avgPackage = parseFloat((5.0 + seed * 2.5).toFixed(1)); // 5.0 to 7.5 LPA
+      maxPackage = parseFloat((15.0 + seed * 10.0).toFixed(1));
+      minPackage = parseFloat((2.8 + seed * 1.2).toFixed(1));
+    } else if (tier === 'Tier 3') {
+      avgPackage = parseFloat((2.0 + seed * 2.9).toFixed(1)); // 2.0 to 4.9 LPA
+      maxPackage = parseFloat((6.0 + seed * 6.0).toFixed(1));
+      minPackage = parseFloat((1.2 + seed * 1.0).toFixed(1));
+    } else {
+      avgPackage = parseFloat((1.2 + seed * 0.7).toFixed(1)); // 1.2 to 1.9 LPA
+      maxPackage = parseFloat((3.0 + seed * 2.0).toFixed(1));
+      minPackage = parseFloat((0.8 + seed * 0.4).toFixed(1));
+    }
+    medianPackage = parseFloat((avgPackage * 0.85).toFixed(1));
+  } else {
+    if (!maxPackage) maxPackage = parseFloat((avgPackage * 2.8).toFixed(1));
+    if (!minPackage) minPackage = parseFloat((avgPackage * 0.55).toFixed(1));
+    if (!medianPackage) medianPackage = parseFloat((avgPackage * 0.85).toFixed(1));
+  }
+
+  // 4b. Adjust Tier dynamically based on resolved average package value
+  // Rules:
+  // - less than 2 lpa: Tier 4
+  // - less than 5 lpa: Tier 3
+  // - more than 5 LPA (or 5-6 lpa): Tier 2 (keeping Tier 1 as Tier 1)
+  if (avgPackage !== null) {
+    if (avgPackage < 2.0) {
+      tier = 'Tier 4';
+    } else if (avgPackage < 5.0) {
+      tier = 'Tier 3';
+    } else if (avgPackage >= 5.0) {
+      if (tier !== 'Tier 1') {
+        tier = 'Tier 2';
+      }
+    }
+  }
+
+  // 5. NAAC Grade (Uses dynamically adjusted tier)
   let naacGrade = manualInfo?.naacGrade || null;
   if (!naacGrade) {
     if (tier === 'Tier 1') {
@@ -1097,7 +1146,7 @@ function generateCollegeDetails(code: string, rawName: string, manualInfo?: Part
     }
   }
 
-  // 6. NBA Accredited programs
+  // 6. NBA Accredited programs (Uses dynamically adjusted tier)
   let nbaAccredited = manualInfo?.nbaAccredited || null;
   if (nbaAccredited === null) {
     if (tier === 'Tier 1') nbaAccredited = 4 + Math.floor(seed * 6);
@@ -1108,38 +1157,6 @@ function generateCollegeDetails(code: string, rawName: string, manualInfo?: Part
 
   // 7. Website
   const website = manualInfo?.website || null;
-
-  // 8. Placements
-  let avgPackage = manualInfo?.avgPackage || null;
-  let maxPackage = manualInfo?.maxPackage || null;
-  let minPackage = manualInfo?.minPackage || null;
-  let medianPackage = manualInfo?.medianPackage || null;
-  let placementRate = manualInfo?.placementRate || null;
-
-  if (!avgPackage) {
-    if (tier === 'Tier 1') {
-      avgPackage = parseFloat((8.5 + seed * 5.0).toFixed(1));
-      maxPackage = parseFloat((30.0 + seed * 25.0).toFixed(1));
-      minPackage = parseFloat((3.5 + seed * 1.5).toFixed(1));
-    } else if (tier === 'Tier 2') {
-      avgPackage = parseFloat((5.2 + seed * 2.8).toFixed(1));
-      maxPackage = parseFloat((16.0 + seed * 14.0).toFixed(1));
-      minPackage = parseFloat((2.8 + seed * 1.0).toFixed(1));
-    } else if (tier === 'Tier 3') {
-      avgPackage = parseFloat((3.6 + seed * 1.6).toFixed(1));
-      maxPackage = parseFloat((8.0 + seed * 8.0).toFixed(1));
-      minPackage = parseFloat((2.2 + seed * 0.8).toFixed(1));
-    } else {
-      avgPackage = parseFloat((2.6 + seed * 1.0).toFixed(1));
-      maxPackage = parseFloat((5.0 + seed * 4.0).toFixed(1));
-      minPackage = parseFloat((1.8 + seed * 0.5).toFixed(1));
-    }
-    medianPackage = parseFloat((avgPackage * 0.85).toFixed(1));
-  } else {
-    if (!maxPackage) maxPackage = parseFloat((avgPackage * 2.8).toFixed(1));
-    if (!minPackage) minPackage = parseFloat((avgPackage * 0.55).toFixed(1));
-    if (!medianPackage) medianPackage = parseFloat((avgPackage * 0.85).toFixed(1));
-  }
 
   if (!placementRate) {
     if (tier === 'Tier 1') placementRate = 85 + Math.floor(seed * 11);
