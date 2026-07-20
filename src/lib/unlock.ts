@@ -127,6 +127,14 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
       },
       modal: {
         ondismiss: function () {
+          toast.error('Payment Cancelled', {
+            description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
+            duration: 10000,
+            action: {
+              label: 'Contact Me',
+              onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
+            }
+          });
           onFailure();
         }
       }
@@ -136,7 +144,12 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
     const rzp = new RazorpayClass(options);
     rzp.on('payment.failed', function (response: any) {
       toast.error('Payment failed', {
-        description: response.error?.description || "Razorpay payment failed."
+        description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
+        duration: 10000,
+        action: {
+          label: 'Contact Me',
+          onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
+        }
       });
       onFailure();
     });
