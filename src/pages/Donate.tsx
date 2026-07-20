@@ -27,6 +27,7 @@ const Donate = () => {
     const [showDonorNamePopup, setShowDonorNamePopup] = useState(false)
     const [donorName, setDonorName] = useState('')
     const [donorIsAnonymous, setDonorIsAnonymous] = useState(false)
+    const [donateSuccessCode, setDonateSuccessCode] = useState('')
 
     const predefinedAmounts = [50, 100, 250, 500]
 
@@ -126,6 +127,28 @@ const Donate = () => {
                         const verifyData = (await verifyRes.json().catch(() => ({}))) as { success?: boolean; error?: string }
 
                         if (verifyRes.ok && verifyData.success) {
+                            // Generate access code
+                            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                            let generatedCode = 'CODED-';
+                            for (let i = 0; i < 4; i++) {
+                                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+                            }
+                            generatedCode += '-';
+                            for (let i = 0; i < 4; i++) {
+                                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+                            }
+
+                            // Save code to Supabase
+                            try {
+                                await supabase.from('access_codes').insert({
+                                    code: generatedCode,
+                                    is_used: false,
+                                    payment_id: response.razorpay_payment_id
+                                })
+                            } catch (e) {
+                                console.error('Failed to save access code to database:', e)
+                            }
+
                             // Save donor to Supabase
                             try {
                                 await supabase.from('donors').insert({
@@ -138,6 +161,7 @@ const Donate = () => {
                                 console.error('Failed to save donor to database:', e)
                             }
 
+                            setDonateSuccessCode(generatedCode)
                             setPaymentStatus('success')
                             setTxnDetails({
                                 paymentId: response.razorpay_payment_id,
@@ -286,6 +310,30 @@ const Donate = () => {
                                 <Sparkles className="h-3.5 w-3.5" />
                                 View your name on the Supporters Wall
                             </Link>
+                            {donateSuccessCode && (
+                                <div className="space-y-2 w-full mt-2 bg-indigo-500/5 border border-indigo-500/10 p-4 rounded-xl text-center">
+                                    <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
+                                        Your One-Time Access Code
+                                    </div>
+                                    <div className="text-base font-bold font-mono text-white tracking-widest my-1.5 selection:bg-indigo-500/30">
+                                        {donateSuccessCode}
+                                    </div>
+                                    <Button
+                                        size="xs"
+                                        variant="outline"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(donateSuccessCode);
+                                            toast({ title: "Copied!", description: "Access code copied to clipboard." });
+                                        }}
+                                        className="text-[10px] h-7 px-3 border-white/10 hover:bg-white/5 text-slate-300 hover:text-white"
+                                    >
+                                        Copy Code
+                                    </Button>
+                                    <div className="text-[9px] text-slate-500 leading-relaxed max-w-[240px] mx-auto pt-1">
+                                        Use this to unlock premium features on another device (phone, laptop, etc.). It can only be used once.
+                                    </div>
+                                </div>
+                            )}
                             {txnDetails && (
                                 <div className="text-left w-full text-[10px] text-muted-foreground/80 space-y-1 bg-white/[0.02] p-2.5 rounded-lg border border-white/5 font-mono">
                                     <div className="truncate"><span className="text-white/40">Payment ID:</span> {txnDetails.paymentId}</div>

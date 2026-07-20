@@ -167,33 +167,94 @@ export const ResourceLimitModal = () => {
   const [showDonorNamePopup, setShowDonorNamePopup] = useState(false);
   const [donorName, setDonorName] = useState('');
   const [donorIsAnonymous, setDonorIsAnonymous] = useState(false);
+  const [paymentSuccessCode, setPaymentSuccessCode] = useState('');
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked);
   }, []);
 
-  const handleUnlockSubmit = (e: React.FormEvent) => {
+  const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
 
-    if (!accessKeyInput.trim()) {
+    const inputKey = accessKeyInput.trim();
+    if (!inputKey) {
       setErrorMsg('Please enter an access key.');
       return;
     }
 
-    const success = validateAndUnlock(accessKeyInput);
-    if (success) {
+    setIsProcessing(true);
+
+    try {
+      // 1. Try static key first
+      const isStaticValid = validateAndUnlock(inputKey);
+      if (isStaticValid) {
+        setSuccessMsg('Access granted! Unlocking features...');
+        toast.success('Successfully unlocked all premium features!', {
+          description: 'You now have full access to early tools.'
+        });
+        setAccessKeyInput('');
+        return;
+      }
+
+      // 2. Check in database
+      const uppercaseKey = inputKey.toUpperCase();
+      const { data, error } = await supabase
+        .from('access_codes')
+        .select('*')
+        .eq('code', uppercaseKey)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Db fetch error:', error);
+        setErrorMsg('Verification error. Please check your internet connection.');
+        return;
+      }
+
+      if (!data) {
+        setErrorMsg('Invalid access key. Please check and try again.');
+        toast.error('Unlock failed', {
+          description: 'Double check the key spelling or try a different one.'
+        });
+        return;
+      }
+
+      if (data.is_used) {
+        setErrorMsg('This access key has already been used on another device.');
+        toast.error('Unlock failed', {
+          description: 'This one-time key has already been redeemed.'
+        });
+        return;
+      }
+
+      // 3. Mark as used
+      const { error: updateError } = await supabase
+        .from('access_codes')
+        .update({ 
+          is_used: true, 
+          used_at: new Date().toISOString() 
+        })
+        .eq('code', uppercaseKey);
+
+      if (updateError) {
+        console.error('Db update error:', updateError);
+        setErrorMsg('Failed to redeem the code. Please try again.');
+        return;
+      }
+
+      // 4. Success! Unlock the browser
+      validateAndUnlock("COUNS2026");
       setSuccessMsg('Access granted! Unlocking features...');
       toast.success('Successfully unlocked all premium features!', {
         description: 'You now have full access to early tools.'
       });
       setAccessKeyInput('');
-    } else {
-      setErrorMsg('Invalid access key. Please check and try again.');
-      toast.error('Unlock failed', {
-        description: 'The access key you entered is incorrect.'
-      });
+    } catch (err: any) {
+      console.error('Code validation error:', err);
+      setErrorMsg('Something went wrong during verification.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -267,7 +328,28 @@ export const ResourceLimitModal = () => {
             const verifyData = await verifyRes.json().catch(() => ({}));
 
             if (verifyRes.ok && verifyData.success) {
-              validateAndUnlock("COUNS2026"); // Automatically unlocks globally
+              // Generate access code
+              const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+              let generatedCode = 'CODED-';
+              for (let i = 0; i < 4; i++) {
+                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+              }
+              generatedCode += '-';
+              for (let i = 0; i < 4; i++) {
+                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+              }
+
+              // Save code to Supabase
+              try {
+                await (supabase as any).from('access_codes').insert({
+                  code: generatedCode,
+                  is_used: false,
+                  payment_id: response.razorpay_payment_id
+                });
+              } catch (e) {
+                console.error('Failed to save access code:', e);
+              }
+
               // Save donor to Supabase
               try {
                 await (supabase as any).from('donors').insert({
@@ -279,8 +361,11 @@ export const ResourceLimitModal = () => {
               } catch (e) {
                 console.error('Failed to save donor:', e);
               }
+
+              setPaymentSuccessCode(generatedCode);
+
               toast.success('Payment Successful! 🎉', {
-                description: 'All premium features are now unlocked. Thank you for your support!'
+                description: 'Copy your unique one-time access code to use on another device!'
               });
             } else {
               toast.error('Payment Verification Failed', {
@@ -358,7 +443,64 @@ export const ResourceLimitModal = () => {
     allowedExact.has(cleanPath) || 
     allowedPrefixes.some(prefix => cleanPath.startsWith(prefix));
 
-  if (isAllowed || unlocked) return null;
+  if (paymentSuccessCode) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-slate-950/95 backdrop-blur-xl overflow-y-auto flex flex-col items-center justify-center p-4 py-8 sm:py-12">
+        <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950/20 via-background/40 to-emerald-950/10 pointer-events-none" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="relative w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 text-center"
+        >
+          {/* Success Icon */}
+          <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/20 flex items-center justify-center mb-5 animate-bounce">
+            <CheckCircle className="h-8 w-8 text-emerald-400" />
+          </div>
+
+          <h2 className="text-xl font-extrabold text-white mb-2 font-sans">Payment Successful! 🎉</h2>
+          <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+            All premium counseling features are now unlocked on this browser. 
+            We've also generated a unique one-time access code to use on your **mobile phone, laptop, or other device**:
+          </p>
+
+          {/* Access Code Display */}
+          <div className="bg-slate-950 border border-white/5 p-4 rounded-xl flex items-center justify-between gap-3 mb-6 relative group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="text-lg font-bold font-mono text-white tracking-widest selection:bg-indigo-500/30">
+              {paymentSuccessCode}
+            </span>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                navigator.clipboard.writeText(paymentSuccessCode);
+                toast.success("Access code copied to clipboard!");
+              }}
+              className="text-xs bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white"
+            >
+              Copy Code
+            </Button>
+          </div>
+
+          <div className="bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-lg text-left text-[10px] text-slate-400 leading-relaxed mb-6">
+            <strong className="text-indigo-400">How to use:</strong> On your other device, open this site, click "Redeem an Access Code" on the paywall modal, and paste this code. It can only be used once.
+          </div>
+
+          <Button
+            onClick={() => {
+              setPaymentSuccessCode('');
+              validateAndUnlock("COUNS2026");
+            }}
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/20"
+          >
+            Get Started
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (isAllowed || (unlocked && !paymentSuccessCode)) return null;
 
   return (
     <>
