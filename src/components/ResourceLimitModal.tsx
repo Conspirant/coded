@@ -278,6 +278,7 @@ export const ResourceLimitModal = () => {
             toast.error('Payment Cancelled', {
               description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
               duration: 10000,
+              position: 'top-center',
               action: {
                 label: 'Contact Me',
                 onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
@@ -293,6 +294,7 @@ export const ResourceLimitModal = () => {
         toast.error('Payment Failed', {
           description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
           duration: 10000,
+          position: 'top-center',
           action: {
             label: 'Contact Me',
             onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
@@ -389,7 +391,7 @@ export const ResourceLimitModal = () => {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Total Donations Received
                 </div>
-                <div className="text-sm font-bold text-white font-mono">₹59</div>
+                <div className="text-sm font-bold text-white font-mono">₹78</div>
               </div>
             </div>
 

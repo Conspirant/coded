@@ -162,7 +162,7 @@ export const DonationButton = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     amount received by people till now
                   </div>
-                  <div className="text-xl font-bold text-white font-mono">₹59</div>
+                  <div className="text-xl font-bold text-white font-mono">₹78</div>
                 </div>
 
                 {/* Action Buttons */}

@@ -130,6 +130,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
           toast.error('Payment Cancelled', {
             description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
             duration: 10000,
+            position: 'top-center',
             action: {
               label: 'Contact Me',
               onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
@@ -146,6 +147,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
       toast.error('Payment failed', {
         description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
         duration: 10000,
+        position: 'top-center',
         action: {
           label: 'Contact Me',
           onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
