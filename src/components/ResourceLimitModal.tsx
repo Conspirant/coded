@@ -548,7 +548,7 @@ export const ResourceLimitModal = () => {
                 To support these costs, we have introduced a nominal **₹19** premium activation fee to unlock all advanced features.
               </p>
               <p className="text-slate-400">
-                Since this platform is built entirely for students, if you cannot afford this fee, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 font-semibold underline">Discord Server</a> or send a DM on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline">Reddit</a>, and we will gladly provide you with a free access key. If you have the means, please also consider donating to support the project further.
+                Since this platform is built entirely for students, if you cannot afford this fee, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or send a DM on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a>, and we will gladly provide you with a free access key. If you have the means, please also consider donating to support the project further.
               </p>
               
               {/* Live Funding Status */}
@@ -738,11 +738,11 @@ export const ResourceLimitModal = () => {
           </Button>
 
           <Button
-            onClick={() => navigate('/rank-predictor')}
+            onClick={() => navigate('/dashboard')}
             variant="outline"
             className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl flex items-center justify-center gap-1.5 text-slate-400 hover:text-white"
           >
-            Predictor
+            Dashboard
             <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>

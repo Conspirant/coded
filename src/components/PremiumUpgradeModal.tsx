@@ -214,7 +214,7 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                     Due to high traffic, our free hosting resources are exhausted. To sustain the server costs, a nominal fee of <strong className="text-emerald-400">₹19</strong> is required to unlock premium features.
                   </p>
                   <p>
-                    If you are in genuine need, please contact the developer directly on Reddit (<a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline">u/Elegant_Compote9073</a>) for a free key.
+                    If you cannot afford this, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a free key.
                   </p>
                 </div>
 
