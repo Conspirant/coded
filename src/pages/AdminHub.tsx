@@ -814,7 +814,7 @@ function AdminAccessCodesSection() {
         setLoading(true)
         try {
             const { data, error } = await supabase
-                .from('access_codes')
+                .from('access_codes' as any)
                 .select('*')
                 .order('created_at', { ascending: false })
             if (error) throw error
@@ -848,7 +848,7 @@ function AdminAccessCodesSection() {
 
         try {
             const { error } = await supabase
-                .from('access_codes')
+                .from('access_codes' as any)
                 .insert({
                     code: generatedCode,
                     is_used: false,
@@ -875,7 +875,7 @@ function AdminAccessCodesSection() {
         if (!confirm(`Delete access code ${code}?`)) return
         try {
             const { error } = await supabase
-                .from('access_codes')
+                .from('access_codes' as any)
                 .delete()
                 .eq('code', code)
             if (error) throw error
@@ -983,7 +983,7 @@ function AdminCollegeSuggestionsSection() {
         setLoading(true)
         try {
             const { data, error } = await supabase
-                .from('college_suggestions')
+                .from('college_suggestions' as any)
                 .select('*')
                 .eq('status', 'pending')
                 .order('created_at', { ascending: false })
@@ -1008,7 +1008,7 @@ function AdminCollegeSuggestionsSection() {
         setProcessingId(suggestion.id)
         try {
             const code = suggestion.college_code.toUpperCase()
-            const suggest = suggestion.suggested_data
+            const suggest = (suggestion.suggested_data as any) || {}
 
             // 1. Fetch current override (if any)
             const { data: currentOverride } = await supabase
@@ -1021,26 +1021,28 @@ function AdminCollegeSuggestionsSection() {
             const staticCollege = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === code)
 
             // 3. Construct fees_structure and placement_stats payloads
-            const fees_structure = currentOverride?.fees_structure || {
-                feeCetQuota: staticCollege?.feeCetQuota || null,
-                feeManagement: staticCollege?.feeManagement || null
+            const currentFees = (currentOverride?.fees_structure as any) || {}
+            const fees_structure = {
+                feeCetQuota: currentFees.feeCetQuota ?? staticCollege?.feeCetQuota ?? null,
+                feeManagement: currentFees.feeManagement ?? staticCollege?.feeManagement ?? null
             }
 
-            const placement_stats = currentOverride?.placement_stats || {
-                avgPackage: staticCollege?.avgPackage || null,
-                medianPackage: staticCollege?.medianPackage || null,
-                maxPackage: staticCollege?.maxPackage || null,
-                minPackage: staticCollege?.minPackage || null,
-                placementRate: staticCollege?.placementRate || null,
-                topRecruiters: staticCollege?.topRecruiters || [],
-                tier: staticCollege?.tier || 'Tier 3',
-                naacGrade: staticCollege?.naacGrade || null,
-                nbaAccredited: staticCollege?.nbaAccredited || null,
-                autonomous: !!staticCollege?.autonomous,
-                nirfRank: staticCollege?.nirfRank || null,
-                tags: staticCollege?.tags || [],
-                logoUrl: staticCollege?.logoUrl || null,
-                totalIntake: staticCollege?.totalIntake || null
+            const currentPlacement = (currentOverride?.placement_stats as any) || {}
+            const placement_stats = {
+                avgPackage: currentPlacement.avgPackage ?? staticCollege?.avgPackage ?? null,
+                medianPackage: currentPlacement.medianPackage ?? staticCollege?.medianPackage ?? null,
+                maxPackage: currentPlacement.maxPackage ?? staticCollege?.maxPackage ?? null,
+                minPackage: currentPlacement.minPackage ?? staticCollege?.minPackage ?? null,
+                placementRate: currentPlacement.placementRate ?? staticCollege?.placementRate ?? null,
+                topRecruiters: currentPlacement.topRecruiters ?? staticCollege?.topRecruiters ?? [],
+                tier: currentPlacement.tier ?? staticCollege?.tier ?? 'Tier 3',
+                naacGrade: currentPlacement.naacGrade ?? staticCollege?.naacGrade ?? null,
+                nbaAccredited: currentPlacement.nbaAccredited ?? staticCollege?.nbaAccredited ?? null,
+                autonomous: currentPlacement.autonomous ?? !!staticCollege?.autonomous ?? false,
+                nirfRank: currentPlacement.nirfRank ?? staticCollege?.nirfRank ?? null,
+                tags: currentPlacement.tags ?? staticCollege?.tags ?? [],
+                logoUrl: currentPlacement.logoUrl ?? staticCollege?.logoUrl ?? null,
+                totalIntake: currentPlacement.totalIntake ?? staticCollege?.totalIntake ?? null
             }
 
             // Merge suggestions
@@ -1082,7 +1084,7 @@ function AdminCollegeSuggestionsSection() {
 
             // 6. Update suggestion status to approved
             const { error: updateError } = await supabase
-                .from('college_suggestions')
+                .from('college_suggestions' as any)
                 .update({ status: 'approved' })
                 .eq('id', suggestion.id)
             if (updateError) throw updateError
@@ -1109,7 +1111,7 @@ function AdminCollegeSuggestionsSection() {
         setProcessingId(id)
         try {
             const { error } = await supabase
-                .from('college_suggestions')
+                .from('college_suggestions' as any)
                 .update({ status: 'rejected' })
                 .eq('id', id)
             if (error) throw error
@@ -1277,7 +1279,7 @@ function AdminSystemSettingsSection() {
 
     const handleSave = async () => {
         setSaving(true)
-        const success = await AdminSuggestionsService.updatePaywallDisabledStatus(paywallDisabled)
+        const success = await AdminSuggestionsService.setPaywallDisabledGlobally(paywallDisabled)
         if (success) {
             setGlobalPaywallDisabled(paywallDisabled)
             toast({
