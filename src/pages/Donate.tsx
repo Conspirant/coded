@@ -136,7 +136,19 @@ const Donate = () => {
                         setIsProcessing(false)
                         toast({
                             title: "Payment Cancelled",
-                            description: "You closed the payment modal.",
+                            description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
+                            duration: 10000,
+                            action: (
+                                <div className="mt-2">
+                                    <Button 
+                                        size="sm" 
+                                        variant="outline"
+                                        onClick={() => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')}
+                                    >
+                                        Contact Me
+                                    </Button>
+                                </div>
+                            )
                         })
                     }
                 }
@@ -149,8 +161,20 @@ const Donate = () => {
                 setPaymentStatus('error')
                 toast({
                     title: "Payment Failed",
-                    description: response.error?.description || "Razorpay payment failed.",
+                    description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
                     variant: "destructive",
+                    duration: 10000,
+                    action: (
+                        <div className="mt-2">
+                            <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')}
+                            >
+                                Contact Me
+                            </Button>
+                        </div>
+                    )
                 })
             })
 

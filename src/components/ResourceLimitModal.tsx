@@ -275,8 +275,13 @@ export const ResourceLimitModal = () => {
         modal: {
           ondismiss: function () {
             setIsProcessing(false);
-            toast('Payment Cancelled', {
-              description: 'You closed the checkout modal.'
+            toast.error('Payment Cancelled', {
+              description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
+              duration: 10000,
+              action: {
+                label: 'Contact Me',
+                onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
+              }
             });
           }
         }
@@ -286,7 +291,12 @@ export const ResourceLimitModal = () => {
       rzp.on('payment.failed', function (response: any) {
         setIsProcessing(false);
         toast.error('Payment Failed', {
-          description: response.error?.description || 'Checkout payment failed.'
+          description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
+          duration: 10000,
+          action: {
+            label: 'Contact Me',
+            onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
+          }
         });
       });
       rzp.open();
