@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { isUnlocked, validateAndUnlock, subscribeToUnlockState } from '@/lib/unlock';
+import { isUnlocked, validateAndUnlock, subscribeToUnlockState, unlockGlobally } from '@/lib/unlock';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -244,7 +244,7 @@ export const ResourceLimitModal = () => {
       }
 
       // 4. Success! Unlock the browser
-      validateAndUnlock("COUNS2026");
+      unlockGlobally();
       setSuccessMsg('Access granted! Unlocking features...');
       toast.success('Successfully unlocked all premium features!', {
         description: 'You now have full access to early tools.'
@@ -489,7 +489,7 @@ export const ResourceLimitModal = () => {
           <Button
             onClick={() => {
               setPaymentSuccessCode('');
-              validateAndUnlock("COUNS2026");
+              unlockGlobally();
             }}
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/20"
           >

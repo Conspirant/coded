@@ -8,7 +8,7 @@ import {
   ArrowLeft, Building2, MapPin, GraduationCap, ExternalLink,
   Award, Shield, Briefcase, TrendingUp, IndianRupee, Users, BookOpen,
   Wifi, Coffee, Dumbbell, Home, BookMarked, PenLine, Star,
-  Calendar, CheckCircle
+  Calendar, CheckCircle, Edit3, X, Loader2
 } from "lucide-react"
 import { normalizeCourseName } from "@/lib/course-normalization"
 import { getCollegeInfo, TIER_COLORS, TYPE_COLORS } from "@/data/collegeDatabase"
@@ -16,6 +16,8 @@ import { computeROI, getArcPath, getROIGradientColor, ROIResult } from "@/lib/co
 import { CollegeLogo } from "@/components/college/CollegeLogo"
 import { supabase } from "@/integrations/supabase/client"
 import { mergeSingleCollege } from "@/lib/college-service"
+import { motion, AnimatePresence } from "framer-motion"
+import { toast } from "sonner"
 
 // ─── Types ──────────────────────────────────────────
 interface CutoffData {
@@ -100,6 +102,77 @@ const CollegeDetail = () => {
   const [selectedCategory, setSelectedCategory] = useState("GM")
   const [collegeName, setCollegeName] = useState("")
   const [override, setOverride] = useState<any>(null)
+
+  // Suggest Edits modal state
+  const [showSuggestModal, setShowSuggestModal] = useState(false)
+  const [isSubmittingSuggest, setIsSubmittingSuggest] = useState(false)
+  const [suggestedAvgPackage, setSuggestedAvgPackage] = useState("")
+  const [suggestedMedianPackage, setSuggestedMedianPackage] = useState("")
+  const [suggestedPlacementRate, setSuggestedPlacementRate] = useState("")
+  const [suggestedFeeCet, setSuggestedFeeCet] = useState("")
+  const [suggestedFeeMgmt, setSuggestedFeeMgmt] = useState("")
+  const [suggestedComments, setSuggestedComments] = useState("")
+
+  // Pre-fill fields when modal opens
+  const openSuggestModal = () => {
+    if (info) {
+      setSuggestedAvgPackage(info.avgPackage ? info.avgPackage.toString() : "")
+      setSuggestedMedianPackage(info.medianPackage ? info.medianPackage.toString() : "")
+      setSuggestedPlacementRate(info.placementRate ? info.placementRate.toString() : "")
+      setSuggestedFeeCet(info.feeCetQuota ? info.feeCetQuota.toString() : "")
+      setSuggestedFeeMgmt(info.feeManagement ? info.feeManagement.toString() : "")
+    }
+    setSuggestedComments("")
+    setShowSuggestModal(true)
+  }
+
+  const handleSuggestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!collegeCode) return
+
+    setIsSubmittingSuggest(true)
+    try {
+      const currentData = {
+        avgPackage: info?.avgPackage || null,
+        medianPackage: info?.medianPackage || null,
+        placementRate: info?.placementRate || null,
+        feeCetQuota: info?.feeCetQuota || null,
+        feeManagement: info?.feeManagement || null,
+      }
+
+      const suggestedData = {
+        avgPackage: suggestedAvgPackage.trim() ? parseFloat(suggestedAvgPackage) : null,
+        medianPackage: suggestedMedianPackage.trim() ? parseFloat(suggestedMedianPackage) : null,
+        placementRate: suggestedPlacementRate.trim() ? parseFloat(suggestedPlacementRate) : null,
+        feeCetQuota: suggestedFeeCet.trim() ? parseFloat(suggestedFeeCet) : null,
+        feeManagement: suggestedFeeMgmt.trim() ? parseFloat(suggestedFeeMgmt) : null,
+        comments: suggestedComments.trim() || null,
+      }
+
+      const { error } = await supabase
+        .from('college_suggestions')
+        .insert({
+          college_code: collegeCode.toUpperCase(),
+          suggested_data: suggestedData,
+          current_data: currentData,
+          status: 'pending'
+        })
+
+      if (error) throw error
+
+      toast.success("Suggestion Submitted! 👍", {
+        description: "Thank you! Our moderators will review and update the information shortly."
+      })
+      setShowSuggestModal(false)
+    } catch (err: any) {
+      console.error("Error submitting suggestion:", err)
+      toast.error("Submission Failed", {
+        description: err.message || "An error occurred while submitting."
+      })
+    } finally {
+      setIsSubmittingSuggest(false)
+    }
+  }
 
   // Fetch overrides on mount/code change
   useEffect(() => {
@@ -326,6 +399,14 @@ const CollegeDetail = () => {
                   <PenLine className="h-3.5 w-3.5 mr-1.5 text-indigo-400" />Reviews
                 </Button>
               </Link>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={openSuggestModal}
+                className="h-9 text-xs rounded-xl border-white/10 hover:bg-white/5 transition-all text-slate-300 hover:text-white"
+              >
+                <Edit3 className="h-3.5 w-3.5 mr-1.5 text-emerald-400" />Suggest Edits
+              </Button>
             </div>
           </div>
         </div>
@@ -693,6 +774,155 @@ const CollegeDetail = () => {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {showSuggestModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="bg-[#0b0f19]/90 border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl relative my-8"
+            >
+              {/* Header */}
+              <div className="border-b border-white/5 bg-white/[0.02] px-6 py-4 flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-white flex items-center gap-2">
+                    <Edit3 className="h-4.5 w-4.5 text-indigo-400" />
+                    Suggest Info Update
+                  </h3>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    For {displayName} ({collegeCode})
+                  </p>
+                </div>
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  onClick={() => setShowSuggestModal(false)}
+                  className="h-8 w-8 text-slate-400 hover:text-white rounded-lg"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSuggestSubmit} className="p-6 space-y-4 font-sans text-xs">
+                <div className="bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-xl text-slate-400 leading-normal text-[10px]">
+                  💡 <strong>Public Suggestions:</strong> Anyone can suggest updates. To protect data integrity, updates are queued for admin review and won't replace live values immediately.
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Avg Package */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg Package (LPA)</label>
+                    <input 
+                      type="number" 
+                      step="0.01"
+                      placeholder="e.g. 8.5"
+                      value={suggestedAvgPackage} 
+                      onChange={e => setSuggestedAvgPackage(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {/* Median Package */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Median Package (LPA)</label>
+                    <input 
+                      type="number" 
+                      step="0.01"
+                      placeholder="e.g. 7.2"
+                      value={suggestedMedianPackage} 
+                      onChange={e => setSuggestedMedianPackage(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  {/* Placement Rate */}
+                  <div className="space-y-1.5 col-span-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Placement (%)</label>
+                    <input 
+                      type="number" 
+                      step="0.1"
+                      placeholder="e.g. 88.5"
+                      value={suggestedPlacementRate} 
+                      onChange={e => setSuggestedPlacementRate(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {/* CET Fee */}
+                  <div className="space-y-1.5 col-span-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CET Fee (₹)</label>
+                    <input 
+                      type="number" 
+                      placeholder="e.g. 98000"
+                      value={suggestedFeeCet} 
+                      onChange={e => setSuggestedFeeCet(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {/* Mgmt Fee */}
+                  <div className="space-y-1.5 col-span-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mgmt Fee (₹)</label>
+                    <input 
+                      type="number" 
+                      placeholder="e.g. 350000"
+                      value={suggestedFeeMgmt} 
+                      onChange={e => setSuggestedFeeMgmt(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+
+                {/* Sources / Comments */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sources & Verification Link</label>
+                  <textarea 
+                    rows={3}
+                    placeholder="Provide placement reports, brochures, or drive links to verify this edit..."
+                    value={suggestedComments}
+                    onChange={e => setSuggestedComments(e.target.value)}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 resize-none"
+                  />
+                </div>
+
+                {/* Footer buttons */}
+                <div className="flex justify-end gap-2 pt-2 border-t border-white/5">
+                  <Button 
+                    type="button"
+                    variant="ghost" 
+                    onClick={() => setShowSuggestModal(false)}
+                    className="h-10 text-xs border border-white/5 hover:bg-white/5 text-slate-300 hover:text-white"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmittingSuggest}
+                    className="h-10 text-xs bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 font-bold text-white shadow-lg shadow-emerald-500/10"
+                  >
+                    {isSubmittingSuggest ? (
+                      <>
+                        <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : "Submit Suggestion"}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

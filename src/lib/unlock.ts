@@ -4,8 +4,8 @@ const STORAGE_KEY = 'kcet_unlocked';
 const EVENT_NAME = 'kcet-unlock-state-change';
 
 // Set of valid keys (case-insensitive & trimmed)
-const VALID_KEYS = new Set([
-  'COUNS2026'
+const VALID_KEYS = new Set<string>([
+  // No hardcoded keys for security. Only dynamic DB access codes.
 ]);
 
 let globalPaywallDisabled = false;
@@ -24,13 +24,17 @@ export function isUnlocked(): boolean {
   }
 }
 
+export function unlockGlobally() {
+  try {
+    localStorage.setItem(STORAGE_KEY, 'true');
+  } catch {}
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
+}
+
 export function validateAndUnlock(key: string): boolean {
   const normalizedKey = key.trim().toUpperCase();
   if (VALID_KEYS.has(normalizedKey)) {
-    try {
-      localStorage.setItem(STORAGE_KEY, 'true');
-    } catch {}
-    window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true } }));
+    unlockGlobally();
     return true;
   }
   return false;
@@ -99,7 +103,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
           const verifyData = await verifyRes.json().catch(() => ({}));
 
           if (verifyRes.ok && verifyData.success) {
-            validateAndUnlock("COUNS2026"); // Automatically unlocks globally
+            unlockGlobally(); // Automatically unlocks globally
             toast.success('Successfully unlocked all premium features!', {
               description: 'You now have full access to early tools.'
             });

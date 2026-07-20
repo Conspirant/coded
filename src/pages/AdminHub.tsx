@@ -15,7 +15,7 @@ import {
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
-    Building2
+    Building2, Key, Loader2
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -27,6 +27,7 @@ import AdminSuggestionsView from "@/components/AdminSuggestionsView"
 import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 import AdminActualRanksView from "@/components/AdminActualRanksView"
 import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
+import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
 import { setGlobalPaywallDisabled } from "@/lib/unlock"
@@ -792,6 +793,461 @@ function AdminPYQSection() {
     )
 }
 
+// ─── Access Codes Manager Section ─────────────────────────────
+function AdminAccessCodesSection() {
+    const [codes, setCodes] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+    const [generating, setGenerating] = useState(false)
+    const { toast } = useToast()
+
+    const fetchCodes = async () => {
+        setLoading(true)
+        try {
+            const { data, error } = await supabase
+                .from('access_codes')
+                .select('*')
+                .order('created_at', { ascending: false })
+            if (error) throw error
+            setCodes(data || [])
+        } catch (err: any) {
+            toast({
+                title: "Error fetching codes",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchCodes()
+    }, [])
+
+    const handleGenerateCode = async () => {
+        setGenerating(true)
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let generatedCode = 'CODED-';
+        for (let i = 0; i < 4; i++) {
+            generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        generatedCode += '-';
+        for (let i = 0; i < 4; i++) {
+            generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        try {
+            const { error } = await supabase
+                .from('access_codes')
+                .insert({
+                    code: generatedCode,
+                    is_used: false,
+                    payment_id: 'ADMIN-GENERATED'
+                })
+            if (error) throw error
+            toast({
+                title: "Code Generated",
+                description: `Successfully created: ${generatedCode}`
+            })
+            fetchCodes()
+        } catch (err: any) {
+            toast({
+                title: "Failed to generate code",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setGenerating(false)
+        }
+    }
+
+    const handleDeleteCode = async (code: string) => {
+        if (!confirm(`Delete access code ${code}?`)) return
+        try {
+            const { error } = await supabase
+                .from('access_codes')
+                .delete()
+                .eq('code', code)
+            if (error) throw error
+            toast({
+                title: "Code Deleted",
+                description: "Access code has been removed."
+            })
+            fetchCodes()
+        } catch (err: any) {
+            toast({
+                title: "Failed to delete code",
+                description: err.message,
+                variant: "destructive"
+            })
+        }
+    }
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                        <Key className="h-5 w-5 text-indigo-400" />
+                        Access Codes Manager
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                        Generate and distribute unique, one-time access codes for premium features.
+                    </p>
+                </div>
+                <Button 
+                    onClick={handleGenerateCode} 
+                    disabled={generating}
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-bold font-sans"
+                >
+                    {generating ? "Generating..." : "Generate Code"}
+                </Button>
+            </div>
+
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+                <CardContent className="p-0">
+                    {loading ? (
+                        <div className="py-20 text-center text-xs text-muted-foreground flex flex-col items-center justify-center gap-2">
+                            <Loader2 className="h-6 w-6 text-indigo-400 animate-spin" />
+                            Loading access codes...
+                        </div>
+                    ) : codes.length === 0 ? (
+                        <div className="py-20 text-center text-xs text-muted-foreground">
+                            No access codes found in the database. Generate one above!
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-wider text-slate-400">
+                                        <th className="p-4 font-semibold">Code</th>
+                                        <th className="p-4 font-semibold">Status</th>
+                                        <th className="p-4 font-semibold">Generated By</th>
+                                        <th className="p-4 font-semibold">Created At</th>
+                                        <th className="p-4 font-semibold">Redeemed At</th>
+                                        <th className="p-4 font-semibold text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5 font-mono">
+                                    {codes.map((c) => (
+                                        <tr key={c.code} className="hover:bg-white/[0.01] transition-colors">
+                                            <td className="p-4 font-bold text-white text-sm tracking-wider">{c.code}</td>
+                                            <td className="p-4">
+                                                <Badge variant={c.is_used ? "secondary" : "default"} className={c.is_used ? "bg-red-500/10 text-red-400 border-red-500/10" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/10"}>
+                                                    {c.is_used ? "Redeemed" : "Active"}
+                                                </Badge>
+                                            </td>
+                                            <td className="p-4 text-slate-400 font-sans">{c.payment_id || 'Checkout Payment'}</td>
+                                            <td className="p-4 text-slate-500 font-sans">{new Date(c.created_at).toLocaleString()}</td>
+                                            <td className="p-4 text-slate-500 font-sans">{c.used_at ? new Date(c.used_at).toLocaleString() : '—'}</td>
+                                            <td className="p-4 text-right">
+                                                <Button 
+                                                    size="icon" 
+                                                    variant="ghost" 
+                                                    onClick={() => handleDeleteCode(c.code)}
+                                                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10 h-8 w-8 rounded-lg"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
+// ─── Crowdsourced College Suggestions Section ─────────────────
+function AdminCollegeSuggestionsSection() {
+    const [suggestions, setSuggestions] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+    const [processingId, setProcessingId] = useState<string | null>(null)
+    const { toast } = useToast()
+
+    const fetchSuggestions = async () => {
+        setLoading(true)
+        try {
+            const { data, error } = await supabase
+                .from('college_suggestions')
+                .select('*')
+                .eq('status', 'pending')
+                .order('created_at', { ascending: false })
+            if (error) throw error
+            setSuggestions(data || [])
+        } catch (err: any) {
+            toast({
+                title: "Error fetching suggestions",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchSuggestions()
+    }, [])
+
+    const handleApprove = async (suggestion: any) => {
+        setProcessingId(suggestion.id)
+        try {
+            const code = suggestion.college_code.toUpperCase()
+            const suggest = suggestion.suggested_data
+
+            // 1. Fetch current override (if any)
+            const { data: currentOverride } = await supabase
+                .from('colleges')
+                .select('*')
+                .eq('code', code)
+                .maybeSingle()
+
+            // 2. Fetch static data from COLLEGE_DATABASE
+            const staticCollege = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === code)
+
+            // 3. Construct fees_structure and placement_stats payloads
+            const fees_structure = currentOverride?.fees_structure || {
+                feeCetQuota: staticCollege?.feeCetQuota || null,
+                feeManagement: staticCollege?.feeManagement || null
+            }
+
+            const placement_stats = currentOverride?.placement_stats || {
+                avgPackage: staticCollege?.avgPackage || null,
+                medianPackage: staticCollege?.medianPackage || null,
+                maxPackage: staticCollege?.maxPackage || null,
+                minPackage: staticCollege?.minPackage || null,
+                placementRate: staticCollege?.placementRate || null,
+                topRecruiters: staticCollege?.topRecruiters || [],
+                tier: staticCollege?.tier || 'Tier 3',
+                naacGrade: staticCollege?.naacGrade || null,
+                nbaAccredited: staticCollege?.nbaAccredited || null,
+                autonomous: !!staticCollege?.autonomous,
+                nirfRank: staticCollege?.nirfRank || null,
+                tags: staticCollege?.tags || [],
+                logoUrl: staticCollege?.logoUrl || null,
+                totalIntake: staticCollege?.totalIntake || null
+            }
+
+            // Merge suggestions
+            if (suggest.avgPackage !== null && suggest.avgPackage !== undefined) {
+                placement_stats.avgPackage = suggest.avgPackage
+            }
+            if (suggest.medianPackage !== null && suggest.medianPackage !== undefined) {
+                placement_stats.medianPackage = suggest.medianPackage
+            }
+            if (suggest.placementRate !== null && suggest.placementRate !== undefined) {
+                placement_stats.placementRate = suggest.placementRate
+            }
+            if (suggest.feeCetQuota !== null && suggest.feeCetQuota !== undefined) {
+                fees_structure.feeCetQuota = suggest.feeCetQuota
+            }
+            if (suggest.feeManagement !== null && suggest.feeManagement !== undefined) {
+                fees_structure.feeManagement = suggest.feeManagement
+            }
+
+            // 4. Build upsert payload
+            const payload = {
+                code,
+                name: currentOverride?.name || staticCollege?.name || code,
+                website: currentOverride?.website || staticCollege?.website || null,
+                location: currentOverride?.location || staticCollege?.city || null,
+                district: currentOverride?.district || staticCollege?.district || null,
+                established_year: currentOverride?.established_year || staticCollege?.established || null,
+                type: currentOverride?.type || staticCollege?.type || 'Private',
+                fees_structure,
+                placement_stats,
+                facilities: currentOverride?.facilities || staticCollege?.facilities || []
+            }
+
+            // 5. Upsert changes to colleges table
+            const { error: upsertError } = await supabase
+                .from('colleges')
+                .upsert(payload, { onConflict: 'code' })
+            if (upsertError) throw upsertError
+
+            // 6. Update suggestion status to approved
+            const { error: updateError } = await supabase
+                .from('college_suggestions')
+                .update({ status: 'approved' })
+                .eq('id', suggestion.id)
+            if (updateError) throw updateError
+
+            toast({
+                title: "Suggestion Approved!",
+                description: `Successfully applied edits for ${code}`
+            })
+
+            fetchSuggestions()
+        } catch (err: any) {
+            toast({
+                title: "Approval Failed",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setProcessingId(null)
+        }
+    }
+
+    const handleReject = async (id: string) => {
+        if (!confirm("Reject this suggestion?")) return
+        setProcessingId(id)
+        try {
+            const { error } = await supabase
+                .from('college_suggestions')
+                .update({ status: 'rejected' })
+                .eq('id', id)
+            if (error) throw error
+
+            toast({
+                title: "Suggestion Rejected",
+                description: "Suggestion has been marked as rejected."
+            })
+
+            fetchSuggestions()
+        } catch (err: any) {
+            toast({
+                title: "Rejection Failed",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setProcessingId(null)
+        }
+    }
+
+    return (
+        <div className="space-y-6">
+            <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <Edit3 className="h-5 w-5 text-indigo-400" />
+                    College Edits Suggestion Queue
+                </h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                    Review and approve crowd-sourced placement, package, and fee suggestions from public users.
+                </p>
+            </div>
+
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+                <CardContent className="p-0">
+                    {loading ? (
+                        <div className="py-20 text-center text-xs text-muted-foreground flex flex-col items-center justify-center gap-2">
+                            <Loader2 className="h-6 w-6 text-indigo-400 animate-spin" />
+                            Loading suggestions queue...
+                        </div>
+                    ) : suggestions.length === 0 ? (
+                        <div className="py-20 text-center text-xs text-muted-foreground">
+                            No pending suggestions found. The data is up to date!
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-white/5">
+                            {suggestions.map((item) => {
+                                const suggest = item.suggested_data
+                                const current = item.current_data
+                                return (
+                                    <div key={item.id} className="p-6 flex flex-col md:flex-row gap-6 justify-between items-start hover:bg-white/[0.01] transition-colors">
+                                        <div className="space-y-4 flex-1">
+                                            <div className="flex items-center gap-2.5">
+                                                <Badge className="bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border-indigo-500/10 font-mono text-xs">
+                                                    {item.college_code}
+                                                </Badge>
+                                                <span className="text-[10px] text-muted-foreground">
+                                                    Submitted: {new Date(item.created_at).toLocaleString()}
+                                                </span>
+                                            </div>
+
+                                            {/* Comparison table */}
+                                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 bg-white/[0.02] border border-white/5 rounded-xl p-4 text-[11px]">
+                                                {/* Avg Package */}
+                                                <div className="space-y-1">
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Avg Package</span>
+                                                    <span className="text-slate-400">{current.avgPackage ? `${current.avgPackage} LPA` : '—'}</span>
+                                                    <span className="text-slate-300 block font-bold">
+                                                        👉 {suggest.avgPackage ? `${suggest.avgPackage} LPA` : '—'}
+                                                    </span>
+                                                </div>
+
+                                                {/* Median Package */}
+                                                <div className="space-y-1">
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Median Package</span>
+                                                    <span className="text-slate-400">{current.medianPackage ? `${current.medianPackage} LPA` : '—'}</span>
+                                                    <span className="text-slate-300 block font-bold">
+                                                        👉 {suggest.medianPackage ? `${suggest.medianPackage} LPA` : '—'}
+                                                    </span>
+                                                </div>
+
+                                                {/* Placement Rate */}
+                                                <div className="space-y-1">
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Placement Rate</span>
+                                                    <span className="text-slate-400">{current.placementRate ? `${current.placementRate}%` : '—'}</span>
+                                                    <span className="text-slate-300 block font-bold">
+                                                        👉 {suggest.placementRate ? `${suggest.placementRate}%` : '—'}
+                                                    </span>
+                                                </div>
+
+                                                {/* CET Fee */}
+                                                <div className="space-y-1">
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">CET Fee</span>
+                                                    <span className="text-slate-400">{current.feeCetQuota ? `₹${current.feeCetQuota.toLocaleString()}` : '—'}</span>
+                                                    <span className="text-slate-300 block font-bold">
+                                                        👉 {suggest.feeCetQuota ? `₹${suggest.feeCetQuota.toLocaleString()}` : '—'}
+                                                    </span>
+                                                </div>
+
+                                                {/* Mgmt Fee */}
+                                                <div className="space-y-1">
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider block">Mgmt Fee</span>
+                                                    <span className="text-slate-400">{current.feeManagement ? `₹${current.feeManagement.toLocaleString()}` : '—'}</span>
+                                                    <span className="text-slate-300 block font-bold">
+                                                        👉 {suggest.feeManagement ? `₹${suggest.feeManagement.toLocaleString()}` : '—'}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Comments */}
+                                            {suggest.comments && (
+                                                <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-slate-300 text-xs leading-relaxed">
+                                                    <div className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">Source & Verification Notes:</div>
+                                                    {suggest.comments}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="flex gap-2 shrink-0 self-center md:self-start mt-4 md:mt-0">
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                disabled={processingId === item.id}
+                                                onClick={() => handleReject(item.id)}
+                                                className="border-red-500/20 hover:bg-red-500/10 text-red-400 hover:text-red-300 h-9 rounded-xl text-xs px-4"
+                                            >
+                                                Reject
+                                            </Button>
+                                            <Button
+                                                size="sm"
+                                                disabled={processingId === item.id}
+                                                onClick={() => handleApprove(item)}
+                                                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-9 rounded-xl text-xs px-4 shadow-lg shadow-emerald-500/15"
+                                            >
+                                                Approve
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
 // ─── System Settings Section ──────────────────────────────────
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
@@ -811,42 +1267,49 @@ function AdminSystemSettingsSection() {
 
     const handleSave = async () => {
         setSaving(true)
-        const success = await AdminSuggestionsService.setPaywallDisabledGlobally(paywallDisabled)
-        setSaving(false)
+        const success = await AdminSuggestionsService.updatePaywallDisabledStatus(paywallDisabled)
         if (success) {
             setGlobalPaywallDisabled(paywallDisabled)
             toast({
                 title: "Settings Saved",
-                description: `Premium paywall is now ${paywallDisabled ? 'globally disabled' : 'globally enabled'}.`
+                description: `Global premium paywall bypass status updated to: ${paywallDisabled ? 'ENABLED' : 'DISABLED'}`
             })
         } else {
             toast({
                 title: "Error",
-                description: "Failed to save settings to the database.",
+                description: "Failed to update paywall status",
                 variant: "destructive"
             })
         }
+        setSaving(false)
     }
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-300">
-            <Card className="glass border-white/5">
+        <div className="space-y-6">
+            <div>
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                    <Settings className="h-5 w-5 text-indigo-400" />
+                    System Settings
+                </h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                    Manage global platform-level flags and features configuration.
+                </p>
+            </div>
+
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
                 <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                        <Settings className="h-5 w-5 text-indigo-400" />
-                        System Settings & Paywall Control
-                    </CardTitle>
-                    <CardDescription>
-                        Configure global site-wide options and access restrictions
-                    </CardDescription>
+                    <CardTitle className="text-sm font-bold text-white">Premium Feature Configuration</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent>
                     {loading ? (
-                        <div className="text-center py-6 text-muted-foreground">Loading settings...</div>
+                        <div className="py-6 text-center text-xs text-muted-foreground flex items-center justify-center gap-2">
+                            <Loader2 className="h-5 w-5 text-indigo-400 animate-spin" />
+                            Checking paywall status...
+                        </div>
                     ) : (
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/[0.01]">
-                                <div className="space-y-1">
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                <div className="space-y-0.5">
                                     <div className="text-sm font-semibold text-foreground flex items-center gap-2">
                                         Disable Premium Paywall Site-Wide
                                         <Badge variant={paywallDisabled ? "secondary" : "default"} className={paywallDisabled ? "bg-emerald-500/10 text-emerald-400" : "bg-indigo-500/10 text-indigo-400"}>
@@ -884,6 +1347,8 @@ const ADMIN_SECTIONS = [
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
     { id: "colleges", label: "Colleges Override", icon: Building2 },
+    { id: "college-suggestions", label: "Crowdsourced Edits", icon: Edit3 },
+    { id: "access-codes", label: "Access Codes", icon: Key },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
     { id: "suggestions", label: "Suggestions & Doubts", icon: ClipboardPaste },
     { id: "features", label: "Feature Requests", icon: Lightbulb },
@@ -954,6 +1419,8 @@ export default function AdminHub() {
                     {activeSection === "features" && <AdminFeatureRequestsView />}
                     {activeSection === "actual-ranks" && <AdminActualRanksView />}
                     {activeSection === "colleges" && <AdminCollegeEditor />}
+                    {activeSection === "college-suggestions" && <AdminCollegeSuggestionsSection />}
+                    {activeSection === "access-codes" && <AdminAccessCodesSection />}
                     {activeSection === "settings" && <AdminSystemSettingsSection />}
                 </main>
             </div>
