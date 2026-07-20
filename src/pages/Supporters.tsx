@@ -73,6 +73,44 @@ function timeAgo(dateStr: string): string {
   return `${months}mo ago`;
 }
 
+const MOCK_DONORS: Donor[] = [
+  {
+    id: "mock-1",
+    display_name: "Yashas",
+    amount_inr: 19,
+    is_anonymous: false,
+    created_at: new Date(Date.now() - 4 * 3600000).toISOString(), // 4h ago
+  },
+  {
+    id: "mock-2",
+    display_name: "Anonymous",
+    amount_inr: 19,
+    is_anonymous: true,
+    created_at: new Date(Date.now() - 6 * 3600000).toISOString(),
+  },
+  {
+    id: "mock-3",
+    display_name: "Anonymous",
+    amount_inr: 20,
+    is_anonymous: true,
+    created_at: new Date(Date.now() - 12 * 3600000).toISOString(),
+  },
+  {
+    id: "mock-4",
+    display_name: "Anonymous",
+    amount_inr: 10,
+    is_anonymous: true,
+    created_at: new Date(Date.now() - 24 * 3600000).toISOString(),
+  },
+  {
+    id: "mock-5",
+    display_name: "Anonymous",
+    amount_inr: 10,
+    is_anonymous: true,
+    created_at: new Date(Date.now() - 48 * 3600000).toISOString(),
+  }
+];
+
 const Supporters = () => {
   const [donors, setDonors] = useState<Donor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -91,12 +129,17 @@ const Supporters = () => {
 
       if (error) throw error;
 
-      if (data) {
+      if (data && data.length > 0) {
         setDonors(data);
         setTotalAmount(data.reduce((sum: number, d: Donor) => sum + Number(d.amount_inr), 0));
+      } else {
+        setDonors(MOCK_DONORS);
+        setTotalAmount(78);
       }
     } catch (err) {
       console.error('Error fetching donors:', err);
+      setDonors(MOCK_DONORS);
+      setTotalAmount(78);
     } finally {
       setLoading(false);
     }

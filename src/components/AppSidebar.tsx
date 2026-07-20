@@ -73,6 +73,7 @@ const getSpecialItems = (examMode: "KCET" | "COMEDK", unlocked: boolean, onUnloc
     } as any);
   }
 
+  items.push({ title: "Supporters Wall 🌟", url: "/supporters", icon: Award });
   items.push({ title: "Support Us ❤️", url: "/donate", icon: Heart });
   return items;
 }
