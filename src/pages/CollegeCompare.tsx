@@ -23,6 +23,27 @@ import {
 import { supabase } from "@/integrations/supabase/client"
 import { mergeSingleCollege } from "@/lib/college-service"
 
+// --- Clean course name ---
+const cleanCourseName = (course: string): string => {
+  if (!course) return course
+  let cleaned = course.trim().replace(/\s+/g, ' ')
+  cleaned = cleaned
+    .replace(/Communicatio\s*n/gi, 'Communication')
+    .replace(/D\s*ata/gi, 'Data')
+    .replace(/Dat\s*a/gi, 'Data')
+    .replace(/Scien\s*ce/gi, 'Science')
+    .replace(/Engineerin\s*g/gi, 'Engineering')
+    .replace(/Electro\s*nics/gi, 'Electronics')
+    .replace(/Informatio\s*n/gi, 'Information')
+    .replace(/Artificia\s*l/gi, 'Artificial')
+    .replace(/Intelligenc\s*e/gi, 'Intelligence')
+    .replace(/Machin\s*e/gi, 'Machine')
+    .replace(/Learnin\s*g/gi, 'Learning')
+  return cleaned
+}
+
+const getCourseKey = (course: string): string => cleanCourseName(course).toLowerCase().trim()
+
 const CollegeCompare = () => {
   const [selectedColleges, setSelectedColleges] = useState<CollegeInfo[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -188,15 +209,28 @@ const CollegeCompare = () => {
 
   // Helper to load cutoffs for a single college based EXACTLY on selected filters
   const getCollegeCutoffs = (collegeCode: string) => {
-    return cutoffData.filter(c => 
+    const filtered = cutoffData.filter(c => 
       c.institute_code.toUpperCase() === collegeCode.toUpperCase() &&
       c.year === cutoffYear &&
       c.round === cutoffRound &&
       c.category.toUpperCase() === cutoffCategory.toUpperCase()
-    ).map(c => ({
-      courseName: c.course,
-      rank: c.cutoff_rank
-    })).sort((a, b) => a.courseName.localeCompare(b.courseName))
+    )
+
+    // Group cutoffs by course key and keep the best (lowest) rank in case of duplicates
+    const courseMap = new Map<string, { courseName: string; rank: number }>()
+    for (const entry of filtered) {
+      const key = getCourseKey(entry.course)
+      const existing = courseMap.get(key)
+      if (!existing || entry.cutoff_rank < existing.rank) {
+        courseMap.set(key, { 
+          courseName: cleanCourseName(entry.course), 
+          rank: entry.cutoff_rank 
+        })
+      }
+    }
+
+    return Array.from(courseMap.values())
+      .sort((a, b) => a.courseName.localeCompare(b.courseName))
   }
 
   return (
