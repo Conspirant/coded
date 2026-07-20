@@ -13,40 +13,6 @@ interface Donor {
   created_at: string;
 }
 
-// Predefined accent colors for donor cards
-const ACCENT_COLORS = [
-  'from-rose-500/20 to-pink-500/20 border-rose-500/20',
-  'from-violet-500/20 to-purple-500/20 border-violet-500/20',
-  'from-blue-500/20 to-cyan-500/20 border-blue-500/20',
-  'from-emerald-500/20 to-teal-500/20 border-emerald-500/20',
-  'from-amber-500/20 to-orange-500/20 border-amber-500/20',
-  'from-indigo-500/20 to-blue-500/20 border-indigo-500/20',
-  'from-fuchsia-500/20 to-pink-500/20 border-fuchsia-500/20',
-  'from-sky-500/20 to-cyan-500/20 border-sky-500/20',
-];
-
-const TEXT_COLORS = [
-  'text-rose-400',
-  'text-violet-400',
-  'text-blue-400',
-  'text-emerald-400',
-  'text-amber-400',
-  'text-indigo-400',
-  'text-fuchsia-400',
-  'text-sky-400',
-];
-
-const AVATAR_GRADIENTS = [
-  'from-rose-500 to-pink-600',
-  'from-violet-500 to-purple-600',
-  'from-blue-500 to-cyan-600',
-  'from-emerald-500 to-teal-600',
-  'from-amber-500 to-orange-600',
-  'from-indigo-500 to-blue-600',
-  'from-fuchsia-500 to-pink-600',
-  'from-sky-500 to-cyan-600',
-];
-
 function getInitials(name: string): string {
   if (name === 'Anonymous' || !name) return '?';
   return name
@@ -58,6 +24,7 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
+// Simple timeAgo formatter
 function timeAgo(dateStr: string): string {
   const now = new Date();
   const d = new Date(dateStr);
@@ -147,158 +114,121 @@ const Supporters = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-slate-300 font-sans selection:bg-white/10">
       <SEO
-        title="Our Supporters — KCET Coded"
-        description="Thank you to everyone who has supported KCET Coded with a donation. Your contributions keep this platform free, ad-free, and constantly improving."
+        title="Supporters Wall — KCET Coded"
+        description="A list of generous supporters who keep Coded free and accessible to every student."
         url="https://kcet-coded2.vercel.app/supporters"
         keywords="supporters KCET Coded, donors, donations wall"
       />
 
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Animated background gradients */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/30 via-background to-emerald-950/20 pointer-events-none" />
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl animate-pulse pointer-events-none" />
-        <div className="absolute top-40 right-1/4 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl animate-pulse pointer-events-none" style={{ animationDelay: '1s' }} />
-
-        <div className="relative max-w-4xl mx-auto px-4 pt-12 pb-8 sm:pt-16 sm:pb-12 text-center">
-          {/* Back link */}
+      <div className="max-w-xl mx-auto px-6 py-16">
+        {/* Navigation */}
+        <div className="mb-12">
           <Link
             to="/donate"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-xs text-slate-500 hover:text-slate-300 transition-colors group"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
+            <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-0.5" />
             Back to Donate
           </Link>
-
-          {/* Icon */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-            className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/20 flex items-center justify-center mb-5"
-          >
-            <Heart className="h-7 w-7 text-pink-400 fill-pink-400" />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3"
-          >
-            Our Supporters
-            <Sparkles className="inline-block ml-2 h-6 w-6 text-amber-400" />
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm sm:text-base text-slate-400 max-w-lg mx-auto leading-relaxed"
-          >
-            Every contribution, big or small, helps keep this platform free and ad-free for all students. Thank you for believing in this project.
-          </motion.p>
-
-          {/* Stats row */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center justify-center gap-6 mt-8"
-          >
-            <div className="flex flex-col items-center">
-              <span className="text-2xl sm:text-3xl font-bold text-white font-mono">₹{totalAmount || 78}</span>
-              <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mt-1">Total Raised</span>
-            </div>
-            <div className="w-px h-10 bg-white/10" />
-            <div className="flex flex-col items-center">
-              <span className="text-2xl sm:text-3xl font-bold text-white font-mono">{donors.length || '—'}</span>
-              <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mt-1">Supporters</span>
-            </div>
-          </motion.div>
         </div>
-      </div>
 
-      {/* Donors Grid */}
-      <div className="max-w-4xl mx-auto px-4 pb-16">
+        {/* Header Section */}
+        <div className="space-y-3.5 mb-12">
+          <div className="flex items-center gap-2">
+            <div className="h-5 w-5 rounded-md bg-pink-500/10 border border-pink-500/20 flex items-center justify-center">
+              <Heart className="h-3 w-3 text-pink-400 fill-pink-400" />
+            </div>
+            <span className="text-[10px] tracking-wider uppercase font-semibold text-slate-500">Support Wall</span>
+          </div>
+          
+          <h1 className="text-2xl font-bold tracking-tight text-white font-sans">
+            Our Supporters
+          </h1>
+          
+          <p className="text-xs text-slate-400 max-w-lg leading-relaxed">
+            Thank you to the students and parents who contribute to keep this platform free, fast, and accessible to everyone.
+          </p>
+
+          {/* Stats Bar */}
+          <div className="flex items-center gap-6 pt-2">
+            <div>
+              <div className="text-xl font-bold text-white font-mono">₹{totalAmount}</div>
+              <div className="text-[9px] tracking-wider uppercase text-slate-500 font-medium mt-0.5">Total Raised</div>
+            </div>
+            <div className="w-px h-6 bg-white/10" />
+            <div>
+              <div className="text-xl font-bold text-white font-mono">{donors.length}</div>
+              <div className="text-[9px] tracking-wider uppercase text-slate-500 font-medium mt-0.5">Supporters</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Supporters List */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-            <p className="text-sm text-slate-500 mt-3">Loading supporters...</p>
+          <div className="flex flex-col items-center justify-center py-20 border border-white/[0.04] bg-white/[0.01] rounded-xl">
+            <div className="w-4 h-4 border-2 border-slate-700 border-t-white rounded-full animate-spin" />
+            <p className="text-[10px] text-slate-500 mt-2.5 font-medium">Loading wall...</p>
           </div>
         ) : donors.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20"
-          >
-            <div className="mx-auto w-16 h-16 rounded-full bg-slate-800/50 border border-white/5 flex items-center justify-center mb-4">
-              <Crown className="h-7 w-7 text-slate-600" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-400 mb-2">Be the first supporter!</h3>
-            <p className="text-sm text-slate-500 max-w-sm mx-auto mb-6">
-              Your name could be the first on this wall. Every contribution helps keep Coded running.
-            </p>
+          <div className="text-center py-12 border border-white/[0.04] bg-white/[0.01] rounded-xl space-y-3">
+            <p className="text-xs text-slate-400">Be the first to support this project.</p>
             <Link
               to="/donate"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-500/20"
+              className="inline-flex items-center gap-1.5 bg-white text-black font-semibold text-[11px] px-3.5 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
             >
-              <Heart className="h-4 w-4" />
-              Make a Donation
+              Support Coded
             </Link>
-          </motion.div>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-1.5">
             <AnimatePresence>
               {donors.map((donor, index) => {
-                const colorIdx = index % ACCENT_COLORS.length;
                 const displayName = donor.is_anonymous ? 'Anonymous' : donor.display_name;
                 const initials = getInitials(displayName);
+                const isTopDonor = index === 0;
 
                 return (
                   <motion.div
                     key={donor.id}
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.3 }}
-                    className={`group relative bg-gradient-to-br ${ACCENT_COLORS[colorIdx]} border rounded-2xl p-5 hover:scale-[1.02] transition-all duration-300`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ delay: index * 0.02, duration: 0.15 }}
+                    className="flex items-center justify-between p-2.5 border border-white/[0.04] bg-white/[0.01] rounded-lg hover:bg-white/[0.02] hover:border-white/[0.06] transition-all group"
                   >
-                    {/* Top donor badge for first place */}
-                    {index === 0 && (
-                      <div className="absolute -top-2 -right-2 bg-amber-500 text-black text-[9px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-lg shadow-amber-500/30">
-                        <Star className="h-2.5 w-2.5 fill-current" />
-                        TOP
-                      </div>
-                    )}
-
-                    <div className="flex items-start gap-3.5">
+                    <div className="flex items-center gap-2.5">
                       {/* Avatar */}
-                      <div className={`shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${AVATAR_GRADIENTS[colorIdx]} flex items-center justify-center text-white text-xs font-bold shadow-lg`}>
+                      <div className="w-7 h-7 rounded-md bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-slate-400 text-[10px] font-semibold select-none group-hover:border-white/10 transition-colors">
                         {initials}
                       </div>
 
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`font-bold text-sm ${donor.is_anonymous ? 'text-slate-400 italic' : 'text-white'} truncate`}>
-                          {displayName}
-                        </h3>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                      {/* Name & Time */}
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-xs font-medium ${donor.is_anonymous ? 'text-slate-400/90 italic' : 'text-white'}`}>
+                            {displayName}
+                          </span>
+                          {isTopDonor && (
+                            <span className="inline-flex items-center gap-0.5 text-[8px] bg-amber-500/10 border border-amber-500/20 text-amber-400 font-bold px-1 py-0.25 rounded">
+                              <Star className="h-1.5 w-1.5 fill-current" />
+                              Top
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[9px] text-slate-500 mt-0.5 block">
                           {timeAgo(donor.created_at)}
-                        </p>
-                      </div>
-
-                      {/* Amount */}
-                      <div className={`shrink-0 text-right`}>
-                        <span className={`text-sm font-bold font-mono ${TEXT_COLORS[colorIdx]}`}>
-                          ₹{Number(donor.amount_inr)}
                         </span>
                       </div>
                     </div>
 
-                    {/* Subtle shine effect on hover */}
-                    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-white/0 via-white/[0.03] to-white/0 pointer-events-none" />
+                    {/* Amount */}
+                    <div className="text-right">
+                      <span className="text-xs font-semibold font-mono text-white">
+                        ₹{Number(donor.amount_inr)}
+                      </span>
+                    </div>
                   </motion.div>
                 );
               })}
@@ -306,23 +236,18 @@ const Supporters = () => {
           </div>
         )}
 
-        {/* CTA at bottom */}
+        {/* Footer CTA */}
         {donors.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-12 pt-8 border-t border-white/5"
-          >
-            <p className="text-sm text-slate-500 mb-4">Want to see your name here?</p>
+          <div className="mt-12 text-center pt-6 border-t border-white/[0.04] space-y-2.5">
+            <p className="text-[11px] text-slate-500 font-medium">Want to see your name on the wall?</p>
             <Link
               to="/donate"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-500/20"
+              className="inline-flex items-center gap-1.5 bg-white text-black font-semibold text-xs px-3.5 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
             >
-              <Heart className="h-4 w-4" />
+              <Heart className="h-3 w-3 fill-current text-pink-600" />
               Support Coded
             </Link>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
