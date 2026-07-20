@@ -79,35 +79,35 @@ const MOCK_DONORS: Donor[] = [
     display_name: "Yashas",
     amount_inr: 19,
     is_anonymous: false,
-    created_at: new Date(Date.now() - 4 * 3600000).toISOString(), // 4h ago
+    created_at: new Date('2026-07-19T17:08:00').toISOString(),
   },
   {
     id: "mock-2",
     display_name: "Anonymous",
     amount_inr: 19,
     is_anonymous: true,
-    created_at: new Date(Date.now() - 6 * 3600000).toISOString(),
+    created_at: new Date('2026-07-18T16:08:00').toISOString(),
   },
   {
     id: "mock-3",
     display_name: "Anonymous",
     amount_inr: 20,
     is_anonymous: true,
-    created_at: new Date(Date.now() - 12 * 3600000).toISOString(),
+    created_at: new Date('2026-07-18T14:08:00').toISOString(),
   },
   {
     id: "mock-4",
     display_name: "Anonymous",
     amount_inr: 10,
     is_anonymous: true,
-    created_at: new Date(Date.now() - 24 * 3600000).toISOString(),
+    created_at: new Date('2026-07-18T11:08:00').toISOString(),
   },
   {
     id: "mock-5",
     display_name: "Anonymous",
     amount_inr: 10,
     is_anonymous: true,
-    created_at: new Date(Date.now() - 48 * 3600000).toISOString(),
+    created_at: new Date('2026-07-18T09:08:00').toISOString(),
   }
 ];
 
