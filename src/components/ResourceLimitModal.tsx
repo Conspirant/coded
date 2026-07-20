@@ -461,13 +461,22 @@ export const ResourceLimitModal = () => {
               </Button>
 
               {/* Access Key Toggle button */}
-              <div className="text-center">
+              <div className="text-center flex flex-col items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setShowKeyForm(!showKeyForm)}
                   className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors underline"
                 >
                   {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate('/supporters')}
+                  className="text-[10px] text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1 font-semibold hover:underline"
+                >
+                  <Sparkles className="h-3 w-3 animate-pulse" />
+                  See Supporters Wall
                 </button>
               </div>
 
