@@ -10,7 +10,13 @@ import {
     Heart,
     CheckCircle2,
     Loader2,
+    Sparkles,
+    Crown,
+    X,
+    MessageCircle,
 } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { supabase } from "@/integrations/supabase/client"
 
 const Donate = () => {
     const { toast } = useToast()
@@ -18,8 +24,34 @@ const Donate = () => {
     const [isProcessing, setIsProcessing] = useState<boolean>(false)
     const [paymentStatus, setPaymentStatus] = useState<'idle' | 'success' | 'error'>('idle')
     const [txnDetails, setTxnDetails] = useState<{ paymentId: string; orderId: string } | null>(null)
+    const [showDonorNamePopup, setShowDonorNamePopup] = useState(false)
+    const [donorName, setDonorName] = useState('')
+    const [donorIsAnonymous, setDonorIsAnonymous] = useState(false)
 
     const predefinedAmounts = [50, 100, 250, 500]
+
+    const handlePayButtonClick = () => {
+        const amtVal = parseFloat(amount)
+        if (isNaN(amtVal) || amtVal <= 0) {
+            toast({
+                title: "Invalid Amount",
+                description: "Please enter a valid amount to donate.",
+                variant: "destructive",
+            })
+            return
+        }
+
+        const paiseAmount = Math.round(amtVal * 100)
+        if (paiseAmount < 100) {
+            toast({
+                title: "Minimum Amount",
+                description: "The minimum donation amount is ₹1 (100 paise).",
+                variant: "destructive",
+            })
+            return
+        }
+        setShowDonorNamePopup(true)
+    }
 
     const handleRazorpayPayment = async () => {
         const amtVal = parseFloat(amount)
@@ -94,6 +126,18 @@ const Donate = () => {
                         const verifyData = (await verifyRes.json().catch(() => ({}))) as { success?: boolean; error?: string }
 
                         if (verifyRes.ok && verifyData.success) {
+                            // Save donor to Supabase
+                            try {
+                                await supabase.from('donors').insert({
+                                    display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                                    amount_inr: amtVal,
+                                    is_anonymous: donorIsAnonymous || !donorName.trim(),
+                                    payment_id: response.razorpay_payment_id,
+                                })
+                            } catch (e) {
+                                console.error('Failed to save donor to database:', e)
+                            }
+
                             setPaymentStatus('success')
                             setTxnDetails({
                                 paymentId: response.razorpay_payment_id,
@@ -124,7 +168,7 @@ const Donate = () => {
                     }
                 },
                 prefill: {
-                    name: "",
+                    name: donorIsAnonymous ? "" : donorName,
                     email: "",
                     contact: "",
                 },
@@ -235,6 +279,13 @@ const Donate = () => {
                                 <h3 className="font-bold text-base text-foreground">Thank You ❤️</h3>
                                 <p className="text-xs text-muted-foreground">Your contribution keeps Coded online and ad-free.</p>
                             </div>
+                            <Link 
+                                to="/supporters" 
+                                className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-500/20 transition-all font-semibold mt-2 animate-pulse"
+                            >
+                                <Sparkles className="h-3.5 w-3.5" />
+                                View your name on the Supporters Wall
+                            </Link>
                             {txnDetails && (
                                 <div className="text-left w-full text-[10px] text-muted-foreground/80 space-y-1 bg-white/[0.02] p-2.5 rounded-lg border border-white/5 font-mono">
                                     <div className="truncate"><span className="text-white/40">Payment ID:</span> {txnDetails.paymentId}</div>
@@ -296,7 +347,7 @@ const Donate = () => {
 
                             {/* Action button */}
                             <Button
-                                onClick={handleRazorpayPayment}
+                                onClick={handlePayButtonClick}
                                 disabled={isProcessing}
                                 className="w-full bg-white text-black hover:bg-white/90 font-bold h-10 transition-all duration-200 mt-2 border-0"
                             >
@@ -316,12 +367,122 @@ const Donate = () => {
                 </CardContent>
             </Card>
 
+            {/* View Supporters Link */}
+            <div className="text-center">
+                <Link to="/supporters" className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    View Supporters Wall
+                </Link>
+            </div>
+
             {/* Back Link */}
             <div className="text-center">
                 <Link to="/dashboard" className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors">
                     Back to Dashboard
                 </Link>
             </div>
+
+            {/* Donor Name Collection Popup */}
+            <AnimatePresence>
+                {showDonorNamePopup && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+                        onClick={() => setShowDonorNamePopup(false)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            transition={{ duration: 0.25, ease: 'easeOut' }}
+                            className="relative w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Close button */}
+                            <button
+                                onClick={() => setShowDonorNamePopup(false)}
+                                className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+
+                            {/* Header */}
+                            <div className="text-center mb-5">
+                                <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 flex items-center justify-center mb-3">
+                                    <Sparkles className="h-5 w-5 text-indigo-400" />
+                                </div>
+                                <h3 className="text-base font-bold text-white">One last thing!</h3>
+                                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                    Your name will be displayed on our{' '}
+                                    <span className="text-indigo-400 font-semibold">Supporters Wall</span>{' '}
+                                    to thank you publicly.
+                                </p>
+                            </div>
+
+                            {/* Name Input */}
+                            <div className="space-y-3 text-left">
+                                <div className="space-y-1.5">
+                                    <Label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                                        Your Name
+                                    </Label>
+                                    <Input
+                                        value={donorName}
+                                        onChange={(e) => setDonorName(e.target.value)}
+                                        placeholder="e.g. Rahul S."
+                                        disabled={donorIsAnonymous}
+                                        className={`bg-slate-800/50 border-white/10 text-white placeholder:text-slate-600 h-10 rounded-xl text-sm ${donorIsAnonymous ? 'opacity-40' : ''}`}
+                                        maxLength={30}
+                                    />
+                                </div>
+
+                                {/* Anonymous toggle */}
+                                <label className="flex items-center gap-2.5 cursor-pointer group py-1">
+                                    <div className="relative">
+                                        <input
+                                            type="checkbox"
+                                            checked={donorIsAnonymous}
+                                            onChange={(e) => {
+                                                setDonorIsAnonymous(e.target.checked);
+                                                if (e.target.checked) setDonorName('');
+                                            }}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-8 h-[18px] bg-slate-700 rounded-full peer-checked:bg-indigo-500 transition-colors" />
+                                        <div className="absolute top-[2px] left-[2px] w-[14px] h-[14px] bg-white rounded-full transition-transform peer-checked:translate-x-[14px] shadow-sm" />
+                                    </div>
+                                    <span className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
+                                        Keep me anonymous
+                                    </span>
+                                </label>
+                            </div>
+
+                            {/* Action buttons */}
+                            <div className="mt-5 space-y-2.5">
+                                <button
+                                    onClick={() => {
+                                        setShowDonorNamePopup(false);
+                                        handleRazorpayPayment();
+                                    }}
+                                    disabled={!donorIsAnonymous && !donorName.trim()}
+                                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/20 transition-all"
+                                >
+                                    <Crown className="h-4 w-4" />
+                                    {donorIsAnonymous ? 'Continue as Anonymous' : `Continue as "${donorName.trim() || '...'}"`}
+                                </button>
+                                <button
+                                    onClick={() => setShowDonorNamePopup(false)}
+                                    className="w-full text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2"
+                                >
+                                    Go Back
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }

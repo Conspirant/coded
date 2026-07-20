@@ -51,6 +51,7 @@ import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
 import CutoffTrends from "./pages/CutoffTrends";
 import Donate from "./pages/Donate";
+import Supporters from "./pages/Supporters";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
@@ -122,6 +123,7 @@ const App = () => (
               <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
               <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
               <Route path="/donate" element={<Layout><Donate /></Layout>} />
+              <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
               <Route path="/squad-finder" element={<SquadFinder />} />
               <Route path="/metro-mapper" element={<MetroMapper />} />
               <Route path="/bmtc-mapper" element={<BmtcMapper />} />

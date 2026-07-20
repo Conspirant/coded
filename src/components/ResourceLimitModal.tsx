@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { isUnlocked, validateAndUnlock, subscribeToUnlockState } from '@/lib/unlock';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface PageDetails {
   title: string;
@@ -163,6 +164,9 @@ export const ResourceLimitModal = () => {
   const [showKeyForm, setShowKeyForm] = useState(false);
   const [customAmount, setCustomAmount] = useState('19');
   const [paymentFailurePopup, setPaymentFailurePopup] = useState<{ show: boolean; title: string; message: string }>({ show: false, title: '', message: '' });
+  const [showDonorNamePopup, setShowDonorNamePopup] = useState(false);
+  const [donorName, setDonorName] = useState('');
+  const [donorIsAnonymous, setDonorIsAnonymous] = useState(false);
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked);
@@ -193,6 +197,19 @@ export const ResourceLimitModal = () => {
     }
   };
 
+  // Called when user clicks the Pay button — show name popup first
+  const handlePayButtonClick = () => {
+    const amtVal = parseFloat(customAmount);
+    if (isNaN(amtVal) || amtVal < 10) {
+      toast.error('Invalid Amount', {
+        description: 'The minimum contribution to unlock premium features is ₹10.'
+      });
+      return;
+    }
+    setShowDonorNamePopup(true);
+  };
+
+  // Called after user confirms name in popup
   const handleRazorpayPayment = async () => {
     if (typeof (window as any).Razorpay === 'undefined') {
       toast.error('Razorpay SDK not loaded. Please disable content blockers or reload the page.');
@@ -251,8 +268,19 @@ export const ResourceLimitModal = () => {
 
             if (verifyRes.ok && verifyData.success) {
               validateAndUnlock("COUNS2026"); // Automatically unlocks globally
+              // Save donor to Supabase
+              try {
+                await (supabase as any).from('donors').insert({
+                  display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                  amount_inr: amtVal,
+                  is_anonymous: donorIsAnonymous || !donorName.trim(),
+                  payment_id: response.razorpay_payment_id,
+                });
+              } catch (e) {
+                console.error('Failed to save donor:', e);
+              }
               toast.success('Payment Successful! 🎉', {
-                description: 'All premium features are now unlocked.'
+                description: 'All premium features are now unlocked. Thank you for your support!'
               });
             } else {
               toast.error('Payment Verification Failed', {
@@ -268,7 +296,7 @@ export const ResourceLimitModal = () => {
           }
         },
         prefill: {
-          name: "",
+          name: donorIsAnonymous ? '' : donorName,
           email: "",
           contact: ""
         },
@@ -314,7 +342,7 @@ export const ResourceLimitModal = () => {
 
   // Set of allowed routes (non-premium)
   const allowedExact = new Set([
-    '', '/', '/rank-predictor', '/admin', '/donate',
+    '', '/', '/rank-predictor', '/admin', '/donate', '/supporters',
     '/daily-challenge', '/cutoff-clash', '/cet-news',
     '/about', '/privacy', '/terms', '/payment-policy', '/reviews',
     '/documents', '/materials', '/info-centre',
@@ -415,7 +443,7 @@ export const ResourceLimitModal = () => {
               </div>
 
               <Button
-                onClick={handleRazorpayPayment}
+                onClick={handlePayButtonClick}
                 disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 10}
                 className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-xs sm:text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
               >
@@ -628,7 +656,7 @@ export const ResourceLimitModal = () => {
               <button
                 onClick={() => {
                   setPaymentFailurePopup({ show: false, title: '', message: '' });
-                  handleRazorpayPayment();
+                  handlePayButtonClick();
                 }}
                 className="flex-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors py-2 rounded-lg hover:bg-white/5"
               >
@@ -640,6 +668,108 @@ export const ResourceLimitModal = () => {
                 className="flex-1 text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2 rounded-lg hover:bg-white/5"
               >
                 Dismiss
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Donor Name Collection Popup */}
+    <AnimatePresence>
+      {showDonorNamePopup && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowDonorNamePopup(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="relative w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setShowDonorNamePopup(false)}
+              className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            {/* Header */}
+            <div className="text-center mb-5">
+              <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 flex items-center justify-center mb-3">
+                <Sparkles className="h-5 w-5 text-indigo-400" />
+              </div>
+              <h3 className="text-base font-bold text-white">One last thing!</h3>
+              <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                Your name will be displayed on our{' '}
+                <span className="text-indigo-400 font-semibold">Supporters Wall</span>{' '}
+                to thank you publicly.
+              </p>
+            </div>
+
+            {/* Name Input */}
+            <div className="space-y-3">
+              <div>
+                <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block">
+                  Your Name
+                </label>
+                <Input
+                  value={donorName}
+                  onChange={(e) => setDonorName(e.target.value)}
+                  placeholder="e.g. Rahul S."
+                  disabled={donorIsAnonymous}
+                  className={`bg-slate-800/50 border-white/10 text-white placeholder:text-slate-600 h-10 rounded-xl text-sm ${donorIsAnonymous ? 'opacity-40' : ''}`}
+                  maxLength={30}
+                />
+              </div>
+
+              {/* Anonymous toggle */}
+              <label className="flex items-center gap-2.5 cursor-pointer group py-1">
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    checked={donorIsAnonymous}
+                    onChange={(e) => {
+                      setDonorIsAnonymous(e.target.checked);
+                      if (e.target.checked) setDonorName('');
+                    }}
+                    className="sr-only peer"
+                  />
+                  <div className="w-8 h-[18px] bg-slate-700 rounded-full peer-checked:bg-indigo-500 transition-colors" />
+                  <div className="absolute top-[2px] left-[2px] w-[14px] h-[14px] bg-white rounded-full transition-transform peer-checked:translate-x-[14px] shadow-sm" />
+                </div>
+                <span className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
+                  Keep me anonymous
+                </span>
+              </label>
+            </div>
+
+            {/* Action buttons */}
+            <div className="mt-5 space-y-2.5">
+              <button
+                onClick={() => {
+                  setShowDonorNamePopup(false);
+                  handleRazorpayPayment();
+                }}
+                disabled={!donorIsAnonymous && !donorName.trim()}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/20 transition-all"
+              >
+                <Crown className="h-4 w-4" />
+                {donorIsAnonymous ? 'Continue as Anonymous' : `Continue as "${donorName.trim() || '...'}"`}
+              </button>
+              <button
+                onClick={() => setShowDonorNamePopup(false)}
+                className="w-full text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2"
+              >
+                Go Back
               </button>
             </div>
           </motion.div>
