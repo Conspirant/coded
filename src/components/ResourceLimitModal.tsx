@@ -12,7 +12,9 @@ import {
   Home,
   ArrowRight,
   Loader2,
-  ChevronDown
+  ChevronDown,
+  MessageCircle,
+  X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -160,6 +162,7 @@ export const ResourceLimitModal = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showKeyForm, setShowKeyForm] = useState(false);
   const [customAmount, setCustomAmount] = useState('19');
+  const [paymentFailurePopup, setPaymentFailurePopup] = useState<{ show: boolean; title: string; message: string }>({ show: false, title: '', message: '' });
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked);
@@ -275,14 +278,10 @@ export const ResourceLimitModal = () => {
         modal: {
           ondismiss: function () {
             setIsProcessing(false);
-            toast.error('Payment Cancelled', {
-              description: "Left midway? Did it fail? Contact me on Reddit if you're facing any issues.",
-              duration: 10000,
-              position: 'top-center',
-              action: {
-                label: 'Contact Me',
-                onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
-              }
+            setPaymentFailurePopup({
+              show: true,
+              title: 'Payment Cancelled',
+              message: "Left midway? No worries! If you faced any issues during checkout, I'm here to help."
             });
           }
         }
@@ -291,14 +290,10 @@ export const ResourceLimitModal = () => {
       const rzp = new (window as any).Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
         setIsProcessing(false);
-        toast.error('Payment Failed', {
-          description: response.error?.description || "Did it fail? Contact me on Reddit if you're facing any issues.",
-          duration: 10000,
-          position: 'top-center',
-          action: {
-            label: 'Contact Me',
-            onClick: () => window.open('https://www.reddit.com/user/Elegant_Compote9073/', '_blank')
-          }
+        setPaymentFailurePopup({
+          show: true,
+          title: 'Payment Failed',
+          message: response.error?.description || "Something went wrong with the payment. Don't worry — I can help you fix it!"
         });
       });
       rzp.open();
@@ -338,6 +333,7 @@ export const ResourceLimitModal = () => {
   if (isAllowed || unlocked) return null;
 
   return (
+    <>
     <div className="fixed inset-0 z-[9999] bg-slate-950/95 backdrop-blur-xl overflow-y-auto flex flex-col items-center justify-start md:justify-center p-4 py-8 sm:py-12">
       <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950/20 via-background/40 to-emerald-950/10 pointer-events-none" />
       
@@ -573,5 +569,83 @@ export const ResourceLimitModal = () => {
         </div>
       </motion.div>
     </div>
+
+    {/* Payment Failure / Cancellation Popup */}
+    <AnimatePresence>
+      {paymentFailurePopup.show && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setPaymentFailurePopup({ show: false, title: '', message: '' })}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="relative w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setPaymentFailurePopup({ show: false, title: '', message: '' })}
+              className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            {/* Icon */}
+            <div className="mx-auto w-14 h-14 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
+              <AlertCircle className="h-7 w-7 text-orange-400" />
+            </div>
+
+            {/* Title */}
+            <h3 className="text-lg font-bold text-white mb-2">
+              {paymentFailurePopup.title}
+            </h3>
+
+            {/* Message */}
+            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+              {paymentFailurePopup.message}
+            </p>
+
+            {/* Reddit Contact CTA */}
+            <a
+              href="https://www.reddit.com/user/Elegant_Compote9073/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold text-sm h-11 rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all"
+            >
+              <MessageCircle className="h-4.5 w-4.5" />
+              Contact Me on Reddit
+            </a>
+
+            {/* Secondary actions */}
+            <div className="flex items-center gap-3 mt-4">
+              <button
+                onClick={() => {
+                  setPaymentFailurePopup({ show: false, title: '', message: '' });
+                  handleRazorpayPayment();
+                }}
+                className="flex-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors py-2 rounded-lg hover:bg-white/5"
+              >
+                Try Again
+              </button>
+              <span className="text-slate-700">|</span>
+              <button
+                onClick={() => setPaymentFailurePopup({ show: false, title: '', message: '' })}
+                className="flex-1 text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2 rounded-lg hover:bg-white/5"
+              >
+                Dismiss
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 };
