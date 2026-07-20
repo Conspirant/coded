@@ -1038,7 +1038,7 @@ function AdminCollegeSuggestionsSection() {
                 tier: currentPlacement.tier ?? staticCollege?.tier ?? 'Tier 3',
                 naacGrade: currentPlacement.naacGrade ?? staticCollege?.naacGrade ?? null,
                 nbaAccredited: currentPlacement.nbaAccredited ?? staticCollege?.nbaAccredited ?? null,
-                autonomous: currentPlacement.autonomous ?? !!staticCollege?.autonomous ?? false,
+                autonomous: currentPlacement.autonomous ?? (staticCollege?.autonomous || false),
                 nirfRank: currentPlacement.nirfRank ?? staticCollege?.nirfRank ?? null,
                 tags: currentPlacement.tags ?? staticCollege?.tags ?? [],
                 logoUrl: currentPlacement.logoUrl ?? staticCollege?.logoUrl ?? null,

@@ -199,7 +199,7 @@ export const ResourceLimitModal = () => {
       }
 
       // 2. Check in database
-      const uppercaseKey = inputKey.toUpperCase();
+      const uppercaseKey = inputKey.toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-');
       const { data, error } = await supabase
         .from('access_codes')
         .select('*')
