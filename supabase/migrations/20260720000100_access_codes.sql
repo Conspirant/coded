@@ -28,3 +28,9 @@ CREATE POLICY "Anyone can update access codes" ON public.access_codes
     FOR UPDATE 
     USING (true)
     WITH CHECK (true);
+
+-- Allow delete (to remove access codes from admin panel)
+DROP POLICY IF EXISTS "Anyone can delete access codes" ON public.access_codes;
+CREATE POLICY "Anyone can delete access codes" ON public.access_codes 
+    FOR DELETE 
+    USING (true);
