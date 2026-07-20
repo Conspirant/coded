@@ -201,7 +201,7 @@ export const ResourceLimitModal = () => {
       // 2. Check in database
       const uppercaseKey = inputKey.toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-');
       const { data, error } = await supabase
-        .from('access_codes')
+        .from('access_codes' as any)
         .select('*')
         .eq('code', uppercaseKey)
         .maybeSingle();
@@ -220,7 +220,7 @@ export const ResourceLimitModal = () => {
         return;
       }
 
-      if (data.is_used) {
+      if ((data as any).is_used) {
         setErrorMsg('This access key has already been used on another device.');
         toast.error('Unlock failed', {
           description: 'This one-time key has already been redeemed.'
@@ -230,7 +230,7 @@ export const ResourceLimitModal = () => {
 
       // 3. Mark as used
       const { error: updateError } = await supabase
-        .from('access_codes')
+        .from('access_codes' as any)
         .update({ 
           is_used: true, 
           used_at: new Date().toISOString() 
