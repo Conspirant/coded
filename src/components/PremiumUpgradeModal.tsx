@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -37,6 +38,27 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
   const [loading, setLoading] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [showKeyForm, setShowKeyForm] = useState(false);
+  const [totalAmount, setTotalAmount] = useState<number>(78);
+
+  useEffect(() => {
+    const fetchTotalAmount = async () => {
+      try {
+        const { data, error } = await (supabase as any)
+          .from('donors')
+          .select('amount_inr');
+
+        if (error) throw error;
+
+        const dbTotal = (data || []).reduce((sum: number, d: { amount_inr: number }) => sum + Number(d.amount_inr), 0);
+        setTotalAmount(78 + dbTotal);
+      } catch (err) {
+        console.error('Error fetching total amount:', err);
+      }
+    };
+    if (open) {
+      fetchTotalAmount();
+    }
+  }, [open]);
 
   const handlePayment = async () => {
     setIsPaying(true);
@@ -44,6 +66,7 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
       () => {
         setIsPaying(false);
         setSuccess(true);
+        setTotalAmount(prev => prev + 19);
         setTimeout(() => {
           onOpenChange(false);
           setSuccess(false);
@@ -201,7 +224,7 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     amount received by people till now
                   </div>
-                  <div className="text-xl font-bold text-white font-mono">₹78</div>
+                  <div className="text-xl font-bold text-white font-mono">₹{totalAmount}</div>
                 </div>
 
                 <div className="space-y-3">

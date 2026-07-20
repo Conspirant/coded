@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SEO } from "@/components/SEO"
 import { Link } from "react-router-dom"
 import { Card, CardContent } from "@/components/ui/card"
@@ -28,6 +28,25 @@ const Donate = () => {
     const [donorName, setDonorName] = useState('')
     const [donorIsAnonymous, setDonorIsAnonymous] = useState(false)
     const [donateSuccessCode, setDonateSuccessCode] = useState('')
+    const [totalAmount, setTotalAmount] = useState<number>(78)
+
+    useEffect(() => {
+        const fetchTotalAmount = async () => {
+            try {
+                const { data, error } = await (supabase as any)
+                    .from('donors')
+                    .select('amount_inr')
+
+                if (error) throw error
+
+                const dbTotal = (data || []).reduce((sum: number, d: { amount_inr: number }) => sum + Number(d.amount_inr), 0)
+                setTotalAmount(78 + dbTotal)
+            } catch (err) {
+                console.error('Error fetching total amount:', err)
+            }
+        }
+        fetchTotalAmount()
+    }, [])
 
     const predefinedAmounts = [50, 100, 250, 500]
 
@@ -161,16 +180,17 @@ const Donate = () => {
                                 console.error('Failed to save donor to database:', e)
                             }
 
-                            setDonateSuccessCode(generatedCode)
-                            setPaymentStatus('success')
-                            setTxnDetails({
-                                paymentId: response.razorpay_payment_id,
-                                orderId: response.razorpay_order_id,
-                            })
-                            toast({
-                                title: "Payment Successful!",
-                                description: `Thank you so much for your donation of ₹${amtVal}!`,
-                            })
+                             setDonateSuccessCode(generatedCode)
+                             setPaymentStatus('success')
+                             setTotalAmount(prev => prev + amtVal)
+                             setTxnDetails({
+                                 paymentId: response.razorpay_payment_id,
+                                 orderId: response.razorpay_order_id,
+                             })
+                             toast({
+                                 title: "Payment Successful!",
+                                 description: `Thank you so much for your donation of ₹${amtVal}!`,
+                             })
                         } else {
                             setPaymentStatus('error')
                             toast({
@@ -286,7 +306,7 @@ const Donate = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     amount received by people till now
                 </div>
-                <div className="text-2xl font-bold text-white font-mono">₹78</div>
+                <div className="text-2xl font-bold text-white font-mono">₹{totalAmount}</div>
             </div>
 
             {/* Elegant Minimal Payment Card */}

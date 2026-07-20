@@ -83,6 +83,11 @@ const Supporters = () => {
   const [loading, setLoading] = useState(true);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  // Find the top donor (highest amount_inr)
+  const topDonor = donors.length > 0
+    ? [...donors].reduce((max, d) => Number(d.amount_inr) > Number(max.amount_inr) ? d : max, donors[0])
+    : null;
+
   useEffect(() => {
     fetchDonors();
   }, []);
@@ -165,6 +170,32 @@ const Supporters = () => {
           </div>
         </div>
 
+        {/* Top Supporter Section (Minimalist) */}
+        {!loading && topDonor && Number(topDonor.amount_inr) > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-3 border border-amber-500/10 bg-amber-500/[0.02] rounded-xl flex items-center justify-between group/top hover:border-amber-500/20 hover:bg-amber-500/[0.04] transition-all duration-300"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover/top:scale-105 transition-transform duration-300">
+                <Crown className="h-4 w-4 fill-amber-400/10" />
+              </div>
+              <div>
+                <span className="text-[9px] uppercase tracking-widest font-semibold text-amber-500/80 block">Top Supporter</span>
+                <span className={`text-xs font-medium ${topDonor.is_anonymous ? 'text-slate-400/90 italic' : 'text-white'}`}>
+                  {topDonor.is_anonymous ? 'Anonymous' : topDonor.display_name}
+                </span>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className="text-xs font-bold font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
+                ₹{Number(topDonor.amount_inr)}
+              </span>
+            </div>
+          </motion.div>
+        )}
+
         {/* Supporters List */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 border border-white/[0.04] bg-white/[0.01] rounded-xl">
@@ -187,7 +218,7 @@ const Supporters = () => {
               {donors.map((donor, index) => {
                 const displayName = donor.is_anonymous ? 'Anonymous' : donor.display_name;
                 const initials = getInitials(displayName);
-                const isTopDonor = index === 0;
+                const isTopDonor = topDonor && Number(donor.amount_inr) === Number(topDonor.amount_inr) && Number(donor.amount_inr) > 0;
 
                 return (
                   <motion.div
