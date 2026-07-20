@@ -38,11 +38,19 @@ const AUTH_KEY = "kcet_admin_auth"
 import { SUBJECTS, Subject, getChaptersForSubject } from "@/data/pyqQuestionBank"
 
 async function hashPassphrase(message: string): Promise<string> {
-    const msgBuffer = new TextEncoder().encode(message)
-    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer)
-    const hashArray = Array.from(new Uint8Array(hashBuffer))
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("")
-    return hashHex
+    try {
+        if (!crypto?.subtle) {
+            return "FALLBACK_NO_CRYPTO";
+        }
+        const msgBuffer = new TextEncoder().encode(message)
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer)
+        const hashArray = Array.from(new Uint8Array(hashBuffer))
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("")
+        return hashHex
+    } catch (e) {
+        console.warn("crypto.subtle failed, using fallback", e)
+        return "FALLBACK_NO_CRYPTO"
+    }
 }
 
 // ─── Auth Gate ─────────────────────────────────────────────────
@@ -60,11 +68,13 @@ function AdminAuthGate({ onAuth }: { onAuth: () => void }) {
         const envPass = import.meta.env.VITE_ADMIN_PASSPHRASE
         
         let isAuthorized = false
-        if (envPass) {
-            isAuthorized = trimmedPass === envPass.trim() || hashedInput === await hashPassphrase(envPass.trim())
+        if (envPass && envPass.trim() !== "") {
+            isAuthorized = trimmedPass === envPass.trim() || 
+                           (hashedInput !== "FALLBACK_NO_CRYPTO" && hashedInput === await hashPassphrase(envPass.trim()))
         } else {
-            // Default passphrase "kcetadmin2026" hashed to SHA-256
-            isAuthorized = hashedInput === "d810ebe01545b5eb232dc2415c249c815b26f351425d4a300412b1809f76cd30"
+            // Default passphrase "kcetadmin2026"
+            isAuthorized = trimmedPass === "kcetadmin2026" || 
+                           hashedInput === "d810ebe01545b5eb232dc2415c249c815b26f351425d4a300412b1809f76cd30"
         }
 
         if (isAuthorized) {
