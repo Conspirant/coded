@@ -129,13 +129,14 @@ const Supporters = () => {
 
       if (error) throw error;
 
-      if (data && data.length > 0) {
-        setDonors(data);
-        setTotalAmount(data.reduce((sum: number, d: Donor) => sum + Number(d.amount_inr), 0));
-      } else {
-        setDonors(MOCK_DONORS);
-        setTotalAmount(78);
-      }
+      const dbDonors = data || [];
+      const combinedDonors = [...dbDonors, ...MOCK_DONORS];
+      
+      // Sort combined list by created_at descending
+      combinedDonors.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      setDonors(combinedDonors);
+      setTotalAmount(combinedDonors.reduce((sum: number, d: Donor) => sum + Number(d.amount_inr), 0));
     } catch (err) {
       console.error('Error fetching donors:', err);
       setDonors(MOCK_DONORS);
