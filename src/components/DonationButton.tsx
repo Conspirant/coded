@@ -13,20 +13,7 @@ export const DonationButton = () => {
   // Hide the FAB on the donate page itself (redundant there)
   const isDonatePage = location.pathname === '/donate';
 
-  // Auto-trigger polite popup after 5 seconds if not paid and not already dismissed
-  useEffect(() => {
-    if (isUnlocked()) return;
 
-    const alreadyDismissed = localStorage.getItem('donation-popup-dismissed-2026') === 'true';
-    if (alreadyDismissed) return;
-
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-      setShowPulse(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Show a gentle nudge pulse after 60 seconds on site (once per session)
   useEffect(() => {

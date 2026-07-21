@@ -45,20 +45,7 @@ export const Calibrate2027Modal = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  useEffect(() => {
-    // Check if the user has already calibrated, has entered results, or has dismissed the popup
-    const hasCalibrated = localStorage.getItem("hasCalibrated2027") === "true"
-    const hasResults = localStorage.getItem("kcetResults") !== null
-    const hasDismissed = localStorage.getItem("hasDismissedCalibratePopup") === "true"
 
-    if (!hasCalibrated && !hasResults && !hasDismissed) {
-      // 1.5 second delay before displaying the modal on site entry
-      const timer = setTimeout(() => {
-        setIsOpen(true)
-      }, 1500)
-      return () => clearTimeout(timer)
-    }
-  }, [])
 
   const handleDismiss = () => {
     localStorage.setItem("hasDismissedCalibratePopup", "true")

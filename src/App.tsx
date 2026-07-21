@@ -57,6 +57,7 @@ import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
+import { InstagramPopup } from "./components/InstagramPopup";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ const App = () => (
             <DisclaimerBanner />
             <ResourceLimitModal />
             <Calibrate2027Modal />
+            <InstagramPopup />
 
             <Routes>
               <Route path="/" element={<Homepage />} />
