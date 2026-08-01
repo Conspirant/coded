@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Sparkles, X, Heart, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { Globe, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const DomainAnnouncementModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user has already dismissed this announcement
     const dismissed = localStorage.getItem("kcetcoded_domain_announcement_v1") === "true";
     if (!dismissed) {
-      // Small delay for smooth pop-in after page load
-      const timer = setTimeout(() => setIsOpen(true), 600);
+      const timer = setTimeout(() => setIsOpen(true), 400);
       return () => clearTimeout(timer);
     }
   }, []);
+
+  // Keyboard accessibility: Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const handleClose = () => {
     localStorage.setItem("kcetcoded_domain_announcement_v1", "true");
@@ -34,101 +43,97 @@ export const DomainAnnouncementModal = () => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-          {/* Backdrop Blur */}
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          {/* Minimalist Dark Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-slate-950/85 backdrop-blur-md"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm"
           />
 
-          {/* Modal Content */}
+          {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 16 }}
-            transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-indigo-500/20 bg-slate-950/90 p-6 sm:p-8 shadow-[0_0_60px_-15px_rgba(99,102,241,0.25)] backdrop-blur-2xl z-10"
+            exit={{ opacity: 0, scale: 0.96, y: 12 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-6 sm:p-7 text-zinc-100 shadow-2xl z-10"
           >
-            {/* Ambient Background Glows */}
-            <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-
-            {/* Close Button */}
+            {/* Accessible Dismiss / Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-5 right-5 p-2 rounded-full border border-white/10 bg-white/5 text-slate-400 hover:text-white hover:bg-white/15 transition-all"
-              aria-label="Close modal"
+              className="absolute top-4 right-4 p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label="Close announcement"
             >
               <X className="h-4 w-4" />
             </button>
 
-            {/* Top Pill & Header */}
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-semibold tracking-wide uppercase">
-                <Globe className="h-3.5 w-3.5 text-indigo-400 animate-pulse" />
-                <span>Official Domain Release</span>
+            {/* Header / Badge */}
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-zinc-800 bg-zinc-900 text-zinc-400 text-xs font-medium tracking-wide">
+                <Globe className="h-3.5 w-3.5 text-zinc-400" />
+                <span>Domain Announcement</span>
               </div>
 
-              <div className="space-y-1">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <span>Welcome to</span>
-                  <span className="bg-gradient-to-r from-indigo-400 via-sky-300 to-emerald-400 bg-clip-text text-transparent">
-                    kcetcoded.dev
-                  </span>
-                  <Sparkles className="h-5 w-5 text-amber-400 shrink-0" />
-                </h3>
-                <p className="text-xs text-slate-400 font-medium">
-                  Next-Generation KCET & COMEDK Counseling & Analytics Platform
+              <div className="space-y-1 pr-8">
+                <h2 id="modal-title" className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+                  Official Domain: kcetcoded.dev
+                </h2>
+                <p className="text-xs text-zinc-400 font-medium">
+                  KCET & COMEDK Counseling Platform
                 </p>
               </div>
             </div>
 
-            {/* Message Body */}
-            <div className="mt-5 space-y-3.5 text-sm text-slate-300 leading-relaxed font-normal">
+            {/* Concise & Professional Body */}
+            <div id="modal-description" className="mt-4 space-y-3 text-sm text-zinc-300 leading-relaxed">
               <p>
-                We are proud to formally announce that our official domain is now live at{" "}
-                <strong className="text-indigo-300 font-semibold underline decoration-indigo-500/40 underline-offset-4">
+                We have officially migrated our platform to{" "}
+                <strong className="text-white font-medium underline decoration-zinc-700 underline-offset-4">
                   kcetcoded.dev
                 </strong>
                 .
               </p>
               <p>
-                We extend our deepest gratitude to our community members and donors. Your generous support has enabled us to upgrade high-performance database resources and maintain seamless server infrastructure.
+                Thank you to our supporters and donors. Your contributions directly help cover our server hosting and database infrastructure costs.
               </p>
-              <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 space-y-1.5">
-                <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                  <span>100% Free & Unlocked Access</span>
+              <div className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-3.5 space-y-1">
+                <div className="text-xs font-semibold text-emerald-400 tracking-wide uppercase">
+                  Temporary Free Access
                 </div>
-                <p className="text-xs text-slate-300 leading-normal">
-                  To celebrate this milestone, <strong className="text-white">all premium features</strong> (College Predictor, Cutoff Explorer, Mock Simulator, and Rank Predictor) are completely free for everyone for a limited period.
+                <p className="text-xs text-zinc-300 leading-normal">
+                  To mark this transition, all tools—including College Predictor, Cutoff Explorer, Mock Simulator, and Rank Predictor—are unlocked for all users for a limited period.
                 </p>
               </div>
-              <p className="text-xs text-slate-400 italic">
-                Sustaining high-volume analytics servers requires continuous infrastructure support. We sincerely appreciate any ongoing contributions to help keep this platform fast and free.
+              <p className="text-xs text-zinc-400">
+                Continued community support helps us sustain server operations and keep high-volume analytics resources running smoothly.
               </p>
             </div>
 
             {/* Actions */}
-            <div className="mt-6 flex flex-col sm:flex-row items-center gap-3">
+            <div className="mt-6 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5">
+              <Button
+                variant="outline"
+                onClick={handleClose}
+                className="w-full sm:w-auto border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-lg h-10 px-4 text-sm font-medium transition-colors"
+              >
+                Dismiss
+              </Button>
               <Button
                 onClick={handleVisitDomain}
-                className="w-full sm:flex-1 bg-gradient-to-r from-indigo-600 via-indigo-500 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white font-semibold shadow-lg shadow-indigo-500/20 rounded-xl h-11 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto bg-white hover:bg-zinc-200 text-zinc-950 font-medium rounded-lg h-10 px-4 text-sm flex items-center justify-center gap-2 transition-colors"
               >
                 <span>Visit kcetcoded.dev</span>
                 <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={handleClose}
-                className="w-full sm:w-auto text-slate-400 hover:text-white hover:bg-white/5 rounded-xl h-11 px-5"
-              >
-                Explore Platform
               </Button>
             </div>
           </motion.div>
