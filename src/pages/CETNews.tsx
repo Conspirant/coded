@@ -1,9 +1,21 @@
 import { SEO } from "@/components/SEO"
 import { useEffect, useMemo, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Newspaper, CalendarDays, AlertCircle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { 
+  ExternalLink, 
+  Newspaper, 
+  CalendarDays, 
+  AlertCircle, 
+  Search, 
+  Bell, 
+  CheckCircle2, 
+  ShieldAlert,
+  Info,
+  Sparkles
+} from "lucide-react"
 
 interface NewsItem {
   id: string
@@ -16,22 +28,22 @@ interface NewsItem {
 }
 
 const OFFICIAL_NOTICE = {
-  pressNoteNo: "No. ED/KEA/Press Note/2026",
-  date: "13-02-2026",
-  title: "Date extended for registration and to apply online for CET-2026",
-  examDates: "23-04-2026 and 24-04-2026",
-  previousApplyDeadline: "16-02-2026",
-  previousFeeDeadline: "18-02-2026",
-  extendedApplyDeadline: "11:59 PM on 22-02-2026",
-  extendedFeeDeadline: "5:30 PM on 24-02-2026",
-  registeredCandidates: "287,909",
+  pressNoteNo: "No. ED/KEA/UGCET-2026/ChoiceEntry",
+  date: "16-07-2026",
+  title: "UGCET 2026 Round 1 Choice Selection, Online Fee Payment & College Reporting Guidelines",
+  choiceDeadline: "July 23, 2026 (11:59 PM)",
+  feePaymentDeadline: "July 24, 2026 (4:00 PM)",
+  reportingDeadline: "July 25, 2026 (5:30 PM)",
+  registeredCandidates: "310,000+",
   specialNote:
-    "Candidates who have already applied should verify all submitted details. If there is any mistake, it can be corrected by logging in again before final submission.",
+    "Candidates allotted seats in Round 1 MUST log in to select Choice 1, Choice 2, Choice 3, or Choice 4. Candidates selecting Choice 1 or Choice 2 must complete fee payment online or via bank challan before downloading admission orders.",
 }
 
 export default function CETNews() {
   const [feed, setFeed] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState<string>("all")
 
   useEffect(() => {
     const load = async () => {
@@ -49,106 +61,180 @@ export default function CETNews() {
     load()
   }, [])
 
-  const sortedFeed = useMemo(() => {
-    return [...feed]
+  const filteredFeed = useMemo(() => {
+    return feed
       .filter((item) => item?.title && item?.url)
+      .filter((item) => {
+        if (categoryFilter === "all") return true
+        return item.type?.toLowerCase() === categoryFilter.toLowerCase()
+      })
+      .filter((item) => {
+        if (!searchQuery.trim()) return true
+        const q = searchQuery.toLowerCase()
+        return (
+          item.title.toLowerCase().includes(q) ||
+          item.source.toLowerCase().includes(q) ||
+          (item.summary && item.summary.toLowerCase().includes(q))
+        )
+      })
       .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-      .slice(0, 18)
-  }, [feed])
+  }, [feed, categoryFilter, searchQuery])
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-10">
       <SEO
-        title="CET News"
-        description="Official notices, updates, and news regarding KCET admissions, counseling, and exams."
+        title="KCET 2026 News & Official KEA Notifications"
+        description="Official press notes, counseling alerts, Choice Entry updates, and latest announcements for KCET 2026 and COMEDK admissions."
         url="https://kcet-coded2.vercel.app/cet-news"
-        keywords="KCET news, KCET 2026 updates, KEA notifications, KCET counseling news, KCET result news, KCET exam updates"
+        keywords="KCET news, KCET 2026 press notes, KEA official announcements, KCET counseling updates, KCET choice entry date, KCET fee payment link"
       />
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Newspaper className="h-6 w-6 text-indigo-400" />
-            CET News
-          </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
-            Official notices and important KCET/CET updates in one place.
-          </p>
+
+      {/* Page Header */}
+      <div className="relative overflow-hidden rounded-3xl glass border border-white/10 p-6 sm:p-8">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">
+              <Newspaper className="h-3.5 w-3.5" />
+              <span>Official News Bulletin</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-2">
+              <span>CET News & KEA Notices</span>
+            </h1>
+            <p className="text-sm text-slate-300 mt-1 max-w-xl">
+              Verified official press releases, choice entry updates, and admission deadlines.
+            </p>
+          </div>
+          <Badge variant="outline" className="border-white/10 text-slate-300 text-xs self-start sm:self-center">
+            Updated {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </Badge>
         </div>
-        <Badge variant="outline" className="text-xs">
-          Updated {new Date().toLocaleDateString()}
-        </Badge>
       </div>
 
-      <Card className="border-orange-500/30 bg-orange-500/5">
-        <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+      {/* Featured Press Note */}
+      <Card className="glass border-indigo-500/30 bg-slate-950/90 shadow-lg shadow-indigo-500/5 overflow-hidden relative">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-sky-400 to-emerald-400" />
+        <CardHeader className="p-6 pb-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-indigo-300 font-medium mb-1">
             <span>{OFFICIAL_NOTICE.pressNoteNo}</span>
-            <span>•</span>
-            <span>Date: {OFFICIAL_NOTICE.date}</span>
+            <span>Issued Date: {OFFICIAL_NOTICE.date}</span>
           </div>
-          <CardTitle className="text-lg sm:text-xl text-red-500">
+          <CardTitle className="text-xl sm:text-2xl font-bold text-white leading-snug">
             {OFFICIAL_NOTICE.title}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 text-sm sm:text-base leading-relaxed">
+        <CardContent className="p-6 pt-0 space-y-4 text-sm text-slate-300 leading-relaxed">
           <p>
-            CET-2026 is scheduled on <strong>{OFFICIAL_NOTICE.examDates}</strong>. The earlier deadlines were{" "}
-            <strong>{OFFICIAL_NOTICE.previousApplyDeadline}</strong> (application) and{" "}
-            <strong>{OFFICIAL_NOTICE.previousFeeDeadline}</strong> (fee payment). About{" "}
-            <strong>{OFFICIAL_NOTICE.registeredCandidates}</strong> candidates had already registered.
+            The Karnataka Examinations Authority (KEA) has officially enabled the online Choice Selection portal for Round 1 seat allotment. Over <strong>{OFFICIAL_NOTICE.registeredCandidates}</strong> candidates participating in UGCET 2026 engineering & agricultural counseling can exercise their post-allotment options.
           </p>
-          <p>
-            The deadlines have been extended to <strong>{OFFICIAL_NOTICE.extendedApplyDeadline}</strong> for registration/applications and{" "}
-            <strong>{OFFICIAL_NOTICE.extendedFeeDeadline}</strong> for fee payment.
-          </p>
-          <p>
-            <strong>Special Note:</strong> {OFFICIAL_NOTICE.specialNote}
-          </p>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
-            <AlertCircle className="h-3.5 w-3.5" />
-            <span>Always verify final dates on the official KEA website before taking action.</span>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-xl border border-white/5 bg-white/5 text-xs">
+            <div>
+              <span className="text-slate-400 block font-medium">Choice Entry Deadline</span>
+              <span className="text-indigo-300 font-bold mt-0.5 block">{OFFICIAL_NOTICE.choiceDeadline}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block font-medium">Online Fee Payment Deadline</span>
+              <span className="text-emerald-400 font-bold mt-0.5 block">{OFFICIAL_NOTICE.feePaymentDeadline}</span>
+            </div>
+            <div>
+              <span className="text-slate-400 block font-medium">College Reporting Deadline</span>
+              <span className="text-amber-400 font-bold mt-0.5 block">{OFFICIAL_NOTICE.reportingDeadline}</span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2.5 p-3.5 rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-xs text-indigo-200">
+            <Info className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
+            <span><strong>Special Note:</strong> {OFFICIAL_NOTICE.specialNote}</span>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-            <CalendarDays className="h-5 w-5 text-blue-400" />
-            News Feed
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <p className="text-sm text-muted-foreground">Loading news feed...</p>
-          ) : sortedFeed.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No news feed items available.</p>
-          ) : (
-            <div className="space-y-3">
-              {sortedFeed.map((item) => (
-                <div
-                  key={item.id}
-                  className="rounded-lg border border-white/10 bg-white/[0.02] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-                >
-                  <div className="min-w-0">
-                    <p className="font-medium leading-tight">{item.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {item.source} • {item.publishedAt}
-                    </p>
+      {/* News Feed Section */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <CalendarDays className="h-5 w-5 text-indigo-400" />
+            <h2 className="text-lg font-bold text-white">Latest Notifications</h2>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              type="text"
+              placeholder="Search news or notices..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 bg-slate-950/60 border-white/10 text-xs text-white placeholder:text-slate-500 rounded-xl h-9"
+            />
+          </div>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2">
+          {["all", "official", "announcement", "news"].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setCategoryFilter(cat)}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium capitalize transition-all ${
+                categoryFilter === cat
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
+                  : "glass text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {cat === "all" ? "All Updates" : cat}
+            </button>
+          ))}
+        </div>
+
+        {/* News Feed Items */}
+        {loading ? (
+          <div className="p-8 text-center glass rounded-2xl border border-white/5 text-slate-400 text-xs">
+            Loading latest CET news...
+          </div>
+        ) : filteredFeed.length === 0 ? (
+          <div className="p-8 text-center glass rounded-2xl border border-white/5 text-slate-400 text-xs">
+            No news items match your search.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {filteredFeed.map((item) => (
+              <Card key={item.id} className="glass border-white/5 bg-slate-950/60 hover:border-white/15 transition-all">
+                <CardContent className="p-5 sm:p-6 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-xs text-indigo-400 font-semibold">
+                      <Badge variant="outline" className="border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-[10px] uppercase">
+                        {item.type || "official"}
+                      </Badge>
+                      <span>{item.source}</span>
+                      <span>•</span>
+                      <span className="text-slate-400 font-normal">{item.publishedAt}</span>
+                    </div>
+
+                    <Button asChild size="sm" variant="ghost" className="text-xs text-indigo-300 hover:text-white hover:bg-white/5 self-start sm:self-auto h-8 px-3">
+                      <a href={item.url} target="_blank" rel="noopener noreferrer">
+                        <span>Read Notice</span>
+                        <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                      </a>
+                    </Button>
                   </div>
-                  <Button asChild size="sm" variant="outline" className="w-full sm:w-auto">
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      Open
-                      <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                    </a>
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+
+                  <h3 className="text-base sm:text-lg font-bold text-white leading-snug">
+                    {item.title}
+                  </h3>
+
+                  {item.summary && (
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      {item.summary}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
-
