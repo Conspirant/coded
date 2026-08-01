@@ -57,6 +57,7 @@ import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
+import { DomainAnnouncementModal } from "./components/DomainAnnouncementModal";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ const App = () => (
             <DisclaimerBanner />
             <ResourceLimitModal />
             <Calibrate2027Modal />
+            <DomainAnnouncementModal />
 
             <Routes>
               <Route path="/" element={<Homepage />} />

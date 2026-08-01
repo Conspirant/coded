@@ -17,7 +17,7 @@ async function loadPageIndex(): Promise<void> {
 
     pageIndexLoading = (async () => {
         try {
-            const response = await fetch('/data/pdf-page-index.json');
+            const response = await fetch('/data/pdf-page-index.dat');
             if (response.ok) {
                 const data = await response.json();
                 pageIndex = data.index || {};

@@ -37,10 +37,10 @@ export const CutoffTrendsGraph = ({ collegeCode, collegeName }: CutoffTrendsProp
                 // We fetch the consolidated JSON file
                 // Note: In a real production app with 30MB+ JSON, we'd want this filtered on the server.
                 // For this implementation, we'll fetch and filter client-side as requested.
-                // Use /data/kcet_cutoffs_consolidated.json first as it has the complete R3 2025 data
-                let response = await fetch('/data/kcet_cutoffs_consolidated.json');
+                // Use /data/kcet_cutoffs_consolidated.dat first as it has the complete R3 2025 data
+                let response = await fetch('/data/kcet_cutoffs_consolidated.dat');
                 if (!response.ok) {
-                    response = await fetch('/kcet_cutoffs_consolidated.json');
+                    response = await fetch('/kcet_cutoffs_consolidated.dat');
                 }
                 if (!response.ok) {
                     throw new Error('Failed to load cutoff data');
@@ -55,7 +55,7 @@ export const CutoffTrendsGraph = ({ collegeCode, collegeName }: CutoffTrendsProp
                 // It seems the actual cutoffs might be in a property.
                 // Wait, I need to be sure where the cutoffs are. 
                 // Based on previous view_file, line 1500 showed objects inside an array structure, likely under a key or root array.
-                // If it's the `kcet_cutoffs_consolidated.json`, detailed view showed line 1500: `}, { ... }`.
+                // If it's the `kcet_cutoffs_consolidated.dat`, detailed view showed line 1500: `}, { ... }`.
                 // This implies a list of objects. But lines 1-10 showed "metadata".
                 // It's likely: { metadata: {...}, data: [...] } or just an array after metadata?
                 // Actually, looking at lines 1-320 in the view_file, it closes "unique_institutes" array but doesn't show the main data key.

@@ -87,10 +87,10 @@ export class AdminCutoffService {
 
         // Load base data from the same sources CutoffExplorer uses
         const urls = [
-            '/data/kcet_cutoffs_high_volume.json',
-            '/data/kcet_cutoffs_master.json',
-            '/data/kcet_cutoffs_consolidated.json',
-            '/kcet_cutoffs.json',
+            '/data/kcet_cutoffs_high_volume.dat',
+            '/data/kcet_cutoffs_master.dat',
+            '/data/kcet_cutoffs_consolidated.dat',
+            '/kcet_cutoffs.dat',
         ];
 
         for (const url of urls) {

@@ -749,9 +749,9 @@ const MockSimulator = () => {
         setProgress(10)
 
         const urls = [
-          '/data/kcet_cutoffs_consolidated.json',
-          '/kcet_cutoffs.json',
-          '/kcet_cutoffs_round3_2025.json'
+          '/data/kcet_cutoffs_consolidated.dat',
+          '/kcet_cutoffs.dat',
+          '/kcet_cutoffs_round3_2025.dat'
         ]
 
         let response: Response | null = null

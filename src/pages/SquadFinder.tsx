@@ -71,7 +71,7 @@ const SquadFinder = () => {
             setLoadingData(true)
             try {
                 // Fetching the consolidated file
-                const response = await fetch('/kcet_cutoffs_consolidated.json')
+                const response = await fetch('/kcet_cutoffs_consolidated.dat')
                 if (!response.ok) throw new Error("Failed to load data")
 
                 const json = await response.json()

@@ -977,14 +977,14 @@ const CollegeFinder = () => {
 
         // Load from the highest-volume merged source first
         const urls = [
-          '/data/kcet_cutoffs_high_volume.json',
-          '/data/kcet_cutoffs_master.json',
-          '/data/kcet_cutoffs_consolidated.json',
-          '/kcet_cutoffs_high_volume.json',
-          '/kcet_cutoffs_master.json',
-          '/kcet_cutoffs.json',
-          '/kcet_cutoffs_round3_2025.json',
-          '/kcet_cutoffs2025.json'
+          '/data/kcet_cutoffs_high_volume.dat',
+          '/data/kcet_cutoffs_master.dat',
+          '/data/kcet_cutoffs_consolidated.dat',
+          '/kcet_cutoffs_high_volume.dat',
+          '/kcet_cutoffs_master.dat',
+          '/kcet_cutoffs.dat',
+          '/kcet_cutoffs_round3_2025.dat',
+          '/kcet_cutoffs2025.dat'
         ]
         let response: Response | null = null
         let dataSource = ''

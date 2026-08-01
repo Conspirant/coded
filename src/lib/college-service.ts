@@ -156,7 +156,7 @@ const loadReviewsFromSupabase = async (): Promise<CollegeReview[]> => {
 
 export const loadColleges = async (): Promise<College[]> => {
   try {
-    const response = await fetch('/colleges-list.json');
+    const response = await fetch('/colleges-list.dat');
     if (!response.ok) {
       throw new Error('Failed to load colleges data');
     }

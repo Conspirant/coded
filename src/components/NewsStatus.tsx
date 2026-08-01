@@ -31,7 +31,7 @@ export function NewsStatus({ className }: NewsStatusProps) {
 
   const loadNewsStats = async () => {
     try {
-      const response = await fetch('/data/news.json')
+      const response = await fetch('/data/news.dat')
       if (!response.ok) throw new Error('Failed to load news')
       
       const news: NewsItem[] = await response.json()

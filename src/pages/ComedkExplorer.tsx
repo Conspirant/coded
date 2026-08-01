@@ -183,7 +183,7 @@ const ComedkExplorer = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/data/comedk_cutoffs.json", { cache: "no-store" });
+        const response = await fetch("/data/comedk_cutoffs.dat", { cache: "no-store" });
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }

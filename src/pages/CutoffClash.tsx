@@ -34,13 +34,13 @@ interface RawCutoffData {
 }
 
 const DATA_URLS = [
-  "/data/kcet_cutoffs_master.json",
-  "/data/kcet_cutoffs_high_volume.json",
-  "/data/kcet_cutoffs_consolidated.json",
-  "/kcet_cutoffs_master.json",
-  "/kcet_cutoffs_high_volume.json",
-  "/kcet_cutoffs_consolidated.json",
-  "/kcet_cutoffs.json",
+  "/data/kcet_cutoffs_master.dat",
+  "/data/kcet_cutoffs_high_volume.dat",
+  "/data/kcet_cutoffs_consolidated.dat",
+  "/kcet_cutoffs_master.dat",
+  "/kcet_cutoffs_high_volume.dat",
+  "/kcet_cutoffs_consolidated.dat",
+  "/kcet_cutoffs.dat",
 ]
 
 const ROUND_PRIORITY = ["R2", "R1", "R3", "MOCK"]

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const jsonPath = path.join(__dirname, '../../public/colleges-list.json');
+const jsonPath = path.join(__dirname, '../../public/colleges-list.dat');
 const outputPath = path.join(__dirname, '../data/collegesRawList.ts');
 
 const rawData = fs.readFileSync(jsonPath, 'utf8');

@@ -1,6 +1,6 @@
 export type Course = { code: string; name: string };
 
-// These are now loaded dynamically from kcet_cutoffs.json (consolidated data)
+// These are now loaded dynamically from kcet_cutoffs.dat (consolidated data)
 // Keeping this file for backward compatibility and type definitions
 export const COURSES: Course[] = [];
 

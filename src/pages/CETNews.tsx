@@ -36,7 +36,7 @@ export default function CETNews() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch("/data/news.json", { cache: "no-store" })
+        const res = await fetch("/data/news.dat", { cache: "no-store" })
         if (!res.ok) throw new Error("Failed to load news")
         const data = await res.json()
         setFeed(Array.isArray(data) ? data : [])
