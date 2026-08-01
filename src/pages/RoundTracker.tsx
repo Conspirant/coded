@@ -1,17 +1,23 @@
 import { SEO } from "@/components/SEO"
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import { 
   Bell, 
   Clock, 
-  CheckCircle, 
+  CheckCircle2, 
   AlertCircle, 
   Calendar,
   ArrowRight,
-  Timer
+  ShieldCheck,
+  FileText,
+  Building2,
+  ExternalLink,
+  Info,
+  HelpCircle
 } from "lucide-react"
 
 interface RoundStatus {
@@ -27,218 +33,272 @@ interface RoundStatus {
 
 const RoundTracker = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [rounds, setRounds] = useState<RoundStatus[]>([
+  const [activeFilter, setActiveFilter] = useState<'all' | 'active' | 'upcoming' | 'completed'>('all')
+
+  const [rounds] = useState<RoundStatus[]>([
     {
       id: 'mock_round',
-      name: 'Mock Allotment & Option Entry',
+      name: 'Stage 1: Verification & Mock Allotment',
       status: 'completed',
       startDate: '2026-06-20',
       endDate: '2026-07-09',
       progress: 100,
-      description: 'Choice entry and mock seat allotment window.',
+      description: 'Document verification, initial choice entry, and mock seat allotment result.',
       alerts: [
         'UGCET Option Entry was open from June 20 to June 30, 2026.',
-        'Mock Seat Allotment results were declared on July 6, 2026.',
-        'Option modification window closed on July 9, 2026, at 10:00 AM.'
+        'Mock Seat Allotment results declared on July 6, 2026.',
+        'Option editing window closed on July 9, 2026.'
       ]
     },
     {
-      id: 'round1',
-      name: 'Round 1 Seat Allotment',
-      status: 'active',
+      id: 'round1_allotment',
+      name: 'Stage 2: Round 1 Seat Allotment',
+      status: 'completed',
       startDate: '2026-07-13',
-      endDate: '2026-07-20',
-      progress: 60,
-      description: 'First round of seat allotment and admission process.',
+      endDate: '2026-07-15',
+      progress: 100,
+      description: 'Provisional allotment, objection window, and publication of final Round 1 seat allotment.',
       alerts: [
-        '✅ Round 1 Provisional Seat Allotment declared on July 13, 2026.',
-        '⏰ Objection window for provisional allotment closed on July 14, 2026, at 5:00 PM.',
-        '📢 Final Round 1 Seat Allotment will be declared on July 15, 2026 (after 11:00 AM).',
-        '📋 Candidates must exercise their choices (Freeze/Slide/Float) and pay fees online after final allotment.'
+        'Provisional Seat Allotment declared on July 13, 2026.',
+        'Objection window closed on July 14, 2026 (5:00 PM).',
+        'Final Round 1 Seat Allotment declared on July 15, 2026.'
+      ]
+    },
+    {
+      id: 'round1_post',
+      name: 'Stage 3: Choice Entry, Fee Payment & Reporting',
+      status: 'active',
+      startDate: '2026-07-16',
+      endDate: '2026-07-24',
+      progress: 75,
+      description: 'Post-allotment choice selection (Choice 1/2/3/4), fee payment, and college reporting.',
+      alerts: [
+        '🟢 Choice Selection Window: Candidates must log in to select Choice 1, 2, 3, or 4.',
+        '💳 Fee Payment: Online payment / Challan download active for Choice 1 & Choice 2 candidates.',
+        '🏫 College Reporting: Choice 1 candidates must report to allotted colleges with original documents.'
       ]
     },
     {
       id: 'round2',
-      name: 'Round 2',
+      name: 'Stage 4: Round 2 Option Entry & Seat Allotment',
       status: 'upcoming',
       startDate: 'TBA',
       endDate: 'TBA',
       progress: 0,
-      description: 'Second round of counseling and allotment.',
+      description: 'Option modification for Choice 2 & 3 candidates followed by Round 2 seat allotment.',
       alerts: [
-        'Detailed schedule for Round 2 choice filling and allotment will be released after Round 1 concludes.',
-        'AYUSH/Medical/Dental choice updates will align with MCC guidelines.'
+        'Fresh option modification window for Choice 2 & Choice 3 candidates will open after Round 1 reporting.',
+        'Seat allotment results for Round 2 will be declared following option entry closure.'
+      ]
+    },
+    {
+      id: 'round3_extended',
+      name: 'Stage 5: Extended Round (Mop-Up / Round 3)',
+      status: 'upcoming',
+      startDate: 'TBA',
+      endDate: 'TBA',
+      progress: 0,
+      description: 'Final counseling round for remaining unfilled engineering, architecture & farm science seats.',
+      alerts: [
+        'Eligible candidates with no seat allotted or holding Choice 2/3 will be allowed to participate.',
+        'Final physical reporting and admission confirmation.'
       ]
     }
   ])
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
+
+  const filteredRounds = rounds.filter(r => activeFilter === 'all' || r.status === activeFilter)
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-500" />
+        return <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
       case 'active':
-        return <Clock className="h-5 w-5 text-blue-500" />
+        return <Clock className="h-5 w-5 text-indigo-400 animate-pulse shrink-0" />
       case 'upcoming':
-        return <Calendar className="h-5 w-5 text-orange-500" />
-      case 'cancelled':
-        return <AlertCircle className="h-5 w-5 text-red-500" />
+        return <Calendar className="h-5 w-5 text-amber-400 shrink-0" />
       default:
-        return <Bell className="h-5 w-5" />
+        return <Bell className="h-5 w-5 text-slate-400 shrink-0" />
     }
   }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">Completed</Badge>
+        return <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Completed</Badge>
       case 'active':
-        return <Badge variant="default" className="bg-blue-100 text-blue-800">Active</Badge>
+        return <Badge className="bg-indigo-500/15 text-indigo-400 border-indigo-500/30 animate-pulse">Active Now</Badge>
       case 'upcoming':
-        return <Badge variant="outline" className="border-orange-300 text-orange-700">Upcoming</Badge>
-      case 'cancelled':
-        return <Badge variant="destructive">Cancelled</Badge>
+        return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20">Upcoming</Badge>
       default:
-        return <Badge variant="outline">Unknown</Badge>
+        return <Badge variant="outline">Scheduled</Badge>
     }
   }
 
   const formatDate = (dateString: string) => {
-    if (dateString === 'TBA') {
-      return 'To be announced'
-    }
+    if (dateString === 'TBA') return 'To be announced'
     return new Date(dateString).toLocaleDateString('en-IN', {
       day: 'numeric',
-      month: 'long',
+      month: 'short',
       year: 'numeric'
     })
   }
 
-  const getTimeUntilNextRound = () => {
-    const nextRound = rounds.find(round => round.status === 'upcoming')
-    if (!nextRound) return null
-
-    // Check if schedule is not yet announced
-    if (nextRound.startDate === 'TBA' || nextRound.endDate === 'TBA') {
-      return 'TBA'
-    }
-
-    const nextRoundDate = new Date(nextRound.startDate)
-    const now = currentTime
-    const diff = nextRoundDate.getTime() - now.getTime()
-
-    if (diff <= 0) return null
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-
-    return { days, hours, minutes }
-  }
-
-  const timeUntilNext = getTimeUntilNextRound()
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-10">
       <SEO
-        title="KCET 2026 Counseling Round Tracker – Dates, Deadlines & Alerts"
-        description="Track all KCET 2026 counseling rounds, deadlines, and important dates. Get real-time updates on Round 1, Round 2, Round 3, fee payment dates, and document verification schedules."
+        title="KCET 2026 Counseling Round Tracker – Real-Time Schedule & Choice Entry Guide"
+        description="Track all KCET 2026 counseling stages, Round 1 choice entry deadlines, fee payment windows, college reporting dates, and Round 2 notifications in real time."
         url="https://kcet-coded2.vercel.app/round-tracker"
-        keywords="KCET counseling rounds, KCET 2026 counseling dates, KCET round 1 date, KCET round 2 date, KCET round 3, KEA counseling schedule, KCET admission deadlines"
+        keywords="KCET counseling rounds, KCET 2026 dates, KCET round 1 choice entry, KCET choice 1 choice 2, KEA counseling schedule, KCET reporting date"
       />
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Round Tracker & Alerts</h1>
-        <p className="text-foreground/70">Stay updated with KCET counseling rounds and notifications</p>
+
+      {/* Header Banner */}
+      <div className="relative overflow-hidden rounded-3xl glass border border-white/10 p-6 sm:p-8">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 -z-10" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3 -z-10" />
+
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+              <Clock className="h-3.5 w-3.5" />
+              <span>Live Counseling Tracker</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-white">
+              KCET 2026 Counseling Round Tracker
+            </h1>
+            <p className="text-sm text-slate-300 max-w-2xl">
+              Stay up-to-date with official KEA counseling timelines, Choice 1–4 entry guidelines, online fee payment windows, and college reporting checklists.
+            </p>
+          </div>
+
+          <a 
+            href="https://cetonline.karnataka.gov.in" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-all shadow-lg shadow-indigo-500/20 shrink-0"
+          >
+            <span>KEA Candidate Portal</span>
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
       </div>
 
-      {/* Current Status Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="h-5 w-5 text-green-500" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Latest Completed Round</p>
-                <p className="text-2xl font-bold">Mock Allotment</p>
-              </div>
+      {/* Quick Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card className="glass border-white/5 bg-slate-950/60">
+          <CardContent className="p-5 flex items-center gap-4">
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+              <CheckCircle2 className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Concluded Stage</p>
+              <p className="text-lg font-bold text-white mt-0.5">Round 1 Allotment</p>
             </div>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <AlertCircle className="h-5 w-5 text-orange-500" />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Current Status</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  Round 1 (Ongoing)
-                </p>
-              </div>
+
+        <Card className="glass border-indigo-500/30 bg-indigo-950/20">
+          <CardContent className="p-5 flex items-center gap-4">
+            <div className="p-3 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
+              <Clock className="h-6 w-6 animate-pulse" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-indigo-300 uppercase tracking-wider">Active Phase</p>
+              <p className="text-lg font-bold text-white mt-0.5">Choice Entry & Fee Pay</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="glass border-white/5 bg-slate-950/60">
+          <CardContent className="p-5 flex items-center gap-4">
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+              <Calendar className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Upcoming Phase</p>
+              <p className="text-lg font-bold text-white mt-0.5">Round 2 Options</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Round Status Cards */}
+      {/* Filter Bar */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-4">
+        {(['all', 'active', 'upcoming', 'completed'] as const).map(filter => (
+          <button
+            key={filter}
+            onClick={() => setActiveFilter(filter)}
+            className={`px-4 py-2 rounded-xl text-xs font-medium capitalize transition-all ${
+              activeFilter === filter
+                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                : 'glass text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            {filter} Rounds
+          </button>
+        ))}
+      </div>
+
+      {/* Timeline Section */}
       <div className="space-y-4">
-        {rounds.map((round) => (
-          <Card key={round.id} className={`${round.status === 'active' ? 'ring-2 ring-blue-500' : ''}`}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
+        {filteredRounds.map((round) => (
+          <Card key={round.id} className={`glass transition-all ${round.status === 'active' ? 'border-indigo-500/40 bg-slate-950/90 shadow-lg shadow-indigo-500/10' : 'border-white/5 bg-slate-950/50'}`}>
+            <CardHeader className="p-5 sm:p-6 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
                   {getStatusIcon(round.status)}
                   <div>
-                    <CardTitle className="text-xl">{round.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{round.description}</p>
+                    <CardTitle className="text-lg sm:text-xl font-bold text-white">{round.name}</CardTitle>
+                    <CardDescription className="text-xs text-slate-400 mt-0.5">{round.description}</CardDescription>
                   </div>
                 </div>
-                {getStatusBadge(round.status)}
+                <div>{getStatusBadge(round.status)}</div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+
+            <CardContent className="p-5 sm:p-6 pt-0 space-y-4">
               {/* Progress Bar */}
               {(round.status === 'active' || round.status === 'completed') && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm font-medium">
-                    <span className="text-foreground">Progress</span>
-                    <span className="text-foreground font-semibold">{round.progress}%</span>
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-medium">
+                    <span className="text-slate-400">Completion Progress</span>
+                    <span className="text-white font-semibold">{round.progress}%</span>
                   </div>
-                  <Progress value={round.progress} className="h-3" />
-                  <div className="text-xs text-muted-foreground">
-                    {round.status === 'completed' ? 'Round completed successfully' : 'Round in progress'}
-                  </div>
+                  <Progress value={round.progress} className="h-2 bg-slate-800" />
                 </div>
               )}
 
-              {/* Dates */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Start & End Dates */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-xl border border-white/5 bg-white/5 text-xs">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Start Date</p>
-                  <p className="text-sm">{formatDate(round.startDate)}</p>
+                  <span className="text-slate-400 block font-medium">Start Date</span>
+                  <span className="text-white font-semibold mt-0.5 block">{formatDate(round.startDate)}</span>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">End Date</p>
-                  <p className="text-sm">{formatDate(round.endDate)}</p>
+                  <span className="text-slate-400 block font-medium">End Date</span>
+                  <span className="text-white font-semibold mt-0.5 block">{formatDate(round.endDate)}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-slate-400 block font-medium">Status Note</span>
+                  <span className="text-indigo-300 font-medium mt-0.5 block">
+                    {round.status === 'completed' ? 'Phase Concluded' : round.status === 'active' ? 'Action Required on KEA Portal' : 'Awaiting Schedule Release'}
+                  </span>
                 </div>
               </div>
 
-
-              {/* Alerts */}
+              {/* Alerts & Steps */}
               {round.alerts.length > 0 && (
                 <div className="space-y-2">
-                  {round.alerts.map((alert, index) => (
-                    <Alert key={index} className={round.status === 'active' ? 'border-orange-200 bg-orange-50 dark:bg-orange-950 dark:border-orange-800' : 'border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-slate-700'}>
-                      <AlertCircle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                      <AlertDescription className="text-sm text-slate-900 dark:text-slate-100 font-medium">{alert}</AlertDescription>
-                    </Alert>
+                  {round.alerts.map((alertText, idx) => (
+                    <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl border border-white/5 bg-slate-900/60 text-xs text-slate-300 leading-relaxed font-normal">
+                      <Info className="h-4 w-4 text-indigo-400 shrink-0 mt-0.5" />
+                      <span>{alertText}</span>
+                    </div>
                   ))}
                 </div>
               )}
@@ -247,47 +307,113 @@ const RoundTracker = () => {
         ))}
       </div>
 
+      {/* Choice Selection Guide (Crucial Information) */}
+      <Card className="glass border-indigo-500/20 bg-slate-950/80 p-6 space-y-5">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+            <HelpCircle className="h-3.5 w-3.5" />
+            <span>Post-Allotment Choice Entry Guide</span>
+          </div>
+          <h2 className="text-xl font-bold text-white">Understanding Choice 1, 2, 3 & 4 Options</h2>
+          <p className="text-xs text-slate-400">
+            After seat allotment is declared, every candidate MUST exercise one of the 4 choices within the specified deadline.
+          </p>
+        </div>
 
-      {/* Important Notices */}
-      <Card className="border-orange-200 bg-orange-50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-orange-800">
-            <Bell className="h-5 w-5" />
-            Important Notices
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>✅ Round 1 Provisional Allotment Declared!</strong> KEA has declared the provisional seat allotment for UGCET 2026 courses on July 13, 2026.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          {/* Choice 1 */}
+          <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-emerald-400 text-sm">Choice 1: Accept & Freeze</span>
+              <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">Final Admission</Badge>
+            </div>
+            <p className="text-slate-300 leading-relaxed">
+              Candidate is 100% satisfied with the allotted seat and does NOT wish to participate in subsequent counseling rounds.
             </p>
+            <div className="text-slate-400 space-y-1 pt-1 border-t border-emerald-500/10">
+              <span className="block font-medium text-emerald-300">Action Required:</span>
+              <span>1. Pay prescribed course fee online or via challan.<br />2. Download Admission Order.<br />3. Report to college with original documents before deadline.</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>⏰ Objections Window:</strong> Candidates had time until July 14, 2026 (5:00 PM) to raise objections or report discrepancies in their provisional allotment.
+
+          {/* Choice 2 */}
+          <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-indigo-400 text-sm">Choice 2: Accept & Upgrade</span>
+              <Badge className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px]">Hold & Next Round</Badge>
+            </div>
+            <p className="text-slate-300 leading-relaxed">
+              Candidate is satisfied with current seat, but wants to hold it while participating in Round 2 for higher preference options.
             </p>
+            <div className="text-slate-400 space-y-1 pt-1 border-t border-indigo-500/10">
+              <span className="block font-medium text-indigo-300">Action Required:</span>
+              <span>1. Pay prescribed course fee for current seat.<br />2. Participate in Round 2.<br />3. If higher option allotted in R2, current seat is automatically cancelled.</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>📢 Final Round 1 Seat Allotment:</strong> The final allotment result for Round 1 is scheduled for declaration on July 15, 2026 (after 11:00 AM).
+
+          {/* Choice 3 */}
+          <div className="p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-amber-400 text-sm">Choice 3: Reject & Upgrade</span>
+              <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[10px]">Reject Current Seat</Badge>
+            </div>
+            <p className="text-slate-300 leading-relaxed">
+              Candidate is NOT satisfied with the allotted seat, forfeits it, and wishes to enter Round 2 to try for higher preferences.
             </p>
+            <div className="text-slate-400 space-y-1 pt-1 border-t border-amber-500/10">
+              <span className="block font-medium text-amber-300">Action Required:</span>
+              <span>1. No fee payment for current seat.<br />2. Re-enter options for Round 2.<br />3. Current seat is released for other candidates.</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>📋 Post-Allotment Process:</strong> Candidates must log in to submit their choices (Freeze/Slide/Float), complete the fee payment, and download their admission orders.
+
+          {/* Choice 4 */}
+          <div className="p-4 rounded-xl border border-rose-500/20 bg-rose-500/5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-rose-400 text-sm">Choice 4: Reject & Exit</span>
+              <Badge className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[10px]">Exit Counseling</Badge>
+            </div>
+            <p className="text-slate-300 leading-relaxed">
+              Candidate is not satisfied with the allotted seat and wishes to quit the KCET 2026 seat allotment process completely.
             </p>
+            <div className="text-slate-400 space-y-1 pt-1 border-t border-rose-500/10">
+              <span className="block font-medium text-rose-300">Action Required:</span>
+              <span>1. No fee payment.<br />2. Candidate is removed from all future rounds.</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <ArrowRight className="h-4 w-4 text-orange-600 mt-1" />
-            <p className="text-sm text-orange-800">
-              <strong>🏫 College Reporting:</strong> Allotted candidates must report to their respective colleges along with original documents within the specified deadline after final allotment.
-            </p>
+        </div>
+      </Card>
+
+      {/* Documents Checklist for College Reporting */}
+      <Card className="glass border-white/10 bg-slate-950/60 p-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+            <FileText className="h-5 w-5" />
           </div>
-        </CardContent>
+          <div>
+            <h3 className="text-lg font-bold text-white">Document Checklist for College Reporting (Choice 1)</h3>
+            <p className="text-xs text-slate-400">Original documents required when reporting to allotted colleges</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          {[
+            'KEA Final Seat Allotment Letter / Admission Order',
+            'Online Fee Payment Receipt / Stamped Bank Challan',
+            'KCET 2026 Application Form Printout & Verification Slip',
+            'KCET 2026 Admit Card / Hall Ticket',
+            '10th / SSLC Marks Card (Proof of Date of Birth)',
+            '12th / 2nd PUC Marks Card',
+            'Study Certificates (7 Years Study in Karnataka verified by BEO)',
+            'Rural / Kannada Medium / Reservation Certificates (if applicable)',
+            'Caste & Income Certificate (issued by Tahsildar if applicable)',
+            '4 Recent Passport Size Photographs'
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-2.5 p-3 rounded-xl border border-white/5 bg-white/5 text-slate-200 font-medium">
+              <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
       </Card>
     </div>
   )

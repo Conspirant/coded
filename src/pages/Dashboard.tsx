@@ -308,7 +308,7 @@ const Dashboard = () => {
                   <span className="font-semibold text-sm text-indigo-400">Counseling & Option Entry</span>
                   <span className="text-[10px] text-indigo-400 uppercase tracking-wider font-semibold">July (Ongoing)</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">Mock allotments and option entry closed. Round 1 seat allotment is ongoing (provisional declared July 13, final scheduled July 15).</p>
+                <p className="text-xs text-muted-foreground mt-1">Round 1 seat allotment declared. Choice Selection (Choice 1-4), fee payment, and college reporting are currently active.</p>
               </div>
             </div>
           </div>
