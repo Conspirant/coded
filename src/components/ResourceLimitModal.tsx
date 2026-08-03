@@ -173,6 +173,48 @@ export const ResourceLimitModal = () => {
     return subscribeToUnlockState(setUnlocked);
   }, []);
 
+  // Compute whether the paywall should show (used for scroll lock)
+  const cleanPathForLock = location.pathname.endsWith('/') && location.pathname.length > 1 
+    ? location.pathname.slice(0, -1) 
+    : location.pathname;
+  const allowedExactForLock = new Set([
+    '', '/', '/rank-predictor', '/admin', '/donate', '/supporters',
+    '/daily-challenge', '/cutoff-clash', '/cet-news',
+    '/about', '/privacy', '/terms', '/payment-policy', '/reviews',
+    '/documents', '/materials', '/info-centre',
+    '/squad-finder', '/metro-mapper', '/bmtc-mapper',
+    '/hidden-gems', '/college-list', '/college-cutoffs',
+    '/dashboard'
+  ]);
+  const allowedPrefixesForLock = ['/reviews/', '/college/'];
+  const isAllowedForLock = allowedExactForLock.has(cleanPathForLock) || allowedPrefixesForLock.some(p => cleanPathForLock.startsWith(p));
+  const shouldShowPaywall = !isAllowedForLock && !unlocked;
+
+  // Grace period: let users try premium pages briefly before showing paywall
+  const GRACE_PERIOD_MS = 15_000;
+  const [graceActive, setGraceActive] = useState(true);
+
+  useEffect(() => {
+    if (!shouldShowPaywall) {
+      // Reset grace when navigating to a free page
+      setGraceActive(true);
+      return;
+    }
+    // Every time the user lands on a (new) premium page, restart the grace timer
+    setGraceActive(true);
+    const timer = setTimeout(() => setGraceActive(false), GRACE_PERIOD_MS);
+    return () => clearTimeout(timer);
+  }, [cleanPathForLock, shouldShowPaywall]);
+
+  // Lock body scroll when paywall overlay is actually visible (grace must be over)
+  useEffect(() => {
+    if ((shouldShowPaywall && !graceActive) || paymentSuccessCode) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [shouldShowPaywall, graceActive, paymentSuccessCode]);
+
   const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
@@ -261,9 +303,9 @@ export const ResourceLimitModal = () => {
   // Called when user clicks the Pay button — show name popup first
   const handlePayButtonClick = () => {
     const amtVal = parseFloat(customAmount);
-    if (isNaN(amtVal) || amtVal < 10) {
+    if (isNaN(amtVal) || amtVal < 5) {
       toast.error('Invalid Amount', {
-        description: 'The minimum contribution to unlock premium features is ₹10.'
+        description: 'The minimum contribution is ₹5.'
       });
       return;
     }
@@ -278,9 +320,9 @@ export const ResourceLimitModal = () => {
     }
 
     const amtVal = parseFloat(customAmount);
-    if (isNaN(amtVal) || amtVal < 10) {
+    if (isNaN(amtVal) || amtVal < 5) {
       toast.error('Invalid Amount', {
-        description: 'The minimum contribution to unlock premium features is ₹10.'
+        description: 'The minimum contribution is ₹5.'
       });
       return;
     }
@@ -502,28 +544,32 @@ export const ResourceLimitModal = () => {
 
   if (isAllowed || (unlocked && !paymentSuccessCode)) return null;
 
+  // During grace period, let users freely use the premium page
+  if (graceActive && !paymentSuccessCode) return null;
+
   return (
     <>
-    <div className="fixed inset-0 z-[9999] bg-slate-950/95 backdrop-blur-xl overflow-y-auto flex flex-col items-center justify-start md:justify-center p-4 py-8 sm:py-12">
-      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950/20 via-background/40 to-emerald-950/10 pointer-events-none" />
-      
+    {/* === GLASSMORPHISM PREVIEW OVERLAY === */}
+    <div className="fixed inset-0 z-[9999] pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-slate-950/40 to-transparent pointer-events-none" style={{ height: '30%' }} />
+      <div className="absolute inset-0 backdrop-blur-md bg-gradient-to-b from-transparent via-slate-950/60 to-slate-950/95 pointer-events-auto" />
+    </div>
+
+    {/* === PAYWALL CARD === */}
+    <div className="fixed inset-0 z-[10000] overflow-y-auto flex flex-col items-center justify-start md:justify-center p-4 py-8 sm:py-12 pointer-events-none">
       <motion.div
         initial={{ opacity: 0, scale: 0.97, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/10 rounded-2xl shadow-2xl p-5 sm:p-6 md:p-8 backdrop-blur-2xl overflow-hidden my-auto md:my-0 flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/50 backdrop-blur-2xl overflow-hidden pointer-events-auto my-auto md:my-0 flex flex-col max-h-[90vh]"
       >
-        {/* Glow lights */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
         {/* Header */}
-        <div className="flex flex-col items-center text-center space-y-1 mb-5 relative z-10 border-b border-white/5 pb-3">
+        <div className="flex flex-col items-center text-center space-y-1 p-5 sm:p-6 pb-0">
           <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
             <Crown className="h-4.5 w-4.5" />
           </div>
           <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-white mt-1 flex items-center justify-center gap-1.5">
-            Unlock Premium features
+            Unlock Premium Features
             <Sparkles className="h-3.5 w-3.5 text-amber-400" />
           </h2>
           <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
@@ -531,62 +577,61 @@ export const ResourceLimitModal = () => {
           </p>
         </div>
 
-        {/* Scrollable Content Container */}
-        <div className="overflow-y-auto pr-1 flex-1 relative z-10 space-y-4 max-h-[55vh] md:max-h-[60vh] custom-scrollbar">
-          {/* 2-Column Grid Layout for Wider, Shorter Aspect */}
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto pr-1 flex-1 relative z-10 space-y-4 p-5 sm:p-6 max-h-[55vh] md:max-h-[60vh] custom-scrollbar">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
-            
-            {/* Left Column: Announcement Disclaimer */}
-            <div className="text-xs text-slate-300 leading-relaxed space-y-3.5 md:border-r md:border-white/5 pr-0 md:pr-8 border-b border-white/5 md:border-b-0 pb-6 md:pb-0 flex flex-col justify-start">
-              <p className="font-bold text-white text-[13px] flex items-center gap-1.5 pt-1">
-                Hosting & Scaling Announcement
+
+            {/* Left Column — Professional Developer Note */}
+            <div className="text-xs text-slate-300 leading-relaxed space-y-3 md:border-r md:border-white/5 pr-0 md:pr-8 border-b border-white/5 md:border-b-0 pb-5 md:pb-0 flex flex-col justify-start">
+              <p className="font-bold text-white text-[13px]">
+                Note from the Developer
               </p>
               <p>
-                Due to high visitor traffic, our server hosting resources are currently close to exhaustion. We are actively planning to scale up the website\'s core architecture, which requires additional operational funds.
+                Due to high user traffic, nominal contributions help cover ongoing server infrastructure and maintenance costs to keep these counseling tools running efficiently.
               </p>
               <p>
-                To support these costs, we have introduced a nominal **₹19** premium activation fee to unlock all advanced features.
+                A small contribution (suggested <strong className="text-emerald-400">₹19</strong>, minimum <strong className="text-emerald-400">₹5</strong>) grants full site-wide access to all premium tools. You can customize your amount on the right.
               </p>
               <p className="text-slate-400">
-                Since this platform is built entirely for students, if you cannot afford this fee, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or send a DM on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a>, and we will gladly provide you with a free access key. If you have the means, please also consider donating to support the project further.
+                If you would like an access code directly, feel free to reach out via our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">Discord</a> or <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">Reddit</a> and I can share one with you.
               </p>
-              
-              {/* Live Funding Status */}
-              <div className="border border-white/5 bg-slate-900/40 rounded-xl p-2.5 flex items-center justify-between text-xs relative overflow-hidden shrink-0 mt-1.5">
+
+              {/* Donations counter */}
+              <div className="border border-white/5 bg-slate-900/40 rounded-xl p-2.5 flex items-center justify-between text-xs relative overflow-hidden shrink-0 mt-1">
                 <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-wider text-slate-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Total Donations Received
+                  Total Contributions Received
                 </div>
                 <div className="text-sm font-bold text-white font-mono">₹78</div>
               </div>
             </div>
 
-            {/* Right Column: Payment CTA & Access Codes */}
+            {/* Right Column — Payment & Actions */}
             <div className="space-y-4">
-              {/* Custom Amount Entry */}
+              {/* Custom Amount */}
               <div className="space-y-1.5 p-3.5 rounded-xl border border-white/5 bg-white/[0.01]">
                 <label className="text-[11px] font-medium text-slate-400 block">
-                  Contribution Amount (Min ₹10)
+                  Your Contribution (Min ₹5)
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
                   <Input
                     type="number"
-                    min="10"
+                    min="5"
                     value={customAmount}
                     onChange={(e) => setCustomAmount(e.target.value)}
                     className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pl-6 text-xs text-white"
                     placeholder="19"
                   />
                 </div>
-                {parseFloat(customAmount) < 10 && (
-                  <p className="text-[9.5px] text-rose-400 font-medium mt-1">Amount cannot be less than ₹10</p>
+                {parseFloat(customAmount) < 5 && (
+                  <p className="text-[9.5px] text-rose-400 font-medium mt-1">Minimum is ₹5</p>
                 )}
               </div>
 
               <Button
                 onClick={handlePayButtonClick}
-                disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 10}
+                disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 5}
                 className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-xs sm:text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
               >
                 {isProcessing ? (
@@ -602,7 +647,7 @@ export const ResourceLimitModal = () => {
                 )}
               </Button>
 
-              {/* Access Key Toggle button */}
+              {/* Access Key & Supporters */}
               <div className="text-center flex flex-col items-center gap-2">
                 <button
                   type="button"
@@ -622,7 +667,7 @@ export const ResourceLimitModal = () => {
                 </button>
               </div>
 
-              {/* Collapsible Access Key Form */}
+              {/* Access Key Form */}
               <AnimatePresence>
                 {showKeyForm && (
                   <motion.div
@@ -679,7 +724,7 @@ export const ResourceLimitModal = () => {
                 )}
               </AnimatePresence>
 
-              {/* Page Info Callout explaining what they are paying for */}
+              {/* Page Info Callout */}
               <div className="border-t border-white/5 pt-4 mt-2">
                 {(() => {
                   const pageInfo = PAGE_INFO[cleanPath] || {
@@ -692,7 +737,7 @@ export const ResourceLimitModal = () => {
                     ]
                   };
                   return (
-                    <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-2.5 animate-in fade-in slide-in-from-top-1 shrink-0">
+                    <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-2.5">
                       <div className="flex items-center justify-between">
                         <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
                           <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
@@ -726,8 +771,8 @@ export const ResourceLimitModal = () => {
           </div>
         </div>
 
-        {/* Footer Navigation helpers */}
-        <div className="grid grid-cols-2 gap-2.5 pt-4 mt-6 border-t border-white/5 relative z-10 shrink-0">
+        {/* Footer */}
+        <div className="grid grid-cols-2 gap-2.5 p-5 sm:p-6 pt-0 relative z-10 shrink-0">
           <Button
             onClick={() => navigate('/')}
             variant="outline"

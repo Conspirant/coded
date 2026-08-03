@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import { isUnlocked } from "@/lib/unlock"
 import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -1069,6 +1070,14 @@ const MockSimulator = () => {
     : simulationResult?.summary.bestOutcome
 
   const downloadSimulationPdf = () => {
+    if (!isUnlocked()) {
+      toast({
+        title: "Premium Feature",
+        description: "PDF export is available for premium users. Unlock to download your simulation results.",
+        variant: "destructive"
+      })
+      return
+    }
     if (preferences.length === 0) {
       toast({
         title: "No options to export",

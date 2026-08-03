@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import { isUnlocked } from "@/lib/unlock"
 import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -283,6 +284,10 @@ const CollegeFinder = () => {
 
   // Export results to PDF
   const exportToPDF = () => {
+    if (!isUnlocked()) {
+      toast({ title: "Premium Feature", description: "PDF export is available for premium users. Unlock to download your results.", variant: "destructive" })
+      return
+    }
     if (matches.length === 0) {
       toast({ title: "No results to export", variant: "destructive" })
       return
