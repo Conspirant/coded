@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { isUnlocked, validateAndUnlock, subscribeToUnlockState, unlockGlobally } from '@/lib/unlock';
+import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, subscribeToUnlockState, unlockGlobally } from '@/lib/unlock';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -227,76 +227,20 @@ export const ResourceLimitModal = () => {
     }
 
     setIsProcessing(true);
+    const res = await verifyAndUnlockAccessKey(inputKey);
+    setIsProcessing(false);
 
-    try {
-      // 1. Try static key first
-      const isStaticValid = validateAndUnlock(inputKey);
-      if (isStaticValid) {
-        setSuccessMsg('Access granted! Unlocking features...');
-        toast.success('Successfully unlocked all premium features!', {
-          description: 'You now have full access to early tools.'
-        });
-        setAccessKeyInput('');
-        return;
-      }
-
-      // 2. Check in database
-      const uppercaseKey = inputKey.toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-');
-      const { data, error } = await supabase
-        .from('access_codes' as any)
-        .select('*')
-        .eq('code', uppercaseKey)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Db fetch error:', error);
-        setErrorMsg('Verification error. Please check your internet connection.');
-        return;
-      }
-
-      if (!data) {
-        setErrorMsg('Invalid access key. Please check and try again.');
-        toast.error('Unlock failed', {
-          description: 'Double check the key spelling or try a different one.'
-        });
-        return;
-      }
-
-      if ((data as any).is_used) {
-        setErrorMsg('This access key has already been used on another device.');
-        toast.error('Unlock failed', {
-          description: 'This one-time key has already been redeemed.'
-        });
-        return;
-      }
-
-      // 3. Mark as used
-      const { error: updateError } = await supabase
-        .from('access_codes' as any)
-        .update({ 
-          is_used: true, 
-          used_at: new Date().toISOString() 
-        })
-        .eq('code', uppercaseKey);
-
-      if (updateError) {
-        console.error('Db update error:', updateError);
-        setErrorMsg('Failed to redeem the code. Please try again.');
-        return;
-      }
-
-      // 4. Success! Unlock the browser
-      unlockGlobally();
+    if (res.success) {
       setSuccessMsg('Access granted! Unlocking features...');
       toast.success('Successfully unlocked all premium features!', {
         description: 'You now have full access to early tools.'
       });
       setAccessKeyInput('');
-    } catch (err: any) {
-      console.error('Code validation error:', err);
-      setErrorMsg('Something went wrong during verification.');
-    } finally {
-      setIsProcessing(false);
+    } else {
+      setErrorMsg(res.error || 'Invalid access key. Please check and try again.');
+      toast.error('Unlock failed', {
+        description: res.error || 'Double check the key spelling or try a different one.'
+      });
     }
   };
 

@@ -1,5 +1,7 @@
 import { toast } from "sonner";
 
+import { supabase } from "@/integrations/supabase/client";
+
 const STORAGE_KEY = 'kcet_unlocked';
 const EVENT_NAME = 'kcet-unlock-state-change';
 
@@ -38,6 +40,62 @@ export function validateAndUnlock(key: string): boolean {
     return true;
   }
   return false;
+}
+
+export async function verifyAndUnlockAccessKey(keyInput: string): Promise<{ success: boolean; error?: string }> {
+  const inputKey = keyInput.trim();
+  if (!inputKey) {
+    return { success: false, error: 'Please enter an access key.' };
+  }
+
+  // 1. Check static local keys
+  if (validateAndUnlock(inputKey)) {
+    return { success: true };
+  }
+
+  // 2. Check in database
+  const uppercaseKey = inputKey.toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-');
+  try {
+    const { data, error } = await supabase
+      .from('access_codes' as any)
+      .select('*')
+      .eq('code', uppercaseKey)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Db fetch error:', error);
+      return { success: false, error: 'Verification error. Please check your internet connection.' };
+    }
+
+    if (!data) {
+      return { success: false, error: 'Invalid access key. Please check and try again.' };
+    }
+
+    if ((data as any).is_used) {
+      return { success: false, error: 'This access key has already been used on another device.' };
+    }
+
+    // 3. Mark as used in database
+    const { error: updateError } = await supabase
+      .from('access_codes' as any)
+      .update({ 
+        is_used: true, 
+        used_at: new Date().toISOString() 
+      })
+      .eq('code', uppercaseKey);
+
+    if (updateError) {
+      console.error('Db update error:', updateError);
+      return { success: false, error: 'Failed to redeem the code. Please try again.' };
+    }
+
+    // 4. Unlock globally
+    unlockGlobally();
+    return { success: true };
+  } catch (err: any) {
+    console.error('Key validation exception:', err);
+    return { success: false, error: 'An unexpected error occurred. Please try again.' };
+  }
 }
 
 export function lockFeatures() {

@@ -20,9 +20,10 @@ import {
   FileText,
   Users,
   Compass,
-  MessageSquare
+  MessageSquare,
+  Loader2
 } from "lucide-react";
-import { validateAndUnlock, initiatePremiumPayment } from "@/lib/unlock";
+import { verifyAndUnlockAccessKey, initiatePremiumPayment } from "@/lib/unlock";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -78,7 +79,7 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
     
@@ -88,28 +89,25 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
     }
 
     setLoading(true);
+    const res = await verifyAndUnlockAccessKey(accessKey);
+    setLoading(false);
     
-    setTimeout(() => {
-      const ok = validateAndUnlock(accessKey);
-      setLoading(false);
-      
-      if (ok) {
-        setSuccess(true);
-        toast.success("Premium access activated! 🎉", {
-          description: "All advanced features are now fully unlocked."
-        });
-        setTimeout(() => {
-          onOpenChange(false);
-          setSuccess(false);
-          setAccessKey("");
-        }, 1500);
-      } else {
-        setErrorMsg("Invalid key. Please check and try again.");
-        toast.error("Unlock failed", {
-          description: "The access key you entered is incorrect."
-        });
-      }
-    }, 600);
+    if (res.success) {
+      setSuccess(true);
+      toast.success("Premium access activated! 🎉", {
+        description: "All advanced features are now fully unlocked."
+      });
+      setTimeout(() => {
+        onOpenChange(false);
+        setSuccess(false);
+        setAccessKey("");
+      }, 1500);
+    } else {
+      setErrorMsg(res.error || "Invalid key. Please check and try again.");
+      toast.error("Unlock failed", {
+        description: res.error || "The access key you entered is incorrect."
+      });
+    }
   };
 
   const premiumFeatures = [
@@ -137,12 +135,12 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md bg-slate-950 border-white/10 text-white overflow-hidden p-0 rounded-2xl">
+      <DialogContent className="max-w-md bg-slate-950 border-white/10 text-white p-0 rounded-2xl max-h-[90vh] flex flex-col overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-emerald-500/10 pointer-events-none" />
         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="p-5 sm:p-6 space-y-5 relative z-10">
+        <div className="p-5 sm:p-6 space-y-4 relative z-10 overflow-y-auto max-h-[calc(90vh-1rem)] custom-scrollbar">
           <DialogHeader className="text-center space-y-2">
             <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 flex items-center justify-center shadow-lg shadow-emerald-500/20">
               <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center">
@@ -274,9 +272,16 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                       type="submit" 
                       disabled={loading}
                       variant="outline"
-                      className="w-full border-white/10 hover:bg-white/5 text-xs text-slate-200 h-9 rounded-lg"
+                      className="w-full border-white/10 hover:bg-white/5 text-xs text-slate-200 h-9 rounded-lg flex items-center justify-center gap-1.5"
                     >
-                      {loading ? "Verifying..." : "Verify & Unlock Key"}
+                      {loading ? (
+                        <>
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          Verifying...
+                        </>
+                      ) : (
+                        "Verify & Unlock Key"
+                      )}
                     </Button>
                   </form>
                 )}

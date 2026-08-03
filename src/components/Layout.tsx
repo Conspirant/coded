@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2 } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -12,7 +12,7 @@ import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type
 import { SidebarHint } from './SidebarHint'
 import { useExamMode } from "@/contexts/ExamModeContext"
 import { Input } from "@/components/ui/input"
-import { isUnlocked, validateAndUnlock, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled } from "@/lib/unlock"
+import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled } from "@/lib/unlock"
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
 import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
@@ -29,6 +29,7 @@ export function Layout({ children }: LayoutProps) {
   const { examMode, setExamMode } = useExamMode()
   const [unlocked, setUnlocked] = useState(isUnlocked)
   const [settingsKey, setSettingsKey] = useState("")
+  const [settingsKeyLoading, setSettingsKeyLoading] = useState(false)
   const [showSettingsKey, setShowSettingsKey] = useState(false)
   const [premiumUpgradeOpen, setPremiumUpgradeOpen] = useState(false)
 
@@ -36,20 +37,23 @@ export function Layout({ children }: LayoutProps) {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
-  const handleSettingsUnlock = (e: React.FormEvent) => {
+  const handleSettingsUnlock = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!settingsKey.trim()) {
       toast.error("Please enter an access key.")
       return
     }
-    const success = validateAndUnlock(settingsKey)
-    if (success) {
+    setSettingsKeyLoading(true)
+    const res = await verifyAndUnlockAccessKey(settingsKey)
+    setSettingsKeyLoading(false)
+
+    if (res.success) {
       toast.success("Successfully unlocked all premium features!", {
         description: "You now have full access to early tools."
       })
       setSettingsKey("")
     } else {
-      toast.error("Invalid access key. Please try again.")
+      toast.error(res.error || "Invalid access key. Please try again.")
     }
   }
 
@@ -301,10 +305,15 @@ export function Layout({ children }: LayoutProps) {
                             </div>
                             <Button
                               type="submit"
+                              disabled={settingsKeyLoading}
                               className="bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs h-9 px-3 rounded-lg shadow-sm flex items-center gap-1 shrink-0"
                             >
-                              <Unlock className="h-3.5 w-3.5" />
-                              Unlock
+                              {settingsKeyLoading ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Unlock className="h-3.5 w-3.5" />
+                              )}
+                              {settingsKeyLoading ? "Verifying..." : "Unlock"}
                             </Button>
                           </form>
                           <div className="flex gap-2 w-full mt-2 pt-2 border-t border-white/5">
