@@ -512,6 +512,7 @@ export const ResourceLimitModal = () => {
   if (graceActive && !paymentSuccessCode) return null;
 
   return (
+    <>
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       {/* Backdrop Overlay (does not dismiss on click, since it is a hard paywall page-blocker) */}
       <div 
@@ -924,6 +925,6 @@ export const ResourceLimitModal = () => {
         </motion.div>
       )}
     </AnimatePresence>
-    </div>
+    </>
   );
 };
