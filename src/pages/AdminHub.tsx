@@ -15,7 +15,7 @@ import {
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
-    Building2, Key, Loader2
+    Building2, Key, Loader2, Heart
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -1260,41 +1260,227 @@ function AdminCollegeSuggestionsSection() {
     )
 }
 
-// ─── System Settings Section ──────────────────────────────────
+// ─── Live Donation Broadcast Controller ──────────────────────────
+function AdminDonationBroadcastController() {
+    const [onlineCount, setOnlineCount] = useState(0)
+    const [dismissedCount, setDismissedCount] = useState(0)
+    const [triedCount, setTriedCount] = useState(0)
+    const [broadcastId, setBroadcastId] = useState<number | null>(null)
+    const [channelInstance, setChannelInstance] = useState<any>(null)
+    const { toast } = useToast()
+
+    useEffect(() => {
+        // Fetch active broadcast ID on mount
+        const init = async () => {
+            const activeId = await AdminSuggestionsService.getActiveDonationBroadcast()
+            if (activeId) {
+                setBroadcastId(activeId)
+                const counts = await AdminSuggestionsService.getDonationActionCounts(activeId)
+                setDismissedCount(counts.dismiss)
+                setTriedCount(counts.try)
+            }
+        }
+        init()
+
+        // Periodically refresh counts every 5 seconds to capture new database logs
+        const interval = setInterval(async () => {
+            const activeId = await AdminSuggestionsService.getActiveDonationBroadcast()
+            if (activeId) {
+                setBroadcastId(activeId)
+                const counts = await AdminSuggestionsService.getDonationActionCounts(activeId)
+                setDismissedCount(counts.dismiss)
+                setTriedCount(counts.try)
+            }
+        }, 5000)
+
+        const channel = supabase.channel("global-alerts")
+
+        channel
+            .on("presence", { event: "sync" }, () => {
+                const presenceState = channel.presenceState()
+                setOnlineCount(Object.keys(presenceState).length)
+            })
+            .on("broadcast", { event: "client-response" }, (payload) => {
+                const { action } = payload.payload || {}
+                if (action === "dismiss") {
+                    setDismissedCount(c => c + 1)
+                } else if (action === "try") {
+                    setTriedCount(c => c + 1)
+                }
+            })
+            .subscribe((status) => {
+                if (status === "SUBSCRIBED") {
+                    channel.track({ online_at: new Date().toISOString(), role: "admin" })
+                }
+            })
+
+        setChannelInstance(channel)
+
+        return () => {
+            channel.unsubscribe()
+            clearInterval(interval)
+        }
+    }, [])
+
+    const handleBroadcast = async () => {
+        let ch = channelInstance
+        if (!ch) {
+            ch = supabase.channel("global-alerts")
+            ch.subscribe()
+            setChannelInstance(ch)
+        }
+
+        const newId = Date.now()
+        setBroadcastId(newId)
+        setDismissedCount(0)
+        setTriedCount(0)
+
+        // Save session config to DB (100% reliable)
+        await AdminSuggestionsService.setActiveDonationBroadcast(newId)
+
+        try {
+            const res = await ch.send({
+                type: "broadcast",
+                event: "donation-prompt",
+                payload: { broadcastId: newId }
+            })
+
+            toast({
+                title: "Broadcast Dispatched!",
+                description: `Donation prompt (Session ID: ${newId}) broadcasted. Status: ${res || 'sent'}`,
+            })
+        } catch (err: any) {
+            toast({
+                title: "Broadcast Failed",
+                description: err.message,
+                variant: "destructive"
+            })
+        }
+
+        try {
+            await supabase.from("admin_activities").insert({
+                action: "broadcast_donation_prompt",
+                admin_id: "admin_manual",
+                changes: { broadcastId: newId }
+            })
+        } catch (e) {
+            console.warn("Failed to log activity:", e)
+        }
+    }
+
+    const handleTestLocal = () => {
+        // Trigger a local custom event for the current window to preview layout
+        const customEvent = new CustomEvent("donation-prompt-local-test", {
+            detail: { broadcastId: Date.now() }
+        })
+        window.dispatchEvent(customEvent)
+
+        toast({
+            title: "Local Preview Triggered",
+            description: "Check the bottom right corner of your screen to see the popup.",
+        })
+    }
+
+    return (
+        <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+            <CardHeader>
+                <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                    <Heart className="h-4 w-4 text-rose-500" />
+                    Live Donation Request Broadcast
+                </CardTitle>
+                <CardDescription className="text-xs">
+                    Broadcast a professional, non-intrusive donation request to all active online users.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                        <div className="text-[10px] text-muted-foreground font-medium uppercase">Active Users Online</div>
+                        <div className="text-2xl font-bold text-emerald-400 mt-1">{onlineCount}</div>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                        <div className="text-[10px] text-muted-foreground font-medium uppercase">Dismissed Alert</div>
+                        <div className="text-2xl font-bold text-zinc-400 mt-1">{dismissedCount}</div>
+                    </div>
+                    <div className="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                        <div className="text-[10px] text-muted-foreground font-medium uppercase">Clicked Support</div>
+                        <div className="text-2xl font-bold text-rose-400 mt-1">{triedCount}</div>
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                    <div className="text-xs text-muted-foreground max-w-md">
+                        {broadcastId ? (
+                            <span>Active Broadcast Session: <code className="text-indigo-400 font-mono">{broadcastId}</code></span>
+                        ) : (
+                            <span>No active broadcast session yet. Click the button to trigger one.</span>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Button 
+                            variant="outline"
+                            onClick={handleTestLocal} 
+                            className="border-white/10 hover:bg-white/5 text-xs h-9 px-3"
+                        >
+                            Test on Self
+                        </Button>
+                        <Button 
+                            onClick={handleBroadcast} 
+                            className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 h-9"
+                        >
+                            Send Donation Popup
+                        </Button>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const { toast } = useToast()
 
-    useEffect(() => {
-        const fetchStatus = async () => {
+    const fetchSettings = async () => {
+        try {
             setLoading(true)
             const disabled = await AdminSuggestionsService.isPaywallDisabledGlobally()
             setPaywallDisabled(disabled)
-            setLoading(false)
-        }
-        fetchStatus()
-    }, [])
-
-    const handleSave = async () => {
-        setSaving(true)
-        const success = await AdminSuggestionsService.setPaywallDisabledGlobally(paywallDisabled)
-        if (success) {
-            setGlobalPaywallDisabled(paywallDisabled)
+        } catch (err: any) {
             toast({
-                title: "Settings Saved",
-                description: `Global premium paywall bypass status updated to: ${paywallDisabled ? 'ENABLED' : 'DISABLED'}`
-            })
-        } else {
-            toast({
-                title: "Error",
-                description: "Failed to update paywall status",
+                title: "Error fetching settings",
+                description: err.message,
                 variant: "destructive"
             })
+        } finally {
+            setLoading(false)
         }
-        setSaving(false)
     }
+
+    const handleSave = async () => {
+        try {
+            setSaving(true)
+            await AdminSuggestionsService.setPaywallDisabledGlobally(paywallDisabled)
+            toast({
+                title: "Settings Saved",
+                description: "Global paywall bypass flag has been updated."
+            })
+        } catch (err: any) {
+            toast({
+                title: "Failed to save settings",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setSaving(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchSettings()
+    }, [])
 
     return (
         <div className="space-y-6">
@@ -1348,6 +1534,8 @@ function AdminSystemSettingsSection() {
                     )}
                 </CardContent>
             </Card>
+
+            <AdminDonationBroadcastController />
         </div>
     )
 }

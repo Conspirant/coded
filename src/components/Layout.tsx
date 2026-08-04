@@ -16,6 +16,7 @@ import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, lockFeatures, 
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
 import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
+import { GlobalDonationPopup } from "./GlobalDonationPopup"
 
 import { Logo } from "./ui/Logo"
 
@@ -368,6 +369,7 @@ export function Layout({ children }: LayoutProps) {
         </div>
       </div>
       <PremiumUpgradeModal open={premiumUpgradeOpen} onOpenChange={setPremiumUpgradeOpen} />
+      <GlobalDonationPopup />
     </SidebarProvider>
   )
 }

@@ -120,4 +120,87 @@ export class AdminSuggestionsService {
             return false;
         }
     }
+
+    static async getActiveDonationBroadcast(): Promise<number | null> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:active_donation_broadcast')
+                .maybeSingle();
+            
+            if (error) throw error;
+            if (data && data.results_json) {
+                return (data.results_json as any).broadcastId || null;
+            }
+            return null;
+        } catch (e) {
+            console.error("Error getting active broadcast:", e);
+            return null;
+        }
+    }
+
+    static async setActiveDonationBroadcast(broadcastId: number | null): Promise<boolean> {
+        try {
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:active_donation_broadcast',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { broadcastId }
+                }], { onConflict: 'appl_no' });
+            
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error("Error setting active broadcast:", e);
+            return false;
+        }
+    }
+
+    static async recordDonationAction(broadcastId: number, action: 'dismiss' | 'try'): Promise<boolean> {
+        try {
+            const key = `ANALYTICS:donation_${action}:${broadcastId}:${Math.random().toString(36).substring(2, 10)}`;
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .insert([{
+                    appl_no: key,
+                    dob: 'analytics',
+                    name: 'analytics',
+                    results_json: { broadcastId, action, timestamp: Date.now() }
+                }]);
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error("Error recording donation action:", e);
+            return false;
+        }
+    }
+
+    static async getDonationActionCounts(broadcastId: number): Promise<{ dismiss: number; try: number }> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('appl_no')
+                .like('appl_no', `ANALYTICS:donation_%:${broadcastId}:%`);
+
+            if (error) throw error;
+            let dismiss = 0;
+            let tryCount = 0;
+
+            for (const row of (data || [])) {
+                if (row.appl_no.includes('donation_dismiss:')) {
+                    dismiss++;
+                } else if (row.appl_no.includes('donation_try:')) {
+                    tryCount++;
+                }
+            }
+
+            return { dismiss, try: tryCount };
+        } catch (e) {
+            console.error("Error getting action counts:", e);
+            return { dismiss: 0, try: 0 };
+        }
+    }
 }
