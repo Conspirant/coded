@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Sparkles, 
+  Heart,
   Crown, 
   Key, 
   Eye, 
@@ -168,6 +168,25 @@ export const ResourceLimitModal = () => {
   const [donorName, setDonorName] = useState('');
   const [donorIsAnonymous, setDonorIsAnonymous] = useState(false);
   const [paymentSuccessCode, setPaymentSuccessCode] = useState('');
+  const [totalAmount, setTotalAmount] = useState<number>(78);
+
+  useEffect(() => {
+    const fetchTotalAmount = async () => {
+      try {
+        const { data, error } = await (supabase as any)
+          .from('donors')
+          .select('amount_inr');
+
+        if (error) throw error;
+
+        const dbTotal = (data || []).reduce((sum: number, d: { amount_inr: number }) => sum + Number(d.amount_inr), 0);
+        setTotalAmount(78 + dbTotal);
+      } catch (err) {
+        console.error('Error fetching total amount:', err);
+      }
+    };
+    fetchTotalAmount();
+  }, []);
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked);
@@ -348,6 +367,7 @@ export const ResourceLimitModal = () => {
                 console.error('Failed to save donor:', e);
               }
 
+              setTotalAmount(prev => prev + amtVal);
               setPaymentSuccessCode(generatedCode);
 
               toast.success('Payment Successful! 🎉', {
@@ -492,247 +512,235 @@ export const ResourceLimitModal = () => {
   if (graceActive && !paymentSuccessCode) return null;
 
   return (
-    <>
-    {/* === GLASSMORPHISM PREVIEW OVERLAY === */}
-    <div className="fixed inset-0 z-[9999] pointer-events-none">
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-slate-950/40 to-transparent pointer-events-none" style={{ height: '30%' }} />
-      <div className="absolute inset-0 backdrop-blur-md bg-gradient-to-b from-transparent via-slate-950/60 to-slate-950/95 pointer-events-auto" />
-    </div>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      {/* Backdrop Overlay (does not dismiss on click, since it is a hard paywall page-blocker) */}
+      <div 
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
+      />
 
-    {/* === PAYWALL CARD === */}
-    <div className="fixed inset-0 z-[10000] overflow-y-auto flex flex-col items-center justify-start md:justify-center p-4 py-8 sm:py-12 pointer-events-none">
+      {/* Modal Card */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.97, y: 10 }}
+        initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="relative w-full max-w-3xl bg-slate-950/90 border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/50 backdrop-blur-2xl overflow-hidden pointer-events-auto my-auto md:my-0 flex flex-col max-h-[90vh]"
+        className="relative max-w-md w-full bg-zinc-950 border border-zinc-800 text-zinc-200 rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200 flex flex-col max-h-[95vh] z-10"
       >
         {/* Header */}
-        <div className="flex flex-col items-center text-center space-y-1 p-5 sm:p-6 pb-0">
-          <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-            <Crown className="h-4.5 w-4.5" />
+        <div className="flex flex-col items-center text-center space-y-3 pt-2 shrink-0">
+          <div className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center">
+            <Crown className="h-6 w-6 text-indigo-500 fill-indigo-500/20 animate-pulse" />
           </div>
-          <h2 className="text-lg sm:text-xl font-extrabold tracking-tight text-white mt-1 flex items-center justify-center gap-1.5">
-            Unlock Premium Features
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-          </h2>
-          <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
-            KCET & COMEDK Counseling Suite
-          </p>
+
+          <div className="space-y-1">
+            <h3 className="text-base font-bold text-white tracking-tight text-center">
+              Unlock Premium Features
+            </h3>
+            <p className="text-[9px] font-semibold text-zinc-400 uppercase tracking-widest">
+              KCET & COMEDK Counseling Suite
+            </p>
+          </div>
         </div>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto pr-1 flex-1 relative z-10 space-y-4 p-5 sm:p-6 max-h-[55vh] md:max-h-[60vh] custom-scrollbar">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+        <div className="overflow-y-auto pr-1 flex-1 my-4 space-y-4 custom-scrollbar text-xs">
+          {/* Note from the Developer */}
+          <div className="text-zinc-400 leading-relaxed space-y-2.5 px-1">
+            <p className="font-bold text-zinc-200 text-xs">Note from the Developer</p>
+            <p>
+              Due to high user traffic, nominal contributions help cover ongoing server infrastructure and maintenance costs to keep these counseling tools running efficiently.
+            </p>
+            <p>
+              A small contribution (suggested <strong className="text-emerald-400 font-semibold">₹19</strong>, minimum <strong className="text-emerald-400 font-semibold">₹5</strong>) grants full site-wide access to all premium tools. You can customize your amount below.
+            </p>
+            <p>
+              If you would like an access code directly, feel free to reach out via our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">Discord</a> or <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">Reddit</a> and I can share one with you.
+            </p>
+          </div>
 
-            {/* Left Column — Professional Developer Note */}
-            <div className="text-xs text-slate-300 leading-relaxed space-y-3 md:border-r md:border-white/5 pr-0 md:pr-8 border-b border-white/5 md:border-b-0 pb-5 md:pb-0 flex flex-col justify-start">
-              <p className="font-bold text-white text-[13px]">
-                Note from the Developer
-              </p>
-              <p>
-                Due to high user traffic, nominal contributions help cover ongoing server infrastructure and maintenance costs to keep these counseling tools running efficiently.
-              </p>
-              <p>
-                A small contribution (suggested <strong className="text-emerald-400">₹19</strong>, minimum <strong className="text-emerald-400">₹5</strong>) grants full site-wide access to all premium tools. You can customize your amount on the right.
-              </p>
-              <p className="text-slate-400">
-                If you would like an access code directly, feel free to reach out via our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">Discord</a> or <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">Reddit</a> and I can share one with you.
-              </p>
-
-              {/* Donations counter */}
-              <div className="border border-white/5 bg-slate-900/40 rounded-xl p-2.5 flex items-center justify-between text-xs relative overflow-hidden shrink-0 mt-1">
-                <div className="flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-wider text-slate-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Total Contributions Received
-                </div>
-                <div className="text-sm font-bold text-white font-mono">₹78</div>
-              </div>
+          {/* Donations counter */}
+          <div className="border border-zinc-800 bg-zinc-900/30 rounded-xl p-3 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-wider text-zinc-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Total Contributions Received
             </div>
+            <div className="text-sm font-bold text-white font-mono">₹{totalAmount}</div>
+          </div>
 
-            {/* Right Column — Payment & Actions */}
-            <div className="space-y-4">
-              {/* Custom Amount */}
-              <div className="space-y-1.5 p-3.5 rounded-xl border border-white/5 bg-white/[0.01]">
-                <label className="text-[11px] font-medium text-slate-400 block">
-                  Your Contribution (Min ₹5)
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-semibold">₹</span>
-                  <Input
-                    type="number"
-                    min="5"
-                    value={customAmount}
-                    onChange={(e) => setCustomAmount(e.target.value)}
-                    className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pl-6 text-xs text-white"
-                    placeholder="19"
-                  />
-                </div>
-                {parseFloat(customAmount) < 5 && (
-                  <p className="text-[9.5px] text-rose-400 font-medium mt-1">Minimum is ₹5</p>
-                )}
-              </div>
+          {/* Custom Amount */}
+          <div className="space-y-1.5 p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/30">
+            <label className="text-[11px] font-medium text-zinc-400 block">
+              Your Contribution (Min ₹5)
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs font-semibold">₹</span>
+              <Input
+                type="number"
+                min="5"
+                value={customAmount}
+                onChange={(e) => setCustomAmount(e.target.value)}
+                className="bg-black/40 border-zinc-800 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-lg h-9.5 pl-6 text-xs text-white"
+                placeholder="19"
+              />
+            </div>
+            {parseFloat(customAmount) < 5 && (
+              <p className="text-[9.5px] text-rose-400 font-medium mt-1">Minimum is ₹5</p>
+            )}
+          </div>
 
-              <Button
-                onClick={handlePayButtonClick}
-                disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 5}
-                className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-extrabold text-xs sm:text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
+          {/* Pay Button */}
+          <Button
+            onClick={handlePayButtonClick}
+            disabled={isProcessing || isNaN(parseFloat(customAmount)) || parseFloat(customAmount) < 5}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs h-10 rounded-lg shadow-lg shadow-indigo-500/10 transition-all flex items-center justify-center gap-2"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Unlock className="h-4 w-4" />
+                Pay ₹{customAmount || '19'} to Unlock Everything
+              </>
+            )}
+          </Button>
+
+          {/* Access Key & Supporters Links */}
+          <div className="flex flex-col items-center gap-2 pt-1 text-center">
+            <button
+              type="button"
+              onClick={() => setShowKeyForm(!showKeyForm)}
+              className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors underline font-medium"
+            >
+              {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate('/supporters')}
+              className="text-[10px] text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1 font-semibold hover:underline"
+            >
+              See Supporters Wall
+            </button>
+          </div>
+
+          {/* Access Key Form */}
+          <AnimatePresence>
+            {showKeyForm && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
               >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Unlock className="h-4 w-4" />
-                    Pay ₹{customAmount || '19'} to Unlock Everything
-                  </>
-                )}
-              </Button>
-
-              {/* Access Key & Supporters */}
-              <div className="text-center flex flex-col items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowKeyForm(!showKeyForm)}
-                  className="text-[10px] text-slate-500 hover:text-slate-300 transition-colors underline"
-                >
-                  {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => navigate('/supporters')}
-                  className="text-[10px] text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1 font-semibold hover:underline"
-                >
-                  <Sparkles className="h-3 w-3 animate-pulse" />
-                  See Supporters Wall
-                </button>
-              </div>
-
-              {/* Access Key Form */}
-              <AnimatePresence>
-                {showKeyForm && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <form onSubmit={handleUnlockSubmit} className="pt-2.5 border-t border-white/5 space-y-2">
-                      <div className="relative flex gap-2">
-                        <div className="relative flex-1">
-                          <Input
-                            type={showKey ? "text" : "password"}
-                            placeholder="Enter Access Code..."
-                            value={accessKeyInput}
-                            onChange={(e) => {
-                              setAccessKeyInput(e.target.value);
-                              if (errorMsg) setErrorMsg('');
-                            }}
-                            className="bg-black/40 border-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-xl h-9.5 pr-9 font-mono text-xs w-full"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowKey(!showKey)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                          >
-                            {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                          </button>
-                        </div>
-                        <Button
-                          type="submit"
-                          variant="outline"
-                          className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl px-4 shrink-0"
-                        >
-                          Redeem
-                        </Button>
-                      </div>
-
-                      {errorMsg && (
-                        <p className="text-[10px] text-rose-400 font-medium flex items-center gap-1">
-                          <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
-                          {errorMsg}
-                        </p>
-                      )}
-                      {successMsg && (
-                        <p className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 animate-pulse">
-                          <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
-                          {successMsg}
-                        </p>
-                      )}
-                    </form>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Page Info Callout */}
-              <div className="border-t border-white/5 pt-4 mt-2">
-                {(() => {
-                  const pageInfo = PAGE_INFO[cleanPath] || {
-                    title: 'Premium Counselor Tool',
-                    description: 'Access advanced tools, simulator engines, comparison charts, and AI assistance.',
-                    benefits: [
-                      'Unlock all premium features site-wide',
-                      'Advanced counseling tools and AI assistance',
-                      'Simulators, visual trends, and verification check wizards'
-                    ]
-                  };
-                  return (
-                    <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-white text-sm flex items-center gap-1.5">
-                          <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-                          {pageInfo.title}
-                        </h3>
-                        <Badge variant="secondary" className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[9px] font-semibold py-0">
-                          Premium Feature
-                        </Badge>
-                      </div>
-                      <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
-                        {pageInfo.description}
-                      </p>
-                      <div className="space-y-1.5 pt-1.5 border-t border-white/5">
-                        <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-wider">
-                          What you unlock in this tool:
-                        </p>
-                        <ul className="space-y-1.5 text-[11px] text-slate-300">
-                          {pageInfo.benefits.map((benefit, i) => (
-                            <li key={i} className="flex items-start gap-1.5">
-                              <span className="text-emerald-400 shrink-0 select-none font-semibold">✓</span>
-                              <span>{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                <form onSubmit={handleUnlockSubmit} className="pt-3 border-t border-zinc-800 space-y-2">
+                  <div className="relative flex gap-2">
+                    <div className="relative flex-1">
+                      <Input
+                        type={showKey ? "text" : "password"}
+                        placeholder="Enter Access Code..."
+                        value={accessKeyInput}
+                        onChange={(e) => {
+                          setAccessKeyInput(e.target.value);
+                          if (errorMsg) setErrorMsg('');
+                        }}
+                        className="bg-black/40 border-zinc-800 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-lg h-9.5 pr-9 font-mono text-xs w-full"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowKey(!showKey)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                      >
+                        {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      </button>
                     </div>
-                  );
-                })()}
-              </div>
-            </div>
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      className="border-zinc-800 hover:bg-zinc-900 text-xs h-9.5 rounded-lg px-4 shrink-0 bg-transparent text-zinc-300"
+                    >
+                      Redeem
+                    </Button>
+                  </div>
+
+                  {errorMsg && (
+                    <p className="text-[10px] text-rose-400 font-medium flex items-center gap-1">
+                      <AlertCircle className="h-3.5 w-3.5 shrink-0 text-rose-400" />
+                      {errorMsg}
+                    </p>
+                  )}
+                  {successMsg && (
+                    <p className="text-[10px] text-emerald-400 font-medium flex items-center gap-1 animate-pulse">
+                      <CheckCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                      {successMsg}
+                    </p>
+                  )}
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Page Info Callout */}
+          <div className="border-t border-zinc-800 pt-3">
+            {(() => {
+              const pageInfo = PAGE_INFO[cleanPath] || {
+                title: 'Premium Counselor Tool',
+                description: 'Access advanced tools, simulator engines, comparison charts, and AI assistance.',
+                benefits: [
+                  'Unlock all premium features site-wide',
+                  'Advanced counseling tools and AI assistance',
+                  'Simulators, visual trends, and verification check wizards'
+                ]
+              };
+              return (
+                <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-white text-xs flex items-center gap-1.5">
+                      {pageInfo.title}
+                    </h3>
+                    <Badge variant="secondary" className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[9px] font-semibold py-0">
+                      Premium Feature
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-zinc-400 leading-relaxed font-medium">
+                    {pageInfo.description}
+                  </p>
+                  <div className="space-y-1.5 pt-1.5 border-t border-zinc-800">
+                    <p className="text-[9px] font-semibold text-zinc-400 uppercase tracking-wider">
+                      What you unlock in this tool:
+                    </p>
+                    <ul className="space-y-1.5 text-[11px] text-zinc-400">
+                      {pageInfo.benefits.map((benefit, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="text-emerald-400 shrink-0 select-none font-semibold">✓</span>
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="grid grid-cols-2 gap-2.5 p-5 sm:p-6 pt-0 relative z-10 shrink-0">
+        <div className="flex w-full gap-3 pt-3 mt-auto border-t border-zinc-800 shrink-0">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl flex items-center justify-center gap-1.5 text-slate-400 hover:text-white"
+            className="flex-1 border-zinc-800 bg-transparent text-zinc-400 hover:text-white hover:bg-zinc-900 text-xs font-semibold h-10 rounded-lg"
           >
-            <Home className="h-3.5 w-3.5" />
             Homepage
           </Button>
 
           <Button
             onClick={() => navigate('/dashboard')}
             variant="outline"
-            className="border-white/10 hover:bg-white/5 text-xs h-9.5 rounded-xl flex items-center justify-center gap-1.5 text-slate-400 hover:text-white"
+            className="flex-1 border-zinc-800 bg-transparent text-zinc-400 hover:text-white hover:bg-zinc-900 text-xs font-semibold h-10 rounded-lg"
           >
             Dashboard
-            <ArrowRight className="h-3.5 w-3.5" />
           </Button>
         </div>
       </motion.div>
@@ -754,20 +762,20 @@ export const ResourceLimitModal = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="relative w-full max-w-md bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 text-center"
+            className="relative w-full max-w-md bg-zinc-950 border border-zinc-800 text-zinc-200 rounded-xl shadow-2xl p-6 sm:p-8 text-center animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setPaymentFailurePopup({ show: false, title: '', message: '' })}
-              className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+              className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-900"
             >
               <X className="h-4 w-4" />
             </button>
 
             {/* Icon */}
-            <div className="mx-auto w-14 h-14 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4">
-              <AlertCircle className="h-7 w-7 text-orange-400" />
+            <div className="mx-auto w-14 h-14 rounded-full bg-orange-500/10 flex items-center justify-center mb-4">
+              <AlertCircle className="h-7 w-7 text-orange-500" />
             </div>
 
             {/* Title */}
@@ -776,7 +784,7 @@ export const ResourceLimitModal = () => {
             </h3>
 
             {/* Message */}
-            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+            <p className="text-xs text-zinc-400 leading-relaxed mb-6">
               {paymentFailurePopup.message}
             </p>
 
@@ -785,7 +793,7 @@ export const ResourceLimitModal = () => {
               href="https://www.reddit.com/user/Elegant_Compote9073/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold text-sm h-11 rounded-xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all"
+              className="w-full flex items-center justify-center gap-2.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm h-11 rounded-lg shadow-lg shadow-orange-500/20 hover:shadow-orange-550/30 transition-all"
             >
               <MessageCircle className="h-4.5 w-4.5" />
               Contact Me on Reddit
@@ -798,14 +806,14 @@ export const ResourceLimitModal = () => {
                   setPaymentFailurePopup({ show: false, title: '', message: '' });
                   handlePayButtonClick();
                 }}
-                className="flex-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors py-2 rounded-lg hover:bg-white/5"
+                className="flex-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors py-2 rounded-lg hover:bg-zinc-900"
               >
                 Try Again
               </button>
-              <span className="text-slate-700">|</span>
+              <span className="text-zinc-800">|</span>
               <button
                 onClick={() => setPaymentFailurePopup({ show: false, title: '', message: '' })}
-                className="flex-1 text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2 rounded-lg hover:bg-white/5"
+                className="flex-1 text-xs font-semibold text-zinc-500 hover:text-zinc-300 transition-colors py-2 rounded-lg hover:bg-zinc-900"
               >
                 Dismiss
               </button>
@@ -831,24 +839,24 @@ export const ResourceLimitModal = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="relative w-full max-w-sm bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-7"
+            className="relative w-full max-w-sm bg-zinc-950 border border-zinc-800 text-zinc-200 rounded-xl shadow-2xl p-6 sm:p-7 animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setShowDonorNamePopup(false)}
-              className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+              className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-900"
             >
               <X className="h-4 w-4" />
             </button>
 
             {/* Header */}
             <div className="text-center mb-5">
-              <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 flex items-center justify-center mb-3">
-                <Sparkles className="h-5 w-5 text-indigo-400" />
+              <div className="mx-auto w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center mb-3">
+                <Heart className="h-5 w-5 text-indigo-500 fill-indigo-500/20" />
               </div>
               <h3 className="text-base font-bold text-white">One last thing!</h3>
-              <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+              <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
                 Your name will be displayed on our{' '}
                 <span className="text-indigo-400 font-semibold">Supporters Wall</span>{' '}
                 to thank you publicly.
@@ -858,7 +866,7 @@ export const ResourceLimitModal = () => {
             {/* Name Input */}
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 block">
+                <label className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1.5 block">
                   Your Name
                 </label>
                 <Input
@@ -866,7 +874,7 @@ export const ResourceLimitModal = () => {
                   onChange={(e) => setDonorName(e.target.value)}
                   placeholder="e.g. Rahul S."
                   disabled={donorIsAnonymous}
-                  className={`bg-slate-800/50 border-white/10 text-white placeholder:text-slate-600 h-10 rounded-xl text-sm ${donorIsAnonymous ? 'opacity-40' : ''}`}
+                  className={`bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-600 h-10 rounded-lg text-sm ${donorIsAnonymous ? 'opacity-40' : ''}`}
                   maxLength={30}
                 />
               </div>
@@ -883,10 +891,10 @@ export const ResourceLimitModal = () => {
                     }}
                     className="sr-only peer"
                   />
-                  <div className="w-8 h-[18px] bg-slate-700 rounded-full peer-checked:bg-indigo-500 transition-colors" />
+                  <div className="w-8 h-[18px] bg-zinc-800 rounded-full peer-checked:bg-indigo-600 transition-colors" />
                   <div className="absolute top-[2px] left-[2px] w-[14px] h-[14px] bg-white rounded-full transition-transform peer-checked:translate-x-[14px] shadow-sm" />
                 </div>
-                <span className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
+                <span className="text-xs text-zinc-400 group-hover:text-zinc-300 transition-colors">
                   Keep me anonymous
                 </span>
               </label>
@@ -900,14 +908,14 @@ export const ResourceLimitModal = () => {
                   handleRazorpayPayment();
                 }}
                 disabled={!donorIsAnonymous && !donorName.trim()}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm h-11 rounded-xl shadow-lg shadow-indigo-500/20 transition-all"
+                className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm h-11 rounded-lg shadow-lg shadow-indigo-500/10 transition-all"
               >
                 <Crown className="h-4 w-4" />
                 {donorIsAnonymous ? 'Continue as Anonymous' : `Continue as "${donorName.trim() || '...'}"`}
               </button>
               <button
                 onClick={() => setShowDonorNamePopup(false)}
-                className="w-full text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors py-2"
+                className="w-full text-xs font-semibold text-zinc-500 hover:text-zinc-300 transition-colors py-2"
               >
                 Go Back
               </button>
@@ -916,6 +924,6 @@ export const ResourceLimitModal = () => {
         </motion.div>
       )}
     </AnimatePresence>
-    </>
+    </div>
   );
 };
