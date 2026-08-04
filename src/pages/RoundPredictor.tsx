@@ -11,13 +11,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import {
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
+  ResponsiveContainer, BarChart, Bar, LineChart as RechartsLineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip as RechartsTooltip, Cell, Legend
 } from "recharts"
 import {
   Target, Info, Loader2, Shield, AlertTriangle, Check, ChevronsUpDown,
   Layers, CheckCircle2, XCircle, BarChart3, Clock, ArrowUpRight,
-  Calculator, Database, LineChart
+  Calculator, Database, LineChart, TrendingUp
 } from "lucide-react"
 import {
   predictR2R3,
@@ -367,6 +367,24 @@ const RoundPredictor = () => {
     }))
   }, [allBranchPredictions])
 
+  // ── Multi-year trend chart data ──
+  const trendChartData = useMemo(() => {
+    if (!prediction) return []
+    const data = prediction.historical_evidence.map(ev => ({
+      year: ev.year,
+      "Round 1": ev.r1,
+      "Round 2": ev.r2,
+      "Round 3": ev.r3,
+    }))
+    data.push({
+      year: "2026 (Est)",
+      "Round 1": prediction.r1_actual,
+      "Round 2": prediction.r2_predicted,
+      "Round 3": prediction.r3_predicted,
+    })
+    return data
+  }, [prediction])
+
   // ── Filtered colleges for search ──
   const filteredColleges = useMemo(() => {
     if (!collegeSearch.trim()) return colleges.slice(0, 30)
@@ -455,6 +473,9 @@ const RoundPredictor = () => {
             </TabsTrigger>
             <TabsTrigger value="all-branches" className="rounded-md px-3 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">
               <BarChart3 className="h-4 w-4 mr-1.5" /> All Branches
+            </TabsTrigger>
+            <TabsTrigger value="trends" className="rounded-md px-3 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">
+              <TrendingUp className="h-4 w-4 mr-1.5" /> Cutoff Trends
             </TabsTrigger>
             <TabsTrigger value="accuracy" className="rounded-md px-3 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">
               <LineChart className="h-4 w-4 mr-1.5" /> Validation
@@ -675,6 +696,66 @@ const RoundPredictor = () => {
                   </Card>
                 </div>
 
+                {/* Cutoff Trend Graph inside Predict tab */}
+                {trendChartData.length > 0 && (
+                  <Card className="bg-card border-border shadow-sm">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-violet-400" />
+                        Cutoff Trend Graph (2023–2026) — {prediction.college_code} • {prediction.normalized_course} ({selectedCategory})
+                      </CardTitle>
+                      <CardDescription className="text-xs">
+                        Multi-year rank progression across Round 1, Round 2, and Round 3. Higher numbers reflect cutoff rank relaxation.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-2">
+                      <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <RechartsLineChart data={trendChartData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+                            <XAxis dataKey="year" tick={{ fill: '#a1a1aa', fontSize: 12 }} />
+                            <YAxis tick={{ fill: '#a1a1aa', fontSize: 11 }} domain={['auto', 'auto']} />
+                            <RechartsTooltip
+                              contentStyle={{
+                                backgroundColor: '#18181b',
+                                border: '1px solid rgba(255,255,255,0.15)',
+                                borderRadius: '8px',
+                                fontSize: '12px'
+                              }}
+                              formatter={(value: number) => [value ? value.toLocaleString() : 'N/A', 'Rank']}
+                            />
+                            <Legend />
+                            <Line
+                              type="monotone"
+                              dataKey="Round 1"
+                              stroke="#3b82f6"
+                              strokeWidth={2.5}
+                              dot={{ fill: '#3b82f6', r: 5 }}
+                              activeDot={{ r: 7 }}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="Round 2"
+                              stroke="#8b5cf6"
+                              strokeWidth={2.5}
+                              dot={{ fill: '#8b5cf6', r: 5 }}
+                              activeDot={{ r: 7 }}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="Round 3"
+                              stroke="#d946ef"
+                              strokeWidth={2.5}
+                              dot={{ fill: '#d946ef', r: 5 }}
+                              activeDot={{ r: 7 }}
+                            />
+                          </RechartsLineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
                 {/* Historical Drift Evidence */}
                 {prediction.historical_evidence.length > 0 && (
                   <Card className="bg-card border-border shadow-sm">
@@ -863,6 +944,132 @@ const RoundPredictor = () => {
                 <CardContent className="flex flex-col items-center justify-center py-16 space-y-3">
                   <BarChart3 className="h-12 w-12 text-violet-400/30" />
                   <p className="text-muted-foreground text-sm">Run a prediction first to see all branches</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          {/* ═══ TAB: Cutoff Trends ═══ */}
+          <TabsContent value="trends" className="space-y-4 mt-0">
+            {prediction ? (
+              <div className="space-y-4">
+                <Card className="bg-card border-border shadow-sm">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-violet-400" />
+                        Multi-Year Cutoff Rank Trend Graph (2023–2026)
+                      </span>
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {prediction.college_code} • {prediction.normalized_course} ({selectedCategory})
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription className="text-xs">
+                      Historical rank progression across Round 1, Round 2, and Round 3. Higher numbers indicate rank relaxation.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-2">
+                    <div className="h-[380px] w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RechartsLineChart data={trendChartData} margin={{ top: 10, right: 30, left: 10, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+                          <XAxis dataKey="year" tick={{ fill: '#a1a1aa', fontSize: 12 }} />
+                          <YAxis tick={{ fill: '#a1a1aa', fontSize: 11 }} domain={['auto', 'auto']} />
+                          <RechartsTooltip
+                            contentStyle={{
+                              backgroundColor: '#18181b',
+                              border: '1px solid rgba(255,255,255,0.15)',
+                              borderRadius: '8px',
+                              fontSize: '12px'
+                            }}
+                            formatter={(value: number) => [value ? value.toLocaleString() : 'N/A', 'Rank']}
+                          />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey="Round 1"
+                            stroke="#3b82f6"
+                            strokeWidth={2.5}
+                            dot={{ fill: '#3b82f6', r: 5 }}
+                            activeDot={{ r: 7 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="Round 2"
+                            stroke="#8b5cf6"
+                            strokeWidth={2.5}
+                            dot={{ fill: '#8b5cf6', r: 5 }}
+                            activeDot={{ r: 7 }}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="Round 3"
+                            stroke="#d946ef"
+                            strokeWidth={2.5}
+                            dot={{ fill: '#d946ef', r: 5 }}
+                            activeDot={{ r: 7 }}
+                          />
+                        </RechartsLineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Evidence table */}
+                <Card className="bg-card border-border shadow-sm">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-violet-400" />
+                      Historical Cutoff Ranks & Round Multipliers
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-white/10">
+                            <th className="text-left py-2 px-3 text-xs text-muted-foreground font-medium">Year</th>
+                            <th className="text-right py-2 px-3 text-xs text-blue-400 font-medium">Round 1</th>
+                            <th className="text-right py-2 px-3 text-xs text-violet-400 font-medium">Round 2</th>
+                            <th className="text-right py-2 px-3 text-xs text-fuchsia-400 font-medium">Round 3</th>
+                            <th className="text-right py-2 px-3 text-xs text-muted-foreground font-medium">R2/R1 Multiplier</th>
+                            <th className="text-right py-2 px-3 text-xs text-muted-foreground font-medium">R3/R1 Multiplier</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {prediction.historical_evidence.map((ev, i) => (
+                            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.03]">
+                              <td className="py-2.5 px-3 font-semibold text-foreground">{ev.year}</td>
+                              <td className="py-2.5 px-3 text-right tabular-nums text-blue-300">{ev.r1?.toLocaleString() || '—'}</td>
+                              <td className="py-2.5 px-3 text-right tabular-nums text-violet-300">{ev.r2?.toLocaleString() || '—'}</td>
+                              <td className="py-2.5 px-3 text-right tabular-nums text-fuchsia-300">{ev.r3?.toLocaleString() || '—'}</td>
+                              <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs">
+                                {ev.r2_r1_ratio ? `×${ev.r2_r1_ratio.toFixed(3)}` : '—'}
+                              </td>
+                              <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs">
+                                {ev.r3_r1_ratio ? `×${ev.r3_r1_ratio.toFixed(3)}` : '—'}
+                              </td>
+                            </tr>
+                          ))}
+                          <tr className="border-t border-violet-500/30 bg-violet-500/[0.08]">
+                            <td className="py-2.5 px-3 font-bold text-violet-300">2026 (Predicted)</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-blue-400 font-semibold">{prediction.r1_actual.toLocaleString()} (Actual)</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-violet-400 font-semibold">{prediction.r2_predicted.toLocaleString()}</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-fuchsia-400 font-semibold">{prediction.r3_predicted.toLocaleString()}</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs font-semibold">×{prediction.r2_drift_ratio.toFixed(3)}</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs font-semibold">×{prediction.r3_drift_ratio.toFixed(3)}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
+              <Card className="bg-card border-border border-dashed">
+                <CardContent className="flex flex-col items-center justify-center py-16 space-y-3">
+                  <TrendingUp className="h-12 w-12 text-violet-400/30" />
+                  <p className="text-muted-foreground text-sm">Select a college, branch, and category to view its cutoff trend graphs</p>
                 </CardContent>
               </Card>
             )}
