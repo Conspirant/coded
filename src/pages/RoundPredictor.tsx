@@ -1074,6 +1074,28 @@ const RoundPredictor = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Professional Analytical Disclaimer */}
+        <div className="mt-8 rounded-xl border border-border/60 bg-muted/20 p-5 md:p-6 text-xs text-muted-foreground space-y-3 leading-relaxed">
+          <div className="flex items-center gap-2 font-semibold text-foreground text-sm">
+            <Shield className="h-4 w-4 text-primary" />
+            <span>Analytical Methodology &amp; Counseling Limitations</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+            <div>
+              <span className="font-semibold text-foreground block mb-1">Empirical Projections</span>
+              Round 2 and Round 3 projections are statistical estimates derived from multi-year historical relaxation trends (2023–2025) applied to published 2026 Round 1 actuals. They represent mathematical expectations and do not constitute official allotment guarantees by the Karnataka Examinations Authority (KEA).
+            </div>
+            <div>
+              <span className="font-semibold text-foreground block mb-1">Low-Volume Quota Volatility</span>
+              In specialized reserved categories (such as Rural, Kannada Medium, or specific sub-category quotas), colleges frequently allocate only 1 or 2 seats per academic year. In such low-volume permutations, individual candidate decisions create random variance that trend modeling cannot fully anticipate.
+            </div>
+            <div>
+              <span className="font-semibold text-foreground block mb-1">Strategic Counseling Guidance</span>
+              These projections are structured as diagnostic reference points to assist in logical option entry sequencing, rather than definitive boundaries. Candidates are strictly advised to retain conservative safety choices regardless of favorable probability bands and to verify all seat matrices directly through official KEA releases.
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )
