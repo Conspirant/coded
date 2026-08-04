@@ -198,14 +198,17 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                 </div>
 
                 {/* Developer note */}
-                <div className="text-[10.5px] leading-relaxed text-zinc-400 bg-zinc-900/30 border border-zinc-800 rounded-xl p-3 space-y-1.5">
-                  <p className="font-semibold text-amber-500">Hosting Resource Update</p>
+                <div className="text-[10.5px] leading-relaxed text-zinc-400 bg-zinc-900/30 border border-zinc-800 rounded-xl p-3 space-y-2">
+                  <p className="font-semibold text-zinc-200">Hosting Resource Update</p>
                   <p>
-                    Due to high traffic, our free hosting resources are exhausted. To sustain the server costs, a nominal fee of <strong className="text-emerald-400">₹19</strong> is required to unlock premium features.
+                    Due to high traffic, nominal contributions help sustain server infrastructure costs. A small contribution of <strong className="text-emerald-400">₹19</strong> grants full access to all premium tools.
                   </p>
-                  <p>
-                    If you cannot afford this, you can get free access. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a free key.
-                  </p>
+                  <div className="p-2.5 rounded-lg border border-zinc-800 bg-zinc-900/50 space-y-1">
+                    <p className="font-semibold text-zinc-300">Need free access?</p>
+                    <p>
+                      If you prefer not to pay or cannot afford to contribute, you can receive a <strong>100% free access code</strong>. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a key directly.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Live Funding Status */}
