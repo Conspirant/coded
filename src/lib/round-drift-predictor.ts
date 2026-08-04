@@ -350,6 +350,11 @@ function getGMComboDrift(
   return getPerComboDrift(idx, code, normCourse, 'GM')
 }
 
+function getFallbackR3R2Ratio(r2r1: number): number {
+  if (r2r1 <= 1.0) return 1.0
+  return Math.max(1.03, 1.0 + (r2r1 - 1.0) * 0.35)
+}
+
 /**
  * Layer 3: Same branch + same category across ALL colleges
  * Computes per-combo R2/R1 and R3/R2 ratios, then takes the median.
@@ -388,7 +393,7 @@ function getBranchCategoryDrift(
   if (r2r1Ratios.length < 3) return null
 
   const r2r1 = median(r2r1Ratios)
-  const r3r2 = r3r2Ratios.length >= 3 ? median(r3r2Ratios) : Math.max(1.0, r2r1 * 0.6)
+  const r3r2 = r3r2Ratios.length >= 3 ? median(r3r2Ratios) : getFallbackR3R2Ratio(r2r1)
 
   return {
     r2_r1_ratio: r2r1,
@@ -436,7 +441,7 @@ function getBranchGlobalDrift(
   if (r2r1Ratios.length < 3) return null
 
   const r2r1 = median(r2r1Ratios)
-  const r3r2 = r3r2Ratios.length >= 3 ? median(r3r2Ratios) : Math.max(1.0, r2r1 * 0.6)
+  const r3r2 = r3r2Ratios.length >= 3 ? median(r3r2Ratios) : getFallbackR3R2Ratio(r2r1)
 
   return {
     r2_r1_ratio: r2r1,
@@ -507,33 +512,61 @@ function getDriftRatios(
   normCourse: string,
   category: string
 ): DriftResult {
+  let result: DriftResult
+
   // Layer 1: Exact combo
   const perCombo = getPerComboDrift(idx, code, normCourse, category)
-  if (perCombo && perCombo.dataPoints >= 2) return perCombo
-
-  // Layer 2: GM fallback for same college+branch
-  const gmCombo = getGMComboDrift(idx, code, normCourse, category)
-  if (gmCombo && gmCombo.dataPoints >= 2) {
-    return {
-      ...gmCombo,
-      source: `GM fallback at same college (${gmCombo.dataPoints} data points)`,
-      evidence: perCombo?.evidence || gmCombo.evidence,
+  if (perCombo && perCombo.dataPoints >= 2) {
+    result = perCombo
+  } else {
+    // Layer 2: GM fallback for same college+branch
+    const gmCombo = getGMComboDrift(idx, code, normCourse, category)
+    if (gmCombo && gmCombo.dataPoints >= 2) {
+      result = {
+        ...gmCombo,
+        source: `GM fallback at same college (${gmCombo.dataPoints} data points)`,
+        evidence: perCombo?.evidence || gmCombo.evidence,
+      }
+    } else if (perCombo && perCombo.dataPoints >= 1) {
+      // If we have at least 1 data point from per-combo, use it (with lower confidence)
+      result = perCombo
+    } else {
+      // Layer 3: Branch+category global
+      const branchCat = getBranchCategoryDrift(idx, normCourse, category)
+      if (branchCat && branchCat.dataPoints >= 2) {
+        result = branchCat
+      } else {
+        // Layer 4: Branch global
+        const branchGlobal = getBranchGlobalDrift(idx, normCourse)
+        if (branchGlobal && branchGlobal.dataPoints >= 2) {
+          result = branchGlobal
+        } else {
+          // Layer 5: Global fallback
+          result = getGlobalDrift(idx)
+        }
+      }
     }
   }
 
-  // If we have at least 1 data point from per-combo, use it (with lower confidence)
-  if (perCombo && perCombo.dataPoints >= 1) return perCombo
+  // For small/sparse categories where R3 historical data was missing or identical to R2 (ratio <= 1.005),
+  // borrow R3/R2 relaxation from GM at the same college, Branch trend, or growth delta so R2 and R3 estimates aren't identically flat.
+  if (result.r2_r1_ratio > 1.01 && result.r3_r2_ratio <= 1.005) {
+    const gmDrift = getGMComboDrift(idx, code, normCourse, category)
+    const branchDrift = getBranchGlobalDrift(idx, normCourse)
+    const fallbackRatio = (gmDrift && gmDrift.r3_r2_ratio > 1.01)
+      ? gmDrift.r3_r2_ratio
+      : (branchDrift && branchDrift.r3_r2_ratio > 1.01)
+        ? branchDrift.r3_r2_ratio
+        : getFallbackR3R2Ratio(result.r2_r1_ratio)
 
-  // Layer 3: Branch+category global
-  const branchCat = getBranchCategoryDrift(idx, normCourse, category)
-  if (branchCat && branchCat.dataPoints >= 2) return branchCat
+    return {
+      ...result,
+      r3_r2_ratio: fallbackRatio,
+      r3_r1_ratio: result.r2_r1_ratio * fallbackRatio,
+    }
+  }
 
-  // Layer 4: Branch global
-  const branchGlobal = getBranchGlobalDrift(idx, normCourse)
-  if (branchGlobal && branchGlobal.dataPoints >= 2) return branchGlobal
-
-  // Layer 5: Global fallback
-  return getGlobalDrift(idx)
+  return result
 }
 
 // ════════════════════════════════════════════════════════════════════
