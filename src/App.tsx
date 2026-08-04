@@ -50,7 +50,7 @@ import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
 import CutoffTrends from "./pages/CutoffTrends";
-import CutoffPredictor from "./pages/CutoffPredictor";
+import RoundPredictor from "./pages/RoundPredictor";
 import Donate from "./pages/Donate";
 import Supporters from "./pages/Supporters";
 import AdminHub from "./pages/AdminHub";
@@ -104,7 +104,8 @@ const App = () => (
               <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
               <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
               <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
-              <Route path="/cutoff-predictor" element={<Layout><CutoffPredictor /></Layout>} />
+              <Route path="/cutoff-predictor" element={<Layout><RoundPredictor /></Layout>} />
+              <Route path="/round-predictor" element={<Layout><RoundPredictor /></Layout>} />
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
