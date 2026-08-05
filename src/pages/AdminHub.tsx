@@ -1651,8 +1651,8 @@ function AdminSystemSettingsSection() {
                     </CardHeader>
                     <CardContent>
                         <div className="border border-white/5 rounded-xl overflow-hidden">
-                            <div className="max-h-[350px] overflow-y-auto">
-                                <table className="w-full text-left border-collapse">
+                            <div className="max-h-[350px] overflow-y-auto w-full overflow-x-auto">
+                                <table className="w-full text-left border-collapse min-w-[500px]">
                                     <thead>
                                         <tr className="bg-white/5 border-b border-white/5 text-[10px] font-bold uppercase text-muted-foreground tracking-wider">
                                             <th className="px-4 py-3">Session ID</th>
@@ -1846,7 +1846,7 @@ export default function AdminHub() {
 
     return (
         <div className="min-h-screen bg-background">
-            <div className="flex">
+            <div className="flex flex-col md:flex-row min-h-screen">
                 {/* Sidebar */}
                 <aside className="w-56 min-h-screen border-r border-white/5 bg-white/[0.02] p-4 space-y-2 shrink-0 hidden md:block">
                     <div className="px-2 pb-4 mb-2 border-b border-white/10">
