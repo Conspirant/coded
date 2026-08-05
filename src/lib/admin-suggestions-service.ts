@@ -203,4 +203,43 @@ export class AdminSuggestionsService {
             return { dismiss: 0, try: 0 };
         }
     }
+
+    static async getBlockedPages(): Promise<string[]> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:blocked_pages')
+                .maybeSingle();
+            
+            if (error) throw error;
+            if (data && data.results_json) {
+                return (data.results_json as any).blockedPaths || [];
+            }
+            return [];
+        } catch (e) {
+            console.error("Error getting blocked pages:", e);
+            return [];
+        }
+    }
+
+    static async setBlockedPages(blockedPaths: string[]): Promise<boolean> {
+        try {
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:blocked_pages',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { blockedPaths }
+                }], { onConflict: 'appl_no' });
+            
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error("Error setting blocked pages:", e);
+            return false;
+        }
+    }
 }
+

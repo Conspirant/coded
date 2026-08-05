@@ -15,7 +15,7 @@ import {
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
-    Building2, Key, Loader2, Heart
+    Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -1437,17 +1437,47 @@ function AdminDonationBroadcastController() {
     )
 }
 
+const BLOCKABLE_PAGES = [
+  { name: "Rank Predictor", path: "/rank-predictor" },
+  { name: "Cutoff Explorer", path: "/cutoff-explorer" },
+  { name: "COMEDK Explorer", path: "/comedk-explorer" },
+  { name: "College Finder", path: "/college-finder" },
+  { name: "Cutoff Trends", path: "/cutoff-trends" },
+  { name: "Mock Simulator", path: "/mock-simulator" },
+  { name: "Round Tracker", path: "/round-tracker" },
+  { name: "College Compare", path: "/college-compare" },
+  { name: "Documents Directory", path: "/documents" },
+  { name: "Document Verification (Mock)", path: "/document-verification" },
+  { name: "Reviews", path: "/reviews" },
+  { name: "Info Centre", path: "/info-centre" },
+  { name: "Study Materials", path: "/materials" },
+  { name: "CET News", path: "/cet-news" },
+  { name: "AI Counselor", path: "/ai-counselor" },
+  { name: "Squad Finder", path: "/squad-finder" },
+  { name: "Metro Mapper", path: "/metro-mapper" },
+  { name: "BMTC Mapper", path: "/bmtc-mapper" },
+  { name: "Hidden Gems", path: "/hidden-gems" },
+  { name: "Donate Page", path: "/donate" }
+];
+
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
+    const [blockedPages, setBlockedPages] = useState<string[]>([])
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
+    const [savingBlocks, setSavingBlocks] = useState(false)
+    const [onlineUsers, setOnlineUsers] = useState<any[]>([])
     const { toast } = useToast()
 
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const disabled = await AdminSuggestionsService.isPaywallDisabledGlobally()
+            const [disabled, blocked] = await Promise.all([
+                AdminSuggestionsService.isPaywallDisabledGlobally(),
+                AdminSuggestionsService.getBlockedPages()
+            ])
             setPaywallDisabled(disabled)
+            setBlockedPages(blocked)
         } catch (err: any) {
             toast({
                 title: "Error fetching settings",
@@ -1478,9 +1508,72 @@ function AdminSystemSettingsSection() {
         }
     }
 
+    const handleSaveBlockedPages = async () => {
+        try {
+            setSavingBlocks(true)
+            await AdminSuggestionsService.setBlockedPages(blockedPages)
+            toast({
+                title: "Settings Saved",
+                description: "Blocked pages configuration has been updated."
+            })
+        } catch (err: any) {
+            toast({
+                title: "Failed to save settings",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setSavingBlocks(false)
+        }
+    }
+
     useEffect(() => {
         fetchSettings()
+
+        const channel = supabase.channel("global-alerts")
+
+        const syncPresence = () => {
+            const presenceState = channel.presenceState()
+            const activeUsersMap: Record<string, { sessionId: string; page: string; online_at: string; isAgentOrAdmin?: boolean }> = {};
+            
+            Object.values(presenceState).forEach((presences: any) => {
+                presences.forEach((presence: any) => {
+                    if (!presence.sessionId) return;
+                    const existing = activeUsersMap[presence.sessionId];
+                    if (!existing || new Date(presence.online_at).getTime() > new Date(existing.online_at).getTime()) {
+                        activeUsersMap[presence.sessionId] = {
+                            sessionId: presence.sessionId,
+                            page: presence.page || "Unknown",
+                            online_at: presence.online_at,
+                            isAgentOrAdmin: presence.role === "admin"
+                        };
+                    }
+                });
+            });
+            
+            setOnlineUsers(Object.values(activeUsersMap))
+        }
+
+        channel
+            .on("presence", { event: "sync" }, syncPresence)
+            .subscribe((status) => {
+                if (status === "SUBSCRIBED") {
+                    channel.track({ online_at: new Date().toISOString(), role: "admin", sessionId: "ADMIN_PANEL" })
+                }
+            })
+
+        return () => {
+            channel.unsubscribe()
+        }
     }, [])
+
+    const regularUsers = onlineUsers.filter(u => !u.isAgentOrAdmin && u.sessionId !== "ADMIN_PANEL")
+    
+    // Count users per page
+    const pageCounts: Record<string, number> = {}
+    regularUsers.forEach(u => {
+        pageCounts[u.page] = (pageCounts[u.page] || 0) + 1
+    })
 
     return (
         <div className="space-y-6">
@@ -1490,11 +1583,198 @@ function AdminSystemSettingsSection() {
                     System Settings
                 </h2>
                 <p className="text-xs text-muted-foreground mt-1">
-                    Manage global platform-level flags and features configuration.
+                    Manage global platform-level flags, page access, and monitor user presence.
                 </p>
             </div>
 
-            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md">
+            {/* Live User Activity Card */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Left: Live user summary and counts by page */}
+                <Card className="lg:col-span-1 border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                            <Activity className="h-4 w-4 text-emerald-400 animate-pulse" />
+                            Live Statistics
+                        </CardTitle>
+                        <CardDescription className="text-[11px] text-muted-foreground">
+                            Current active sessions breakdown by page.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-center">
+                            <div className="text-2xl font-black text-emerald-400">
+                                {regularUsers.length}
+                            </div>
+                            <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground mt-1">
+                                Users Online Now
+                            </div>
+                        </div>
+
+                        <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                            <div className="text-xs font-semibold text-muted-foreground/80 px-1">
+                                Users Per Page
+                            </div>
+                            {Object.keys(pageCounts).length === 0 ? (
+                                <p className="text-xs text-muted-foreground px-1 py-2 italic">
+                                    No user activity detected.
+                                </p>
+                            ) : (
+                                Object.entries(pageCounts).map(([page, count]) => {
+                                    const pageObj = BLOCKABLE_PAGES.find(p => p.path === page);
+                                    const pageName = pageObj ? pageObj.name : page;
+                                    return (
+                                        <div key={page} className="flex justify-between items-center bg-white/[0.02] border border-white/5 rounded-lg px-3 py-2 text-xs">
+                                            <span className="text-slate-300 font-medium truncate max-w-[180px]">
+                                                {pageName}
+                                            </span>
+                                            <Badge className="bg-indigo-500/20 text-indigo-300 border-none font-bold">
+                                                {count} {count === 1 ? "user" : "users"}
+                                            </Badge>
+                                        </div>
+                                    )
+                                })
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Right: Live user list */}
+                <Card className="lg:col-span-2 border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                            <Users className="h-4 w-4 text-indigo-400" />
+                            Live User Directory
+                        </CardTitle>
+                        <CardDescription className="text-[11px] text-muted-foreground">
+                            Real-time overview of active user sessions.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="border border-white/5 rounded-xl overflow-hidden">
+                            <div className="max-h-[350px] overflow-y-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-white/5 border-b border-white/5 text-[10px] font-bold uppercase text-muted-foreground tracking-wider">
+                                            <th className="px-4 py-3">Session ID</th>
+                                            <th className="px-4 py-3">Active Page</th>
+                                            <th className="px-4 py-3 text-right">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5 text-xs text-slate-300">
+                                        {regularUsers.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={3} className="text-center py-8 text-muted-foreground italic">
+                                                    No active user sessions online right now.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            regularUsers.map((user) => {
+                                                const pageObj = BLOCKABLE_PAGES.find(p => p.path === user.page);
+                                                const pageName = pageObj ? pageObj.name : user.page;
+                                                return (
+                                                    <tr key={user.sessionId} className="hover:bg-white/[0.01] transition-colors">
+                                                        <td className="px-4 py-3 font-mono text-[11px] text-indigo-400">
+                                                            {user.sessionId.replace("USER:", "#")}
+                                                        </td>
+                                                        <td className="px-4 py-3">
+                                                            <span className="font-medium text-white">{pageName}</span>
+                                                            <span className="text-[10px] text-muted-foreground block truncate max-w-[200px]">
+                                                                {user.page}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-4 py-3 text-right">
+                                                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400">
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                                Active
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Page Access Management Card */}
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+                <CardHeader>
+                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                        <ShieldAlert className="h-4 w-4 text-rose-500" />
+                        Page Access Control
+                    </CardTitle>
+                    <CardDescription className="text-[11px] text-muted-foreground">
+                        Block individual routes/features of the platform to prevent public access. whitelisted admin routes remain accessible.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {loading ? (
+                        <div className="py-6 text-center text-xs text-muted-foreground flex items-center justify-center gap-2">
+                            <Loader2 className="h-5 w-5 text-indigo-400 animate-spin" />
+                            Loading configuration...
+                        </div>
+                    ) : (
+                        <div className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {BLOCKABLE_PAGES.map((page) => {
+                                    const isPageBlocked = blockedPages.includes(page.path);
+                                    return (
+                                        <div 
+                                            key={page.path} 
+                                            className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
+                                                isPageBlocked 
+                                                    ? "bg-rose-500/5 border-rose-500/20" 
+                                                    : "bg-white/[0.02] border-white/5 hover:border-white/10"
+                                            }`}
+                                        >
+                                            <div className="space-y-0.5 pr-2 truncate">
+                                                <div className="text-xs font-semibold text-white flex items-center gap-2 truncate">
+                                                    <span className="truncate">{page.name}</span>
+                                                    {isPageBlocked && (
+                                                        <Badge variant="destructive" className="text-[8px] px-1 py-0 h-3.5 uppercase font-bold shrink-0">
+                                                            Blocked
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                                <span className="text-[9px] text-muted-foreground font-mono block truncate">
+                                                    {page.path}
+                                                </span>
+                                            </div>
+                                            <Switch
+                                                className="data-[state=checked]:bg-rose-500 shrink-0"
+                                                checked={isPageBlocked}
+                                                onCheckedChange={(checked) => {
+                                                    if (checked) {
+                                                        setBlockedPages(prev => [...prev, page.path]);
+                                                    } else {
+                                                        setBlockedPages(prev => prev.filter(p => p !== page.path));
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="flex justify-end pt-2 border-t border-white/5">
+                                <Button 
+                                    onClick={handleSaveBlockedPages} 
+                                    disabled={savingBlocks} 
+                                    className="bg-gradient-to-r from-rose-500 to-amber-600 hover:from-rose-600 hover:to-amber-700 text-white font-semibold text-xs h-9 px-4 shadow-lg shadow-rose-500/10"
+                                >
+                                    {savingBlocks ? "Saving..." : "Save Page Access Settings"}
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
                 <CardHeader>
                     <CardTitle className="text-sm font-bold text-white">Premium Feature Configuration</CardTitle>
                 </CardHeader>
@@ -1526,7 +1806,7 @@ function AdminSystemSettingsSection() {
                             </div>
 
                             <div className="flex justify-end pt-2">
-                                <Button onClick={handleSave} disabled={saving} className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700">
+                                <Button onClick={handleSave} disabled={saving} className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-xs h-9 px-4">
                                     {saving ? "Saving..." : "Save Settings"}
                                 </Button>
                             </div>

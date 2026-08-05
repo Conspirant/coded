@@ -59,6 +59,7 @@ import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
 import { DomainAnnouncementModal } from "./components/DomainAnnouncementModal";
+import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
 
@@ -86,7 +87,8 @@ const App = () => (
               v7_relativeSplatPath: true
             }}
           >
-            <CommandPalette />
+            <PresenceAndBlockProvider>
+              <CommandPalette />
             <KonamiEasterEgg />
             <KeyboardShortcutsHUD />
             <DisclaimerBanner />
@@ -138,6 +140,7 @@ const App = () => (
             </Routes>
             <DonationButton />
             <PWAInstallBanner />
+            </PresenceAndBlockProvider>
           </BrowserRouter>
         </TooltipProvider>
       </ExamModeProvider>
