@@ -114,7 +114,7 @@ export function subscribeToUnlockState(callback: (unlocked: boolean) => void) {
   return () => window.removeEventListener(EVENT_NAME, handler);
 }
 
-export async function initiatePremiumPayment(onSuccess: () => void, onFailure: () => void) {
+export async function initiatePremiumPayment(onSuccess: () => void, onFailure: () => void, customAmount?: number) {
   if (typeof (window as any).Razorpay === 'undefined') {
     toast.error('Razorpay SDK not loaded. Please disable content blockers or reload the page.');
     onFailure();
@@ -122,7 +122,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
   }
 
   try {
-    const paiseAmount = 1900; // ₹19
+    const paiseAmount = customAmount ? Math.round(customAmount * 100) : 1900; // ₹19
     // Step 1: Create Order
     const orderRes = await fetch('/api/create-order', {
       method: 'POST',
