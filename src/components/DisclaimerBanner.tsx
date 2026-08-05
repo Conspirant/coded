@@ -1,9 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AlertCircle, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export const DisclaimerBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const isDismissed = localStorage.getItem('disclaimerDismissed');
+    if (!isDismissed) {
+      setIsVisible(true);
+    }
+  }, []);
+
+  const handleDismiss = () => {
+    localStorage.setItem('disclaimerDismissed', 'true');
+    setIsVisible(false);
+  };
 
   if (!isVisible) return null;
 
@@ -28,7 +40,7 @@ export const DisclaimerBanner = () => {
                 </p>
               </div>
               <button
-                onClick={() => setIsVisible(false)}
+                onClick={handleDismiss}
                 className="text-muted-foreground hover:text-white transition-colors shrink-0"
               >
                 <X className="h-4 w-4" />
