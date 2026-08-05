@@ -114,7 +114,31 @@ export function subscribeToUnlockState(callback: (unlocked: boolean) => void) {
   return () => window.removeEventListener(EVENT_NAME, handler);
 }
 
-export async function initiatePremiumPayment(onSuccess: () => void, onFailure: () => void, customAmount?: number) {
+const SAVED_CODE_KEY = 'kcet_my_access_code';
+
+export function getSavedAccessCode(): string | null {
+  try {
+    return localStorage.getItem(SAVED_CODE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function saveAccessCode(code: string) {
+  if (!code) return;
+  try {
+    localStorage.setItem(SAVED_CODE_KEY, code.trim());
+  } catch {}
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true, code } }));
+}
+
+export async function initiatePremiumPayment(
+  onSuccess: (code?: string) => void, 
+  onFailure: () => void, 
+  customAmount?: number,
+  donorName?: string,
+  isAnonymous?: boolean
+) {
   if (typeof (window as any).Razorpay === 'undefined') {
     toast.error('Razorpay SDK not loaded. Please disable content blockers or reload the page.');
     onFailure();
@@ -123,6 +147,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
 
   try {
     const paiseAmount = customAmount ? Math.round(customAmount * 100) : 1900; // ₹19
+    const amtVal = customAmount || 19;
     // Step 1: Create Order
     const orderRes = await fetch('/api/create-order', {
       method: 'POST',
@@ -147,7 +172,7 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
       order_id: order.order_id,
       handler: async function (response: any) {
         try {
-          // Step 3: Verify Payment Signature
+          // Step 3: Verify Payment Signature & Generate Access Code
           const verifyRes = await fetch('/api/verify-payment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -155,17 +180,25 @@ export async function initiatePremiumPayment(onSuccess: () => void, onFailure: (
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
+              donor_name: donorName,
+              is_anonymous: isAnonymous,
+              amount_inr: amtVal
             })
           });
 
           const verifyData = await verifyRes.json().catch(() => ({}));
 
           if (verifyRes.ok && verifyData.success) {
+            if (verifyData.code) {
+              saveAccessCode(verifyData.code);
+            }
             unlockGlobally(); // Automatically unlocks globally
-            toast.success('Successfully unlocked all premium features!', {
-              description: 'You now have full access to early tools.'
+            toast.success('Successfully unlocked all premium features! 🎉', {
+              description: verifyData.code 
+                ? `Your access code (${verifyData.code}) is saved in Settings.`
+                : 'You now have full access to early tools.'
             });
-            onSuccess();
+            onSuccess(verifyData.code);
           } else {
             toast.error('Verification failed', {
               description: verifyData.error || "Could not verify your payment signature."

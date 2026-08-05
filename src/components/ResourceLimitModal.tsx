@@ -20,7 +20,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, subscribeToUnlockState, unlockGlobally } from '@/lib/unlock';
+import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, subscribeToUnlockState, unlockGlobally, saveAccessCode } from '@/lib/unlock';
+import { copyToClipboard } from '@/lib/utils';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -327,51 +328,53 @@ export const ResourceLimitModal = () => {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
+                donor_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                is_anonymous: donorIsAnonymous || !donorName.trim(),
+                amount_inr: amtVal
               })
             });
 
             const verifyData = await verifyRes.json().catch(() => ({}));
 
             if (verifyRes.ok && verifyData.success) {
-              // Generate access code
-              const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-              let generatedCode = 'CODED-';
-              for (let i = 0; i < 4; i++) {
-                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
-              }
-              generatedCode += '-';
-              for (let i = 0; i < 4; i++) {
-                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+              let finalCode = verifyData.code;
+              
+              if (!finalCode) {
+                // Fallback code generation if not provided by backend
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                finalCode = 'CODED-';
+                for (let i = 0; i < 4; i++) finalCode += chars.charAt(Math.floor(Math.random() * chars.length));
+                finalCode += '-';
+                for (let i = 0; i < 4; i++) finalCode += chars.charAt(Math.floor(Math.random() * chars.length));
+
+                try {
+                  await (supabase as any).from('access_codes').insert({
+                    code: finalCode,
+                    is_used: false,
+                    payment_id: response.razorpay_payment_id
+                  });
+                } catch (e) {
+                  console.error('Failed to save access code:', e);
+                }
+
+                try {
+                  await (supabase as any).from('donors').insert({
+                    display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                    amount_inr: amtVal,
+                    is_anonymous: donorIsAnonymous || !donorName.trim(),
+                    payment_id: response.razorpay_payment_id,
+                  });
+                } catch (e) {
+                  console.error('Failed to save donor:', e);
+                }
               }
 
-              // Save code to Supabase
-              try {
-                await (supabase as any).from('access_codes').insert({
-                  code: generatedCode,
-                  is_used: false,
-                  payment_id: response.razorpay_payment_id
-                });
-              } catch (e) {
-                console.error('Failed to save access code:', e);
-              }
-
-              // Save donor to Supabase
-              try {
-                await (supabase as any).from('donors').insert({
-                  display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
-                  amount_inr: amtVal,
-                  is_anonymous: donorIsAnonymous || !donorName.trim(),
-                  payment_id: response.razorpay_payment_id,
-                });
-              } catch (e) {
-                console.error('Failed to save donor:', e);
-              }
-
+              saveAccessCode(finalCode);
               setTotalAmount(prev => prev + amtVal);
-              setPaymentSuccessCode(generatedCode);
+              setPaymentSuccessCode(finalCode);
 
               toast.success('Payment Successful! 🎉', {
-                description: 'Copy your unique one-time access code to use on another device!'
+                description: `Your access code (${finalCode}) is saved in Settings for future use!`
               });
             } else {
               toast.error('Payment Verification Failed', {
@@ -478,11 +481,15 @@ export const ResourceLimitModal = () => {
             <Button
               size="sm"
               variant="secondary"
-              onClick={() => {
-                navigator.clipboard.writeText(paymentSuccessCode);
-                toast.success("Access code copied to clipboard!");
+              onClick={async () => {
+                const ok = await copyToClipboard(paymentSuccessCode);
+                if (ok) {
+                  toast.success("Access code copied to clipboard!");
+                } else {
+                  toast.error("Failed to copy automatically. Please select and copy manually.");
+                }
               }}
-              className="text-xs bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white"
+              className="text-xs bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white font-semibold"
             >
               Copy Code
             </Button>

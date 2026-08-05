@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2 } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2, Copy } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -12,7 +12,8 @@ import { loadSettings, saveSettings, applyRuntimeSettings, defaultSettings, type
 import { SidebarHint } from './SidebarHint'
 import { useExamMode } from "@/contexts/ExamModeContext"
 import { Input } from "@/components/ui/input"
-import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled } from "@/lib/unlock"
+import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, lockFeatures, subscribeToUnlockState, setGlobalPaywallDisabled, getSavedAccessCode } from "@/lib/unlock"
+import { copyToClipboard } from "@/lib/utils"
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
 import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
@@ -262,8 +263,44 @@ export function Layout({ children }: LayoutProps) {
                     </div>
 
                     {/* Access Key Section */}
-                    <div className="border-t border-white/5 pt-4 mt-2">
-                      <Label className="text-sm font-semibold text-slate-200 block mb-2">Access Key Configuration</Label>
+                    <div className="border-t border-white/5 pt-4 mt-2 space-y-3">
+                      <Label className="text-sm font-semibold text-slate-200 block">Access Key Configuration</Label>
+
+                      {/* Display Saved Access Code if Available */}
+                      {getSavedAccessCode() && (
+                        <div className="rounded-xl p-3 bg-indigo-500/10 border border-indigo-500/20 space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] uppercase font-bold text-indigo-400 tracking-wider">Your Generated Access Code</span>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={async () => {
+                                const code = getSavedAccessCode();
+                                if (code) {
+                                  const ok = await copyToClipboard(code);
+                                  if (ok) {
+                                    toast.success("Access code copied to clipboard!");
+                                  } else {
+                                    toast.error("Could not copy code. Please copy manually.");
+                                  }
+                                }
+                              }}
+                              className="h-7 text-[11px] bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 px-2 rounded-md flex items-center gap-1 font-mono"
+                            >
+                              <Copy className="h-3 w-3" />
+                              Copy Code
+                            </Button>
+                          </div>
+                          <div className="text-sm font-mono font-bold text-white tracking-widest selection:bg-indigo-500/30">
+                            {getSavedAccessCode()}
+                          </div>
+                          <p className="text-[10px] text-zinc-400">
+                            Saved on this device. You can copy this code and use it to unlock features on any other device.
+                          </p>
+                        </div>
+                      )}
+
                       {unlocked ? (
                         <div className="flex items-center justify-between rounded-xl p-3 bg-emerald-500/5 border border-emerald-500/10">
                           <div className="flex items-center gap-2">

@@ -17,6 +17,8 @@ import {
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "@/integrations/supabase/client"
+import { saveAccessCode } from "@/lib/unlock"
+import { copyToClipboard } from "@/lib/utils"
 
 const Donate = () => {
     const { toast } = useToast()
@@ -140,57 +142,59 @@ const Donate = () => {
                                 razorpay_order_id: response.razorpay_order_id,
                                 razorpay_payment_id: response.razorpay_payment_id,
                                 razorpay_signature: response.razorpay_signature,
+                                donor_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                                is_anonymous: donorIsAnonymous || !donorName.trim(),
+                                amount_inr: amtVal
                             })
                         })
 
-                        const verifyData = (await verifyRes.json().catch(() => ({}))) as { success?: boolean; error?: string }
+                        const verifyData = (await verifyRes.json().catch(() => ({}))) as { success?: boolean; code?: string; error?: string }
 
                         if (verifyRes.ok && verifyData.success) {
-                            // Generate access code
-                            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                            let generatedCode = 'CODED-';
-                            for (let i = 0; i < 4; i++) {
-                                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
-                            }
-                            generatedCode += '-';
-                            for (let i = 0; i < 4; i++) {
-                                generatedCode += chars.charAt(Math.floor(Math.random() * chars.length));
+                            let finalCode = verifyData.code;
+
+                            if (!finalCode) {
+                                // Generate access code fallback
+                                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                                finalCode = 'CODED-';
+                                for (let i = 0; i < 4; i++) finalCode += chars.charAt(Math.floor(Math.random() * chars.length));
+                                finalCode += '-';
+                                for (let i = 0; i < 4; i++) finalCode += chars.charAt(Math.floor(Math.random() * chars.length));
+
+                                try {
+                                    await supabase.from('access_codes').insert({
+                                        code: finalCode,
+                                        is_used: false,
+                                        payment_id: response.razorpay_payment_id
+                                    })
+                                } catch (e) {
+                                    console.error('Failed to save access code to database:', e)
+                                }
+
+                                try {
+                                    await supabase.from('donors').insert({
+                                        display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
+                                        amount_inr: amtVal,
+                                        is_anonymous: donorIsAnonymous || !donorName.trim(),
+                                        payment_id: response.razorpay_payment_id,
+                                    })
+                                } catch (e) {
+                                    console.error('Failed to save donor to database:', e)
+                                }
                             }
 
-                            // Save code to Supabase
-                            try {
-                                await supabase.from('access_codes').insert({
-                                    code: generatedCode,
-                                    is_used: false,
-                                    payment_id: response.razorpay_payment_id
-                                })
-                            } catch (e) {
-                                console.error('Failed to save access code to database:', e)
-                            }
-
-                            // Save donor to Supabase
-                            try {
-                                await supabase.from('donors').insert({
-                                    display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
-                                    amount_inr: amtVal,
-                                    is_anonymous: donorIsAnonymous || !donorName.trim(),
-                                    payment_id: response.razorpay_payment_id,
-                                })
-                            } catch (e) {
-                                console.error('Failed to save donor to database:', e)
-                            }
-
-                             setDonateSuccessCode(generatedCode)
-                             setPaymentStatus('success')
-                             setTotalAmount(prev => prev + amtVal)
-                             setTxnDetails({
-                                 paymentId: response.razorpay_payment_id,
-                                 orderId: response.razorpay_order_id,
-                             })
-                             toast({
-                                 title: "Payment Successful!",
-                                 description: `Thank you so much for your donation of ₹${amtVal}!`,
-                             })
+                            saveAccessCode(finalCode)
+                            setDonateSuccessCode(finalCode)
+                            setPaymentStatus('success')
+                            setTotalAmount(prev => prev + amtVal)
+                            setTxnDetails({
+                                paymentId: response.razorpay_payment_id,
+                                orderId: response.razorpay_order_id,
+                            })
+                            toast({
+                                title: "Payment Successful!",
+                                description: `Thank you so much for your donation of ₹${amtVal}! Your access code (${finalCode}) is saved in Settings.`,
+                            })
                         } else {
                             setPaymentStatus('error')
                             toast({
@@ -339,13 +343,17 @@ const Donate = () => {
                                         {donateSuccessCode}
                                     </div>
                                     <Button
-                                        size="xs"
+                                        size="sm"
                                         variant="outline"
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(donateSuccessCode);
-                                            toast({ title: "Copied!", description: "Access code copied to clipboard." });
+                                        onClick={async () => {
+                                            const ok = await copyToClipboard(donateSuccessCode);
+                                            if (ok) {
+                                                toast({ title: "Copied!", description: "Access code copied to clipboard." });
+                                            } else {
+                                                toast({ title: "Error", description: "Failed to copy. Please select and copy manually.", variant: "destructive" });
+                                            }
                                         }}
-                                        className="text-[10px] h-7 px-3 border-white/10 hover:bg-white/5 text-slate-300 hover:text-white"
+                                        className="text-[10px] h-7 px-3 border-white/10 hover:bg-white/5 text-slate-300 hover:text-white font-semibold"
                                     >
                                         Copy Code
                                     </Button>
