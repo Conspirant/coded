@@ -40,7 +40,7 @@ const StarRating = ({
       <SEO
         title="College Review – KCET Engineering College Reviews & Ratings"
         description="Detailed student reviews, ratings, and experiences for this KCET engineering college. Read about placements, faculty quality, campus facilities, and hostel life."
-        url="https://kcet-coded2.vercel.app/reviews"
+        url="https://kcetcoded.dev/reviews"
         keywords="KCET college review, student review, college ratings, placements, campus life, faculty review"
       />
             {[1, 2, 3, 4, 5].map(i => (

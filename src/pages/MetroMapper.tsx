@@ -34,7 +34,7 @@ const MetroMapper = () => {
       <SEO
         title="KCET Metro Mapper – Engineering Colleges Near Bangalore Metro"
         description="Find top engineering colleges in Bangalore within walking distance of Namma Metro stations. Filter by metro line, distance & cutoff ranks."
-        url="https://kcet-coded2.vercel.app/metro-mapper"
+        url="https://kcetcoded.dev/metro-mapper"
         keywords="engineering colleges near Bangalore metro, colleges near metro station, Namma Metro colleges, KCET metro colleges"
       />
             <div className="max-w-5xl mx-auto space-y-8">

@@ -41,7 +41,7 @@ const ComedkRankPredictor = () => {
       <SEO
         title="COMEDK 2025 Rank Predictor - Community Based"
         description="Predict COMEDK rank from marks using community-reported 2025 marks-vs-rank data from r/comedk post and comments."
-        url="https://kcet-coded2.vercel.app/rank-predictor"
+        url="https://kcetcoded.dev/rank-predictor"
         keywords="COMEDK rank predictor, COMEDK marks vs rank 2025, COMEDK expected rank, r/comedk marks rank"
       />
 

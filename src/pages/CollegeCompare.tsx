@@ -238,7 +238,7 @@ const CollegeCompare = () => {
       <SEO
         title="Side-by-Side College Compare"
         description="Compare KCET engineering colleges side-by-side. Analyze placements, packages, cutoffs, fees, and infrastructure metrics to make the best choice."
-        url="https://kcet-coded2.vercel.app/college-compare"
+        url="https://kcetcoded.dev/college-compare"
       />
 
       {/* Header */}

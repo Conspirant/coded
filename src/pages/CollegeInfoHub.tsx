@@ -314,7 +314,7 @@ const CollegeInfoHub = () => {
       <SEO
         title="All KCET Engineering Colleges – Info, Placements, ROI & Reviews"
         description="Complete directory of all 232+ KCET engineering colleges in Karnataka. Compare placements, fees, NAAC grades, ROI scores, cutoff ranks, and student reviews for every college."
-        url="https://kcet-coded2.vercel.app/colleges"
+        url="https://kcetcoded.dev/colleges"
         keywords="KCET colleges, Karnataka engineering colleges, KCET college list, college placements, ROI, NAAC grade, KCET fees, college reviews"
       />
 

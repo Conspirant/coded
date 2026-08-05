@@ -296,10 +296,10 @@ const RankPredictor = () => {
     }
   }
 
-  // Navigate to College Finder with predicted rank
+  // Navigate to College Predictor with predicted rank
   const findColleges = () => {
     if (!prediction) return
-    navigate(`/college-finder?rank=${prediction.rank2026}`)
+    navigate(`/college-predictor?rank=${prediction.rank2026}`)
   }
 
   const downloadPNG = () => {
@@ -373,7 +373,7 @@ const RankPredictor = () => {
       <SEO
         title="KCET 2026 Rank Predictor – Predict Your Rank from Marks (Free)"
         description="Predict your KCET 2026 rank from marks instantly using 3 years of historical data. Enter your Physics, Chemistry & Maths marks to get your estimated rank and college suggestions. 100% free, no sign-up."
-        url="https://kcet-coded2.vercel.app/rank-predictor"
+        url="https://kcetcoded.dev/rank-predictor"
         keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction, predict KCET rank from marks, KCET expected rank, 76 marks in KCET rank, 100 marks in KCET rank"
         jsonLd={{
           "@type": "FAQPage",
@@ -410,7 +410,7 @@ const RankPredictor = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0 z-10">
             <Button
-              onClick={() => navigate("/college-finder")}
+              onClick={() => navigate("/college-predictor")}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-600/20 px-5 transition-all gap-1.5 h-11"
             >
               <Search className="h-4 w-4" /> Check College Eligibility

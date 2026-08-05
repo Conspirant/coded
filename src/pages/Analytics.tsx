@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart3, Clock } from "lucide-react"
-import { finderStore, FinderMatch } from "@/store/finderStore"
+import { predictorStore, PredictorMatch } from "@/store/predictorStore"
 
 interface CutoffData {
   institute: string
@@ -33,8 +33,8 @@ const Analytics = () => {
   const [error, setError] = useState<string>("")
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [metadata, setMetadata] = useState<CutoffResponseMeta | null>(null)
-  const [liveMatches, setLiveMatches] = useState<FinderMatch[]>(finderStore.getState().matches)
-  const [liveRank, setLiveRank] = useState<number | null>(finderStore.getState().userRank)
+  const [liveMatches, setLiveMatches] = useState<PredictorMatch[]>(predictorStore.getState().matches)
+  const [liveRank, setLiveRank] = useState<number | null>(predictorStore.getState().userRank)
 
   useEffect(() => {
     const loadData = async () => {
@@ -92,8 +92,8 @@ const Analytics = () => {
 
     loadData()
 
-    // Subscribe to live updates from CollegeFinder
-    const unsubscribe = finderStore.subscribe((s) => {
+    // Subscribe to live updates from CollegePredictor
+    const unsubscribe = predictorStore.subscribe((s) => {
       setLiveMatches(s.matches)
       setLiveRank(s.userRank)
     })
@@ -189,7 +189,7 @@ const Analytics = () => {
             </CardTitle>
             {typeof liveRank === 'number' && (
               <div className="text-sm text-muted-foreground">
-                Based on current College Finder results at rank {liveRank.toLocaleString()}
+                Based on current College Predictor results at rank {liveRank.toLocaleString()}
               </div>
             )}
           </CardHeader>

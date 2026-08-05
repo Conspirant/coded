@@ -46,7 +46,7 @@ const COMMANDS: CommandItem[] = [
     { id: "daily-challenge", title: "Daily Challenge", description: "Daily KCET quiz & streak", icon: Flame, href: "/daily-challenge", keywords: ["daily", "quiz", "challenge", "test", "streak"], category: "main" },
     { id: "cutoff-clash", title: "Cutoff Clash", description: "Higher/Lower cutoff game", icon: Sword, href: "/cutoff-clash", keywords: ["game", "play", "clash", "cutoff", "higher", "lower", "vs"], category: "main" },
     { id: "dashboard", title: "Dashboard", description: "Overview & stats", icon: LayoutDashboard, href: "/dashboard", keywords: ["dashboard", "overview", "stats"], category: "main" },
-    { id: "college-finder", title: "College Finder", description: "Find colleges by rank", icon: Target, href: "/college-finder", keywords: ["college", "find", "search", "rank"], category: "main" },
+    { id: "college-predictor", title: "College Predictor", description: "Predict colleges by rank", icon: Target, href: "/college-predictor", keywords: ["college", "predict", "search", "rank"], category: "main" },
     { id: "cutoff-explorer", title: "Cutoff Explorer", description: "Analyze cutoff trends", icon: BarChart3, href: "/cutoff-explorer", keywords: ["cutoff", "explore", "trends", "analyze"], category: "main" },
     { id: "comedk-explorer", title: "COMEDK Explorer", description: "Browse COMEDK cutoffs with source PDFs", icon: ShieldCheck, href: "/comedk-explorer", keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"], category: "main" },
     { id: "rank-predictor", title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", keywords: ["rank", "predict", "marks", "score"], category: "main" },

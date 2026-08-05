@@ -37,7 +37,7 @@ const About = () => {
             <SEO
                 title="About"
                 description="Learn about KCET Coded — a free, open-source platform built by a fellow KCET aspirant to help students navigate counseling with real data and powerful tools."
-                url="https://kcet-coded2.vercel.app/about"
+                url="https://kcetcoded.dev/about"
         keywords="about KCET Coded, KCET tools website, free KCET platform"
             />
 
@@ -127,7 +127,7 @@ const About = () => {
                         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                     </div>
 
-                    {/* College Finder */}
+                    {/* College Predictor */}
                     <Card className="group hover:border-blue-500/20 transition-colors">
                         <CardContent className="p-6 space-y-3">
                             <div className="flex items-start gap-4">
@@ -136,14 +136,14 @@ const About = () => {
                                 </div>
                                 <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-2">
-                                        <h3 className="text-lg font-bold">College Finder</h3>
+                                        <h3 className="text-lg font-bold">College Predictor</h3>
                                         <Badge variant="secondary" className="text-[10px] bg-blue-500/10 text-blue-400">FLAGSHIP</Badge>
                                     </div>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
                                         <strong className="text-foreground">The problem:</strong> You know your rank, but you have no clue which colleges will accept you. The KEA PDF is 200+ pages and completely unsearchable. You'd have to manually scan thousands of rows to find colleges where your rank falls within the cutoff.
                                     </p>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
-                                        <strong className="text-foreground">What it does:</strong> Enter your KCET rank, select your reservation category, and the College Finder instantly shows you every single college-branch combination where you're eligible — pulled directly from real historical cutoff data. You can filter by year, round, specific colleges, or specific courses.
+                                        <strong className="text-foreground">What it does:</strong> Enter your KCET rank, select your reservation category, and the College Predictor instantly shows you every single college-branch combination where you're eligible — pulled directly from real historical cutoff data. You can filter by year, round, specific colleges, or specific courses.
                                     </p>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
                                         <strong className="text-foreground">What makes it special:</strong> Each result shows an "<span className="text-emerald-400">admission probability</span>" label (High / Moderate / Borderline) based on how comfortably your rank fits within the cutoff. There's a built-in <span className="text-indigo-400">sparkline trend chart</span> showing whether that particular college-branch cutoff has been rising or falling across years. You can <span className="text-amber-400">bookmark</span> colleges you like, <span className="text-purple-400">compare up to 3 colleges side-by-side</span>, <span className="text-cyan-400">verify any entry</span> against the official KEA PDF with one click, and <span className="text-pink-400">export your entire results as a professional PDF</span> to share with your parents or keep for reference during counseling.
@@ -192,7 +192,7 @@ const About = () => {
                                         <strong className="text-foreground">What it does:</strong> Uses the official <span className="text-indigo-400">KEA composite formula</span> (50% KCET score + 50% PUC percentage) calibrated against actual 2025 rank distribution data from community-sourced analysis. You just slide two sliders — your KCET PCM score out of 180 and your PUC PCM percentage — and it instantly shows your predicted rank for 2025 <em>and</em> an estimated 2026 rank (accounting for expected competition increase).
                                     </p>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
-                                        <strong className="text-foreground">What makes it special:</strong> It doesn't just give you one number — it gives you a <span className="text-emerald-400">confidence range</span> (low, medium, high estimates) with a visual gauge. There's a full <span className="text-amber-400">methodology page</span> showing exactly how the prediction works, with links to the original Reddit analysis post and credits to the community members who compiled the data. You can <span className="text-pink-400">download a shareable rank card as a PNG image</span>, <span className="text-green-400">share your prediction</span> with friends, save multiple results to track progress over time, and with one click navigate directly to College Finder pre-filled with your predicted rank.
+                                        <strong className="text-foreground">What makes it special:</strong> It doesn't just give you one number — it gives you a <span className="text-emerald-400">confidence range</span> (low, medium, high estimates) with a visual gauge. There's a full <span className="text-amber-400">methodology page</span> showing exactly how the prediction works, with links to the original Reddit analysis post and credits to the community members who compiled the data. You can <span className="text-pink-400">download a shareable rank card as a PNG image</span>, <span className="text-green-400">share your prediction</span> with friends, save multiple results to track progress over time, and with one click navigate directly to College Predictor pre-filled with your predicted rank.
                                     </p>
                                 </div>
                             </div>

@@ -387,7 +387,7 @@ const ComedkExplorer = () => {
       <SEO
         title="COMEDK Cutoff Explorer"
         description="Explore COMEDK cutoffs from 2022 to 2025 with year, round, category, institute, and course filters."
-        url="https://kcet-coded2.vercel.app/comedk-explorer"
+        url="https://kcetcoded.dev/comedk-explorer"
         keywords="COMEDK cutoff explorer, COMEDK cutoffs 2022 2023 2024 2025, COMEDK round wise cutoff, COMEDK GM KKR HKR cutoff"
       />
 

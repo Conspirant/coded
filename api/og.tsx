@@ -83,7 +83,7 @@ export default async function handler(req: Request) {
                             opacity: 0.8,
                         }}
                     >
-                        kcet-coded2.vercel.app
+                        kcetcoded.dev
                     </div>
                 </div>
             ),

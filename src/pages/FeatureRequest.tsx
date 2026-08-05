@@ -92,7 +92,7 @@ export default function FeatureRequest() {
             <SEO
                 title="Feature Requests"
                 description="Help shape the future of KCET Coded. Suggest new features, report bugs, or request improvements to existing tools."
-                url="https://kcet-coded2.vercel.app/request-feature"
+                url="https://kcetcoded.dev/request-feature"
         keywords="KCET Coded feedback, KCET feature request"
             />
 

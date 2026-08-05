@@ -244,7 +244,7 @@ export default function MockVerification() {
       <SEO
         title="Mock Document Verification Wizard – KCET Coded"
         description="Verify your KCET counseling certificates and study documents against official KEA compliance rules before verification begins."
-        url="https://kcet-coded2.vercel.app/document-verification"
+        url="https://kcetcoded.dev/document-verification"
         keywords="KCET document verification, KEA document verification, study certificate BEO countersign, rural certificate BEO, Kannada medium certificate, KCET reservation check"
       />
 

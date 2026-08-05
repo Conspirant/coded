@@ -37,7 +37,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
     { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
     { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
     { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
-    { title: "College Finder", url: "/college-finder", icon: Target },
+    { title: "College Predictor", url: "/college-predictor", icon: Target },
     { title: "Cutoff Trends", url: "/cutoff-trends", icon: TrendingUp, isNew: true },
     { title: "Cutoff Predictor", url: "/cutoff-predictor", icon: Brain, isNew: true },
   ]

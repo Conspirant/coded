@@ -196,7 +196,7 @@ const PYQTest = () => {
       <SEO
         title="KCET PYQ Practice"
         description="Practice KCET previous year questions chapter-wise with instant grading and explanations."
-        url="https://kcet-coded2.vercel.app/pyq-test"
+        url="https://kcetcoded.dev/pyq-test"
         keywords="KCET PYQ, chapter wise physics PYQ, KCET practice"
       />
 

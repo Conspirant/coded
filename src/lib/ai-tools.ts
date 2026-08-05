@@ -115,7 +115,7 @@ RANK PREDICTION RESULT:
  * TOOL: Find Colleges by Rank
  * Given a rank and category, finds colleges where the student is eligible
  */
-export async function toolFindColleges(
+export async function toolPredictColleges(
     rank: number,
     category: string = 'GM',
     course?: string,
@@ -172,7 +172,7 @@ export async function toolFindColleges(
         };
 
         let formatted = `
-COLLEGE FINDER RESULTS for Rank ${rank.toLocaleString()} (${normalizedCategory} category):
+COLLEGE PREDICTOR RESULTS for Rank ${rank.toLocaleString()} (${normalizedCategory} category):
 `;
 
         if (unique.length > 0) {
@@ -286,7 +286,7 @@ CUTOFF DATA for "${collegeName}"${course ? ` (${course})` : ''}${category ? ` [$
  */
 export function parseQueryForTools(query: string): {
     needsRankPrediction: boolean;
-    needsCollegeFinder: boolean;
+    needsCollegePredictor: boolean;
     needsCutoffLookup: boolean;
     kcetMarks?: number;
     pucPercentage?: number;
@@ -299,7 +299,7 @@ export function parseQueryForTools(query: string): {
     const lowerQuery = query.toLowerCase();
     const result: ReturnType<typeof parseQueryForTools> = {
         needsRankPrediction: false,
-        needsCollegeFinder: false,
+        needsCollegePredictor: false,
         needsCutoffLookup: false
     };
 
@@ -366,7 +366,7 @@ export function parseQueryForTools(query: string): {
         if (lowerQuery.includes('college') || lowerQuery.includes('get') ||
             lowerQuery.includes('eligible') || lowerQuery.includes('admission') ||
             lowerQuery.includes('which') || lowerQuery.includes('suggest')) {
-            result.needsCollegeFinder = true;
+            result.needsCollegePredictor = true;
             if (rankMatch) result.rank = parseInt(rankMatch[1]);
         }
     }
@@ -388,7 +388,7 @@ export function parseQueryForTools(query: string): {
 
     // Also check for generic cutoff queries
     if ((lowerQuery.includes('cutoff') || lowerQuery.includes('cut off') || lowerQuery.includes('cut-off')) &&
-        !result.needsCollegeFinder) {
+        !result.needsCollegePredictor) {
         // Extract college name if present after "for" or "of"
         const collegeMatch = query.match(/(?:cutoff|cut off|cut-off)\s*(?:for|of|at)?\s*([A-Za-z\s]+?)(?:\s+(?:in|for|20\d{2}|cse|ece|\?|$))/i);
         if (collegeMatch) {
@@ -412,16 +412,16 @@ export async function executeToolsForQuery(query: string): Promise<string> {
         const rankResult = await toolPredictRank(parsed.kcetMarks, parsed.pucPercentage);
         if (rankResult.success) {
             results.push(rankResult.formatted);
-            // Use predicted rank for college finder if no explicit rank given
-            if (parsed.needsCollegeFinder && !parsed.rank) {
+            // Use predicted rank for college predictor if no explicit rank given
+            if (parsed.needsCollegePredictor && !parsed.rank) {
                 parsed.rank = rankResult.data.predictedRank.expected;
             }
         }
     }
 
-    // Execute college finder if needed
-    if (parsed.needsCollegeFinder && parsed.rank) {
-        const collegeResult = await toolFindColleges(
+    // Execute college predictor if needed
+    if (parsed.needsCollegePredictor && parsed.rank) {
+        const collegeResult = await toolPredictColleges(
             parsed.rank,
             parsed.category || 'GM',
             parsed.course,

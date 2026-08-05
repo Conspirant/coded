@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
       <SEO
         title="Privacy Policy"
         description="Privacy policy for KCET Coded. Learn how we handle your data, what information we collect, and your privacy rights."
-        url="https://kcet-coded2.vercel.app/privacy"
+        url="https://kcetcoded.dev/privacy"
       />
             {/* Header */}
             <div className="text-center space-y-4">

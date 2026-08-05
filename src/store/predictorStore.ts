@@ -1,6 +1,6 @@
 type SafetyLevel = 'Eligible'
 
-export interface FinderMatch {
+export interface PredictorMatch {
   institute: string
   institute_code: string
   course: string
@@ -12,7 +12,7 @@ export interface FinderMatch {
   safetyLevel: SafetyLevel
 }
 
-interface FinderState {
+interface PredictorState {
   userRank: number | null
   userCategory: string
   selectedYear: string
@@ -20,13 +20,13 @@ interface FinderState {
   selectedInstitute: string
   selectedCourses: string[]
   locationFilter: string
-  matches: FinderMatch[]
+  matches: PredictorMatch[]
 }
 
-type Listener = (state: FinderState) => void
+type Listener = (state: PredictorState) => void
 
-class FinderStore {
-  private state: FinderState = {
+class PredictorStore {
+  private state: PredictorState = {
     userRank: null,
     userCategory: '',
     selectedYear: '',
@@ -38,11 +38,11 @@ class FinderStore {
   }
   private listeners: Set<Listener> = new Set()
 
-  getState(): FinderState {
+  getState(): PredictorState {
     return this.state
   }
 
-  setState(partial: Partial<FinderState>) {
+  setState(partial: Partial<PredictorState>) {
     this.state = { ...this.state, ...partial }
     this.emit()
   }
@@ -57,6 +57,7 @@ class FinderStore {
   }
 }
 
-export const finderStore = new FinderStore()
+export const predictorStore = new PredictorStore()
+
 
 

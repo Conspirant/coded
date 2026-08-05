@@ -1441,7 +1441,7 @@ const BLOCKABLE_PAGES = [
   { name: "Rank Predictor", path: "/rank-predictor" },
   { name: "Cutoff Explorer", path: "/cutoff-explorer" },
   { name: "COMEDK Explorer", path: "/comedk-explorer" },
-  { name: "College Finder", path: "/college-finder" },
+  { name: "College Predictor", path: "/college-predictor" },
   { name: "Cutoff Trends", path: "/cutoff-trends" },
   { name: "Mock Simulator", path: "/mock-simulator" },
   { name: "Round Tracker", path: "/round-tracker" },

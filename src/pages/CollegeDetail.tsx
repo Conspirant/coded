@@ -311,7 +311,7 @@ const CollegeDetail = () => {
       <SEO
         title={`${displayName} – Placements, Cutoffs, Fees & Reviews`}
         description={`Complete info for ${fullName} — KCET cutoff ranks, placement packages (avg/max LPA), fees, NAAC grade, ROI score, student reviews & more.`}
-        url={`https://kcet-coded2.vercel.app/college/${collegeCode}`}
+        url={`https://kcetcoded.dev/college/${collegeCode}`}
         keywords={`${displayName}, KCET college, cutoff ranks, placements, fees, NAAC, reviews`}
       />
 

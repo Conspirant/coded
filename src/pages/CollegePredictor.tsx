@@ -15,7 +15,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { XLSXLoader } from "@/lib/xlsx-loader"
-import { finderStore } from "@/store/finderStore"
+import { predictorStore } from "@/store/predictorStore"
 import { loadSettings } from '@/lib/settings'
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -153,7 +153,7 @@ const Sparkline = ({ data }: { data: number[] }) => {
     </div>
   )
 }
-const CollegeFinder = () => {
+const CollegePredictor = () => {
   const [cutoffs, setCutoffs] = useState<CutoffData[]>([])
   const [matches, setMatches] = useState<CollegeMatch[]>([])
   const [loading, setLoading] = useState(true)
@@ -303,7 +303,7 @@ const CollegeFinder = () => {
     doc.setTextColor(255, 255, 255)
     doc.setFontSize(22)
     doc.setFont('helvetica', 'bold')
-    doc.text("KCET College Finder", 14, 20)
+    doc.text("KCET College Predictor", 14, 20)
 
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
@@ -524,7 +524,7 @@ const CollegeFinder = () => {
         })
 
         setMatches(deduplicatedMatches)
-        finderStore.setState({
+        predictorStore.setState({
           userRank: activeRank,
           userCategory: activeCategory,
           matches: deduplicatedMatches,
@@ -1348,7 +1348,7 @@ const CollegeFinder = () => {
       setMatches(deduplicatedMatches)
       setCurrentPage(1)
       // Publish to shared store for Analytics
-      finderStore.setState({
+      predictorStore.setState({
         userRank,
         userCategory,
         selectedYear,
@@ -1519,14 +1519,14 @@ const CollegeFinder = () => {
     return (
       <div className="min-h-screen bg-background pb-20 md:pb-0">
         <SEO
-          title="College Finder"
+          title="College Predictor"
           description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
-          url="https://kcet-coded2.vercel.app/college-finder"
-        keywords="KCET college finder, find colleges by rank, KCET 2026 colleges, best engineering colleges for my rank, KCET rank wise college list"
+          url="https://kcetcoded.dev/college-predictor"
+        keywords="KCET college predictor, find colleges by rank, KCET 2026 colleges, best engineering colleges for my rank, KCET rank wise college list"
         />
         <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
           <div className="space-y-2">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">College Finder</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">College Predictor</h1>
             <p className="text-sm sm:text-base text-muted-foreground">Find the best colleges based on your KCET rank and preferences</p>
           </div>
           <div className="py-8 mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -1630,9 +1630,9 @@ const CollegeFinder = () => {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <SEO
-        title="College Finder"
+        title="College Predictor"
         description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
-        url="https://kcet-coded2.vercel.app/college-finder"
+        url="https://kcetcoded.dev/college-predictor"
       />
       {/* Animated Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -1648,7 +1648,7 @@ const CollegeFinder = () => {
             <span>Official KCET 2024-25 Data</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-            College Finder
+            College Predictor
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
             Filter through verified cutoff positions from previous years to find your perfect engineering college.
@@ -1708,7 +1708,7 @@ const CollegeFinder = () => {
                     onChange={(e) => {
                       const val = parseInt(e.target.value) || 0
                       setUserRank(val)
-                      finderStore.setState({ userRank: val })
+                      predictorStore.setState({ userRank: val })
                     }}
                     className="bg-black/20 border-white/10 h-11 text-lg font-mono focus:ring-primary/20"
                     placeholder="Enter your rank"
@@ -1900,7 +1900,7 @@ const CollegeFinder = () => {
                           setLocationFilter("")
                           setMatches([])
                           setCollegeSearchTerm("")
-                          finderStore.setState({
+                          predictorStore.setState({
                             userRank: 50000,
                             userCategory: '',
                             selectedYear: '',
@@ -2579,4 +2579,4 @@ const CollegeFinder = () => {
   )
 }
 
-export default CollegeFinder
+export default CollegePredictor

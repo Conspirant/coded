@@ -380,7 +380,7 @@ export default function CutoffClash() {
       <SEO
         title="Cutoff Clash – KCET Higher or Lower Cutoff Game"
         description="Play the Cutoff Clash game! Guess which KCET college has a higher or lower cutoff rank. Test your knowledge of Karnataka engineering college cutoffs in this fun game."
-        url="https://kcet-coded2.vercel.app/cutoff-clash"
+        url="https://kcetcoded.dev/cutoff-clash"
         keywords="KCET cutoff game, KCET higher lower game, KCET cutoff quiz, KCET college cutoff comparison"
       />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-black to-black" />

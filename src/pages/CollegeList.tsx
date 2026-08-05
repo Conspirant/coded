@@ -95,7 +95,7 @@ const CollegeList = () => {
       <SEO
         title="KCET Engineering Colleges List – All Karnataka Colleges"
         description="Complete list of engineering colleges in Karnataka under KCET 2026 counseling. Browse all colleges with codes, locations, branches offered & historical cutoff data."
-        url="https://kcet-coded2.vercel.app/college-list"
+        url="https://kcetcoded.dev/college-list"
         keywords="KCET college list, engineering colleges Karnataka, all KCET colleges, Karnataka engineering colleges list, KEA college codes"
       />
             <div className="container mx-auto px-4 py-8 max-w-7xl">

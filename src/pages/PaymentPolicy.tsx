@@ -10,7 +10,7 @@ const PaymentPolicy = () => {
             <SEO
                 title="Payment & Refund Policy"
                 description="Payment, refund, and cancellation policies for KCET Coded. Read about transaction processing, fees, and refund eligibility."
-                url="https://kcet-coded2.vercel.app/payment-policy"
+                url="https://kcetcoded.dev/payment-policy"
             />
             
             {/* Header */}

@@ -10,14 +10,14 @@ interface SEOProps {
     jsonLd?: Record<string, unknown>;
 }
 
-const BASE_KEYWORDS = 'KCET, KCET 2026, KCET 2025, Karnataka CET, KEA, Karnataka Examination Authority, KCET cutoff, KCET rank predictor, KCET college finder, KCET counseling, engineering colleges Karnataka';
+const BASE_KEYWORDS = 'KCET, KCET 2026, KCET 2025, Karnataka CET, KEA, Karnataka Examination Authority, KCET cutoff, KCET rank predictor, KCET college predictor, KCET counseling, engineering colleges Karnataka';
 
 export function SEO({
     title,
     description,
-    url = 'https://kcet-coded2.vercel.app',
+    url = 'https://kcetcoded.dev',
     type = 'website',
-    image = 'https://kcet-coded2.vercel.app/icon-512x512.png',
+    image = 'https://kcetcoded.dev/icon-512x512.png',
     keywords = '',
     jsonLd,
 }: SEOProps) {

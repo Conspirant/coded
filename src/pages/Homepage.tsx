@@ -145,10 +145,10 @@ const Homepage = () => {
 
     const features = [
         {
-            title: "College Finder",
+            title: "College Predictor",
             description: "Find the perfect college based on your rank, category, and preferences with smart filtering",
             icon: Search,
-            href: "/college-finder",
+            href: "/college-predictor",
             gradient: "from-blue-500 to-cyan-400",
             iconBg: "bg-blue-500/10",
             large: true,
@@ -222,9 +222,9 @@ const Homepage = () => {
     return (
         <div className="min-h-screen bg-background overflow-hidden">
             <SEO
-                title="KCET Coded – Free KCET 2026 Tools: Rank Predictor, Cutoffs & College Finder"
+                title="KCET Coded – Free KCET 2026 Tools: Rank Predictor, Cutoffs & College Predictor"
                 description="KCET Coded is an independent free platform for KCET 2026 aspirants. Predict your rank, explore college-wise cutoffs (2023-2025), find engineering colleges, simulate mock allotments & get interactive counseling assistance — all 100% free."
-                url="https://kcet-coded2.vercel.app"
+                url="https://kcetcoded.dev"
                 keywords="KCET 2026, KCET tools, free KCET resources, KCET counseling guidance, Karnataka CET tools, KCET rank predictor, KCET cutoff 2025"
             />
             {/* ═══ Aurora Background ═══ */}
@@ -266,9 +266,9 @@ const Homepage = () => {
                                     Dashboard
                                 </Button>
                             </Link>
-                            <Link to="/college-finder">
+                            <Link to="/college-predictor">
                                 <Button variant="ghost" size="sm" className="hidden md:flex text-muted-foreground hover:text-foreground">
-                                    College Finder
+                                    College Predictor
                                 </Button>
                             </Link>
                             <Link to="/dashboard">
@@ -847,7 +847,7 @@ const Homepage = () => {
                         <div>
                             <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-[0.15em]">Quick Links</h4>
                             <div className="grid grid-cols-2 gap-2">
-                                <Link to="/college-finder" className="text-sm text-muted-foreground hover:text-foreground transition-colors">College Finder</Link>
+                                <Link to="/college-predictor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">College Predictor</Link>
                                 <Link to="/cutoff-explorer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cutoff Explorer</Link>
                                 <Link to="/rank-predictor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Rank Predictor</Link>
                                 <Link to="/mock-simulator" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mock Simulator</Link>

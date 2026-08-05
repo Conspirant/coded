@@ -36,7 +36,7 @@ const BmtcMapper = () => {
       <SEO
         title="KCET BMTC Route Mapper – Engineering Colleges on Bus Routes"
         description="Find engineering colleges in Bangalore accessible by BMTC bus routes. Plan your daily commute to college using public transport."
-        url="https://kcet-coded2.vercel.app/bmtc-mapper"
+        url="https://kcetcoded.dev/bmtc-mapper"
         keywords="engineering colleges BMTC bus routes, colleges near bus stop Bangalore, BMTC college commute"
       />
             <div className="max-w-6xl mx-auto space-y-8">

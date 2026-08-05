@@ -54,7 +54,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://kcet-coded2.vercel.app"
+          "value": "https://kcetcoded.dev"
         },
         {
           "key": "X-Robots-Tag",

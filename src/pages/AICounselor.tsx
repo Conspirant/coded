@@ -208,7 +208,7 @@ const AICounselor = () => {
             <SEO
                 title="KCET Admissions Assistant – Free Personalized College Guidance"
                 description="Get personalized guidance for KCET 2026 college counseling. Ask questions about colleges, cutoffs, branch selection, and placements — completely free."
-                url="https://kcet-coded2.vercel.app/ai-counselor"
+                url="https://kcetcoded.dev/ai-counselor"
                 keywords="KCET counseling assistant, KCET college guidance, KCET counseling help, KCET branch selection, KCET college suggestions"
             />
             {/* Disclaimer Dialog */}
@@ -254,11 +254,11 @@ const AICounselor = () => {
                                 <p className="text-blue-800 dark:text-blue-200 text-xs">
                                     🎯 For <strong>reliable cutoff data</strong>, please use our{" "}
                                     <Link
-                                        to="/college-finder"
+                                        to="/college-predictor"
                                         className="underline font-medium hover:text-blue-600"
                                         onClick={() => setShowDisclaimer(false)}
                                     >
-                                        College Finder
+                                        College Predictor
                                     </Link>{" "}
                                     or{" "}
                                     <Link

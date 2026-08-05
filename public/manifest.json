@@ -1,7 +1,7 @@
 {
   "name": "KCET Coded - KCET Helping Hub",
   "short_name": "KCET Coded",
-  "description": "Your comprehensive guide to KCET admissions with cutoff data, rank prediction, and college finder",
+  "description": "Your comprehensive guide to KCET admissions with cutoff data, rank prediction, and college predictor",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -78,10 +78,10 @@
       ]
     },
     {
-      "name": "College Finder",
+      "name": "College Predictor",
       "short_name": "Colleges",
       "description": "Find colleges based on your rank",
-      "url": "/college-finder",
+      "url": "/college-predictor",
       "icons": [
         {
           "src": "/icon-192x192.png",

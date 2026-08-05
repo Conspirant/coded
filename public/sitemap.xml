@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core Pages -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/</loc>
+    <loc>https://kcetcoded.dev/</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/dashboard</loc>
+    <loc>https://kcetcoded.dev/dashboard</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -16,25 +16,25 @@
 
   <!-- High-Traffic Tools -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/rank-predictor</loc>
+    <loc>https://kcetcoded.dev/rank-predictor</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/college-finder</loc>
+    <loc>https://kcetcoded.dev/college-predictor</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/cutoff-explorer</loc>
+    <loc>https://kcetcoded.dev/cutoff-explorer</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/mock-simulator</loc>
+    <loc>https://kcetcoded.dev/mock-simulator</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -42,25 +42,25 @@
 
   <!-- Counseling Tools -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/round-tracker</loc>
+    <loc>https://kcetcoded.dev/round-tracker</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/college-compare</loc>
+    <loc>https://kcetcoded.dev/college-compare</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/documents</loc>
+    <loc>https://kcetcoded.dev/documents</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/planner</loc>
+    <loc>https://kcetcoded.dev/planner</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -68,25 +68,25 @@
 
   <!-- College Info Pages -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/reviews</loc>
+    <loc>https://kcetcoded.dev/reviews</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/college-cutoffs</loc>
+    <loc>https://kcetcoded.dev/college-cutoffs</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/college-list</loc>
+    <loc>https://kcetcoded.dev/college-list</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/hidden-gems</loc>
+    <loc>https://kcetcoded.dev/hidden-gems</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -94,19 +94,19 @@
 
   <!-- Information & Resources -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/info-centre</loc>
+    <loc>https://kcetcoded.dev/info-centre</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/materials</loc>
+    <loc>https://kcetcoded.dev/materials</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/cet-news</loc>
+    <loc>https://kcetcoded.dev/cet-news</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -114,25 +114,25 @@
 
   <!-- AI & Interactive Tools -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/ai-counselor</loc>
+    <loc>https://kcetcoded.dev/ai-counselor</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/daily-challenge</loc>
+    <loc>https://kcetcoded.dev/daily-challenge</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/cutoff-clash</loc>
+    <loc>https://kcetcoded.dev/cutoff-clash</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/squad-finder</loc>
+    <loc>https://kcetcoded.dev/squad-finder</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -140,13 +140,13 @@
 
   <!-- Location-Based Tools -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/metro-mapper</loc>
+    <loc>https://kcetcoded.dev/metro-mapper</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/bmtc-mapper</loc>
+    <loc>https://kcetcoded.dev/bmtc-mapper</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -154,25 +154,25 @@
 
   <!-- Informational Pages -->
   <url>
-    <loc>https://kcet-coded2.vercel.app/about</loc>
+    <loc>https://kcetcoded.dev/about</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/request-feature</loc>
+    <loc>https://kcetcoded.dev/request-feature</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/privacy</loc>
+    <loc>https://kcetcoded.dev/privacy</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://kcet-coded2.vercel.app/terms</loc>
+    <loc>https://kcetcoded.dev/terms</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>

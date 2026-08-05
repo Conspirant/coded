@@ -54,7 +54,7 @@ const VTUvsAutonomousSection = () => {
       <SEO
         title="KCET Info Centre – Eligibility, Fees, Exam Pattern & FAQs"
         description="Everything you need to know about KCET 2026 — eligibility criteria, exam pattern, fee structure, important dates, syllabus, reservation policies & frequently asked questions."
-        url="https://kcet-coded2.vercel.app/info-centre"
+        url="https://kcetcoded.dev/info-centre"
         keywords="KCET eligibility, KCET exam pattern, KCET fee structure, KCET 2026 syllabus, KCET reservation policy, KCET FAQ, KEA rules, KCET important dates"
       />
       <CardHeader className="bg-gradient-to-r from-violet-500/10 to-indigo-500/10 border-b">

@@ -66,7 +66,7 @@ const Reviews = () => {
       <SEO
         title="KCET College Reviews – Real Student Experiences & Ratings"
         description="Read honest reviews from real KCET students about engineering colleges in Karnataka. Compare placements, campus life, faculty & infrastructure before choosing your college."
-        url="https://kcet-coded2.vercel.app/reviews"
+        url="https://kcetcoded.dev/reviews"
         keywords="KCET college reviews, engineering college reviews Karnataka, student reviews KCET colleges, college placement reviews, campus life reviews"
       />
         <div className="rounded-2xl glass border border-white/5 p-5 sm:p-8">

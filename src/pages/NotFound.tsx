@@ -9,8 +9,8 @@ const NotFound = () => {
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
       <SEO
         title="Page Not Found"
-        description="The page you're looking for doesn't exist. Head back to KCET Coded to explore rank predictor, cutoff explorer, college finder and more."
-        url="https://kcet-coded2.vercel.app/404"
+        description="The page you're looking for doesn't exist. Head back to KCET Coded to explore rank predictor, cutoff explorer, college predictor and more."
+        url="https://kcetcoded.dev/404"
       />
       {/* Aurora Background */}
       <div className="absolute inset-0 -z-10">

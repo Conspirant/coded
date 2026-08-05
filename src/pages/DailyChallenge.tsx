@@ -445,7 +445,7 @@ const DailyChallenge = () => {
       <SEO
         title="KCET Daily Challenge – Free Daily Quiz for KCET 2026"
         description="Test your KCET preparation with 5 new questions every day! Build your streak, track your score & compete with other KCET 2026 aspirants — free daily practice quiz."
-        url="https://kcet-coded2.vercel.app/daily-challenge"
+        url="https://kcetcoded.dev/daily-challenge"
         keywords="KCET daily quiz, KCET practice questions, KCET 2026 mock test, KCET daily challenge, KCET preparation quiz"
       />
             {/* Aurora background */}

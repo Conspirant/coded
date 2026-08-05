@@ -51,8 +51,8 @@ const PAGE_INFO: Record<string, PageDetails> = {
       'Verify cutoffs against official COMEDK PDF pages to ensure absolute accuracy before filling options.'
     ]
   },
-  '/college-finder': {
-    title: 'College Finder & Predictor',
+  '/college-predictor': {
+    title: 'College Predictor & Predictor',
     description: 'A recommendation engine that matches your rank with historical cutoff databases to show which colleges and branches you can realistically get. It sorts options by probability so you can structure your entry form.',
     benefits: [
       'Personalized recommendations sorted into dynamic categories: "Safe" (90%+ chance), "Target" (medium chance), and "Dream" (borderline/stretch target).',

@@ -241,7 +241,7 @@ const CutoffTrends = () => {
       <SEO
         title="KCET Cutoff Trends – Year-over-Year College Branch Analysis"
         description="Visualize how KCET cutoff ranks change across years for any college-branch combination. Compare trends, spot rising/falling cutoffs, and make smarter counseling decisions."
-        url="https://kcet-coded2.vercel.app/cutoff-trends"
+        url="https://kcetcoded.dev/cutoff-trends"
         keywords="KCET cutoff trends, cutoff rank history, year over year cutoffs, KCET college branch trends, cutoff analysis Karnataka"
       />
 

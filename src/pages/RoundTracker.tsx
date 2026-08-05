@@ -153,7 +153,7 @@ const RoundTracker = () => {
       <SEO
         title="KCET 2026 Counseling Round Tracker – Real-Time Schedule & Choice Entry Guide"
         description="Track all KCET 2026 counseling stages, Round 1 choice entry deadlines, fee payment windows, college reporting dates, and Round 2 notifications in real time."
-        url="https://kcet-coded2.vercel.app/round-tracker"
+        url="https://kcetcoded.dev/round-tracker"
         keywords="KCET counseling rounds, KCET 2026 dates, KCET round 1 choice entry, KCET choice 1 choice 2, KEA counseling schedule, KCET reporting date"
       />
 

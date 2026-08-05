@@ -11,7 +11,7 @@ const Terms = () => {
       <SEO
         title="Terms of Service"
         description="Terms of service for KCET Coded. Read our terms and conditions for using the platform, tools, and data."
-        url="https://kcet-coded2.vercel.app/terms"
+        url="https://kcetcoded.dev/terms"
       />
             {/* Header */}
             <div className="text-center space-y-4">

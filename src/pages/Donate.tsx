@@ -284,7 +284,7 @@ const Donate = () => {
             <SEO
                 title="Support Coded — Donate"
                 description="Support KCET Coded with a small donation. Help us keep the platform running, ad-free, and constantly improving for all Karnataka students."
-                url="https://kcet-coded2.vercel.app/donate"
+                url="https://kcetcoded.dev/donate"
                 keywords="donate KCET Coded, support KCET tools, online donation"
             />
 

@@ -86,7 +86,7 @@ const HiddenGems = () => {
       <SEO
         title="KCET Hidden Gems – Underrated Engineering Colleges in Karnataka"
         description="Discover underrated engineering colleges in Karnataka with excellent placements & faculty at lower cutoff ranks. These hidden gems are often overlooked by KCET aspirants."
-        url="https://kcet-coded2.vercel.app/hidden-gems"
+        url="https://kcetcoded.dev/hidden-gems"
         keywords="underrated KCET colleges, hidden gem colleges Karnataka, best value engineering colleges, low cutoff good colleges KCET"
       />
             <div className="max-w-6xl mx-auto space-y-8">

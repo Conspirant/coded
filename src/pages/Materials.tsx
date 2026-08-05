@@ -50,7 +50,7 @@ const Materials = () => {
       <SEO
         title="KCET 2026 Study Materials – PYQs, Notes & Resources"
         description="Free KCET 2026 study materials including previous year papers (PYQs), chapter-wise notes, important formulas & preparation resources for Physics, Chemistry & Maths."
-        url="https://kcet-coded2.vercel.app/materials"
+        url="https://kcetcoded.dev/materials"
         keywords="KCET study materials, KCET previous year papers, KCET PYQ, KCET notes, KCET preparation resources, KCET 2026 syllabus"
       />
             <div className="flex flex-col gap-2">

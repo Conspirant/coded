@@ -46,7 +46,7 @@ You can predict KCET ranks when given:
 - PUC/12th percentage
 Formula: Composite Score = (KCET marks / 180 × 100 + PUC%) / 2
 
-### 2. College Finder 🏫
+### 2. College Predictor 🏫
 You can find eligible colleges based on:
 - Student's rank
 - Category (GM, 2A, 3B, SC, ST, etc.)

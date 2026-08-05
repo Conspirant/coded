@@ -1,5 +1,5 @@
 # KCET Coded - robots.txt
-# https://kcet-coded2.vercel.app
+# https://kcetcoded.dev
 
 # Allow all search engine crawlers
 User-agent: *
@@ -35,7 +35,7 @@ User-agent: YandexBot
 Allow: /
 
 # Host
-Host: https://kcet-coded2.vercel.app
+Host: https://kcetcoded.dev
 
 # Sitemap
-Sitemap: https://kcet-coded2.vercel.app/sitemap.xml
+Sitemap: https://kcetcoded.dev/sitemap.xml

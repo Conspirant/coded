@@ -166,7 +166,7 @@ const Dashboard = () => {
       { title: "Documents", description: "Counseling checklist", icon: FileText, href: "/documents", gradient: "from-slate-500 to-zinc-400", glow: "shadow-slate-500/15" },
     ]
     : [
-      { title: "Find Colleges", description: "Search based on your rank", icon: Search, href: "/college-finder", gradient: "from-blue-500 to-cyan-400", glow: "shadow-blue-500/15" },
+      { title: "Find Colleges", description: "Search based on your rank", icon: Search, href: "/college-predictor", gradient: "from-blue-500 to-cyan-400", glow: "shadow-blue-500/15" },
       explorerAction,
       { title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", gradient: "from-purple-500 to-pink-400", glow: "shadow-purple-500/15" },
       { title: "Cutoff Trends", description: "YOY cutoff rank trends", icon: TrendingUp, href: "/cutoff-trends", gradient: "from-indigo-500 to-violet-400", glow: "shadow-indigo-500/15" },
@@ -198,8 +198,8 @@ const Dashboard = () => {
         title={examMode === "COMEDK" ? "COMEDK Dashboard â€“ Predictor & Cutoff Tools" : "KCET 2026 Dashboard â€“ Counseling Tools & Cutoff Data"}
         description={examMode === "COMEDK"
           ? "Your COMEDK dashboard with rank predictor and cutoff explorer powered by community + PDF data."
-          : "Your KCET 2026 dashboard with rank predictor, college finder, cutoff explorer, mock simulator, daily challenges & counseling round tracker. All tools in one place â€” 100% free."}
-        url="https://kcet-coded2.vercel.app/dashboard"
+          : "Your KCET 2026 dashboard with rank predictor, college predictor, cutoff explorer, mock simulator, daily challenges & counseling round tracker. All tools in one place â€” 100% free."}
+        url="https://kcetcoded.dev/dashboard"
         keywords={examMode === "COMEDK"
           ? "COMEDK dashboard, COMEDK rank predictor, COMEDK marks vs rank, COMEDK cutoff explorer"
           : "KCET dashboard, KCET tools, KCET 2026 counseling, KCET exam schedule, CET 2026 dates, KCET preparation tools"}
@@ -320,7 +320,7 @@ const Dashboard = () => {
                 Simulate Option Entry
               </Button>
             </Link>
-            <Link to="/college-finder" className="flex-1">
+            <Link to="/college-predictor" className="flex-1">
               <Button variant="outline" className="w-full gap-2 border-white/10 hover:bg-white/5">
                 <Search className="h-4 w-4" />
                 Find Colleges

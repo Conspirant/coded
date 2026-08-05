@@ -148,7 +148,7 @@ const Documents = () => {
       <SEO
         title="KCET 2026 Documents Checklist – Complete List for Counseling"
         description="Complete checklist of documents required for KCET 2026 counseling and admission. Includes academic documents, KCET admit card, category certificates, identity proofs & more — with copy counts."
-        url="https://kcet-coded2.vercel.app/documents"
+        url="https://kcetcoded.dev/documents"
         keywords="KCET documents required, KCET counseling documents, KCET admission documents list, KCET 2026 document checklist, KEA counseling documents, KCET category certificate"
       />
       <div className="space-y-2">

@@ -85,7 +85,7 @@ export default function CETNews() {
       <SEO
         title="KCET 2026 News & Official KEA Notifications"
         description="Official press notes, counseling alerts, Choice Entry updates, and latest announcements for KCET 2026 and COMEDK admissions."
-        url="https://kcet-coded2.vercel.app/cet-news"
+        url="https://kcetcoded.dev/cet-news"
         keywords="KCET news, KCET 2026 press notes, KEA official announcements, KCET counseling updates, KCET choice entry date, KCET fee payment link"
       />
 

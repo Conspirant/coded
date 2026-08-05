@@ -123,7 +123,7 @@ const Supporters = () => {
       <SEO
         title="Supporters Wall — KCET Coded"
         description="A list of generous supporters who keep Coded free and accessible to every student."
-        url="https://kcet-coded2.vercel.app/supporters"
+        url="https://kcetcoded.dev/supporters"
         keywords="supporters KCET Coded, donors, donations wall"
       />
 

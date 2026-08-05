@@ -1235,7 +1235,7 @@ const MockSimulator = () => {
       <SEO
         title="KCET Mock Allotment Simulator 2026 – Simulate Seat Allotment"
         description="Simulate your KCET 2026 seat allotment using real historical cutoff data. Enter your rank, add college preferences, and see which seat you'd get in each counseling round — free mock simulator."
-        url="https://kcet-coded2.vercel.app/mock-simulator"
+        url="https://kcetcoded.dev/mock-simulator"
         keywords="KCET mock allotment, KCET seat simulator, KCET 2026 seat allotment, KCET counseling simulator, mock counseling KCET, KCET preference list"
       />
       <div className="space-y-4">

@@ -5,7 +5,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -21,7 +21,7 @@ import RankPredictor from "./pages/RankPredictor";
 import ComedkRankPredictor from "./pages/ComedkRankPredictor";
 import CutoffExplorer from "./pages/CutoffExplorer";
 import ComedkExplorer from "./pages/ComedkExplorer";
-import CollegeFinder from "./pages/CollegeFinder";
+import CollegePredictor from "./pages/CollegePredictor";
 import MockSimulator from "./pages/MockSimulator";
 import RoundTracker from "./pages/RoundTracker";
 import CollegeCompare from "./pages/CollegeCompare";
@@ -104,7 +104,8 @@ const App = () => (
               <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
               <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
               <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
-              <Route path="/college-finder" element={<Layout><CollegeFinder /></Layout>} />
+              <Route path="/college-predictor" element={<Layout><CollegePredictor /></Layout>} />
+              <Route path="/college-finder" element={<Navigate to="/college-predictor" replace />} />
               <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
               <Route path="/cutoff-predictor" element={<Layout><RoundPredictor /></Layout>} />
               <Route path="/round-predictor" element={<Layout><RoundPredictor /></Layout>} />

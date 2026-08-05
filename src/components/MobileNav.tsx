@@ -54,7 +54,7 @@ const getDockItems = (examMode: "KCET" | "COMEDK"): DockItem[] =>
         ]
         : [
             { icon: Home, label: "Home", href: "/" },
-            { icon: Search, label: "Finder", href: "/college-finder" },
+            { icon: Search, label: "Predictor", href: "/college-predictor" },
             { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
             { icon: Calculator, label: "Predict", href: "/rank-predictor" },
         ]
@@ -288,7 +288,7 @@ const getFabActions = (examMode: "KCET" | "COMEDK") =>
         ]
         : [
             { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
-            { icon: Search, label: "Find College", href: "/college-finder", color: "from-blue-500 to-cyan-400" },
+            { icon: Search, label: "Find College", href: "/college-predictor", color: "from-blue-500 to-cyan-400" },
             { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
             { icon: Bot, label: "Admissions Assistant", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
         ]
