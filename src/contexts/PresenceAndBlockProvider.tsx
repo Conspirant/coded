@@ -53,7 +53,8 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
         if (error) throw error;
 
-        const dbTotal = (data || []).reduce((sum: number, d: { amount_inr: number }) => sum + Number(d.amount_inr), 0);
+        const donorsList = (data as any[]) || [];
+        const dbTotal: number = donorsList.reduce((sum: number, d: any) => sum + (Number(d?.amount_inr) || 0), 0);
         setTotalAmount(78 + dbTotal);
       } catch (err) {
         console.error('Error fetching total amount:', err);
@@ -254,7 +255,7 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
                         <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">
                           Reddit
                         </a>{" "}
-                        and I will gladly share one with you.
+                        and I will gladly share one with you. We understand student budgets and truly never wanted to place a financial burden on anyone, so please feel entirely comfortable requesting a free access code without hesitation.
                       </p>
                     </div>
                   </div>

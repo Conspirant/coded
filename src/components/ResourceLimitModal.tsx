@@ -555,7 +555,7 @@ export const ResourceLimitModal = () => {
             <div className="p-3 rounded-xl border border-zinc-800 bg-zinc-900/40 text-xs space-y-1">
               <p className="font-bold text-zinc-200">Need free access?</p>
               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                If you prefer not to pay or cannot afford to contribute, you can request a <strong>100% free access code</strong>. Simply reach out via our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">Discord</a> or <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">Reddit</a> and I will gladly share one with you.
+                If you prefer not to pay or cannot afford to contribute, you can request a <strong>100% free access code</strong>. Simply reach out via our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-semibold underline transition-colors">Discord</a> or <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-semibold underline transition-colors">Reddit</a> and I will gladly share one with you. We understand student budgets and truly never wanted to place a financial burden on anyone, so please feel entirely comfortable requesting a free access code without hesitation.
               </p>
             </div>
           </div>

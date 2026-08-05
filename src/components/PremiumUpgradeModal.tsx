@@ -206,7 +206,7 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                   <div className="p-2.5 rounded-lg border border-zinc-800 bg-zinc-900/50 space-y-1">
                     <p className="font-semibold text-zinc-300">Need free access?</p>
                     <p>
-                      If you prefer not to pay or cannot afford to contribute, you can receive a <strong>100% free access code</strong>. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a key directly.
+                      If you prefer not to pay or cannot afford to contribute, you can receive a <strong>100% free access code</strong>. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a key directly. We understand student budgets and truly never wanted to place a financial burden on anyone, so please feel entirely comfortable requesting a free access code without hesitation.
                     </p>
                   </div>
                 </div>

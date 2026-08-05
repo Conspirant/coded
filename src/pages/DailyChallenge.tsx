@@ -8,6 +8,7 @@ import {
     ChevronRight, ArrowLeft, Sparkles, Zap, RotateCcw, Copy,
     Calendar, Target, BookOpen
 } from "lucide-react"
+import { logActivity } from "@/lib/engagement"
 
 /* ═══════════════════════════════════════════════════
    QUESTION BANK
@@ -359,6 +360,7 @@ const DailyChallenge = () => {
 
         if (allAnswered) {
             setTimeout(() => {
+                logActivity("challenge")
                 setCompleted(true)
                 setTimerActive(false)
                 setShowResults(true)
