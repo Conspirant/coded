@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Slider } from "@/components/ui/slider"
 import {
   ResponsiveContainer, BarChart, Bar, LineChart as RechartsLineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip as RechartsTooltip, Cell, Legend
@@ -259,6 +260,7 @@ const RoundPredictor = () => {
   const [selectedCollege, setSelectedCollege] = useState("")
   const [selectedBranch, setSelectedBranch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("GM")
+  const [neetMultiplier, setNeetMultiplier] = useState<number>(1.0)
   const [collegeSearchOpen, setCollegeSearchOpen] = useState(false)
   const [collegeSearch, setCollegeSearch] = useState("")
 
@@ -336,8 +338,8 @@ const RoundPredictor = () => {
 
     try {
       const [p, allB] = await Promise.all([
-        predictR2R3(selectedCollege, selectedBranch, selectedCategory),
-        predictAllBranches(selectedCollege, selectedCategory),
+        predictR2R3(selectedCollege, selectedBranch, selectedCategory, neetMultiplier),
+        predictAllBranches(selectedCollege, selectedCategory, neetMultiplier),
       ])
       setPrediction(p)
       setAllBranchPredictions(allB)
@@ -346,7 +348,26 @@ const RoundPredictor = () => {
     } finally {
       setPredicting(false)
     }
-  }, [selectedCollege, selectedBranch, selectedCategory])
+  }, [selectedCollege, selectedBranch, selectedCategory, neetMultiplier])
+
+  // ── Auto-run prediction when selections or slider changes ──
+  useEffect(() => {
+    if (selectedCollege && selectedBranch && selectedCategory) {
+      async function run() {
+        try {
+          const [p, allB] = await Promise.all([
+            predictR2R3(selectedCollege, selectedBranch, selectedCategory, neetMultiplier),
+            predictAllBranches(selectedCollege, selectedCategory, neetMultiplier),
+          ])
+          setPrediction(p)
+          setAllBranchPredictions(allB)
+        } catch (e) {
+          console.error("Round prediction failed", e)
+        }
+      }
+      run()
+    }
+  }, [selectedCollege, selectedBranch, selectedCategory, neetMultiplier])
 
   // ── Eligibility results ──
   const eligibility = useMemo(() => {
@@ -556,32 +577,89 @@ const RoundPredictor = () => {
                   </Select>
                 </div>
 
-                {/* Category + Predict */}
+                {/* Category Selector */}
                 <div className="space-y-2">
                   <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Category</Label>
-                  <div className="flex gap-2">
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                      <SelectTrigger className="bg-background border-input h-10 flex-1">
-                        <SelectValue placeholder="Category" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[250px]">
-                        {KCET_CATEGORIES.filter(c => categories.includes(c.code)).map(c => (
-                          <SelectItem key={c.code} value={c.code}>{c.code}</SelectItem>
-                        ))}
-                        {/* Also show categories from data not in KCET_CATEGORIES */}
-                        {categories.filter(c => !KCET_CATEGORIES.find(k => k.code === c)).map(c => (
-                          <SelectItem key={c} value={c}>{c}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <Button
-                      onClick={runPrediction}
-                      disabled={!selectedCollege || !selectedBranch || predicting}
-                      className="h-10 px-4"
-                    >
-                      {predicting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Estimate"}
-                    </Button>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="bg-background border-input h-10">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[250px]">
+                      {KCET_CATEGORIES.filter(c => categories.includes(c.code)).map(c => (
+                        <SelectItem key={c.code} value={c.code}>{c.code}</SelectItem>
+                      ))}
+                      {/* Also show categories from data not in KCET_CATEGORIES */}
+                      {categories.filter(c => !KCET_CATEGORIES.find(k => k.code === c)).map(c => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* NEET Surrender Wave / Seat Release Factor Section */}
+              <div className="border-t border-white/5 pt-4 grid grid-cols-1 lg:grid-cols-4 gap-4 items-center">
+                <div className="lg:col-span-3 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      NEET / PCMB Seat Surrender Multiplier
+                    </Label>
+                    <Badge variant="secondary" className="bg-violet-500/10 text-violet-400 border border-violet-500/20 text-xs px-1.5 font-mono">
+                      {neetMultiplier.toFixed(2)}x
+                    </Badge>
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Adjusts predictions upwards (more relaxed cutoffs) to account for students surrendering engineering seats for medical (NEET) seats.
+                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <Slider
+                      value={[neetMultiplier]}
+                      onValueChange={(val) => setNeetMultiplier(val[0])}
+                      min={1.0}
+                      max={1.3}
+                      step={0.01}
+                      className="flex-1"
+                    />
+                    <div className="flex gap-1 flex-shrink-0">
+                      <Button
+                        size="sm"
+                        variant={neetMultiplier === 1.0 ? "default" : "outline"}
+                        onClick={() => setNeetMultiplier(1.0)}
+                        className="text-[10px] h-7 px-2"
+                      >
+                        Neutral (1.0x)
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={neetMultiplier === 1.05 ? "default" : "outline"}
+                        onClick={() => setNeetMultiplier(1.05)}
+                        className="text-[10px] h-7 px-2"
+                      >
+                        Moderate (1.05x)
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={neetMultiplier === 1.15 ? "default" : "outline"}
+                        onClick={() => setNeetMultiplier(1.15)}
+                        className="text-[10px] h-7 px-2"
+                      >
+                        High Wave (1.15x)
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end lg:col-span-1 pt-2 lg:pt-0">
+                  <Button
+                    onClick={runPrediction}
+                    disabled={!selectedCollege || !selectedBranch || predicting}
+                    className="w-full h-10 px-6 font-semibold shadow-sm"
+                  >
+                    {predicting ? (
+                      <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Estimating...</>
+                    ) : (
+                      "⚡ Estimate Cutoffs"
+                    )}
+                  </Button>
                 </div>
               </div>
             </CardContent>

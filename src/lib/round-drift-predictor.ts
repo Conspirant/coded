@@ -638,7 +638,8 @@ export async function getCategoriesWithR1Data(
 export async function predictR2R3(
   collegeCode: string,
   course: string,
-  category: string
+  category: string,
+  neetMultiplier: number = 1.0
 ): Promise<RoundDriftPrediction | null> {
   const idx = await ensureIndex()
   const codeUpper = collegeCode.trim().toUpperCase()
@@ -663,8 +664,8 @@ export async function predictR2R3(
   const r2Drift = drift.r2_r1_ratio
   const r3r2Drift = drift.r3_r2_ratio
 
-  // Apply drift to R1
-  const r2Predicted = Math.max(1, Math.round(r1Actual * r2Drift))
+  // Apply drift to R1 with NEET surrender adjustment
+  const r2Predicted = Math.max(1, Math.round(r1Actual * r2Drift * neetMultiplier))
   const r3Predicted = Math.max(1, Math.round(r2Predicted * r3r2Drift))
 
   // Re-calculate effective multipliers & percentages for UI
@@ -717,7 +718,8 @@ export async function predictR2R3(
  */
 export async function predictAllBranches(
   collegeCode: string,
-  category: string
+  category: string,
+  neetMultiplier: number = 1.0
 ): Promise<RoundDriftPrediction[]> {
   const idx = await ensureIndex()
   const codeUpper = collegeCode.trim().toUpperCase()
@@ -731,7 +733,7 @@ export async function predictAllBranches(
 
   const predictions: RoundDriftPrediction[] = []
   for (const normCourse of branches) {
-    const p = await predictR2R3(codeUpper, normCourse, category)
+    const p = await predictR2R3(codeUpper, normCourse, category, neetMultiplier)
     if (p) predictions.push(p)
   }
 
@@ -745,13 +747,14 @@ export async function predictAllBranches(
  */
 export async function predictAllCategories(
   collegeCode: string,
-  course: string
+  course: string,
+  neetMultiplier: number = 1.0
 ): Promise<RoundDriftPrediction[]> {
   const categories = await getCategoriesWithR1Data(collegeCode, normalizeCourseName(course) || course)
 
   const predictions: RoundDriftPrediction[] = []
   for (const cat of categories) {
-    const p = await predictR2R3(collegeCode, course, cat)
+    const p = await predictR2R3(collegeCode, course, cat, neetMultiplier)
     if (p) predictions.push(p)
   }
 
