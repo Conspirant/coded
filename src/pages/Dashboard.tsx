@@ -28,7 +28,7 @@ import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import AdUnit from "@/components/AdUnit"
-import { DailyRoutineWidget } from "@/components/DailyRoutineWidget"
+import { CommunityPollWidget } from "@/components/CommunityPollWidget"
 
 interface DataStats {
   totalRecords: number
@@ -229,8 +229,8 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* ═══ Daily Routine Tracker ═══ */}
-      <DailyRoutineWidget />
+      {/* ═══ Community Live Poll ═══ */}
+      <CommunityPollWidget />
 
       {/* ═══ Post-Exam Counseling Status ═══ */}
       {examMode === "KCET" ? (

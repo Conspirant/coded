@@ -59,6 +59,7 @@ import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
 import { DynamicPopupManager } from "./components/DynamicPopupManager";
+import { GlobalPollPopup } from "./components/GlobalPollPopup";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
@@ -141,6 +142,7 @@ const App = () => (
             </Routes>
             <DonationButton />
             <PWAInstallBanner />
+            <GlobalPollPopup />
             </PresenceAndBlockProvider>
           </BrowserRouter>
         </TooltipProvider>

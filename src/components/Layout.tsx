@@ -384,7 +384,7 @@ export function Layout({ children }: LayoutProps) {
 
           {/* Main Content */}
           <main className="flex-1 p-3 sm:p-4 md:p-6 pb-6 flex flex-col min-h-[calc(100vh-4rem)]">
-            <div className="flex-1">
+            <div className="flex-1 max-w-7xl mx-auto w-full">
               {children}
             </div>
             
