@@ -167,8 +167,9 @@ export async function restorePurchase(input: string): Promise<{ success: boolean
 export function lockFeatures() {
   try {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SAVED_CODE_KEY);
   } catch {}
-  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: isUnlocked() } }));
+  window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: false } }));
 }
 
 export function subscribeToUnlockState(callback: (unlocked: boolean) => void) {
