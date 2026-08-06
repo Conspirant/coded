@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { useToast } from "@/hooks/use-toast";
 import { PopupService } from "@/lib/popup-service";
 import { SitePopup, PopupType } from "@/types/popup";
+import { PopupCardContent } from "@/components/DynamicPopupManager";
 import {
   Megaphone,
   Wrench,
@@ -754,93 +755,17 @@ export function AdminPopupControllerSection() {
 
 // ─── Modal Live Preview Component inside Admin Panel ───────────────────
 function AdminPopupPreviewModal({ popup, onClose }: { popup: SitePopup; onClose: () => void }) {
-  const getIcon = () => {
-    switch (popup.icon) {
-      case "wrench":
-        return <Wrench className="h-6 w-6 text-amber-400" />;
-      case "alert-triangle":
-        return <AlertTriangle className="h-6 w-6 text-indigo-400" />;
-      case "stethoscope":
-        return <Stethoscope className="h-6 w-6 text-emerald-400" />;
-      case "megaphone":
-        return <Megaphone className="h-6 w-6 text-cyan-400" />;
-      case "sparkles":
-        return <Sparkles className="h-6 w-6 text-purple-400" />;
-      case "shield":
-        return <ShieldAlert className="h-6 w-6 text-rose-400" />;
-      case "info":
-        return <Info className="h-6 w-6 text-blue-400" />;
-      case "bell":
-      default:
-        return <Bell className="h-6 w-6 text-emerald-400" />;
-    }
-  };
-
-  const isMaintenance = popup.type === "maintenance";
-  const isMaintenanceUpdate = popup.type === "maintenance_announcement";
-
-  const borderColor = isMaintenance
-    ? "border-amber-500/30"
-    : isMaintenanceUpdate
-    ? "border-indigo-500/30"
-    : "border-emerald-500/30";
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className={`relative w-full max-w-md bg-zinc-950 border ${borderColor} rounded-2xl p-6 text-zinc-100 shadow-2xl space-y-4`}
-      >
-        <div className="flex items-center justify-between text-[10px] text-amber-400 font-mono border-b border-white/10 pb-2 mb-2">
-          <span>LIVE ADMIN PREVIEW MODE</span>
-          <button onClick={onClose} className="p-1 hover:text-white">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 shrink-0">
-              {getIcon()}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-white leading-snug">{popup.title}</h2>
-              </div>
-              {popup.subtitle && (
-                <p className="text-xs text-indigo-400 font-medium mt-0.5">{popup.subtitle}</p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-3 text-xs text-zinc-300 leading-relaxed bg-zinc-900/50 p-3 rounded-xl border border-zinc-800">
-          <p>{popup.message}</p>
-        </div>
-
-        <div className="flex items-center justify-end gap-2 pt-2">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            className="border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white text-xs h-9"
-          >
-            {popup.secondaryActionText || "Close Preview"}
-          </Button>
-          {popup.actionText && (
-            <Button
-              onClick={() => {
-                alert(`Action link trigger: ${popup.actionUrl || "No URL set"}`);
-                onClose();
-              }}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs h-9 flex items-center gap-1.5"
-            >
-              <span>{popup.actionText}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          )}
-        </div>
-      </motion.div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <PopupCardContent
+        popup={popup}
+        isPreview={true}
+        onDismiss={onClose}
+        onAction={() => {
+          alert(`Action link trigger test: ${popup.actionUrl || "No URL specified"}`);
+          onClose();
+        }}
+      />
     </div>
   );
 }
