@@ -22,7 +22,7 @@ import {
   MessageSquare,
   Loader2
 } from "lucide-react";
-import { verifyAndUnlockAccessKey, initiatePremiumPayment } from "@/lib/unlock";
+import { verifyAndUnlockAccessKey, initiatePremiumPayment, restorePurchase } from "@/lib/unlock";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -83,18 +83,18 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
     setErrorMsg("");
     
     if (!accessKey.trim()) {
-      setErrorMsg("Please enter an access key.");
+      setErrorMsg("Please enter an access key or payment ID.");
       return;
     }
 
     setLoading(true);
-    const res = await verifyAndUnlockAccessKey(accessKey);
+    const res = await restorePurchase(accessKey);
     setLoading(false);
     
     if (res.success) {
       setSuccess(true);
-      toast.success("Premium access activated! 🎉", {
-        description: "All advanced features are now fully unlocked."
+      toast.success("Access Restored! 🎉", {
+        description: "Your premium features are now fully unlocked."
       });
       setTimeout(() => {
         onOpenChange(false);
@@ -102,9 +102,9 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
         setAccessKey("");
       }, 1500);
     } else {
-      setErrorMsg(res.error || "Invalid key. Please check and try again.");
-      toast.error("Unlock failed", {
-        description: res.error || "The access key you entered is incorrect."
+      setErrorMsg(res.error || "No matching key or payment found.");
+      toast.error("Restoration failed", {
+        description: res.error || "Could not verify your access key or payment ID."
       });
     }
   };
@@ -234,9 +234,10 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                     <button
                       type="button"
                       onClick={() => setShowKeyForm(!showKeyForm)}
-                      className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors underline font-medium"
+                      className="text-[10.5px] text-indigo-400 hover:text-indigo-300 transition-colors underline font-semibold flex items-center justify-center gap-1 mx-auto"
                     >
-                      {showKeyForm ? "Hide Access Key form" : "Have an Access Key? Click here"}
+                      <Unlock className="h-3 w-3" />
+                      {showKeyForm ? "Hide Restore Purchase form" : "Already Paid or Have an Access Key? Restore Purchase"}
                     </button>
                   </div>
                 </div>
@@ -245,37 +246,40 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                   <form onSubmit={handleSubmit} className="space-y-2.5 pt-2.5 border-t border-zinc-800 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="space-y-1.5">
                       <div className="flex justify-between items-center">
-                        <label className="text-[11px] font-medium text-zinc-300">Access Key</label>
+                        <label className="text-[11px] font-medium text-zinc-300">Access Key or Razorpay Payment ID</label>
                         {errorMsg && <span className="text-[9.5px] text-red-400 flex items-center gap-0.5"><X className="h-3 w-3" /> {errorMsg}</span>}
                       </div>
                       <div className="relative">
                         <Input
                           type="text"
-                          placeholder="e.g. KCETCODED, DEVELOPER"
+                          placeholder="e.g. CODED-ABCD-1234 or pay_Pxxxxxxxx"
                           value={accessKey}
                           onChange={(e) => {
                             setAccessKey(e.target.value);
                             setErrorMsg("");
                           }}
                           disabled={loading}
-                          className="bg-black/40 border-zinc-800 text-white text-xs h-9 focus-visible:ring-indigo-500 focus-visible:border-indigo-500 rounded-lg focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20"
+                          className="bg-black/40 border-zinc-800 text-white text-xs h-9 focus-visible:ring-indigo-500 focus-visible:border-indigo-500 rounded-lg focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 font-mono"
                         />
                       </div>
+                      <p className="text-[9.5px] text-zinc-500">
+                        Tip: You can find your Payment ID (starts with <code>pay_</code>) in your UPI app receipt or Razorpay email.
+                      </p>
                     </div>
 
                     <Button 
                       type="submit" 
                       disabled={loading}
                       variant="outline"
-                      className="w-full border-zinc-800 hover:bg-zinc-900 text-xs text-zinc-300 h-9 rounded-lg flex items-center justify-center gap-1.5 bg-transparent"
+                      className="w-full border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-xs text-indigo-300 h-9 rounded-lg flex items-center justify-center gap-1.5 font-semibold"
                     >
                       {loading ? (
                         <>
                           <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          Verifying...
+                          Restoring Purchase...
                         </>
                       ) : (
-                        "Verify & Unlock Key"
+                        "Restore Purchase / Verify Key"
                       )}
                     </Button>
                   </form>

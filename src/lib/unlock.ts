@@ -98,6 +98,72 @@ export async function verifyAndUnlockAccessKey(keyInput: string): Promise<{ succ
   }
 }
 
+export async function restorePurchase(input: string): Promise<{ success: boolean; code?: string; error?: string }> {
+  const query = input.trim();
+  if (!query) {
+    return { success: false, error: 'Please enter your Access Code or Razorpay Payment ID.' };
+  }
+
+  // 1. Check if input is a valid key locally
+  if (validateAndUnlock(query)) {
+    return { success: true, code: query.toUpperCase() };
+  }
+
+  const uppercaseQuery = query.toUpperCase().replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]/g, '-');
+
+  try {
+    // Search access_codes by code OR payment_id
+    const { data: codeData, error: codeErr } = await supabase
+      .from('access_codes' as any)
+      .select('*')
+      .or(`code.eq.${uppercaseQuery},payment_id.eq.${query}`)
+      .maybeSingle();
+
+    if (!codeErr && codeData) {
+      const codeToUse = (codeData as any).code || uppercaseQuery;
+      saveAccessCode(codeToUse);
+      unlockGlobally();
+      return { 
+        success: true, 
+        code: codeToUse 
+      };
+    }
+
+    // Search donors table by payment_id
+    const { data: donorData, error: donorErr } = await supabase
+      .from('donors' as any)
+      .select('*')
+      .eq('payment_id', query)
+      .maybeSingle();
+
+    if (!donorErr && donorData) {
+      const generatedCode = `CODED-RESTORED-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+      try {
+        await supabase.from('access_codes' as any).insert({
+          code: generatedCode,
+          is_used: true,
+          payment_id: query
+        });
+      } catch {}
+
+      saveAccessCode(generatedCode);
+      unlockGlobally();
+      return { 
+        success: true, 
+        code: generatedCode 
+      };
+    }
+
+    return {
+      success: false,
+      error: 'No payment record found for this Payment ID or Access Key. If you paid and need help, message us on Discord or Reddit for instant support!'
+    };
+  } catch (err: any) {
+    console.error('Restore purchase exception:', err);
+    return { success: false, error: 'An unexpected error occurred during restoration.' };
+  }
+}
+
 export function lockFeatures() {
   try {
     localStorage.removeItem(STORAGE_KEY);
