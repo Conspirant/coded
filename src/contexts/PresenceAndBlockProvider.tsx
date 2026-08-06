@@ -186,8 +186,12 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
   };
 
   const currentPath = location.pathname;
+  const normalizedPath = currentPath.length > 1 && currentPath.endsWith('/') 
+    ? currentPath.slice(0, -1) 
+    : currentPath;
+
   // Admin page should never be blocked, home page shouldn't either. Also bypassed if already unlocked.
-  const isBlocked = blockedPages.includes(currentPath) && currentPath !== "/admin" && currentPath !== "/" && !unlocked;
+  const isBlocked = blockedPages.includes(normalizedPath) && normalizedPath !== "/admin" && normalizedPath !== "/" && !unlocked;
 
   return (
     <PresenceAndBlockContext.Provider value={{ blockedPages, isBlocked }}>
