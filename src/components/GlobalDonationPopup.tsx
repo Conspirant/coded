@@ -41,6 +41,9 @@ export function GlobalDonationPopup() {
               setBroadcastId(newId)
               setVisible(true)
             }
+          } else {
+            setVisible(false)
+            setBroadcastId(null)
           }
         }
       )
@@ -60,6 +63,9 @@ export function GlobalDonationPopup() {
               setBroadcastId(newId)
               setVisible(true)
             }
+          } else {
+            setVisible(false)
+            setBroadcastId(null)
           }
         }
       )
@@ -70,13 +76,21 @@ export function GlobalDonationPopup() {
     broadcastChannel
       .on("broadcast", { event: "donation-prompt" }, (payload) => {
         const id = payload.payload?.broadcastId
-        if (!id) return
+        if (!id) {
+          setVisible(false)
+          setBroadcastId(null)
+          return
+        }
 
         const dismissed = localStorage.getItem(`dismiss_donation_${id}`)
         if (dismissed) return
 
         setBroadcastId(id)
         setVisible(true)
+      })
+      .on("broadcast", { event: "donation-prompt-stop" }, () => {
+        setVisible(false)
+        setBroadcastId(null)
       })
       .subscribe((status) => {
         if (status === "SUBSCRIBED") {
@@ -92,12 +106,19 @@ export function GlobalDonationPopup() {
       setVisible(true)
     }
 
+    const handleLocalTestStop = () => {
+      setVisible(false)
+      setBroadcastId(null)
+    }
+
     window.addEventListener("donation-prompt-local-test", handleLocalTest)
+    window.addEventListener("donation-prompt-local-stop", handleLocalTestStop)
 
     return () => {
       dbChannel.unsubscribe()
       broadcastChannel.unsubscribe()
       window.removeEventListener("donation-prompt-local-test", handleLocalTest)
+      window.removeEventListener("donation-prompt-local-stop", handleLocalTestStop)
     }
   }, [])
 

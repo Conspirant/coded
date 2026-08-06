@@ -15,7 +15,7 @@ import {
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
-    Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert
+    Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -1368,6 +1368,52 @@ function AdminDonationBroadcastController() {
         }
     }
 
+    const handleStopBroadcast = async () => {
+        let ch = channelInstance
+        if (!ch) {
+            ch = supabase.channel("global-alerts")
+            ch.subscribe()
+            setChannelInstance(ch)
+        }
+
+        setBroadcastId(null)
+
+        // Clear active session in DB (100% reliable)
+        await AdminSuggestionsService.setActiveDonationBroadcast(null)
+
+        // Close local test if active on current window
+        window.dispatchEvent(new CustomEvent("donation-prompt-local-stop"))
+
+        try {
+            await ch.send({
+                type: "broadcast",
+                event: "donation-prompt-stop",
+                payload: { broadcastId: null }
+            })
+
+            toast({
+                title: "Broadcast Stopped",
+                description: "Active donation request broadcast has been stopped and cleared.",
+            })
+        } catch (err: any) {
+            toast({
+                title: "Stop Broadcast Issue",
+                description: err.message,
+                variant: "destructive"
+            })
+        }
+
+        try {
+            await supabase.from("admin_activities").insert({
+                action: "stop_donation_prompt",
+                admin_id: "admin_manual",
+                changes: { stoppedAt: new Date().toISOString() }
+            })
+        } catch (e) {
+            console.warn("Failed to log activity:", e)
+        }
+    }
+
     const handleTestLocal = () => {
         // Trigger a local custom event for the current window to preview layout
         const customEvent = new CustomEvent("donation-prompt-local-test", {
@@ -1417,6 +1463,16 @@ function AdminDonationBroadcastController() {
                         )}
                     </div>
                     <div className="flex items-center gap-2">
+                        {broadcastId && (
+                            <Button 
+                                variant="destructive"
+                                onClick={handleStopBroadcast} 
+                                className="bg-rose-600/90 hover:bg-rose-600 text-white text-xs font-semibold px-3 h-9 flex items-center gap-1.5 border border-rose-500/30"
+                            >
+                                <StopCircle className="h-3.5 w-3.5" />
+                                Stop Broadcast
+                            </Button>
+                        )}
                         <Button 
                             variant="outline"
                             onClick={handleTestLocal} 
@@ -1428,7 +1484,7 @@ function AdminDonationBroadcastController() {
                             onClick={handleBroadcast} 
                             className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-4 h-9"
                         >
-                            Send Donation Popup
+                            {broadcastId ? "Restart Broadcast" : "Send Donation Popup"}
                         </Button>
                     </div>
                 </div>

@@ -211,7 +211,7 @@ export const ResourceLimitModal = () => {
   const shouldShowPaywall = !isAllowedForLock && !unlocked;
 
   // Grace period: let users try premium pages briefly before showing paywall
-  const GRACE_PERIOD_MS = 15_000;
+  const GRACE_PERIOD_MS = 19_000;
   const [graceActive, setGraceActive] = useState(true);
 
   useEffect(() => {

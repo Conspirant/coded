@@ -58,7 +58,7 @@ import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
-import { DomainAnnouncementModal } from "./components/DomainAnnouncementModal";
+import { NeetCodedAnnouncementModal } from "./components/NeetCodedAnnouncementModal";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
@@ -94,7 +94,7 @@ const App = () => (
             <DisclaimerBanner />
             <ResourceLimitModal />
             <Calibrate2027Modal />
-            <DomainAnnouncementModal />
+            <NeetCodedAnnouncementModal />
 
             <Routes>
               <Route path="/" element={<Homepage />} />

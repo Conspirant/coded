@@ -647,6 +647,9 @@ const RoundPredictor = () => {
                       </Button>
                     </div>
                   </div>
+                  <p className="text-[10px] text-muted-foreground/70 leading-tight pt-0.5">
+                    Seat surrender multiplier was developed from the suggestions taken from u/tbh_smarty and u/SamVerse11.
+                  </p>
                 </div>
                 <div className="flex justify-end lg:col-span-1 pt-2 lg:pt-0">
                   <Button
