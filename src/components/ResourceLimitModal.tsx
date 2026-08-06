@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
-import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, subscribeToUnlockState, unlockGlobally, saveAccessCode } from '@/lib/unlock';
+import { isUnlocked, validateAndUnlock, verifyAndUnlockAccessKey, restorePurchase, subscribeToUnlockState, unlockGlobally, saveAccessCode } from '@/lib/unlock';
 import { copyToClipboard } from '@/lib/utils';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -242,24 +242,24 @@ export const ResourceLimitModal = () => {
 
     const inputKey = accessKeyInput.trim();
     if (!inputKey) {
-      setErrorMsg('Please enter an access key.');
+      setErrorMsg('Please enter an Access Code or Razorpay Payment ID.');
       return;
     }
 
     setIsProcessing(true);
-    const res = await verifyAndUnlockAccessKey(inputKey);
+    const res = await restorePurchase(inputKey);
     setIsProcessing(false);
 
     if (res.success) {
-      setSuccessMsg('Access granted! Unlocking features...');
-      toast.success('Successfully unlocked all premium features!', {
-        description: 'You now have full access to early tools.'
+      setSuccessMsg('Access Restored! Unlocking features...');
+      toast.success('Successfully restored premium access!', {
+        description: 'You now have full access to all tools.'
       });
       setAccessKeyInput('');
     } else {
-      setErrorMsg(res.error || 'Invalid access key. Please check and try again.');
-      toast.error('Unlock failed', {
-        description: res.error || 'Double check the key spelling or try a different one.'
+      setErrorMsg(res.error || 'No matching key or payment found.');
+      toast.error('Restoration failed', {
+        description: res.error || 'Could not verify your access key or payment ID.'
       });
     }
   };
@@ -621,21 +621,22 @@ export const ResourceLimitModal = () => {
             <button
               type="button"
               onClick={() => setShowKeyForm(!showKeyForm)}
-              className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors underline font-medium"
+              className="text-[10.5px] text-indigo-400 hover:text-indigo-300 transition-colors underline font-semibold flex items-center justify-center gap-1"
             >
-              {showKeyForm ? "Hide Access Key verification" : "Redeem an Access Code"}
+              <Unlock className="h-3 w-3" />
+              {showKeyForm ? "Hide Restore Purchase form" : "Already Paid or Have an Access Key? Restore Purchase"}
             </button>
 
             <button
               type="button"
               onClick={() => navigate('/supporters')}
-              className="text-[10px] text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1 font-semibold hover:underline"
+              className="text-[10px] text-zinc-400 hover:text-zinc-300 transition-colors flex items-center gap-1 font-medium hover:underline"
             >
               See Supporters Wall
             </button>
           </div>
 
-          {/* Access Key Form */}
+          {/* Access Key / Payment ID Form */}
           <AnimatePresence>
             {showKeyForm && (
               <motion.div
@@ -649,31 +650,28 @@ export const ResourceLimitModal = () => {
                   <div className="relative flex gap-2">
                     <div className="relative flex-1">
                       <Input
-                        type={showKey ? "text" : "password"}
-                        placeholder="Enter Access Code..."
+                        type="text"
+                        placeholder="Access Code (CODED-...) or Payment ID (pay_...)"
                         value={accessKeyInput}
                         onChange={(e) => {
                           setAccessKeyInput(e.target.value);
                           if (errorMsg) setErrorMsg('');
                         }}
-                        className="bg-black/40 border-zinc-800 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-lg h-9.5 pr-9 font-mono text-xs w-full"
+                        className="bg-black/40 border-zinc-800 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 rounded-lg h-9.5 font-mono text-xs w-full"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowKey(!showKey)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
-                      >
-                        {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                      </button>
                     </div>
                     <Button
                       type="submit"
                       variant="outline"
-                      className="border-zinc-800 hover:bg-zinc-900 text-xs h-9.5 rounded-lg px-4 shrink-0 bg-transparent text-zinc-300"
+                      disabled={isProcessing}
+                      className="border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-xs text-indigo-300 h-9.5 rounded-lg px-4 shrink-0 font-semibold"
                     >
-                      Redeem
+                      {isProcessing ? "Verifying..." : "Restore"}
                     </Button>
                   </div>
+                  <p className="text-[9.5px] text-zinc-500">
+                    Paste your Access Code or Payment ID (starts with <code>pay_</code>) from your UPI receipt.
+                  </p>
 
                   {errorMsg && (
                     <p className="text-[10px] text-rose-400 font-medium flex items-center gap-1">
