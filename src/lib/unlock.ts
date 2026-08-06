@@ -20,7 +20,7 @@ export function setGlobalPaywallDisabled(disabled: boolean) {
 export function isUnlocked(): boolean {
   if (globalPaywallDisabled) return true;
   try {
-    return localStorage.getItem(STORAGE_KEY) === 'true';
+    return localStorage.getItem(STORAGE_KEY) === 'true' || Boolean(localStorage.getItem(SAVED_CODE_KEY));
   } catch {
     return false;
   }
@@ -128,6 +128,7 @@ export function saveAccessCode(code: string) {
   if (!code) return;
   try {
     localStorage.setItem(SAVED_CODE_KEY, code.trim());
+    localStorage.setItem(STORAGE_KEY, 'true');
   } catch {}
   window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true, code } }));
 }

@@ -17,7 +17,7 @@ import {
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "@/integrations/supabase/client"
-import { saveAccessCode } from "@/lib/unlock"
+import { saveAccessCode, unlockGlobally } from "@/lib/unlock"
 import { copyToClipboard } from "@/lib/utils"
 
 const Donate = () => {
@@ -184,6 +184,7 @@ const Donate = () => {
                             }
 
                             saveAccessCode(finalCode)
+                            unlockGlobally()
                             setDonateSuccessCode(finalCode)
                             setPaymentStatus('success')
                             setTotalAmount(prev => prev + amtVal)

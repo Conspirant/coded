@@ -15,7 +15,8 @@ import {
     ClipboardPaste, Plus, Trash2, Search, Edit3, Save, X,
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
-    Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle
+    Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
+    Megaphone
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -27,6 +28,7 @@ import AdminSuggestionsView from "@/components/AdminSuggestionsView"
 import { AdminAIExtractor } from "@/components/admin/AdminAIExtractor"
 import AdminActualRanksView from "@/components/AdminActualRanksView"
 import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
+import { AdminPopupControllerSection } from "@/components/admin/AdminPopupControllerSection"
 import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
@@ -1879,6 +1881,7 @@ function AdminSystemSettingsSection() {
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
+    { id: "popups", label: "Popups & Alerts", icon: Megaphone },
     { id: "ai-extractor", label: "AI Extractor", icon: BrainCircuit },
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
@@ -1947,6 +1950,7 @@ export default function AdminHub() {
                 {/* Content */}
                 <main className="flex-1 p-6 md:p-8 max-w-7xl">
                     {activeSection === "pyq" && <AdminPYQSection />}
+                    {activeSection === "popups" && <AdminPopupControllerSection />}
                     {activeSection === "ai-extractor" && <AdminAIExtractor />}
                     {activeSection === "cutoffs" && <AdminCutoffsPage />}
                     {activeSection === "reviews" && <AdminReviewModeration />}
