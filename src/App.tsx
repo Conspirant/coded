@@ -58,7 +58,6 @@ import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "./components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
-import { NeetCodedAnnouncementModal } from "./components/NeetCodedAnnouncementModal";
 import { DynamicPopupManager } from "./components/DynamicPopupManager";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
@@ -95,7 +94,6 @@ const App = () => (
             <DisclaimerBanner />
             <ResourceLimitModal />
             <Calibrate2027Modal />
-            <NeetCodedAnnouncementModal />
             <DynamicPopupManager />
 
             <Routes>

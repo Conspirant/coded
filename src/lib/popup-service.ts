@@ -5,23 +5,7 @@ const POPUP_PREFIX = "POPUP:";
 const CONFIG_KEY = "CONFIG:site_popups_list";
 const REALTIME_CHANNEL = "site-popups-channel";
 
-export const DEFAULT_INITIAL_POPUPS: SitePopup[] = [
-  {
-    id: "neet_coded_announcement_v1",
-    title: "NEET Coded is Coming",
-    subtitle: "Built based on student requests",
-    message: "We received multiple requests from students asking for a NEET version of Coded. We're now building it with the same fast rank predictors, clean cutoffs, and counseling tools you use for KCET & COMEDK.",
-    type: "announcement",
-    icon: "stethoscope",
-    badgeText: "Coming Soon",
-    actionText: "Notify Me When Live",
-    actionUrl: "",
-    dismissible: true,
-    enabled: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+export const DEFAULT_INITIAL_POPUPS: SitePopup[] = [];
 
 // Helper to sanitize array of popups
 function formatPopupsList(rawList: any[]): SitePopup[] {
