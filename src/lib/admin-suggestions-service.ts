@@ -223,6 +223,25 @@ export class AdminSuggestionsService {
         }
     }
 
+    static async setBlockedPages(blockedPaths: string[]): Promise<boolean> {
+        try {
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:blocked_pages',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { blockedPaths }
+                }], { onConflict: 'appl_no' });
+            
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error("Error setting blocked pages:", e);
+            return false;
+        }
+    }
+
     static async getMaintenancePages(): Promise<string[]> {
         try {
             const { data, error } = await supabase
