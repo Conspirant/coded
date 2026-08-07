@@ -1522,6 +1522,7 @@ const BLOCKABLE_PAGES = [
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
+    const [blockedPages, setBlockedPages] = useState<string[]>([])
     const [maintenancePages, setMaintenancePages] = useState<string[]>([])
     const [savingMaintenance, setSavingMaintenance] = useState(false)
     const [loading, setLoading] = useState(true)
