@@ -1706,7 +1706,7 @@ function AdminSystemSettingsSection() {
                                 )}
                             </CardTitle>
                             <CardDescription className="text-xs text-muted-foreground max-w-2xl">
-                                Completely shut down the entire website for all users (including Homepage & Dashboard). Every visitor will see a full-screen maintenance message. <strong className="text-amber-400">Only the <code className="text-indigo-400">/admin</code> route remains accessible.</strong>
+                                Completely shut down the entire website for all users (including Homepage & Dashboard). Every visitor will see a realistic 404 Not Found error screen with no mention of maintenance. <strong className="text-amber-400">Only the <code className="text-indigo-400">/admin</code> route remains accessible.</strong>
                             </CardDescription>
                         </div>
                         <div className="flex items-center gap-3 shrink-0">

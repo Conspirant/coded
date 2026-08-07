@@ -260,14 +260,44 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     : currentPath;
 
   const isAdminRoute = normalizedPath === "/admin" || normalizedPath.startsWith("/admin/");
+  const shouldShutdown = isSiteShutdown && !isAdminRoute;
   const isExempt = isAdminRoute || (!isSiteShutdown && (normalizedPath === "/" || normalizedPath === "/dashboard"));
-  const isMaintenance = (isSiteShutdown && !isAdminRoute) || (!isExempt && maintenancePages.includes(normalizedPath));
+  const isMaintenance = !isExempt && maintenancePages.includes(normalizedPath);
   const isBlocked = !isExempt && blockedPages.includes(normalizedPath) && !unlocked;
 
   return (
     <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isSiteShutdown, isBlocked, isMaintenance }}>
       <AnimatePresence mode="wait">
-        {isMaintenance ? (
+        {shouldShutdown ? (
+          <motion.div
+            key="shutdown-404-screen"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-6 bg-[#0a0d14] text-slate-200 font-sans select-none"
+          >
+            <div className="max-w-md w-full text-center space-y-6 p-8 rounded-2xl border border-white/10 bg-slate-950/80 backdrop-blur-xl shadow-2xl">
+              <div className="space-y-2">
+                <div className="text-6xl font-black font-mono tracking-tight text-white">404</div>
+                <h1 className="text-lg font-bold text-slate-100">Page Not Found</h1>
+              </div>
+
+              <p className="text-xs text-slate-400 leading-relaxed">
+                The requested URL <code className="text-slate-200 bg-white/5 px-1.5 py-0.5 rounded font-mono text-[11px]">{location.pathname}</code> does not exist or has been moved.
+              </p>
+
+              <div className="pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => window.history.back()}
+                  className="text-xs text-slate-300 border-white/10 bg-white/5 hover:bg-white/10 hover:text-white rounded-xl h-9 px-5"
+                >
+                  Go Back
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        ) : isMaintenance ? (
           <motion.div
             key="maintenance-screen"
             initial={{ opacity: 0 }}
@@ -291,19 +321,16 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
               <div className="space-y-1">
                 <h2 className="text-xl font-bold text-white tracking-tight">
-                  {isSiteShutdown ? "Website Temporarily Offline" : "Tool Under Maintenance"}
+                  Tool Under Maintenance
                 </h2>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-amber-400">
-                  {isSiteShutdown ? "SYSTEM-WIDE MAINTENANCE IN PROGRESS" : "ROUTINE DATA UPDATE IN PROGRESS"}
+                  ROUTINE DATA UPDATE IN PROGRESS
                 </p>
               </div>
 
               <div className="border border-white/5 bg-white/[0.02] p-4 rounded-2xl text-xs text-muted-foreground leading-relaxed space-y-2 text-left">
                 <p>
-                  {isSiteShutdown
-                    ? "The website is currently undergoing scheduled system updates and maintenance. Please check back shortly."
-                    : "We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool."
-                  }
+                  We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool.
                 </p>
                 {unlocked && (
                   <p className="text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl text-[11px]">
@@ -312,24 +339,22 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
                 )}
               </div>
 
-              {!isSiteShutdown && (
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <Button
-                    variant="ghost"
-                    onClick={() => navigate("/")}
-                    className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
-                  >
-                    <Home className="h-3.5 w-3.5 mr-1.5" /> Homepage
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => navigate("/dashboard")}
-                    className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
-                  >
-                    Dashboard
-                  </Button>
-                </div>
-              )}
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/")}
+                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                >
+                  <Home className="h-3.5 w-3.5 mr-1.5" /> Homepage
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/dashboard")}
+                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                >
+                  Dashboard
+                </Button>
+              </div>
             </motion.div>
           </motion.div>
         ) : isBlocked ? (
