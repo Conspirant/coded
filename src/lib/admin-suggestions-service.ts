@@ -352,7 +352,7 @@ export class AdminSuggestionsService {
                     appl_no: 'CONFIG:site_shutdown',
                     dob: 'config',
                     name: 'config',
-                    results_json: config
+                    results_json: config as any
                 }], { onConflict: 'appl_no' });
             
             if (error) throw error;

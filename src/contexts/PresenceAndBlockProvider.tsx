@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { AdminSuggestionsService } from "@/lib/admin-suggestions-service";
+import { AdminSuggestionsService, SiteShutdownConfig } from "@/lib/admin-suggestions-service";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldAlert, Home, ArrowLeft, Crown, Key, Loader2, Check, Lock, ExternalLink, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,14 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
   const [blockedPages, setBlockedPages] = useState<string[]>([]);
   const [maintenancePages, setMaintenancePages] = useState<string[]>([]);
   const [isSiteShutdown, setIsSiteShutdown] = useState(false);
+  const [shutdownConfig, setShutdownConfig] = useState<SiteShutdownConfig>({
+    shutdown: false,
+    errorCode: "404",
+    title: "Page Not Found",
+    message: "The requested URL {path} does not exist or has been moved.",
+    buttonText: "Go Back",
+    showButton: true
+  });
   const [unlocked, setUnlocked] = useState(isUnlocked());
   const [amount, setAmount] = useState<number>(19);
   const [totalAmount, setTotalAmount] = useState<number>(78);
