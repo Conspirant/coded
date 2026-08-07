@@ -16,7 +16,7 @@ import {
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
     Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
-    Megaphone, Vote
+    Megaphone, Vote, Power
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -1522,6 +1522,7 @@ const BLOCKABLE_PAGES = [
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
+    const [siteShutdown, setSiteShutdown] = useState(false)
     const [blockedPages, setBlockedPages] = useState<string[]>([])
     const [maintenancePages, setMaintenancePages] = useState<string[]>([])
     const [savingMaintenance, setSavingMaintenance] = useState(false)
@@ -1534,14 +1535,16 @@ function AdminSystemSettingsSection() {
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const [disabled, blocked, maintenance] = await Promise.all([
+            const [disabled, blocked, maintenance, shutdown] = await Promise.all([
                 AdminSuggestionsService.isPaywallDisabledGlobally(),
                 AdminSuggestionsService.getBlockedPages(),
-                AdminSuggestionsService.getMaintenancePages()
+                AdminSuggestionsService.getMaintenancePages(),
+                AdminSuggestionsService.isSiteShutdownGlobally()
             ])
             setPaywallDisabled(disabled)
             setBlockedPages(blocked)
             setMaintenancePages(maintenance)
+            setSiteShutdown(shutdown)
             setDonationButtonEnabled(localStorage.getItem('kcet_donation_button_enabled') === 'true')
         } catch (err: any) {
             toast({
@@ -1570,6 +1573,31 @@ function AdminSystemSettingsSection() {
             })
         } finally {
             setSaving(false)
+        }
+    }
+
+    const handleToggleSiteShutdown = async (checked: boolean) => {
+        setSiteShutdown(checked)
+        try {
+            const success = await AdminSuggestionsService.setSiteShutdownGlobally(checked)
+            if (success) {
+                toast({
+                    title: checked ? "Website Completely Shut Down" : "Website Restored",
+                    description: checked 
+                        ? "The entire website is now offline for users except /admin." 
+                        : "The website is back online for all users.",
+                    variant: checked ? "destructive" : "default"
+                })
+            } else {
+                throw new Error("Failed to update database")
+            }
+        } catch (err: any) {
+            setSiteShutdown(!checked)
+            toast({
+                title: "Error updating site shutdown status",
+                description: err.message,
+                variant: "destructive"
+            })
         }
     }
 
@@ -1654,6 +1682,46 @@ function AdminSystemSettingsSection() {
                     Manage global platform-level flags, page access, and monitor user presence.
                 </p>
             </div>
+
+            {/* Emergency Complete Site Shutdown Card */}
+            <Card className={`border shadow-lg transition-all ${
+                siteShutdown 
+                    ? "bg-rose-950/40 border-rose-500/50 shadow-rose-500/20" 
+                    : "border-white/10 bg-slate-950/40 backdrop-blur-md"
+            }`}>
+                <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                            <CardTitle className="text-base font-bold text-white flex items-center gap-2">
+                                <Power className={`h-5 w-5 ${siteShutdown ? "text-rose-500 animate-pulse" : "text-slate-400"}`} />
+                                Emergency Complete Website Shutdown
+                                {siteShutdown ? (
+                                    <Badge variant="destructive" className="bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] uppercase font-extrabold tracking-wider px-2 py-0.5">
+                                        Active (Website Offline)
+                                    </Badge>
+                                ) : (
+                                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5">
+                                        Online (Normal Operation)
+                                    </Badge>
+                                )}
+                            </CardTitle>
+                            <CardDescription className="text-xs text-muted-foreground max-w-2xl">
+                                Completely shut down the entire website for all users (including Homepage & Dashboard). Every visitor will see a full-screen maintenance message. <strong className="text-amber-400">Only the <code className="text-indigo-400">/admin</code> route remains accessible.</strong>
+                            </CardDescription>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                            <span className={`text-xs font-semibold ${siteShutdown ? "text-rose-400" : "text-muted-foreground"}`}>
+                                {siteShutdown ? "SHUTDOWN ACTIVE" : "NORMAL SITE ACCESS"}
+                            </span>
+                            <Switch
+                                className="data-[state=checked]:bg-rose-600 scale-125"
+                                checked={siteShutdown}
+                                onCheckedChange={handleToggleSiteShutdown}
+                            />
+                        </div>
+                    </div>
+                </CardHeader>
+            </Card>
 
             {/* Live User Activity Card */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

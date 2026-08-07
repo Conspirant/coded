@@ -279,5 +279,44 @@ export class AdminSuggestionsService {
             return false;
         }
     }
+
+    static async isSiteShutdownGlobally(): Promise<boolean> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:site_shutdown')
+                .maybeSingle();
+            
+            if (error) throw error;
+            if (data && data.results_json) {
+                return (data.results_json as any).shutdown === true;
+            }
+            return false;
+        } catch (e) {
+            console.error("Error checking site shutdown status:", e);
+            return false;
+        }
+    }
+
+    static async setSiteShutdownGlobally(shutdown: boolean): Promise<boolean> {
+        try {
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:site_shutdown',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { shutdown }
+                }], { onConflict: 'appl_no' });
+            
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error("Error setting site shutdown status:", e);
+            return false;
+        }
+    }
 }
+
 

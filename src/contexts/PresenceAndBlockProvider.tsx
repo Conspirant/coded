@@ -11,6 +11,7 @@ import { isUnlocked, subscribeToUnlockState, initiatePremiumPayment, verifyAndUn
 interface PresenceAndBlockContextValue {
   blockedPages: string[];
   maintenancePages: string[];
+  isSiteShutdown: boolean;
   isBlocked: boolean;
   isMaintenance: boolean;
 }
@@ -20,6 +21,7 @@ const PresenceAndBlockContext = createContext<PresenceAndBlockContextValue | und
 export function PresenceAndBlockProvider({ children }: { children: React.ReactNode }) {
   const [blockedPages, setBlockedPages] = useState<string[]>([]);
   const [maintenancePages, setMaintenancePages] = useState<string[]>([]);
+  const [isSiteShutdown, setIsSiteShutdown] = useState(false);
   const [unlocked, setUnlocked] = useState(isUnlocked());
   const [amount, setAmount] = useState<number>(19);
   const [totalAmount, setTotalAmount] = useState<number>(78);
@@ -53,6 +55,11 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
       setMaintenancePages(paths);
     };
 
+    const fetchShutdown = async () => {
+      const shutdown = await AdminSuggestionsService.isSiteShutdownGlobally();
+      setIsSiteShutdown(shutdown);
+    };
+
     const fetchTotalAmount = async () => {
       try {
         const { data, error } = await supabase
@@ -71,6 +78,7 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
     fetchBlocked();
     fetchMaintenance();
+    fetchShutdown();
     fetchTotalAmount();
 
     const dbChannel = supabase
@@ -125,6 +133,32 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
         (payload) => {
           const paths = (payload.new as any)?.results_json?.maintenancePaths || [];
           setMaintenancePages(paths);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:site_shutdown",
+        },
+        (payload) => {
+          const shutdown = (payload.new as any)?.results_json?.shutdown === true;
+          setIsSiteShutdown(shutdown);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:site_shutdown",
+        },
+        (payload) => {
+          const shutdown = (payload.new as any)?.results_json?.shutdown === true;
+          setIsSiteShutdown(shutdown);
         }
       )
       .subscribe();
@@ -225,13 +259,13 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     ? currentPath.slice(0, -1) 
     : currentPath;
 
-  // Admin page, home page, and dashboard should never be blocked.
-  const isExempt = normalizedPath === "/admin" || normalizedPath === "/" || normalizedPath === "/dashboard";
-  const isMaintenance = !isExempt && maintenancePages.includes(normalizedPath);
+  const isAdminRoute = normalizedPath === "/admin" || normalizedPath.startsWith("/admin/");
+  const isExempt = isAdminRoute || (!isSiteShutdown && (normalizedPath === "/" || normalizedPath === "/dashboard"));
+  const isMaintenance = (isSiteShutdown && !isAdminRoute) || (!isExempt && maintenancePages.includes(normalizedPath));
   const isBlocked = !isExempt && blockedPages.includes(normalizedPath) && !unlocked;
 
   return (
-    <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isBlocked, isMaintenance }}>
+    <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isSiteShutdown, isBlocked, isMaintenance }}>
       <AnimatePresence mode="wait">
         {isMaintenance ? (
           <motion.div
@@ -257,16 +291,19 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
               <div className="space-y-1">
                 <h2 className="text-xl font-bold text-white tracking-tight">
-                  Tool Under Maintenance
+                  {isSiteShutdown ? "Website Temporarily Offline" : "Tool Under Maintenance"}
                 </h2>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-amber-400">
-                  ROUTINE DATA UPDATE IN PROGRESS
+                  {isSiteShutdown ? "SYSTEM-WIDE MAINTENANCE IN PROGRESS" : "ROUTINE DATA UPDATE IN PROGRESS"}
                 </p>
               </div>
 
               <div className="border border-white/5 bg-white/[0.02] p-4 rounded-2xl text-xs text-muted-foreground leading-relaxed space-y-2 text-left">
                 <p>
-                  We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool.
+                  {isSiteShutdown
+                    ? "The website is currently undergoing scheduled system updates and maintenance. Please check back shortly."
+                    : "We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool."
+                  }
                 </p>
                 {unlocked && (
                   <p className="text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl text-[11px]">
@@ -275,22 +312,24 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => navigate("/")}
-                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
-                >
-                  <Home className="h-3.5 w-3.5 mr-1.5" /> Homepage
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => navigate("/dashboard")}
-                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
-                >
-                  Dashboard
-                </Button>
-              </div>
+              {!isSiteShutdown && (
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/")}
+                    className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                  >
+                    <Home className="h-3.5 w-3.5 mr-1.5" /> Homepage
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/dashboard")}
+                    className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                  >
+                    Dashboard
+                  </Button>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         ) : isBlocked ? (
