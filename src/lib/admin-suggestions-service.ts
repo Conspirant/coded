@@ -300,7 +300,7 @@ export class AdminSuggestionsService {
             if (error) throw error;
             if (data && data.results_json) {
                 const json = data.results_json as any;
-                return {
+                const cfg: SiteShutdownConfig = {
                     shutdown: json.shutdown === true,
                     errorCode: json.errorCode || "404",
                     title: json.title || "Page Not Found",
@@ -308,7 +308,15 @@ export class AdminSuggestionsService {
                     buttonText: json.buttonText || "Go Back",
                     showButton: json.showButton !== false
                 };
+                try { localStorage.setItem('kcet_site_shutdown_config_backup', JSON.stringify(cfg)); } catch {}
+                return cfg;
             }
+
+            const stored = localStorage.getItem('kcet_site_shutdown_config_backup');
+            if (stored) {
+                try { return JSON.parse(stored); } catch {}
+            }
+
             return {
                 shutdown: false,
                 errorCode: "404",
@@ -319,6 +327,10 @@ export class AdminSuggestionsService {
             };
         } catch (e) {
             console.error("Error getting site shutdown config:", e);
+            const stored = localStorage.getItem('kcet_site_shutdown_config_backup');
+            if (stored) {
+                try { return JSON.parse(stored); } catch {}
+            }
             return {
                 shutdown: false,
                 errorCode: "404",
@@ -332,6 +344,8 @@ export class AdminSuggestionsService {
 
     static async setSiteShutdownConfig(config: SiteShutdownConfig): Promise<boolean> {
         try {
+            try { localStorage.setItem('kcet_site_shutdown_config_backup', JSON.stringify(config)); } catch {}
+
             const { error } = await supabase
                 .from('ugcet_results_cache')
                 .upsert([{
@@ -342,6 +356,18 @@ export class AdminSuggestionsService {
                 }], { onConflict: 'appl_no' });
             
             if (error) throw error;
+
+            try {
+                const channel = supabase.channel("global-alerts");
+                await channel.send({
+                    type: "broadcast",
+                    event: "site_shutdown_updated",
+                    payload: { config, timestamp: Date.now() }
+                });
+            } catch (bErr) {
+                console.warn("Site shutdown broadcast warning:", bErr);
+            }
+
             return true;
         } catch (e) {
             console.error("Error setting site shutdown config:", e);

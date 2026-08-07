@@ -198,15 +198,29 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     const channel = supabase.channel("global-alerts");
     presenceChannelRef.current = channel;
 
-    channel.subscribe((status) => {
-      if (status === "SUBSCRIBED") {
-        channel.track({
-          online_at: new Date().toISOString(),
-          page: location.pathname,
-          sessionId: sessionId
-        });
-      }
-    });
+    channel
+      .on("broadcast", { event: "site_shutdown_updated" }, (payload: any) => {
+        const raw = payload?.payload?.config || {};
+        const cfg = {
+          shutdown: raw.shutdown === true,
+          errorCode: raw.errorCode || "404",
+          title: raw.title || "Page Not Found",
+          message: raw.message || "The requested URL {path} does not exist or has been moved.",
+          buttonText: raw.buttonText || "Go Back",
+          showButton: raw.showButton !== false
+        };
+        setShutdownConfig(cfg);
+        setIsSiteShutdown(cfg.shutdown);
+      })
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          channel.track({
+            online_at: new Date().toISOString(),
+            page: location.pathname,
+            sessionId: sessionId
+          });
+        }
+      });
 
     return () => {
       channel.unsubscribe();
