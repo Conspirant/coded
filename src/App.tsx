@@ -58,9 +58,10 @@ import Supporters from "./pages/Supporters";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
-import { ResourceLimitModal } from "./components/ResourceLimitModal";
+import { ResourceLimitModal } from "@/components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
 import { DynamicPopupManager } from "./components/DynamicPopupManager";
+import { WebsiteReviewPrompt } from "@/components/WebsiteReviewPrompt";
 import { GlobalPollPopup } from "./components/GlobalPollPopup";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
@@ -98,6 +99,7 @@ const App = () => (
             <ResourceLimitModal />
             <Calibrate2027Modal />
             <DynamicPopupManager />
+            <WebsiteReviewPrompt />
 
             <Routes>
               <Route path="/" element={<Homepage />} />

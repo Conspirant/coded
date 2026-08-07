@@ -6,8 +6,11 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CollegeReviewCard } from "@/components/CollegeReviewCard"
-import { Search, Star, MessageSquare, TrendingUp, Sparkles } from "lucide-react"
+import { Search, Star, MessageSquare, TrendingUp, Sparkles, Heart } from "lucide-react"
 import { getCollegesWithReviews, College, CollegeReview } from "@/lib/college-service"
+import { WebsiteReviewModal } from "@/components/WebsiteReviewModal"
+import { SiteReviewService } from "@/lib/site-review-service"
+import { SiteReview } from "@/types/siteReview"
 
 type SortMode = "reviews" | "name" | "code"
 
@@ -19,6 +22,13 @@ const Reviews = () => {
   const [loading, setLoading] = useState(true)
   const [sortMode, setSortMode] = useState<SortMode>("reviews")
   const [showOnlyWithReviews, setShowOnlyWithReviews] = useState(false)
+  const [reviewModalOpen, setReviewModalOpen] = useState(false)
+  const [siteReviews, setSiteReviews] = useState<SiteReview[]>([])
+
+  const loadSiteReviews = async () => {
+    const res = await SiteReviewService.getApprovedReviews()
+    setSiteReviews(res)
+  }
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,6 +36,7 @@ const Reviews = () => {
         const data = await getCollegesWithReviews()
         setCollegesWithReviews(data)
         setFilteredColleges(data)
+        await loadSiteReviews()
       } catch (error) {
         console.error("Error loading college reviews:", error)
       } finally {
@@ -97,17 +108,27 @@ const Reviews = () => {
         <div className="absolute bottom-0 left-0 -ml-12 -mb-12 w-48 h-48 bg-indigo-500/8 rounded-full blur-3xl" />
 
         <div className="relative z-10 space-y-4">
-          {/* Title + Stats */}
-          <div>
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25">
-                <Star className="h-4.5 w-4.5 text-white" />
+          {/* Title + Stats + Write Website Review */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                  <Star className="h-4.5 w-4.5 text-amber-400 fill-amber-400" />
+                </div>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">College & Website Reviews</h1>
               </div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">College Reviews</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Real reviews from students. Compare colleges or leave feedback for KCET Coded.
+              </p>
             </div>
-            <p className="text-xs sm:text-sm text-muted-foreground pl-[46px] sm:pl-0">
-              Real reviews from students. Help juniors make better choices.
-            </p>
+
+            <Button
+              onClick={() => setReviewModalOpen(true)}
+              size="sm"
+              className="bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold gap-1.5 rounded-xl self-start sm:self-auto shadow-md"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Rate KCET Coded
+            </Button>
           </div>
 
           {/* Stats row */}
@@ -194,6 +215,79 @@ const Reviews = () => {
           )}
         </div>
       )}
+
+      {/* ═══ Platform Reviews & Aspirant Feedback ═══ */}
+      <div className="pt-8 border-t border-border/40 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-violet-400" /> What Aspirants Say About KCET Coded
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              Feedback and reviews submitted by KCET & COMEDK candidates.
+            </p>
+          </div>
+          <Button
+            onClick={() => setReviewModalOpen(true)}
+            size="sm"
+            variant="outline"
+            className="border-border text-xs gap-1.5 rounded-xl self-start sm:self-auto"
+          >
+            <Heart className="h-3.5 w-3.5 text-rose-400" /> Share Your Feedback
+          </Button>
+        </div>
+
+        {siteReviews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {siteReviews.map((rev) => (
+              <div
+                key={rev.id}
+                className="bg-card border border-border/60 p-4 rounded-xl space-y-2.5 flex flex-col justify-between hover:border-violet-500/40 transition-colors"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {Array.from({ length: rev.rating }).map((_, idx) => (
+                        <Star key={idx} className="h-3.5 w-3.5 fill-amber-400" />
+                      ))}
+                    </div>
+                    {rev.rank && (
+                      <span className="text-[10px] font-semibold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded-md border border-violet-500/20">
+                        {rev.rank}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-foreground/90 italic leading-relaxed">
+                    "{rev.comment}"
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-border/30 flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span className="font-semibold text-foreground">{rev.name}</span>
+                  <span>{new Date(rev.createdAt).toLocaleDateString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-card border border-border p-6 rounded-xl text-center space-y-2">
+            <p className="text-xs text-muted-foreground">No platform reviews submitted yet. Be the first!</p>
+            <Button
+              onClick={() => setReviewModalOpen(true)}
+              size="sm"
+              className="bg-violet-600 hover:bg-violet-500 text-white text-xs"
+            >
+              Write First Review
+            </Button>
+          </div>
+        )}
+      </div>
+
+      <WebsiteReviewModal
+        open={reviewModalOpen}
+        onOpenChange={setReviewModalOpen}
+        onReviewSubmitted={loadSiteReviews}
+      />
     </div>
   )
 }
