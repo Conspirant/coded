@@ -2,6 +2,95 @@ import { BlogPost } from "@/types/blog";
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    id: "kcet-round-2-seat-allotment-guide-2026",
+    slug: "kcet-round-2-seat-allotment-guide-2026",
+    title: "KCET Round 2 Counseling Guide: Seat Matrix Shifts, Option Deletion & Second Extended Penalty Risks",
+    description: "Crucial guide for KCET Round 2 and Second Extended (Mop-up) Round. Learn how cutoffs shift, why Second Extended allotment is 100% mandatory to join, and how to avoid penalty fees.",
+    category: "Counseling",
+    publishedAt: "2026-08-07",
+    readTime: "9 min read",
+    featured: true,
+    author: {
+      name: "KCET Coded Editorial",
+      role: "Counseling & Admissions Team",
+      avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=kcet-editor"
+    },
+    tags: ["Round 2 Counseling", "KEA Rules", "Second Extended Round", "Choice Entry", "Penalty Warning"],
+    content: `
+As KCET Round 1 concludes, candidates transition into **Round 2** and the final **Second Extended Round (Mop-up Round)**. 
+
+While Round 1 is relatively low-risk, Round 2 and Second Extended Round carry **strict legal and financial rules**. A minor oversight—such as leaving an unwanted college in your option list—can force you to pay heavy financial penalties or accept a seat you never intended to take.
+
+Here is everything you MUST know before Round 2 begins.
+
+---
+
+### 1. What Changes in Round 2? (Seat Matrix & Cutoff Shifts)
+
+#### Where Do Round 2 Seats Come From?
+Round 2 seats are generated from three sources:
+1. **Surrendered Seats**: Seats rejected by Choice 3 and Choice 4 candidates from Round 1.
+2. **Upgraded Seats**: Seats vacated by Choice 2 candidates who get upgraded to higher choices.
+3. **Newly Added Seats**: Additional seats approved by KEA or government colleges before Round 2.
+
+#### How Much Do Round 2 Cutoffs Shift?
+- **Computer Science & Allied Branches (CSE/ISE/AIML)**: Cutoffs generally relax by **3% to 10%**. High demand means top Bangalore colleges (RVCE, BMSCE, MSRIT) see smaller cutoff shifts.
+- **Circuit & Core Branches (ECE/EEE/Mech/Civil)**: Cutoffs can relax by **15% to 30%**, creating great upgrade opportunities for Choice 2 holders!
+
+---
+
+### 2. The Golden Rule of Round 2 Option Editing
+
+> **CRITICAL RULE**: You CANNOT add fresh new college options in Round 2! You can ONLY re-order or delete options above your Round 1 held seat.
+
+#### What You MUST Do Before Round 2 Option Window Closes:
+1. **Review Options Above Your Seat**: Look at every option listed ABOVE your Round 1 held seat. If there is ANY college/branch listed that you now realize you like LESS than your Round 1 held seat, **delete it immediately**!
+2. **Why Deleting Unwanted Options is Mandatory**: If KEA's computer algorithm finds a seat for you in ANY option listed above your held seat in Round 2, your Round 1 seat is **automatically cancelled and given to someone else**. You cannot get it back!
+
+---
+
+### 3. Round 2 vs Second Extended Round (The Penalty Warning!)
+
+Understanding the difference between **Round 2** and **Second Extended Round** is crucial:
+
+| Feature | Round 2 | Second Extended Round (Final Round) |
+| :--- | :--- | :--- |
+| **Choice Selection (Choice 1/2/3/4)** | YES (Choice 1, 2, 3, 4 available) | **NO! No choices available** |
+| **Joining Status** | Can hold or reject via Choice 2/3 | **100% MANDATORY to join** |
+| **Fee Forfeiture Penalty** | Standard forfeiture rules | **Full Fee Forfeiture + 5x Penalty** |
+
+#### ⚠️ The Second Extended Round Trap
+In the **Second Extended Round**, there is **NO Choice 1, Choice 2, or Choice 3**. 
+- Whatever seat the computer allot to you in Second Extended Round is **FINAL AND COMPULSORY**.
+- If you get allotted a seat in Second Extended Round and refuse to join the college, KEA rules mandate **forfeiture of the entire tuition fee** and potential legal/financial recovery under Karnataka Selection of Candidates for Admission Rules.
+- **Action Required**: Delete EVERY single college from your list before Second Extended Round except colleges you are 100% prepared to join physically!
+
+---
+
+### 4. Fee Payment & College Reporting Checklist
+
+If you get allotted a seat in Round 2 (or accept via Choice 1/Choice 2 upgrade):
+
+1. **Download Bank Challan / Pay Online**: Pay the tuition fee via KEA online portal or bank challan at designated bank branches.
+2. **Download KEA Admission Order**: Only generated after payment reconciliation is complete.
+3. **Physical College Reporting**: Visit the allotted college with original documents (**SSLC Marks Card, 2nd PUC Marks Card, 7-Year BEO Signed Study Certificate, Caste/Income Certificate, KEA Admission Order**).
+4. **Obtain College Acknowledgement Slip**: Ensure the college principal/admission office issues a signed admission receipt.
+
+---
+
+### Frequently Asked Questions (FAQs)
+
+#### Q1: What happens to my fee if I get upgraded to a different college in Round 2?
+If you selected Choice 2 in Round 1 and paid the fee, your fee automatically transfers to the newly allotted college in Round 2. If the new college fee is higher, you pay the difference online. If it is lower, KEA refunds the excess amount to your bank account.
+
+#### Q2: Can I participate in Second Extended Round if I took Choice 1 in Round 1?
+No. Candidates who select Choice 1 and join a college are completely removed from subsequent counseling rounds.
+
+#### Q3: How do I handle COMEDK vs KCET Round 2 dates?
+If you hold a COMEDK seat and get a KCET Round 2 seat, ensure you formally surrender your COMEDK seat within the official COMEDK surrender window to receive your fee refund!
+`
+  },
+  {
     id: "kcet-option-entry-strategy-2026",
     slug: "kcet-option-entry-strategy-2026",
     title: "The Ultimate KCET Option Entry Strategy: How to Structure 200+ Choices Safely",
@@ -9,7 +98,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Strategy",
     publishedAt: "2026-08-05",
     readTime: "9 min read",
-    featured: true,
+    featured: false,
     author: {
       name: "KCET Coded Editorial",
       role: "Counseling & Admissions Team",
