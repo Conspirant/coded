@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { SEO } from "@/components/SEO";
 import { getBlogPostBySlug, getRelatedBlogPosts } from "@/data/blogPosts";
 import { Card } from "@/components/ui/card";
@@ -220,6 +221,7 @@ export default function BlogPostDetail() {
         <div className="lg:col-span-3 space-y-8">
           <article className="text-foreground leading-relaxed">
             <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
               components={{
                 h2: ({ children }) => {
                   const text = String(children);
