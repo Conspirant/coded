@@ -56,8 +56,9 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     };
 
     const fetchShutdown = async () => {
-      const shutdown = await AdminSuggestionsService.isSiteShutdownGlobally();
-      setIsSiteShutdown(shutdown);
+      const config = await AdminSuggestionsService.getSiteShutdownConfig();
+      setShutdownConfig(config);
+      setIsSiteShutdown(config.shutdown);
     };
 
     const fetchTotalAmount = async () => {
@@ -144,8 +145,17 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
           filter: "appl_no=eq.CONFIG:site_shutdown",
         },
         (payload) => {
-          const shutdown = (payload.new as any)?.results_json?.shutdown === true;
-          setIsSiteShutdown(shutdown);
+          const raw = (payload.new as any)?.results_json || {};
+          const cfg = {
+            shutdown: raw.shutdown === true,
+            errorCode: raw.errorCode || "404",
+            title: raw.title || "Page Not Found",
+            message: raw.message || "The requested URL {path} does not exist or has been moved.",
+            buttonText: raw.buttonText || "Go Back",
+            showButton: raw.showButton !== false
+          };
+          setShutdownConfig(cfg);
+          setIsSiteShutdown(cfg.shutdown);
         }
       )
       .on(
@@ -157,8 +167,17 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
           filter: "appl_no=eq.CONFIG:site_shutdown",
         },
         (payload) => {
-          const shutdown = (payload.new as any)?.results_json?.shutdown === true;
-          setIsSiteShutdown(shutdown);
+          const raw = (payload.new as any)?.results_json || {};
+          const cfg = {
+            shutdown: raw.shutdown === true,
+            errorCode: raw.errorCode || "404",
+            title: raw.title || "Page Not Found",
+            message: raw.message || "The requested URL {path} does not exist or has been moved.",
+            buttonText: raw.buttonText || "Go Back",
+            showButton: raw.showButton !== false
+          };
+          setShutdownConfig(cfg);
+          setIsSiteShutdown(cfg.shutdown);
         }
       )
       .subscribe();
@@ -278,23 +297,31 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
           >
             <div className="max-w-md w-full text-center space-y-6 p-8 rounded-2xl border border-white/10 bg-slate-950/80 backdrop-blur-xl shadow-2xl">
               <div className="space-y-2">
-                <div className="text-6xl font-black font-mono tracking-tight text-white">404</div>
-                <h1 className="text-lg font-bold text-slate-100">Page Not Found</h1>
+                {shutdownConfig.errorCode && (
+                  <div className="text-6xl font-black font-mono tracking-tight text-white font-sans">
+                    {shutdownConfig.errorCode}
+                  </div>
+                )}
+                <h1 className="text-lg font-bold text-slate-100">
+                  {shutdownConfig.title || "Page Not Found"}
+                </h1>
               </div>
 
-              <p className="text-xs text-slate-400 leading-relaxed">
-                The requested URL <code className="text-slate-200 bg-white/5 px-1.5 py-0.5 rounded font-mono text-[11px]">{location.pathname}</code> does not exist or has been moved.
+              <p className="text-xs text-slate-400 leading-relaxed whitespace-pre-wrap">
+                {(shutdownConfig.message || "The requested URL {path} does not exist or has been moved.").replace("{path}", location.pathname)}
               </p>
 
-              <div className="pt-2">
-                <Button
-                  variant="outline"
-                  onClick={() => window.history.back()}
-                  className="text-xs text-slate-300 border-white/10 bg-white/5 hover:bg-white/10 hover:text-white rounded-xl h-9 px-5"
-                >
-                  Go Back
-                </Button>
-              </div>
+              {shutdownConfig.showButton !== false && (
+                <div className="pt-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => window.history.back()}
+                    className="text-xs text-slate-300 border-white/10 bg-white/5 hover:bg-white/10 hover:text-white rounded-xl h-9 px-5"
+                  >
+                    {shutdownConfig.buttonText || "Go Back"}
+                  </Button>
+                </div>
+              )}
             </div>
           </motion.div>
         ) : isMaintenance ? (

@@ -1523,6 +1523,15 @@ function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
     const [siteShutdown, setSiteShutdown] = useState(false)
+    const [shutdownConfig, setShutdownConfig] = useState<SiteShutdownConfig>({
+        shutdown: false,
+        errorCode: "404",
+        title: "Page Not Found",
+        message: "The requested URL {path} does not exist or has been moved.",
+        buttonText: "Go Back",
+        showButton: true
+    })
+    const [savingShutdownConfig, setSavingShutdownConfig] = useState(false)
     const [blockedPages, setBlockedPages] = useState<string[]>([])
     const [maintenancePages, setMaintenancePages] = useState<string[]>([])
     const [savingMaintenance, setSavingMaintenance] = useState(false)
@@ -1535,16 +1544,17 @@ function AdminSystemSettingsSection() {
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const [disabled, blocked, maintenance, shutdown] = await Promise.all([
+            const [disabled, blocked, maintenance, shutdownCfg] = await Promise.all([
                 AdminSuggestionsService.isPaywallDisabledGlobally(),
                 AdminSuggestionsService.getBlockedPages(),
                 AdminSuggestionsService.getMaintenancePages(),
-                AdminSuggestionsService.isSiteShutdownGlobally()
+                AdminSuggestionsService.getSiteShutdownConfig()
             ])
             setPaywallDisabled(disabled)
             setBlockedPages(blocked)
             setMaintenancePages(maintenance)
-            setSiteShutdown(shutdown)
+            setShutdownConfig(shutdownCfg)
+            setSiteShutdown(shutdownCfg.shutdown)
             setDonationButtonEnabled(localStorage.getItem('kcet_donation_button_enabled') === 'true')
         } catch (err: any) {
             toast({
@@ -1578,8 +1588,10 @@ function AdminSystemSettingsSection() {
 
     const handleToggleSiteShutdown = async (checked: boolean) => {
         setSiteShutdown(checked)
+        const updatedConfig = { ...shutdownConfig, shutdown: checked }
+        setShutdownConfig(updatedConfig)
         try {
-            const success = await AdminSuggestionsService.setSiteShutdownGlobally(checked)
+            const success = await AdminSuggestionsService.setSiteShutdownConfig(updatedConfig)
             if (success) {
                 toast({
                     title: checked ? "Website Completely Shut Down" : "Website Restored",
@@ -1593,11 +1605,35 @@ function AdminSystemSettingsSection() {
             }
         } catch (err: any) {
             setSiteShutdown(!checked)
+            setShutdownConfig({ ...shutdownConfig, shutdown: !checked })
             toast({
                 title: "Error updating site shutdown status",
                 description: err.message,
                 variant: "destructive"
             })
+        }
+    }
+
+    const handleSaveShutdownConfig = async () => {
+        try {
+            setSavingShutdownConfig(true)
+            const success = await AdminSuggestionsService.setSiteShutdownConfig(shutdownConfig)
+            if (success) {
+                toast({
+                    title: "Popup Content Saved",
+                    description: "Shutdown 404 popup title, message, and error code have been updated."
+                })
+            } else {
+                throw new Error("Database error saving popup content")
+            }
+        } catch (err: any) {
+            toast({
+                title: "Failed to save popup content",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setSavingShutdownConfig(false)
         }
     }
 
@@ -1706,7 +1742,7 @@ function AdminSystemSettingsSection() {
                                 )}
                             </CardTitle>
                             <CardDescription className="text-xs text-muted-foreground max-w-2xl">
-                                Completely shut down the entire website for all users (including Homepage & Dashboard). Every visitor will see a realistic 404 Not Found error screen with no mention of maintenance. <strong className="text-amber-400">Only the <code className="text-indigo-400">/admin</code> route remains accessible.</strong>
+                                Completely shut down the entire website for all users (including Homepage & Dashboard). Every visitor will see a custom error screen. <strong className="text-amber-400">Only the <code className="text-indigo-400">/admin</code> route remains accessible.</strong>
                             </CardDescription>
                         </div>
                         <div className="flex items-center gap-3 shrink-0">
@@ -1721,6 +1757,108 @@ function AdminSystemSettingsSection() {
                         </div>
                     </div>
                 </CardHeader>
+
+                <CardContent className="space-y-6 pt-0 border-t border-white/5 mt-4">
+                    <div className="pt-4 space-y-4">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                            <Edit3 className="h-3.5 w-3.5 text-indigo-400" /> Customize 404 Popup Content & Message
+                        </h4>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-3">
+                                <div className="grid grid-cols-3 gap-3">
+                                    <div className="col-span-1 space-y-1">
+                                        <Label className="text-xs text-muted-foreground">Error Code</Label>
+                                        <Input
+                                            value={shutdownConfig.errorCode || "404"}
+                                            onChange={e => setShutdownConfig({ ...shutdownConfig, errorCode: e.target.value })}
+                                            placeholder="404"
+                                            className="bg-white/5 border-white/10 text-xs font-mono"
+                                        />
+                                    </div>
+                                    <div className="col-span-2 space-y-1">
+                                        <Label className="text-xs text-muted-foreground">Headline Title</Label>
+                                        <Input
+                                            value={shutdownConfig.title || "Page Not Found"}
+                                            onChange={e => setShutdownConfig({ ...shutdownConfig, title: e.target.value })}
+                                            placeholder="Page Not Found"
+                                            className="bg-white/5 border-white/10 text-xs"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <Label className="text-xs text-muted-foreground flex justify-between">
+                                        <span>Message Body Text</span>
+                                        <span className="text-[10px] text-indigo-400 font-mono">Use {"{path}"} for route</span>
+                                    </Label>
+                                    <Textarea
+                                        value={shutdownConfig.message || "The requested URL {path} does not exist or has been moved."}
+                                        onChange={e => setShutdownConfig({ ...shutdownConfig, message: e.target.value })}
+                                        placeholder="The requested URL {path} does not exist or has been moved."
+                                        className="bg-white/5 border-white/10 text-xs min-h-[80px]"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3 items-center">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs text-muted-foreground">Button Text</Label>
+                                        <Input
+                                            value={shutdownConfig.buttonText || "Go Back"}
+                                            onChange={e => setShutdownConfig({ ...shutdownConfig, buttonText: e.target.value })}
+                                            placeholder="Go Back"
+                                            className="bg-white/5 border-white/10 text-xs"
+                                        />
+                                    </div>
+                                    <div className="flex items-center justify-between pt-4">
+                                        <Label className="text-xs text-muted-foreground">Show Button</Label>
+                                        <Switch
+                                            checked={shutdownConfig.showButton !== false}
+                                            onCheckedChange={checked => setShutdownConfig({ ...shutdownConfig, showButton: checked })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Live Mini Preview Box */}
+                            <div className="space-y-2">
+                                <Label className="text-xs text-muted-foreground flex items-center gap-1.5">
+                                    <Monitor className="h-3 w-3 text-slate-400" /> Live Popup Preview
+                                </Label>
+                                <div className="border border-white/10 bg-[#0a0d14] rounded-xl p-6 text-center space-y-4 shadow-inner min-h-[220px] flex flex-col justify-center items-center">
+                                    <div className="space-y-1">
+                                        {shutdownConfig.errorCode && (
+                                            <div className="text-4xl font-black font-mono tracking-tight text-white">
+                                                {shutdownConfig.errorCode}
+                                            </div>
+                                        )}
+                                        <h5 className="text-sm font-bold text-slate-100">
+                                            {shutdownConfig.title || "Page Not Found"}
+                                        </h5>
+                                    </div>
+                                    <p className="text-[11px] text-slate-400 leading-relaxed max-w-xs whitespace-pre-wrap">
+                                        {(shutdownConfig.message || "The requested URL {path} does not exist or has been moved.").replace("{path}", "/rank-predictor")}
+                                    </p>
+                                    {shutdownConfig.showButton !== false && (
+                                        <Button variant="outline" size="sm" className="text-[10px] text-slate-300 border-white/10 bg-white/5 h-7 px-3 rounded-lg pointer-events-none">
+                                            {shutdownConfig.buttonText || "Go Back"}
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end pt-2 border-t border-white/5">
+                            <Button
+                                onClick={handleSaveShutdownConfig}
+                                disabled={savingShutdownConfig}
+                                className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold text-xs h-9 px-4"
+                            >
+                                {savingShutdownConfig ? "Saving Content..." : "Save Popup Content & Config"}
+                            </Button>
+                        </div>
+                    </div>
+                </CardContent>
             </Card>
 
             {/* Live User Activity Card */}

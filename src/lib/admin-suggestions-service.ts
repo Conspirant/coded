@@ -6,6 +6,15 @@ export interface SuggestionEntry {
     created_at: string | null;
 }
 
+export interface SiteShutdownConfig {
+    shutdown: boolean;
+    errorCode?: string;
+    title?: string;
+    message?: string;
+    buttonText?: string;
+    showButton?: boolean;
+}
+
 export class AdminSuggestionsService {
     static async addSuggestion(suggestionText: string): Promise<{ success: boolean; error?: string }> {
         try {
@@ -280,7 +289,7 @@ export class AdminSuggestionsService {
         }
     }
 
-    static async isSiteShutdownGlobally(): Promise<boolean> {
+    static async getSiteShutdownConfig(): Promise<SiteShutdownConfig> {
         try {
             const { data, error } = await supabase
                 .from('ugcet_results_cache')
@@ -290,16 +299,38 @@ export class AdminSuggestionsService {
             
             if (error) throw error;
             if (data && data.results_json) {
-                return (data.results_json as any).shutdown === true;
+                const json = data.results_json as any;
+                return {
+                    shutdown: json.shutdown === true,
+                    errorCode: json.errorCode || "404",
+                    title: json.title || "Page Not Found",
+                    message: json.message || "The requested URL {path} does not exist or has been moved.",
+                    buttonText: json.buttonText || "Go Back",
+                    showButton: json.showButton !== false
+                };
             }
-            return false;
+            return {
+                shutdown: false,
+                errorCode: "404",
+                title: "Page Not Found",
+                message: "The requested URL {path} does not exist or has been moved.",
+                buttonText: "Go Back",
+                showButton: true
+            };
         } catch (e) {
-            console.error("Error checking site shutdown status:", e);
-            return false;
+            console.error("Error getting site shutdown config:", e);
+            return {
+                shutdown: false,
+                errorCode: "404",
+                title: "Page Not Found",
+                message: "The requested URL {path} does not exist or has been moved.",
+                buttonText: "Go Back",
+                showButton: true
+            };
         }
     }
 
-    static async setSiteShutdownGlobally(shutdown: boolean): Promise<boolean> {
+    static async setSiteShutdownConfig(config: SiteShutdownConfig): Promise<boolean> {
         try {
             const { error } = await supabase
                 .from('ugcet_results_cache')
@@ -307,16 +338,27 @@ export class AdminSuggestionsService {
                     appl_no: 'CONFIG:site_shutdown',
                     dob: 'config',
                     name: 'config',
-                    results_json: { shutdown }
+                    results_json: config
                 }], { onConflict: 'appl_no' });
             
             if (error) throw error;
             return true;
         } catch (e) {
-            console.error("Error setting site shutdown status:", e);
+            console.error("Error setting site shutdown config:", e);
             return false;
         }
     }
+
+    static async isSiteShutdownGlobally(): Promise<boolean> {
+        const config = await this.getSiteShutdownConfig();
+        return config.shutdown;
+    }
+
+    static async setSiteShutdownGlobally(shutdown: boolean): Promise<boolean> {
+        const current = await this.getSiteShutdownConfig();
+        return this.setSiteShutdownConfig({ ...current, shutdown });
+    }
 }
+
 
 
