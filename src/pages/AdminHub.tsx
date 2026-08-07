@@ -1522,7 +1522,8 @@ const BLOCKABLE_PAGES = [
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
-    const [blockedPages, setBlockedPages] = useState<string[]>([])
+    const [maintenancePages, setMaintenancePages] = useState<string[]>([])
+    const [savingMaintenance, setSavingMaintenance] = useState(false)
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [savingBlocks, setSavingBlocks] = useState(false)
@@ -1532,12 +1533,14 @@ function AdminSystemSettingsSection() {
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const [disabled, blocked] = await Promise.all([
+            const [disabled, blocked, maintenance] = await Promise.all([
                 AdminSuggestionsService.isPaywallDisabledGlobally(),
-                AdminSuggestionsService.getBlockedPages()
+                AdminSuggestionsService.getBlockedPages(),
+                AdminSuggestionsService.getMaintenancePages()
             ])
             setPaywallDisabled(disabled)
             setBlockedPages(blocked)
+            setMaintenancePages(maintenance)
             setDonationButtonEnabled(localStorage.getItem('kcet_donation_button_enabled') === 'true')
         } catch (err: any) {
             toast({
@@ -1572,10 +1575,13 @@ function AdminSystemSettingsSection() {
     const handleSaveBlockedPages = async () => {
         try {
             setSavingBlocks(true)
-            await AdminSuggestionsService.setBlockedPages(blockedPages)
+            await Promise.all([
+                AdminSuggestionsService.setBlockedPages(blockedPages),
+                AdminSuggestionsService.setMaintenancePages(maintenancePages)
+            ])
             toast({
                 title: "Settings Saved",
-                description: "Blocked pages configuration has been updated."
+                description: "Page access & maintenance configurations updated."
             })
         } catch (err: any) {
             toast({
@@ -1783,39 +1789,72 @@ function AdminSystemSettingsSection() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {BLOCKABLE_PAGES.map((page) => {
                                     const isPageBlocked = blockedPages.includes(page.path);
+                                    const isPageMaintenance = maintenancePages.includes(page.path);
                                     return (
                                         <div 
                                             key={page.path} 
-                                            className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
-                                                isPageBlocked 
+                                            className={`flex flex-col gap-2.5 p-3 rounded-xl border transition-all ${
+                                                isPageMaintenance
+                                                    ? "bg-amber-500/5 border-amber-500/30"
+                                                    : isPageBlocked 
                                                     ? "bg-rose-500/5 border-rose-500/20" 
                                                     : "bg-white/[0.02] border-white/5 hover:border-white/10"
                                             }`}
                                         >
-                                            <div className="space-y-0.5 pr-2 truncate">
-                                                <div className="text-xs font-semibold text-white flex items-center gap-2 truncate">
-                                                    <span className="truncate">{page.name}</span>
-                                                    {isPageBlocked && (
-                                                        <Badge variant="destructive" className="text-[8px] px-1 py-0 h-3.5 uppercase font-bold shrink-0">
-                                                            Blocked
-                                                        </Badge>
-                                                    )}
+                                            <div className="flex items-center justify-between">
+                                                <div className="space-y-0.5 pr-2 truncate">
+                                                    <div className="text-xs font-semibold text-white flex items-center gap-1.5 truncate">
+                                                        <span className="truncate">{page.name}</span>
+                                                        {isPageMaintenance && (
+                                                            <Badge className="bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[8px] px-1 py-0 h-3.5 uppercase font-bold shrink-0">
+                                                                Maintenance
+                                                            </Badge>
+                                                        )}
+                                                        {isPageBlocked && (
+                                                            <Badge variant="destructive" className="text-[8px] px-1 py-0 h-3.5 uppercase font-bold shrink-0">
+                                                                Paywall
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+                                                    <span className="text-[9px] text-muted-foreground font-mono block truncate">
+                                                        {page.path}
+                                                    </span>
                                                 </div>
-                                                <span className="text-[9px] text-muted-foreground font-mono block truncate">
-                                                    {page.path}
-                                                </span>
                                             </div>
-                                            <Switch
-                                                className="data-[state=checked]:bg-rose-500 shrink-0"
-                                                checked={isPageBlocked}
-                                                onCheckedChange={(checked) => {
-                                                    if (checked) {
-                                                        setBlockedPages(prev => [...prev, page.path]);
-                                                    } else {
-                                                        setBlockedPages(prev => prev.filter(p => p !== page.path));
-                                                    }
-                                                }}
-                                            />
+
+                                            <div className="flex items-center justify-between pt-1 border-t border-white/5 text-[10px]">
+                                                {/* Paywall Toggle */}
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-muted-foreground">Paywall:</span>
+                                                    <Switch
+                                                        className="data-[state=checked]:bg-rose-500 scale-75"
+                                                        checked={isPageBlocked}
+                                                        onCheckedChange={(checked) => {
+                                                            if (checked) {
+                                                                setBlockedPages(prev => [...prev, page.path]);
+                                                            } else {
+                                                                setBlockedPages(prev => prev.filter(p => p !== page.path));
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                {/* Maintenance Toggle */}
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="text-amber-400 font-medium">Maintenance:</span>
+                                                    <Switch
+                                                        className="data-[state=checked]:bg-amber-500 scale-75"
+                                                        checked={isPageMaintenance}
+                                                        onCheckedChange={(checked) => {
+                                                            if (checked) {
+                                                                setMaintenancePages(prev => [...prev, page.path]);
+                                                            } else {
+                                                                setMaintenancePages(prev => prev.filter(p => p !== page.path));
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     );
                                 })}

@@ -3,20 +3,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldAlert, Home, ArrowLeft, Crown, Key, Loader2, Check, Lock, ExternalLink } from "lucide-react";
+import { ShieldAlert, Home, ArrowLeft, Crown, Key, Loader2, Check, Lock, ExternalLink, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { isUnlocked, subscribeToUnlockState, initiatePremiumPayment, verifyAndUnlockAccessKey } from "@/lib/unlock";
 
 interface PresenceAndBlockContextValue {
   blockedPages: string[];
+  maintenancePages: string[];
   isBlocked: boolean;
+  isMaintenance: boolean;
 }
 
 const PresenceAndBlockContext = createContext<PresenceAndBlockContextValue | undefined>(undefined);
 
 export function PresenceAndBlockProvider({ children }: { children: React.ReactNode }) {
   const [blockedPages, setBlockedPages] = useState<string[]>([]);
+  const [maintenancePages, setMaintenancePages] = useState<string[]>([]);
   const [unlocked, setUnlocked] = useState(isUnlocked());
   const [amount, setAmount] = useState<number>(19);
   const [totalAmount, setTotalAmount] = useState<number>(78);
@@ -45,6 +48,11 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
       setBlockedPages(paths);
     };
 
+    const fetchMaintenance = async () => {
+      const paths = await AdminSuggestionsService.getMaintenancePages();
+      setMaintenancePages(paths);
+    };
+
     const fetchTotalAmount = async () => {
       try {
         const { data, error } = await supabase
@@ -62,6 +70,7 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     };
 
     fetchBlocked();
+    fetchMaintenance();
     fetchTotalAmount();
 
     const dbChannel = supabase
@@ -90,6 +99,32 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
         (payload) => {
           const paths = (payload.new as any)?.results_json?.blockedPaths || [];
           setBlockedPages(paths);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:maintenance_pages",
+        },
+        (payload) => {
+          const paths = (payload.new as any)?.results_json?.maintenancePaths || [];
+          setMaintenancePages(paths);
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:maintenance_pages",
+        },
+        (payload) => {
+          const paths = (payload.new as any)?.results_json?.maintenancePaths || [];
+          setMaintenancePages(paths);
         }
       )
       .subscribe();
@@ -190,13 +225,74 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     ? currentPath.slice(0, -1) 
     : currentPath;
 
-  // Admin page should never be blocked, home page shouldn't either. Also bypassed if already unlocked.
+  // Admin page should never be blocked, home page shouldn't either. Also bypassed if already unlocked for paywall.
+  const isMaintenance = maintenancePages.includes(normalizedPath) && normalizedPath !== "/admin" && normalizedPath !== "/";
   const isBlocked = blockedPages.includes(normalizedPath) && normalizedPath !== "/admin" && normalizedPath !== "/" && !unlocked;
 
   return (
-    <PresenceAndBlockContext.Provider value={{ blockedPages, isBlocked }}>
+    <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isBlocked, isMaintenance }}>
       <AnimatePresence mode="wait">
-        {isBlocked ? (
+        {isMaintenance ? (
+          <motion.div
+            key="maintenance-screen"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-4 bg-slate-950/95 backdrop-blur-md text-white overflow-hidden"
+          >
+            {/* Ambient background glows */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-violet-500/10 blur-[100px] rounded-full pointer-events-none" />
+
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="max-w-md w-full text-center space-y-5 p-6 rounded-3xl border border-white/10 bg-slate-950/90 backdrop-blur-2xl shadow-2xl relative"
+            >
+              <div className="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <Wrench className="h-7 w-7 text-amber-400 animate-pulse" />
+              </div>
+
+              <div className="space-y-1">
+                <h2 className="text-xl font-bold text-white tracking-tight">
+                  Tool Under Maintenance
+                </h2>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-amber-400">
+                  ROUTINE DATA UPDATE IN PROGRESS
+                </p>
+              </div>
+
+              <div className="border border-white/5 bg-white/[0.02] p-4 rounded-2xl text-xs text-muted-foreground leading-relaxed space-y-2 text-left">
+                <p>
+                  We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool.
+                </p>
+                {unlocked && (
+                  <p className="text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl text-[11px]">
+                    ✓ Paid User Status: Active & Protected. Your unlocked access remains 100% saved and will automatically resume once maintenance completes!
+                  </p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/")}
+                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                >
+                  <Home className="h-3.5 w-3.5 mr-1.5" /> Homepage
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate("/dashboard")}
+                  className="w-full text-slate-300 hover:text-white hover:bg-white/5 text-xs h-9 rounded-xl border border-white/10"
+                >
+                  Dashboard
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : isBlocked ? (
           <motion.div
             key="blocked-screen"
             initial={{ opacity: 0 }}

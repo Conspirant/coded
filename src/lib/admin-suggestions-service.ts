@@ -223,21 +223,40 @@ export class AdminSuggestionsService {
         }
     }
 
-    static async setBlockedPages(blockedPaths: string[]): Promise<boolean> {
+    static async getMaintenancePages(): Promise<string[]> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:maintenance_pages')
+                .maybeSingle();
+            
+            if (error) throw error;
+            if (data && data.results_json) {
+                return (data.results_json as any).maintenancePaths || [];
+            }
+            return [];
+        } catch (e) {
+            console.error("Error getting maintenance pages:", e);
+            return [];
+        }
+    }
+
+    static async setMaintenancePages(maintenancePaths: string[]): Promise<boolean> {
         try {
             const { error } = await supabase
                 .from('ugcet_results_cache')
                 .upsert([{
-                    appl_no: 'CONFIG:blocked_pages',
+                    appl_no: 'CONFIG:maintenance_pages',
                     dob: 'config',
                     name: 'config',
-                    results_json: { blockedPaths }
+                    results_json: { maintenancePaths }
                 }], { onConflict: 'appl_no' });
             
             if (error) throw error;
             return true;
         } catch (e) {
-            console.error("Error setting blocked pages:", e);
+            console.error("Error setting maintenance pages:", e);
             return false;
         }
     }
