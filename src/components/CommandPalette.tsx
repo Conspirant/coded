@@ -56,6 +56,7 @@ const COMMANDS: CommandItem[] = [
     { id: "mock-simulator", title: "Mock Simulator", description: "Simulate seat allotment", icon: Shuffle, href: "/mock-simulator", keywords: ["mock", "simulate", "allotment", "seat"], category: "tools" },
     { id: "round-tracker", title: "Round Tracker", description: "Counseling round dates", icon: Bell, href: "/round-tracker", keywords: ["round", "track", "counseling", "dates"], category: "tools" },
     { id: "documents", title: "Documents Guide", description: "Required documents checklist", icon: FileText, href: "/documents", keywords: ["documents", "checklist", "guide"], category: "tools" },
+    { id: "blog", title: "Blog & Guides", description: "Counseling guides, Option Entry blueprints, and comparisons", icon: Book, href: "/blog", keywords: ["blog", "article", "guide", "counseling", "option entry", "choice 1 choice 2", "vtu autonomous"], category: "tools" },
     { id: "cet-news", title: "CET News", description: "Official CET updates and notices", icon: Newspaper, href: "/cet-news", keywords: ["cet", "news", "update", "press note", "kea"], category: "tools" },
     { id: "reviews", title: "College Reviews", description: "Student reviews", icon: Star, href: "/reviews", keywords: ["reviews", "feedback", "students"], category: "tools" },
     { id: "info-centre", title: "Info Centre", description: "KCET information hub", icon: Info, href: "/info-centre", keywords: ["info", "information", "centre", "hub"], category: "tools" },

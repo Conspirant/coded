@@ -36,6 +36,8 @@ import NotFound from "./pages/NotFound";
 import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
 import CETNews from "./pages/CETNews";
+import BlogList from "./pages/BlogList";
+import BlogPostDetail from "./pages/BlogPostDetail";
 import CollegeDetail from "./pages/CollegeDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
@@ -123,6 +125,8 @@ const App = () => (
               <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
               <Route path="/materials" element={<Layout><Materials /></Layout>} />
               <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
+              <Route path="/blog" element={<Layout><BlogList /></Layout>} />
+              <Route path="/blog/:slug" element={<Layout><BlogPostDetail /></Layout>} />
               <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
               <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
               <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />

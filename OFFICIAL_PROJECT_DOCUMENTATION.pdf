@@ -1,0 +1,4245 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R 19 0 R 21 0 R 23 0 R 25 0 R 27 0 R 29 0 R 31 0 R 33 0 R 35 0 R 37 0 R] /Count 17 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 4625 >>
+stream
+BT
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 800 Td
+(KCETCoded) Tj
+-50 -20 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 780 Td
+(Official Project Documentation) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(Document classification: Internal / Company operational reference) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(System: KCETCoded \(kcet-compass\)) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(Baseline inspected: 6 August 2026) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(Status: Code-grounded implementation documentation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(Review requirement: Review before any production release or changes to data, payments, database policies,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(APIs, privacy practice, or third-party integrations.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 644 Td
+(Document purpose) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 628 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 616 Td
+(This is the single consolidated technical and operational description of KCETCoded as implemented in this) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 604 Td
+(repository. It is written for company use: engineering, operations, product review, security review, data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 592 Td
+(maintenance, handover, and due diligence.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 580 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 568 Td
+(It intentionally distinguishes implemented capabilities from assumptions and records operational) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 556 Td
+(limitations. It is not a promotional document, a claim of admission accuracy, a legal opinion, a privacy) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+(certification, or a statement of affiliation with any external organisation.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+(KCETCoded is an independent product. It is not operated by, affiliated with, or an official service of) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+(KEA, COMEDK, any educational institution, Razorpay, Supabase, Vercel, NVIDIA, or any government) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+(authority. Users must verify consequential admissions decisions with the relevant current official) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(notices and documents.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 460 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 448 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 436 Td
+(Contents) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+(1. Product summary and scope) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+(2. Architecture and runtime model) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+(3. Technology stack) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+(4. Complete active route catalogue) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+(5. Feature and page inventory) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+(6. Repository and code structure) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+(7. Core business logic and browser state) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+(8. Static data, sources, and data pipeline) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(9. Database and Supabase integration) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+(10. Serverless API reference) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+(11. Payments, donors, and access-code flow) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+(12. AI and external-service integrations) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+(13. Configuration and environment variables) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 252 Td
+(14. Hosting, headers, PWA, SEO, and analytics) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 240 Td
+(15. Security, privacy, and governance assessment) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 228 Td
+(16. Development, testing, and quality assurance) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 216 Td
+(17. Release, data-refresh, and rollback procedures) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(1) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 5194 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(18. Incident response) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(19. Known limitations and required remediation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(20. Ownership and change management) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 728 Td
+(1. Product summary and scope) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 708 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 696 Td
+(1.1 What the system is) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+(KCETCoded is a React-based web application intended to help KCET and COMEDK applicants research) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(counselling outcomes and prepare for counselling. It combines historical cutoff data, rank and round) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(estimates, college discovery, planning tools, resource pages, community contribution flows,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+(previous-year-question practice, payments/donations, and selected AI-assisted user experiences.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(The product is primarily browser-led. Core static data is delivered from the site itself. Supabase) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(provides shared storage for selected features, and Vercel functions provide server-side integrations) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(where secrets or edge rendering are involved.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 560 Td
+(1.2 Product domains) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+(Domain | Implemented purpose | Important limitation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+(Admission intelligence | KCET/COMEDK rank estimates, cutoffs, trends, round estimates, college matching) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+(and simulation | Estimates and historical data are not official outcomes or guarantees) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+(College research | College pages, comparison, reviews, placement/ROI-related data and suggestions |) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(Source completeness and community content need ongoing validation/moderation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+(Counselling support | Documents, round tracking, mock verification, materials and information pages |) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 460 Td
+(Informational only; does not replace the authority process) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 448 Td
+(Practice and engagement | PYQ tests, daily challenge, Cutoff Clash, Squad Finder and mapping tools |) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 436 Td
+(Coverage and content quality vary by feature/data set) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 424 Td
+(Community | Reviews, comments, reports, suggestions, polls and feedback | Public write policies must be) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 412 Td
+(audited and hardened) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 400 Td
+(Payments / access | Razorpay order and verification flow, donor records and access codes | Browser unlock) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 388 Td
+(logic is not strong authorization) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 376 Td
+(AI assistance | AI counsellor and AI-assisted college listing | External model reliability, cost and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 364 Td
+(output safety require controls) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 352 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 340 Td
+(1.3 Product modes) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(src/contexts/ExamModeContext.tsx controls the global KCET/COMEDK mode. The selection is persisted in) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+(browser local storage under kcet.exam-mode.v1. The selected mode changes the behaviour of shared) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+(rank-predictor and cutoff-explorer routes and related navigation language. A dedicated COMEDK explorer) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+(route also exists.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 252 Td
+(1.4 What the system must not claim) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 236 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 224 Td
+(- It must not claim to be an official counselling portal or official source of results.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 212 Td
+(- It must not claim predicted rank, allotment, cutoff or college chance as certain.) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(2) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 4630 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(- It must not claim that cached/parsing-assisted results are authoritative.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(- It must not describe browser-stored access status or a client-visible admin passphrase as secure) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(authentication.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(- It must not claim data accuracy without a documented source and release validation record.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 716 Td
+(2. Architecture and runtime model) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 696 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 684 Td
+(2.1 Logical architecture) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(flowchart LR) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+(U[Applicant browser] --> SPA[React SPA / Vite bundle]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+(SPA --> D[Static data and assets in public/]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(SPA --> SB[Supabase PostgreSQL]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(SPA --> VF[Vercel functions]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(VF --> RP[Razorpay API]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+(VF --> NV[NVIDIA chat API]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 560 Td
+(VF --> KR[KEA result endpoint]) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 548 Td
+(VF --> SB) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 536 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 524 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 512 Td
+(2.2 Runtime characteristics) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(Layer | Implementation | Responsibility) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+(Presentation | React 18 components/pages | UI, client calculations, navigation and browser interactions) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 460 Td
+(Routing | React Router DOM | SPA route selection and fallback page) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 448 Td
+(Styling | Tailwind CSS, Radix UI primitives, local CSS | Responsive UI and accessible building blocks) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 436 Td
+(Static data | `public/data/`, public PDFs/XLSX assets | High-volume cutoff and supporting data delivery) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 424 Td
+(Shared data | Supabase via `@supabase/supabase-js` | Community, practice, donor/access, suggestions and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 412 Td
+(selected cache records) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 400 Td
+(Server logic | Vercel functions in `api/` | Payments, AI, result lookups, social metadata/image) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 388 Td
+(generation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 376 Td
+(Build/deploy | Vite and Vercel | Client bundle build, route rewrite and function deployment) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 364 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 352 Td
+(2.3 Application bootstrapping and state) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+(src/main.tsx mounts the React application. src/App.tsx defines routes and composes top-level providers.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(Shared state is mixed by design:) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+(- React context: exam mode and presence/block-related state.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+(- Lightweight custom store: predictor-related shared state in src/store/predictorStore.ts.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+(- Browser local/session storage: settings, exam mode, selected preferences, some progress and unlock) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 252 Td
+(state.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 240 Td
+(- React Query: available for asynchronous client queries.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 228 Td
+(- Supabase: selected shared persistent records.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 216 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(3) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 4694 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(There is no single universal state-management system. Feature maintainers must identify the actual) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(storage/authority for each item before changing it.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 764 Td
+(2.4 Application shell) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 748 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 736 Td
+(Layout.tsx, AppSidebar.tsx, Navbar.tsx, MobileNav.tsx, and CommandPalette.tsx form the principal) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 724 Td
+(application shell. Layout-wrapped pages share this navigation experience. Homepage, daily challenge,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 712 Td
+(Cutoff Clash, Squad Finder, metro/BMTC mappers, Hidden Gems, and the admin hub intentionally render as) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 700 Td
+(standalone pages.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 688 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 676 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 664 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 652 Td
+(3. Technology stack) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+(Category | Technology present in the repository) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(Language | TypeScript, JavaScript, SQL, Python) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(Frontend | React 18, React DOM, React Router DOM) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(Build | Vite 5, SWC React plugin, TypeScript) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+(UI | Tailwind CSS, Radix UI, Lucide, Framer Motion, Sonner, cmdk) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 560 Td
+(Forms / validation | React Hook Form, Zod, Hook Form resolvers) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 548 Td
+(Data / charts | TanStack React Query, Recharts, XLSX, PDF.js) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 536 Td
+(Backend | Vercel Node/Edge functions) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 524 Td
+(Database | Supabase PostgreSQL and generated client types) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 512 Td
+(Payments | Razorpay) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 500 Td
+(AI | NVIDIA chat-completions API; OpenRouter-referencing client module) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 488 Td
+(Analytics | Vercel Analytics) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 476 Td
+(Testing | Vitest, Testing Library, JSDOM) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 464 Td
+(Extraction tooling | Node scripts, Python scripts, PDF/XLSX/OCR support packages) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 452 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 440 Td
+(The exact package versions are controlled by package.json and package-lock.json. Do not treat this table) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 428 Td
+(as a substitute for dependency vulnerability management.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 416 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 404 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 380 Td
+(4. Complete active route catalogue) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+(The following routes are declared in src/App.tsx at the baseline date. A  Shell  route uses Layout; a) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+( Standalone  route does not.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(Path | Component / behaviour | Form) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+(`/` | `Homepage` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+(`/daily-challenge` | `DailyChallenge` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+(`/cutoff-clash` | `CutoffClash` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+(`/dashboard` | `Dashboard` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 252 Td
+(`/rank-predictor` | Mode-aware KCET or COMEDK rank predictor | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 240 Td
+(`/cutoff-explorer` | Mode-aware KCET or COMEDK cutoff explorer | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 228 Td
+(`/comedk-explorer` | `ComedkExplorer` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 216 Td
+(`/college-predictor` | `CollegePredictor` | Shell) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(4) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 4689 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(`/college-finder` | Redirects to `/college-predictor` | Redirect) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(`/cutoff-trends` | `CutoffTrends` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(`/cutoff-predictor` | `RoundPredictor` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(`/round-predictor` | `RoundPredictor` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(`/mock-simulator` | `MockSimulator` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(`/round-tracker` | `RoundTracker` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(`/college-compare` | `CollegeCompare` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(`/documents` | `Documents` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(`/document-verification` | `MockVerification` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(`/reviews` | `Reviews` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+(`/reviews/:collegeCode` | `CollegeReviewPage` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+(`/colleges` | `CollegeInfoHub` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(`/college-list` | `CollegeInfoHub` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(`/college-cutoffs` | `CollegeCutoffs` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+(`/info-centre` | `InfoCentre` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+(`/materials` | `Materials` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(`/cet-news` | `CETNews` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(`/ai-counselor` | `AICounselor` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(`/college/:collegeCode` | `CollegeDetail` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+(`/privacy` | `PrivacyPolicy` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 560 Td
+(`/terms` | `Terms` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 548 Td
+(`/payment-policy` | `PaymentPolicy` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 536 Td
+(`/about` | `About` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 524 Td
+(`/request-feature` | `FeatureRequest` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 512 Td
+(`/pyq-test` | `PYQTest` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 500 Td
+(`/donate` | `Donate` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 488 Td
+(`/supporters` | `Supporters` | Shell) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 476 Td
+(`/squad-finder` | `SquadFinder` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 464 Td
+(`/metro-mapper` | `MetroMapper` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 452 Td
+(`/bmtc-mapper` | `BmtcMapper` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 440 Td
+(`/hidden-gems` | `HiddenGems` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 428 Td
+(`/admin` | `AdminHub` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 416 Td
+(`*` | `NotFound` | Standalone) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 404 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+(Route-level files may exist without an active route declaration, including Analytics.tsx,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 380 Td
+(FeeCalculator.tsx, Planner.tsx, and XLSXDemo.tsx. Presence in the source tree must not be described as an) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 368 Td
+(active public feature without verifying the route and navigation wiring.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 356 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 344 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 332 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 320 Td
+(5. Feature and page inventory) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 288 Td
+(5.1 Admission and college intelligence) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 272 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 260 Td
+(Feature | Principal modules | Function) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 248 Td
+(Rank prediction | `RankPredictor`, `ComedkRankPredictor`, `rank-predictor.ts`, `comedk-rank-predictor.ts`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 236 Td
+(| Produces estimated rank ranges from relevant input data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 224 Td
+(Cutoff exploration | `CutoffExplorer`, `ComedkExplorer`, `cutoff-service.ts` | Filters and displays) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(5) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 5256 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(historical cutoff records) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(College prediction | `CollegePredictor`, cutoff/college services | Identifies potential college-course) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(choices using rank/category criteria) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(College cutoffs/details | `CollegeCutoffs`, `CollegeDetail`, `CollegeInfoHub` | College-first views and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(contextual information) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(College comparison | `CollegeCompare` | Comparison of selected colleges and course data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(Trend and round tools | `CutoffTrends`, `RoundPredictor`, `round-drift-predictor.ts`,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(`cutoff-predictor.ts` | Historical movement and future-round estimation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(Mock simulator | `MockSimulator`, `mock-simulator.ts` | Preference/allotment-style simulation based on) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(available data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 668 Td
+(5.2 Counselling and informational surfaces) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 652 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 640 Td
+(Documents, RoundTracker, MockVerification, InfoCentre, Materials, CETNews, About, PrivacyPolicy, Terms,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 628 Td
+(and PaymentPolicy present guidance, policy or information. These pages must remain aligned with actual) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 616 Td
+(data handling and payment processes. In particular, document-verification and result-related experiences) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 604 Td
+(must be clearly labelled as non-official assistance.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 592 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 580 Td
+(5.3 Community and engagement surfaces) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 564 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 552 Td
+(Reviews, college-specific review pages, community discussion components, feature requests, polls,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 540 Td
+(suggestions, Daily Challenge, PYQ Test, Cutoff Clash, Squad Finder, support/donation pages, and the) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 528 Td
+(supporter view create user input or engagement. Content involving reviews, comments, suggestions, actual) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 516 Td
+(ranks, donors, and results requires abuse prevention, ownership rules, moderation, retention, and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+(deletion procedures.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 480 Td
+(5.4 Transport, discovery, and specialist utilities) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 464 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 452 Td
+(MetroMapper, BmtcMapper, and HiddenGems use local data/services to support practical college research.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 440 Td
+(Their outputs are convenience features and must not be treated as live transport or institution) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 428 Td
+(guarantees without documented data refreshes.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 416 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 404 Td
+(5.5 Administrative tooling) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 388 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 376 Td
+(AdminHub and related components support PYQ management, access-code handling, college suggestions,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 364 Td
+(college editing, review/report work, feedback, actual-rank-related material and AI extraction support.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 352 Td
+(The current gate is browser-side and is not enterprise administration. Administrative mutations require) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 340 Td
+(server-side identity, role checks, audited actions, and restrictive database policies before the area can) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 328 Td
+(be treated as secure.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 316 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 304 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 292 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 280 Td
+(6. Repository and code structure) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 260 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 248 Td
+(Path | Responsibility) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 236 Td
+(`src/pages/` | Route-level product pages) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 224 Td
+(`src/components/` | Reusable UI, widgets, analytic visuals, community and admin components) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 212 Td
+(`src/contexts/` | Cross-cutting providers such as exam mode and presence state) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(6) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 14 0 R >>
+endobj
+16 0 obj
+<< /Length 5180 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(`src/data/` | Embedded question-bank and college data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(`src/lib/` | Business logic, predictors, parsers, loaders, services and security helpers) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(`src/store/` | Lightweight shared predictor state) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(`src/integrations/supabase/` | Supabase client and generated database types) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(`api/` | Vercel serverless and edge endpoints) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(`public/` | PWA/SEO assets, static data, PDFs and downloadable resources) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(`scripts/` | Data extraction, merge, validation, news and asset-generation tools) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(`supabase/` | Database bootstrap schema, migrations and configuration) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(`reports/` | Data audit and validation outputs) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(root PDFs/XLSX/JSON/debug files | Source material, raw extracts, backups and working artifacts) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+(The repository currently mixes product source, delivered artifacts, raw documents, generated outputs and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(investigation/debug material. This assists research provenance but makes the authoritative artifact set) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(harder to identify. A formal data manifest and archive policy are required.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 596 Td
+(7. Core business logic and browser state) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 576 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 564 Td
+(7.1 Main logic modules) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 548 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 536 Td
+(Module group | Key files | Responsibility) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 524 Td
+(Rank and cutoff modelling | `rank-predictor.ts`, `comedk-rank-predictor.ts`, `cutoff-predictor.ts`,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 512 Td
+(`round-drift-predictor.ts` | Estimate ranks and trend/round outcomes) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 500 Td
+(Allocation simulation | `mock-simulator.ts` | Model preference and allotment-related scenarios) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 488 Td
+(College data | `college-service.ts`, `collegeRoi.ts`, `college-placements.ts`, `courses.ts` | College) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 476 Td
+(profiles, review integration, economics/placement-support data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 464 Td
+(Cutoff data | `cutoff-service.ts`, course-normalisation modules | Load, filter and normalise cutoff) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 452 Td
+(material) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 440 Td
+(Source traceability | `pdf-parser.ts`, `pdf-url-mapper.ts`, `pdf-config.ts`, `xlsx-loader.ts` |) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 428 Td
+(Read/expose source document and spreadsheet context) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 416 Td
+(Community | `feature-request-service.ts`, `poll-service.ts`, `popup-service.ts`, `actual-rank-service.ts`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 404 Td
+(| Community/feedback shared records) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+(Access | `unlock.ts`, `settings.ts`, `security.ts` | Access UI, settings, client utility behaviour) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 380 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 368 Td
+(7.2 Browser storage) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 352 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 340 Td
+(Browser state is used for selected settings, mode, local user experience, progress and unlock/access-code) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 328 Td
+(storage. Browser storage must be assumed editable by users and must never be an authorization authority.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 316 Td
+(It is suitable for preferences and convenience; it is not suitable for access enforcement, admin) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 304 Td
+(authentication, confidential data, payment evidence, or definitive user identity.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 292 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 280 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 256 Td
+(8. Static data, sources, and data pipeline) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 236 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 224 Td
+(8.1 Delivered data) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 208 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(7) Tj
+ET
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 16 0 R >>
+endobj
+18 0 obj
+<< /Length 5313 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(public/data/ contains high-volume KCET and COMEDK cutoff artifacts, additional cutoff variants, course) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(mappings, source-PDF indexes, raw extraction text/tables and news artifacts. Multiple formats coexist:) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(JSON, DAT, CSV, XLSX and PDF. Additional raw source PDFs/XLSX are also stored at repository root and in) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(topic-specific folders.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(The static artifacts are a key runtime source for cutoff features. The database is not the sole source of) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(truth for browsing them. The currently live artifact must be identified by a release manifest, not) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(inferred from any older README count or similarly named file.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 692 Td
+(8.2 Script categories) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 676 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 664 Td
+(Category | Typical script names | Purpose) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 652 Td
+(Extraction | `extract-*`, `parse-*` | Extract source PDF, XLSX or HTML content) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 640 Td
+(Consolidation | `merge-*`, `clean-*`, `create-*-dataset` | Merge, normalise and construct usable data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 628 Td
+(sets) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 616 Td
+(Validation | `validate-*`, `verify-*`, `test-*`, `audit-*` | Check extraction quality and compare data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 604 Td
+(News | `fetch-*`, `refresh-news`, `news-webhook` | Collect and publish news artifacts) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 592 Td
+(Assets/indexes | `generate-*`, `split-data` | Build PWA/static support and data indexes) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 580 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 568 Td
+(Scripts are working utilities, not a single workflow orchestrator. Operators must record exact source) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 556 Td
+(input, command, parser version/commit, output artifact, validation results and reviewer for every) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+(release.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 520 Td
+(8.3 Mandatory data-release procedure) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+(1. Preserve the original official source with URL, authority, publication date, acquisition time and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 480 Td
+(checksum.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 468 Td
+(2. Use a dedicated branch and execute the relevant extraction/consolidation script.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 456 Td
+(3. Validate schema, years, rounds, category labels, ranks, duplicate keys and row counts.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+(4. Compare output with the preceding published data set and investigate material differences.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+(5. Spot-check records against primary PDFs/XLSX files across common and edge categories.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+(6. Run applicable repository validation/audit scripts.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+(7. Publish only the intended served artifact under public/data/ and keep a recoverable previous version.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+(8. Test the explorer/predictor locally with the updated artifact.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+(9. Obtain a second reviewer approval for consequential releases, deploy, and record release provenance.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 336 Td
+(9. Database and Supabase integration) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 316 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 304 Td
+(9.1 Integration pattern) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+(The browser initialises Supabase from src/integrations/supabase/client.ts. Selected Vercel functions) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+(initialise their own client. The client uses browser local storage for session persistence. The code) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 252 Td
+(includes fallback Supabase configuration; this makes deployment configuration less explicit and should be) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 240 Td
+(removed from server-sensitive paths.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 228 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 216 Td
+(9.2 Database record groups) Tj
+-50 -16 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(8) Tj
+ET
+endstream
+endobj
+19 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 18 0 R >>
+endobj
+20 0 obj
+<< /Length 5502 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(Group | Tables referenced in schema, migrations or application) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(Core admissions | `users`, `colleges`, `branches`, `cutoffs`, `seat_matrix`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(Community | `college_reviews`, `college_comments`, `review_reports`, `user_suggestions`,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(`college_suggestions`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(Predictions/practice | `rank_predictions`, `mock_simulations`, `actual_rank_submissions`, `pyq_questions`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(Operations | `admin_activities`, `notification_subscriptions`, `polls`, `popups`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(Results/engagement | `ugcet_results_cache`, `bring_it_back_votes`, `coping_hugs`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(Payments/access | `donors`, `access_codes`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+(supabase/schema.sql is a broad bootstrap schema. Timestamped migrations are the more reliable history for) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+(additions made later. Before changing a schema, review both the live project state and migrations; do not) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(assume the root schema exactly matches production.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 632 Td
+(9.3 Access-control requirement) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 616 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 604 Td
+(Supabase anon access is public configuration. RLS policies are the actual browser-data boundary. The root) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 592 Td
+(schema contains broad public mutation policies for a number of tables. This requires direct live-policy) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 580 Td
+(audit. Public clients must not have unrestricted write or delete access to donor records, access codes,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 568 Td
+(administrative activity, moderation outcomes, or any private result data.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 556 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+(Every database migration must include: table change, indexes where required, RLS state, explicit) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+(policies, role tests \(anonymous/authenticated/admin\), and generated-type update when types are relied on.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 484 Td
+(10. Serverless API reference) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 464 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 452 Td
+(Endpoint | Method | Purpose | Key dependencies and considerations) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 440 Td
+(`/api/ai-lister` | POST | Requests AI-assisted ranking/selection of candidate colleges | NVIDIA key;) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 428 Td
+(client body needs strict validation, rate limit and cost controls) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 416 Td
+(`/api/nvidia-chat` | POST | Streams NVIDIA chat-completion responses | NVIDIA key; accepts messages) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 404 Td
+(array; needs abuse controls and output safety treatment) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+(`/api/create-order` | POST | Creates Razorpay payment order | Razorpay ID/secret; validates integer paise) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 380 Td
+(and minimum amount) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 368 Td
+(`/api/verify-payment` | POST | Verifies Razorpay HMAC signature and may create donor/access records |) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 356 Td
+(Razorpay secret and Supabase; must use authoritative payment data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 344 Td
+(`/api/check-result` | POST | Fetches/parses configured KEA result page and uses a cache | External) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 332 Td
+(markup/service; sensitive data/retention risk) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 320 Td
+(`/api/share` | GET | Serves social metadata HTML and redirects | Query content must be escaped; redirect) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 308 Td
+(path must be constrained) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 296 Td
+(`/api/og` | GET | Generates OG image from title/subtitle query values | Edge runtime and `@vercel/og`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 284 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 272 Td
+(10.1 API rules) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(- Reject unsupported methods, malformed JSON and invalid schemas.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(- Enforce body-size limits and rate limits before expensive provider calls.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+(- Log request IDs and outcomes but never raw credentials, signatures, application numbers, full results) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(9) Tj
+ET
+endstream
+endobj
+21 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 20 0 R >>
+endobj
+22 0 obj
+<< /Length 5206 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(or payment data unnecessarily.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(- Return generic safe errors to the client and retain technical diagnostics in protected server logs.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(- Use server-side authorization for sensitive actions; do not depend on a UI flag.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(- Add contract tests for valid, invalid, provider-failure, rate-limit and unauthorized cases.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 716 Td
+(11. Payments, donors, and access-code flow) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 696 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 684 Td
+(11.1 Current flow) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(1. The client calls /api/create-order with an amount in paise.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(2. The server validates basic amount input and creates a Razorpay order using server credentials.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+(3. The browser opens Razorpay checkout using VITE_RAZORPAY_KEY_ID.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+(4. Checkout response is sent to /api/verify-payment.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(5. The function calculates/compares HMAC signature data using RAZORPAY_KEY_SECRET.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(6. On success, donor and access-code records may be created in Supabase and an access code is returned.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(7. unlock.ts saves access state/code in browser storage and updates local UI state.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 560 Td
+(11.2 Required integrity controls) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+(- Verify order, payment amount, currency and completion state from Razorpay server-side; do not persist a) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+(client-provided amount as authoritative.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+(- Use privileged Supabase credentials only in the server environment, never in a Vite client variable.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+(- Establish idempotency to prevent duplicated donor/access records on retries.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(- Protect donor/contact information with least-privilege policies and a retention policy.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+(- Enforce premium entitlement server-side whenever a feature or paid resource needs real protection.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 460 Td
+(- Reconcile payment provider records with donor/access records and have a defined refund/support process.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 448 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 436 Td
+(11.3 Current limitation) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+(The client s global unlock state and saved access code are user-interface mechanisms. Since browser) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+(storage can be altered, they are not secure access control. A client-visible admin passphrase is likewise) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+(not secure administration.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 336 Td
+(12. AI and external-service integrations) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 316 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 304 Td
+(Integration | Use | Main risk) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 292 Td
+(NVIDIA API | Chat and AI listing | Cost, prompt/input abuse, incorrect output, provider outage) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 280 Td
+(Razorpay | Payments | Payment integrity, web/API attack surface, personal data handling) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+(KEA result endpoint | Result lookup/parsing | Non-official proxy risk, external markup changes, sensitive) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+(data retention) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(Supabase | Shared data | RLS misconfiguration and excessive client permissions) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(Vercel | Hosting/functions/analytics | Deployment secrets, function observability and third-party) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+(processing) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 208 Td
+(OpenRouter reference | Client-side AI helper module | Private key exposure if configured with) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(10) Tj
+ET
+endstream
+endobj
+23 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 22 0 R >>
+endobj
+24 0 obj
+<< /Length 5229 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(`VITE_OPENROUTER_API_KEY`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(Ad/social sources | CSP-approved/linked services | Third-party tracking, policy and availability) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(dependencies) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(AI outputs must be labelled as generated assistance, screened for unsafe/incorrect claims where material,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(and never treated as official counselling direction. If VITE_OPENROUTER_API_KEY is configured, it is) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(exposed to browser clients; it must be replaced by a server-side integration and any exposed key must be) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(rotated.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 668 Td
+(13. Configuration and environment variables) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 648 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 636 Td
+(Variable | Used by | Classification / rule) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 624 Td
+(`VITE_SUPABASE_URL` | Browser and selected functions | Public configuration) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 612 Td
+(`VITE_SUPABASE_ANON_KEY` | Browser and selected functions | Public anon key; protected by RLS, not) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 600 Td
+(secrecy) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 588 Td
+(`NEWS_API_KEY` | News scripts | Secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 576 Td
+(`WEBHOOK_SECRET` | News workflow | Secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 564 Td
+(`NVIDIA_API_KEY` | AI API endpoints / dev setup | Secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 552 Td
+(`VITE_ACCESS_KEY` | Browser access-key flow | Public at build time; never use as a secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 540 Td
+(`VITE_RAZORPAY_KEY_ID` | Browser checkout | Public publishable identifier) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 528 Td
+(`RAZORPAY_KEY_ID` | Server order creation | Credential) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 516 Td
+(`RAZORPAY_KEY_SECRET` | Server order creation/payment verification | Secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+(`SUPABASE_SERVICE_ROLE_KEY` | Server-side privileged Supabase use | Highly privileged secret) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+(`VITE_ADMIN_PASSPHRASE` | Current browser admin gate | Public at build time; not secure) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 480 Td
+(`VITE_OPENROUTER_API_KEY` | Client `gemini.ts` module | Unsafe for a private API key; must not be used in) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 468 Td
+(production client build) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 456 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+(Any name beginning with VITE_ is bundled into browser-delivered code. Never place a secret, service-role) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+(key, admin credential, payment secret, or paid API secret in it. Store secrets in Vercel/Supabase) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+(approved secret management and keep development/staging/production credentials separate.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 372 Td
+(14. Hosting, headers, PWA, SEO, and analytics) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 352 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 340 Td
+(14.1 Vercel configuration) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(vercel.json configures broad no-store cache headers, security-related headers, a CORS/data rule and SPA) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+(rewrites that exclude /api/. It sets Content Security Policy, X-Content-Type-Options, X-Frame-Options,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+(Referrer-Policy, and Permissions-Policy headers.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 264 Td
+(The CSP currently permits multiple external sources and includes unsafe-inline and unsafe-eval. These) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 252 Td
+(directives weaken CSP protection and must be removed incrementally with compatibility testing. All assets) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 240 Td
+(are broadly configured no-store, which favours immediate freshness but may increase bandwidth, latency) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 228 Td
+(and cost for large cutoff files. Adopt versioned artifacts and measured cache policy instead of changing) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 216 Td
+(this casually.) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(11) Tj
+ET
+endstream
+endobj
+25 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 24 0 R >>
+endobj
+26 0 obj
+<< /Length 4908 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 788 Td
+(14.2 PWA and static assets) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 772 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 760 Td
+(The repository includes a manifest, service worker and icon files. This demonstrates installability) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 748 Td
+(support, not a guaranteed offline experience. Offline critical paths must be explicitly tested.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 736 Td
+(public/sitemap.xml, robots.txt, share/OG functions and index metadata support discoverability/social) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 724 Td
+(presentation.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 712 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 700 Td
+(14.3 Analytics) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 684 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 672 Td
+(Vercel Analytics is included. The privacy policy must accurately state what analytics and any) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 660 Td
+(advertising/third-party tooling collect or process. Do not describe analytics as anonymous or) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 648 Td
+(non-identifying unless the deployed configuration and provider terms support that statement.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 636 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 624 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 612 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 600 Td
+(15. Security, privacy, and governance assessment) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 580 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 568 Td
+(15.1 Data inventory) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 552 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 540 Td
+(Data class | Examples | Main storage/transit) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 528 Td
+(Public admissions data | Cutoffs, college/course metadata, source documents | Static files and browser) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 516 Td
+(downloads) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+(Academic inputs | Marks, PUC aggregate, rank, category, preferences | Browser state; selected Supabase) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+(records) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 480 Td
+(Result lookup data | Application number, parsed results | Result API and `ugcet_results_cache`) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 468 Td
+(Community content | Reviews, comments, reports, suggestions | Supabase) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 456 Td
+(Payment/support data | Amount, name, anonymous preference, access code | Razorpay flow and Supabase) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+(Technical data | Browser storage, server logs, analytics | Browser, Vercel, external providers) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 420 Td
+(15.2 Trust boundaries) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 404 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+(1. Browser code and storage are untrusted and alterable.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 380 Td
+(2. Supabase anon key is public; RLS is the data boundary.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 368 Td
+(3. Vercel functions are the server boundary for secrets and privileged logic.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 356 Td
+(4. Third parties have independent availability, security and privacy obligations.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 344 Td
+(5. Static data is only trustworthy when source provenance and validation are maintained.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 332 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 320 Td
+(15.3 Controls visible in the repository) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 304 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 292 Td
+(- Razorpay HMAC signature verification occurs in a server function.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 280 Td
+(- Security-related Vercel headers are configured.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+(- RLS is enabled for a number of schema tables.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+(- API handlers generally reject unsupported HTTP methods.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(- Some review workflows use validation/sanitisation helpers.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(- The product includes non-official and verification-oriented messaging.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 208 Td
+(These are partial controls, not security certification or complete protection.) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(12) Tj
+ET
+endstream
+endobj
+27 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 26 0 R >>
+endobj
+28 0 obj
+<< /Length 5113 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 788 Td
+(15.4 Material findings) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 772 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 760 Td
+(Priority | Finding | Required remediation) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 748 Td
+(Critical | Client-side `VITE_ADMIN_PASSPHRASE` gate is extractable/bypassable | Replace with) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 736 Td
+(server-verified identity and RBAC enforced by RLS/API) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 724 Td
+(Critical | Browser unlock/access code controls premium UI | Server-enforce entitlement for protected) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 712 Td
+(data/actions) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 700 Td
+(Critical | Schema shows broad public mutation policies | Audit live RLS table by table; remove broad) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 688 Td
+(mutations and add owner/admin rules) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 676 Td
+(High | Server/client code contains fallback Supabase configuration | Fail closed when config absent;) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 664 Td
+(audit RLS and remove server fallbacks) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 652 Td
+(High | Client OpenRouter variable may expose a paid secret | Move all private AI credentials behind a) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 640 Td
+(server endpoint and rotate exposed key) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 628 Td
+(High | No evident comprehensive rate limiting/body limits/abuse monitoring | Add edge/server rate limit,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 616 Td
+(payload caps, schemas, metrics and alerts) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 604 Td
+(High | `share` interpolates query values into HTML/redirect | Escape values and restrict to safe) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 592 Td
+(same-origin relative path) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 580 Td
+(High | Result lookup caches potentially sensitive student data | Define consent, minimum fields, access) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 568 Td
+(control, TTL/deletion and legal review) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 556 Td
+(Medium | CSP permits `unsafe-inline` and `unsafe-eval` | Harden CSP with nonce/hash approach after) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+(compatibility tests) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+(Medium | Payment flow trusts client-provided metadata | Read authoritative order/payment facts from) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+(provider server-side) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+(Medium | Large raw/debug/backup artifacts are retained in repo | Classify, remove PII, archive) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+(appropriately and establish retention policy) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(Medium | Limited automated API/RLS/payment/E2E coverage | Add tests and enforce release gates) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 460 Td
+(15.5 Required operating rules) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+(- Never commit .env, payment secrets, provider keys, result data or unnecessary personal data.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+(- Rotate credentials after exposure, incorrect distribution, public build inclusion, or suspected) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+(compromise.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+(- Do not log application numbers, result contents, payment signatures, secrets or access codes) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+(unnecessarily.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+(- Apply database migrations in staging first and test every affected policy using anonymous, normal and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+(admin identities.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+(- Apply least privilege to browser data access.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+(- Maintain documented retention/deletion processes for cached results, community content and donor) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+(records.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+(- Keep privacy, terms and payment-policy pages synchronized with actual implementation.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 288 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 276 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 264 Td
+(16. Development, testing, and quality assurance) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 232 Td
+(16.1 Prerequisites) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 216 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(13) Tj
+ET
+endstream
+endobj
+29 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 28 0 R >>
+endobj
+30 0 obj
+<< /Length 4656 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(- Node.js 18+; Node.js 20 LTS is recommended for operating consistency.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(- npm.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(- Python 3 for relevant extraction/validation scripts.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(- Supabase/Vercel access only when changing shared environment or deployment.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 740 Td
+(16.2 Local setup) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 724 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 712 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 700 Td
+(npm install) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 688 Td
+(Copy-Item env.example .env) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 676 Td
+(npm run dev) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 664 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 652 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 640 Td
+(Use non-production secrets/credentials for development. Do not commit .env.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 628 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 616 Td
+(16.3 Package-script reference) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 600 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 588 Td
+(Command | Purpose) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 576 Td
+(`npm run dev` | Start Vite development server) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 564 Td
+(`npm run build` | Production bundle build) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 552 Td
+(`npm run build:dev` | Development-mode build) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 540 Td
+(`npm run preview` | Preview production bundle) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 528 Td
+(`npm run lint` | ESLint) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 516 Td
+(`npm test` | Vitest) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+(`npm run test:ui` | Vitest UI) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+(`npm run extract:cutoffs` | KCET extraction entry point) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 480 Td
+(`npm run extract:comedk` | COMEDK extraction entry point) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 468 Td
+(`npm run move:xlsx` | Publish/move XLSX assets for app consumption) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 456 Td
+(`npm run fetch:news`, `fetch:news:advanced`, `refresh:news`, `fetch:kcet`, `news:webhook` | News workflow) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+(entry points) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+(`npm run build:summary` | Generate summary output) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 408 Td
+(16.4 Current test posture) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 392 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 380 Td
+(Vitest configuration and tests for rank predictor, round drift predictor and mock simulator are present.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 368 Td
+(A full automated test suite for page navigation, browser accessibility, artifact contracts, payment) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 356 Td
+(verification, API validation, RLS, result lookup and deployed-function smoke testing is not evident. A) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 344 Td
+(successful build does not prove data accuracy, payment integrity, policy correctness, privacy compliance,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 332 Td
+(or reliable external integrations.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 320 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 308 Td
+(16.5 Required quality gates) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 292 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 280 Td
+(Before merging/releasing relevant changes run lint, unit tests and production build. Add and execute) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+(targeted tests for any data, API, payment or policy change. The minimum future test suite should include) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+(artifact schema contracts, malformed API bodies, provider failure paths, anonymous/authenticated/admin) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(RLS tests, payment signature/error paths, accessibility checks, and end-to-end smoke flows for core) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(rank/cutoff/college journeys.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(14) Tj
+ET
+endstream
+endobj
+31 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 30 0 R >>
+endobj
+32 0 obj
+<< /Length 4813 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 776 Td
+(17. Release, data-refresh, and rollback procedures) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 756 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 744 Td
+(17.1 General release checklist) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+(1. Review the change set and ensure no secret, .env, personal data, unsupported claim, or unintended) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(generated asset is included.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(2. Run npm run lint, npm test, and npm run build.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+(3. Smoke-test navigation, mobile navigation, critical static-data loading and errors.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+(4. Complete data release checks for data changes.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+(5. Apply and test database migrations/policies in staging before production.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+(6. Check all Vercel variables and confirm only public values use VITE_* names.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 632 Td
+(7. Test relevant functions for wrong method, invalid body, valid flow and safe error handling.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 620 Td
+(8. Test payment changes with provider test flows, including cancellation and invalid signature.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 608 Td
+(9. Deploy and run production smoke checks.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 596 Td
+(10. Record deployment ID/URL, commit SHA, data version, migration identifiers, reviewer and rollback) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 584 Td
+(point.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 572 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 560 Td
+(17.2 Production smoke checks) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 544 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 532 Td
+(- Homepage and main static assets load.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 520 Td
+(- /dashboard, /rank-predictor, /cutoff-explorer, /college-predictor, and /cet-news render without console) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 508 Td
+(failures.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 496 Td
+(- One KCET and one COMEDK query return expected-form results.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 484 Td
+(- Policy pages load.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 472 Td
+(- /api/og produces an image; /api/share is limited to a safe internal redirect.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 460 Td
+(- AI, payment and result lookup failure states are safe and understandable when providers are) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 448 Td
+(unavailable.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 436 Td
+(- Review/PYQ paths behave correctly under an anonymous browser session and no excessive permissions are) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 424 Td
+(granted.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 412 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 13 Tf
+50 400 Td
+(17.3 Rollback) Tj
+-50 -16 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+(Redeploy the previous known-good Vercel deployment or Git commit. For data-only faults, restore the) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+(preceding versioned static artifact and deploy it. For schema changes, use a separately reviewed) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+(corrective migration; do not execute destructive production rollback actions without approved backups and) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+(a recorded change plan.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 288 Td
+(18. Incident response) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+(Event | Immediate action) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(Cutoff data error | Disable or rollback affected artifact/feature, preserve evidence, compare against) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(official source) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+(AI spend/error spike | Disable/restrict AI routes, investigate rate/traffic without recording private) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 208 Td
+(prompt data, rotate exposed key) Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(15) Tj
+ET
+endstream
+endobj
+33 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 32 0 R >>
+endobj
+34 0 obj
+<< /Length 5191 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(Payment verification issue | Stop reporting payment success, reconcile provider state, preserve safe logs) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(and resolve before grant) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(Suspected RLS bypass | Restrict affected policy/function, record scope, test live roles, rotate) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(privileged secrets if involved) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(Result lookup failure | Mark unavailable or disable; do not aggressively retry against external authority) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(Credential exposure | Revoke/rotate immediately, update deployment config, inspect build/history/log) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(exposure and document scope) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(General response sequence: contain, preserve minimum necessary evidence, assess scope, patch/rotate,) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(validate correction, follow applicable notification duties, and document root cause plus a preventive) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+(test/control.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 656 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 644 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 632 Td
+(19. Known limitations and required remediation) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 612 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 600 Td
+(The following are factual operational limitations of the current repository and must remain documented) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 588 Td
+(until resolved:) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 576 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 564 Td
+(1. Client-side admin gating and unlock status are not secure authorization.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 552 Td
+(2. Supabase policy security cannot be confirmed from source alone; live RLS requires audit.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 540 Td
+(3. API abuse controls, input schemas, body limits and monitoring are incomplete/not demonstrated) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 528 Td
+(comprehensively.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 516 Td
+(4. The result lookup depends on third-party availability and HTML structure and may handle sensitive) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 504 Td
+(information.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 492 Td
+(5. Historical cutoff quality depends on manual/extraction validation; multiple similarly named data) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 480 Td
+(artifacts coexist.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 468 Td
+(6. CSP is present but weakened by unsafe-inline and unsafe-eval.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 456 Td
+(7. The codebase includes raw artifacts, backups and debug output whose retention/classification is not) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 444 Td
+(centrally governed.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 432 Td
+(8. Automated testing exists but does not demonstrate complete end-to-end, policy, payment, accessibility) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 420 Td
+(or external-service coverage.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 408 Td
+(9. Page/component existence does not always mean the feature is actively routed or production-ready.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 396 Td
+(10. Predictions, simulations, community reports and AI outputs require visible uncertainty/disclaimer) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 384 Td
+(treatment.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 372 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 360 Td
+(Priority order: replace client-side administration/access control; audit/enforce RLS; remove client-held) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 348 Td
+(private keys and source fallbacks; harden/rate-limit APIs; establish result-data governance; validate) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 336 Td
+(payment authority server-side; make data provenance/releases reproducible; expand automated verification.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 324 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 312 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 300 Td
+() Tj
+-50 -12 Td
+0.06 0.22 0.40 rg
+/F1 17 Tf
+50 288 Td
+(20. Ownership and change management) Tj
+-50 -20 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 268 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 256 Td
+(Every production change must have a responsible owner, a reviewer, a release/rollback record, and an) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 244 Td
+(updated documentation statement where it affects product behaviour. The following require elevated) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 232 Td
+(review:) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 220 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(16) Tj
+ET
+endstream
+endobj
+35 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 34 0 R >>
+endobj
+36 0 obj
+<< /Length 1549 >>
+stream
+BT
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 800 Td
+(- Supabase migrations, RLS or client database permissions.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 788 Td
+(- Payment, donor, access-code or entitlement logic.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 776 Td
+(- Server API input/output processing and external integrations.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 764 Td
+(- Cutoff/news/static-data releases and source provenance.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 752 Td
+(- Result lookup, any personal data field, retention/deletion practice, or policy-page statement.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 740 Td
+(- CSP, deployment security headers, secrets, analytics or advertising integrations.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 728 Td
+(- Any external claim about official status, accuracy, privacy or availability.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 716 Td
+() Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 704 Td
+(This document is the single PDF-ready master reference. It must be revised in the same change set) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 692 Td
+(whenever those controlled areas change. The supporting files under docs/ are working references; this) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 680 Td
+(file is the consolidated company document for export and circulation.) Tj
+-50 -12 Td
+0.10 0.10 0.10 rg
+/F1 9 Tf
+50 668 Td
+() Tj
+-50 -12 Td
+0.35 0.35 0.35 rg
+/F1 8 Tf
+50 22 Td
+(KCETCoded - Official Project Documentation | Internal operational reference) Tj
+0 -0 Td
+500 22 Td
+(17) Tj
+ET
+endstream
+endobj
+37 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 36 0 R >>
+endobj
+xref
+0 38
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000232 00000 n 
+0000000302 00000 n 
+0000004979 00000 n 
+0000005105 00000 n 
+0000010351 00000 n 
+0000010477 00000 n 
+0000015159 00000 n 
+0000015285 00000 n 
+0000020032 00000 n 
+0000020160 00000 n 
+0000024902 00000 n 
+0000025030 00000 n 
+0000030339 00000 n 
+0000030467 00000 n 
+0000035700 00000 n 
+0000035828 00000 n 
+0000041194 00000 n 
+0000041322 00000 n 
+0000046877 00000 n 
+0000047005 00000 n 
+0000052264 00000 n 
+0000052392 00000 n 
+0000057674 00000 n 
+0000057802 00000 n 
+0000062763 00000 n 
+0000062891 00000 n 
+0000068057 00000 n 
+0000068185 00000 n 
+0000072894 00000 n 
+0000073022 00000 n 
+0000077888 00000 n 
+0000078016 00000 n 
+0000083260 00000 n 
+0000083388 00000 n 
+0000084990 00000 n 
+trailer
+<< /Size 38 /Root 1 0 R /Info << /Title (KCETCoded Official Project Documentation) /Author (KCETCoded) >> >>
+startxref
+85118
+%%EOF

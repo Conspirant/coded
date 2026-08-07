@@ -1,93 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Core Pages -->
+  <!-- Core Landing & Dashboard Pages -->
   <url>
     <loc>https://kcetcoded.dev/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/dashboard</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- High-Traffic Tools -->
+  <!-- High-Traffic Counseling & Predictor Tools -->
   <url>
     <loc>https://kcetcoded.dev/rank-predictor</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/college-predictor</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/cutoff-explorer</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/comedk-explorer</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/cutoff-trends</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/cutoff-predictor</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/mock-simulator</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Counseling Tools -->
+  <!-- Admissions Journal & SEO Blog Articles -->
+  <url>
+    <loc>https://kcetcoded.dev/blog</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/kcet-option-entry-strategy-2026</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/vtu-vs-autonomous-colleges-karnataka</loc>
+    <lastmod>2026-08-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/kcet-choice-1-2-3-4-explained</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/kcet-reservations-snq-hkr-rural-explained</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/rvce-bmsce-msrit-college-comparison-2026</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/blog/kcet-document-verification-clause-checklist</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Counseling Tools & Tracking Pages -->
   <url>
     <loc>https://kcetcoded.dev/round-tracker</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/college-compare</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/documents</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kcetcoded.dev/planner</loc>
-    <lastmod>2026-03-12</lastmod>
+    <loc>https://kcetcoded.dev/document-verification</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
 
-  <!-- College Info Pages -->
+  <!-- College Directories & Reviews -->
   <url>
-    <loc>https://kcetcoded.dev/reviews</loc>
-    <lastmod>2026-03-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://kcetcoded.dev/college-cutoffs</loc>
-    <lastmod>2026-03-12</lastmod>
+    <loc>https://kcetcoded.dev/colleges</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kcetcoded.dev/college-list</loc>
-    <lastmod>2026-03-12</lastmod>
+    <loc>https://kcetcoded.dev/college-cutoffs</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/reviews</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/hidden-gems</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -95,85 +157,101 @@
   <!-- Information & Resources -->
   <url>
     <loc>https://kcetcoded.dev/info-centre</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/materials</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/cet-news</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://kcetcoded.dev/pyq-test</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 
-  <!-- AI & Interactive Tools -->
+  <!-- Interactive & Student Tools -->
   <url>
     <loc>https://kcetcoded.dev/ai-counselor</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/daily-challenge</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/cutoff-clash</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/squad-finder</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
-  <!-- Location-Based Tools -->
   <url>
     <loc>https://kcetcoded.dev/metro-mapper</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/bmtc-mapper</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
-  <!-- Informational Pages -->
+  <!-- Informational & Legal Pages -->
   <url>
     <loc>https://kcetcoded.dev/about</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/supporters</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/request-feature</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/privacy</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
     <loc>https://kcetcoded.dev/terms</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://kcetcoded.dev/payment-policy</loc>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>

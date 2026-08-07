@@ -499,3 +499,8 @@ Suggested workflow:
 
 MIT License. See [LICENSE](LICENSE).
 
+---
+
+## Official Operational Documentation
+
+The maintained company and operations documentation is in [docs/README.md](docs/README.md). It includes the code-grounded platform inventory, technical reference, security/data-governance assessment, and deployment/data-release runbook. It intentionally records current limitations and required controls alongside implemented features.
