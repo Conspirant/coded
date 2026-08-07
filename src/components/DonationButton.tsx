@@ -46,7 +46,14 @@ export const DonationButton = () => {
     setIsOpen(false);
   };
 
-  if (isDonatePage) return null;
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const isEnabled = localStorage.getItem('kcet_donation_button_enabled') === 'true';
+    setEnabled(isEnabled);
+  }, []);
+
+  if (!enabled || isDonatePage) return null;
 
   return (
     <>

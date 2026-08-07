@@ -1521,6 +1521,7 @@ const BLOCKABLE_PAGES = [
 
 function AdminSystemSettingsSection() {
     const [paywallDisabled, setPaywallDisabled] = useState(false)
+    const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
     const [blockedPages, setBlockedPages] = useState<string[]>([])
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
@@ -1537,6 +1538,7 @@ function AdminSystemSettingsSection() {
             ])
             setPaywallDisabled(disabled)
             setBlockedPages(blocked)
+            setDonationButtonEnabled(localStorage.getItem('kcet_donation_button_enabled') === 'true')
         } catch (err: any) {
             toast({
                 title: "Error fetching settings",
@@ -1861,6 +1863,32 @@ function AdminSystemSettingsSection() {
                                     className="data-[state=checked]:bg-emerald-500"
                                     checked={paywallDisabled}
                                     onCheckedChange={setPaywallDisabled}
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                                <div className="space-y-0.5">
+                                    <div className="text-sm font-semibold text-foreground flex items-center gap-2">
+                                        Enable Floating Support (Heart) Button
+                                        <Badge variant={donationButtonEnabled ? "default" : "secondary"} className={donationButtonEnabled ? "bg-rose-500/10 text-rose-400 border border-rose-500/20" : "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20"}>
+                                            {donationButtonEnabled ? "Visible" : "Hidden"}
+                                        </Badge>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground max-w-xl">
+                                        Show the floating pink Heart button at the bottom-right corner of the platform for candidate contributions.
+                                    </p>
+                                </div>
+                                <Switch
+                                    className="data-[state=checked]:bg-rose-500"
+                                    checked={donationButtonEnabled}
+                                    onCheckedChange={(checked) => {
+                                        setDonationButtonEnabled(checked)
+                                        localStorage.setItem('kcet_donation_button_enabled', checked ? 'true' : 'false')
+                                        toast({
+                                            title: checked ? "Floating Heart Button Enabled" : "Floating Heart Button Hidden",
+                                            description: checked ? "The floating support button is now visible to users." : "The floating support button is now hidden from users."
+                                        })
+                                    }}
                                 />
                             </div>
 
