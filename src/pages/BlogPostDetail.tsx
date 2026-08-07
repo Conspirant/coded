@@ -275,8 +275,8 @@ export default function BlogPostDetail() {
                   </li>
                 ),
                 table: ({ children }) => (
-                  <div className="my-6 overflow-x-auto border border-border rounded-xl bg-card">
-                    <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                  <div className="my-6 overflow-x-auto border border-border rounded-xl bg-card max-w-full min-w-0">
+                    <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[500px]">
                       {children}
                     </table>
                   </div>

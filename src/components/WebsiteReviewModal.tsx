@@ -103,7 +103,7 @@ export const WebsiteReviewModal: React.FC<WebsiteReviewModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-card border border-border text-foreground rounded-2xl p-6 shadow-2xl">
+      <DialogContent className="w-[94vw] max-w-lg max-h-[85vh] overflow-y-auto bg-card border border-border text-foreground rounded-2xl p-4 sm:p-6 shadow-2xl">
         {isSubmitted ? (
           <div className="py-8 text-center space-y-3">
             <div className="h-12 w-12 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">

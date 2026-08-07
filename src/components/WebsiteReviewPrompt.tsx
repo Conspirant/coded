@@ -32,7 +32,7 @@ export const WebsiteReviewPrompt: React.FC = () => {
 
   return (
     <>
-      <div className="fixed bottom-20 right-4 z-40 flex items-center gap-2 group">
+      <div className="fixed bottom-20 md:bottom-8 right-3 sm:right-6 z-40 flex items-center gap-2 group">
         <button
           onClick={() => setModalOpen(true)}
           className="flex items-center gap-2 bg-card/90 hover:bg-card text-foreground border border-violet-500/30 hover:border-violet-500/60 shadow-lg backdrop-blur-md px-3.5 py-2 rounded-full text-xs font-semibold transition-all hover:scale-105 active:scale-95"
