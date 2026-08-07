@@ -225,9 +225,10 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
     ? currentPath.slice(0, -1) 
     : currentPath;
 
-  // Admin page should never be blocked, home page shouldn't either. Also bypassed if already unlocked for paywall.
-  const isMaintenance = maintenancePages.includes(normalizedPath) && normalizedPath !== "/admin" && normalizedPath !== "/";
-  const isBlocked = blockedPages.includes(normalizedPath) && normalizedPath !== "/admin" && normalizedPath !== "/" && !unlocked;
+  // Admin page, home page, and dashboard should never be blocked.
+  const isExempt = normalizedPath === "/admin" || normalizedPath === "/" || normalizedPath === "/dashboard";
+  const isMaintenance = !isExempt && maintenancePages.includes(normalizedPath);
+  const isBlocked = !isExempt && blockedPages.includes(normalizedPath) && !unlocked;
 
   return (
     <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isBlocked, isMaintenance }}>
