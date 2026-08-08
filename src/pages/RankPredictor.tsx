@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -988,6 +989,8 @@ const RankPredictor = () => {
                   Find Colleges
                 </Button>
               </div>
+
+              <AdUnit className="my-6" />
             </>
           ) : (
             <Card>

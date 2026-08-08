@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { Link } from "react-router-dom"
 import { motion, useScroll, useTransform } from "framer-motion"
@@ -552,6 +553,11 @@ const Homepage = () => {
                             </div>
                         </div>
                     </motion.div>
+
+                    {/* Ad Placement */}
+                    <div className="max-w-5xl mx-auto px-4 my-8">
+                        <AdUnit />
+                    </div>
 
                     {/* ═══ More Tools ═══ */}
                     <div className="mt-14">

@@ -11,13 +11,15 @@ interface AdUnitProps {
   slot?: string
   format?: string
   layoutKey?: string
+  label?: boolean
 }
 
 const AdUnit = ({
   className = "",
   slot = "4887553688",
   format = "auto",
-  layoutKey
+  layoutKey,
+  label = true
 }: AdUnitProps) => {
   const adRef = useRef<HTMLDivElement>(null)
   const pushed = useRef(false)
@@ -34,7 +36,7 @@ const AdUnit = ({
           }
         }
       } catch (e) {
-        // Silent catch for ad blockers or unapproved domain
+        // Ad blocker or empty response
       }
     }, 200)
 
@@ -44,16 +46,23 @@ const AdUnit = ({
   return (
     <div
       ref={adRef}
-      className={`w-full overflow-hidden rounded-2xl bg-card/30 border border-white/5 p-2 my-4 min-h-[90px] flex items-center justify-center ${className}`}
+      className={`w-full overflow-hidden rounded-xl bg-white/[0.02] border border-white/5 p-2 my-4 flex flex-col items-center justify-center transition-all ${className}`}
     >
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block", width: "100%", minHeight: "90px" }}
-        data-ad-client="ca-pub-8278256783074970"
-        data-ad-slot={slot}
-        data-ad-format={format}
-        {...(layoutKey ? { "data-ad-layout-key": layoutKey } : { "data-full-width-responsive": "true" })}
-      />
+      {label && (
+        <span className="text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest self-start px-2 py-0.5 select-none">
+          Sponsored
+        </span>
+      )}
+      <div className="w-full flex items-center justify-center min-h-[90px]">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", width: "100%", minHeight: "90px" }}
+          data-ad-client="ca-pub-8278256783074970"
+          data-ad-slot={slot}
+          data-ad-format={format}
+          {...(layoutKey ? { "data-ad-layout-key": layoutKey } : { "data-full-width-responsive": "true" })}
+        />
+      </div>
     </div>
   )
 }

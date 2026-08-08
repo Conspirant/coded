@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -697,6 +698,8 @@ const CutoffExplorer = () => {
             </CardContent>
           </Card>
         </div>
+
+        <AdUnit className="my-6" />
 
         {/* Results */}
         <Card>
