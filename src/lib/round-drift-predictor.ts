@@ -506,6 +506,47 @@ function getGlobalDrift(idx: DriftIndex): DriftResult {
  *   4. Same branch across all colleges+categories
  *   5. Global all-data median
  */
+function extractComboEvidence(
+  idx: DriftIndex,
+  code: string,
+  normCourse: string,
+  category: string
+): DriftEvidence[] {
+  const ck = comboKey(code, normCourse, category)
+  const yearMap = idx.byCombo.get(ck)
+  const evidence: DriftEvidence[] = []
+
+  for (const year of HISTORICAL_YEARS) {
+    const roundMap = yearMap?.get(year)
+    const r1 = roundMap?.get('R1') || null
+    const r2 = roundMap?.get('R2') || null
+    const r3 = roundMap?.get('R3') || null
+    const r2_r1_ratio = (r1 && r2 && r1 > 0) ? r2 / r1 : null
+    const r3_r2_ratio = (r2 && r3 && r2 > 0) ? r3 / r2 : null
+    const r3_r1_ratio = (r1 && r3 && r1 > 0) ? r3 / r1 : null
+
+    evidence.push({
+      year: String(year),
+      r1,
+      r2,
+      r3,
+      r2_r1_ratio,
+      r3_r2_ratio,
+      r3_r1_ratio,
+    })
+  }
+
+  return evidence
+}
+
+/**
+ * Get drift ratios using the fallback hierarchy:
+ *   1. Exact combo (code+branch+category)
+ *   2. Same combo with GM
+ *   3. Same branch+category across all colleges
+ *   4. Same branch across all colleges+categories
+ *   5. Global all-data median
+ */
 function getDriftRatios(
   idx: DriftIndex,
   code: string,
@@ -545,6 +586,20 @@ function getDriftRatios(
           result = getGlobalDrift(idx)
         }
       }
+    }
+  }
+
+  // Ensure historical evidence is attached if available for this exact combo or GM fallback
+  const exactEvidence = extractComboEvidence(idx, code, normCourse, category)
+  const hasExactData = exactEvidence.some(ev => ev.r1 !== null || ev.r2 !== null || ev.r3 !== null)
+
+  if (hasExactData) {
+    result.evidence = exactEvidence
+  } else if (!result.evidence || result.evidence.length === 0) {
+    const gmEvidence = extractComboEvidence(idx, code, normCourse, 'GM')
+    const hasGmData = gmEvidence.some(ev => ev.r1 !== null || ev.r2 !== null || ev.r3 !== null)
+    if (hasGmData) {
+      result.evidence = gmEvidence
     }
   }
 

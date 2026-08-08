@@ -391,12 +391,14 @@ const RoundPredictor = () => {
   // ── Multi-year trend chart data ──
   const trendChartData = useMemo(() => {
     if (!prediction) return []
-    const data = prediction.historical_evidence.map(ev => ({
-      year: ev.year,
-      "Round 1": ev.r1,
-      "Round 2": ev.r2,
-      "Round 3": ev.r3,
-    }))
+    const data = prediction.historical_evidence
+      .filter(ev => ev.r1 !== null || ev.r2 !== null || ev.r3 !== null)
+      .map(ev => ({
+        year: ev.year,
+        "Round 1": ev.r1,
+        "Round 2": ev.r2,
+        "Round 3": ev.r3,
+      }))
     data.push({
       year: "2026 (Est)",
       "Round 1": prediction.r1_actual,
@@ -786,7 +788,9 @@ const RoundPredictor = () => {
                         Cutoff Trend Graph (2023–2026) — {prediction.college_code} • {prediction.normalized_course} ({selectedCategory})
                       </CardTitle>
                       <CardDescription className="text-xs">
-                        Multi-year rank progression across Round 1, Round 2, and Round 3. Higher numbers reflect cutoff rank relaxation.
+                        {trendChartData.length > 1
+                          ? "Multi-year rank progression across Round 1, Round 2, and Round 3. Higher numbers reflect cutoff rank relaxation."
+                          : "New branch or college introduced in 2026 (no prior historical cutoffs recorded for 2023–2025)."}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-2">
@@ -813,6 +817,7 @@ const RoundPredictor = () => {
                               strokeWidth={2.5}
                               dot={{ fill: '#3b82f6', r: 5 }}
                               activeDot={{ r: 7 }}
+                              connectNulls={true}
                             />
                             <Line
                               type="monotone"
@@ -821,6 +826,7 @@ const RoundPredictor = () => {
                               strokeWidth={2.5}
                               dot={{ fill: '#8b5cf6', r: 5 }}
                               activeDot={{ r: 7 }}
+                              connectNulls={true}
                             />
                             <Line
                               type="monotone"
@@ -829,6 +835,7 @@ const RoundPredictor = () => {
                               strokeWidth={2.5}
                               dot={{ fill: '#d946ef', r: 5 }}
                               activeDot={{ r: 7 }}
+                              connectNulls={true}
                             />
                           </RechartsLineChart>
                         </ResponsiveContainer>

@@ -382,8 +382,56 @@ export const NORMALIZE_COURSE: Record<string, string> = {
     "INDUSTRIAL DESIGN": "Industrial Design",
 };
 
+export const cleanCourseName = (rawName: string): string => {
+    if (!rawName) return "";
+    let s = rawName.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+
+    const wordFixes: [RegExp, string][] = [
+        [/INSTRUMENTATI\s+ON/gi, "INSTRUMENTATION"],
+        [/INSTRUMENTATIO\s+N/gi, "INSTRUMENTATION"],
+        [/COMMUNICATIO\s+N/gi, "COMMUNICATION"],
+        [/TELECOMMUNICA\s+TION/gi, "TELECOMMUNICATION"],
+        [/TELECOMMUNICAT\s+ION/gi, "TELECOMMUNICATION"],
+        [/ARTIFICAL\s+INTELLIGENCE/gi, "ARTIFICIAL INTELLIGENCE"],
+        [/ARTIFICA\s+L/gi, "ARTIFICIAL"],
+        [/ARTIFI\s+CIAL/gi, "ARTIFICIAL"],
+        [/TECHNOLO\s+GY/gi, "TECHNOLOGY"],
+        [/ENGINEERIN\s+G/gi, "ENGINEERING"],
+        [/PHARMACEUTICA\s+L/gi, "PHARMACEUTICAL"],
+        [/ENVIRONMENTA\s+L/gi, "ENVIRONMENTAL"],
+        [/VL\s+SI/gi, "VLSI"],
+        [/DA\s+TA/gi, "DATA"],
+        [/D\s+ATA/gi, "DATA"],
+        [/DAT\s+A/gi, "DATA"],
+        [/EX\s+CLUSIVELY/gi, "EXCLUSIVELY"],
+        [/INTERNE\s+T/gi, "INTERNET"],
+        [/ARTI\s+FICIAL/gi, "ARTIFICIAL"],
+        [/SOF\s+TWARE/gi, "SOFTWARE"],
+        [/S\s+OFTWARE/gi, "SOFTWARE"],
+        [/COMPU\s+TER/gi, "COMPUTER"],
+        [/COMP\s+UTER/gi, "COMPUTER"],
+        [/ELECTRI\s+CAL/gi, "ELECTRICAL"],
+        [/MECHANI\s+CAL/gi, "MECHANICAL"],
+        [/AERO\s+SPACE/gi, "AEROSPACE"],
+        [/AERONAUTI\s+CAL/gi, "AERONAUTICAL"],
+        [/INTELLI\s+GENCE/gi, "INTELLIGENCE"],
+        [/INTELLIGEN\s+CE/gi, "INTELLIGENCE"],
+        [/AUTOMATI\s+ON/gi, "AUTOMATION"],
+        [/ROBOTI\s+CS/gi, "ROBOTICS"],
+        [/BIOTECH\s+NOLOGY/gi, "BIOTECHNOLOGY"],
+        [/AGRICUL\s+TURAL/gi, "AGRICULTURAL"],
+        [/INFORMA\s+TION/gi, "INFORMATION"]
+    ];
+
+    for (const [regex, replacement] of wordFixes) {
+        s = s.replace(regex, replacement);
+    }
+    return s;
+};
+
 export const normalizeCourseName = (rawName: string) => {
     if (!rawName) return "";
-    const cleaned = rawName.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+    const cleaned = cleanCourseName(rawName);
     return NORMALIZE_COURSE[cleaned] || cleaned;
 };
+
