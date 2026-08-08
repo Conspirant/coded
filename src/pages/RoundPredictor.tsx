@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -733,6 +734,8 @@ const RoundPredictor = () => {
                     driftRatio={prediction.r3_drift_ratio}
                   />
                 </div>
+
+                <AdUnit className="my-4" />
 
                 {/* Details & Rank Check (2 Equal Cards Below) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

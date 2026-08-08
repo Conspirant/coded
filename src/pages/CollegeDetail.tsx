@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useMemo } from "react"
 import { useParams, Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
@@ -622,6 +623,8 @@ const CollegeDetail = () => {
                 </Select>
               </div>
             </div>
+
+            <AdUnit className="my-6" />
 
             <div className="bg-white/[0.03] rounded-xl border border-white/5 overflow-hidden">
               <div className="overflow-x-auto">

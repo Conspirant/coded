@@ -1,4 +1,5 @@
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { isUnlocked } from "@/lib/unlock"
 import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -2061,6 +2062,8 @@ const CollegePredictor = () => {
           </CardContent>
         </Card>
 
+        {/* Ad Placement */}
+        <AdUnit className="my-6" />
 
         {/* Results */}
         {matches.length > 0 && (
