@@ -20,7 +20,7 @@ interface CutoffTrendsProps {
 
 const CATEGORIES = ["GM", "2AG", "2BG", "3AG", "3BG", "SCG", "STG"];
 
-import { normalizeCourseName } from "@/lib/course-normalization";
+import { normalizeCourseName, isValidCourseName } from "@/lib/course-normalization";
 
 export const CutoffTrendsGraph = ({ collegeCode, collegeName }: CutoffTrendsProps) => {
     const [data, setData] = useState<any[]>([]);
@@ -86,7 +86,7 @@ export const CutoffTrendsGraph = ({ collegeCode, collegeName }: CutoffTrendsProp
 
                 // Extract unique courses and normalize them for display
                 const rawCourses = Array.from(new Set(collegeCutoffs.map((c: any) => c.course))) as string[];
-                const uniqueCourses = Array.from(new Set(rawCourses.map(c => normalizeCourseName(c)))).sort();
+                const uniqueCourses = Array.from(new Set(rawCourses.map(c => normalizeCourseName(c)))).filter(isValidCourseName).sort();
 
                 setCourses(uniqueCourses);
                 if (uniqueCourses.length > 0) {

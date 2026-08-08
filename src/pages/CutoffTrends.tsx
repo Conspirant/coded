@@ -16,7 +16,7 @@ import {
   Loader2, ArrowUpRight, ArrowDownRight, Minus, Plus, X, Sparkles
 } from "lucide-react"
 import { CutoffService, type CutoffData } from "@/lib/cutoff-service"
-import { normalizeCourseName } from "@/lib/course-normalization"
+import { normalizeCourseName, isValidCourseName } from "@/lib/course-normalization"
 
 interface TrendPoint {
   year: string
@@ -98,6 +98,7 @@ const CutoffTrends = () => {
     const map = new Map<string, CollegeBranchCombo>()
     cutoffs.forEach(c => {
       const normalized = normalizeCourseName(c.course)
+      if (!isValidCourseName(normalized)) return
       const key = `${c.institute_code}|${normalized}`
       if (!map.has(key)) {
         map.set(key, {

@@ -385,7 +385,20 @@ export const NORMALIZE_COURSE: Record<string, string> = {
     "B Tech in Information Science & Technology": "Information Science",
     "B Tech in Information Science Engineering": "Information Science",
     "B Tech in Mechanical Engineering": "Mechanical Engineering",
-    "B Tech in Petroleum Engineering": "Petroleum Engineering",
+    // Additional Core & Specialization Mappings
+    "INDUSTRIAL ENGINEERING & MANAGEMENT": "Industrial Engineering & Mgmt",
+    "INDUSTRIAL ENGINEERING AND MANAGEMENT": "Industrial Engineering & Mgmt",
+    "AERO SPACE ENGINEERING": "Aerospace Engineering",
+    "AUTOMATION AND ROBOTIC ENGINEERING": "Automation & Robotics",
+    "INFORMATION TECHNOLOGY & ENGINEERING": "Information Technology",
+    "CIVIL AND INFRASTRUCTURE ENGINEERING": "Civil & Infrastructure",
+    "BACHELOR OF DESIGN(INTERIOR DESIGN)": "Interior Design",
+    "B TECH (HONS) COMPUTER SCIENCE AND ENGINEERING": "Computer Science & Engineering",
+    "B.TECH (HONS) ELECTRONICS AND COMMUNICATION": "Electronics & Communication",
+    "BTECH IN INFORMATION TECHNOLOGY AUGMENTED REALITY AND VIRUTAL REALITY(AR/VR)": "IT - AR/VR",
+    "B.Tech in VLSI": "Electronics - VLSI",
+    "B TECH IN CIVIL ENGINEERING AND TOWN PLANNING": "Civil & Town Planning",
+    "B.Tech in Electrical & Electronics Engineering (Electrical Vehicle Technology)": "Electrical & Electronics (EV)",
 
     // Final unmapped courses
     "B TECH (HONS) COMPUTER SCIENCE AND ENGINEERING(DAT A SCIENCE)": "CS - Data Science",
@@ -395,17 +408,37 @@ export const NORMALIZE_COURSE: Record<string, string> = {
     "INDUSTRIAL DESIGN": "Industrial Design",
 };
 
+export const INVALID_COURSE_NOISE = new Set([
+    "SC sub", "ST sub", "INFORMATION", "ENGINEERING", "SCIENCE", "ELECTRONICS", "ELECTRONICS &", "CIVIL", "COMPUTER", "B.Plan", "SC SUB", "ST SUB"
+]);
+
+export const isValidCourseName = (rawOrNormName: string): boolean => {
+    if (!rawOrNormName || typeof rawOrNormName !== 'string') return false;
+    const trimmed = rawOrNormName.trim();
+    if (trimmed.length < 3) return false;
+    if (INVALID_COURSE_NOISE.has(trimmed) || INVALID_COURSE_NOISE.has(trimmed.toUpperCase())) return false;
+    return true;
+};
+
 export const cleanCourseName = (rawName: string): string => {
     if (!rawName) return "";
     let s = rawName.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
 
     const wordFixes: [RegExp, string][] = [
+        [/CY\s+BER/gi, "CYBER"],
+        [/AR\s+TIFICIAL/gi, "ARTIFICIAL"],
+        [/AR\s+TIFICAL/gi, "ARTIFICIAL"],
+        [/ARTIFICAL/gi, "ARTIFICIAL"],
+        [/INTELLIENCE/gi, "INTELLIGENCE"],
+        [/IOT\s+\)/gi, "IOT)"],
+        [/SO\s+FTWARE/gi, "SOFTWARE"],
+        [/BL\s+OCK/gi, "BLOCK"],
+        [/DE\s+V/gi, "DEV"],
         [/INSTRUMENTATI\s+ON/gi, "INSTRUMENTATION"],
         [/INSTRUMENTATIO\s+N/gi, "INSTRUMENTATION"],
         [/COMMUNICATIO\s+N/gi, "COMMUNICATION"],
         [/TELECOMMUNICA\s+TION/gi, "TELECOMMUNICATION"],
         [/TELECOMMUNICAT\s+ION/gi, "TELECOMMUNICATION"],
-        [/ARTIFICAL\s+INTELLIGENCE/gi, "ARTIFICIAL INTELLIGENCE"],
         [/ARTIFICA\s+L/gi, "ARTIFICIAL"],
         [/ARTIFI\s+CIAL/gi, "ARTIFICIAL"],
         [/TECHNOLO\s+GY/gi, "TECHNOLOGY"],
@@ -447,4 +480,24 @@ export const normalizeCourseName = (rawName: string) => {
     const cleaned = cleanCourseName(rawName);
     return NORMALIZE_COURSE[cleaned] || cleaned;
 };
+
+export function getCourseCategoryGroup(courseName: string): string {
+    const norm = (courseName || '').toLowerCase();
+    if (norm.includes('cs') || norm.includes('computer') || norm.includes('ai') || norm.includes('data') || norm.includes('cyber') || norm.includes('software') || norm.includes('cloud') || norm.includes('devops') || norm.includes('web') || norm.includes('blockchain') || norm.includes('iot')) {
+        return 'Computer Science & AI';
+    }
+    if (norm.includes('electronics') || norm.includes('electrical') || norm.includes('vlsi') || norm.includes('telecomm') || norm.includes('instrumentation') || norm.includes('embedded')) {
+        return 'Electronics & Electrical';
+    }
+    if (norm.includes('mechanical') || norm.includes('mechatronics') || norm.includes('automotive') || norm.includes('automobile') || norm.includes('manufacturing') || norm.includes('aerospace') || norm.includes('aeronautical') || norm.includes('robot')) {
+        return 'Mechanical & Robotics';
+    }
+    if (norm.includes('civil') || norm.includes('construction') || norm.includes('infrastructure') || norm.includes('environmental') || norm.includes('planning')) {
+        return 'Civil & Infrastructure';
+    }
+    if (norm.includes('bio') || norm.includes('medical') || norm.includes('pharm')) {
+        return 'Biotechnology & Medical';
+    }
+    return 'Specialized Engineering';
+}
 

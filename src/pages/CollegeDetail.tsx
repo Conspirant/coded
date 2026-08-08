@@ -10,7 +10,7 @@ import {
   Wifi, Coffee, Dumbbell, Home, BookMarked, PenLine, Star,
   Calendar, CheckCircle, Edit3, X, Loader2
 } from "lucide-react"
-import { normalizeCourseName } from "@/lib/course-normalization"
+import { normalizeCourseName, isValidCourseName } from "@/lib/course-normalization"
 import { getCollegeInfo, TIER_COLORS, TYPE_COLORS } from "@/data/collegeDatabase"
 import { computeROI, getArcPath, getROIGradientColor, ROIResult } from "@/lib/collegeRoi"
 import { CollegeLogo } from "@/components/college/CollegeLogo"
@@ -251,7 +251,7 @@ const CollegeDetail = () => {
     allCutoffs.forEach(c => {
       if (c.course) {
         const normalized = normalizeCourseName(c.course)
-        if (normalized) branchSet.add(normalized)
+        if (normalized && isValidCourseName(normalized)) branchSet.add(normalized)
       }
     })
     return [...branchSet].sort()
@@ -263,6 +263,7 @@ const CollegeDetail = () => {
 
     filtered.forEach(c => {
       const key = normalizeCourseName(c.course)
+      if (!isValidCourseName(key)) return
       if (!courseGroups.has(key)) courseGroups.set(key, [])
       courseGroups.get(key)!.push(c)
     })

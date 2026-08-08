@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel, SelectSeparator } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Slider } from "@/components/ui/slider"
+import { getCourseCategoryGroup, isValidCourseName } from "@/lib/course-normalization"
 import {
   ResponsiveContainer, BarChart, Bar, LineChart as RechartsLineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip as RechartsTooltip, Cell, Legend
@@ -305,13 +306,25 @@ const RoundPredictor = () => {
     }
     async function loadBranches() {
       const b = await getBranchesWithR1Data(selectedCollege)
-      setBranches(b)
-      if (b.length > 0 && !b.find(x => x.normalized === selectedBranch)) {
-        setSelectedBranch(b[0].normalized)
+      const validBranches = b.filter(x => isValidCourseName(x.normalized))
+      setBranches(validBranches)
+      if (validBranches.length > 0 && !validBranches.find(x => x.normalized === selectedBranch)) {
+        setSelectedBranch(validBranches[0].normalized)
       }
     }
     loadBranches()
   }, [selectedCollege])
+
+  // ── Grouped branch options for structured UI dropdown ──
+  const groupedBranches = useMemo(() => {
+    const groups: Record<string, BranchOption[]> = {}
+    branches.forEach(b => {
+      const category = getCourseCategoryGroup(b.normalized)
+      if (!groups[category]) groups[category] = []
+      groups[category].push(b)
+    })
+    return Object.entries(groups)
+  }, [branches])
 
   // ── Load categories when branch changes ──
   useEffect(() => {
@@ -564,16 +577,29 @@ const RoundPredictor = () => {
 
                 {/* Branch Selector */}
                 <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Branch</Label>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Branch</Label>
+                    {branches.length > 0 && (
+                      <span className="text-[10px] text-violet-400 font-mono font-medium">{branches.length} branches</span>
+                    )}
+                  </div>
                   <Select value={selectedBranch} onValueChange={setSelectedBranch}>
                     <SelectTrigger className="bg-background border-input h-10">
                       <SelectValue placeholder="Select branch" />
                     </SelectTrigger>
-                    <SelectContent className="max-h-[250px]">
-                      {branches.map(b => (
-                        <SelectItem key={b.normalized} value={b.normalized}>
-                          {b.normalized}
-                        </SelectItem>
+                    <SelectContent className="max-h-[320px]">
+                      {groupedBranches.map(([groupName, items], index) => (
+                        <SelectGroup key={groupName}>
+                          {index > 0 && <SelectSeparator className="my-1 border-border/40" />}
+                          <SelectLabel className="text-[10px] font-bold uppercase tracking-wider text-violet-400 px-2 py-1 bg-violet-500/10 rounded-sm my-0.5">
+                            {groupName}
+                          </SelectLabel>
+                          {items.map(b => (
+                            <SelectItem key={b.normalized} value={b.normalized} className="text-xs py-2 cursor-pointer">
+                              {b.normalized}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
                       ))}
                     </SelectContent>
                   </Select>

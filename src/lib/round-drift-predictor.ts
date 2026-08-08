@@ -15,7 +15,7 @@
  */
 
 import { CutoffService, type CutoffData } from './cutoff-service'
-import { normalizeCourseName } from './course-normalization'
+import { normalizeCourseName, isValidCourseName } from './course-normalization'
 
 // ════════════════════════════════════════════════════════════════════
 //  Types
@@ -655,6 +655,7 @@ export async function getBranchesWithR1Data(collegeCode: string): Promise<Branch
   const branches = new Map<string, string>()
   for (const [ck, combo] of idx.r1Combos2026) {
     if (combo.code !== codeUpper) continue
+    if (!isValidCourseName(combo.normCourse)) continue
     if (!branches.has(combo.normCourse)) {
       branches.set(combo.normCourse, combo.rawCourse)
     }
