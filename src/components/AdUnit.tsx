@@ -16,7 +16,7 @@ interface AdUnitProps {
 
 const AdUnit = ({
   className = "",
-  slot = "4887553688",
+  slot,
   format = "auto",
   layoutKey,
   label = true
@@ -38,7 +38,7 @@ const AdUnit = ({
       } catch (e) {
         // Ad blocker or empty response
       }
-    }, 200)
+    }, 250)
 
     return () => clearTimeout(timer)
   }, [])
@@ -58,7 +58,7 @@ const AdUnit = ({
           className="adsbygoogle"
           style={{ display: "block", width: "100%", minHeight: "90px" }}
           data-ad-client="ca-pub-8278256783074970"
-          data-ad-slot={slot}
+          {...(slot ? { "data-ad-slot": slot } : {})}
           data-ad-format={format}
           {...(layoutKey ? { "data-ad-layout-key": layoutKey } : { "data-full-width-responsive": "true" })}
         />

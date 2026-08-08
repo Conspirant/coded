@@ -350,6 +350,9 @@ const CutoffTrends = () => {
         </div>
       )}
 
+      {/* Ad Placement */}
+      <AdUnit className="my-6" />
+
       {/* Chart */}
       {selectedCombos.length === 0 ? (
         <Card className="glass border-white/5">

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 import { SEO } from "@/components/SEO"
+import AdUnit from "@/components/AdUnit"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
