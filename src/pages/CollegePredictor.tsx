@@ -20,6 +20,7 @@ import { loadSettings } from '@/lib/settings'
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import { normalizeCourse, getUniqueCourses, isSameCourse } from "@/lib/course-normalizer"
+import { getCourseCategoryGroup, isValidCourseName } from "@/lib/course-normalization"
 import { getPdfUrlWithPage } from "@/lib/pdf-url-mapper"
 import { extractPdfPage, getTrustMeta } from "@/lib/data-trust"
 import { jsPDF } from "jspdf"
@@ -169,6 +170,17 @@ const CollegePredictor = () => {
   const [availableCourses, setAvailableCourses] = useState<string[]>([])
   const [availableInstitutes, setAvailableInstitutes] = useState<InstituteOption[]>([])
   const [availableRounds, setAvailableRounds] = useState<string[]>([])
+
+  const groupedAvailableCourses = useMemo(() => {
+    const groups: Record<string, string[]> = {}
+    availableCourses.forEach(c => {
+      if (!isValidCourseName(c)) return
+      const cat = getCourseCategoryGroup(c)
+      if (!groups[cat]) groups[cat] = []
+      groups[cat].push(c)
+    })
+    return Object.entries(groups)
+  }, [availableCourses])
 
   // User inputs
   const [userRank, setUserRank] = useState<number>(50000)
@@ -1987,36 +1999,43 @@ const CollegePredictor = () => {
                         <Command>
                           <CommandInput placeholder="Search courses..." />
                           <CommandEmpty>No courses found.</CommandEmpty>
-                          <CommandList>
-                            <CommandGroup>
-                              {availableCourses.map((course) => {
-                                const isSelected = selectedCourses.includes(course)
-                                const courseCode = getCourseCode(course)
-                                return (
-                                  <CommandItem
-                                    key={course}
-                                    value={`${course} ${courseCode || ''}`}
-                                    onSelect={() => {
-                                      if (isSelected) {
-                                        setSelectedCourses(selectedCourses.filter(c => c !== course))
-                                      } else {
-                                        setSelectedCourses([...selectedCourses, course])
-                                      }
-                                    }}
-                                  >
-                                    <Check className={`mr-2 h-4 w-4 ${isSelected ? 'opacity-100' : 'opacity-0'}`} />
-                                    <div className="flex items-center gap-2">
-                                      {courseCode && (
-                                        <Badge variant="secondary" className="text-xs font-mono">
-                                          {courseCode}
-                                        </Badge>
-                                      )}
-                                      <span className="truncate">{course}</span>
-                                    </div>
-                                  </CommandItem>
-                                )
-                              })}
-                            </CommandGroup>
+                          <CommandList className="max-h-[350px]">
+                            {groupedAvailableCourses.map(([groupName, items]) => (
+                              <CommandGroup key={groupName} heading={groupName}>
+                                {items.map((course) => {
+                                  const isSelected = selectedCourses.includes(course)
+                                  const courseCode = getCourseCode(course)
+                                  return (
+                                    <CommandItem
+                                      key={course}
+                                      value={`${course} ${courseCode || ''}`}
+                                      onSelect={() => {
+                                        if (isSelected) {
+                                          setSelectedCourses(selectedCourses.filter(c => c !== course))
+                                        } else {
+                                          setSelectedCourses([...selectedCourses, course])
+                                        }
+                                      }}
+                                      className="cursor-pointer py-1.5"
+                                    >
+                                      <Check className={`mr-2 h-4 w-4 ${isSelected ? 'opacity-100 text-primary' : 'opacity-0'}`} />
+                                      <div className="flex items-center gap-2">
+                                        {courseCode ? (
+                                          <Badge variant="secondary" className="text-[10px] font-mono px-1.5 py-0 bg-violet-500/10 text-violet-300 border border-violet-500/20">
+                                            {courseCode}
+                                          </Badge>
+                                        ) : (
+                                          <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0 opacity-60">
+                                            {course.substring(0, 2).toUpperCase()}
+                                          </Badge>
+                                        )}
+                                        <span className="truncate text-sm">{course}</span>
+                                      </div>
+                                    </CommandItem>
+                                  )
+                                })}
+                              </CommandGroup>
+                            ))}
                           </CommandList>
                         </Command>
                       </PopoverContent>

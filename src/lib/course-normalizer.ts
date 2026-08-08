@@ -268,13 +268,15 @@ const COURSE_PATTERNS: Array<{ pattern: RegExp; canonical: string }> = [
     },
 ];
 
-/**
- * Normalize a course name to its canonical form
- * @param rawCourse - The raw course name from the data (may vary by year)
- * @returns The canonical course name
- */
+import { normalizeCourseName as normalizeGlobal, isValidCourseName } from './course-normalization';
+
 export function normalizeCourse(rawCourse: string): string {
     if (!rawCourse) return rawCourse;
+
+    const globalNorm = normalizeGlobal(rawCourse);
+    if (globalNorm && globalNorm !== rawCourse && isValidCourseName(globalNorm)) {
+        return globalNorm;
+    }
 
     // Step 1: Clean the input - remove newlines, collapse spaces, trim
     const cleaned = rawCourse
@@ -358,6 +360,7 @@ export function getUniqueCourses(rawCourses: string[]): string[] {
 
     for (const raw of rawCourses) {
         const canonical = normalizeCourse(raw);
+        if (!isValidCourseName(canonical)) continue;
         const key = getCanonicalCourseKey(canonical);
 
         if (!seen.has(key)) {
