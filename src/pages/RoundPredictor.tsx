@@ -697,6 +697,9 @@ const RoundPredictor = () => {
             </CardContent>
           </Card>
 
+          {/* Unconditional Ad Placement */}
+          <AdUnit className="my-4" />
+
           {/* ═══ TAB: Predict ═══ */}
           <TabsContent value="predict" className="space-y-4 mt-0">
             {predicting && (
@@ -734,8 +737,6 @@ const RoundPredictor = () => {
                     driftRatio={prediction.r3_drift_ratio}
                   />
                 </div>
-
-                <AdUnit className="my-4" />
 
                 {/* Details & Rank Check (2 Equal Cards Below) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
