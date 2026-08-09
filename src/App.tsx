@@ -45,6 +45,7 @@ import PaymentPolicy from "./pages/PaymentPolicy";
 import SquadFinder from "./pages/SquadFinder";
 import MetroMapper from "./pages/MetroMapper";
 import BmtcMapper from './pages/BmtcMapper';
+import FeeCalculator from "./pages/FeeCalculator";
 import HiddenGems from "./pages/HiddenGems";
 import CollegeCutoffs from "./pages/CollegeCutoffs";
 import CollegeInfoHub from "./pages/CollegeInfoHub";
@@ -117,6 +118,7 @@ const App = () => (
               <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
               <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
               <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
+              <Route path="/fee-calculator" element={<Layout><FeeCalculator /></Layout>} />
               <Route path="/documents" element={<Layout><Documents /></Layout>} />
               <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
               <Route path="/reviews" element={<Layout><Reviews /></Layout>} />

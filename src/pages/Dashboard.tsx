@@ -49,6 +49,7 @@ import {
 } from "recharts"
 import { predictKCETRankBothYears, getRankBand } from "@/lib/rank-predictor"
 import { predictComedkRankFromMarks, type ComedkShift } from "@/lib/comedk-rank-predictor"
+import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 import { toast } from "sonner"
 
 interface DataStats {
@@ -190,7 +191,8 @@ const Dashboard = () => {
 
     return TOP_KCET_COLLEGES.map(c => {
       const isCSE = profile.preferredStream.toUpperCase().includes("CS")
-      const effectiveCutoff = isCSE ? c.cseCutoff : c.eceCutoff
+      const catBase = (c.cutoffs as Record<string, number>)[cat] || (c.cutoffs as Record<string, number>)["GM"] || c.cseCutoff
+      const effectiveCutoff = isCSE ? catBase : Math.round(catBase * 2.4)
 
       let status: "Safe" | "Target" | "Dream" = "Safe"
       let safetyScore = 100
@@ -239,13 +241,29 @@ const Dashboard = () => {
   }, [examMode, kcetMarksInput, pucPctInput, comedkMarksInput, comedkShiftInput])
 
   const filteredQuickColleges = useMemo(() => {
-    if (!quickSearchQuery.trim()) return TOP_KCET_COLLEGES.slice(0, 4)
-    const q = quickSearchQuery.toLowerCase()
-    return TOP_KCET_COLLEGES.filter(c =>
+    const q = quickSearchQuery.trim().toLowerCase()
+    if (!q) return TOP_KCET_COLLEGES.slice(0, 4)
+    
+    const topMatches = TOP_KCET_COLLEGES.filter(c =>
       c.name.toLowerCase().includes(q) ||
       c.code.toLowerCase().includes(q) ||
       c.location.toLowerCase().includes(q)
     )
+    if (topMatches.length > 0) return topMatches
+
+    return COLLEGE_DATABASE.filter(c =>
+      c.name.toLowerCase().includes(q) ||
+      c.code.toLowerCase().includes(q) ||
+      c.city.toLowerCase().includes(q)
+    ).slice(0, 4).map(c => ({
+      code: c.code,
+      name: c.name,
+      location: c.city,
+      cutoffs: { GM: 15000 },
+      tier: c.tier === 'Tier 1' ? 1 : c.tier === 'Tier 2' ? 2 : 3,
+      cseCutoff: 15000,
+      eceCutoff: 25000
+    }))
   }, [quickSearchQuery])
 
   const removeBookmark = useCallback((code: string) => {
@@ -811,11 +829,12 @@ const Dashboard = () => {
           ) : (
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {bookmarks.map((code) => {
-                const college = TOP_KCET_COLLEGES.find(c => c.code === code) || {
+                const dbCollege = COLLEGE_DATABASE.find(c => c.code === code)
+                const topCollege = TOP_KCET_COLLEGES.find(c => c.code === code)
+                const college = {
                   code,
-                  name: `College ${code}`,
-                  location: "Karnataka",
-                  cseCutoff: 10000
+                  name: dbCollege?.name || topCollege?.name || `College (${code})`,
+                  location: dbCollege?.city || topCollege?.location || "Karnataka"
                 }
                 return (
                   <div key={code} className="p-3 rounded-lg border border-border/40 bg-background/40 flex items-center justify-between text-xs hover:border-primary/40 transition-all cursor-pointer">
