@@ -34,8 +34,9 @@ import {
   Star,
   Trash2,
   Zap,
-  LayoutDashboard,
   Compass,
+  Crown,
+  Sparkle,
   ArrowUpRight
 } from "lucide-react"
 import { Link } from "react-router-dom"
@@ -111,6 +112,23 @@ const Dashboard = () => {
   const [stats, setStats] = useState<DataStats | null>(null)
   const [loading, setLoading] = useState(true)
   const { examMode, setExamMode } = useExamMode()
+
+  // Admin Configured Greeting Suffix
+  const [adminGreeting, setAdminGreeting] = useState<string>(() => {
+    return localStorage.getItem("kcet_admin_greeting_text") || "User"
+  })
+
+  useEffect(() => {
+    const handleGreetingUpdate = () => {
+      setAdminGreeting(localStorage.getItem("kcet_admin_greeting_text") || "User")
+    }
+    window.addEventListener("admin_greeting_updated", handleGreetingUpdate)
+    window.addEventListener("storage", handleGreetingUpdate)
+    return () => {
+      window.removeEventListener("admin_greeting_updated", handleGreetingUpdate)
+      window.removeEventListener("storage", handleGreetingUpdate)
+    }
+  }, [])
 
   // User profile with memory optimization
   const [profile, setProfile] = useState<UserProfile>(() => {
@@ -274,15 +292,57 @@ const Dashboard = () => {
     })
   }, [])
 
+  // Crown Showcase Features
+  const CROWN_FEATURES = useMemo(() => [
+    {
+      title: "Rank Predictor",
+      tagline: "Marks vs Rank 2026 Engine",
+      desc: "Calculate KCET & COMEDK rank forecasts based on 180-marks and Board % weightage.",
+      icon: Calculator,
+      href: "/rank-predictor",
+      gradient: "from-indigo-500/20 via-purple-500/10 to-transparent border-indigo-500/30",
+      accent: "text-indigo-400",
+      btnClass: "bg-indigo-600 hover:bg-indigo-700 text-white"
+    },
+    {
+      title: "College Predictor",
+      tagline: "KEA & COMEDK Seat Eligibility",
+      desc: "Find Govt & Private colleges matching your rank, category, and preferred engineering branch.",
+      icon: Target,
+      href: "/college-predictor",
+      gradient: "from-emerald-500/20 via-teal-500/10 to-transparent border-emerald-500/30",
+      accent: "text-emerald-400",
+      btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white"
+    },
+    {
+      title: "Fee Calculator",
+      tagline: "Tuition, SSP & 4-Year Cost",
+      desc: "Estimate tuition fees, SNQ 100% waivers, SSP category scholarships, and hostel charges.",
+      icon: FileText,
+      href: "/fee-calculator",
+      gradient: "from-amber-500/20 via-orange-500/10 to-transparent border-amber-500/30",
+      accent: "text-amber-400",
+      btnClass: "bg-amber-600 hover:bg-amber-700 text-white"
+    },
+    {
+      title: "AI Admissions Counselor",
+      tagline: "24/7 Gemini Smart AI",
+      desc: "Get instant guidance on KEA Choice 1 vs 2, document codes, and college comparisons.",
+      icon: Bot,
+      href: "/ai-counselor",
+      gradient: "from-cyan-500/20 via-blue-500/10 to-transparent border-cyan-500/30",
+      accent: "text-cyan-400",
+      btnClass: "bg-cyan-600 hover:bg-cyan-700 text-white"
+    }
+  ], [])
+
   const actionCategories = useMemo(() => [
     {
       id: "predictors",
       title: "Predictors & Simulators",
       items: [
         { title: "Cutoff Predictor", desc: "Predict Round 1, Round 2 & Round 3 cutoff shifts", icon: Sparkles, href: "/cutoff-predictor", metric: "2026 Model" },
-        { title: "College Predictor", desc: "Find colleges eligible for your rank", icon: Search, href: "/college-predictor", metric: "Popular" },
         { title: "Mock Seat Simulator", desc: "Simulate option entry allotment", icon: Target, href: "/mock-simulator", metric: "KEA Engine" },
-        { title: "Rank Predictor", desc: "Predict KCET rank from marks", icon: Calculator, href: "/rank-predictor", metric: "Rank Model" },
         { title: "Round Tracker", desc: "Track R1, R2 & R3 cutoff shifts", icon: Bell, href: "/round-tracker", metric: "Live Rounds" },
         { title: "College Compare", desc: "Side-by-side college comparison", icon: Layers, href: "/college-compare", metric: "3-Way Stats" },
       ]
@@ -294,15 +354,13 @@ const Dashboard = () => {
         { title: "Cutoff Explorer", desc: "Filter GM, 2A, SC/ST cutoff ranks", icon: BarChart3, href: "/cutoff-explorer", metric: "Official KEA" },
         { title: "COMEDK Explorer", desc: "Browse GM, HKR, KKR cutoffs", icon: ShieldCheck, href: "/comedk-explorer", metric: "COMEDK UGET" },
         { title: "Cutoff Trends", desc: "Year-over-year rank line charts", icon: TrendingUp, href: "/cutoff-trends", metric: "2022-2025" },
-        { title: "Fee Calculator", desc: "Government vs Management fee stats", icon: FileText, href: "/fee-calculator", metric: "Updated 2026" },
         { title: "Hidden Gems", desc: "High ROI colleges with low cutoffs", icon: Star, href: "/hidden-gems", metric: "Top Value" },
       ]
     },
     {
       id: "practice",
-      title: "AI & Practice",
+      title: "Practice & Preparation",
       items: [
-        { title: "AI Counselor", desc: "Gemini-powered admission assistant", icon: Bot, href: "/ai-counselor", metric: "24/7 Smart AI" },
         { title: "Daily Challenge", desc: "5-question daily CET physics/chem/math quiz", icon: Flame, href: "/daily-challenge", metric: "Streak Active" },
         { title: "Cutoff Clash", desc: "Higher or Lower college cutoff game", icon: Sword, href: "/cutoff-clash", metric: "Fun Quiz" },
         { title: "PYQ Mock Tests", desc: "Previous year question timed tests", icon: BookOpen, href: "/pyq-test", metric: "Real Papers" },
@@ -338,7 +396,7 @@ const Dashboard = () => {
       />
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 1: HERO HEADER & EXAM MODE STRIP
+          SECTION 1: HERO HEADER & EXAM MODE WORKSPACE
          ═══════════════════════════════════════════════════ */}
       <div className="p-6 rounded-2xl border border-border/40 bg-card/60 backdrop-blur-md shadow-sm space-y-6">
         <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -350,7 +408,7 @@ const Dashboard = () => {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              {getGreeting()}, <span className="text-primary font-black">User</span>
+              {getGreeting()}, <span className="text-primary font-black">{adminGreeting}</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               Real-time rank predictions, seat odds, cutoff analytics & option entry tools.
@@ -418,7 +476,56 @@ const Dashboard = () => {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 2: TWO-COLUMN STRUCTURED MAIN DASHBOARD
+          SECTION 2: CROWN FLAGSHIP TOOLS SHOWCASE
+         ═══════════════════════════════════════════════════ */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Crown className="h-5 w-5 text-amber-400 animate-bounce" />
+            <h2 className="text-lg font-extrabold tracking-tight">Flagship Counseling Suite</h2>
+          </div>
+          <Badge variant="outline" className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs px-2.5 py-0.5 font-bold">
+            Most Popular
+          </Badge>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {CROWN_FEATURES.map((feat) => (
+            <Card
+              key={feat.title}
+              className={`border bg-gradient-to-br ${feat.gradient} bg-card/70 backdrop-blur-md shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group cursor-pointer overflow-hidden relative`}
+            >
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <div className={`p-2 rounded-xl bg-background/60 border border-white/10 ${feat.accent}`}>
+                    <feat.icon className="h-5 w-5" />
+                  </div>
+                  <Badge variant="outline" className="text-[9px] font-mono border-white/10 text-muted-foreground">
+                    {feat.tagline}
+                  </Badge>
+                </div>
+                <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                  {feat.title}
+                </CardTitle>
+                <CardDescription className="text-xs line-clamp-2 mt-1">
+                  {feat.desc}
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="pt-2">
+                <Link to={feat.href} className="block">
+                  <Button size="sm" className={`w-full text-xs font-bold gap-1.5 cursor-pointer shadow-sm ${feat.btnClass}`}>
+                    Launch Tool <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          SECTION 3: TWO-COLUMN STRUCTURED MAIN DASHBOARD
          ═══════════════════════════════════════════════════ */}
       <div className="grid gap-8 lg:grid-cols-12">
         {/* ---------------------------------------------------
