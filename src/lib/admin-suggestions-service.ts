@@ -384,6 +384,138 @@ export class AdminSuggestionsService {
         const current = await this.getSiteShutdownConfig();
         return this.setSiteShutdownConfig({ ...current, shutdown });
     }
+
+    // Global Admin Greeting Name Override (Supabase DB + Realtime Broadcast)
+    static async getAdminGreetingName(): Promise<string> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:admin_greeting_name')
+                .maybeSingle();
+
+            if (error) throw error;
+            if (data && data.results_json && (data.results_json as any).name) {
+                const name = (data.results_json as any).name;
+                try { localStorage.setItem('kcet_admin_greeting_text', name); } catch {}
+                return name;
+            }
+            return localStorage.getItem('kcet_admin_greeting_text') || "User";
+        } catch (e) {
+            console.error("Error getting admin greeting name:", e);
+            return localStorage.getItem('kcet_admin_greeting_text') || "User";
+        }
+    }
+
+    static async setAdminGreetingName(name: string): Promise<boolean> {
+        try {
+            const cleanName = name.trim() || "User";
+            try { localStorage.setItem('kcet_admin_greeting_text', cleanName); } catch {}
+
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:admin_greeting_name',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { name: cleanName }
+                }], { onConflict: 'appl_no' });
+
+            if (error) throw error;
+
+            try {
+                const channel = supabase.channel("global-alerts");
+                await channel.send({
+                    type: "broadcast",
+                    event: "admin_greeting_updated",
+                    payload: { name: cleanName, timestamp: Date.now() }
+                });
+            } catch (bErr) {
+                console.warn("Greeting broadcast warning:", bErr);
+            }
+
+            return true;
+        } catch (e) {
+            console.error("Error setting admin greeting name:", e);
+            return false;
+        }
+    }
+
+    // Global Developer Announcement Message (Supabase DB + Realtime Broadcast)
+    static async getDevAnnouncementConfig(): Promise<{ message: string; enabled: boolean; type: string }> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:dev_announcement')
+                .maybeSingle();
+
+            if (error) throw error;
+            if (data && data.results_json) {
+                const json = data.results_json as any;
+                const cfg = {
+                    message: json.message || "",
+                    enabled: json.enabled === true,
+                    type: json.type || "info"
+                };
+                try {
+                    localStorage.setItem('kcet_dev_message_text', cfg.message);
+                    localStorage.setItem('kcet_dev_message_enabled', cfg.enabled ? "true" : "false");
+                    localStorage.setItem('kcet_dev_message_type', cfg.type);
+                } catch {}
+                return cfg;
+            }
+            return {
+                message: localStorage.getItem('kcet_dev_message_text') || "",
+                enabled: localStorage.getItem('kcet_dev_message_enabled') === "true",
+                type: localStorage.getItem('kcet_dev_message_type') || "info"
+            };
+        } catch (e) {
+            console.error("Error getting dev announcement config:", e);
+            return {
+                message: localStorage.getItem('kcet_dev_message_text') || "",
+                enabled: localStorage.getItem('kcet_dev_message_enabled') === "true",
+                type: localStorage.getItem('kcet_dev_message_type') || "info"
+            };
+        }
+    }
+
+    static async setDevAnnouncementConfig(config: { message: string; enabled: boolean; type: string }): Promise<boolean> {
+        try {
+            try {
+                localStorage.setItem('kcet_dev_message_text', config.message);
+                localStorage.setItem('kcet_dev_message_enabled', config.enabled ? "true" : "false");
+                localStorage.setItem('kcet_dev_message_type', config.type);
+            } catch {}
+
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:dev_announcement',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: config as any
+                }], { onConflict: 'appl_no' });
+
+            if (error) throw error;
+
+            try {
+                const channel = supabase.channel("global-alerts");
+                await channel.send({
+                    type: "broadcast",
+                    event: "dev_message_updated",
+                    payload: { config, timestamp: Date.now() }
+                });
+            } catch (bErr) {
+                console.warn("Dev announcement broadcast warning:", bErr);
+            }
+
+            return true;
+        } catch (e) {
+            console.error("Error setting dev announcement config:", e);
+            return false;
+        }
+    }
 }
 
 

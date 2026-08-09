@@ -39,6 +39,8 @@ import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
 import AdUnit from "@/components/AdUnit"
 import { CommunityPollWidget } from "@/components/CommunityPollWidget"
+import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
+import { supabase } from "@/integrations/supabase/client"
 import {
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
   ResponsiveContainer, Legend, Area, AreaChart, BarChart, Bar, Cell
@@ -118,6 +120,35 @@ const Dashboard = () => {
   const [devMessageDismissed, setDevMessageDismissed] = useState<boolean>(false)
 
   useEffect(() => {
+    // 1. Initial fetch from global Supabase DB
+    AdminSuggestionsService.getAdminGreetingName().then(name => {
+      if (name) setAdminGreeting(name)
+    })
+
+    AdminSuggestionsService.getDevAnnouncementConfig().then(cfg => {
+      setDevMessage(cfg.message)
+      setDevMessageEnabled(cfg.enabled)
+      setDevMessageType(cfg.type)
+    })
+
+    // 2. Realtime listener across all devices/visitors
+    const channel = supabase.channel("global-alerts")
+      .on("broadcast", { event: "admin_greeting_updated" }, (payload: any) => {
+        if (payload.payload?.name) {
+          setAdminGreeting(payload.payload.name)
+        }
+      })
+      .on("broadcast", { event: "dev_message_updated" }, (payload: any) => {
+        if (payload.payload?.config) {
+          const cfg = payload.payload.config
+          setDevMessage(cfg.message || "")
+          setDevMessageEnabled(cfg.enabled === true)
+          setDevMessageType(cfg.type || "info")
+          setDevMessageDismissed(false)
+        }
+      })
+      .subscribe()
+
     const handleGreetingUpdate = () => {
       setAdminGreeting(localStorage.getItem("kcet_admin_greeting_text") || "User")
     }
@@ -130,14 +161,11 @@ const Dashboard = () => {
 
     window.addEventListener("admin_greeting_updated", handleGreetingUpdate)
     window.addEventListener("dev_message_updated", handleDevMessageUpdate)
-    window.addEventListener("storage", handleGreetingUpdate)
-    window.addEventListener("storage", handleDevMessageUpdate)
 
     return () => {
+      channel.unsubscribe()
       window.removeEventListener("admin_greeting_updated", handleGreetingUpdate)
       window.removeEventListener("dev_message_updated", handleDevMessageUpdate)
-      window.removeEventListener("storage", handleGreetingUpdate)
-      window.removeEventListener("storage", handleDevMessageUpdate)
     }
   }, [])
 

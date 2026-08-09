@@ -1548,41 +1548,69 @@ function AdminSystemSettingsSection() {
     const [onlineUsers, setOnlineUsers] = useState<any[]>([])
     const { toast } = useToast()
 
-    const handleSaveGreeting = () => {
-        const val = greetingText.trim()
-        localStorage.setItem("kcet_admin_greeting_text", val || "User")
-        window.dispatchEvent(new Event("admin_greeting_updated"))
-        toast({
-            title: "Greeting Updated",
-            description: `Dashboard greeting text set to: "${val || 'User'}"`
-        })
+    const handleSaveGreeting = async () => {
+        const val = greetingText.trim() || "User"
+        setSaving(true)
+        const ok = await AdminSuggestionsService.setAdminGreetingName(val)
+        setSaving(false)
+        if (ok) {
+            toast({
+                title: "Global Greeting Saved",
+                description: `Dashboard greeting name globally updated to "${val}" for all users.`
+            })
+        } else {
+            toast({
+                title: "Save Failed",
+                description: "Could not save custom greeting to database.",
+                variant: "destructive"
+            })
+        }
     }
 
-    const handleSaveDevMessage = () => {
-        localStorage.setItem("kcet_dev_message_text", devMessageText.trim())
-        localStorage.setItem("kcet_dev_message_enabled", devMessageEnabled ? "true" : "false")
-        localStorage.setItem("kcet_dev_message_type", devMessageType)
-        window.dispatchEvent(new Event("dev_message_updated"))
-        toast({
-            title: "Developer Announcement Saved",
-            description: devMessageEnabled ? "Message live on Dashboard below greeting." : "Announcement saved (currently hidden)."
+    const handleSaveDevMessage = async () => {
+        setSaving(true)
+        const ok = await AdminSuggestionsService.setDevAnnouncementConfig({
+            message: devMessageText.trim(),
+            enabled: devMessageEnabled,
+            type: devMessageType
         })
+        setSaving(false)
+        if (ok) {
+            toast({
+                title: "Global Developer Announcement Saved",
+                description: devMessageEnabled 
+                    ? "Announcement live on Dashboard for all visitors globally!" 
+                    : "Announcement saved to database (hidden).",
+            })
+        } else {
+            toast({
+                title: "Save Failed",
+                description: "Could not save announcement to database.",
+                variant: "destructive"
+            })
+        }
     }
 
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const [disabled, blocked, maintenance, shutdownCfg] = await Promise.all([
+            const [disabled, blocked, maintenance, shutdownCfg, name, devCfg] = await Promise.all([
                 AdminSuggestionsService.isPaywallDisabledGlobally(),
                 AdminSuggestionsService.getBlockedPages(),
                 AdminSuggestionsService.getMaintenancePages(),
-                AdminSuggestionsService.getSiteShutdownConfig()
+                AdminSuggestionsService.getSiteShutdownConfig(),
+                AdminSuggestionsService.getAdminGreetingName(),
+                AdminSuggestionsService.getDevAnnouncementConfig()
             ])
             setPaywallDisabled(disabled)
             setBlockedPages(blocked)
             setMaintenancePages(maintenance)
             setShutdownConfig(shutdownCfg)
             setSiteShutdown(shutdownCfg.shutdown)
+            setGreetingText(name)
+            setDevMessageText(devCfg.message)
+            setDevMessageEnabled(devCfg.enabled)
+            setDevMessageType(devCfg.type)
             setDonationButtonEnabled(localStorage.getItem('kcet_donation_button_enabled') === 'true')
         } catch (err: any) {
             toast({
