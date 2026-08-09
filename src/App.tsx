@@ -101,7 +101,6 @@ const App = () => (
             <ResourceLimitModal />
             <Calibrate2027Modal />
             <DynamicPopupManager />
-            <WebsiteReviewPrompt />
 
             <Routes>
               <Route path="/" element={<Homepage />} />

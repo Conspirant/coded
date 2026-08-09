@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Music, Play, Pause, SkipForward, SkipBack, Shuffle, Repeat,
-  Volume2, VolumeX, ChevronUp, ChevronDown, X, Search
+  Volume2, VolumeX, ChevronUp, ChevronDown, X, Search, Sliders
 } from 'lucide-react';
 import { TRACKS, LANGUAGE_LABELS, type Track, type Language } from '@/data/musicPlayerData';
 
@@ -41,11 +41,10 @@ function save(p: Partial<Saved>) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MusicPlayer — compact floating widget
+   MusicPlayer — compact, attractive floating player
    ═══════════════════════════════════════════════════════ */
 export function MusicPlayer() {
   const init = useRef(load()).current;
-  // clamp saved index to valid range (old data may have pointed at removed/invalid tracks)
   if (init.idx < 0 || init.idx >= TRACKS.length) init.idx = 0;
 
   const [visible, setVisible] = useState(init.show);
@@ -66,9 +65,8 @@ export function MusicPlayer() {
 
   const ytRef = useRef<any>(null);
   const tick = useRef<ReturnType<typeof setInterval>>();
-  const errorSkips = useRef(0); // prevent infinite skip loop
+  const errorSkips = useRef(0);
 
-  // refs to avoid stale closures inside YT callbacks
   const idxRef = useRef(idx);
   const shufRef = useRef(shuf);
   const rptRef = useRef(rpt);
@@ -87,6 +85,12 @@ export function MusicPlayer() {
     return list;
   }, [lang, query]);
 
+  /* Completion ratio percentage (0 to 100) */
+  const completionPct = useMemo(() => {
+    if (!dur || dur <= 0) return 0;
+    return Math.min(100, Math.max(0, Math.round((pos / dur) * 100)));
+  }, [pos, dur]);
+
   /* persist */
   useEffect(() => { save({ idx }); }, [idx]);
   useEffect(() => { save({ vol }); }, [vol]);
@@ -95,11 +99,10 @@ export function MusicPlayer() {
   useEffect(() => { save({ lang }); }, [lang]);
   useEffect(() => { save({ show: visible }); }, [visible]);
 
-  /* ── advance track (uses refs, never stale) ────────── */
+  /* ── advance track (uses refs) ────────── */
   const advance = useCallback((fromError = false) => {
     if (fromError) {
       errorSkips.current++;
-      // stop trying after 5 consecutive errors to avoid infinite loop
       if (errorSkips.current > 5) { console.warn('[MusicPlayer] Too many errors, stopping.'); return; }
     } else {
       errorSkips.current = 0;
@@ -200,69 +203,109 @@ export function MusicPlayer() {
 
   const langBadge = (l: Language) => {
     const map: Record<Language, string> = {
-      hindi: 'bg-orange-500/10 text-orange-400',
-      kannada: 'bg-red-500/10 text-red-400',
-      english: 'bg-sky-500/10 text-sky-400',
+      hindi: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+      kannada: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+      english: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
     };
     return map[l];
   };
 
-  /* ═══ Hidden FAB (player closed) ═══ */
+  /* ═══ Circular SVG Progress Ring calculation ═══ */
+  const strokeDasharray = 2 * Math.PI * 20; // radius = 20 -> 125.66
+  const strokeDashoffset = strokeDasharray - (strokeDasharray * completionPct) / 100;
+
+  /* ═══ Floating Circular FAB (player closed) ═══ */
   if (!visible) {
     return (
       <button
         onClick={() => setVisible(true)}
-        title="Music Player"
-        className="fixed bottom-20 left-5 z-[9998] w-11 h-11 rounded-full
-                   bg-[#1e1e2e] border border-white/[0.08] shadow-lg
-                   flex items-center justify-center
-                   hover:border-white/20 hover:scale-105 active:scale-95 transition-all"
+        title={track ? `${track.title} (${completionPct}% completed)` : 'Open Music Player'}
+        className="fixed bottom-6 left-6 z-[9998] group cursor-pointer focus:outline-none"
       >
-        <Music className="w-[18px] h-[18px] text-purple-400" />
+        <div className="relative w-12 h-12 rounded-full bg-[#131422] border border-white/10 shadow-xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+          {/* SVG Progress Ring */}
+          <svg className="absolute inset-0 w-12 h-12 -rotate-90 transform pointer-events-none" viewBox="0 0 48 48">
+            <circle
+              cx="24" cy="24" r="20"
+              className="stroke-white/10"
+              strokeWidth="2.5"
+              fill="transparent"
+            />
+            <circle
+              cx="24" cy="24" r="20"
+              className="stroke-indigo-400 transition-all duration-300"
+              strokeWidth="2.5"
+              strokeDasharray={strokeDasharray}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              fill="transparent"
+            />
+          </svg>
+
+          {playing ? (
+            <div className="flex items-end gap-[2.5px] h-3.5 z-10">
+              <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar1_.5s_ease_infinite]" />
+              <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar2_.5s_ease_infinite_.15s]" />
+              <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar3_.5s_ease_infinite_.3s]" />
+            </div>
+          ) : (
+            <Music className="w-4 h-4 text-indigo-400 z-10" />
+          )}
+
+          {/* Hover completion percentage tooltip */}
+          {playing && (
+            <div className="absolute left-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#1b1c2e] border border-white/10 text-[11px] font-medium text-white px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap pointer-events-none">
+              {completionPct}% • {track?.title}
+            </div>
+          )}
+        </div>
       </button>
     );
   }
 
   return (
     <>
-      {/* hidden YT iframe — must be in DOM, 1×1 pixel, opacity 0 */}
+      {/* hidden YT iframe — 1×1 pixel */}
       <div className="fixed w-px h-px overflow-hidden opacity-0 pointer-events-none" style={{ top: 0, left: 0 }} aria-hidden>
         <div id="yt-mp-frame" />
       </div>
 
       <AnimatePresence mode="wait">
         {open ? (
-          /* ═══ Expanded ═══ */
+          /* ═══ Expanded Panel ═══ */
           <motion.div
             key="exp"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed bottom-3 left-3 z-[9999] w-[340px] max-w-[calc(100vw-1.5rem)]
-                       rounded-xl border border-white/[0.08] bg-[#161622]/95 backdrop-blur-xl
-                       shadow-xl flex flex-col overflow-hidden"
-            style={{ maxHeight: 'min(460px, calc(100vh - 5rem))' }}
+            initial={{ opacity: 0, y: 30, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            className="fixed bottom-4 left-4 z-[9999] w-[340px] max-w-[calc(100vw-1.5rem)]
+                       rounded-2xl border border-white/10 bg-[#131422]/95 backdrop-blur-2xl
+                       shadow-2xl shadow-black/40 flex flex-col overflow-hidden text-foreground"
+            style={{ maxHeight: 'min(470px, calc(100vh - 5rem))' }}
           >
-            {/* header */}
-            <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-white/[0.06] relative">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 relative">
               <div className="flex items-center gap-2">
-                <span className="text-[13px] font-medium text-white/80">Music</span>
+                <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                <span className="text-xs font-bold tracking-wide text-white/90">Music Player</span>
               </div>
-              <div className="flex items-center gap-1">
-                {/* Quality selector button */}
+
+              <div className="flex items-center gap-1.5">
+                {/* Quality Selector dropdown */}
                 <div className="relative">
                   <button
                     onClick={() => setShowQualityMenu((p) => !p)}
-                    className="px-2 py-0.5 rounded text-[10px] font-medium bg-white/[0.05] border border-white/[0.08] text-white/60 hover:text-white hover:bg-white/[0.1] transition-colors flex items-center gap-1"
-                    title="Change Audio/Video Quality"
+                    className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1 cursor-pointer"
+                    title="Audio/Video Stream Quality"
                   >
-                    <span>{quality === 'auto' ? 'Auto' : quality === 'hd720' ? 'HD 720p' : quality === 'medium' ? '360p' : '144p Saver'}</span>
+                    <Sliders className="w-3 h-3 text-indigo-400" />
+                    <span>{quality === 'auto' ? 'Auto' : quality === 'hd720' ? '720p' : quality === 'medium' ? '360p' : '144p'}</span>
                   </button>
 
                   {showQualityMenu && (
-                    <div className="absolute right-0 top-full mt-1.5 w-32 rounded-lg border border-white/[0.1] bg-[#1a1a28] shadow-xl py-1 z-[10000]">
-                      <div className="px-2 py-1 text-[9px] font-semibold text-white/30 uppercase tracking-wider">Quality</div>
+                    <div className="absolute right-0 top-full mt-1.5 w-36 rounded-xl border border-white/10 bg-[#1b1c2e] shadow-2xl py-1 z-[10000]">
+                      <div className="px-3 py-1 text-[9px] font-bold text-white/40 uppercase tracking-wider">Quality</div>
                       {([
                         { key: 'auto', label: 'Auto (Best)' },
                         { key: 'hd720', label: 'HD (720p)' },
@@ -277,129 +320,177 @@ export function MusicPlayer() {
                             ytRef.current?.setPlaybackQuality?.(q.key);
                             setShowQualityMenu(false);
                           }}
-                          className={`w-full px-2.5 py-1 text-left text-[11px] flex items-center justify-between transition-colors ${
-                            quality === q.key ? 'text-purple-400 bg-white/[0.06] font-medium' : 'text-white/60 hover:text-white hover:bg-white/[0.04]'
+                          className={`w-full px-3 py-1.5 text-left text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                            quality === q.key ? 'text-indigo-400 bg-white/5 font-semibold' : 'text-white/70 hover:text-white hover:bg-white/5'
                           }`}
                         >
                           <span>{q.label}</span>
-                          {quality === q.key && <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />}
+                          {quality === q.key && <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />}
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
 
-                <button onClick={() => setOpen(false)} className="p-1 rounded hover:bg-white/[0.06] text-white/40 hover:text-white/70 transition-colors"><ChevronDown className="w-4 h-4" /></button>
-                <button onClick={close} className="p-1 rounded hover:bg-white/[0.06] text-white/40 hover:text-white/70 transition-colors"><X className="w-4 h-4" /></button>
+                <button onClick={() => setOpen(false)} className="p-1 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition-colors cursor-pointer"><ChevronDown className="w-4 h-4" /></button>
+                <button onClick={close} className="p-1 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition-colors cursor-pointer"><X className="w-4 h-4" /></button>
               </div>
             </div>
 
-            {/* now playing */}
+            {/* Now Playing section */}
             {track && (
-              <div className="px-3.5 pt-3 pb-2">
-                <div className="flex items-center gap-3 mb-2.5">
-                  <div className="w-11 h-11 rounded-lg bg-white/[0.04] flex items-center justify-center flex-shrink-0">
+              <div className="px-4 pt-3.5 pb-2 bg-gradient-to-b from-white/[0.02] to-transparent">
+                <div className="flex items-center gap-3.5 mb-3">
+                  <div className="relative w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
                     {playing ? (
                       <div className="flex items-end gap-[3px] h-4">
-                        <span className="w-[3px] rounded-full bg-purple-400 animate-[bar1_.5s_ease_infinite]" />
-                        <span className="w-[3px] rounded-full bg-purple-400 animate-[bar2_.5s_ease_infinite_.15s]" />
-                        <span className="w-[3px] rounded-full bg-purple-400 animate-[bar3_.5s_ease_infinite_.3s]" />
+                        <span className="w-[3px] rounded-full bg-indigo-400 animate-[bar1_.5s_ease_infinite]" />
+                        <span className="w-[3px] rounded-full bg-indigo-400 animate-[bar2_.5s_ease_infinite_.15s]" />
+                        <span className="w-[3px] rounded-full bg-indigo-400 animate-[bar3_.5s_ease_infinite_.3s]" />
                       </div>
                     ) : (
-                      <Music className="w-4 h-4 text-white/20" />
+                      <Music className="w-5 h-5 text-indigo-400/60" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13px] font-medium text-white/90 truncate">{track.title}</p>
-                    <p className="text-[11px] text-white/40 truncate">{track.artist}</p>
+                    <div className="flex items-center justify-between gap-1">
+                      <p className="text-xs font-bold text-white truncate">{track.title}</p>
+                      <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex-shrink-0">
+                        {completionPct}%
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-white/40 truncate mt-0.5">{track.artist}</p>
                   </div>
                 </div>
 
-                {/* seek */}
-                <input type="range" min={0} max={dur || 1} value={pos} onChange={(e) => seek(+e.target.value)}
-                  className="w-full h-[3px] rounded-full appearance-none cursor-pointer bg-white/[0.08]
-                    [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full
-                    [&::-webkit-slider-thumb]:bg-white/70 [&::-webkit-slider-thumb]:appearance-none
-                    [&::-webkit-slider-thumb]:border-0 [&::-webkit-slider-thumb]:shadow-none" />
-                <div className="flex justify-between text-[10px] text-white/25 mt-0.5 mb-1">
-                  <span>{fmt(pos)}</span><span>{fmt(dur)}</span>
+                {/* Progress bar with completion ratio */}
+                <div className="space-y-1">
+                  <input
+                    type="range"
+                    min={0}
+                    max={dur || 1}
+                    value={pos}
+                    onChange={(e) => seek(+e.target.value)}
+                    className="w-full h-1 rounded-full appearance-none cursor-pointer bg-white/10 accent-indigo-400
+                      [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full
+                      [&::-webkit-slider-thumb]:bg-indigo-400 [&::-webkit-slider-thumb]:appearance-none border-0"
+                  />
+                  <div className="flex justify-between text-[10px] font-mono text-white/30">
+                    <span>{fmt(pos)}</span>
+                    <span className="text-white/40">{completionPct}% completed</span>
+                    <span>{fmt(dur)}</span>
+                  </div>
                 </div>
 
-                {/* transport */}
-                <div className="flex items-center justify-center gap-1">
-                  <button onClick={() => setShuf((p) => !p)} className={`p-1.5 rounded transition-colors ${shuf ? 'text-purple-400' : 'text-white/25 hover:text-white/50'}`}><Shuffle className="w-3.5 h-3.5" /></button>
-                  <button onClick={prev} className="p-1.5 text-white/50 hover:text-white/80 transition-colors"><SkipBack className="w-4 h-4" /></button>
-                  <button onClick={toggle} disabled={!ready}
-                    className="p-2.5 rounded-full bg-white/[0.08] text-white hover:bg-white/[0.12] disabled:opacity-40 transition-colors mx-1">
-                    {loading ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                      : playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-[1px]" />}
+                {/* Transport controls */}
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <button onClick={() => setShuf((p) => !p)} className={`p-1.5 rounded-lg transition-colors cursor-pointer ${shuf ? 'text-indigo-400 bg-indigo-500/10' : 'text-white/30 hover:text-white/60'}`}><Shuffle className="w-3.5 h-3.5" /></button>
+                  <button onClick={prev} className="p-1.5 text-white/60 hover:text-white transition-colors cursor-pointer"><SkipBack className="w-4 h-4" /></button>
+                  <button
+                    onClick={toggle}
+                    disabled={!ready}
+                    className="p-2.5 rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-400 disabled:opacity-40 transition-all cursor-pointer mx-1"
+                  >
+                    {loading ? (
+                      <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    ) : playing ? (
+                      <Pause className="w-4 h-4 fill-white" />
+                    ) : (
+                      <Play className="w-4 h-4 fill-white ml-0.5" />
+                    )}
                   </button>
-                  <button onClick={next} className="p-1.5 text-white/50 hover:text-white/80 transition-colors"><SkipForward className="w-4 h-4" /></button>
-                  <button onClick={() => setRpt((p) => !p)} className={`p-1.5 rounded transition-colors ${rpt ? 'text-purple-400' : 'text-white/25 hover:text-white/50'}`}><Repeat className="w-3.5 h-3.5" /></button>
+                  <button onClick={next} className="p-1.5 text-white/60 hover:text-white transition-colors cursor-pointer"><SkipForward className="w-4 h-4" /></button>
+                  <button onClick={() => setRpt((p) => !p)} className={`p-1.5 rounded-lg transition-colors cursor-pointer ${rpt ? 'text-indigo-400 bg-indigo-500/10' : 'text-white/30 hover:text-white/60'}`}><Repeat className="w-3.5 h-3.5" /></button>
                 </div>
 
-                {/* volume */}
-                <div className="flex items-center gap-2 mt-1.5">
-                  <button onClick={() => setVolume(vol === 0 ? 60 : 0)} className="text-white/25 hover:text-white/50 transition-colors">
+                {/* Volume slider */}
+                <div className="flex items-center gap-2 mt-2 px-1">
+                  <button onClick={() => setVolume(vol === 0 ? 60 : 0)} className="text-white/30 hover:text-white/60 transition-colors cursor-pointer">
                     {vol === 0 ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
                   </button>
-                  <input type="range" min={0} max={100} value={vol} onChange={(e) => setVolume(+e.target.value)}
-                    className="flex-1 h-[2px] rounded-full appearance-none cursor-pointer bg-white/[0.08]
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={vol}
+                    onChange={(e) => setVolume(+e.target.value)}
+                    className="flex-1 h-1 rounded-full appearance-none cursor-pointer bg-white/10 accent-indigo-400
                       [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full
-                      [&::-webkit-slider-thumb]:bg-white/50 [&::-webkit-slider-thumb]:appearance-none" />
+                      [&::-webkit-slider-thumb]:bg-indigo-400 [&::-webkit-slider-thumb]:appearance-none"
+                  />
+                  <span className="text-[10px] font-mono text-white/30 w-6 text-right">{vol}%</span>
                 </div>
               </div>
             )}
 
-            <div className="h-px bg-white/[0.04]" />
+            <div className="h-px bg-white/5" />
 
-            {/* language tabs */}
-            <div className="flex gap-1 px-3 py-2">
+            {/* Language filter tabs */}
+            <div className="flex gap-1.5 px-3 py-2">
               {(['all', 'hindi', 'kannada', 'english'] as const).map((l) => (
-                <button key={l} onClick={() => setLang(l)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors
-                    ${lang === l ? 'bg-white/[0.08] text-white/80' : 'text-white/30 hover:text-white/50 hover:bg-white/[0.03]'}`}>
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer
+                    ${lang === l
+                      ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'
+                      : 'text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent'
+                    }`}
+                >
                   {l === 'all' ? 'All' : l.charAt(0).toUpperCase() + l.slice(1)}
                 </button>
               ))}
             </div>
 
-            {/* search */}
-            <div className="px-3 pb-1.5">
+            {/* Search */}
+            <div className="px-3 pb-2">
               <div className="relative">
-                <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-white/20" />
-                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..."
-                  className="w-full pl-7 pr-2 py-1.5 rounded-md bg-white/[0.04] border border-white/[0.06]
-                    text-[11px] text-white/70 placeholder:text-white/20 focus:outline-none focus:border-white/[0.12] transition-colors" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search tracks..."
+                  className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-white/5 border border-white/10
+                    text-xs text-white/90 placeholder:text-white/25 focus:outline-none focus:border-indigo-500/40 transition-colors"
+                />
               </div>
             </div>
 
-            {/* track list */}
-            <div className="flex-1 overflow-y-auto px-1.5 pb-2 min-h-0" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.06) transparent' }}>
+            {/* Track list */}
+            <div className="flex-1 overflow-y-auto px-2 pb-2 min-h-0 space-y-0.5" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.1) transparent' }}>
               {filtered.length === 0 ? (
-                <p className="text-center text-[11px] text-white/20 py-6">No songs found</p>
+                <p className="text-center text-xs text-white/30 py-6">No matching songs found</p>
               ) : filtered.map((t) => {
                 const gi = TRACKS.indexOf(t);
                 const active = gi === idx;
                 return (
-                  <button key={t.id} onClick={() => go(gi)}
-                    className={`w-full flex items-center gap-2.5 px-2.5 py-[7px] rounded-lg text-left transition-colors
-                      ${active ? 'bg-white/[0.06]' : 'hover:bg-white/[0.03]'}`}>
-                    <div className={`w-7 h-7 rounded flex-shrink-0 flex items-center justify-center text-[10px]
-                      ${active ? 'bg-purple-500/15 text-purple-400' : 'bg-white/[0.03] text-white/20'}`}>
+                  <button
+                    key={t.id}
+                    onClick={() => go(gi)}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all cursor-pointer
+                      ${active
+                        ? 'bg-indigo-500/15 border border-indigo-500/30'
+                        : 'hover:bg-white/5 border border-transparent'
+                      }`}
+                  >
+                    <div className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center text-xs font-bold
+                      ${active ? 'bg-indigo-500 text-white' : 'bg-white/5 text-white/30'}`}
+                    >
                       {active && playing ? (
                         <div className="flex items-end gap-[2px] h-3">
-                          <span className="w-[2px] rounded-full bg-purple-400 animate-[bar1_.5s_ease_infinite]" />
-                          <span className="w-[2px] rounded-full bg-purple-400 animate-[bar2_.5s_ease_infinite_.15s]" />
-                          <span className="w-[2px] rounded-full bg-purple-400 animate-[bar3_.5s_ease_infinite_.3s]" />
+                          <span className="w-[2px] rounded-full bg-white animate-[bar1_.5s_ease_infinite]" />
+                          <span className="w-[2px] rounded-full bg-white animate-[bar2_.5s_ease_infinite_.15s]" />
+                          <span className="w-[2px] rounded-full bg-white animate-[bar3_.5s_ease_infinite_.3s]" />
                         </div>
-                      ) : <Music className="w-3 h-3" />}
+                      ) : (
+                        <Music className="w-3.5 h-3.5" />
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className={`text-[12px] truncate ${active ? 'text-white/90 font-medium' : 'text-white/60'}`}>{t.title}</p>
-                      <p className="text-[10px] text-white/30 truncate">{t.artist}</p>
+                      <p className={`text-xs font-semibold truncate ${active ? 'text-indigo-300' : 'text-white/80'}`}>{t.title}</p>
+                      <p className="text-[10px] text-white/40 truncate">{t.artist}</p>
                     </div>
-                    <span className={`text-[9px] px-1.5 py-[2px] rounded flex-shrink-0 ${langBadge(t.language)}`}>
+                    <span className={`text-[9px] font-semibold px-2 py-0.5 rounded-full border flex-shrink-0 ${langBadge(t.language)}`}>
                       {t.language === 'hindi' ? 'HI' : t.language === 'kannada' ? 'KN' : 'EN'}
                     </span>
                   </button>
@@ -408,45 +499,64 @@ export function MusicPlayer() {
             </div>
           </motion.div>
         ) : (
-          /* ═══ Mini player ═══ */
+          /* ═══ Mini player Bar ═══ */
           <motion.div
             key="mini"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.15 }}
-            className="fixed bottom-3 left-3 z-[9999] w-[300px] max-w-[calc(100vw-1.5rem)]
-                       rounded-xl border border-white/[0.08] bg-[#161622]/95 backdrop-blur-xl shadow-lg"
+            className="fixed bottom-4 left-4 z-[9999] w-[310px] max-w-[calc(100vw-1.5rem)]
+                       rounded-2xl border border-white/10 bg-[#131422]/95 backdrop-blur-2xl shadow-xl overflow-hidden"
           >
-            <div className="flex items-center gap-2.5 px-3 py-2">
-              <div className="w-9 h-9 rounded-lg bg-white/[0.04] flex-shrink-0 flex items-center justify-center">
+            <div className="flex items-center gap-3 px-3.5 py-2.5">
+              <div className="relative w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex-shrink-0 flex items-center justify-center">
                 {playing ? (
                   <div className="flex items-end gap-[2px] h-3.5">
-                    <span className="w-[2.5px] rounded-full bg-purple-400 animate-[bar1_.5s_ease_infinite]" />
-                    <span className="w-[2.5px] rounded-full bg-purple-400 animate-[bar2_.5s_ease_infinite_.15s]" />
-                    <span className="w-[2.5px] rounded-full bg-purple-400 animate-[bar3_.5s_ease_infinite_.3s]" />
+                    <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar1_.5s_ease_infinite]" />
+                    <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar2_.5s_ease_infinite_.15s]" />
+                    <span className="w-[2.5px] rounded-full bg-indigo-400 animate-[bar3_.5s_ease_infinite_.3s]" />
                   </div>
-                ) : <Music className="w-4 h-4 text-white/20" />}
+                ) : (
+                  <Music className="w-4 h-4 text-indigo-400/60" />
+                )}
               </div>
+
               <div className="min-w-0 flex-1">
-                <p className="text-[12px] font-medium text-white/80 truncate">{track?.title ?? 'No track'}</p>
-                <p className="text-[10px] text-white/35 truncate">{track?.artist ?? '—'}</p>
+                <div className="flex items-center justify-between gap-1">
+                  <p className="text-xs font-bold text-white truncate">{track?.title ?? 'No track'}</p>
+                  <span className="text-[9px] font-mono font-semibold text-indigo-400">{completionPct}%</span>
+                </div>
+                <p className="text-[10px] text-white/40 truncate">{track?.artist ?? '—'}</p>
               </div>
-              <div className="flex items-center gap-0.5 flex-shrink-0">
-                <button onClick={prev} className="p-1 text-white/35 hover:text-white/60 transition-colors"><SkipBack className="w-3.5 h-3.5" /></button>
-                <button onClick={toggle} disabled={!ready}
-                  className="p-1.5 rounded-full bg-white/[0.08] text-white hover:bg-white/[0.12] disabled:opacity-40 transition-colors">
-                  {loading ? <div className="w-3.5 h-3.5 border-[1.5px] border-white/20 border-t-white rounded-full animate-spin" />
-                    : playing ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-[1px]" />}
+
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <button onClick={prev} className="p-1 text-white/40 hover:text-white transition-colors cursor-pointer"><SkipBack className="w-3.5 h-3.5" /></button>
+                <button
+                  onClick={toggle}
+                  disabled={!ready}
+                  className="p-2 rounded-full bg-indigo-500 text-white shadow-md hover:bg-indigo-400 disabled:opacity-40 transition-all cursor-pointer"
+                >
+                  {loading ? (
+                    <div className="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  ) : playing ? (
+                    <Pause className="w-3.5 h-3.5 fill-white" />
+                  ) : (
+                    <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
+                  )}
                 </button>
-                <button onClick={next} className="p-1 text-white/35 hover:text-white/60 transition-colors"><SkipForward className="w-3.5 h-3.5" /></button>
-                <button onClick={() => setOpen(true)} className="p-1 text-white/25 hover:text-white/50 transition-colors ml-0.5"><ChevronUp className="w-3.5 h-3.5" /></button>
-                <button onClick={close} className="p-1 text-white/20 hover:text-white/40 transition-colors"><X className="w-3 h-3" /></button>
+                <button onClick={next} className="p-1 text-white/40 hover:text-white transition-colors cursor-pointer"><SkipForward className="w-3.5 h-3.5" /></button>
+                <button onClick={() => setOpen(true)} className="p-1 text-white/30 hover:text-white transition-colors cursor-pointer ml-0.5"><ChevronUp className="w-4 h-4" /></button>
+                <button onClick={close} className="p-1 text-white/30 hover:text-white transition-colors cursor-pointer"><X className="w-3.5 h-3.5" /></button>
               </div>
             </div>
-            {/* thin progress line */}
-            <div className="h-[2px] bg-white/[0.04] rounded-b-xl overflow-hidden">
-              <div className="h-full bg-purple-500/40 transition-all duration-300" style={{ width: dur ? `${(pos / dur) * 100}%` : '0%' }} />
+
+            {/* Bottom completion progress bar */}
+            <div className="h-1 bg-white/5 w-full overflow-hidden">
+              <div
+                className="h-full bg-indigo-500 transition-all duration-300"
+                style={{ width: `${completionPct}%` }}
+              />
             </div>
           </motion.div>
         )}
