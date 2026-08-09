@@ -16,7 +16,7 @@ import {
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
     Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
-    Megaphone, Vote, Power, Sparkles
+    Megaphone, Vote, Power, Sparkles, Music
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -30,6 +30,7 @@ import AdminActualRanksView from "@/components/AdminActualRanksView"
 import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
 import { AdminPopupControllerSection } from "@/components/admin/AdminPopupControllerSection"
 import { AdminPollManager } from "@/components/admin/AdminPollManager"
+import { AdminMusicManager } from "@/components/admin/AdminMusicManager"
 import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
@@ -2383,6 +2384,7 @@ function AdminVisitorCounterControl() {
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
+    { id: "music", label: "Music Playlist", icon: Music },
     { id: "polls", label: "Community Polls", icon: Vote },
     { id: "popups", label: "Popups & Alerts", icon: Megaphone },
     { id: "ai-extractor", label: "AI Extractor", icon: BrainCircuit },
@@ -2453,6 +2455,7 @@ export default function AdminHub() {
                 {/* Content */}
                 <main className="flex-1 p-6 md:p-8 max-w-7xl">
                     {activeSection === "pyq" && <AdminPYQSection />}
+                    {activeSection === "music" && <AdminMusicManager />}
                     {activeSection === "polls" && <AdminPollManager />}
                     {activeSection === "popups" && <AdminPopupControllerSection />}
                     {activeSection === "ai-extractor" && <AdminAIExtractor />}

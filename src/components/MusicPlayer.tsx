@@ -4,7 +4,8 @@ import {
   Music, Play, Pause, SkipForward, SkipBack, Shuffle, Repeat,
   Volume2, VolumeX, ChevronUp, ChevronDown, X, Search, Sliders
 } from 'lucide-react';
-import { TRACKS, LANGUAGE_LABELS, type Track, type Language } from '@/data/musicPlayerData';
+import { TRACKS as DEFAULT_TRACKS, LANGUAGE_LABELS, type Track, type Language } from '@/data/musicPlayerData';
+import { getActiveTracks } from '@/components/admin/AdminMusicManager';
 
 /* ─── YouTube IFrame API bootstrap ──────────────────── */
 let ytApiReady = false;
@@ -45,7 +46,9 @@ function save(p: Partial<Saved>) {
    ═══════════════════════════════════════════════════════ */
 export function MusicPlayer() {
   const init = useRef(load()).current;
-  if (init.idx < 0 || init.idx >= TRACKS.length) init.idx = 0;
+  const [tracks, setTracks] = useState<Track[]>(getActiveTracks());
+
+  if (init.idx < 0 || init.idx >= tracks.length) init.idx = 0;
 
   const [visible, setVisible] = useState(init.show);
   const [open, setOpen] = useState(false);
@@ -72,21 +75,35 @@ export function MusicPlayer() {
   const shufRef = useRef(shuf);
   const rptRef = useRef(rpt);
   const volRef = useRef(vol);
+  const tracksRef = useRef(tracks);
+
   useEffect(() => { idxRef.current = idx; }, [idx]);
   useEffect(() => { shufRef.current = shuf; }, [shuf]);
   useEffect(() => { rptRef.current = rpt; }, [rpt]);
   useEffect(() => { volRef.current = vol; }, [vol]);
+  useEffect(() => { tracksRef.current = tracks; }, [tracks]);
 
-  const track: Track | undefined = TRACKS[idx];
+  // Real-time custom event listener when admin updates songs
+  useEffect(() => {
+    const handleUpdate = () => {
+      const updated = getActiveTracks();
+      setTracks(updated);
+      tracksRef.current = updated;
+    };
+    window.addEventListener('kcet_music_tracks_updated', handleUpdate);
+    return () => window.removeEventListener('kcet_music_tracks_updated', handleUpdate);
+  }, []);
+
+  const track: Track | undefined = tracks[idx] ?? tracks[0];
 
   const filtered = useMemo(() => {
-    let list = lang === 'all' ? TRACKS : TRACKS.filter((t) => t.language === lang);
+    let list = lang === 'all' ? tracks : tracks.filter((t) => t.language === lang);
     if (query.trim()) {
       const q = query.toLowerCase();
       list = list.filter((t) => t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q));
     }
     return list;
-  }, [lang, query]);
+  }, [tracks, lang, query]);
 
   /* Completion ratio percentage (0 to 100) */
   const completionPct = useMemo(() => {
@@ -104,6 +121,9 @@ export function MusicPlayer() {
 
   /* ── advance track ────────── */
   const advance = useCallback((fromError = false) => {
+    const activeList = tracksRef.current;
+    if (!activeList || activeList.length === 0) return;
+
     if (fromError) {
       errorSkips.current++;
       if (errorSkips.current > 5) { console.warn('[MusicPlayer] Too many errors, stopping.'); return; }
@@ -116,10 +136,10 @@ export function MusicPlayer() {
       return;
     }
     const next = shufRef.current
-      ? Math.floor(Math.random() * TRACKS.length)
-      : (idxRef.current + 1) % TRACKS.length;
+      ? Math.floor(Math.random() * activeList.length)
+      : (idxRef.current + 1) % activeList.length;
     setIdx(next);
-    ytRef.current?.loadVideoById(TRACKS[next].id);
+    ytRef.current?.loadVideoById(activeList[next].id);
     ytRef.current?.playVideo();
   }, []);
 
@@ -136,9 +156,12 @@ export function MusicPlayer() {
         const targetDiv = document.createElement('div');
         playerContainerRef.current.appendChild(targetDiv);
 
+        const currentTracks = tracksRef.current;
+        const initialVideoId = currentTracks[idxRef.current]?.id ?? currentTracks[0]?.id ?? '4NRXx6U8ABQ';
+
         player = new (window as any).YT.Player(targetDiv, {
           width: '320', height: '180',
-          videoId: TRACKS[idxRef.current]?.id ?? TRACKS[0].id,
+          videoId: initialVideoId,
           playerVars: {
             autoplay: 0,
             controls: 0,
@@ -203,8 +226,9 @@ export function MusicPlayer() {
   /* ── controls ──────────────────────────────────────── */
   const go = useCallback((i: number) => {
     setIdx(i);
-    if (ytRef.current) {
-      ytRef.current.loadVideoById(TRACKS[i].id);
+    const activeList = tracksRef.current;
+    if (ytRef.current && activeList[i]) {
+      ytRef.current.loadVideoById(activeList[i].id);
       ytRef.current.playVideo();
       ytRef.current.setPlaybackQuality?.(quality);
     }
@@ -221,12 +245,14 @@ export function MusicPlayer() {
   }, [playing]);
 
   const next = useCallback(() => {
-    const n = shufRef.current ? Math.floor(Math.random() * TRACKS.length) : (idxRef.current + 1) % TRACKS.length;
+    const listLen = tracksRef.current.length || 1;
+    const n = shufRef.current ? Math.floor(Math.random() * listLen) : (idxRef.current + 1) % listLen;
     go(n);
   }, [go]);
 
   const prev = useCallback(() => {
-    const n = shufRef.current ? Math.floor(Math.random() * TRACKS.length) : (idxRef.current === 0 ? TRACKS.length - 1 : idxRef.current - 1);
+    const listLen = tracksRef.current.length || 1;
+    const n = shufRef.current ? Math.floor(Math.random() * listLen) : (idxRef.current === 0 ? listLen - 1 : idxRef.current - 1);
     go(n);
   }, [go]);
 
@@ -494,7 +520,7 @@ export function MusicPlayer() {
                 {filtered.length === 0 ? (
                   <p className="text-center text-xs text-white/30 py-6">No matching songs found</p>
                 ) : filtered.map((t) => {
-                  const gi = TRACKS.indexOf(t);
+                  const gi = tracks.indexOf(t);
                   const active = gi === idx;
                   return (
                     <button
