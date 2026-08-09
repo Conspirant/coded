@@ -39,13 +39,14 @@ Round 2 seats are generated from three sources:
 
 ---
 
-### 2. The Golden Rule of Round 2 Option Editing
+### 2. Option Editing & Adding Fresh Choices in Round 2
 
-> **CRITICAL RULE**: You CANNOT add fresh new college options in Round 2! You can ONLY re-order or delete options above your Round 1 held seat.
+> **OFFICIAL KEA UPDATE**: Candidates **ARE ALLOWED** to add fresh new college and branch options during Round 2 and Second Extended Round option entry windows! You can add new choices, modify existing priority rankings, or delete unwanted options.
 
 #### What You MUST Do Before Round 2 Option Window Closes:
-1. **Review Options Above Your Seat**: Look at every option listed ABOVE your Round 1 held seat. If there is ANY college/branch listed that you now realize you like LESS than your Round 1 held seat, **delete it immediately**!
-2. **Why Deleting Unwanted Options is Mandatory**: If KEA's computer algorithm finds a seat for you in ANY option listed above your held seat in Round 2, your Round 1 seat is **automatically cancelled and given to someone else**. You cannot get it back!
+1. **Review & Add Fresh Options**: Explore newly added seats, fee-revised colleges, or options you missed in Round 1 and add them to your option list.
+2. **Review Options Above Your Seat**: Look at every option listed ABOVE your Round 1 held seat. If there is ANY college/branch listed that you now realize you like LESS than your Round 1 held seat, **delete it immediately**!
+3. **Why Deleting Unwanted Options is Mandatory**: If KEA's computer algorithm finds a seat for you in ANY option listed above your held seat in Round 2, your Round 1 seat is **automatically cancelled and given to someone else**. You cannot get it back!
 
 ---
 
@@ -114,9 +115,9 @@ This guide breaks down the exact method top rankers use to structure 200+ option
 
 ---
 
-### 🚨 CRITICAL KEA RULE: Options Entered in Round 1 are FINAL!
+### 🟢 OFFICIAL KEA RULE: Fresh Option Entry Allowed in Subsequent Rounds
 
-> **WARNING**: You CANNOT add fresh new college/branch options in Round 2! Whatever colleges and branches you want to be considered for across all counseling rounds MUST be added during the Round 1 Option Entry window. In Round 2, candidates are ONLY allowed to delete existing options or re-order priority rankings above their held seat.
+> **OFFICIAL UPDATE**: Candidates **ARE ALLOWED** to add fresh new college and branch options during Round 2 and Extended Round option entry windows! Candidates can add new choices, re-order priority rankings, or delete unwanted options above their held seat.
 
 ---
 

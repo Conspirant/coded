@@ -87,8 +87,9 @@ const RoundTracker = () => {
       progress: 0,
       description: 'Option modification for Choice 2 & 3 candidates followed by Round 2 seat allotment.',
       alerts: [
-        'Fresh option modification window for Choice 2 & Choice 3 candidates will open after Round 1 reporting.',
-        'Seat allotment results for Round 2 will be declared following option entry closure.'
+        '🟢 OFFICIAL KEA UPDATE: Candidates ARE ALLOWED to add fresh new college/branch options during Round 2 option entry!',
+        'Fresh option entry & modification window for Choice 2, Choice 3, and unallotted candidates will open after Round 1 reporting.',
+        'Ensure you review and delete any unwanted options above your held seat before final option locking.'
       ]
     },
     {
@@ -186,7 +187,21 @@ const RoundTracker = () => {
             <ExternalLink className="h-4 w-4" />
           </a>
         </div>
-      </div>
+      {/* Official KEA Option Entry Update Callout Banner */}
+      <Alert className="border-emerald-500/30 bg-emerald-500/10 text-emerald-200 p-4 sm:p-5 rounded-2xl flex items-start gap-3 shadow-md">
+        <ShieldCheck className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+        <div className="space-y-1">
+          <AlertTitle className="text-sm font-bold text-emerald-300 flex flex-wrap items-center gap-2">
+            <span>OFFICIAL KEA 2026 UPDATE: Candidates Allowed to Add Fresh Options in Round 2</span>
+            <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/40 text-[9px] uppercase font-mono">
+              Policy Confirmed
+            </Badge>
+          </AlertTitle>
+          <AlertDescription className="text-xs leading-relaxed text-emerald-200/90">
+            Candidates participating in Round 2 and Extended Rounds (holding Choice 2 / Choice 3 or unallotted) <strong>ARE PERMITTED to add fresh new college and branch options</strong> to their option entry sheet. You are no longer restricted to only re-ordering previously entered options.
+          </AlertDescription>
+        </div>
+      </Alert>
 
       {/* Quick Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -347,7 +362,7 @@ const RoundTracker = () => {
             </p>
             <div className="text-slate-400 space-y-1 pt-1 border-t border-indigo-500/10">
               <span className="block font-medium text-indigo-300">Action Required:</span>
-              <span>1. Pay prescribed course fee for current seat.<br />2. Participate in Round 2.<br />3. If higher option allotted in R2, current seat is automatically cancelled.</span>
+              <span>1. Pay prescribed course fee for current seat.<br />2. Participate in Round 2 (<strong>You CAN add fresh college options</strong>, reorder, or delete options).<br />3. If higher option allotted in R2, current seat is automatically cancelled and upgraded.</span>
             </div>
           </div>
 
@@ -362,7 +377,7 @@ const RoundTracker = () => {
             </p>
             <div className="text-slate-400 space-y-1 pt-1 border-t border-amber-500/10">
               <span className="block font-medium text-amber-300">Action Required:</span>
-              <span>1. No fee payment for current seat.<br />2. Re-enter options for Round 2.<br />3. Current seat is released for other candidates.</span>
+              <span>1. No fee payment for current seat.<br />2. Enter Round 2 option entry (<strong>You CAN add fresh college options</strong>, reorder, or delete options).<br />3. Current seat is released for other candidates.</span>
             </div>
           </div>
 
