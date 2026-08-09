@@ -168,7 +168,7 @@ const Dashboard = () => {
         }
       } catch (e) {
         console.error("Error loading stats", e)
-      } font-sans {
+      } finally {
         if (isMounted) setLoading(false)
       }
     }
