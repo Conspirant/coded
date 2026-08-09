@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   TrendingUp,
   GraduationCap,
@@ -13,7 +12,6 @@ import {
   Target,
   Calculator,
   BookOpen,
-  ExternalLink,
   Calendar,
   Bell,
   ArrowRight,
@@ -25,19 +23,14 @@ import {
   FileText,
   Sword,
   CheckCircle2,
-  Bookmark,
   Layers,
   Bot,
   Bus,
   Train,
   Building2,
   Star,
-  Trash2,
   Zap,
-  Compass,
-  Crown,
-  Sparkle,
-  ArrowUpRight
+  Compass
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
@@ -48,9 +41,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
   ResponsiveContainer, Legend, Area, AreaChart, BarChart, Bar, Cell
 } from "recharts"
-import { predictKCETRankBothYears, getRankBand } from "@/lib/rank-predictor"
-import { predictComedkRankFromMarks, type ComedkShift } from "@/lib/comedk-rank-predictor"
-import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
+import { getRankBand } from "@/lib/rank-predictor"
 import { toast } from "sonner"
 
 interface DataStats {
@@ -149,26 +140,6 @@ const Dashboard = () => {
     return { rank: 12500, category: "GM", preferredStream: "CSE" }
   })
 
-  // Quick Calculator State
-  const [kcetMarksInput, setKcetMarksInput] = useState<string>("110")
-  const [pucPctInput, setPucPctInput] = useState<string>("92")
-  const [comedkMarksInput, setComedkMarksInput] = useState<string>("95")
-  const [comedkShiftInput, setComedkShiftInput] = useState<ComedkShift>("10s1")
-  const [calcResult, setCalcResult] = useState<any>(null)
-
-  // Quick Cutoff Search State
-  const [quickSearchQuery, setQuickSearchQuery] = useState("")
-
-  // Bookmarks State
-  const [bookmarks, setBookmarks] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem("kcet_bookmarks")
-      return saved ? JSON.parse(saved) : []
-    } catch {
-      return []
-    }
-  })
-
   useEffect(() => {
     let isMounted = true
     const loadStats = async () => {
@@ -236,63 +207,6 @@ const Dashboard = () => {
   const safeCount = useMemo(() => matchedColleges.filter(m => m.status === "Safe").length, [matchedColleges])
   const targetCount = useMemo(() => matchedColleges.filter(m => m.status === "Target").length, [matchedColleges])
   const dreamCount = useMemo(() => matchedColleges.filter(m => m.status === "Dream").length, [matchedColleges])
-
-  const handleQuickRankCalc = useCallback(() => {
-    if (examMode === "KCET") {
-      const cet = parseFloat(kcetMarksInput)
-      const puc = parseFloat(pucPctInput)
-      if (isNaN(cet) || isNaN(puc) || cet < 0 || cet > 180 || puc < 0 || puc > 100) {
-        toast.error("Enter valid KCET (0-180) and Board % (0-100)")
-        return
-      }
-      const res = predictKCETRankBothYears(cet, puc)
-      setCalcResult(res)
-    } else {
-      const marks = parseFloat(comedkMarksInput)
-      if (isNaN(marks) || marks < 0 || marks > 180) {
-        toast.error("Enter valid COMEDK marks (0-180)")
-        return
-      }
-      const res = predictComedkRankFromMarks(marks, comedkShiftInput)
-      setCalcResult(res)
-    }
-  }, [examMode, kcetMarksInput, pucPctInput, comedkMarksInput, comedkShiftInput])
-
-  const filteredQuickColleges = useMemo(() => {
-    const q = quickSearchQuery.trim().toLowerCase()
-    if (!q) return TOP_KCET_COLLEGES.slice(0, 4)
-
-    const topMatches = TOP_KCET_COLLEGES.filter(c =>
-      c.name.toLowerCase().includes(q) ||
-      c.code.toLowerCase().includes(q) ||
-      c.location.toLowerCase().includes(q)
-    )
-    if (topMatches.length > 0) return topMatches
-
-    return COLLEGE_DATABASE.filter(c =>
-      c.name.toLowerCase().includes(q) ||
-      c.code.toLowerCase().includes(q) ||
-      c.city.toLowerCase().includes(q)
-    ).slice(0, 4).map(c => ({
-      code: c.code,
-      name: c.name,
-      location: c.city,
-      cutoffs: { GM: 15000 },
-      tier: c.tier === 'Tier 1' ? 1 : c.tier === 'Tier 2' ? 2 : 3,
-      cseCutoff: 15000,
-      eceCutoff: 25000
-    }))
-  }, [quickSearchQuery])
-
-  const removeBookmark = useCallback((code: string) => {
-    setBookmarks(prev => {
-      const updated = prev.filter(b => b !== code)
-      localStorage.setItem("kcet_bookmarks", JSON.stringify(updated))
-      return updated
-    })
-  }, [])
-
-
 
   const actionCategories = useMemo(() => [
     {
@@ -495,600 +409,287 @@ const Dashboard = () => {
       </section>
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 3: TWO-COLUMN STRUCTURED MAIN DASHBOARD
+          SECTION 3: ADMISSION ODDS ENGINE & PROFILE
          ═══════════════════════════════════════════════════ */}
-      <div className="grid gap-8 lg:grid-cols-12">
-        {/* ---------------------------------------------------
-            LEFT COLUMN: PRIMARY WORKSPACE (8 COLS)
-           --------------------------------------------------- */}
-        <div className="lg:col-span-8 space-y-8">
-          {/* 1. ADMISSION ODDS ENGINE & PROFILE */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold flex items-center gap-2">
-                <Compass className="h-4 w-4 text-primary" />
-                Personalized Admission Engine
-              </h2>
-              <Badge variant="outline" className="text-[10px] font-mono border-border/40">
-                Live Category Match
-              </Badge>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-12">
-              {/* Profile Inputs (5 cols) */}
-              <Card className="border-border/40 bg-card/60 sm:col-span-5 shadow-sm">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-sm font-bold flex items-center gap-1.5">
-                      <Target className="h-3.5 w-3.5 text-primary" />
-                      Target Profile
-                    </CardTitle>
-                    <span className="text-[10px] font-mono text-emerald-400 font-bold">Saved</span>
-                  </div>
-                  <CardDescription className="text-[11px]">Set rank & category for real odds.</CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-3.5">
-                  <div className="space-y-1">
-                    <div className="flex justify-between items-center text-xs">
-                      <Label className="text-muted-foreground font-medium">Rank ({examMode})</Label>
-                      <span className="font-mono font-bold text-primary">#{profile.rank.toLocaleString()}</span>
-                    </div>
-                    <Input
-                      type="number"
-                      value={profile.rank}
-                      onChange={e => updateProfile({ rank: parseInt(e.target.value) || 1 })}
-                      className="font-mono bg-background/50 border-border/50 h-8 text-xs"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <Label className="text-[11px] text-muted-foreground">Category</Label>
-                      <select
-                        value={profile.category}
-                        onChange={e => updateProfile({ category: e.target.value })}
-                        className="w-full h-8 rounded-md border border-border/50 bg-background/50 px-2 text-xs font-semibold text-foreground"
-                      >
-                        {["GM", "2AG", "2BG", "3AG", "3BG", "SCG", "STG", "1G", "GMK", "GMR"].map(c => (
-                          <option key={c} value={c} className="bg-background text-foreground">{c}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <Label className="text-[11px] text-muted-foreground">Stream</Label>
-                      <select
-                        value={profile.preferredStream}
-                        onChange={e => updateProfile({ preferredStream: e.target.value })}
-                        className="w-full h-8 rounded-md border border-border/50 bg-background/50 px-2 text-xs font-semibold text-foreground"
-                      >
-                        <option value="CSE" className="bg-background text-foreground">CSE & Allied</option>
-                        <option value="ECE" className="bg-background text-foreground">ECE / EEE</option>
-                        <option value="MECH" className="bg-background text-foreground">Mechanical</option>
-                        <option value="ALL" className="bg-background text-foreground">All Streams</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Summary Bar */}
-                  <div className="p-3 rounded-lg border border-border/40 bg-secondary/30 space-y-2 text-xs">
-                    <div className="flex justify-between items-center text-[11px]">
-                      <span className="text-muted-foreground">Band:</span>
-                      <span className="font-semibold text-foreground">{getRankBand(profile.rank)}</span>
-                    </div>
-                    <div className="space-y-1 pt-1 border-t border-border/40 text-[10px]">
-                      <div className="flex justify-between text-muted-foreground font-mono">
-                        <span>Safe: {safeCount}</span>
-                        <span>Target: {targetCount}</span>
-                        <span>Dream: {dreamCount}</span>
-                      </div>
-                      <div className="h-1.5 rounded-full bg-border/40 flex overflow-hidden">
-                        <div className="h-full bg-emerald-500/80" style={{ width: `${(safeCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
-                        <div className="h-full bg-amber-500/80" style={{ width: `${(targetCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
-                        <div className="h-full bg-rose-500/80" style={{ width: `${(dreamCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <Link to="/college-predictor" className="block pt-0.5">
-                    <Button size="sm" className="w-full text-xs h-8 font-semibold gap-1.5 cursor-pointer">
-                      <Search className="h-3 w-3" /> Full College Predictor
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-
-              {/* Admission Odds Cards (7 cols) */}
-              <Card className="border-border/40 bg-card/60 sm:col-span-7 shadow-sm flex flex-col justify-between">
-                <CardHeader className="pb-2 border-b border-border/40">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-sm font-bold flex items-center gap-1.5">
-                        <GraduationCap className="h-4 w-4 text-primary" />
-                        Matched Institutes
-                      </CardTitle>
-                      <CardDescription className="text-[11px]">
-                        Odds for Rank #{profile.rank.toLocaleString()} ({profile.category})
-                      </CardDescription>
-                    </div>
-                    <Link to="/college-predictor">
-                      <Button variant="ghost" size="sm" className="text-xs h-7 text-primary hover:bg-primary/10 gap-1 cursor-pointer">
-                        View All <ChevronRight className="h-3 w-3" />
-                      </Button>
-                    </Link>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="p-3 space-y-2">
-                  {matchedColleges.slice(0, 4).map((c) => (
-                    <div
-                      key={c.code}
-                      className="p-2.5 rounded-lg border border-border/40 bg-background/40 hover:border-primary/40 hover:bg-secondary/30 transition-all flex items-center justify-between gap-2 group cursor-pointer"
-                    >
-                      <div className="min-w-0 space-y-0.5">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-mono text-[10px] text-primary font-bold">{c.code}</span>
-                          <span className="text-[10px] text-muted-foreground">• {c.location}</span>
-                        </div>
-                        <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">{c.name}</h3>
-                        <p className="text-[10px] text-muted-foreground font-mono">
-                          Cutoff: #{c.cutoffRank.toLocaleString()}
-                        </p>
-                      </div>
-
-                      <div className="shrink-0 flex items-center gap-2">
-                        <Badge
-                          variant="outline"
-                          className={`text-[9px] font-bold ${
-                            c.status === "Safe"
-                              ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
-                              : c.status === "Target"
-                                ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
-                                : "border-rose-500/30 text-rose-400 bg-rose-500/10"
-                          }`}
-                        >
-                          {c.status}
-                        </Badge>
-                        <Link to={`/college/${c.code}`}>
-                          <Button variant="outline" size="sm" className="h-7 px-2 text-[11px] gap-1 border-border/40 group-hover:border-primary/40 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                            View
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-
-                <div className="px-3 py-2 border-t border-border/40 bg-secondary/20 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span>Top 4 matches</span>
-                  <Link to="/mock-simulator" className="text-primary hover:underline font-semibold flex items-center gap-1">
-                    Simulate Option Entry <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </Card>
-            </div>
-          </section>
-
-          {/* 2. INTERACTIVE TOOLS SUITE (TABS) */}
-          <section className="space-y-4">
-            <Card className="border-border/40 bg-card/60 shadow-sm">
-              <CardHeader className="pb-2 border-b border-border/40">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base font-bold flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-amber-400" />
-                    Instant Tool Suite
-                  </CardTitle>
-                  <Badge variant="outline" className="text-[10px] font-mono border-border/40">
-                    Quick Access
-                  </Badge>
-                </div>
-              </CardHeader>
-
-              <CardContent className="p-4 sm:p-5">
-                <Tabs defaultValue="rank-calc" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 bg-secondary/50 border border-border/40 p-1 mb-4">
-                    <TabsTrigger value="rank-calc" className="text-xs font-semibold cursor-pointer">Rank Calculator</TabsTrigger>
-                    <TabsTrigger value="cutoff-finder" className="text-xs font-semibold cursor-pointer">Cutoff Lookup</TabsTrigger>
-                    <TabsTrigger value="daily-streak" className="text-xs font-semibold cursor-pointer">Daily CET Quiz</TabsTrigger>
-                  </TabsList>
-
-                  {/* TAB 1: RANK CALCULATOR */}
-                  <TabsContent value="rank-calc" className="space-y-3 mt-0">
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 items-end">
-                      {examMode === "KCET" ? (
-                        <>
-                          <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">KCET Marks (0-180)</Label>
-                            <Input
-                              type="number"
-                              value={kcetMarksInput}
-                              onChange={e => setKcetMarksInput(e.target.value)}
-                              className="bg-background/50 border-border/50 h-9 font-mono text-xs"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">PUC Board %</Label>
-                            <Input
-                              type="number"
-                              value={pucPctInput}
-                              onChange={e => setPucPctInput(e.target.value)}
-                              className="bg-background/50 border-border/50 h-9 font-mono text-xs"
-                            />
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">COMEDK Marks (0-180)</Label>
-                            <Input
-                              type="number"
-                              value={comedkMarksInput}
-                              onChange={e => setComedkMarksInput(e.target.value)}
-                              className="bg-background/50 border-border/50 h-9 font-mono text-xs"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <Label className="text-xs text-muted-foreground">Exam Shift</Label>
-                            <select
-                              value={comedkShiftInput}
-                              onChange={e => setComedkShiftInput(e.target.value as ComedkShift)}
-                              className="w-full h-9 rounded-md border border-border/50 bg-background/50 px-2.5 text-xs text-foreground"
-                            >
-                              <option value="10s1">May 10 Shift 1</option>
-                              <option value="10s2">May 10 Shift 2</option>
-                              <option value="10s3">May 10 Shift 3</option>
-                              <option value="25may">May 25 Shift</option>
-                              <option value="unknown">Shift Average</option>
-                            </select>
-                          </div>
-                        </>
-                      )}
-
-                      <Button size="sm" onClick={handleQuickRankCalc} className="h-9 text-xs font-semibold gap-1.5 cursor-pointer">
-                        <Calculator className="h-3.5 w-3.5" /> Calculate Rank
-                      </Button>
-
-                      {calcResult && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updateProfile({ rank: calcResult.rank2026 || calcResult.expectedRank })}
-                          className="h-9 text-xs border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 gap-1 cursor-pointer"
-                        >
-                          <CheckCircle2 className="h-3.5 w-3.5" /> Save Target Rank
-                        </Button>
-                      )}
-                    </div>
-
-                    {calcResult && (
-                      <div className="p-3 rounded-xl border border-primary/20 bg-primary/5 grid gap-3 sm:grid-cols-3 text-xs">
-                        <div>
-                          <span className="text-muted-foreground">2025 Rank:</span>
-                          <p className="font-mono font-bold text-foreground text-sm">#{(calcResult.rank2025 || calcResult.expectedRank).toLocaleString()}</p>
-                        </div>
-                        <div>
-                          <span className="text-primary font-medium">2026 Predicted:</span>
-                          <p className="font-mono font-extrabold text-primary text-sm">#{(calcResult.rank2026 || calcResult.expectedRank).toLocaleString()}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Band:</span>
-                          <p className="font-semibold text-foreground">{calcResult.rankBand || getRankBand(calcResult.expectedRank)}</p>
-                        </div>
-                      </div>
-                    )}
-                  </TabsContent>
-
-                  {/* TAB 2: CUTOFF FINDER */}
-                  <TabsContent value="cutoff-finder" className="space-y-3 mt-0">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
-                      <Input
-                        value={quickSearchQuery}
-                        onChange={e => setQuickSearchQuery(e.target.value)}
-                        placeholder="Type college code (e.g. E001) or name..."
-                        className="pl-8 bg-background/50 border-border/50 h-9 text-xs"
-                      />
-                    </div>
-
-                    <div className="grid gap-2 sm:grid-cols-2">
-                      {filteredQuickColleges.map(c => (
-                        <div key={c.code} className="p-2.5 rounded-lg border border-border/40 bg-background/40 hover:border-primary/40 hover:bg-secondary/30 transition-all flex items-center justify-between text-xs cursor-pointer">
-                          <div className="truncate">
-                            <span className="font-mono font-bold text-primary">{c.code}</span>
-                            <span className="text-muted-foreground ml-2 truncate">{c.name}</span>
-                          </div>
-                          <span className="font-mono font-semibold text-foreground shrink-0 ml-2">GM #{c.cseCutoff.toLocaleString()}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-
-                  {/* TAB 3: DAILY QUIZ */}
-                  <TabsContent value="daily-streak" className="space-y-3 mt-0">
-                    <div className="p-3.5 rounded-xl border border-orange-500/20 bg-orange-500/5 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Flame className="h-5 w-5 text-orange-400 shrink-0" />
-                        <div>
-                          <h3 className="font-bold text-xs">Daily CET Challenge</h3>
-                          <p className="text-[11px] text-muted-foreground">5 practice questions for Physics, Chem & Math.</p>
-                        </div>
-                      </div>
-                      <Link to="/daily-challenge">
-                        <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold gap-1 cursor-pointer h-8">
-                          <Flame className="h-3 w-3" /> Start
-                        </Button>
-                      </Link>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </section>
-
-          {/* 3. CATEGORIZED FEATURE SUITE */}
-          <section className="space-y-4">
-            <div className="border-b border-border/40 pb-2">
-              <h2 className="text-base font-bold tracking-tight">Feature Exploration</h2>
-              <p className="text-xs text-muted-foreground">Explore all tools categorized for counseling & preparation</p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              {actionCategories.map((cat) => (
-                <Card key={cat.id} className="border-border/40 bg-card/60 shadow-sm overflow-hidden">
-                  <CardHeader className="pb-2.5 border-b border-border/40 bg-secondary/30">
-                    <CardTitle className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                      {cat.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-2.5 grid gap-2">
-                    {cat.items.map((item) => (
-                      <Link
-                        key={item.title}
-                        to={item.href}
-                        className="group block p-2.5 rounded-lg border border-white/5 bg-background/40 hover:bg-primary/10 hover:border-primary/40 transition-all duration-150 cursor-pointer"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
-                              <item.icon className="h-3.5 w-3.5" />
-                            </div>
-                            <div className="truncate">
-                              <div className="flex items-center gap-1.5">
-                                <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">
-                                  {item.title}
-                                </h3>
-                                <Badge variant="outline" className="text-[8px] font-mono border-white/10 text-muted-foreground px-1 py-0">
-                                  {item.metric}
-                                </Badge>
-                              </div>
-                              <p className="text-[10px] text-muted-foreground truncate">{item.desc}</p>
-                            </div>
-                          </div>
-
-                          <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-transform shrink-0" />
-                        </div>
-                      </Link>
-                    ))}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* 4. VISUAL ANALYTICS (RECHARTS) */}
-          <section className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Card className="border-border/40 bg-card/60 shadow-sm">
-                <CardHeader className="pb-2 border-b border-border/40">
-                  <CardTitle className="text-xs font-bold flex items-center gap-2">
-                    <TrendingUp className="h-3.5 w-3.5 text-primary" />
-                    Multi-Year Cutoff Trends
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-3">
-                  <div className="h-[200px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={TREND_BRANCH_DATA} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis dataKey="year" tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 10 }} />
-                        <YAxis tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} />
-                        <RechartsTooltip contentStyle={{ backgroundColor: "#090d16", borderColor: "rgba(255,255,255,0.1)", borderRadius: "6px", fontSize: "10px" }} />
-                        <Legend wrapperStyle={{ fontSize: "10px" }} />
-                        <Area type="monotone" dataKey="CSE" stroke="#6366f1" fill="#6366f1" fillOpacity={0.15} strokeWidth={2} />
-                        <Area type="monotone" dataKey="ECE" stroke="#06b6d4" fill="#06b6d4" fillOpacity={0.15} strokeWidth={2} />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/40 bg-card/60 shadow-sm">
-                <CardHeader className="pb-2 border-b border-border/40">
-                  <CardTitle className="text-xs font-bold flex items-center gap-2">
-                    <BarChart3 className="h-3.5 w-3.5 text-purple-400" />
-                    Engineering Stream Intake
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-3">
-                  <div className="h-[200px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={BRANCH_POPULARITY} layout="vertical" margin={{ top: 5, right: 10, left: 15, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                        <XAxis type="number" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} />
-                        <YAxis type="category" dataKey="name" tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 9 }} width={100} />
-                        <RechartsTooltip contentStyle={{ backgroundColor: "#090d16", borderColor: "rgba(255,255,255,0.1)", borderRadius: "6px", fontSize: "10px" }} />
-                        <Bar dataKey="count" radius={[0, 4, 4, 0]}>
-                          {BRANCH_POPULARITY.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} opacity={0.85} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-bold flex items-center gap-2">
+            <Compass className="h-4 w-4 text-primary" />
+            Personalized Admission Engine
+          </h2>
+          <Badge variant="outline" className="text-[10px] font-mono border-border/40">
+            Live Category Match
+          </Badge>
         </div>
 
-        {/* ---------------------------------------------------
-            RIGHT SIDEBAR: COMMUNITY & QUICK STATS (4 COLS)
-           --------------------------------------------------- */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* COMMUNITY POLL */}
-          <CommunityPollWidget />
-
-          {/* COUNSELING ROADMAP STATUS */}
-          {examMode === "KCET" ? (
-            <Card className="border-border/40 bg-card/60 shadow-sm">
-              <CardHeader className="pb-2 border-b border-border/40">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-sm font-bold flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4 text-emerald-400" />
-                    Counseling Status
-                  </CardTitle>
-                  <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
-                    Option Entry
-                  </Badge>
-                </div>
-              </CardHeader>
-
-              <CardContent className="p-3.5 space-y-3">
-                <div className="grid gap-2 text-xs">
-                  <div className="p-2 rounded border border-emerald-500/30 bg-emerald-500/5 flex justify-between items-center">
-                    <span className="font-semibold">Phase 1: CET Exam</span>
-                    <span className="text-emerald-400 font-bold">✓ Complete</span>
-                  </div>
-                  <div className="p-2 rounded border border-emerald-500/30 bg-emerald-500/5 flex justify-between items-center">
-                    <span className="font-semibold">Phase 2: Ranks Issued</span>
-                    <span className="text-emerald-400 font-bold">✓ Complete</span>
-                  </div>
-                  <div className="p-2 rounded border border-primary/30 bg-primary/10 flex justify-between items-center">
-                    <span className="font-semibold text-primary">Phase 3: Option Entry</span>
-                    <span className="text-primary font-bold">⏳ Active</span>
-                  </div>
-                </div>
-
-                <Link to="/mock-simulator" className="block">
-                  <Button size="sm" className="w-full text-xs h-8 font-semibold gap-1 cursor-pointer">
-                    <Target className="h-3 w-3" /> Simulate Option Sheet
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card className="border-amber-500/30 bg-amber-500/5 shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-amber-500" />
-                  COMEDK Mode
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-xs text-muted-foreground">
-                COMEDK UGET private engineering cutoffs and rank predictions enabled.
-              </CardContent>
-            </Card>
-          )}
-
-          {/* SAVED BOOKMARKS TRACKER */}
-          <Card className="border-border/40 bg-card/60 shadow-sm">
-            <CardHeader className="pb-2 border-b border-border/40">
+        <div className="grid gap-4 sm:grid-cols-12">
+          {/* Profile Inputs (5 cols) */}
+          <Card className="border-border/40 bg-card/60 sm:col-span-5 shadow-sm">
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-bold flex items-center gap-1.5">
-                  <Bookmark className="h-4 w-4 text-primary" />
-                  Saved Bookmarks
+                  <Target className="h-3.5 w-3.5 text-primary" />
+                  Target Profile
                 </CardTitle>
-                <Badge variant="outline" className="text-[10px] font-mono border-border/40">
-                  {bookmarks.length} Saved
-                </Badge>
+                <span className="text-[10px] font-mono text-emerald-400 font-bold">Saved</span>
+              </div>
+              <CardDescription className="text-[11px]">Set rank & category for real odds.</CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-3.5">
+              <div className="space-y-1">
+                <div className="flex justify-between items-center text-xs">
+                  <Label className="text-muted-foreground font-medium">Rank ({examMode})</Label>
+                  <span className="font-mono font-bold text-primary">#{profile.rank.toLocaleString()}</span>
+                </div>
+                <Input
+                  type="number"
+                  value={profile.rank}
+                  onChange={e => updateProfile({ rank: parseInt(e.target.value) || 1 })}
+                  className="font-mono bg-background/50 border-border/50 h-8 text-xs"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label className="text-[11px] text-muted-foreground">Category</Label>
+                  <select
+                    value={profile.category}
+                    onChange={e => updateProfile({ category: e.target.value })}
+                    className="w-full h-8 rounded-md border border-border/50 bg-background/50 px-2 text-xs font-semibold text-foreground"
+                  >
+                    {["GM", "2AG", "2BG", "3AG", "3BG", "SCG", "STG", "1G", "GMK", "GMR"].map(c => (
+                      <option key={c} value={c} className="bg-background text-foreground">{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <Label className="text-[11px] text-muted-foreground">Stream</Label>
+                  <select
+                    value={profile.preferredStream}
+                    onChange={e => updateProfile({ preferredStream: e.target.value })}
+                    className="w-full h-8 rounded-md border border-border/50 bg-background/50 px-2 text-xs font-semibold text-foreground"
+                  >
+                    <option value="CSE" className="bg-background text-foreground">CSE & Allied</option>
+                    <option value="ECE" className="bg-background text-foreground">ECE / EEE</option>
+                    <option value="MECH" className="bg-background text-foreground">Mechanical</option>
+                    <option value="ALL" className="bg-background text-foreground">All Streams</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Summary Bar */}
+              <div className="p-3 rounded-lg border border-border/40 bg-secondary/30 space-y-2 text-xs">
+                <div className="flex justify-between items-center text-[11px]">
+                  <span className="text-muted-foreground">Band:</span>
+                  <span className="font-semibold text-foreground">{getRankBand(profile.rank)}</span>
+                </div>
+                <div className="space-y-1 pt-1 border-t border-border/40 text-[10px]">
+                  <div className="flex justify-between text-muted-foreground font-mono">
+                    <span>Safe: {safeCount}</span>
+                    <span>Target: {targetCount}</span>
+                    <span>Dream: {dreamCount}</span>
+                  </div>
+                  <div className="h-1.5 rounded-full bg-border/40 flex overflow-hidden">
+                    <div className="h-full bg-emerald-500/80" style={{ width: `${(safeCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
+                    <div className="h-full bg-amber-500/80" style={{ width: `${(targetCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
+                    <div className="h-full bg-rose-500/80" style={{ width: `${(dreamCount / TOP_KCET_COLLEGES.length) * 100}%` }} />
+                  </div>
+                </div>
+              </div>
+
+              <Link to="/college-predictor" className="block pt-0.5">
+                <Button size="sm" className="w-full text-xs h-8 font-semibold gap-1.5 cursor-pointer">
+                  <Search className="h-3 w-3" /> Full College Predictor
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Admission Odds Cards (7 cols) */}
+          <Card className="border-border/40 bg-card/60 sm:col-span-7 shadow-sm flex flex-col justify-between">
+            <CardHeader className="pb-2 border-b border-border/40">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-sm font-bold flex items-center gap-1.5">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    Matched Institutes
+                  </CardTitle>
+                  <CardDescription className="text-[11px]">
+                    Odds for Rank #{profile.rank.toLocaleString()} ({profile.category})
+                  </CardDescription>
+                </div>
+                <Link to="/college-predictor">
+                  <Button variant="ghost" size="sm" className="text-xs h-7 text-primary hover:bg-primary/10 gap-1 cursor-pointer">
+                    View All <ChevronRight className="h-3 w-3" />
+                  </Button>
+                </Link>
               </div>
             </CardHeader>
 
-            <CardContent className="p-3">
-              {bookmarks.length === 0 ? (
-                <div className="py-4 text-center space-y-2">
-                  <p className="text-xs text-muted-foreground">No bookmarked colleges yet.</p>
-                  <Link to="/college-predictor">
-                    <Button variant="outline" size="sm" className="text-xs h-7 border-border/40 gap-1 cursor-pointer">
-                      <Search className="h-3 w-3" /> Find Colleges
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {bookmarks.slice(0, 6).map((code) => {
-                    const dbCollege = COLLEGE_DATABASE.find(c => c.code === code)
-                    const topCollege = TOP_KCET_COLLEGES.find(c => c.code === code)
-                    const college = {
-                      code,
-                      name: dbCollege?.name || topCollege?.name || `College (${code})`,
-                      location: dbCollege?.city || topCollege?.location || "Karnataka"
-                    }
-                    return (
-                      <div key={code} className="p-2 rounded border border-border/40 bg-background/40 flex items-center justify-between text-xs hover:border-primary/40 transition-all cursor-pointer">
-                        <div className="truncate min-w-0 pr-2">
-                          <span className="font-mono font-bold text-primary text-[10px]">{college.code}</span>
-                          <span className="text-foreground ml-1.5 font-semibold truncate text-[11px]">{college.name}</span>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeBookmark(code)}
-                          className="h-5 w-5 p-0 text-muted-foreground hover:text-rose-400 shrink-0"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+            <CardContent className="p-3 space-y-2">
+              {matchedColleges.slice(0, 4).map((c) => (
+                <div
+                  key={c.code}
+                  className="p-2.5 rounded-lg border border-border/40 bg-background/40 hover:border-primary/40 hover:bg-secondary/30 transition-all flex items-center justify-between gap-2 group cursor-pointer"
+                >
+                  <div className="min-w-0 space-y-0.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-[10px] text-primary font-bold">{c.code}</span>
+                      <span className="text-[10px] text-muted-foreground">• {c.location}</span>
+                    </div>
+                    <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">{c.name}</h3>
+                    <p className="text-[10px] text-muted-foreground font-mono">
+                      Cutoff: #{c.cutoffRank.toLocaleString()}
+                    </p>
+                  </div>
 
-          {/* REDDIT COMMUNITIES */}
+                  <div className="shrink-0 flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      className={`text-[9px] font-bold ${
+                        c.status === "Safe"
+                          ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
+                          : c.status === "Target"
+                            ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
+                            : "border-rose-500/30 text-rose-400 bg-rose-500/10"
+                      }`}
+                    >
+                      {c.status}
+                    </Badge>
+                    <Link to={`/college/${c.code}`}>
+                      <Button variant="outline" size="sm" className="h-7 px-2 text-[11px] gap-1 border-border/40 group-hover:border-primary/40 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                        View
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+
+            <div className="px-3 py-2 border-t border-border/40 bg-secondary/20 flex items-center justify-between text-[11px] text-muted-foreground">
+              <span>Top 4 matches</span>
+              <Link to="/mock-simulator" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                Simulate Option Entry <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          SECTION 4: CATEGORIZED FEATURE SUITE
+         ═══════════════════════════════════════════════════ */}
+      <section className="space-y-4">
+        <div className="border-b border-border/40 pb-2">
+          <h2 className="text-base font-bold tracking-tight">Feature Exploration</h2>
+          <p className="text-xs text-muted-foreground">Explore all tools categorized for counseling & preparation</p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {actionCategories.map((cat) => (
+            <Card key={cat.id} className="border-border/40 bg-card/60 shadow-sm overflow-hidden">
+              <CardHeader className="pb-2.5 border-b border-border/40 bg-secondary/30">
+                <CardTitle className="text-xs font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  {cat.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-2.5 grid gap-2">
+                {cat.items.map((item) => (
+                  <Link
+                    key={item.title}
+                    to={item.href}
+                    className="group block p-2.5 rounded-lg border border-white/5 bg-background/40 hover:bg-primary/10 hover:border-primary/40 transition-all duration-150 cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors shrink-0">
+                          <item.icon className="h-3.5 w-3.5" />
+                        </div>
+                        <div className="truncate">
+                          <div className="flex items-center gap-1.5">
+                            <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">
+                              {item.title}
+                            </h3>
+                            <Badge variant="outline" className="text-[8px] font-mono border-white/10 text-muted-foreground px-1 py-0">
+                              {item.metric}
+                            </Badge>
+                          </div>
+                          <p className="text-[10px] text-muted-foreground truncate">{item.desc}</p>
+                        </div>
+                      </div>
+
+                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-transform shrink-0" />
+                    </div>
+                  </Link>
+                ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════
+          SECTION 5: VISUAL ANALYTICS (RECHARTS) & POLL
+         ═══════════════════════════════════════════════════ */}
+      <section className="space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2">
           <Card className="border-border/40 bg-card/60 shadow-sm">
             <CardHeader className="pb-2 border-b border-border/40">
-              <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Community & Reddit Hubs
+              <CardTitle className="text-xs font-bold flex items-center gap-2">
+                <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                Multi-Year Cutoff Trends
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-3 space-y-2 text-xs">
-              <a
-                href="https://www.reddit.com/r/kcet/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded border border-border/40 bg-background/40 hover:border-primary/40 flex items-center justify-between text-foreground transition-all"
-              >
-                <span>r/kcet Community</span>
-                <ExternalLink className="h-3 w-3 text-muted-foreground" />
-              </a>
-              <a
-                href="https://www.reddit.com/r/comedk/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded border border-border/40 bg-background/40 hover:border-primary/40 flex items-center justify-between text-foreground transition-all"
-              >
-                <span>r/comedk Community</span>
-                <ExternalLink className="h-3 w-3 text-muted-foreground" />
-              </a>
-              <a
-                href="https://www.reddit.com/r/KCETCoded/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded border border-border/40 bg-background/40 hover:border-primary/40 flex items-center justify-between text-foreground transition-all"
-              >
-                <span>r/KCETCoded Subreddit</span>
-                <ExternalLink className="h-3 w-3 text-muted-foreground" />
-              </a>
+            <CardContent className="pt-3">
+              <div className="h-[200px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={TREND_BRANCH_DATA} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis dataKey="year" tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 10 }} />
+                    <YAxis tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} />
+                    <RechartsTooltip contentStyle={{ backgroundColor: "#090d16", borderColor: "rgba(255,255,255,0.1)", borderRadius: "6px", fontSize: "10px" }} />
+                    <Legend wrapperStyle={{ fontSize: "10px" }} />
+                    <Area type="monotone" dataKey="CSE" stroke="#6366f1" fill="#6366f1" fillOpacity={0.15} strokeWidth={2} />
+                    <Area type="monotone" dataKey="ECE" stroke="#06b6d4" fill="#06b6d4" fillOpacity={0.15} strokeWidth={2} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
 
-          <AdUnit />
+          <Card className="border-border/40 bg-card/60 shadow-sm">
+            <CardHeader className="pb-2 border-b border-border/40">
+              <CardTitle className="text-xs font-bold flex items-center gap-2">
+                <BarChart3 className="h-3.5 w-3.5 text-purple-400" />
+                Engineering Stream Intake
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-3">
+              <div className="h-[200px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={BRANCH_POPULARITY} layout="vertical" margin={{ top: 5, right: 10, left: 15, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis type="number" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 9 }} />
+                    <YAxis type="category" dataKey="name" tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 9 }} width={100} />
+                    <RechartsTooltip contentStyle={{ backgroundColor: "#090d16", borderColor: "rgba(255,255,255,0.1)", borderRadius: "6px", fontSize: "10px" }} />
+                    <Bar dataKey="count" radius={[0, 4, 4, 0]}>
+                      {BRANCH_POPULARITY.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} opacity={0.85} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+
+        <CommunityPollWidget />
+        <AdUnit />
+      </section>
     </div>
   )
 }
