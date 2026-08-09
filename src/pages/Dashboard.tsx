@@ -738,7 +738,6 @@ const Dashboard = () => {
         </div>
 
         <CommunityPollWidget />
-        <AdUnit />
       </section>
     </div>
   )
