@@ -1522,6 +1522,7 @@ const BLOCKABLE_PAGES = [
 ];
 
 function AdminSystemSettingsSection() {
+    const [greetingText, setGreetingText] = useState(() => localStorage.getItem("kcet_admin_greeting_text") || "User")
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
     const [siteShutdown, setSiteShutdown] = useState(false)
@@ -1542,6 +1543,16 @@ function AdminSystemSettingsSection() {
     const [savingBlocks, setSavingBlocks] = useState(false)
     const [onlineUsers, setOnlineUsers] = useState<any[]>([])
     const { toast } = useToast()
+
+    const handleSaveGreeting = () => {
+        const val = greetingText.trim()
+        localStorage.setItem("kcet_admin_greeting_text", val || "User")
+        window.dispatchEvent(new Event("admin_greeting_updated"))
+        toast({
+            title: "Greeting Updated",
+            description: `Dashboard greeting text set to: "${val || 'User'}"`
+        })
+    }
 
     const fetchSettings = async () => {
         try {
@@ -1720,6 +1731,34 @@ function AdminSystemSettingsSection() {
                     Manage global platform-level flags, page access, and monitor user presence.
                 </p>
             </div>
+
+            {/* Dashboard Greeting Name Override Card */}
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+                <CardHeader className="pb-3">
+                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-indigo-400" /> Dashboard Greeting Name Override
+                    </CardTitle>
+                    <CardDescription className="text-xs text-muted-foreground">
+                        Customize the greeting suffix shown on the dashboard header ("Good evening, [Admin Custom Name]").
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex gap-2">
+                        <Input
+                            value={greetingText}
+                            onChange={(e) => setGreetingText(e.target.value)}
+                            placeholder="e.g. Aspirant, Future Engineer, Scholar..."
+                            className="bg-white/5 border-white/10 text-xs font-semibold text-white"
+                        />
+                        <Button
+                            onClick={handleSaveGreeting}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
+                        >
+                            Save Greeting
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
 
             {/* Emergency Complete Site Shutdown Card */}
             <Card className={`border shadow-lg transition-all ${
@@ -2236,94 +2275,6 @@ function AdminVisitorCounterControl() {
                 </div>
             </CardContent>
         </Card>
-    )
-}
-
-function AdminSystemSettingsSection() {
-    const { toast } = useToast()
-    const [greetingText, setGreetingText] = useState(() => localStorage.getItem("kcet_admin_greeting_text") || "User")
-    const [isPaywallDisabled, setIsPaywallDisabled] = useState(() => localStorage.getItem("kcet_global_paywall_disabled") === "true")
-
-    const handleSaveGreeting = () => {
-        const val = greetingText.trim()
-        localStorage.setItem("kcet_admin_greeting_text", val || "User")
-        window.dispatchEvent(new Event("admin_greeting_updated"))
-        toast({
-            title: "Greeting Updated",
-            description: `Dashboard greeting text updated to: "${val || 'User'}"`
-        })
-    }
-
-    const handleTogglePaywall = (checked: boolean) => {
-        setIsPaywallDisabled(checked)
-        setGlobalPaywallDisabled(checked)
-        toast({
-            title: checked ? "Paywall Disabled" : "Paywall Active",
-            description: checked ? "All premium tools unlocked for site visitors." : "Standard paywalls enabled."
-        })
-    }
-
-    return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <Settings className="h-6 w-6 text-indigo-400" /> System Settings & Controls
-                </h1>
-                <p className="text-xs text-muted-foreground mt-1">
-                    Manage global site parameters, dashboard greeting name overrides, and paywall switches.
-                </p>
-            </div>
-
-            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-                        <Sparkles className="h-4 w-4 text-indigo-400" /> Dashboard Greeting Name Override
-                    </CardTitle>
-                    <CardDescription className="text-xs text-muted-foreground">
-                        Customize the greeting suffix shown on the dashboard header ("Good evening, [Admin Custom Name]").
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="flex gap-2">
-                        <Input
-                            value={greetingText}
-                            onChange={(e) => setGreetingText(e.target.value)}
-                            placeholder="e.g. Aspirant, Future Engineer, Scholar..."
-                            className="bg-white/5 border-white/10 text-xs font-semibold text-white"
-                        />
-                        <Button
-                            onClick={handleSaveGreeting}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
-                        >
-                            Save Greeting
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-                        <Power className="h-4 w-4 text-amber-400" /> Global Paywall Control
-                    </CardTitle>
-                    <CardDescription className="text-xs text-muted-foreground">
-                        Toggle free site-wide premium access for all users during peak counseling days.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-200">Unlock All Premium Features</p>
-                        <p className="text-[11px] text-muted-foreground">Disables all paywalls for all users across the platform.</p>
-                    </div>
-                    <Switch
-                        checked={isPaywallDisabled}
-                        onCheckedChange={handleTogglePaywall}
-                    />
-                </CardContent>
-            </Card>
-
-            <AdminVisitorManagerSection />
-        </div>
     )
 }
 
