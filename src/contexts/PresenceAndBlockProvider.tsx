@@ -308,7 +308,9 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
   return (
     <PresenceAndBlockContext.Provider value={{ blockedPages, maintenancePages, isSiteShutdown, isBlocked, isMaintenance }}>
-      <AnimatePresence mode="wait">
+      {children}
+
+      <AnimatePresence>
         {shouldShutdown ? (
           <motion.div
             key="shutdown-404-screen"
@@ -586,9 +588,7 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
               )}
             </motion.div>
           </motion.div>
-        ) : (
-          children
-        )}
+        ) : null}
       </AnimatePresence>
     </PresenceAndBlockContext.Provider>
   );
