@@ -35,6 +35,8 @@ import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 import { Switch } from "@/components/ui/switch"
 import { setGlobalPaywallDisabled } from "@/lib/unlock"
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
+import { LiveVisitorCounter } from "@/components/LiveVisitorCounter"
+import { VisitorService, useVisitorCounter } from "@/lib/visitor-service"
 
 const AUTH_KEY = "kcet_admin_auth"
 
@@ -2148,8 +2150,92 @@ function AdminSystemSettingsSection() {
                 </CardContent>
             </Card>
 
+            <AdminVisitorCounterControl />
+
             <AdminDonationBroadcastController />
         </div>
+    )
+}
+
+function AdminVisitorCounterControl() {
+    const { totalVisits, activeOnline, isLive, overrideVisits } = useVisitorCounter()
+    const [newVal, setNewVal] = useState(String(totalVisits))
+    const [saving, setSaving] = useState(false)
+    const { toast } = useToast()
+
+    useEffect(() => {
+        setNewVal(String(totalVisits))
+    }, [totalVisits])
+
+    const handleUpdate = async () => {
+        const num = Number(newVal)
+        if (isNaN(num) || num < 51783) {
+            toast({
+                title: "Invalid Count",
+                description: "Baseline count cannot be less than 51,783.",
+                variant: "destructive"
+            })
+            return
+        }
+        setSaving(true)
+        const ok = await overrideVisits(num)
+        setSaving(false)
+        if (ok) {
+            toast({
+                title: "Visitor Count Updated",
+                description: `Live visitor counter baseline updated to ${num.toLocaleString('en-IN')}`
+            })
+        } else {
+            toast({
+                title: "Update Failed",
+                description: "Could not save updated count to database.",
+                variant: "destructive"
+            })
+        }
+    }
+
+    return (
+        <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+            <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-white flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                        <Activity className="h-4 w-4 text-emerald-400" /> Realtime Visitor Counter Manager
+                    </span>
+                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px]">
+                        {isLive ? "REALTIME SYNC ACTIVE" : "CONNECTING..."}
+                    </Badge>
+                </CardTitle>
+                <CardDescription className="text-xs text-muted-foreground">
+                    Monitor site visits starting from baseline 51,783 and override counter values live.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <LiveVisitorCounter variant="detailed" />
+
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                    <Label className="text-xs font-medium text-slate-300">Override Total Visitor Baseline</Label>
+                    <div className="flex gap-2">
+                        <Input
+                            type="number"
+                            value={newVal}
+                            onChange={(e) => setNewVal(e.target.value)}
+                            className="bg-white/5 border-white/10 text-xs font-mono"
+                            placeholder="Enter new visitor count..."
+                        />
+                        <Button
+                            onClick={handleUpdate}
+                            disabled={saving}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
+                        >
+                            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save Count"}
+                        </Button>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground">
+                        Updating this will broadcast the new count immediately to all active visitors in real-time.
+                    </p>
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 

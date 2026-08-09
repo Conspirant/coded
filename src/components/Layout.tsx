@@ -18,6 +18,7 @@ import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { toast } from "sonner"
 import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
 import { GlobalDonationPopup } from "./GlobalDonationPopup"
+import { LiveVisitorCounter } from "./LiveVisitorCounter"
 
 import { Logo } from "./ui/Logo"
 
@@ -111,7 +112,8 @@ export function Layout({ children }: LayoutProps) {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <LiveVisitorCounter variant="compact" />
               <div className="hidden md:inline-flex relative h-8 w-[9.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
                 <span
                   className={`absolute left-0.5 h-7 w-[4.5rem] rounded-full transition-all duration-300 ease-in-out ${
