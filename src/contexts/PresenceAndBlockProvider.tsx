@@ -370,20 +370,20 @@ export function PresenceAndBlockProvider({ children }: { children: React.ReactNo
 
               <div className="space-y-1">
                 <h2 className="text-xl font-bold text-white tracking-tight">
-                  Tool Under Maintenance
+                  Under Maintenance
                 </h2>
                 <p className="text-[10px] uppercase font-bold tracking-widest text-amber-400">
-                  ROUTINE DATA UPDATE IN PROGRESS
+                  SYSTEM UPDATES IN PROGRESS
                 </p>
               </div>
 
               <div className="border border-white/5 bg-white/[0.02] p-4 rounded-2xl text-xs text-muted-foreground leading-relaxed space-y-2 text-left">
                 <p>
-                  We are currently updating seat matrix algorithms, cutoff statistics, or deploying platform improvements for this tool.
+                  This section is currently undergoing scheduled maintenance or platform updates. Access will resume shortly.
                 </p>
                 {unlocked && (
                   <p className="text-emerald-400 font-semibold bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl text-[11px]">
-                    ✓ Paid User Status: Active & Protected. Your unlocked access remains 100% saved and will automatically resume once maintenance completes!
+                    ✓ Pro User Status: Active & Protected. Your access remains saved and will automatically resume once updates complete.
                   </p>
                 )}
               </div>
