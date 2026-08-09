@@ -2171,12 +2171,16 @@ function AdminSystemSettingsSection() {
                                                     <Switch
                                                         className="data-[state=checked]:bg-rose-500 scale-75"
                                                         checked={isPageBlocked}
-                                                        onCheckedChange={(checked) => {
-                                                            if (checked) {
-                                                                setBlockedPages(prev => [...prev, page.path]);
-                                                            } else {
-                                                                setBlockedPages(prev => prev.filter(p => p !== page.path));
-                                                            }
+                                                        onCheckedChange={async (checked) => {
+                                                            const updated = checked 
+                                                                ? [...blockedPages.filter(p => p !== page.path), page.path]
+                                                                : blockedPages.filter(p => p !== page.path);
+                                                            setBlockedPages(updated);
+                                                            await AdminSuggestionsService.setBlockedPages(updated);
+                                                            toast({
+                                                                title: checked ? "Paywall Enabled" : "Paywall Disabled",
+                                                                description: `Paywall setting for ${page.name} updated globally.`
+                                                            });
                                                         }}
                                                     />
                                                 </div>
@@ -2187,12 +2191,16 @@ function AdminSystemSettingsSection() {
                                                     <Switch
                                                         className="data-[state=checked]:bg-amber-500 scale-75"
                                                         checked={isPageMaintenance}
-                                                        onCheckedChange={(checked) => {
-                                                            if (checked) {
-                                                                setMaintenancePages(prev => [...prev, page.path]);
-                                                            } else {
-                                                                setMaintenancePages(prev => prev.filter(p => p !== page.path));
-                                                            }
+                                                        onCheckedChange={async (checked) => {
+                                                            const updated = checked 
+                                                                ? [...maintenancePages.filter(p => p !== page.path), page.path]
+                                                                : maintenancePages.filter(p => p !== page.path);
+                                                            setMaintenancePages(updated);
+                                                            await AdminSuggestionsService.setMaintenancePages(updated);
+                                                            toast({
+                                                                title: checked ? "Maintenance Mode Active" : "Maintenance Mode Off",
+                                                                description: `Maintenance status for ${page.name} updated globally.`
+                                                            });
                                                         }}
                                                     />
                                                 </div>
