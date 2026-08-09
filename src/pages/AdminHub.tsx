@@ -1500,13 +1500,21 @@ function AdminDonationBroadcastController() {
 
 const BLOCKABLE_PAGES = [
   { name: "Rank Predictor", path: "/rank-predictor" },
-  { name: "Cutoff Explorer", path: "/cutoff-explorer" },
-  { name: "COMEDK Explorer", path: "/comedk-explorer" },
   { name: "College Predictor", path: "/college-predictor" },
+  { name: "Fee Calculator", path: "/fee-calculator" },
+  { name: "Cutoff Explorer", path: "/cutoff-explorer" },
+  { name: "Cutoff Predictor", path: "/cutoff-predictor" },
+  { name: "COMEDK Explorer", path: "/comedk-explorer" },
   { name: "Cutoff Trends", path: "/cutoff-trends" },
   { name: "Mock Simulator", path: "/mock-simulator" },
   { name: "Round Tracker", path: "/round-tracker" },
   { name: "College Compare", path: "/college-compare" },
+  { name: "College Cutoffs & Directory", path: "/college-cutoffs" },
+  { name: "College Info Hub", path: "/college-info-hub" },
+  { name: "Blog & Guides", path: "/blog" },
+  { name: "Daily Challenge Quiz", path: "/daily-challenge" },
+  { name: "Cutoff Clash Game", path: "/cutoff-clash" },
+  { name: "PYQ Mock Tests", path: "/pyq-test" },
   { name: "Documents Directory", path: "/documents" },
   { name: "Document Verification (Mock)", path: "/document-verification" },
   { name: "Reviews", path: "/reviews" },
@@ -1518,7 +1526,9 @@ const BLOCKABLE_PAGES = [
   { name: "Metro Mapper", path: "/metro-mapper" },
   { name: "BMTC Mapper", path: "/bmtc-mapper" },
   { name: "Hidden Gems", path: "/hidden-gems" },
-  { name: "Donate Page", path: "/donate" }
+  { name: "Donate Page", path: "/donate" },
+  { name: "Supporters Page", path: "/supporters" },
+  { name: "Feature Requests", path: "/feature-requests" }
 ];
 
 function AdminSystemSettingsSection() {
