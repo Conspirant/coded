@@ -16,7 +16,7 @@ import {
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
     Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
-    Megaphone, Vote, Power
+    Megaphone, Vote, Power, Sparkles
 } from "lucide-react"
 
 // Lazy load heavy admin components
@@ -34,7 +34,7 @@ import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
 import { setGlobalPaywallDisabled } from "@/lib/unlock"
-import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
+import { AdminSuggestionsService, type SiteShutdownConfig } from "@/lib/admin-suggestions-service"
 import { LiveVisitorCounter } from "@/components/LiveVisitorCounter"
 import { VisitorService, useVisitorCounter } from "@/lib/visitor-service"
 
@@ -2173,40 +2173,6 @@ function AdminVisitorCounterControl() {
             toast({
                 title: "Invalid Count",
                 description: "Baseline count cannot be less than 51,783.",
-                variant: "destructive"
-            })
-            return
-        }
-        setSaving(true)
-        const ok = await overrideVisits(num)
-        setSaving(false)
-        if (ok) {
-            toast({
-                title: "Visitor Count Updated",
-                description: `Live visitor counter baseline updated to ${num.toLocaleString('en-IN')}`
-            })
-        } else {
-            toast({
-                title: "Update Failed",
-                description: "Could not save updated count to database.",
-                variant: "destructive"
-            })
-        }
-    }
-
-function AdminVisitorManagerSection() {
-    const { isLive } = useVisitorCounter()
-    const { overrideVisits } = VisitorService
-    const { toast } = useToast()
-    const [newVal, setNewVal] = useState<string>("")
-    const [saving, setSaving] = useState(false)
-
-    const handleUpdate = async () => {
-        const num = parseInt(newVal.trim())
-        if (isNaN(num) || num < 0) {
-            toast({
-                title: "Invalid Input",
-                description: "Please enter a valid positive number for baseline.",
                 variant: "destructive"
             })
             return

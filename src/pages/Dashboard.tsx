@@ -292,49 +292,7 @@ const Dashboard = () => {
     })
   }, [])
 
-  // Crown Showcase Features
-  const CROWN_FEATURES = useMemo(() => [
-    {
-      title: "Rank Predictor",
-      tagline: "Marks vs Rank 2026 Engine",
-      desc: "Calculate KCET & COMEDK rank forecasts based on 180-marks and Board % weightage.",
-      icon: Calculator,
-      href: "/rank-predictor",
-      gradient: "from-indigo-500/20 via-purple-500/10 to-transparent border-indigo-500/30",
-      accent: "text-indigo-400",
-      btnClass: "bg-indigo-600 hover:bg-indigo-700 text-white"
-    },
-    {
-      title: "College Predictor",
-      tagline: "KEA & COMEDK Seat Eligibility",
-      desc: "Find Govt & Private colleges matching your rank, category, and preferred engineering branch.",
-      icon: Target,
-      href: "/college-predictor",
-      gradient: "from-emerald-500/20 via-teal-500/10 to-transparent border-emerald-500/30",
-      accent: "text-emerald-400",
-      btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white"
-    },
-    {
-      title: "Fee Calculator",
-      tagline: "Tuition, SSP & 4-Year Cost",
-      desc: "Estimate tuition fees, SNQ 100% waivers, SSP category scholarships, and hostel charges.",
-      icon: FileText,
-      href: "/fee-calculator",
-      gradient: "from-amber-500/20 via-orange-500/10 to-transparent border-amber-500/30",
-      accent: "text-amber-400",
-      btnClass: "bg-amber-600 hover:bg-amber-700 text-white"
-    },
-    {
-      title: "AI Admissions Counselor",
-      tagline: "24/7 Gemini Smart AI",
-      desc: "Get instant guidance on KEA Choice 1 vs 2, document codes, and college comparisons.",
-      icon: Bot,
-      href: "/ai-counselor",
-      gradient: "from-cyan-500/20 via-blue-500/10 to-transparent border-cyan-500/30",
-      accent: "text-cyan-400",
-      btnClass: "bg-cyan-600 hover:bg-cyan-700 text-white"
-    }
-  ], [])
+
 
   const actionCategories = useMemo(() => [
     {
@@ -476,50 +434,62 @@ const Dashboard = () => {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 2: CROWN FLAGSHIP TOOLS SHOWCASE
+          SECTION 2: CORE COUNSELING TOOLS
          ═══════════════════════════════════════════════════ */}
-      <section className="space-y-4">
+      <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Crown className="h-5 w-5 text-amber-400 animate-bounce" />
-            <h2 className="text-lg font-extrabold tracking-tight">Flagship Counseling Suite</h2>
-          </div>
-          <Badge variant="outline" className="bg-amber-500/10 text-amber-400 border-amber-500/30 text-xs px-2.5 py-0.5 font-bold">
-            Most Popular
-          </Badge>
+          <h2 className="text-base font-bold tracking-tight flex items-center gap-2">
+            <Zap className="h-4 w-4 text-primary" />
+            Core Counseling Tools
+          </h2>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CROWN_FEATURES.map((feat) => (
-            <Card
-              key={feat.title}
-              className={`border bg-gradient-to-br ${feat.gradient} bg-card/70 backdrop-blur-md shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group cursor-pointer overflow-hidden relative`}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              title: "Rank Predictor",
+              desc: "Estimate KCET & COMEDK rank based on your marks.",
+              icon: Calculator,
+              href: "/rank-predictor"
+            },
+            {
+              title: "College Predictor",
+              desc: "Find eligible colleges matching your rank & category.",
+              icon: Target,
+              href: "/college-predictor"
+            },
+            {
+              title: "Fee Calculator",
+              desc: "Tuition fees, scholarships, and 4-year cost breakdown.",
+              icon: FileText,
+              href: "/fee-calculator"
+            },
+            {
+              title: "AI Counselor",
+              desc: "Ask questions about KEA rules, options & choices.",
+              icon: Bot,
+              href: "/ai-counselor"
+            }
+          ].map((item) => (
+            <Link
+              key={item.title}
+              to={item.href}
+              className="p-4 rounded-xl border border-border/40 bg-card/50 hover:bg-card hover:border-primary/40 transition-all group flex flex-col justify-between cursor-pointer space-y-3 shadow-sm"
             >
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between mb-2">
-                  <div className={`p-2 rounded-xl bg-background/60 border border-white/10 ${feat.accent}`}>
-                    <feat.icon className="h-5 w-5" />
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <item.icon className="h-4 w-4" />
                   </div>
-                  <Badge variant="outline" className="text-[9px] font-mono border-white/10 text-muted-foreground">
-                    {feat.tagline}
-                  </Badge>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
                 </div>
-                <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                  {feat.title}
-                </CardTitle>
-                <CardDescription className="text-xs line-clamp-2 mt-1">
-                  {feat.desc}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="pt-2">
-                <Link to={feat.href} className="block">
-                  <Button size="sm" className={`w-full text-xs font-bold gap-1.5 cursor-pointer shadow-sm ${feat.btnClass}`}>
-                    Launch Tool <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+                <h3 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
+              <span className="text-[11px] font-semibold text-primary flex items-center gap-1 pt-1">
+                Open Tool <ArrowRight className="h-3 w-3" />
+              </span>
+            </Link>
           ))}
         </div>
       </section>
