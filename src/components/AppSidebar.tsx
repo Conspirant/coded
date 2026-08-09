@@ -44,6 +44,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
 }
 
 const toolItems = [
+  { title: "Fee Calculator", url: "/fee-calculator", icon: Calculator, isNew: true },
   { title: "College Directory", url: "/colleges", icon: Building2, isNew: true },
   { title: "Blog & Guides", url: "/blog", icon: BookOpen, isNew: true },
   { title: "Round Tracker", url: "/round-tracker", icon: Bell },

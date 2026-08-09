@@ -77,6 +77,7 @@ const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
     }
 
     return [
+        { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
         { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
         { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
         { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
