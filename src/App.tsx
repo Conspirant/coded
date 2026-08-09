@@ -64,6 +64,7 @@ import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
 import { DynamicPopupManager } from "./components/DynamicPopupManager";
 import { WebsiteReviewPrompt } from "@/components/WebsiteReviewPrompt";
 import { GlobalPollPopup } from "./components/GlobalPollPopup";
+import { MusicPlayer } from "./components/MusicPlayer";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
@@ -149,6 +150,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <DonationButton />
+            <MusicPlayer />
             <PWAInstallBanner />
             <GlobalPollPopup />
             </PresenceAndBlockProvider>
