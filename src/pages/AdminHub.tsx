@@ -1523,6 +1523,10 @@ const BLOCKABLE_PAGES = [
 
 function AdminSystemSettingsSection() {
     const [greetingText, setGreetingText] = useState(() => localStorage.getItem("kcet_admin_greeting_text") || "User")
+    const [devMessageText, setDevMessageText] = useState(() => localStorage.getItem("kcet_dev_message_text") || "")
+    const [devMessageEnabled, setDevMessageEnabled] = useState(() => localStorage.getItem("kcet_dev_message_enabled") === "true")
+    const [devMessageType, setDevMessageType] = useState(() => localStorage.getItem("kcet_dev_message_type") || "info")
+    
     const [paywallDisabled, setPaywallDisabled] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
     const [siteShutdown, setSiteShutdown] = useState(false)
@@ -1551,6 +1555,17 @@ function AdminSystemSettingsSection() {
         toast({
             title: "Greeting Updated",
             description: `Dashboard greeting text set to: "${val || 'User'}"`
+        })
+    }
+
+    const handleSaveDevMessage = () => {
+        localStorage.setItem("kcet_dev_message_text", devMessageText.trim())
+        localStorage.setItem("kcet_dev_message_enabled", devMessageEnabled ? "true" : "false")
+        localStorage.setItem("kcet_dev_message_type", devMessageType)
+        window.dispatchEvent(new Event("dev_message_updated"))
+        toast({
+            title: "Developer Announcement Saved",
+            description: devMessageEnabled ? "Message live on Dashboard below greeting." : "Announcement saved (currently hidden)."
         })
     }
 
@@ -1755,6 +1770,60 @@ function AdminSystemSettingsSection() {
                             className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
                         >
                             Save Greeting
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Developer Announcement Below Greeting Card */}
+            <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
+                <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                        <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                            <Megaphone className="h-4 w-4 text-emerald-400" /> Developer Announcement Below Greeting
+                        </CardTitle>
+                        <div className="flex items-center gap-2">
+                            <Label className="text-xs text-slate-300">Show on Dashboard</Label>
+                            <Switch
+                                checked={devMessageEnabled}
+                                onCheckedChange={(val) => setDevMessageEnabled(val)}
+                            />
+                        </div>
+                    </div>
+                    <CardDescription className="text-xs text-muted-foreground">
+                        Post a custom developer message or update directly under the dashboard header greeting.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label className="text-xs text-slate-300 font-semibold">Message Text</Label>
+                        <Textarea
+                            value={devMessageText}
+                            onChange={(e) => setDevMessageText(e.target.value)}
+                            placeholder="e.g. Option entry window is open! Verify your college preferences before submitting."
+                            rows={3}
+                            className="bg-white/5 border-white/10 text-xs text-white"
+                        />
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                            <Label className="text-xs text-slate-300">Badge Type:</Label>
+                            <select
+                                value={devMessageType}
+                                onChange={(e) => setDevMessageType(e.target.value)}
+                                className="bg-slate-900 border border-white/10 text-xs rounded-md px-2 py-1 text-white"
+                            >
+                                <option value="info">Info / Notice (Blue)</option>
+                                <option value="announcement">Announcement (Purple)</option>
+                                <option value="success">Success / Update (Green)</option>
+                                <option value="warning">Important Alert (Amber)</option>
+                            </select>
+                        </div>
+                        <Button
+                            onClick={handleSaveDevMessage}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
+                        >
+                            Save Announcement
                         </Button>
                     </div>
                 </CardContent>
