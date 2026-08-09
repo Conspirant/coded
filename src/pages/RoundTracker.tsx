@@ -66,37 +66,37 @@ const RoundTracker = () => {
     },
     {
       id: 'round1_post',
-      name: 'Stage 3: Choice Entry, Fee Payment & Reporting',
-      status: 'active',
+      name: 'Stage 3: Round 1 Choice Entry & College Reporting',
+      status: 'completed',
       startDate: '2026-07-16',
       endDate: '2026-07-24',
-      progress: 75,
+      progress: 100,
       description: 'Post-allotment choice selection (Choice 1/2/3/4), fee payment, and college reporting.',
       alerts: [
-        '🟢 Choice Selection Window: Candidates must log in to select Choice 1, 2, 3, or 4.',
-        '💳 Fee Payment: Online payment / Challan download active for Choice 1 & Choice 2 candidates.',
-        '🏫 College Reporting: Choice 1 candidates must report to allotted colleges with original documents.'
+        'Choice Selection & Payment window concluded.',
+        'Choice 1 candidates reported to allotted colleges with original documents.'
       ]
     },
     {
       id: 'round2',
       name: 'Stage 4: Round 2 Option Entry & Seat Allotment',
-      status: 'upcoming',
-      startDate: 'TBA',
-      endDate: 'TBA',
-      progress: 0,
-      description: 'Option modification for Choice 2 & 3 candidates followed by Round 2 seat allotment.',
+      status: 'active',
+      startDate: '2026-08-07',
+      endDate: '2026-08-13',
+      progress: 65,
+      description: 'Live option entry modification, fresh option additions, and Round 2 seat allotment.',
       alerts: [
-        '🟢 OFFICIAL KEA UPDATE: Candidates ARE ALLOWED to add fresh new college/branch options during Round 2 option entry!',
-        'Fresh option entry & modification window for Choice 2, Choice 3, and unallotted candidates will open after Round 1 reporting.',
-        'Ensure you review and delete any unwanted options above your held seat before final option locking.'
+        '🟢 LIVE NOW: KCET 2026 Round 2 Option Entry portal is ACTIVE on cetonline.karnataka.gov.in!',
+        '📝 FRESH OPTIONS ALLOWED: Candidates (Choice 2, Choice 3 & unallotted) CAN add fresh options, re-order preferences, or delete unwanted options.',
+        '⏰ DEADLINE: Option entry closes on August 13, 2026 (until 9:00 AM sharp).',
+        '📊 Provisional Seat Allotment results will be declared on August 19, 2026 (after 10:00 AM).'
       ]
     },
     {
       id: 'round3_extended',
       name: 'Stage 5: Extended Round (Mop-Up / Round 3)',
       status: 'upcoming',
-      startDate: 'TBA',
+      startDate: '2026-08-20',
       endDate: 'TBA',
       progress: 0,
       description: 'Final counseling round for remaining unfilled engineering, architecture & farm science seats.',
@@ -219,14 +219,14 @@ const RoundTracker = () => {
           </CardContent>
         </Card>
 
-        <Card className="glass border-indigo-500/30 bg-indigo-950/20">
+        <Card className="glass border-emerald-500/40 bg-emerald-950/20 shadow-lg shadow-emerald-500/10">
           <CardContent className="p-5 flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
+            <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400">
               <Clock className="h-6 w-6 animate-pulse" />
             </div>
             <div>
-              <p className="text-xs font-medium text-indigo-300 uppercase tracking-wider">Active Phase</p>
-              <p className="text-lg font-bold text-white mt-0.5">Choice Entry & Fee Pay</p>
+              <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Active Phase (Live)</p>
+              <p className="text-lg font-bold text-white mt-0.5">Round 2 Option Entry</p>
             </div>
           </CardContent>
         </Card>
@@ -238,7 +238,7 @@ const RoundTracker = () => {
             </div>
             <div>
               <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Upcoming Phase</p>
-              <p className="text-lg font-bold text-white mt-0.5">Round 2 Options</p>
+              <p className="text-lg font-bold text-white mt-0.5">Round 2 Allotment (Aug 19)</p>
             </div>
           </CardContent>
         </Card>
