@@ -41,7 +41,7 @@ function save(p: Partial<Saved>) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MusicPlayer — right-aligned, sleek floating player
+   MusicPlayer — robust, right-aligned, sleek floating player
    ═══════════════════════════════════════════════════════ */
 export function MusicPlayer() {
   const init = useRef(load()).current;
@@ -63,6 +63,7 @@ export function MusicPlayer() {
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const playerContainerRef = useRef<HTMLDivElement>(null);
   const ytRef = useRef<any>(null);
   const tick = useRef<ReturnType<typeof setInterval>>();
   const errorSkips = useRef(0);
@@ -70,9 +71,11 @@ export function MusicPlayer() {
   const idxRef = useRef(idx);
   const shufRef = useRef(shuf);
   const rptRef = useRef(rpt);
+  const volRef = useRef(vol);
   useEffect(() => { idxRef.current = idx; }, [idx]);
   useEffect(() => { shufRef.current = shuf; }, [shuf]);
   useEffect(() => { rptRef.current = rpt; }, [rpt]);
+  useEffect(() => { volRef.current = vol; }, [vol]);
 
   const track: Track | undefined = TRACKS[idx];
 
@@ -120,15 +123,21 @@ export function MusicPlayer() {
     ytRef.current?.playVideo();
   }, []);
 
-  /* ── init YT player unconditionally ────────────────── */
+  /* ── init YT player with robust ref container ────────────────── */
   useEffect(() => {
     let dead = false;
+    let player: any = null;
 
     ensureYTApi().then(() => {
-      if (dead) return;
+      if (dead || !playerContainerRef.current) return;
       try {
-        const p = new (window as any).YT.Player('yt-mp-frame', {
-          width: '200', height: '150',
+        // Clean container and create fresh child target element
+        playerContainerRef.current.innerHTML = '';
+        const targetDiv = document.createElement('div');
+        playerContainerRef.current.appendChild(targetDiv);
+
+        player = new (window as any).YT.Player(targetDiv, {
+          width: '320', height: '180',
           videoId: TRACKS[idxRef.current]?.id ?? TRACKS[0].id,
           playerVars: {
             autoplay: 0,
@@ -143,7 +152,7 @@ export function MusicPlayer() {
             onReady(e: any) {
               if (dead) return;
               ytRef.current = e.target;
-              e.target.setVolume(vol);
+              e.target.setVolume(volRef.current);
               setReady(true);
             },
             onStateChange(e: any) {
@@ -154,16 +163,26 @@ export function MusicPlayer() {
               else if (e.data === S.BUFFERING) setLoading(true);
               else if (e.data === S.ENDED) advance();
             },
-            onError() { if (!dead) advance(true); },
+            onError(err: any) {
+              console.warn('[MusicPlayer] YouTube error code:', err?.data);
+              if (!dead) advance(true);
+            },
           },
         });
-        return () => { dead = true; p?.destroy?.(); ytRef.current = null; setReady(false); };
       } catch (err) {
-        console.warn('YT player init error', err);
+        console.warn('[MusicPlayer] YT player init exception', err);
       }
     });
 
-    return () => { dead = true; };
+    return () => {
+      dead = true;
+      if (player && typeof player.destroy === 'function') {
+        try { player.destroy(); } catch {}
+      }
+      ytRef.current = null;
+      setReady(false);
+      if (playerContainerRef.current) playerContainerRef.current.innerHTML = '';
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -233,10 +252,12 @@ export function MusicPlayer() {
 
   return (
     <>
-      {/* Off-screen YouTube Iframe container with standard dimensions (200x150) so YouTube doesn't block audio playback */}
-      <div className="fixed top-0 -left-[9999px] w-[200px] h-[150px] z-[-1] pointer-events-none" aria-hidden>
-        <div id="yt-mp-frame" />
-      </div>
+      {/* Container for YouTube iframe with standard size (320x180) off-screen */}
+      <div
+        ref={playerContainerRef}
+        className="fixed top-0 -left-[9999px] w-[320px] h-[180px] z-[-1] pointer-events-none"
+        aria-hidden
+      />
 
       {/* ═══ Floating Circular FAB (player closed/hidden) ═══ */}
       {!visible ? (
