@@ -331,7 +331,7 @@ const Dashboard = () => {
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            {getGreeting()}, <span className="text-primary font-black">Student</span>
+            {getGreeting()}, <span className="text-primary font-black">Nighaaaaaaaaaaa</span>
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             Everything you need for {examMode} 2026 option entry & college decisions.
@@ -343,22 +343,20 @@ const Dashboard = () => {
           <button
             type="button"
             onClick={() => setExamMode("KCET")}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
-              examMode === "KCET"
+            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${examMode === "KCET"
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
           >
             KCET 2026
           </button>
           <button
             type="button"
             onClick={() => setExamMode("COMEDK")}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${
-              examMode === "COMEDK"
+            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 ${examMode === "COMEDK"
                 ? "bg-amber-500 text-black shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
-            }`}
+              }`}
           >
             COMEDK
           </button>
@@ -532,13 +530,12 @@ const Dashboard = () => {
                 <div className="shrink-0 flex items-center gap-2">
                   <Badge
                     variant="outline"
-                    className={`text-[10px] font-bold ${
-                      c.status === "Safe"
+                    className={`text-[10px] font-bold ${c.status === "Safe"
                         ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
                         : c.status === "Target"
-                        ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
-                        : "border-rose-500/30 text-rose-400 bg-rose-500/10"
-                    }`}
+                          ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
+                          : "border-rose-500/30 text-rose-400 bg-rose-500/10"
+                      }`}
                   >
                     {c.status} ({c.safetyScore}%)
                   </Badge>
