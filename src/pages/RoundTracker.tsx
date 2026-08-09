@@ -187,6 +187,8 @@ const RoundTracker = () => {
             <ExternalLink className="h-4 w-4" />
           </a>
         </div>
+      </div>
+
       {/* Official KEA Option Entry Update Callout Banner */}
       <Alert className="border-emerald-500/30 bg-emerald-500/10 text-emerald-200 p-4 sm:p-5 rounded-2xl flex items-start gap-3 shadow-md">
         <ShieldCheck className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
