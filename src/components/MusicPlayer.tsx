@@ -128,7 +128,7 @@ export function MusicPlayer() {
       if (dead) return;
       try {
         const p = new (window as any).YT.Player('yt-mp-frame', {
-          width: '1', height: '1',
+          width: '200', height: '150',
           videoId: TRACKS[idxRef.current]?.id ?? TRACKS[0].id,
           playerVars: {
             autoplay: 0,
@@ -233,8 +233,8 @@ export function MusicPlayer() {
 
   return (
     <>
-      {/* ALWAYS mounted YouTube Iframe container */}
-      <div className="fixed w-px h-px overflow-hidden opacity-0 pointer-events-none" style={{ top: 0, right: 0 }} aria-hidden>
+      {/* Off-screen YouTube Iframe container with standard dimensions (200x150) so YouTube doesn't block audio playback */}
+      <div className="fixed top-0 -left-[9999px] w-[200px] h-[150px] z-[-1] pointer-events-none" aria-hidden>
         <div id="yt-mp-frame" />
       </div>
 
