@@ -330,8 +330,10 @@ const Dashboard = () => {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               {getGreeting()}, <span className="text-primary font-black">{adminGreeting}</span>
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Real-time rank predictions, seat odds, cutoff analytics & option entry tools.
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed max-w-3xl">
+              {devMessageEnabled && devMessage
+                ? devMessage
+                : "Real-time rank predictions, seat odds, cutoff analytics & option entry tools."}
             </p>
           </div>
 
@@ -361,42 +363,6 @@ const Dashboard = () => {
             </button>
           </div>
         </header>
-
-        {/* Developer Announcement Banner */}
-        {devMessageEnabled && devMessage && !devMessageDismissed && (
-          <div className={`p-4 rounded-xl border flex items-start justify-between gap-3 text-xs shadow-sm transition-all animate-in fade-in slide-in-from-top-2 duration-300 ${
-            devMessageType === "warning"
-              ? "bg-amber-500/10 border-amber-500/30 text-amber-200"
-              : devMessageType === "success"
-                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-200"
-                : devMessageType === "announcement"
-                  ? "bg-purple-500/10 border-purple-500/30 text-purple-200"
-                  : "bg-blue-500/10 border-blue-500/30 text-blue-200"
-          }`}>
-            <div className="flex items-start gap-2.5">
-              <Megaphone className="h-4 w-4 shrink-0 mt-0.5" />
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <span className="font-bold uppercase tracking-wider text-[10px] opacity-80">
-                    Developer Announcement
-                  </span>
-                  <span className="h-1 w-1 rounded-full bg-current opacity-40" />
-                  <span className="text-[10px] font-mono opacity-70">KCET Coded Broadcast</span>
-                </div>
-                <p className="text-xs leading-relaxed font-medium">
-                  {devMessage}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setDevMessageDismissed(true)}
-              className="text-muted-foreground hover:text-foreground shrink-0 p-1 rounded hover:bg-white/10 transition-colors"
-              title="Dismiss message"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        )}
 
         {/* METRICS STRIP */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-border/40">

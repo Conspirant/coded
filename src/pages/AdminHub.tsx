@@ -1803,15 +1803,15 @@ function AdminSystemSettingsSection() {
                 </CardContent>
             </Card>
 
-            {/* Developer Announcement Below Greeting Card */}
+            {/* Dashboard Natural Description Subtitle Card */}
             <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-                            <Megaphone className="h-4 w-4 text-emerald-400" /> Developer Announcement Below Greeting
+                            <Edit3 className="h-4 w-4 text-emerald-400" /> Dashboard Subtitle / Custom Description
                         </CardTitle>
                         <div className="flex items-center gap-2">
-                            <Label className="text-xs text-slate-300">Show on Dashboard</Label>
+                            <Label className="text-xs text-slate-300">Enable Custom Subtitle</Label>
                             <Switch
                                 checked={devMessageEnabled}
                                 onCheckedChange={(val) => setDevMessageEnabled(val)}
@@ -1819,39 +1819,26 @@ function AdminSystemSettingsSection() {
                         </div>
                     </div>
                     <CardDescription className="text-xs text-muted-foreground">
-                        Post a custom developer message or update directly under the dashboard header greeting.
+                        Set custom description text displayed naturally under the greeting on the dashboard.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                        <Label className="text-xs text-slate-300 font-semibold">Message Text</Label>
+                        <Label className="text-xs text-slate-300 font-semibold">Description Text</Label>
                         <Textarea
                             value={devMessageText}
                             onChange={(e) => setDevMessageText(e.target.value)}
-                            placeholder="e.g. Option entry window is open! Verify your college preferences before submitting."
+                            placeholder="e.g. Option entry window is live! Verify your college preferences before submitting."
                             rows={3}
                             className="bg-white/5 border-white/10 text-xs text-white"
                         />
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                            <Label className="text-xs text-slate-300">Badge Type:</Label>
-                            <select
-                                value={devMessageType}
-                                onChange={(e) => setDevMessageType(e.target.value)}
-                                className="bg-slate-900 border border-white/10 text-xs rounded-md px-2 py-1 text-white"
-                            >
-                                <option value="info">Info / Notice (Blue)</option>
-                                <option value="announcement">Announcement (Purple)</option>
-                                <option value="success">Success / Update (Green)</option>
-                                <option value="warning">Important Alert (Amber)</option>
-                            </select>
-                        </div>
+                    <div className="flex justify-end">
                         <Button
                             onClick={handleSaveDevMessage}
                             className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-9 px-4 shrink-0"
                         >
-                            Save Announcement
+                            Save Subtitle Text
                         </Button>
                     </div>
                 </CardContent>
