@@ -16,8 +16,10 @@ import {
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
     Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
-    Megaphone, Vote, Power, Sparkles, Music
+    Megaphone, Vote, Power, Sparkles, Music, Award
 } from "lucide-react"
+import { DonationCertificateModal } from "@/components/DonationCertificateModal"
+
 
 // Lazy load heavy admin components
 import AdminCutoffsPage from "./AdminCutoffs"
@@ -2381,9 +2383,109 @@ function AdminVisitorCounterControl() {
     )
 }
 
+// ─── Admin Certificate Generator Section ───────────────────────
+function AdminCertificateGeneratorSection() {
+    const [donorName, setDonorName] = useState("Karnataka Aspirant")
+    const [amount, setAmount] = useState("100")
+    const [certId, setCertId] = useState("KCET-CERT-ADMIN-" + Math.random().toString(36).substring(2, 8).toUpperCase())
+    const [customDate, setCustomDate] = useState(new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }))
+    const [showCertModal, setShowCertModal] = useState(false)
+
+    return (
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <Award className="h-5 w-5 text-amber-400" />
+                    Certificate Generator Tool
+                </h1>
+                <p className="text-xs text-muted-foreground mt-1">
+                    Issue and preview official digital Certificates of Appreciation & Support for any student, donor, or supporter.
+                </p>
+            </div>
+
+            <Card className="glass-card border-white/10 p-6 space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label className="text-xs font-semibold text-slate-300">Recipient Name</Label>
+                        <Input
+                            value={donorName}
+                            onChange={(e) => setDonorName(e.target.value)}
+                            placeholder="e.g. Rahul Kumar"
+                            className="bg-white/5 border-white/10 text-xs text-white"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-xs font-semibold text-slate-300">Contribution / Support Amount (₹)</Label>
+                        <Input
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="e.g. 100"
+                            className="bg-white/5 border-white/10 text-xs text-white"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-xs font-semibold text-slate-300">Certificate ID</Label>
+                        <Input
+                            value={certId}
+                            onChange={(e) => setCertId(e.target.value)}
+                            placeholder="Certificate ID..."
+                            className="bg-white/5 border-white/10 text-xs text-white font-mono"
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-xs font-semibold text-slate-300">Issue Date</Label>
+                        <Input
+                            value={customDate}
+                            onChange={(e) => setCustomDate(e.target.value)}
+                            placeholder="e.g. August 10, 2026"
+                            className="bg-white/5 border-white/10 text-xs text-white"
+                        />
+                    </div>
+                </div>
+
+                <div className="pt-2 flex flex-wrap gap-3">
+                    <Button
+                        type="button"
+                        onClick={() => setShowCertModal(true)}
+                        className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs h-10 px-5 rounded-xl flex items-center gap-2 shadow-md shadow-amber-500/20"
+                    >
+                        <Award className="h-4 w-4" />
+                        Generate & Preview Certificate 📜
+                    </Button>
+
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                            setCertId("KCET-CERT-ADMIN-" + Math.random().toString(36).substring(2, 8).toUpperCase())
+                        }}
+                        className="border-white/10 hover:bg-white/5 text-xs h-10 px-4 rounded-xl text-slate-300"
+                    >
+                        New Random ID
+                    </Button>
+                </div>
+            </Card>
+
+            <DonationCertificateModal
+                open={showCertModal}
+                onOpenChange={setShowCertModal}
+                donorName={donorName}
+                amount={parseFloat(amount) || 0}
+                date={customDate}
+                paymentId={certId}
+            />
+        </div>
+    )
+}
+
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
+    { id: "certificates", label: "Certificate Generator", icon: Award },
     { id: "music", label: "Music Playlist", icon: Music },
     { id: "polls", label: "Community Polls", icon: Vote },
     { id: "popups", label: "Popups & Alerts", icon: Megaphone },
@@ -2455,6 +2557,7 @@ export default function AdminHub() {
                 {/* Content */}
                 <main className="flex-1 p-6 md:p-8 max-w-7xl">
                     {activeSection === "pyq" && <AdminPYQSection />}
+                    {activeSection === "certificates" && <AdminCertificateGeneratorSection />}
                     {activeSection === "music" && <AdminMusicManager />}
                     {activeSection === "polls" && <AdminPollManager />}
                     {activeSection === "popups" && <AdminPopupControllerSection />}
@@ -2474,3 +2577,4 @@ export default function AdminHub() {
         </div>
     )
 }
+

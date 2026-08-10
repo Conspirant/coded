@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { SEO } from '@/components/SEO';
 import { supabase } from '@/integrations/supabase/client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Sparkles, Crown, Star, ArrowLeft } from 'lucide-react';
+import { Heart, Sparkles, Crown, Star, ArrowLeft, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { DonationCertificateModal } from '@/components/DonationCertificateModal';
 
 interface Donor {
   id: string;
@@ -40,48 +41,11 @@ function timeAgo(dateStr: string): string {
   return `${months}mo ago`;
 }
 
-const MOCK_DONORS: Donor[] = [
-  {
-    id: "mock-1",
-    display_name: "Yashas",
-    amount_inr: 19,
-    is_anonymous: false,
-    created_at: new Date('2026-07-19T17:08:00').toISOString(),
-  },
-  {
-    id: "mock-2",
-    display_name: "Anonymous",
-    amount_inr: 19,
-    is_anonymous: true,
-    created_at: new Date('2026-07-18T16:08:00').toISOString(),
-  },
-  {
-    id: "mock-3",
-    display_name: "Anonymous",
-    amount_inr: 20,
-    is_anonymous: true,
-    created_at: new Date('2026-07-18T14:08:00').toISOString(),
-  },
-  {
-    id: "mock-4",
-    display_name: "Anonymous",
-    amount_inr: 10,
-    is_anonymous: true,
-    created_at: new Date('2026-07-18T11:08:00').toISOString(),
-  },
-  {
-    id: "mock-5",
-    display_name: "Anonymous",
-    amount_inr: 10,
-    is_anonymous: true,
-    created_at: new Date('2026-07-18T09:08:00').toISOString(),
-  }
-];
-
 const Supporters = () => {
   const [donors, setDonors] = useState<Donor[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [selectedDonorForCert, setSelectedDonorForCert] = useState<Donor | null>(null);
 
   // Find the top donor (highest amount_inr)
   const topDonor = donors.length > 0
@@ -101,17 +65,21 @@ const Supporters = () => {
 
       if (error) throw error;
 
-      const dbDonors = data || [];
-      const combinedDonors = [...dbDonors, ...MOCK_DONORS];
-      
-      // Sort combined list by created_at descending
-      combinedDonors.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      const items: Donor[] = (data || []).map((d: any) => ({
+        id: d.id,
+        display_name: d.display_name || 'Anonymous',
+        amount_inr: d.amount_inr || 0,
+        is_anonymous: d.is_anonymous ?? false,
+        created_at: d.created_at || new Date().toISOString(),
+      }));
 
-      setDonors(combinedDonors);
-      setTotalAmount(combinedDonors.reduce((sum: number, d: Donor) => sum + Number(d.amount_inr), 0));
+      setDonors(items);
+
+      const dbTotal = items.reduce((sum, d) => sum + Number(d.amount_inr), 0);
+      setTotalAmount(78 + dbTotal);
     } catch (err) {
       console.error('Error fetching donors:', err);
-      setDonors(MOCK_DONORS);
+      setDonors([]);
       setTotalAmount(78);
     } finally {
       setLoading(false);
@@ -122,9 +90,9 @@ const Supporters = () => {
     <div className="min-h-screen bg-background text-slate-300 font-sans selection:bg-white/10">
       <SEO
         title="Supporters Wall — KCET Coded"
-        description="A list of generous supporters who keep Coded free and accessible to every student."
+        description="A heartfelt thank you to all Karnataka students and parents supporting KCET Coded."
         url="https://kcetcoded.dev/supporters"
-        keywords="supporters KCET Coded, donors, donations wall"
+        keywords="KCET Coded supporters, donations, community"
       />
 
       <div className="max-w-xl mx-auto px-6 py-16">
@@ -175,7 +143,7 @@ const Supporters = () => {
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-3 border border-amber-500/10 bg-amber-500/[0.02] rounded-xl flex items-center justify-between group/top hover:border-amber-500/20 hover:bg-amber-500/[0.04] transition-all duration-300"
+            className="mb-6 p-3 border border-amber-500/20 bg-amber-500/[0.03] rounded-xl flex items-center justify-between group/top hover:border-amber-500/30 hover:bg-amber-500/[0.05] transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover/top:scale-105 transition-transform duration-300">
@@ -188,7 +156,15 @@ const Supporters = () => {
                 </span>
               </div>
             </div>
-            <div className="text-right">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedDonorForCert(topDonor)}
+                className="text-[10px] font-semibold px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 transition-colors flex items-center gap-1"
+              >
+                <Award className="h-3.5 w-3.5 text-amber-400" />
+                <span>Certificate</span>
+              </button>
               <span className="text-xs font-bold font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
                 ₹{Number(topDonor.amount_inr)}
               </span>
@@ -254,8 +230,17 @@ const Supporters = () => {
                       </div>
                     </div>
 
-                    {/* Amount */}
-                    <div className="text-right">
+                    {/* Certificate & Amount */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDonorForCert(donor)}
+                        className="text-[9px] font-mono px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1"
+                        title="View Official Certificate"
+                      >
+                        <Award className="h-3.5 w-3.5 text-amber-400" />
+                        <span>Certificate</span>
+                      </button>
                       <span className="text-xs font-semibold font-mono text-white">
                         ₹{Number(donor.amount_inr)}
                       </span>
@@ -279,6 +264,20 @@ const Supporters = () => {
               Support Coded
             </Link>
           </div>
+        )}
+
+        {/* Certificate Modal */}
+        {selectedDonorForCert && (
+          <DonationCertificateModal
+            open={!!selectedDonorForCert}
+            onOpenChange={(open) => {
+              if (!open) setSelectedDonorForCert(null);
+            }}
+            donorName={selectedDonorForCert.is_anonymous ? "Anonymous Supporter" : selectedDonorForCert.display_name}
+            amount={selectedDonorForCert.amount_inr}
+            date={new Date(selectedDonorForCert.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+            paymentId={`KCET-CERT-${selectedDonorForCert.id.substring(0, 8).toUpperCase()}`}
+          />
         )}
       </div>
     </div>

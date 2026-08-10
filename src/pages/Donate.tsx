@@ -14,11 +14,13 @@ import {
     Crown,
     X,
     MessageCircle,
+    Award,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "@/integrations/supabase/client"
 import { saveAccessCode, unlockGlobally } from "@/lib/unlock"
 import { copyToClipboard } from "@/lib/utils"
+import { DonationCertificateModal } from "@/components/DonationCertificateModal"
 
 const Donate = () => {
     const { toast } = useToast()
@@ -31,6 +33,7 @@ const Donate = () => {
     const [donorIsAnonymous, setDonorIsAnonymous] = useState(false)
     const [donateSuccessCode, setDonateSuccessCode] = useState('')
     const [totalAmount, setTotalAmount] = useState<number>(78)
+    const [showCertModal, setShowCertModal] = useState(false)
 
     useEffect(() => {
         const fetchTotalAmount = async () => {
@@ -162,7 +165,7 @@ const Donate = () => {
                                 for (let i = 0; i < 4; i++) finalCode += chars.charAt(Math.floor(Math.random() * chars.length));
 
                                 try {
-                                    await supabase.from('access_codes').insert({
+                                    await (supabase as any).from('access_codes').insert({
                                         code: finalCode,
                                         is_used: false,
                                         payment_id: response.razorpay_payment_id
@@ -172,7 +175,7 @@ const Donate = () => {
                                 }
 
                                 try {
-                                    await supabase.from('donors').insert({
+                                    await (supabase as any).from('donors').insert({
                                         display_name: donorIsAnonymous ? 'Anonymous' : (donorName.trim() || 'Anonymous'),
                                         amount_inr: amtVal,
                                         is_anonymous: donorIsAnonymous || !donorName.trim(),
@@ -181,6 +184,7 @@ const Donate = () => {
                                 } catch (e) {
                                     console.error('Failed to save donor to database:', e)
                                 }
+
                             }
 
                             saveAccessCode(finalCode)
@@ -192,6 +196,7 @@ const Donate = () => {
                                 paymentId: response.razorpay_payment_id,
                                 orderId: response.razorpay_order_id,
                             })
+                            setShowCertModal(true)
                             toast({
                                 title: "Payment Successful!",
                                 description: `Thank you so much for your donation of ₹${amtVal}! Your access code (${finalCode}) is saved in Settings.`,
@@ -298,10 +303,11 @@ const Donate = () => {
                 <div className="relative inline-block">
                     <Heart className="h-10 w-10 text-pink-500 fill-pink-500 mx-auto" />
                 </div>
-                <h1 className="text-3xl font-bold tracking-tight">Support Coded</h1>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
-                    This platform is free, ad-free, and requires no sign-up. 
-                    If it helped you, consider supporting our hosting costs with a small contribution.
+                <h1 className="text-2xl font-bold tracking-tight text-white font-sans">
+                    Support KCET Coded
+                </h1>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                    Help keep this platform free, fast, and accessible for all Karnataka students preparing for counseling.
                 </p>
             </div>
 
@@ -328,6 +334,16 @@ const Donate = () => {
                                 <h3 className="font-bold text-base text-foreground">Thank You ❤️</h3>
                                 <p className="text-xs text-muted-foreground">Your contribution keeps Coded online and ad-free.</p>
                             </div>
+
+                            <Button
+                                type="button"
+                                onClick={() => setShowCertModal(true)}
+                                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs h-10 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 my-1"
+                            >
+                                <Award className="h-4 w-4" />
+                                View Official Donation Certificate 📜
+                            </Button>
+
                             <Link 
                                 to="/supporters" 
                                 className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-500/20 transition-all font-semibold mt-2 animate-pulse"
@@ -560,8 +576,18 @@ const Donate = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <DonationCertificateModal
+                open={showCertModal}
+                onOpenChange={setShowCertModal}
+                donorName={donorIsAnonymous ? "Anonymous Supporter" : (donorName.trim() || "Valued Supporter")}
+                amount={parseFloat(amount) || 100}
+                paymentId={txnDetails?.paymentId || "KCET-CODED-DONATION"}
+            />
         </div>
     )
 }
 
 export default Donate
+
+
