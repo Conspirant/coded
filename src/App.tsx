@@ -67,7 +67,6 @@ import { DynamicPopupManager } from "./components/DynamicPopupManager";
 import { WebsiteReviewPrompt } from "@/components/WebsiteReviewPrompt";
 import { GlobalPollPopup } from "./components/GlobalPollPopup";
 import { MusicPlayer } from "./components/MusicPlayer";
-import { AuthProvider } from "./contexts/AuthContext";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
@@ -86,8 +85,7 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <ExamModeProvider>
-        <AuthProvider>
-          <TooltipProvider>
+        <TooltipProvider>
           <Toaster />
           <Sonner />
           <Analytics />
@@ -162,7 +160,6 @@ const App = () => (
             </PresenceAndBlockProvider>
           </BrowserRouter>
           </TooltipProvider>
-        </AuthProvider>
       </ExamModeProvider>
     </QueryClientProvider>
   </HelmetProvider>

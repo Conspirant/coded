@@ -18,7 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ForumCategory, createForumPost, ForumPost } from "@/lib/forum-service";
-import { useAuth } from "@/contexts/AuthContext";
 import { Sparkles, MessageSquarePlus, Tag, User, Award } from "lucide-react";
 import { toast } from "sonner";
 
@@ -42,8 +41,6 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
   onOpenChange,
   onPostCreated,
 }) => {
-  const { user, profile } = useAuth();
-
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ForumCategory>("Option Entry");
   const [content, setContent] = useState("");
@@ -51,19 +48,6 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
   const [authorName, setAuthorName] = useState("");
   const [authorRank, setAuthorRank] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  React.useEffect(() => {
-    if (open) {
-      if (profile?.display_name) {
-        setAuthorName(profile.display_name);
-      } else if (user?.email) {
-        setAuthorName(user.email.split("@")[0]);
-      }
-      if (profile?.kcet_rank) {
-        setAuthorRank(`Rank #${profile.kcet_rank.toLocaleString()} (${profile.kcet_category || "GM"})`);
-      }
-    }
-  }, [open, profile, user]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

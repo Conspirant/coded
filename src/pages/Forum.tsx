@@ -27,10 +27,6 @@ import {
   Filter,
 } from "lucide-react";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { ForumAuthModal } from "@/components/forum/ForumAuthModal";
-import { User as UserIcon, LogIn } from "lucide-react";
-
 type SortOption = "trending" | "latest" | "unanswered" | "solved";
 
 const CATEGORIES: ("All" | ForumCategory)[] = [
@@ -45,14 +41,11 @@ const CATEGORIES: ("All" | ForumCategory)[] = [
 
 const Forum: React.FC = () => {
   const navigate = useNavigate();
-  const { user, profile } = useAuth();
-
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<"All" | ForumCategory>("All");
   const [sortOption, setSortOption] = useState<SortOption>("trending");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const refreshPosts = () => {
     setPosts(getStoredPosts());
@@ -62,14 +55,6 @@ const Forum: React.FC = () => {
   useEffect(() => {
     refreshPosts();
   }, []);
-
-  const handleAskQuestionClick = () => {
-    if (!user) {
-      setIsAuthOpen(true);
-    } else {
-      setIsCreateOpen(true);
-    }
-  };
 
   // Filter & Sort Posts
   const filteredPosts = useMemo(() => {
@@ -156,43 +141,14 @@ const Forum: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              {user ? (
-                <Button
-                  onClick={() => setIsAuthOpen(true)}
-                  variant="outline"
-                  size="lg"
-                  className="bg-slate-900/80 border-white/15 text-white hover:bg-slate-800 rounded-2xl flex items-center gap-2 text-xs sm:text-sm"
-                >
-                  <UserIcon className="h-4 w-4 text-primary" />
-                  <span>{profile?.display_name || user.email?.split('@')[0]}</span>
-                  {profile?.kcet_rank && (
-                    <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono text-xs font-bold">
-                      #{profile.kcet_rank.toLocaleString()}
-                    </span>
-                  )}
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => setIsAuthOpen(true)}
-                  variant="outline"
-                  size="lg"
-                  className="bg-white/5 border-white/15 text-white hover:bg-white/10 rounded-2xl flex items-center gap-2 text-xs sm:text-sm"
-                >
-                  <LogIn className="h-4 w-4 text-indigo-400" />
-                  Sign In
-                </Button>
-              )}
-
-              <Button
-                onClick={handleAskQuestionClick}
-                size="lg"
-                className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_30px_-5px_rgba(99,102,241,0.5)] transition-all duration-300"
-              >
-                <PlusCircle className="h-5 w-5 mr-2" />
-                Ask a Question
-              </Button>
-            </div>
+            <Button
+              onClick={() => setIsCreateOpen(true)}
+              size="lg"
+              className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_30px_-5px_rgba(99,102,241,0.5)] transition-all duration-300"
+            >
+              <PlusCircle className="h-5 w-5 mr-2" />
+              Ask a Question
+            </Button>
           </div>
 
           {/* Stats Bar */}
@@ -363,12 +319,6 @@ const Forum: React.FC = () => {
         open={isCreateOpen}
         onOpenChange={setIsCreateOpen}
         onPostCreated={handlePostCreated}
-      />
-
-      {/* Forum Auth Modal */}
-      <ForumAuthModal
-        open={isAuthOpen}
-        onOpenChange={setIsAuthOpen}
       />
     </div>
   );

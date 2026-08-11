@@ -96,7 +96,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       if (error) throw error;
     } catch (err: any) {
-      toast.error(err.message || "Failed to initiate Google sign in.");
+      if (err?.message?.includes("validation_failed") || err?.message?.includes("provider is not enabled")) {
+        toast.error("Google Auth is not enabled in Supabase settings yet. Please sign in with Email below!");
+      } else {
+        toast.error(err.message || "Failed to initiate Google sign in.");
+      }
     }
   };
 
