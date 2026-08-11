@@ -24,6 +24,7 @@ import {
     Command,
     Flame,
     Sword,
+    MessageSquare,
     ExternalLink,
     TrendingUp
 } from "lucide-react"
@@ -62,6 +63,7 @@ const getDockItems = (examMode: "KCET" | "COMEDK"): DockItem[] =>
 const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
     if (examMode === "COMEDK") {
         return [
+            { icon: MessageSquare, label: "Forum", href: "/forum" },
             { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
             { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
             { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
@@ -77,6 +79,7 @@ const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
     }
 
     return [
+        { icon: MessageSquare, label: "Forum", href: "/forum" },
         { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
         { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
         { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },

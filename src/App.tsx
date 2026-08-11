@@ -56,6 +56,8 @@ import CutoffTrends from "./pages/CutoffTrends";
 import RoundPredictor from "./pages/RoundPredictor";
 import Donate from "./pages/Donate";
 import Supporters from "./pages/Supporters";
+import Forum from "./pages/Forum";
+import ThreadDetailPage from "./pages/ThreadDetailPage";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
@@ -142,6 +144,9 @@ const App = () => (
               <Route path="/donate" element={<Layout><Donate /></Layout>} />
               <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
               <Route path="/squad-finder" element={<SquadFinder />} />
+              <Route path="/forum" element={<Layout><Forum /></Layout>} />
+              <Route path="/forum/:postId" element={<Layout><ThreadDetailPage /></Layout>} />
+              <Route path="/community" element={<Navigate to="/forum" replace />} />
               <Route path="/metro-mapper" element={<MetroMapper />} />
               <Route path="/bmtc-mapper" element={<BmtcMapper />} />
               <Route path="/hidden-gems" element={<HiddenGems />} />

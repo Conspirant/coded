@@ -33,6 +33,7 @@ import { AdminCollegeEditor } from "@/components/admin/AdminCollegeEditor"
 import { AdminPopupControllerSection } from "@/components/admin/AdminPopupControllerSection"
 import { AdminPollManager } from "@/components/admin/AdminPollManager"
 import { AdminMusicManager } from "@/components/admin/AdminMusicManager"
+import { AdminForumControlSection } from "@/components/admin/AdminForumControlSection"
 import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
@@ -2484,6 +2485,7 @@ function AdminCertificateGeneratorSection() {
 
 // ─── Admin Hub Tabs ────────────────────────────────────────────
 const ADMIN_SECTIONS = [
+    { id: "forum-control", label: "Forum Control 💬", icon: MessageSquare },
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
     { id: "certificates", label: "Certificate Generator", icon: Award },
     { id: "music", label: "Music Playlist", icon: Music },
@@ -2506,7 +2508,7 @@ type SectionId = typeof ADMIN_SECTIONS[number]["id"]
 
 export default function AdminHub() {
     const [authed, setAuthed] = useState(sessionStorage.getItem(AUTH_KEY) === "1")
-    const [activeSection, setActiveSection] = useState<SectionId>("pyq")
+    const [activeSection, setActiveSection] = useState<SectionId>("forum-control")
 
     if (!authed) return <AdminAuthGate onAuth={() => setAuthed(true)} />
 
@@ -2556,6 +2558,7 @@ export default function AdminHub() {
 
                 {/* Content */}
                 <main className="flex-1 p-6 md:p-8 max-w-7xl">
+                    {activeSection === "forum-control" && <AdminForumControlSection />}
                     {activeSection === "pyq" && <AdminPYQSection />}
                     {activeSection === "certificates" && <AdminCertificateGeneratorSection />}
                     {activeSection === "music" && <AdminMusicManager />}

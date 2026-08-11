@@ -1,4 +1,4 @@
-import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, BookOpen, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp, Award, Zap, Brain, Crown } from "lucide-react"
+import { Calculator, Search, Target, Shuffle, Bell, GitCompare, FileText, Star, Home, ClipboardList, ExternalLink, Info, Book, BookOpen, Bot, LayoutDashboard, Building2, Flame, Sword, Newspaper, Lightbulb, BookOpenCheck, ShieldCheck, Heart, TrendingUp, Award, Zap, Brain, Crown, MessageSquare } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import {
   Sidebar,
@@ -22,6 +22,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
     return [
       { title: "Home", url: "/", icon: Home },
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+      { title: "Discussion Forum", url: "/forum", icon: MessageSquare, isNew: true },
       { title: "COMEDK Predictor", url: "/rank-predictor", icon: Calculator, isNew: true },
       { title: "COMEDK Explorer", url: "/cutoff-explorer", icon: ShieldCheck, isNew: true },
       { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
@@ -32,6 +33,7 @@ const getMainItems = (examMode: "KCET" | "COMEDK") => {
   return [
     { title: "Home", url: "/", icon: Home },
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+    { title: "Discussion Forum", url: "/forum", icon: MessageSquare, isNew: true },
     { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
     { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
     { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
