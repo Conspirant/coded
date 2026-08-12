@@ -86,7 +86,7 @@ export function Logo({
         <circle cx="16" cy="11" r="1.5" fill="#ffffff" />
         <circle cx="8" cy="11" r="1" fill="#ffffff" opacity="0.8" />
         <circle cx="24" cy="11" r="1" fill="#ffffff" opacity="0.8" />
-        
+
         {/* Tassel line morphing into data point */}
         <path
           d="M20 13L24 16.5C24.5 17 25 18 24.5 19C24 20 22.5 19.5 22 19"

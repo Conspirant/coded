@@ -896,9 +896,9 @@ const Homepage = () => {
                         </div>
                         <p className="text-[11px] text-muted-foreground/60 tracking-wide text-center sm:text-right">
                             Created by & if any queries contact{' '}
-                            <a 
-                                href="https://www.reddit.com/user/Elegant_Compote9073/" 
-                                target="_blank" 
+                            <a
+                                href="https://www.reddit.com/user/Elegant_Compote9073/"
+                                target="_blank"
                                 rel="noreferrer"
                                 className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
                             >

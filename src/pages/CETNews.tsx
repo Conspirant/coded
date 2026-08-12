@@ -4,14 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { 
-  ExternalLink, 
-  Newspaper, 
-  CalendarDays, 
-  AlertCircle, 
-  Search, 
-  Bell, 
-  CheckCircle2, 
+import {
+  ExternalLink,
+  Newspaper,
+  CalendarDays,
+  AlertCircle,
+  Search,
+  Bell,
+  CheckCircle2,
   ShieldAlert,
   Info,
   Sparkles
@@ -177,11 +177,10 @@ export default function CETNews() {
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium capitalize transition-all ${
-                categoryFilter === cat
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium capitalize transition-all ${categoryFilter === cat
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
                   : "glass text-slate-400 hover:text-white hover:bg-white/5"
-              }`}
+                }`}
             >
               {cat === "all" ? "All Updates" : cat}
             </button>

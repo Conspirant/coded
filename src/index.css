@@ -129,7 +129,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6, .font-brand {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-brand {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     letter-spacing: -0.01em;
   }
@@ -374,9 +380,12 @@
 
 /* Custom Animations */
 @keyframes bounce-horizontal {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   50% {
     transform: translateX(-25%);
   }
@@ -617,6 +626,7 @@ body.party-mode {
    ═══════════════════════════════════════════════════ */
 
 @media (max-width: 640px) {
+
   /* Reduce blur on mobile — biggest GPU bottleneck */
   .glass {
     backdrop-filter: blur(12px);

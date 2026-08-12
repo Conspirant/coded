@@ -5,11 +5,11 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { 
-  Bell, 
-  Clock, 
-  CheckCircle2, 
-  AlertCircle, 
+import {
+  Bell,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
   Calendar,
   ArrowRight,
   ShieldCheck,
@@ -177,9 +177,9 @@ const RoundTracker = () => {
             </p>
           </div>
 
-          <a 
-            href="https://cetonline.karnataka.gov.in" 
-            target="_blank" 
+          <a
+            href="https://cetonline.karnataka.gov.in"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-all shadow-lg shadow-indigo-500/20 shrink-0"
           >
@@ -250,11 +250,10 @@ const RoundTracker = () => {
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`px-4 py-2 rounded-xl text-xs font-medium capitalize transition-all ${
-              activeFilter === filter
+            className={`px-4 py-2 rounded-xl text-xs font-medium capitalize transition-all ${activeFilter === filter
                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
                 : 'glass text-slate-400 hover:text-white hover:bg-white/5'
-            }`}
+              }`}
           >
             {filter} Rounds
           </button>

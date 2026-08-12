@@ -5,21 +5,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { 
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select"
-import { 
-  Scale, Plus, X, Award, Shield, Check, AlertCircle, 
-  MapPin, Landmark, Calendar, LandmarkIcon, Percent, 
-  IndianRupee, Briefcase, GraduationCap, Loader2 
+import {
+  Scale, Plus, X, Award, Shield, Check, AlertCircle,
+  MapPin, Landmark, Calendar, LandmarkIcon, Percent,
+  IndianRupee, Briefcase, GraduationCap, Loader2
 } from "lucide-react"
 import { COLLEGE_DATABASE, CollegeInfo } from "@/data/collegeDatabase"
 import { CutoffService, CutoffData } from "@/lib/cutoff-service"
 
 import { toast } from "sonner"
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, 
-  Tooltip as RechartsTooltip, Legend, ResponsiveContainer 
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip as RechartsTooltip, Legend, ResponsiveContainer
 } from "recharts"
 import { supabase } from "@/integrations/supabase/client"
 import { mergeSingleCollege } from "@/lib/college-service"
@@ -114,11 +114,11 @@ const CollegeCompare = () => {
   // Filter colleges based on search query, excluding already selected ones
   const filteredColleges = mergedColleges.filter(college => {
     const isAlreadySelected = selectedColleges.some(s => s.code === college.code)
-    const matchesSearch = 
+    const matchesSearch =
       college.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       college.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (college.shortName && college.shortName.toLowerCase().includes(searchQuery.toLowerCase()))
-    
+
     return !isAlreadySelected && matchesSearch
   }).slice(0, 8) // Limit to top 8 search results for speed
 
@@ -150,7 +150,7 @@ const CollegeCompare = () => {
   // Highlight the best value in a comparison row
   const getBestValueIndex = (field: keyof CollegeInfo, isLowerBetter = false) => {
     if (activeColleges.length < 2) return -1
-    
+
     let targetIndex = -1
     let optimalValue = isLowerBetter ? Infinity : -Infinity
 
@@ -182,8 +182,8 @@ const CollegeCompare = () => {
   const chartData = useMemo(() => {
     return activeColleges.map(c => {
       const displayName = c.shortName || c.code || c.name;
-      const truncatedName = displayName.length > 15 
-        ? displayName.substring(0, 12) + "..." 
+      const truncatedName = displayName.length > 15
+        ? displayName.substring(0, 12) + "..."
         : displayName;
       return {
         name: truncatedName,
@@ -200,7 +200,7 @@ const CollegeCompare = () => {
   const comparedCutoffs = useMemo(() => {
     if (activeColleges.length === 0 || cutoffData.length === 0) return []
     const codes = activeColleges.map(c => c.code.toUpperCase())
-    return cutoffData.filter(c => 
+    return cutoffData.filter(c =>
       codes.includes(c.institute_code.toUpperCase()) &&
       c.year === cutoffYear &&
       c.round === cutoffRound &&
@@ -210,7 +210,7 @@ const CollegeCompare = () => {
 
   // Helper to load cutoffs for a single college based EXACTLY on selected filters
   const getCollegeCutoffs = (collegeCode: string) => {
-    const filtered = cutoffData.filter(c => 
+    const filtered = cutoffData.filter(c =>
       c.institute_code.toUpperCase() === collegeCode.toUpperCase() &&
       c.year === cutoffYear &&
       c.round === cutoffRound &&
@@ -223,9 +223,9 @@ const CollegeCompare = () => {
       const key = getCourseKey(entry.course)
       const existing = courseMap.get(key)
       if (!existing || entry.cutoff_rank < existing.rank) {
-        courseMap.set(key, { 
-          courseName: cleanCourseName(entry.course), 
-          rank: entry.cutoff_rank 
+        courseMap.set(key, {
+          courseName: cleanCourseName(entry.course),
+          rank: entry.cutoff_rank
         })
       }
     }
@@ -256,8 +256,8 @@ const CollegeCompare = () => {
 
         {/* Clear All Button */}
         {activeColleges.length > 0 && (
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setSelectedColleges([])}
             className="border-white/10 hover:bg-white/5 text-xs h-9"
           >
@@ -282,7 +282,7 @@ const CollegeCompare = () => {
               className="bg-slate-950/40 border-white/10 text-sm h-11 pr-10 focus:ring-indigo-500 focus:border-indigo-500"
             />
             {searchQuery && (
-              <button 
+              <button
                 onClick={() => setSearchQuery("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white"
               >
@@ -345,7 +345,7 @@ const CollegeCompare = () => {
               <Card key={college.code} className="border-white/10 bg-slate-900/10 backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 {/* Header highlight if best value */}
                 <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
-                
+
                 <button
                   onClick={() => handleRemoveCollege(college.code)}
                   className="absolute top-4 right-4 p-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-muted-foreground hover:text-white transition-all duration-200"
@@ -521,7 +521,7 @@ const CollegeCompare = () => {
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                         <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
                         <YAxis stroke="#94a3b8" fontSize={11} />
-                        <RechartsTooltip 
+                        <RechartsTooltip
                           contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
                         />
                         <Legend wrapperStyle={{ fontSize: 10 }} />
@@ -546,7 +546,7 @@ const CollegeCompare = () => {
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                         <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
                         <YAxis stroke="#94a3b8" fontSize={11} domain={[0, 100]} />
-                        <RechartsTooltip 
+                        <RechartsTooltip
                           contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
                         />
                         <Bar dataKey="placementRate" name="Placement %" fill="#14b8a6" radius={[4, 4, 0, 0]} />
@@ -569,7 +569,7 @@ const CollegeCompare = () => {
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                         <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
                         <YAxis stroke="#94a3b8" fontSize={11} />
-                        <RechartsTooltip 
+                        <RechartsTooltip
                           contentStyle={{ backgroundColor: "#020617", borderColor: "rgba(255,255,255,0.1)", color: "#fff" }}
                         />
                         <Legend wrapperStyle={{ fontSize: 10 }} />
@@ -647,7 +647,7 @@ const CollegeCompare = () => {
                 </div>
               </div>
             </div>
-                      {cutoffsLoading ? (
+            {cutoffsLoading ? (
               <Card className="border-white/5 bg-slate-950/20 py-16 text-center">
                 <CardContent className="flex flex-col items-center justify-center gap-2">
                   <Loader2 className="h-8 w-8 text-indigo-400 animate-spin" />

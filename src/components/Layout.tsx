@@ -116,27 +116,24 @@ export function Layout({ children }: LayoutProps) {
               <LiveVisitorCounter variant="compact" />
               <div className="hidden md:inline-flex relative h-8 w-[9.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
                 <span
-                  className={`absolute left-0.5 h-7 w-[4.5rem] rounded-full transition-all duration-300 ease-in-out ${
-                    examMode === "COMEDK"
+                  className={`absolute left-0.5 h-7 w-[4.5rem] rounded-full transition-all duration-300 ease-in-out ${examMode === "COMEDK"
                       ? "translate-x-[4.5rem] bg-amber-500 shadow-lg shadow-amber-500/25"
                       : "translate-x-0 bg-indigo-500 shadow-lg shadow-indigo-500/25"
-                  }`}
+                    }`}
                 />
                 <button
                   type="button"
                   onClick={() => setExamMode("KCET")}
-                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${
-                    examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   KCET
                 </button>
                 <button
                   type="button"
                   onClick={() => setExamMode("COMEDK")}
-                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${
-                    examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded-full text-xs font-semibold transition-colors duration-200 ${examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   COMEDK
                 </button>
@@ -165,27 +162,24 @@ export function Layout({ children }: LayoutProps) {
                       <Label className="text-sm font-medium">Exam Mode</Label>
                       <div className="relative inline-flex h-9 w-[10.5rem] items-center rounded-full border border-white/10 bg-white/5 p-0.5">
                         <span
-                          className={`absolute left-0.5 h-8 w-[5rem] rounded-full transition-all duration-300 ease-in-out ${
-                            examMode === "COMEDK"
+                          className={`absolute left-0.5 h-8 w-[5rem] rounded-full transition-all duration-300 ease-in-out ${examMode === "COMEDK"
                               ? "translate-x-[5rem] bg-amber-500 shadow-lg shadow-amber-500/25"
                               : "translate-x-0 bg-indigo-500 shadow-lg shadow-indigo-500/25"
-                          }`}
+                            }`}
                         />
                         <button
                           type="button"
                           onClick={() => setExamMode("KCET")}
-                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
-                            examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
-                          }`}
+                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${examMode === "KCET" ? "text-white" : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                           KCET
                         </button>
                         <button
                           type="button"
                           onClick={() => setExamMode("COMEDK")}
-                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${
-                            examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
-                          }`}
+                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded-full text-sm font-semibold transition-colors duration-200 ${examMode === "COMEDK" ? "text-black" : "text-muted-foreground hover:text-foreground"
+                            }`}
                         >
                           COMEDK
                         </button>
@@ -314,10 +308,10 @@ export function Layout({ children }: LayoutProps) {
                               <span className="text-[10px] text-muted-foreground">All features unlocked.</span>
                             </div>
                           </div>
-                          <Button 
-                            onClick={handleLockFeatures} 
-                            variant="outline" 
-                            size="sm" 
+                          <Button
+                            onClick={handleLockFeatures}
+                            variant="outline"
+                            size="sm"
                             className="h-8 text-xs border-rose-500/20 text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 rounded-lg shrink-0"
                           >
                             <Lock className="h-3 w-3 mr-1" />
@@ -389,14 +383,14 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex-1 max-w-7xl mx-auto w-full">
               {children}
             </div>
-            
+
             {/* Minimalist Creator Credit */}
             <div className="mt-8 pt-4 border-t border-white/5 text-center w-full">
               <p className="text-[11px] text-muted-foreground/60 tracking-wide">
                 Created by & if any queries contact{' '}
-                <a 
-                  href="https://www.reddit.com/user/Elegant_Compote9073/" 
-                  target="_blank" 
+                <a
+                  href="https://www.reddit.com/user/Elegant_Compote9073/"
+                  target="_blank"
                   rel="noreferrer"
                   className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
                 >

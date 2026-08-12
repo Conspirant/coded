@@ -18,7 +18,7 @@ import {
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "@/integrations/supabase/client"
-import { saveAccessCode, unlockGlobally } from "@/lib/unlock"
+import { saveAccessCode, unlockGlobally, getSavedAccessCode, isUnlocked } from "@/lib/unlock"
 import { copyToClipboard } from "@/lib/utils"
 import { DonationCertificateModal } from "@/components/DonationCertificateModal"
 
@@ -34,6 +34,81 @@ const Donate = () => {
     const [donateSuccessCode, setDonateSuccessCode] = useState('')
     const [totalAmount, setTotalAmount] = useState<number>(78)
     const [showCertModal, setShowCertModal] = useState(false)
+    const [existingDonorName, setExistingDonorName] = useState('')
+    const [existingAmount, setExistingAmount] = useState<number | null>(null)
+    const [isAdminCode, setIsAdminCode] = useState(false)
+
+    // On mount, check if the user has already paid and restore their paid state
+    useEffect(() => {
+        const checkExistingPayment = async () => {
+            const savedCode = getSavedAccessCode()
+            const alreadyUnlocked = isUnlocked()
+
+            if (!savedCode && !alreadyUnlocked) return
+
+            try {
+                // Look up the access code in the database to get the payment_id
+                if (savedCode) {
+                    const { data: codeData } = await (supabase as any)
+                        .from('access_codes')
+                        .select('code, payment_id')
+                        .eq('code', savedCode.toUpperCase())
+                        .maybeSingle()
+
+                    if (codeData) {
+                        setDonateSuccessCode(codeData.code)
+                        setPaymentStatus('success')
+
+                        // Check if this is an admin-granted code
+                        if (codeData.payment_id === 'ADMIN-GENERATED') {
+                            setIsAdminCode(true)
+                            return
+                        }
+
+                        if (codeData.payment_id) {
+                            setTxnDetails({
+                                paymentId: codeData.payment_id,
+                                orderId: '—',
+                            })
+
+                            // Also look up donor info for certificate
+                            const { data: donorData } = await (supabase as any)
+                                .from('donors')
+                                .select('display_name, amount_inr, is_anonymous')
+                                .eq('payment_id', codeData.payment_id)
+                                .maybeSingle()
+
+                            if (donorData) {
+                                setExistingDonorName(donorData.is_anonymous ? 'Anonymous Supporter' : (donorData.display_name || 'Valued Supporter'))
+                                setExistingAmount(Number(donorData.amount_inr) || null)
+                                setAmount(String(donorData.amount_inr || '100'))
+                                if (!donorData.is_anonymous && donorData.display_name) {
+                                    setDonorName(donorData.display_name)
+                                } else {
+                                    setDonorIsAnonymous(true)
+                                }
+                            }
+                        }
+                        return
+                    }
+                }
+
+                // Fallback: if unlocked but no code found in DB, still show success
+                if (alreadyUnlocked) {
+                    setPaymentStatus('success')
+                    if (savedCode) setDonateSuccessCode(savedCode)
+                }
+            } catch (err) {
+                console.error('Error checking existing payment:', err)
+                // If unlocked locally, still show success even if DB lookup fails
+                if (alreadyUnlocked) {
+                    setPaymentStatus('success')
+                    if (savedCode) setDonateSuccessCode(savedCode)
+                }
+            }
+        }
+        checkExistingPayment()
+    }, [])
 
     useEffect(() => {
         const fetchTotalAmount = async () => {
@@ -327,34 +402,54 @@ const Donate = () => {
                     {/* Payment States UI */}
                     {paymentStatus === 'success' ? (
                         <div className="flex flex-col items-center justify-center space-y-4 py-6 text-center">
-                            <div className="h-12 w-12 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                                <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+                            <div className={`h-12 w-12 rounded-full flex items-center justify-center border ${isAdminCode ? 'bg-violet-500/10 border-violet-500/20' : 'bg-emerald-500/10 border-emerald-500/20'}`}>
+                                {isAdminCode ? (
+                                    <Crown className="h-6 w-6 text-violet-400" />
+                                ) : (
+                                    <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+                                )}
                             </div>
                             <div className="space-y-1">
-                                <h3 className="font-bold text-base text-foreground">Thank You ❤️</h3>
-                                <p className="text-xs text-muted-foreground">Your contribution keeps Coded online and ad-free.</p>
+                                <h3 className="font-bold text-base text-foreground">
+                                    {isAdminCode ? 'Premium Access Active ✨' : 'Thank You ❤️'}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                    {isAdminCode
+                                        ? 'Your access was granted by an admin. All premium features are unlocked.'
+                                        : 'Your contribution keeps Coded online and ad-free.'}
+                                </p>
+                                {isAdminCode && (
+                                    <span className="inline-flex items-center gap-1 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-[10px] px-2.5 py-1 rounded-full font-semibold mt-2">
+                                        <Crown className="h-3 w-3" />
+                                        Granted by Admin
+                                    </span>
+                                )}
                             </div>
 
-                            <Button
-                                type="button"
-                                onClick={() => setShowCertModal(true)}
-                                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs h-10 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 my-1"
-                            >
-                                <Award className="h-4 w-4" />
-                                View Official Donation Certificate 📜
-                            </Button>
+                            {!isAdminCode && (
+                                <Button
+                                    type="button"
+                                    onClick={() => setShowCertModal(true)}
+                                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs h-10 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 my-1"
+                                >
+                                    <Award className="h-4 w-4" />
+                                    View Official Donation Certificate 📜
+                                </Button>
+                            )}
 
-                            <Link 
-                                to="/supporters" 
-                                className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-500/20 transition-all font-semibold mt-2 animate-pulse"
-                            >
-                                <Sparkles className="h-3.5 w-3.5" />
-                                View your name on the Supporters Wall
-                            </Link>
+                            {!isAdminCode && (
+                                <Link 
+                                    to="/supporters" 
+                                    className="inline-flex items-center gap-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-500/20 transition-all font-semibold mt-2 animate-pulse"
+                                >
+                                    <Sparkles className="h-3.5 w-3.5" />
+                                    View your name on the Supporters Wall
+                                </Link>
+                            )}
                             {donateSuccessCode && (
                                 <div className="space-y-2 w-full mt-2 bg-indigo-500/5 border border-indigo-500/10 p-4 rounded-xl text-center">
                                     <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
-                                        Your One-Time Access Code
+                                        Your Access Code
                                     </div>
                                     <div className="text-base font-bold font-mono text-white tracking-widest my-1.5 selection:bg-indigo-500/30">
                                         {donateSuccessCode}
@@ -375,11 +470,11 @@ const Donate = () => {
                                         Copy Code
                                     </Button>
                                     <div className="text-[9px] text-slate-500 leading-relaxed max-w-[240px] mx-auto pt-1">
-                                        Use this to unlock premium features on another device (phone, laptop, etc.). It can only be used once.
+                                        Use this to unlock premium features on another device (phone, laptop, etc.).
                                     </div>
                                 </div>
                             )}
-                            {txnDetails && (
+                            {txnDetails && !isAdminCode && (
                                 <div className="text-left w-full text-[10px] text-muted-foreground/80 space-y-1 bg-white/[0.02] p-2.5 rounded-lg border border-white/5 font-mono">
                                     <div className="truncate"><span className="text-white/40">Payment ID:</span> {txnDetails.paymentId}</div>
                                     <div className="truncate"><span className="text-white/40">Order ID:</span> {txnDetails.orderId}</div>
@@ -388,10 +483,13 @@ const Donate = () => {
                             <Button 
                                 variant="outline" 
                                 size="sm" 
-                                onClick={() => setPaymentStatus('idle')}
+                                onClick={() => {
+                                    setPaymentStatus('idle')
+                                    setIsAdminCode(false)
+                                }}
                                 className="text-xs border-white/10 hover:bg-white/5"
                             >
-                                Donate Again
+                                {isAdminCode ? 'Support Us with a Donation' : 'Donate Again'}
                             </Button>
                         </div>
                     ) : (
@@ -580,8 +678,8 @@ const Donate = () => {
             <DonationCertificateModal
                 open={showCertModal}
                 onOpenChange={setShowCertModal}
-                donorName={donorIsAnonymous ? "Anonymous Supporter" : (donorName.trim() || "Valued Supporter")}
-                amount={parseFloat(amount) || 100}
+                donorName={existingDonorName || (donorIsAnonymous ? "Anonymous Supporter" : (donorName.trim() || "Valued Supporter"))}
+                amount={existingAmount || parseFloat(amount) || 100}
                 paymentId={txnDetails?.paymentId || "KCET-CODED-DONATION"}
             />
         </div>

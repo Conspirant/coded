@@ -98,15 +98,13 @@ function SidebarNavItem({ item, state, isMobile, setOpenMobile }: {
             item.onClick()
             if (isMobile) setOpenMobile(false)
           }}
-          className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 w-full text-left group ${
-            item.isPremiumTrigger 
-              ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-bold border border-emerald-500/20" 
+          className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 w-full text-left group ${item.isPremiumTrigger
+              ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-bold border border-emerald-500/20"
               : "text-sidebar-foreground hover:bg-white/5 hover:text-foreground"
-          }`}
+            }`}
         >
-          <item.icon className={`h-4 w-4 flex-shrink-0 transition-colors ${
-            item.isPremiumTrigger ? "text-emerald-400 group-hover:text-emerald-300 animate-pulse" : "text-muted-foreground group-hover:text-indigo-400"
-          }`} />
+          <item.icon className={`h-4 w-4 flex-shrink-0 transition-colors ${item.isPremiumTrigger ? "text-emerald-400 group-hover:text-emerald-300 animate-pulse" : "text-muted-foreground group-hover:text-indigo-400"
+            }`} />
           {state !== "collapsed" && (
             <span className="truncate text-sm">{item.title}</span>
           )}
