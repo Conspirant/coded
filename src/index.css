@@ -303,3 +303,47 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   LOW-END DEVICE & HARDWARE ACCELERATION OPTIMIZATIONS (60-120 FPS)
+   ========================================================================== */
+
+/* GPU Hardware compositing hints */
+.gpu-accelerated,
+.surface-card,
+[role="dialog"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Off-screen rendering containment for massive tables & lists */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 120px;
+}
+
+/* Smooth kinetic touch momentum for mobile webviews */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+/* Optimize text legibility with 0 paint jitter */
+body, input, button, select {
+  text-rendering: optimizeSpeed;
+}
+
+/* On lower-end devices or slow GPUs, relax backdrop filter blur overhead */
+@media (max-width: 768px) {
+  .glass,
+  .glass-strong {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: hsl(var(--card) / 0.95);
+  }
+}

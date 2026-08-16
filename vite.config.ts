@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv, type Plugin } from "vite";
+﻿import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { createClient } from "@supabase/supabase-js";
@@ -425,7 +425,7 @@ const devRazorpayPlugin = (keyId: string, keySecret: string): Plugin => ({
         if (isNaN(numericAmount) || !Number.isInteger(numericAmount) || numericAmount < 100) {
           res.statusCode = 400;
           res.setHeader("Content-Type", "application/json");
-          res.end(JSON.stringify({ error: "Minimum amount must be 100 paise (₹1)" }));
+          res.end(JSON.stringify({ error: "Minimum amount must be 100 paise (â‚¹1)" }));
           return;
         }
 
@@ -545,5 +545,35 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
+    build: {
+      target: "es2020",
+      cssCodeSplit: true,
+      sourcemap: false,
+      chunkSizeWarningLimit: 1500,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (id.includes("react") || id.includes("react-dom") || id.includes("react-router-dom")) {
+                return "vendor-react";
+              }
+              if (id.includes("@radix-ui") || id.includes("lucide-react") || id.includes("framer-motion")) {
+                return "vendor-ui";
+              }
+              if (id.includes("@tanstack") || id.includes("@supabase") || id.includes("fflate")) {
+                return "vendor-core";
+              }
+              if (id.includes("recharts") || id.includes("d3-")) {
+                return "vendor-charts";
+              }
+              if (id.includes("jspdf") || id.includes("xlsx") || id.includes("canvas-confetti")) {
+                return "vendor-docs";
+              }
+            }
+          },
+        },
+      },
+    },
   };
 });
+
