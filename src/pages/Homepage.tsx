@@ -73,62 +73,6 @@ const Homepage = () => {
         return () => clearInterval(interval)
     }, [])
 
-    // Fetch real data stats
-    useEffect(() => {
-        const loadRealStats = async () => {
-            try {
-                const urls = [
-                    '/data/kcet_cutoffs_high_volume.dat',
-                    '/data/kcet_cutoffs_master.dat',
-                    '/data/kcet_cutoffs_consolidated.dat',
-                    '/kcet_cutoffs_high_volume.dat',
-                    '/kcet_cutoffs_master.dat',
-                    '/kcet_cutoffs_consolidated.dat',
-                    '/kcet_cutoffs.dat'
-                ]
-                let response: Response | null = null
-
-                for (const url of urls) {
-                    const r = await fetch(url, { cache: 'no-store' })
-                    if (r.ok) { response = r; break }
-                }
-
-                if (!response) throw new Error('Failed to load data')
-
-                const raw = await response.json()
-
-                if (!Array.isArray(raw) && raw.totals && raw.years) {
-                    setStats({
-                        totalRecords: raw.totals.records || 197831,
-                        totalColleges: raw.totals.colleges || 269,
-                        totalBranches: raw.totals.branches || 496,
-                        years: raw.years || ['2026', '2025', '2024', '2023'],
-                        loading: false
-                    })
-                } else {
-                    setStats({
-                        totalRecords: 197831,
-                        totalColleges: 269,
-                        totalBranches: 496,
-                        years: ['2026', '2025', '2024', '2023'],
-                        loading: false
-                    })
-                }
-            } catch (err) {
-                console.error('Stats load error:', err)
-                setStats({
-                    totalRecords: 197831,
-                    totalColleges: 269,
-                    totalBranches: 496,
-                    years: ['2026', '2025', '2024', '2023'],
-                    loading: false
-                })
-            }
-        }
-
-        loadRealStats()
-    }, [])
-
     // 1. Core Admissions & Cutoffs
     const admissionTools = [
         {
@@ -293,7 +237,7 @@ const Homepage = () => {
                     >
                         <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         <span className="text-xs font-medium text-muted-foreground">
-                            {stats.loading ? 'Syncing KEA Archive...' : `${stats.totalRecords.toLocaleString()} Verified Records • 2023–2026 Database`}
+                            {`${stats.totalRecords.toLocaleString()} Verified Records • 2023–2026 Database`}
                         </span>
                     </motion.div>
 
