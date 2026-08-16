@@ -3,6 +3,8 @@ import { useState, useEffect, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
 import {
     Diamond,
     TrendingUp,
@@ -10,14 +12,14 @@ import {
     Sparkles,
     Filter,
     Loader2,
-    Info
+    Info,
+    Building2,
+    CheckCircle2
 } from "lucide-react"
 import { Link } from "react-router-dom"
 import { PLACEMENT_DATA, CollegePlacement } from "@/lib/college-placements"
 import { CutoffService, CutoffData } from "@/lib/cutoff-service"
 
-// Gem Score = (AvgPackage^1.5 × log10(CutoffRank) × 10) / Fees
-// Emphasizes package while rewarding easier-to-get-into colleges and low fees
 const calculateGemScore = (avgPackage: number, cutoff: number, fees: number) => {
     if (cutoff <= 0) return 0
     const packageScore = Math.pow(avgPackage, 1.5)
@@ -31,7 +33,7 @@ interface GemEntry extends CollegePlacement {
     score: number
 }
 
-const HiddenGems = () => {
+export const HiddenGems = () => {
     const [minPackage, setMinPackage] = useState(5)
     const [maxRank, setMaxRank] = useState(50000)
     const [cutoffMap, setCutoffMap] = useState<Map<string, number>>(new Map())
@@ -44,14 +46,10 @@ const HiddenGems = () => {
                 const cutoffs = await CutoffService.loadCutoffs()
                 const map = new Map<string, number>()
 
-                // For each college, get the GM cutoff for their relevant branch
-                // Use the latest year, R2 round as the most representative
                 cutoffs.forEach((c: CutoffData) => {
                     if (c.category !== "GM") return
-                    // Only consider the best cutoff for each institute code
                     const existing = map.get(c.institute_code)
                     if (!existing || c.cutoff_rank > existing) {
-                        // Higher cutoff_rank = easier to get in (for hidden gems we want the broadest branch)
                         map.set(c.institute_code, c.cutoff_rank)
                     }
                 })
@@ -66,7 +64,6 @@ const HiddenGems = () => {
         loadCutoffs()
     }, [])
 
-    // Sort by Gem Score
     const gems = useMemo<GemEntry[]>(() => {
         return PLACEMENT_DATA
             .map(c => {
@@ -82,141 +79,136 @@ const HiddenGems = () => {
     }, [minPackage, maxRank, cutoffMap])
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 sm:p-8 font-sans selection:bg-amber-500/30">
-      <SEO
-        title="KCET Hidden Gems – Underrated Engineering Colleges in Karnataka"
-        description="Discover underrated engineering colleges in Karnataka with excellent placements & faculty at lower cutoff ranks. These hidden gems are often overlooked by KCET aspirants."
-        url="https://kcetcoded.dev/hidden-gems"
-        keywords="underrated KCET colleges, hidden gem colleges Karnataka, best value engineering colleges, low cutoff good colleges KCET"
-      />
-            <div className="max-w-6xl mx-auto space-y-8">
+        <div className="space-y-8 max-w-5xl mx-auto px-4 py-6 text-foreground font-sans animate-scale-in">
+            <SEO
+                title="KCET Hidden Gems – Underrated Engineering Colleges in Karnataka"
+                description="Discover underrated engineering colleges in Karnataka with excellent placements & faculty at lower cutoff ranks. These hidden gems are often overlooked by KCET aspirants."
+                url="https://kcetcoded.dev/hidden-gems"
+                keywords="underrated KCET colleges, hidden gem colleges Karnataka, best value engineering colleges, low cutoff good colleges KCET"
+            />
 
-                {/* Header */}
-                <div className="text-center space-y-4">
-                    <Badge variant="outline" className="px-4 py-1 rounded-full border-amber-500/50 text-amber-400 bg-amber-500/10 text-sm uppercase tracking-widest">
-                        Real Placement Data
+            {/* Header Area */}
+            <div className="p-6 rounded-lg border border-border bg-card shadow-xs space-y-3">
+                <div className="flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded border border-primary/20 bg-primary/10 text-primary text-[10px] font-mono font-semibold uppercase">
+                        <Sparkles className="h-3 w-3" />
+                        Coded Labs Placement ROI Model
+                    </div>
+                    <Badge variant="outline" className="font-mono text-[10px] text-amber-500 border-amber-500/20 bg-amber-500/10">
+                        High ROI Index
                     </Badge>
-                    <h1 className="text-4xl sm:text-6xl font-black tracking-tight bg-gradient-to-r from-amber-200 via-yellow-400 to-orange-500 bg-clip-text text-transparent flex items-center justify-center gap-3">
-                        <Diamond className="h-10 w-10 text-amber-400 fill-amber-400/20" />
-                        Hidden Gems
-                    </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        The Algorithm knows. Find colleges with <span className="text-white font-semibold">High ROI</span> (Return on Investment) that others miss.
-                    </p>
-                    <p className="text-xs text-muted-foreground/60 font-mono flex items-center justify-center gap-1">
-                        <Info className="h-3 w-3" />
-                        Placement data from Shiksha, Careers360, & official sites. Cutoffs from KEA.
-                    </p>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                    <Diamond className="h-6 w-6 text-amber-500" />
+                    Hidden <span className="text-primary">Gems</span>
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                    Filter out overpriced brand hype. Discover institutions with high placement-to-cutoff ROI ratios where moderate ranks yield strong median packages and low tuition barriers.
+                </p>
+            </div>
+
+            {/* Controls Filter Bar */}
+            <div className="p-4 rounded-lg border border-border bg-card shadow-xs grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Min Avg Package</Label>
+                        <span className="text-xs font-mono font-bold text-foreground">₹{minPackage} LPA</span>
+                    </div>
+                    <Input
+                        type="range"
+                        min={3}
+                        max={15}
+                        step={0.5}
+                        value={minPackage}
+                        onChange={(e) => setMinPackage(Number(e.target.value))}
+                        className="h-2 cursor-pointer bg-muted"
+                    />
                 </div>
 
-                {/* Controls */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
-                    <div className="flex items-center gap-2">
-                        <Filter className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium text-sm">Filters:</span>
+                <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Max KCET Rank Threshold</Label>
+                        <span className="text-xs font-mono font-bold text-foreground">#{maxRank.toLocaleString()}</span>
                     </div>
+                    <Input
+                        type="range"
+                        min={5000}
+                        max={150000}
+                        step={5000}
+                        value={maxRank}
+                        onChange={(e) => setMaxRank(Number(e.target.value))}
+                        className="h-2 cursor-pointer bg-muted"
+                    />
+                </div>
+            </div>
 
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">Min Package:</span>
-                        <Input
-                            type="number"
-                            value={minPackage}
-                            onChange={e => setMinPackage(Number(e.target.value))}
-                            className="w-20 bg-black/40 border-white/10 h-8"
-                        />
-                        <span className="text-xs">LPA</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">Max Rank:</span>
-                        <Input
-                            type="number"
-                            value={maxRank}
-                            onChange={e => setMaxRank(Number(e.target.value))}
-                            className="w-24 bg-black/40 border-white/10 h-8"
-                        />
-                    </div>
+            {/* Results Grid */}
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-emerald-500" />
+                        Top High-ROI Colleges ({gems.length})
+                    </h2>
+                    <span className="text-[11px] font-mono text-muted-foreground">Ranked by Placement/Cutoff Ratio</span>
                 </div>
 
-                {/* Loading */}
                 {loading ? (
-                    <div className="flex items-center justify-center py-20">
-                        <Loader2 className="h-8 w-8 animate-spin text-amber-400" />
+                    <div className="p-12 text-center text-xs text-muted-foreground flex items-center justify-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Calculating ROI indexes...
+                    </div>
+                ) : gems.length === 0 ? (
+                    <div className="p-8 rounded-lg border border-border bg-card text-center space-y-2">
+                        <Diamond className="h-8 w-8 text-muted-foreground/40 mx-auto" />
+                        <h3 className="text-sm font-semibold text-foreground">No matches within current thresholds</h3>
+                        <p className="text-xs text-muted-foreground">Try lowering the minimum salary expectation or increasing the rank threshold.</p>
                     </div>
                 ) : (
-                    <>
-                        {/* Results count */}
-                        <div className="text-center text-sm text-muted-foreground">
-                            {gems.length} gems found — sorted by ROI score
-                        </div>
-
-                        {/* Gems Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {gems.map((gem, idx) => (
-                                <div key={`${gem.code}-${gem.branch}-${idx}`} className="group relative bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl p-6 hover:border-amber-500/50 hover:shadow-[0_0_30px_-10px_rgba(251,191,36,0.3)] transition-all duration-300">
-
-                                    {/* Rank Badge */}
-                                    <div className="absolute top-4 right-4 text-5xl font-black text-white/[0.03] group-hover:text-amber-500/10 transition-colors">
-                                        #{idx + 1}
-                                    </div>
-
-                                    <div className="space-y-4 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {gems.map((college, idx) => (
+                            <Card key={college.code} className="border border-border bg-card shadow-xs hover:border-slate-600 transition-colors flex flex-col justify-between">
+                                <CardContent className="p-5 space-y-3">
+                                    <div className="flex items-start justify-between gap-3">
                                         <div>
-                                            <div className="flex justify-between items-start">
-                                                <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 mb-2">
-                                                    Gem Score: {gem.score.toFixed(0)}
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <Badge variant="outline" className="font-mono text-[10px] border-primary/20 text-primary bg-primary/5">
+                                                    {college.code}
                                                 </Badge>
-                                                {gem.fees < 2 && (
-                                                    <Badge variant="outline" className="border-green-500/30 text-green-400 bg-green-500/5">
-                                                        Super Low Fees
-                                                    </Badge>
-                                                )}
+                                                <Badge variant="secondary" className="font-mono text-[10px] text-amber-500 bg-amber-500/10 border-amber-500/20">
+                                                    ROI Score: {Math.round(college.score)}
+                                                </Badge>
                                             </div>
-                                            <h3 className="font-bold text-xl leading-tight text-white group-hover:text-amber-200 transition-colors">
-                                                {gem.name}
+                                            <h3 className="text-sm font-bold text-foreground leading-snug">
+                                                {college.name}
                                             </h3>
-                                            <p className="text-sm text-muted-foreground mt-1">{gem.branch}</p>
                                         </div>
-
-                                        <div className="grid grid-cols-2 gap-4 py-4 border-y border-white/5">
-                                            <div>
-                                                <p className="text-xs text-muted-foreground uppercase tracking-wider">Avg Package</p>
-                                                <p className="text-2xl font-black text-green-400">{gem.avgPackage} <span className="text-sm font-normal text-white/50">LPA</span></p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-xs text-muted-foreground uppercase tracking-wider">Cutoff Rank</p>
-                                                <p className="text-2xl font-black text-white">{gem.cutoff > 0 ? gem.cutoff.toLocaleString() : '—'}</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex justify-between items-center text-xs text-muted-foreground">
-                                            <span>Fees: ~{gem.fees}L / year</span>
-                                            <span>Max: {gem.maxPackage} LPA</span>
-                                        </div>
-
-                                        <div className="flex justify-between items-center text-[10px] text-muted-foreground/50">
-                                            <span>Source: {gem.source}</span>
-                                        </div>
-
-                                        <Link to={`/college/${gem.code}`}>
-                                            <Button className="w-full bg-white/10 hover:bg-amber-500 hover:text-black font-bold transition-all group-hover:translate-y-[-2px]">
-                                                View Details <ArrowUpRight className="ml-2 h-4 w-4" />
-                                            </Button>
-                                        </Link>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
 
-                        {gems.length === 0 && !loading && (
-                            <div className="text-center py-12 text-muted-foreground">
-                                <Sparkles className="h-8 w-8 mx-auto mb-3 text-amber-400/30" />
-                                <p>No gems match your filters. Try increasing Max Rank or lowering Min Package.</p>
-                            </div>
-                        )}
-                    </>
+                                    <div className="grid grid-cols-3 gap-2 text-xs pt-2 border-t border-border/60">
+                                        <div className="p-2 rounded bg-muted/40 border border-border/60">
+                                            <span className="text-[10px] uppercase font-mono font-semibold text-muted-foreground block">Avg Package</span>
+                                            <span className="font-bold text-emerald-500 font-mono">₹{college.avgPackage} LPA</span>
+                                        </div>
+                                        <div className="p-2 rounded bg-muted/40 border border-border/60">
+                                            <span className="text-[10px] uppercase font-mono font-semibold text-muted-foreground block">Cutoff (GM)</span>
+                                            <span className="font-bold font-mono text-foreground">#{college.cutoff.toLocaleString()}</span>
+                                        </div>
+                                        <div className="p-2 rounded bg-muted/40 border border-border/60">
+                                            <span className="text-[10px] uppercase font-mono font-semibold text-muted-foreground block">Annual Fees</span>
+                                            <span className="font-bold font-mono text-foreground">~₹{college.fees}L</span>
+                                        </div>
+                                    </div>
+
+                                    {college.highlight && (
+                                        <p className="text-[11px] text-muted-foreground bg-muted/20 p-2 rounded border border-border/40 leading-relaxed">
+                                            ✨ {college.highlight}
+                                        </p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 )}
-
             </div>
         </div>
     )

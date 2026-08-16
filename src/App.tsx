@@ -1,7 +1,7 @@
-// ╔══════════════════════════════════════════════════════════════════╗
-// ║  PROJECT RESTORED — Full site active                           ║
-// ║  To pause again: replace App with the PausedNotice version     ║
-// ╚══════════════════════════════════════════════════════════════════╝
+﻿// â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+// â•‘  PROJECT RESTORED â€” Full site active                           â•‘
+// â•‘  To pause again: replace App with the PausedNotice version     â•‘
+// â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
@@ -143,13 +143,13 @@ const App = () => (
               <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
               <Route path="/donate" element={<Layout><Donate /></Layout>} />
               <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
-              <Route path="/squad-finder" element={<SquadFinder />} />
+              <Route path="/squad-finder" element={<Layout><SquadFinder /></Layout>} />
               <Route path="/forum" element={<Layout><Forum /></Layout>} />
               <Route path="/forum/:postId" element={<Layout><ThreadDetailPage /></Layout>} />
               <Route path="/community" element={<Navigate to="/forum" replace />} />
-              <Route path="/metro-mapper" element={<MetroMapper />} />
-              <Route path="/bmtc-mapper" element={<BmtcMapper />} />
-              <Route path="/hidden-gems" element={<HiddenGems />} />
+              <Route path="/metro-mapper" element={<Layout><MetroMapper /></Layout>} />
+              <Route path="/bmtc-mapper" element={<Layout><BmtcMapper /></Layout>} />
+              <Route path="/hidden-gems" element={<Layout><HiddenGems /></Layout>} />
               <Route path="/admin" element={<AdminHub />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -166,3 +166,4 @@ const App = () => (
 );
 
 export default App;
+

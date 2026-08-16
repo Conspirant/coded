@@ -16,25 +16,18 @@ import {
     ArrowRight,
     School,
     Loader2,
-    AlertTriangle
+    CheckCircle2,
+    AlertTriangle,
+    Shield
 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { Progress } from "@/components/ui/progress"
+import { CutoffService, CutoffData } from "@/lib/cutoff-service"
 
 interface Friend {
     id: string
     name: string
     rank: number
-}
-
-interface CutoffData {
-    institute: string
-    institute_code: string
-    course: string
-    category: string
-    cutoff_rank: number | string
-    year: string
-    round: string
 }
 
 interface CollegeMatch {
@@ -48,7 +41,7 @@ interface CollegeMatch {
 
 const CATEGORIES = ["GM", "1G", "1K", "1R", "2AG", "2AK", "2AR", "2BG", "2BK", "2BR", "3AG", "3AK", "3AR", "3BG", "3BK", "3BR", "GMK", "GMR", "SCG", "SCK", "SCR", "STG", "STK", "STR"]
 
-const SquadFinder = () => {
+export const SquadFinder = () => {
     const { toast } = useToast()
 
     // State
@@ -58,65 +51,43 @@ const SquadFinder = () => {
     const [newRank, setNewRank] = useState<number | "">("")
     const [results, setResults] = useState<CollegeMatch[]>([])
     const [isSearching, setIsSearching] = useState(false)
-    const [loadingData, setLoadingData] = useState(false)
-
-    // Filters
     const [selectedCategory, setSelectedCategory] = useState("GM")
+    const [selectedLocation, setSelectedLocation] = useState("all")
     const [cutoffData, setCutoffData] = useState<CutoffData[]>([])
     const [dataLoaded, setDataLoaded] = useState(false)
 
-    // Load Data on Mount
+    // Load Cutoff Data via CutoffService Vault
     useEffect(() => {
-        const loadData = async () => {
-            setLoadingData(true)
+        const fetchCutoffs = async () => {
             try {
-                // Fetching the consolidated file
-                const response = await fetch('/kcet_cutoffs_consolidated.dat')
-                if (!response.ok) throw new Error("Failed to load data")
-
-                const json = await response.json()
-                if (json.cutoffs && Array.isArray(json.cutoffs)) {
-                    // Optimization: Filter strictly for what we need to save memory?
-                    // For now, keep it in memory but maybe only latest year/round if possible?
-                    // Actually, let's keep all and filter client side for flexibility
-                    setCutoffData(json.cutoffs)
+                const data = await CutoffService.loadCutoffs()
+                if (data && data.length > 0) {
+                    setCutoffData(data)
                     setDataLoaded(true)
                 }
-            } catch (error) {
-                console.error("Failed to load cutoffs:", error)
-                toast({
-                    title: "Data Load Failed",
-                    description: "Could not load real cutoff data. Please try again.",
-                    variant: "destructive"
-                })
-            } finally {
-                setLoadingData(false)
+            } catch (err) {
+                console.error("SquadFinder data load error:", err)
             }
         }
 
-        loadData()
+        fetchCutoffs()
     }, [])
 
-    // Add friend handler
     const addFriend = () => {
         if (!newName.trim()) {
             toast({ title: "Name required", description: "Please enter your friend's name", variant: "destructive" })
             return
         }
-        if (!newRank || newRank <= 0) {
-            toast({ title: "Valid rank required", description: "Please enter a valid KCET rank", variant: "destructive" })
+        if (!newRank || Number(newRank) <= 0) {
+            toast({ title: "Valid rank required", description: "Please enter a valid rank", variant: "destructive" })
             return
         }
         if (friends.length >= 3) {
-            toast({ title: "Squad full", description: "Max 3 friends allowed", variant: "destructive" })
+            toast({ title: "Squad full", description: "You can add up to 3 friends (4 total squad size)", variant: "destructive" })
             return
         }
 
-        setFriends([...friends, {
-            id: Date.now().toString(),
-            name: newName,
-            rank: Number(newRank)
-        }])
+        setFriends([...friends, { id: Math.random().toString(), name: newName.trim(), rank: Number(newRank) }])
         setNewName("")
         setNewRank("")
     }
@@ -125,287 +96,280 @@ const SquadFinder = () => {
         setFriends(friends.filter(f => f.id !== id))
     }
 
-    // CORE LOGIC
-    const findSquadColleges = () => {
+    const handleSearch = () => {
         if (!myRank) {
-            toast({ title: "Rank required", description: "Please enter your rank", variant: "destructive" })
-            return
-        }
-        if (!dataLoaded) {
-            toast({ title: "Loading Data", description: "Please wait for college data to load...", variant: "default" })
+            toast({ title: "Your rank is required", description: "Please enter your own KCET rank to proceed", variant: "destructive" })
             return
         }
 
         setIsSearching(true)
 
-        // Simulate processing delay for UX
         setTimeout(() => {
             const allRanks = [Number(myRank), ...friends.map(f => f.rank)]
-            const maxRank = Math.max(...allRanks)
+            const worstRank = Math.max(...allRanks)
 
-            // 1. Filter by Category
-            // 2. Filter by Year (Prefer latest 2024/2025 data points)
-            // 3. Filter where Cutoff Rank >= maxRank
+            const targetCategory = selectedCategory || "GM"
 
-            // Get unique colleges first
+            const validRows = cutoffData.filter(row => {
+                if (row.category !== targetCategory) return false
+                if (selectedLocation !== "all") {
+                    const isBlr = (row.college_name || row.institute_code).toLowerCase().includes("bangalore") ||
+                        (row.college_name || row.institute_code).toLowerCase().includes("bengaluru")
+                    if (selectedLocation === "bangalore" && !isBlr) return false
+                    if (selectedLocation === "other" && isBlr) return false
+                }
+                return row.cutoff_rank >= worstRank
+            })
+
             const collegeMap = new Map<string, CollegeMatch>()
 
-            cutoffData.forEach(item => {
-                // Filter Logic
-                if (item.category !== selectedCategory) return
-
-                const cutoff = typeof item.cutoff_rank === 'number' ? item.cutoff_rank : parseInt(item.cutoff_rank)
-                if (isNaN(cutoff)) return
-
-                // We want matches where the cutoff is greater than our worst rank (meaning even the lowest rank gets in)
-                if (cutoff < maxRank) return
-
-                // Prefer latest data (2024/2025)
-                // If multiple entries for same college+course, usually handled by data quality or valid checks
-                // We will just accumulate valid branches
-
-                if (!collegeMap.has(item.institute_code)) {
-                    collegeMap.set(item.institute_code, {
-                        code: item.institute_code,
-                        name: item.institute,
+            for (const row of validRows) {
+                const code = row.institute_code
+                if (!collegeMap.has(code)) {
+                    collegeMap.set(code, {
+                        code,
+                        name: row.college_name || code,
                         branches: []
                     })
                 }
-
-                const college = collegeMap.get(item.institute_code)!
-                // Avoid duplicate branches (e.g. from different rounds/years)
-                // Simple heuristic: if branch already exists, keep the one with higher cutoff (safer)? 
-                // Or just list unique branches. Let's list unique branches.
-                if (!college.branches.find(b => b.name === item.course)) {
-                    college.branches.push({ name: item.course, cutoff })
+                const college = collegeMap.get(code)!
+                if (!college.branches.some(b => b.name === row.course)) {
+                    college.branches.push({
+                        name: row.course,
+                        cutoff: row.cutoff_rank
+                    })
                 }
-            })
+            }
 
-            // Convert map to array and sort
-            // Sort: Most branches available -> then by Name
-            const resultsArray = Array.from(collegeMap.values())
-                .filter(c => c.branches.length > 0)
-                .sort((a, b) => b.branches.length - a.branches.length)
-                .slice(0, 50) // Limit to top 50 relevant results
+            const sortedColleges = Array.from(collegeMap.values()).sort((a, b) => b.branches.length - a.branches.length)
 
-            setResults(resultsArray)
+            setResults(sortedColleges)
             setIsSearching(false)
 
-            if (resultsArray.length > 0) {
-                toast({ title: "Squad Assembled!", description: `Found ${resultsArray.length} colleges for your squad.` })
-            } else {
-                toast({ title: "No Matches", description: "Rank too low for selected category/colleges. Try a different category?", variant: "destructive" })
+            if (sortedColleges.length === 0) {
+                toast({
+                    title: "No perfect matches found",
+                    description: "Try adjusting the target category or removing extreme rank gaps in the squad.",
+                })
             }
-        }, 500)
+        }, 300)
     }
 
     return (
-        <div className="min-h-screen bg-black text-white p-4 sm:p-8 font-sans selection:bg-indigo-500/30">
-      <SEO
-        title="KCET Squad Finder – Find Colleges Where Friends Can Go Together"
-        description="Don't split the gang! Enter your friends' KCET ranks and find colleges where everyone can get a seat together. Unique squad-matching tool for KCET aspirants."
-        url="https://kcetcoded.dev/squad-finder"
-        keywords="KCET squad finder, KCET group college predictor, KCET friends same college, study group finder KCET"
-      />
-            <div className="max-w-4xl mx-auto space-y-8">
+        <div className="space-y-8 max-w-5xl mx-auto px-4 py-6 text-foreground font-sans animate-scale-in">
+            <SEO
+                title="KCET Squad Finder – Find Colleges Where Friends Can Go Together"
+                description="Don't split the gang! Enter your friends' KCET ranks and find colleges where everyone can get a seat together. Unique squad-matching tool for KCET aspirants."
+                url="https://kcetcoded.dev/squad-finder"
+                keywords="KCET squad finder, KCET group college predictor, KCET friends same college, study group finder KCET"
+            />
 
-                {/* Header */}
-                <div className="text-center space-y-4">
-                    {!dataLoaded ? (
-                        <Badge variant="outline" className="px-4 py-1 rounded-full border-yellow-500/50 text-yellow-500 bg-yellow-500/10 animate-pulse">
-                            Loading Database...
-                        </Badge>
-                    ) : (
-                        <Badge variant="outline" className="px-4 py-1 rounded-full border-green-500/50 text-green-400 bg-green-500/10">
-                            Database Connected
-                        </Badge>
-                    )}
-                    <h1 className="text-4xl sm:text-6xl font-black tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                        Squad Finder
-                    </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                        Find colleges where <span className="text-white font-semibold">all of you</span> can get a seat together.
-                        <br />
-                        <span className="text-xs text-muted-foreground">Powered by Real 2024/25 Cutoff Data</span>
-                    </p>
+            {/* Header Area */}
+            <div className="p-6 rounded-lg border border-border bg-card shadow-xs space-y-3">
+                <div className="flex items-center justify-between">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded border border-primary/20 bg-primary/10 text-primary text-[10px] font-mono font-semibold uppercase">
+                        <Sparkles className="h-3 w-3" />
+                        Coded Labs Research
+                    </div>
+                    <Badge variant="outline" className={`text-[10px] font-mono ${dataLoaded ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/10" : "text-amber-500 border-amber-500/20 bg-amber-500/10"}`}>
+                        {dataLoaded ? "197k+ Records Ready" : "Loading Dataset..."}
+                    </Badge>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                    Squad <span className="text-primary">Finder</span>
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+                    Don't split the gang. Enter your rank alongside your friends' ranks to find top engineering campuses where <strong>everyone in the squad</strong> can get admitted simultaneously.
+                </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Input Section */}
+                <div className="space-y-5">
+                    <Card className="border border-border bg-card shadow-xs">
+                        <CardHeader className="pb-3">
+                            <CardTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+                                <Users className="h-4.5 w-4.5 text-primary" />
+                                Build Your Squad
+                            </CardTitle>
+                            <CardDescription className="text-xs">
+                                Configure your team ranks and seat quota.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {/* Category Selector */}
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Quota Category</Label>
+                                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                    <SelectTrigger className="bg-background border-border">
+                                        <SelectValue placeholder="Select Category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {CATEGORIES.map(cat => (
+                                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* Location Filter */}
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Campus Location</Label>
+                                <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                                    <SelectTrigger className="bg-background border-border">
+                                        <SelectValue placeholder="All Karnataka" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Karnataka Institutes</SelectItem>
+                                        <SelectItem value="bangalore">Bengaluru Urban Only</SelectItem>
+                                        <SelectItem value="other">Outside Bengaluru</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            {/* My Rank */}
+                            <div className="space-y-1.5">
+                                <Label className="text-xs font-semibold text-foreground">Your Rank (Leader)</Label>
+                                <Input
+                                    type="number"
+                                    placeholder="e.g. 14500"
+                                    value={myRank}
+                                    onChange={(e) => setMyRank(e.target.value === "" ? "" : Number(e.target.value))}
+                                    className="bg-background border-border font-mono text-sm"
+                                />
+                            </div>
+
+                            {/* Friends List */}
+                            <div className="space-y-2 pt-2 border-t border-border/60">
+                                <div className="flex items-center justify-between">
+                                    <Label className="text-xs font-semibold text-muted-foreground">Squad Members ({friends.length}/3)</Label>
+                                    <span className="text-[11px] text-muted-foreground">Max 4 Members Total</span>
+                                </div>
+
+                                {friends.map(friend => (
+                                    <div key={friend.id} className="flex items-center justify-between p-2.5 rounded-md bg-muted/40 border border-border text-xs">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold font-mono text-[10px]">
+                                                {friend.name[0].toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-foreground">{friend.name}</p>
+                                                <p className="text-[11px] font-mono text-muted-foreground">Rank: #{friend.rank.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+                                        <Button variant="ghost" size="icon" onClick={() => removeFriend(friend.id)} className="h-7 w-7 text-muted-foreground hover:text-rose-400">
+                                            <Trash2 className="h-3.5 w-3.5" />
+                                        </Button>
+                                    </div>
+                                ))}
+
+                                {/* Add Friend Form */}
+                                {friends.length < 3 && (
+                                    <div className="flex gap-2 pt-1.5">
+                                        <Input
+                                            placeholder="Friend Name"
+                                            value={newName}
+                                            onChange={(e) => setNewName(e.target.value)}
+                                            className="bg-background border-border text-xs h-8"
+                                        />
+                                        <Input
+                                            type="number"
+                                            placeholder="KCET Rank"
+                                            value={newRank}
+                                            onChange={(e) => setNewRank(e.target.value === "" ? "" : Number(e.target.value))}
+                                            className="bg-background border-border text-xs font-mono h-8 w-28"
+                                        />
+                                        <Button
+                                            type="button"
+                                            onClick={addFriend}
+                                            variant="outline"
+                                            className="h-8 px-2.5 text-xs border-border shrink-0"
+                                        >
+                                            <UserPlus className="h-3.5 w-3.5" />
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+
+                            <Button
+                                onClick={handleSearch}
+                                disabled={isSearching || !myRank}
+                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-9 rounded-md shadow-xs flex items-center justify-center gap-2"
+                            >
+                                {isSearching ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        <span>Matching Cutoffs...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Search className="h-4 w-4" />
+                                        <span>Find Matching Colleges for Squad</span>
+                                    </>
+                                )}
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Input Section */}
-                    <div className="space-y-6">
-                        <Card className="border-white/10 bg-white/5 backdrop-blur-xl">
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Users className="h-5 w-5 text-indigo-400" />
-                                    Build Your Squad
-                                </CardTitle>
-                                <CardDescription>
-                                    Enter ranks and category.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-
-                                {/* Category Selector */}
-                                <div className="space-y-2">
-                                    <Label className="text-indigo-300">Category</Label>
-                                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                                        <SelectTrigger className="bg-black/40 border-white/10">
-                                            <SelectValue placeholder="Select Category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {CATEGORIES.map(cat => (
-                                                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Me */}
-                                <div className="space-y-2">
-                                    <Label className="text-indigo-300">Your Rank</Label>
-                                    <Input
-                                        type="number"
-                                        placeholder="e.g. 15000"
-                                        value={myRank}
-                                        onChange={(e) => setMyRank(Number(e.target.value))}
-                                        className="bg-black/40 border-white/10 focus:border-indigo-500/50 text-lg"
-                                    />
-                                </div>
-
-                                {/* Friends List */}
-                                <div className="space-y-3">
-                                    <Label>Squad Members ({friends.length}/3)</Label>
-
-                                    {friends.map(friend => (
-                                        <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5 animate-in slide-in-from-left-2">
-                                            <div className="flex items-center gap-3">
-                                                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold">
-                                                    {friend.name[0].toUpperCase()}
-                                                </div>
-                                                <div>
-                                                    <p className="font-medium text-sm">{friend.name}</p>
-                                                    <p className="text-xs text-muted-foreground">Rank: {friend.rank.toLocaleString()}</p>
-                                                </div>
-                                            </div>
-                                            <Button variant="ghost" size="icon" onClick={() => removeFriend(friend.id)} className="text-white/40 hover:text-red-400">
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    ))}
-
-                                    {/* Add Friend Form */}
-                                    {friends.length < 3 && (
-                                        <div className="flex gap-2 pt-2">
-                                            <Input
-                                                placeholder="Friend Name"
-                                                value={newName}
-                                                onChange={(e) => setNewName(e.target.value)}
-                                                className="bg-black/20 border-white/10"
-                                            />
-                                            <Input
-                                                type="number"
-                                                placeholder="Rank"
-                                                value={newRank}
-                                                onChange={(e) => setNewRank(Number(e.target.value))}
-                                                className="bg-black/20 border-white/10 w-24"
-                                            />
-                                            <Button size="icon" onClick={addFriend} className="bg-indigo-600 hover:bg-indigo-700 shrink-0">
-                                                <UserPlus className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <Button
-                                    className="w-full bg-white text-black hover:bg-white/90 font-bold py-6 text-lg rounded-xl shadow-lg shadow-white/5 disabled:opacity-50"
-                                    onClick={findSquadColleges}
-                                    disabled={isSearching || !myRank || !dataLoaded}
-                                >
-                                    {isSearching ? (
-                                        <span className="flex items-center gap-2">
-                                            <Sparkles className="h-5 w-5 animate-spin" />
-                                            Analyzing {cutoffData.length > 0 ? (cutoffData.length / 1000).toFixed(0) + 'k' : ''} Records...
-                                        </span>
-                                    ) : (
-                                        <span className="flex items-center gap-2">
-                                            Find Our College <ArrowRight className="h-5 w-5" />
-                                        </span>
-                                    )}
-                                </Button>
-
-                            </CardContent>
-                        </Card>
+                {/* Results Section */}
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+                            <School className="h-4 w-4 text-primary" />
+                            Squad Compatible Colleges ({results.length})
+                        </h2>
                     </div>
 
-                    {/* Results Section */}
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <School className="h-5 w-5 text-purple-400" />
-                                Squad Matches
-                            </h2>
-                            {results.length > 0 && (
-                                <Badge variant="secondary" className="bg-green-500/10 text-green-400 border-green-500/20">
-                                    {results.length} Found
-                                </Badge>
-                            )}
+                    {results.length === 0 ? (
+                        <div className="p-8 rounded-lg border border-border bg-card text-center space-y-2">
+                            <Users className="h-8 w-8 text-muted-foreground/40 mx-auto" />
+                            <h3 className="text-sm font-semibold text-foreground">No squad calculation yet</h3>
+                            <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                                Enter your rank and add your friends to compute campuses where all candidate ranks pass the cutoff criteria.
+                            </p>
                         </div>
-
-                        {/* Empty State */}
-                        {!isSearching && results.length === 0 && (
-                            <div className="h-64 flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl bg-white/5 text-center p-6">
-                                {loadingData ? (
-                                    <Loader2 className="h-12 w-12 text-indigo-500 animate-spin mb-4" />
-                                ) : (
-                                    <Users className="h-12 w-12 text-white/20 mb-4" />
-                                )}
-                                <h3 className="text-lg font-medium text-white/60">
-                                    {loadingData ? "Loading Database..." : "No Squad Matches Yet"}
-                                </h3>
-                                <p className="text-sm text-muted-foreground mt-2 max-w-xs">
-                                    {loadingData ? "Please wait while we fetch the latest cutoffs." : "Add ranks and hit search to find colleges where everyone can get in."}
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Results List */}
-                        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                            {results.map((college, idx) => (
-                                <div key={idx} className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300">
-                                    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                    <div className="p-5">
-                                        <div className="flex justify-between items-start mb-2">
+                    ) : (
+                        <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                            {results.map(college => (
+                                <Card key={college.code} className="border border-border bg-card shadow-xs">
+                                    <CardContent className="p-4 space-y-2.5">
+                                        <div className="flex items-start justify-between gap-2">
                                             <div>
-                                                <Badge variant="outline" className="mb-2 text-[10px] border-white/10 text-white/50">{college.code}</Badge>
-                                                <h3 className="font-bold text-lg leading-tight group-hover:text-indigo-300 transition-colors">
+                                                <div className="flex items-center gap-1.5 mb-1">
+                                                    <Badge variant="outline" className="font-mono text-[10px] border-primary/20 text-primary bg-primary/5">
+                                                        {college.code}
+                                                    </Badge>
+                                                    <span className="text-[11px] text-emerald-500 font-semibold flex items-center gap-1">
+                                                        <CheckCircle2 className="h-3 w-3" /> All {friends.length + 1} Qualify
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-sm font-bold text-foreground leading-snug">
                                                     {college.name}
                                                 </h3>
                                             </div>
-                                            <div className="text-right">
-                                                <Badge variant="secondary" className="bg-indigo-500/10 text-indigo-400">
-                                                    {college.branches.length} Options
-                                                </Badge>
-                                            </div>
                                         </div>
 
-                                        <div className="flex flex-wrap gap-2 mt-4">
-                                            {college.branches.slice(0, 5).map((b, i) => (
-                                                <Badge key={i} variant="secondary" className="bg-white/5 hover:bg-white/10 text-[10px] h-6 flex gap-1">
-                                                    {b.name}
-                                                    <span className="text-white/40 border-l border-white/10 pl-1 ml-1">
-                                                        {b.cutoff}
-                                                    </span>
-                                                </Badge>
-                                            ))}
-                                            {college.branches.length > 5 && (
-                                                <span className="text-[10px] self-center text-muted-foreground">+{college.branches.length - 5} more</span>
-                                            )}
+                                        <div className="space-y-1.5 pt-2 border-t border-border/60">
+                                            <p className="text-[11px] font-semibold text-muted-foreground">Available Branches for Squad:</p>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {college.branches.slice(0, 5).map((b, idx) => (
+                                                    <Badge key={idx} variant="secondary" className="text-[10px] font-medium bg-muted text-foreground border-border">
+                                                        {b.name} (Cutoff: #{b.cutoff.toLocaleString()})
+                                                    </Badge>
+                                                ))}
+                                                {college.branches.length > 5 && (
+                                                    <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                                                        +{college.branches.length - 5} more
+                                                    </Badge>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             ))}
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
