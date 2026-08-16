@@ -1,3 +1,4 @@
+﻿import { CutoffService } from "@/lib/cutoff-service";
 import { SEO } from "@/components/SEO"
 import AdUnit from "@/components/AdUnit"
 import { isUnlocked } from "@/lib/unlock"
@@ -130,7 +131,7 @@ const Sparkline = ({ data }: { data: number[] }) => {
   }).join(' ')
 
   return (
-    <div className="flex flex-col items-center select-none" title={`Trend: ${data.join(' → ')}`}>
+    <div className="flex flex-col items-center select-none" title={`Trend: ${data.join(' â†’ ')}`}>
       <div className="relative h-6 w-[60px]">
         <svg width={width} height={height} className="overflow-visible stroke-primary/80 fill-none stroke-2">
           <polyline points={points} vectorEffect="non-scaling-stroke" />
@@ -343,7 +344,7 @@ const CollegePredictor = () => {
 
     let yPos = 58
     summaryData.forEach(text => {
-      doc.text(`• ${text}`, 20, yPos)
+      doc.text(`â€¢ ${text}`, 20, yPos)
       yPos += 6
     })
 
@@ -1415,15 +1416,15 @@ const CollegePredictor = () => {
   const getAdmissionProbabilityIcon = (probability: string) => {
     switch (probability) {
       case 'High':
-        return '✅'
+        return 'âœ…'
       case 'Moderate':
-        return '⚠️'
+        return 'âš ï¸'
       case 'Borderline':
-        return '🔶'
+        return 'ðŸ”¶'
       case 'Exact':
-        return '🎯'
+        return 'ðŸŽ¯'
       default:
-        return '❓'
+        return 'â“'
     }
   }
 
@@ -1547,7 +1548,7 @@ const CollegePredictor = () => {
             <div className="lg:col-span-1 max-w-2xl w-full mx-auto">
               <div className="flex items-center gap-3 mb-3 justify-start">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                <p className="text-muted-foreground">Loading college data from high-volume cutoff dataset…</p>
+                <p className="text-muted-foreground">Loading college data from high-volume cutoff datasetâ€¦</p>
               </div>
 
               {/* Data Size Disclaimer */}
@@ -1567,7 +1568,7 @@ const CollegePredictor = () => {
               <Progress value={progress} />
               <div className="flex items-center justify-between mt-1">
                 <div className="text-xs text-muted-foreground">{loadingTips[tipIndex]}</div>
-                <div className="text-right text-xs text-muted-foreground">{Math.round(progress)}% • ~{secondsLeft}s left</div>
+                <div className="text-right text-xs text-muted-foreground">{Math.round(progress)}% â€¢ ~{secondsLeft}s left</div>
               </div>
 
               {/* Step checklist tied to progress */}
@@ -1965,9 +1966,9 @@ const CollegePredictor = () => {
                               This feature is still in development and may have some issues:
                             </p>
                             <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-                              <li>• Some courses may not be properly mapped</li>
-                              <li>• Course matching might be inconsistent</li>
-                              <li>• Data accuracy may vary</li>
+                              <li>â€¢ Some courses may not be properly mapped</li>
+                              <li>â€¢ Course matching might be inconsistent</li>
+                              <li>â€¢ Data accuracy may vary</li>
                             </ul>
                             <p className="text-xs text-muted-foreground">
                               We're working to improve course mapping and data accuracy.
@@ -2102,7 +2103,7 @@ const CollegePredictor = () => {
 
               <div className="text-sm text-muted-foreground space-y-2 mt-4">
                 <p>
-                  <strong>How to read results:</strong> Colleges are shown where the cutoff rank is <strong>≥ your rank ({userRank.toLocaleString()})</strong>.
+                  <strong>How to read results:</strong> Colleges are shown where the cutoff rank is <strong>â‰¥ your rank ({userRank.toLocaleString()})</strong>.
                 </p>
               </div>
 
@@ -2573,7 +2574,7 @@ const CollegePredictor = () => {
                       </div>
 
                       <div className="h-10 flex items-center text-sm text-muted-foreground">
-                        {college.year} • {getRoundDisplayName(college.round)}
+                        {college.year} â€¢ {getRoundDisplayName(college.round)}
                       </div>
                     </div>
                   ))}
@@ -2602,3 +2603,4 @@ const CollegePredictor = () => {
 }
 
 export default CollegePredictor
+

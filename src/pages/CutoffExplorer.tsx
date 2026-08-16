@@ -1,3 +1,4 @@
+﻿import { CutoffService } from "@/lib/cutoff-service";
 import { SEO } from "@/components/SEO"
 import AdUnit from "@/components/AdUnit"
 import { useState, useEffect } from "react"
@@ -126,44 +127,22 @@ const CutoffExplorer = () => {
     try {
       console.log('Loading cutoff data from local JSON file...')
 
-      // Try multiple data sources with fallback (largest dataset first)
-      const urls = [
-        '/data/kcet_cutoffs_high_volume.dat',
-        '/data/kcet_cutoffs_master.dat',
-        '/data/kcet_cutoffs_consolidated.dat',
-        '/kcet_cutoffs_high_volume.dat',
-        '/kcet_cutoffs_master.dat',
-        '/kcet_cutoffs.dat',
-        '/public/data/kcet_cutoffs_consolidated.dat',
-        '/kcet_cutoffs2025.dat',
-        '/kcet_cutoffs_round3_2025.dat',
-      ]
-      let response: Response | null = null
-      let dataSource = ''
-      for (const url of urls) {
-        const r = await fetch(url, { cache: 'no-store' })
-        if (r.ok) {
-          response = r
-          dataSource = url.replace(/^\//, '')
-          break
+      const rawCutoffs = await CutoffService.loadCutoffs()
+      const data: CutoffResponse = {
+        cutoffs: rawCutoffs.map(item => ({
+          institute: item.college_name || item.institute_code || '',
+          institute_code: item.institute_code || '',
+          course: item.course || '',
+          category: item.category || '',
+          cutoff_rank: item.cutoff_rank || 0,
+          year: item.year || '2025',
+          round: item.round || 'R1'
+        })),
+        metadata: {
+          total_records: rawCutoffs.length,
+          years: ['2026', '2025', '2024', '2023'],
+          rounds: ['R1', 'R2', 'R3', 'EXT']
         }
-      }
-      if (!response) {
-        throw new Error('Failed to load data from all sources')
-      }
-
-      console.log(`Loading data from: ${dataSource}`)
-
-      const rawData = await response.json()
-      console.log('Raw data structure:', Object.keys(rawData))
-
-      // Handle different data structures
-      let data: CutoffResponse
-      if (!rawData.cutoffs && Array.isArray(rawData)) {
-        console.log('Data is a direct array, wrapping in response format')
-        data = { cutoffs: rawData, metadata: {} } as any
-      } else {
-        data = rawData
       }
 
       console.log('Loaded cutoff data:', data.cutoffs.length, 'records')
@@ -641,7 +620,7 @@ const CutoffExplorer = () => {
                       <SelectItem value="ALL">All Courses</SelectItem>
                       {COURSES.map((c) => (
                         <SelectItem key={c.code} value={c.code}>
-                          {c.code} — {c.name}
+                          {c.code} â€” {c.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -889,7 +868,7 @@ const CutoffExplorer = () => {
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
                       <span className="hidden sm:inline">Previous</span>
-                      <span className="sm:hidden">←</span>
+                      <span className="sm:hidden">â†</span>
                     </Button>
                     <div className="flex items-center px-3 py-2 text-sm font-medium bg-background border rounded-md min-h-[44px]">
                       Page {page}
@@ -902,7 +881,7 @@ const CutoffExplorer = () => {
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
                       <span className="hidden sm:inline">Next</span>
-                      <span className="sm:hidden">→</span>
+                      <span className="sm:hidden">â†’</span>
                     </Button>
                   </div>
                 </div>
@@ -922,3 +901,4 @@ const CutoffExplorer = () => {
 }
 
 export default CutoffExplorer
+
