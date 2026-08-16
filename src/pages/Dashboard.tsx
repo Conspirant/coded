@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO"
+﻿import { SEO } from "@/components/SEO"
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -310,14 +310,14 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-foreground font-sans animate-scale-in">
       <SEO
-        title={examMode === "COMEDK" ? "COMEDK Dashboard – KCET Coded" : "KCET 2026 Dashboard – KCET Coded"}
+        title={examMode === "COMEDK" ? "COMEDK Dashboard â€“ KCET Coded" : "KCET 2026 Dashboard â€“ KCET Coded"}
         description="Structured, high-performance counseling dashboard for KCET & COMEDK."
         url="https://kcetcoded.dev/dashboard"
       />
 
-      {/* ═══════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SECTION 1: HERO HEADER & EXAM MODE WORKSPACE
-         ═══════════════════════════════════════════════════ */}
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <div className="p-6 rounded-2xl border border-border/40 bg-card/60 backdrop-blur-md shadow-sm space-y-6">
         <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -397,9 +397,12 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ═══════════════════════════════════════════════════
+      {/* COMMUNITY LIVE POLL */}
+      <CommunityPollWidget />
+
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SECTION 2: CORE COUNSELING TOOLS
-         ═══════════════════════════════════════════════════ */}
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold tracking-tight flex items-center gap-2">
@@ -458,9 +461,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SECTION 3: ADMISSION ODDS ENGINE & PROFILE
-         ═══════════════════════════════════════════════════ */}
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold flex items-center gap-2">
@@ -587,7 +590,7 @@ const Dashboard = () => {
                   <div className="min-w-0 space-y-0.5">
                     <div className="flex items-center gap-1.5">
                       <span className="font-mono text-[10px] text-primary font-bold">{c.code}</span>
-                      <span className="text-[10px] text-muted-foreground">• {c.location}</span>
+                      <span className="text-[10px] text-muted-foreground">â€¢ {c.location}</span>
                     </div>
                     <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">{c.name}</h3>
                     <p className="text-[10px] text-muted-foreground font-mono">
@@ -628,9 +631,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SECTION 4: CATEGORIZED FEATURE SUITE
-         ═══════════════════════════════════════════════════ */}
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="space-y-4">
         <div className="border-b border-border/40 pb-2">
           <h2 className="text-base font-bold tracking-tight">Feature Exploration</h2>
@@ -681,9 +684,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SECTION 5: VISUAL ANALYTICS (RECHARTS) & POLL
-         ═══════════════════════════════════════════════════ */}
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <Card className="border-border/40 bg-card/60 shadow-sm">
@@ -737,10 +740,11 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        <CommunityPollWidget />
+        
       </section>
     </div>
   )
 }
 
 export default Dashboard
+

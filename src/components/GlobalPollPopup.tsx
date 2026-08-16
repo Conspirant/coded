@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -109,7 +109,7 @@ export function GlobalPollPopup() {
         if (e.target === e.currentTarget) handleDismiss();
       }}
     >
-      <div className="w-full max-w-md max-h-[85vh] overflow-y-auto glass-strong border border-primary/30 bg-card/95 p-5 sm:p-6 rounded-2xl shadow-2xl relative animate-in zoom-in-95 duration-200">
+      <div className="w-full max-w-md max-h-[85vh] overflow-y-auto glass-strong border border-primary/30 bg-card/95 p-5 sm:p-6 rounded-lg shadow-2xl relative animate-in zoom-in-95 duration-200">
         {/* Close X Button */}
         <button
           type="button"
@@ -152,7 +152,7 @@ export function GlobalPollPopup() {
                 const isUserChoice = opt.id === votedOptionId;
 
                 return (
-                  <div key={opt.id} className="p-3 rounded-xl border border-white/10 bg-background/30 space-y-1.5">
+                  <div key={opt.id} className="p-3 rounded-md border border-border bg-background/30 space-y-1.5">
                     <div className="flex items-center justify-between text-sm">
                       <span className="font-medium text-foreground flex items-center gap-1.5 truncate">
                         <span className="truncate">{opt.text}</span>
@@ -174,7 +174,7 @@ export function GlobalPollPopup() {
                 );
               })}
 
-              <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground border-t border-white/5">
+              <div className="flex items-center justify-between pt-3 text-xs text-muted-foreground border-t border-border/60">
                 <span className="flex items-center gap-1 text-emerald-400 font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Vote submitted
                 </span>
@@ -193,10 +193,10 @@ export function GlobalPollPopup() {
                     key={opt.id}
                     type="button"
                     onClick={() => setSelectedOption(opt.id)}
-                    className={`w-full text-left p-3 rounded-xl border transition-all text-sm font-medium flex items-center justify-between gap-3 ${
+                    className={`w-full text-left p-3 rounded-md border transition-all text-sm font-medium flex items-center justify-between gap-3 ${
                       isSelected
                         ? "border-primary bg-primary/15 text-foreground shadow-sm shadow-primary/10"
-                        : "border-white/10 bg-background/40 hover:bg-background/80 hover:border-white/20 text-muted-foreground hover:text-foreground"
+                        : "border-border bg-background/40 hover:bg-background/80 hover:border-white/20 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <span>{opt.text}</span>
@@ -213,7 +213,7 @@ export function GlobalPollPopup() {
                 <Button
                   variant="outline"
                   onClick={handleDismiss}
-                  className="flex-1 border-white/10 text-xs hover:bg-white/5"
+                  className="flex-1 border-border text-xs hover:bg-white/5"
                 >
                   Skip for now
                 </Button>
@@ -240,3 +240,4 @@ export function GlobalPollPopup() {
     </div>
   );
 }
+

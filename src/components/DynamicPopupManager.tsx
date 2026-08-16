@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
-  Bell,
   Wrench,
   AlertTriangle,
   Stethoscope,
@@ -9,253 +10,256 @@ import {
   Sparkles,
   ShieldAlert,
   Info,
+  Bell,
   X,
   ArrowRight,
   CheckCircle2,
-  Activity,
-  Layers
+  Activity
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { PopupService } from "@/lib/popup-service";
-import { SitePopup } from "@/types/popup";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-export const DynamicPopupManager: React.FC = () => {
-  const [activePopups, setActivePopups] = useState<SitePopup[]>([]);
-  const [currentPopupIndex, setCurrentPopupIndex] = useState<number>(0);
+export interface SitePopupConfig {
+  id?: string;
+  enabled: boolean;
+  type: "maintenance" | "maintenance_announcement" | "feature_update" | "general_announcement";
+  title: string;
+  subtitle?: string;
+  message: string;
+  badgeText?: string;
+  icon?: string;
+  actionText?: string;
+  actionUrl?: string;
+  dismissible: boolean;
+  secondaryActionText?: string;
+  version?: number;
+  scheduled_at?: string;
+  expires_at?: string;
+}
+
+export function DynamicPopupManager({
+  isPreview = false,
+  previewConfig = null
+}: {
+  isPreview?: boolean;
+  previewConfig?: SitePopupConfig | null;
+}) {
+  const [popup, setPopup] = useState<SitePopupConfig | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [actionDone, setActionDone] = useState(false);
-  const { toast } = useToast();
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const loadPopups = async () => {
-    try {
-      const popups = await PopupService.getActivePopups();
-      const currentPath = location.pathname;
-
-      // Filter popups suitable for current route path & not dismissed by user
-      const validForPage = popups.filter((popup) => {
-        if (!popup.enabled) return false;
-
-        // Check path match
-        const matchesPath =
-          !popup.targetPages ||
-          popup.targetPages.includes("*") ||
-          popup.targetPages.some((p) => p === currentPath || (p !== "/" && currentPath.startsWith(p)));
-
-        if (!matchesPath) return false;
-
-        // Check user dismissal status
-        if (!popup.isForced) {
-          const isDismissed = localStorage.getItem(`kcetcoded_popup_dismissed_${popup.id}`) === "true";
-          if (isDismissed) return false;
-        }
-
-        return true;
-      });
-
-      setActivePopups(validForPage);
-      if (validForPage.length > 0) {
-        setIsOpen(true);
-      } else {
-        setIsOpen(false);
-      }
-    } catch (e) {
-      console.warn("Failed to load active popups:", e);
+  useEffect(() => {
+    if (isPreview && previewConfig) {
+      setPopup(previewConfig);
+      setIsOpen(true);
+      return;
     }
-  };
 
-  useEffect(() => {
-    loadPopups();
+    const fetchConfig = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("ugcet_results_cache")
+          .select("results_json")
+          .eq("appl_no", "CONFIG:site_popup_modal")
+          .maybeSingle();
 
-    // Subscribe to real-time broadcasts when admin toggles or adds popups
-    const unsubscribe = PopupService.subscribeToPopups(() => {
-      loadPopups();
-    });
+        if (!error && data?.results_json) {
+          const cfg = data.results_json as SitePopupConfig;
 
-    return () => unsubscribe();
-  }, [location.pathname]);
+          if (cfg.enabled) {
+            // Check expiry
+            if (cfg.expires_at && new Date(cfg.expires_at) < new Date()) {
+              setIsOpen(false);
+              return;
+            }
 
-  // Keyboard accessibility: ESC key close
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen && currentPopup) {
-        if (currentPopup.dismissible) {
-          handleDismiss();
+            // Check if dismissed
+            const dismissedKey = `dismissed_popup_${cfg.id || "default"}_v${cfg.version || 1}`;
+            const isDismissed = localStorage.getItem(dismissedKey);
+
+            if (!isDismissed) {
+              setPopup(cfg);
+              setIsOpen(true);
+            }
+          }
         }
+      } catch (err) {
+        console.error("Failed to load site popup modal config:", err);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, currentPopupIndex, activePopups]);
 
-  const currentPopup = activePopups[currentPopupIndex];
+    fetchConfig();
 
-  if (!isOpen || !currentPopup) return null;
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel("site-popup-modal-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:site_popup_modal"
+        },
+        (payload) => {
+          const newCfg = (payload.new as any)?.results_json as SitePopupConfig;
+          if (newCfg?.enabled) {
+            const dismissedKey = `dismissed_popup_${newCfg.id || "default"}_v${newCfg.version || 1}`;
+            const isDismissed = localStorage.getItem(dismissedKey);
+            if (!isDismissed) {
+              setPopup(newCfg);
+              setIsOpen(true);
+            }
+          } else {
+            setIsOpen(false);
+          }
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "ugcet_results_cache",
+          filter: "appl_no=eq.CONFIG:site_popup_modal"
+        },
+        (payload) => {
+          const newCfg = (payload.new as any)?.results_json as SitePopupConfig;
+          if (newCfg?.enabled) {
+            const dismissedKey = `dismissed_popup_${newCfg.id || "default"}_v${newCfg.version || 1}`;
+            const isDismissed = localStorage.getItem(dismissedKey);
+            if (!isDismissed) {
+              setPopup(newCfg);
+              setIsOpen(true);
+            }
+          } else {
+            setIsOpen(false);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isPreview, previewConfig]);
 
   const handleDismiss = () => {
-    if (currentPopup) {
-      localStorage.setItem(`kcetcoded_popup_dismissed_${currentPopup.id}`, "true");
+    if (popup) {
+      const dismissedKey = `dismissed_popup_${popup.id || "default"}_v${popup.version || 1}`;
+      localStorage.setItem(dismissedKey, "true");
     }
-
-    if (currentPopupIndex < activePopups.length - 1) {
-      setCurrentPopupIndex((prev) => prev + 1);
-    } else {
-      setIsOpen(false);
-    }
+    setIsOpen(false);
   };
 
   const handleAction = () => {
-    if (!currentPopup) return;
+    if (!popup?.actionUrl) return;
 
-    localStorage.setItem(`kcetcoded_popup_dismissed_${currentPopup.id}`, "true");
     setActionDone(true);
-
-    if (currentPopup.actionUrl) {
-      if (currentPopup.actionUrl.startsWith("http://") || currentPopup.actionUrl.startsWith("https://")) {
-        window.open(currentPopup.actionUrl, "_blank");
+    setTimeout(() => {
+      if (popup.actionUrl?.startsWith("http")) {
+        window.open(popup.actionUrl, "_blank", "noopener,noreferrer");
       } else {
-        navigate(currentPopup.actionUrl);
+        navigate(popup.actionUrl!);
       }
-      setTimeout(() => setIsOpen(false), 500);
-    } else {
-      toast({
-        title: "Preference Saved!",
-        description: `Thank you! Your action for "${currentPopup.title}" has been recorded.`
-      });
-      setTimeout(() => {
-        if (currentPopupIndex < activePopups.length - 1) {
-          setActionDone(false);
-          setCurrentPopupIndex((prev) => prev + 1);
-        } else {
-          setIsOpen(false);
-        }
-      }, 1000);
-    }
+      handleDismiss();
+    }, 250);
   };
 
+  if (!isOpen || !popup) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && currentPopup && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="site-modal-title"
-          aria-describedby="site-modal-description"
-        >
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={() => {
-              if (currentPopup.dismissible) handleDismiss();
-            }}
-            className="fixed inset-0 bg-black/85 backdrop-blur-md"
-          />
-
-          {/* Premium Modal Container */}
-          <PopupCardContent
-            popup={currentPopup}
-            actionDone={actionDone}
-            onDismiss={handleDismiss}
-            onAction={handleAction}
-          />
-        </div>
-      )}
-    </AnimatePresence>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="site-modal-title"
+      aria-describedby="site-modal-description"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+    >
+      <PopupCardContent
+        popup={popup}
+        onDismiss={handleDismiss}
+        onAction={handleAction}
+        actionDone={actionDone}
+        isPreview={isPreview}
+      />
+    </div>
   );
-};
+}
 
-// ─── Reusable Render Component for Theme Styling & Structured Text ───
 export function PopupCardContent({
   popup,
-  actionDone,
   onDismiss,
   onAction,
+  actionDone,
   isPreview = false
 }: {
-  popup: SitePopup;
-  actionDone?: boolean;
+  popup: SitePopupConfig | any;
   onDismiss?: () => void;
   onAction?: () => void;
+  actionDone?: boolean;
   isPreview?: boolean;
 }) {
   const isMaintenance = popup.type === "maintenance";
   const isMaintenanceUpdate = popup.type === "maintenance_announcement";
 
-  // Theme Styles
+  // Clean Theme Styles
   const theme = isMaintenance
     ? {
-        border: "border-amber-500/40",
-        shadow: "shadow-[0_0_50px_-12px_rgba(245,158,11,0.3)]",
-        bgGradient: "bg-gradient-to-b from-amber-950/40 via-zinc-950 to-zinc-950",
-        iconBox: "bg-gradient-to-br from-amber-500/20 to-orange-500/10 border-amber-500/30 text-amber-400",
-        pillBadge: "bg-amber-500/10 text-amber-400 border-amber-500/25",
+        border: "border-amber-500/30",
+        iconBox: "bg-amber-500/10 text-amber-500 border-amber-500/20",
+        pillBadge: "bg-amber-500/10 text-amber-500 border-amber-500/20 font-mono",
         pillText: "MAINTENANCE UPDATE",
-        subtitleText: "text-amber-300",
-        btnPrimary: "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 font-bold shadow-lg shadow-amber-950/50",
-        accentCard: "bg-amber-950/20 border-amber-500/20 text-amber-200"
+        btnPrimary: "bg-amber-500 hover:bg-amber-600 text-black font-semibold"
       }
     : isMaintenanceUpdate
     ? {
-        border: "border-indigo-500/40",
-        shadow: "shadow-[0_0_50px_-12px_rgba(99,102,241,0.3)]",
-        bgGradient: "bg-gradient-to-b from-indigo-950/40 via-zinc-950 to-zinc-950",
-        iconBox: "bg-gradient-to-br from-indigo-500/20 to-purple-500/10 border-indigo-500/30 text-indigo-400",
-        pillBadge: "bg-indigo-500/10 text-indigo-300 border-indigo-500/25",
-        pillText: "FEATURE & MAINTENANCE UPDATE",
-        subtitleText: "text-indigo-300",
-        btnPrimary: "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold shadow-lg shadow-indigo-950/50",
-        accentCard: "bg-indigo-950/20 border-indigo-500/20 text-indigo-200"
+        border: "border-primary/30",
+        iconBox: "bg-primary/10 text-primary border-primary/20",
+        pillBadge: "bg-primary/10 text-primary border-primary/20 font-mono",
+        pillText: "FEATURE UPDATE",
+        btnPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
       }
     : {
-        border: "border-emerald-500/40",
-        shadow: "shadow-[0_0_50px_-12px_rgba(16,185,129,0.3)]",
-        bgGradient: "bg-gradient-to-b from-emerald-950/40 via-zinc-950 to-zinc-950",
-        iconBox: "bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border-emerald-500/30 text-emerald-400",
-        pillBadge: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
+        border: "border-border",
+        iconBox: "bg-muted text-foreground border-border",
+        pillBadge: "bg-muted text-foreground border-border font-mono",
         pillText: "ANNOUNCEMENT",
-        subtitleText: "text-emerald-300",
-        btnPrimary: "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-zinc-950 font-bold shadow-lg shadow-emerald-950/50",
-        accentCard: "bg-emerald-950/20 border-emerald-500/20 text-emerald-200"
+        btnPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
       };
 
   const getIcon = () => {
     switch (popup.icon) {
       case "wrench":
-        return <Wrench className="h-6 w-6" />;
+        return <Wrench className="h-5 w-5" />;
       case "alert-triangle":
-        return <AlertTriangle className="h-6 w-6" />;
+        return <AlertTriangle className="h-5 w-5" />;
       case "stethoscope":
-        return <Stethoscope className="h-6 w-6" />;
+        return <Stethoscope className="h-5 w-5" />;
       case "megaphone":
-        return <Megaphone className="h-6 w-6" />;
+        return <Megaphone className="h-5 w-5" />;
       case "sparkles":
-        return <Sparkles className="h-6 w-6" />;
+        return <Sparkles className="h-5 w-5" />;
       case "shield":
-        return <ShieldAlert className="h-6 w-6" />;
+        return <ShieldAlert className="h-5 w-5" />;
       case "info":
-        return <Info className="h-6 w-6" />;
+        return <Info className="h-5 w-5" />;
       case "bell":
       default:
-        return <Bell className="h-6 w-6" />;
+        return <Bell className="h-5 w-5" />;
     }
   };
 
-  // Structured Text Parser: Break down multi-paragraph or bullet point text cleanly
-  const parseMessageStructure = (rawMessage: string) => {
+  // Structured Text Parser
+  const parseMessageStructure = (rawMessage?: string) => {
+    if (!rawMessage) return { intro: "", bullets: [] };
     const lines = rawMessage
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
 
     if (lines.length <= 1) {
-      // Split by periods if long single block
       const sentences = rawMessage.split(/(?<=\.)\s+/).filter(Boolean);
       if (sentences.length > 2) {
         return {
@@ -268,7 +272,7 @@ export function PopupCardContent({
 
     return {
       intro: lines[0],
-      bullets: lines.slice(1).map((l) => l.replace(/^[•\-\*]\s*/, ""))
+      bullets: lines.slice(1).map((l) => l.replace(/^[\u2022\-\*]\s*/, ""))
     };
   };
 
@@ -276,28 +280,28 @@ export function PopupCardContent({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 15 }}
+      initial={{ opacity: 0, scale: 0.96, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95, y: 15 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
-      className={`relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl border ${theme.border} ${theme.bgGradient} ${theme.shadow} p-6 sm:p-7 text-zinc-100 z-10 space-y-5 backdrop-blur-xl`}
+      exit={{ opacity: 0, scale: 0.96, y: 10 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border ${theme.border} bg-card p-5 sm:p-6 text-card-foreground z-10 space-y-4 shadow-xl`}
     >
       {/* Top Banner Tag */}
       <div className="flex items-center justify-between">
-        <div className={`px-3 py-1 rounded-full border text-[10px] uppercase font-extrabold tracking-wider flex items-center gap-1.5 ${theme.pillBadge}`}>
-          <Activity className="h-3 w-3 animate-pulse" />
+        <div className={`px-2.5 py-0.5 rounded border text-[10px] uppercase font-semibold tracking-wider flex items-center gap-1.5 ${theme.pillBadge}`}>
+          <Activity className="h-3 w-3" />
           <span>{popup.badgeText || theme.pillText}</span>
         </div>
 
         {isPreview ? (
-          <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+          <span className="text-[10px] font-mono text-amber-500 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
             ADMIN PREVIEW
           </span>
         ) : (
           popup.dismissible && (
             <button
               onClick={onDismiss}
-              className="p-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all shrink-0"
+              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
               aria-label="Close popup"
             >
               <X className="h-4 w-4" />
@@ -307,16 +311,16 @@ export function PopupCardContent({
       </div>
 
       {/* Header Area */}
-      <div className="flex items-start gap-4 pt-1">
-        <div className={`p-3 rounded-2xl border shrink-0 shadow-inner ${theme.iconBox}`}>
+      <div className="flex items-start gap-3 pt-0.5">
+        <div className={`p-2.5 rounded-md border shrink-0 ${theme.iconBox}`}>
           {getIcon()}
         </div>
-        <div className="space-y-1">
-          <h2 id="site-modal-title" className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
+        <div className="space-y-0.5">
+          <h2 id="site-modal-title" className="text-lg sm:text-xl font-bold tracking-tight text-foreground leading-snug">
             {popup.title}
           </h2>
           {popup.subtitle && (
-            <p className={`text-xs font-semibold ${theme.subtitleText} leading-snug`}>
+            <p className="text-xs text-muted-foreground leading-snug">
               {popup.subtitle}
             </p>
           )}
@@ -324,22 +328,22 @@ export function PopupCardContent({
       </div>
 
       {/* Structured Content Area */}
-      <div id="site-modal-description" className="space-y-3">
+      <div id="site-modal-description" className="space-y-2.5">
         {/* Intro Message */}
-        <div className="p-3.5 rounded-2xl bg-zinc-900/70 border border-zinc-800/80 text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal shadow-sm">
+        <div className="p-3 rounded-md bg-muted/30 border border-border text-xs text-muted-foreground leading-relaxed">
           {intro}
         </div>
 
         {/* Structured Highlights / Bullets */}
         {bullets.length > 0 && (
-          <div className="space-y-2 pt-1">
+          <div className="space-y-1.5 pt-0.5">
             {bullets.map((bullet, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-3 p-3 rounded-xl border border-zinc-800/80 bg-zinc-900/40 text-xs text-zinc-200 transition-colors"
+                className="flex items-start gap-2.5 p-2.5 rounded-md border border-border bg-muted/20 text-xs text-foreground"
               >
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
-                <span className="leading-relaxed font-medium">{bullet}</span>
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                <span className="leading-relaxed">{bullet}</span>
               </div>
             ))}
           </div>
@@ -347,12 +351,12 @@ export function PopupCardContent({
       </div>
 
       {/* Action Footer */}
-      <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-2">
+      <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2 pt-2 border-t border-border/60">
         {popup.dismissible && (
           <Button
             variant="outline"
             onClick={onDismiss}
-            className="w-full sm:w-auto border-zinc-800 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-xl h-10 px-5 text-xs font-semibold transition-all"
+            className="w-full sm:w-auto h-8 px-4 text-xs font-semibold border-border text-foreground hover:bg-muted"
           >
             {popup.secondaryActionText || "Dismiss"}
           </Button>
@@ -362,17 +366,17 @@ export function PopupCardContent({
           <Button
             onClick={onAction}
             disabled={actionDone}
-            className={`w-full sm:w-auto rounded-xl h-10 px-5 text-xs flex items-center justify-center gap-2 transition-all ${theme.btnPrimary}`}
+            className={`w-full sm:w-auto h-8 px-4 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs ${theme.btnPrimary}`}
           >
             {actionDone ? (
               <>
-                <CheckCircle2 className="h-4 w-4" />
+                <CheckCircle2 className="h-3.5 w-3.5" />
                 <span>Recorded</span>
               </>
             ) : (
               <>
                 <span>{popup.actionText}</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </>
             )}
           </Button>
@@ -381,3 +385,5 @@ export function PopupCardContent({
     </motion.div>
   );
 }
+
+export const PopupContent = PopupCardContent;

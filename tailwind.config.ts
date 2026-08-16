@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+﻿import type { Config } from "tailwindcss";
 
 export default {
 	darkMode: ["class"],
@@ -75,6 +75,7 @@ export default {
 			fontFamily: {
 				sans: ["Inter", "sans-serif"],
 				brand: ["Plus Jakarta Sans", "sans-serif"],
+				mono: ["JetBrains Mono", "monospace"],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -107,3 +108,4 @@ export default {
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

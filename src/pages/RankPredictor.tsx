@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO"
+﻿import { SEO } from "@/components/SEO"
 import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Crown, Calculator, Database, Target, TrendingUp, AlertTriangle, ChevronRight, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, SlidersHorizontal, ArrowRight, RotateCcw, Info, Shield, Sparkles, Table, Share2, Download, FileText, AlertCircle } from 'lucide-react'
+import { Calculator, Database, Target, TrendingUp, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, ArrowRight, Info, Shield, Table, Share2, Download, FileText, AlertCircle, Sparkles } from 'lucide-react'
 import { AdminFeedbackService } from "@/lib/admin-feedback-service"
 import { ActualRankService } from "@/lib/actual-rank-service"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -25,8 +25,6 @@ import { useNavigate } from "react-router-dom"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts"
 import {
   predictKCETRankBothYears,
-  predictKCETRank,
-  getPercentile,
   calculatePercentile,
   getRankAnalysis,
   getCollegeSuggestions,
@@ -34,7 +32,6 @@ import {
   getCutoffEstimates,
   kcet2025RankTable,
   rankGapAnalysis,
-  type RankPrediction,
   type Rank2026Prediction
 } from "@/lib/rank-predictor"
 import { validateKCETMarks, validatePUCPercentage } from "@/lib/security"
@@ -67,7 +64,7 @@ const KCET_CATEGORIES = [
 ]
 
 // Animated counter hook for smooth number transitions
-const useAnimatedCounter = (value: number, duration: number = 500) => {
+const useAnimatedCounter = (value: number, duration: number = 300) => {
   const [displayValue, setDisplayValue] = useState(value)
   const previousValue = useRef(value)
   const animationRef = useRef<number>()
@@ -81,7 +78,6 @@ const useAnimatedCounter = (value: number, duration: number = 500) => {
       const elapsed = currentTime - startTime
       const progress = Math.min(elapsed / duration, 1)
 
-      // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4)
       const current = Math.round(start + (end - start) * easeOutQuart)
 
@@ -106,64 +102,26 @@ const useAnimatedCounter = (value: number, duration: number = 500) => {
   return displayValue
 }
 
-// Confidence gauge component
-const ConfidenceGauge = ({ low, medium, high }: { low: number; medium: number; high: number }) => {
-  const maxRank = 260000
-  const lowPercent = Math.min((1 - low / maxRank) * 100, 100)
-  const medPercent = Math.min((1 - medium / maxRank) * 100, 100)
-  const highPercent = Math.min((1 - high / maxRank) * 100, 100)
-
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between text-xs text-muted-foreground">
-        <span>Better Rank</span>
-        <span>Lower Rank</span>
-      </div>
-      <div className="relative h-4 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full overflow-hidden">
-        {/* Range indicator */}
-        <div
-          className="absolute h-full bg-primary/30 border-2 border-primary rounded-sm"
-          style={{
-            left: `${100 - lowPercent}%`,
-            width: `${lowPercent - highPercent}%`,
-          }}
-        />
-        {/* Middle marker */}
-        <div
-          className="absolute w-1 h-6 -top-1 bg-primary shadow-lg rounded-full transform -translate-x-1/2"
-          style={{ left: `${100 - medPercent}%` }}
-        />
-      </div>
-      <div className="flex justify-between text-xs font-medium">
-        <span className="text-green-600">{low.toLocaleString()}</span>
-        <span className="text-primary font-bold">{medium.toLocaleString()}</span>
-        <span className="text-red-600">{high.toLocaleString()}</span>
-      </div>
-    </div>
-  )
-}
-
 const RankPredictor = () => {
-  const [kcetMarks, setKcetMarks] = useState(90)
-  const [pucPercentage, setPucPercentage] = useState(60)
+  const [kcetMarks, setKcetMarks] = useState(110)
+  const [pucPercentage, setPucPercentage] = useState(85)
   const [prediction, setPrediction] = useState<Rank2026Prediction | null>(null)
   const [activeTab, setActiveTab] = useState("predictor")
   const [savedResults, setSavedResults] = useState<any[]>([])
   const [boardMarksMode, setBoardMarksMode] = useState(false)
-  const [boardMarksTotal, setBoardMarksTotal] = useState(180)
+  const [boardMarksTotal, setBoardMarksTotal] = useState(255)
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  // Animated rank display
-  const animatedRank2025 = useAnimatedCounter(prediction?.rank2025 || 0, 400)
-  const animatedRank2026 = useAnimatedCounter(prediction?.rank2026 || 0, 400)
+  const animatedRank2025 = useAnimatedCounter(prediction?.rank2025 || 0, 300)
+  const animatedRank2026 = useAnimatedCounter(prediction?.rank2026 || 0, 300)
 
   const [feedbackRank, setFeedbackRank] = useState("")
   const [feedbackKcet, setFeedbackKcet] = useState("")
   const [feedbackPuc, setFeedbackPuc] = useState("")
   const [showFeedbackDialog, setShowFeedbackDialog] = useState(false)
 
-  // KCET 2026 Declared Banner States
+  // KCET 2026 Declared Modal States
   const [showShareDialog, setShowShareDialog] = useState(false)
   const [submittedShare, setSubmittedShare] = useState(false)
   const [shareRank, setShareRank] = useState("")
@@ -185,9 +143,8 @@ const RankPredictor = () => {
     }
   }, [])
 
-  // Real-time prediction - auto-calculate on input change
+  // Real-time prediction
   useEffect(() => {
-    // Validate inputs silently
     const kcetValidation = validateKCETMarks(kcetMarks)
     const pucValidation = validatePUCPercentage(pucPercentage)
 
@@ -199,64 +156,72 @@ const RankPredictor = () => {
     try {
       const rankData = predictKCETRankBothYears(kcetMarks, pucPercentage)
       setPrediction(rankData)
-    } catch (error) {
+    } catch (err) {
+      console.error("Prediction error:", err)
       setPrediction(null)
     }
   }, [kcetMarks, pucPercentage])
 
   const handleShareSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!shareRank || parseInt(shareRank) <= 0) {
-      toast({ title: "Validation Error", description: "Please enter your actual KCET rank.", variant: "destructive" })
-      return
-    }
-    if (!shareMarks || parseFloat(shareMarks) <= 0 || parseFloat(shareMarks) > 180) {
-      toast({ title: "Validation Error", description: "KCET marks must be between 1 and 180.", variant: "destructive" })
-      return
-    }
-    if (!sharePucAggregate || parseFloat(sharePucAggregate) <= 0 || parseFloat(sharePucAggregate) > 100) {
-      toast({ title: "Validation Error", description: "PUC/12th PCM aggregate percentage must be between 1 and 100.", variant: "destructive" })
+    if (!shareRank || !shareMarks || !sharePucAggregate) {
+      toast({ title: "Missing Fields", description: "Please fill all required fields.", variant: "destructive" })
       return
     }
 
     setIsSubmittingShare(true)
     try {
-      const res = await ActualRankService.submitRank({
-        kcet_marks: parseFloat(shareMarks),
-        puc_aggregate: parseFloat(sharePucAggregate),
-        puc_board: shareBoard,
-        actual_rank: parseInt(shareRank),
+      const res = await ActualRankService.submitActualRank({
+        actual_rank: Number(shareRank),
+        kcet_marks: Number(shareMarks),
+        puc_marks: Number(sharePucAggregate),
+        board: shareBoard,
         category: shareCategory,
-        year: 2026
+        stream: "Engineering"
       })
 
       if (res.success) {
         setSubmittedShare(true)
-        localStorage.setItem("hasCalibrated2027", "true")
-        toast({
-          title: "Thank You! 🎉",
-          description: "Your data has been anonymously added to the database. Good luck with counseling!",
-        })
+        toast({ title: "Thank you!", description: "Your official score data will calibrate the 2027 engine." })
       } else {
-        toast({
-          title: "Submission Failed",
-          description: res.error || "Failed to submit data.",
-          variant: "destructive"
-        })
+        toast({ title: "Submission Failed", description: res.error || "Please try again later.", variant: "destructive" })
       }
     } catch (err) {
-      console.error(err)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive"
-      })
+      toast({ title: "Error", description: "An unexpected error occurred. Please try again.", variant: "destructive" })
     } finally {
       setIsSubmittingShare(false)
     }
   }
 
-  // Save current result
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackRank || !feedbackKcet || !feedbackPuc) {
+      toast({ title: "Missing Fields", description: "Please enter your scores.", variant: "destructive" })
+      return
+    }
+
+    try {
+      const res = await AdminFeedbackService.submitFeedback({
+        actualRank: Number(feedbackRank),
+        kcetMarks: Number(feedbackKcet),
+        pucPercentage: Number(feedbackPuc),
+        predictedRank: prediction?.medium || 0,
+        notes: "Anonymous User Calibrate Data"
+      })
+
+      if (res.success) {
+        toast({ title: "Data Submitted", description: "Your contribution helps refine normalization models." })
+        setShowFeedbackDialog(false)
+        setFeedbackRank("")
+        setFeedbackKcet("")
+        setFeedbackPuc("")
+      } else {
+        toast({ title: "Submission Failed", description: res.error || "Failed to submit.", variant: "destructive" })
+      }
+    } catch (err) {
+      toast({ title: "Error", description: "Could not submit calibration data.", variant: "destructive" })
+    }
+  }
+
   const saveResult = () => {
     if (!prediction) return
 
@@ -264,7 +229,7 @@ const RankPredictor = () => {
       cet: kcetMarks,
       puc: pucPercentage,
       rank: prediction.medium,
-      range: `${prediction.low}–${prediction.high}`,
+      range: `${prediction.low.toLocaleString()} â€“ ${prediction.high.toLocaleString()}`,
       percentile: calculatePercentile(prediction.medium),
       timestamp: new Date().toISOString()
     }
@@ -274,16 +239,16 @@ const RankPredictor = () => {
     localStorage.setItem('kcetResults', JSON.stringify(updatedResults))
 
     toast({
-      title: "Result Saved!",
-      description: `Rank ${prediction.medium.toLocaleString()} saved to history`,
+      title: "Result Saved",
+      description: `Rank ${prediction.medium.toLocaleString()} saved to local history.`,
     })
   }
 
   const shareResult = async () => {
     if (!prediction) return
     const title = 'My KCET 2026 Rank Prediction'
-    const text = `I just predicted my KCET 2026 rank: ${prediction.medium.toLocaleString()}! Check out where you stand on KCET Coded.`
-    const shareUrl = `${window.location.origin}/api/share?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(`Predicted Rank: ${prediction.medium.toLocaleString()}`)}&path=/rank-predictor`
+    const text = `Predicted KCET 2026 Rank: ~${prediction.medium.toLocaleString()} (Range: ${prediction.low.toLocaleString()} - ${prediction.high.toLocaleString()}). Explore KCET Coded:`
+    const shareUrl = `${window.location.origin}/rank-predictor`
 
     if (navigator.share) {
       try {
@@ -293,11 +258,10 @@ const RankPredictor = () => {
       }
     } else {
       await navigator.clipboard.writeText(`${text} ${shareUrl}`)
-      toast({ title: "Link Copied!", description: "Prediction copied to clipboard. Share it with your friends!" })
+      toast({ title: "Link Copied", description: "Prediction summary copied to clipboard." })
     }
   }
 
-  // Navigate to College Predictor with predicted rank
   const findColleges = () => {
     if (!prediction) return
     navigate(`/college-predictor?rank=${prediction.rank2026}`)
@@ -311,294 +275,127 @@ const RankPredictor = () => {
     if (!ctx) return
 
     canvas.width = 600
-    canvas.height = 400
+    canvas.height = 380
 
-    // Background gradient
-    const gradient = ctx.createLinearGradient(0, 0, 600, 400)
-    gradient.addColorStop(0, '#6d28d9')
-    gradient.addColorStop(1, '#4f46e5')
-    ctx.fillStyle = gradient
+    // Background
+    ctx.fillStyle = '#0F172A'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-    // Card
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.98)'
-    ctx.beginPath()
-    ctx.roundRect(30, 30, 540, 340, 16)
-    ctx.fill()
+    // Border
+    ctx.strokeStyle = '#1E293B'
+    ctx.lineWidth = 2
+    ctx.strokeRect(16, 16, 568, 348)
 
     // Title
-    ctx.fillStyle = '#6d28d9'
-    ctx.font = 'bold 28px Inter, system-ui, sans-serif'
+    ctx.fillStyle = '#94A3B8'
+    ctx.font = '600 14px "Plus Jakarta Sans", sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('KCET 2025 Rank Card', 300, 75)
+    ctx.fillText('KCET 2026 RANK PREDICTION CARD', 300, 50)
 
     // Rank
-    ctx.font = 'bold 56px Inter, system-ui, sans-serif'
-    ctx.fillStyle = '#6366f1' // indigo-500
-    ctx.fillText(`${prediction.medium.toLocaleString()}`, 300, 145)
+    ctx.fillStyle = '#3B82F6'
+    ctx.font = '700 48px "JetBrains Mono", monospace'
+    ctx.fillText(`~${prediction.medium.toLocaleString()}`, 300, 115)
 
-    // Subtitle
-    ctx.font = '16px Inter, system-ui, sans-serif'
-    ctx.fillStyle = '#64748b'
-    ctx.fillText('Predicted Rank', 300, 170)
+    ctx.fillStyle = '#64748B'
+    ctx.font = '500 13px "Plus Jakarta Sans", sans-serif'
+    ctx.fillText(`Estimated Median Range: ${prediction.low.toLocaleString()} â€“ ${prediction.high.toLocaleString()}`, 300, 145)
 
     // Details box
-    ctx.fillStyle = '#f8fafc'
+    ctx.fillStyle = '#1E293B'
     ctx.beginPath()
-    ctx.roundRect(50, 195, 500, 150, 12)
+    ctx.roundRect(40, 175, 520, 140, 8)
     ctx.fill()
 
-    // Details
-    ctx.font = '15px Inter, system-ui, sans-serif'
-    ctx.fillStyle = '#1e1b4b'
+    ctx.fillStyle = '#F8FAFC'
+    ctx.font = '500 13px "JetBrains Mono", monospace'
     ctx.textAlign = 'left'
-    ctx.fillText(`📊 Rank Range: ${prediction.low.toLocaleString()} – ${prediction.high.toLocaleString()}`, 70, 230)
-    ctx.fillText(`📝 KCET Score: ${kcetMarks}/180 (${((kcetMarks / 180) * 100).toFixed(1)}%)`, 70, 260)
-    ctx.fillText(`📚 PUC PCM: ${pucPercentage}%`, 70, 290)
-    ctx.fillText(`📈 Percentile: ${calculatePercentile(prediction.medium)}`, 70, 320)
+    ctx.fillText(`â€¢ KCET Score: ${kcetMarks} / 180 (${((kcetMarks / 180) * 100).toFixed(1)}%)`, 60, 210)
+    ctx.fillText(`â€¢ Board PCM: ${pucPercentage}% (Weightage: 50%)`, 60, 240)
+    ctx.fillText(`â€¢ Composite Score: ${prediction.composite.toFixed(2)}%`, 60, 270)
+    ctx.fillText(`â€¢ Expected Percentile: ${calculatePercentile(prediction.medium)}`, 60, 300)
 
-    // Download
+    ctx.fillStyle = '#64748B'
+    ctx.font = '400 11px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.fillText('Generated via KCET Coded (kcetcoded.dev) â€¢ Verified KEA Normalization Modeling', 300, 345)
+
     const link = document.createElement('a')
     link.href = canvas.toDataURL('image/png')
-    link.download = `KCET_2025_Rank_${prediction.medium}.png`
+    link.download = `KCET_2026_Rank_${prediction.medium}.png`
     link.click()
 
     toast({
-      title: "Downloaded!",
-      description: "Rank card saved as PNG",
+      title: "Downloaded",
+      description: "Rank card exported as PNG image.",
     })
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-8">
+    <div className="max-w-6xl mx-auto space-y-6 pb-12">
       <SEO
-        title="KCET 2026 Rank Predictor – Predict Your Rank from Marks (Free)"
-        description="Predict your KCET 2026 rank from marks instantly using 3 years of historical data. Enter your Physics, Chemistry & Maths marks to get your estimated rank and college suggestions. 100% free, no sign-up."
+        title="KCET 2026 Rank Predictor â€“ Marks vs Rank Calculator (Free)"
+        description="Calculate your predicted Karnataka CET 2026 rank from marks using multi-year KEA normalized data (2023â€“2025). 50% KCET + 50% Board formula."
         url="https://kcetcoded.dev/rank-predictor"
-        keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction, predict KCET rank from marks, KCET expected rank, 76 marks in KCET rank, 100 marks in KCET rank"
-        jsonLd={{
-          "@type": "FAQPage",
-          "mainEntity": [
-            { "@type": "Question", "name": "How to predict KCET rank from marks?", "acceptedAnswer": { "@type": "Answer", "text": "Enter your Physics, Chemistry, and Maths KCET marks in the Rank Predictor tool. It uses 3 years of historical data (2023-2025) to estimate your rank based on the official KEA formula." }},
-            { "@type": "Question", "name": "What is the rank for 76 marks in KCET?", "acceptedAnswer": { "@type": "Answer", "text": "76 marks in KCET typically corresponds to a rank around 50,000-70,000 depending on exam difficulty. Use the Rank Predictor for a more accurate year-specific prediction." }},
-            { "@type": "Question", "name": "What rank is needed for CSE in RVCE KCET?", "acceptedAnswer": { "@type": "Answer", "text": "For CSE at RVCE, you typically need a KCET rank under 700 (GM category). The cutoff varies by year — check the Cutoff Explorer for exact historical data." }},
-            { "@type": "Question", "name": "Is KCET rank based only on CET marks?", "acceptedAnswer": { "@type": "Answer", "text": "No, KCET rank is based on CET marks (50%) + qualifying exam marks (50% of 12th/PUC PCM). Our predictor factors in both components." }}
-          ]
-        }}
+        keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction"
       />
-      {/* Results Declared Callout Box */}
-      <Card className="relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-indigo-950/40 via-emerald-950/20 to-background backdrop-blur-2xl shadow-xl rounded-2xl p-5 md:p-6 mb-2">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-36 h-36 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0 mt-1 md:mt-0">
-              <Sparkles className="h-6 w-6 text-white animate-pulse" />
+
+      {/* Header Banner */}
+      <div className="rounded-lg border border-border bg-card p-5 md:p-6 shadow-xs">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                KEA 50:50 NORMALIZATION MODEL
+              </span>
             </div>
-            <div className="space-y-1">
-              <h2 className="text-lg font-bold flex items-center gap-2 text-foreground">
-                KCET 2026 Results are Officially Declared! 🎉
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-              </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-                Official ranks are out. Skip rank estimation and instantly check which engineering/medical colleges you qualify for using your actual rank.
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0 z-10">
-            <Button
-              onClick={() => navigate("/college-predictor")}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-600/20 px-5 transition-all gap-1.5 h-11"
-            >
-              <Search className="h-4 w-4" /> Check College Eligibility
-            </Button>
-            
-            <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-400 h-11">
-                  <Database className="h-4 w-4 mr-1.5 animate-pulse" /> Calibrate 2027 Predictor
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md bg-slate-950 border-white/10 text-foreground">
-                <DialogHeader>
-                  <DialogTitle className="text-lg font-bold flex items-center gap-2">
-                    <Database className="h-5 w-5 text-indigo-400" />
-                    Share Your Official Rank & Score
-                  </DialogTitle>
-                  <DialogDescription className="text-muted-foreground text-xs">
-                    Help train the 2027 predictor by sharing your official scores anonymously.
-                  </DialogDescription>
-                </DialogHeader>
-                {submittedShare ? (
-                  <div className="py-6 text-center space-y-4 animate-scale-in">
-                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400 shadow-lg shadow-emerald-500/10">
-                      <CheckCircle2 className="h-6 w-6" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-md font-bold text-foreground">Submission Received!</h3>
-                      <p className="text-xs text-muted-foreground max-w-md mx-auto">
-                        Your entry was stored anonymously. Thank you for contributing!
-                      </p>
-                    </div>
-                    <Button 
-                      onClick={() => setSubmittedShare(false)} 
-                      variant="outline" 
-                      size="sm"
-                      className="border-white/10 hover:bg-white/5"
-                    >
-                      Submit Another Record
-                    </Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleShareSubmit} className="space-y-4 py-2">
-                    <div className="grid gap-3 grid-cols-2">
-                      <div className="space-y-1">
-                        <Label htmlFor="shareRank" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Official Rank</Label>
-                        <Input id="shareRank" type="number" required placeholder="e.g. 15430" value={shareRank} onChange={e => setShareRank(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="shareMarks" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">KCET Marks (out of 180)</Label>
-                        <Input id="shareMarks" type="number" step="0.01" required placeholder="e.g. 110" value={shareMarks} onChange={e => setShareMarks(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="sharePuc" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">PUC PCM (%)</Label>
-                        <Input id="sharePuc" type="number" step="0.01" required placeholder="e.g. 95.5" value={sharePucAggregate} onChange={e => setSharePucAggregate(e.target.value)} className="bg-black/20 border-white/10 font-mono text-sm h-9" />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="shareBoard" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">12th Board</Label>
-                        <Select value={shareBoard} onValueChange={setShareBoard}>
-                          <SelectTrigger id="shareBoard" className="bg-black/20 border-white/10 text-xs h-9">
-                            <SelectValue placeholder="Select Board" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground">
-                            <SelectItem value="State Board">State Board (PUC)</SelectItem>
-                            <SelectItem value="CBSE">CBSE Class 12</SelectItem>
-                            <SelectItem value="ISC">ISC Class 12</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <Label htmlFor="shareCategory" className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground">Category</Label>
-                      <Select value={shareCategory} onValueChange={setShareCategory}>
-                        <SelectTrigger id="shareCategory" className="bg-black/20 border-white/10 text-xs h-9">
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-slate-900 border-white/10 text-xs text-foreground max-h-48">
-                          {KCET_CATEGORIES.map(cat => (
-                            <SelectItem key={cat.code} value={cat.code} className="hover:bg-slate-800 text-xs">
-                              {cat.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button type="submit" disabled={isSubmittingShare} className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold gap-1.5 h-10 mt-2 text-sm text-white">
-                      {isSubmittingShare ? "Submitting..." : "Submit Anonymously"}
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </form>
-                )}
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-      </Card>
-      {/* Header */}
-      <div className="text-center space-y-4 py-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/20 to-indigo-500/20 rounded-2xl">
-          <Crown className="h-8 w-8 text-primary" />
-        </div>
-        <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-indigo-500 bg-clip-text text-transparent">
-            KCET 2026 Rank Predictor
-          </h1>
-          <p className="text-muted-foreground">
-            Real-time rank prediction based on official KEA formula
-          </p>
-          <div className="flex justify-center mt-2 mb-2">
-            <p className="text-[11px] text-muted-foreground/60 tracking-wide">
-              Created by & if any queries contact{' '}
-              <a 
-                href="https://www.reddit.com/user/Elegant_Compote9073/" 
-                target="_blank" 
-                rel="noreferrer"
-                className="font-medium text-muted-foreground hover:text-foreground transition-colors hover:underline"
-              >
-                u/Elegant_Compote9073
-              </a>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              KCET 2026 Rank & Aggregate Predictor
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+              Estimate your rank based on 50% CET marks + 50% 12th/PUC PCM board percentage, benchmarked against 3.12 lakh verified candidate records.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex flex-wrap gap-2 shrink-0">
             <Button
-              variant="outline"
+              onClick={() => navigate("/college-predictor")}
               size="sm"
-              onClick={() => setActiveTab("methodology")}
-              className="group text-xs border-primary/20 hover:border-primary/50 bg-primary/5 hover:bg-primary/10 transition-all font-medium"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-9 px-3.5 shadow-xs"
             >
-              <Database className="h-3.5 w-3.5 mr-1.5 text-primary group-hover:scale-110 transition-transform" />
-              View Prediction Data & Methodology
+              <Search className="h-3.5 w-3.5 mr-1.5" /> Check Colleges
             </Button>
-
             <Dialog open={showFeedbackDialog} onOpenChange={setShowFeedbackDialog}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="group text-xs border-amber-500/20 hover:border-amber-500/50 bg-amber-500/5 hover:bg-amber-500/10 transition-all font-medium text-amber-700 dark:text-amber-400">
-                  <Target className="h-3.5 w-3.5 mr-1.5 text-amber-500 group-hover:scale-110 transition-transform" />
-                  2025 Aspirant? Share Your Rank
+                <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-muted text-xs h-9 px-3">
+                  <Database className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" /> Calibrate Data
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="sm:max-w-md bg-card border-border shadow-lg">
                 <DialogHeader>
-                  <DialogTitle>Help Improve the Predictor!</DialogTitle>
-                  <DialogDescription>
-                    Were you a KCET 2025 aspirant? Share your actual rank and scores to help us refine our prediction model for the 2026 batch.
+                  <DialogTitle className="text-base font-bold flex items-center gap-2">
+                    <Database className="h-4 w-4 text-primary" />
+                    Submit Calibration Data
+                  </DialogTitle>
+                  <DialogDescription className="text-xs text-muted-foreground">
+                    Contribute anonymous score points to improve multi-year normalization algorithms.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="actualRank">Actual 2025 Rank</Label>
-                    <Input id="actualRank" placeholder="e.g. 4500" type="number" value={feedbackRank} onChange={e => setFeedbackRank(e.target.value)} />
+                <div className="space-y-3 py-1">
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase">Actual Rank</Label>
+                    <Input type="number" placeholder="e.g. 15430" value={feedbackRank} onChange={e => setFeedbackRank(e.target.value)} className="font-mono text-xs h-8" />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="kcetMarks">KCET Marks (out of 180)</Label>
-                      <Input id="kcetMarks" placeholder="e.g. 110" type="number" value={feedbackKcet} onChange={e => setFeedbackKcet(e.target.value)} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="pucMarks">PUC PCM (%)</Label>
-                      <Input id="pucMarks" placeholder="e.g. 95" type="number" value={feedbackPuc} onChange={e => setFeedbackPuc(e.target.value)} />
-                    </div>
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase">KCET Marks (/ 180)</Label>
+                    <Input type="number" placeholder="e.g. 110" value={feedbackKcet} onChange={e => setFeedbackKcet(e.target.value)} className="font-mono text-xs h-8" />
                   </div>
-                  <Button className="w-full mt-4" onClick={(e) => {
-                    if (!feedbackRank || !feedbackKcet || !feedbackPuc) {
-                      toast({ title: "Incomplete", description: "Please fill all fields to share your rank.", variant: "destructive" });
-                      return;
-                    }
-                    const payload = {
-                      actual_rank: parseInt(feedbackRank) || 0,
-                      kcet_marks: parseInt(feedbackKcet) || 0,
-                      puc_marks: parseFloat(feedbackPuc) || 0
-                    };
-                    if (payload.kcet_marks > 180 || payload.puc_marks > 100) {
-                      toast({ title: "Invalid Values", description: "Marks must be valid (KCET < 180, PUC < 100).", variant: "destructive" });
-                      return;
-                    }
-                    AdminFeedbackService.addFeedback(payload);
-                    toast({
-                      title: "Thanks for your feedback! 🚀",
-                      description: "Your data helps future aspirants. Best of luck for your college journey!",
-                    });
-                    
-                    // Reset and Close
-                    setFeedbackRank(""); setFeedbackKcet(""); setFeedbackPuc("");
-                    setShowFeedbackDialog(false);
-                  }}>
-                    Submit Data
+                  <div className="space-y-1">
+                    <Label className="text-[11px] font-semibold text-muted-foreground uppercase">PUC PCM (%)</Label>
+                    <Input type="number" placeholder="e.g. 92.5" value={feedbackPuc} onChange={e => setFeedbackPuc(e.target.value)} className="font-mono text-xs h-8" />
+                  </div>
+                  <Button onClick={handleFeedbackSubmit} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-8 mt-2">
+                    Submit Calibration Record
                   </Button>
                 </div>
               </DialogContent>
@@ -607,56 +404,69 @@ const RankPredictor = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="flex flex-wrap justify-center gap-1 w-full bg-muted/50 dark:bg-muted/30 rounded-xl p-1 h-auto">
-          <TabsTrigger value="predictor" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <Calculator className="h-4 w-4" />
-            <span className="hidden sm:inline">Predictor</span>
+        <TabsList className="flex flex-wrap justify-start gap-1 w-full bg-muted/60 rounded-md p-1 border border-border h-auto">
+          <TabsTrigger value="predictor" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <Calculator className="h-3.5 w-3.5" /> Predictor
           </TabsTrigger>
-          <TabsTrigger value="methodology" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <Database className="h-4 w-4" />
-            <span className="hidden sm:inline">Data</span>
+          <TabsTrigger value="breakdown" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <PieChart className="h-3.5 w-3.5" /> Score Breakdown
           </TabsTrigger>
-          <TabsTrigger value="analysis" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Analysis</span>
+          <TabsTrigger value="analysis" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <BarChart3 className="h-3.5 w-3.5" /> Competition & Gap
           </TabsTrigger>
-          <TabsTrigger value="breakdown" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <PieChart className="h-4 w-4" />
-            <span className="hidden sm:inline">Breakdown</span>
+          <TabsTrigger value="methodology" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <Database className="h-3.5 w-3.5" /> Historical Benchmarks
           </TabsTrigger>
-          <TabsTrigger value="progress" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <LineChartIcon className="h-4 w-4" />
-            <span className="hidden sm:inline">History</span>
+          <TabsTrigger value="progress" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <LineChartIcon className="h-3.5 w-3.5" /> Saved History
           </TabsTrigger>
-          <TabsTrigger value="disclaimer" className="flex-1 min-w-[100px] flex items-center justify-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm py-1.5">
-            <Shield className="h-4 w-4" />
-            <span className="hidden sm:inline">Info</span>
+          <TabsTrigger value="disclaimer" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
+            <Shield className="h-3.5 w-3.5" /> Policy Notes
           </TabsTrigger>
         </TabsList>
 
+        {/* Tab 1: Predictor Main */}
         <TabsContent value="predictor" className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-3">
-            {/* Input Form */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Live Calculator Card */}
-              <Card className="border-2 border-primary/20">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    Live Calculator
-                    <Badge variant="secondary" className="ml-2 text-xs">Auto-updates</Badge>
-                  </CardTitle>
+            {/* Input Form Column */}
+            <div className="lg:col-span-2 space-y-5">
+              <Card className="border border-border bg-card shadow-xs">
+                <CardHeader className="pb-3 border-b border-border/60">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-sm font-bold flex items-center gap-2">
+                      <Calculator className="h-4 w-4 text-primary" />
+                      Candidate Score Inputs
+                    </CardTitle>
+                    <Badge variant="secondary" className="font-mono text-[10px]">
+                      50:50 WEIGHTAGE
+                    </Badge>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* KCET Input */}
-                    <div className="space-y-3">
-                      <Label className="text-base font-medium">KCET PCM Score</Label>
-                      <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
-                        <div className="text-4xl font-bold text-primary">{kcetMarks}</div>
-                        <div className="text-sm text-muted-foreground">out of 180 ({((kcetMarks / 180) * 100).toFixed(1)}%)</div>
+                <CardContent className="space-y-6 pt-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {/* KCET Marks Input */}
+                    <div className="space-y-2.5 p-4 rounded-md border border-border bg-muted/20">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-semibold text-foreground">KCET Exam Score</Label>
+                        <span className="text-xs font-mono font-bold text-primary">
+                          {((kcetMarks / 180) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <Input
+                          type="number"
+                          min="0"
+                          max="180"
+                          value={kcetMarks}
+                          onChange={(e) => setKcetMarks(Math.min(180, Math.max(0, Number(e.target.value))))}
+                          className="font-mono text-base font-bold pr-14 h-10"
+                          placeholder="Marks"
+                        />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground pointer-events-none">
+                          / 180
+                        </span>
                       </div>
                       <input
                         type="range"
@@ -664,57 +474,50 @@ const RankPredictor = () => {
                         max="180"
                         value={kcetMarks}
                         onChange={(e) => setKcetMarks(Number(e.target.value))}
-                        className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
+                        className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                       />
-                      <Input
-                        type="number"
-                        min="0"
-                        max="180"
-                        value={kcetMarks}
-                        onChange={(e) => setKcetMarks(Math.min(180, Math.max(0, Number(e.target.value))))}
-                        className="text-center font-mono"
-                        placeholder="Enter exact marks"
-                      />
+                      <p className="text-[11px] text-muted-foreground">Physics (60) + Chemistry (60) + Math (60)</p>
                     </div>
 
-                    {/* PUC Input */}
-                    <div className="space-y-3">
+                    {/* Board PCM Input */}
+                    <div className="space-y-2.5 p-4 rounded-md border border-border bg-muted/20">
                       <div className="flex items-center justify-between">
-                        <Label className="text-base font-medium">PUC PCM Board Marks</Label>
+                        <Label className="text-xs font-semibold text-foreground">12th / PUC PCM Board</Label>
                         <button
                           type="button"
                           onClick={() => {
                             if (!boardMarksMode) {
-                              // Switching to total marks mode — initialize from current percentage
                               setBoardMarksTotal(Math.round(pucPercentage * 3))
                             } else {
-                              // Switching back to percentage — sync from total
                               setPucPercentage(Math.round((boardMarksTotal / 300) * 100))
                             }
                             setBoardMarksMode(!boardMarksMode)
                           }}
-                          className="relative inline-flex h-6 w-[7.5rem] items-center rounded-full border border-white/10 bg-muted/50 p-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                          className="text-[10px] font-mono font-semibold text-primary hover:underline"
                         >
-                          <span
-                            className={`absolute left-0.5 flex h-5 w-[3.5rem] items-center justify-center rounded-full text-[10px] font-semibold transition-all duration-300 ease-in-out ${
-                              boardMarksMode
-                                ? "translate-x-[3.75rem] bg-primary text-primary-foreground shadow-lg"
-                                : "translate-x-0 bg-primary text-primary-foreground shadow-lg"
-                            }`}
-                          >
-                            {boardMarksMode ? "Total" : "%"}
-                          </span>
-                          <span className={`absolute left-2 text-[10px] font-medium transition-opacity duration-200 ${boardMarksMode ? "opacity-50" : "opacity-0"}`}>%</span>
-                          <span className={`absolute right-2 text-[10px] font-medium transition-opacity duration-200 ${boardMarksMode ? "opacity-0" : "opacity-50"}`}>Total</span>
+                          {boardMarksMode ? "Switch to %" : "Enter Marks (/ 300)"}
                         </button>
                       </div>
 
                       {boardMarksMode ? (
-                        /* ─── Total Marks Mode ─── */
                         <>
-                          <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
-                            <div className="text-4xl font-bold text-primary">{boardMarksTotal}</div>
-                            <div className="text-sm text-muted-foreground">out of 300 ({((boardMarksTotal / 300) * 100).toFixed(1)}%)</div>
+                          <div className="relative">
+                            <Input
+                              type="number"
+                              min="0"
+                              max="300"
+                              value={boardMarksTotal}
+                              onChange={(e) => {
+                                const total = Math.min(300, Math.max(0, Number(e.target.value)))
+                                setBoardMarksTotal(total)
+                                setPucPercentage(Number(((total / 300) * 100).toFixed(2)))
+                              }}
+                              className="font-mono text-base font-bold pr-14 h-10"
+                              placeholder="Total Marks"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground pointer-events-none">
+                              / 300
+                            </span>
                           </div>
                           <input
                             type="range"
@@ -724,30 +527,27 @@ const RankPredictor = () => {
                             onChange={(e) => {
                               const total = Number(e.target.value)
                               setBoardMarksTotal(total)
-                              setPucPercentage(Math.round((total / 300) * 100))
+                              setPucPercentage(Number(((total / 300) * 100).toFixed(2)))
                             }}
-                            className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
-                          />
-                          <Input
-                            type="number"
-                            min="0"
-                            max="300"
-                            value={boardMarksTotal}
-                            onChange={(e) => {
-                              const total = Math.min(300, Math.max(0, Number(e.target.value)))
-                              setBoardMarksTotal(total)
-                              setPucPercentage(Math.round((total / 300) * 100))
-                            }}
-                            className="text-center font-mono"
-                            placeholder="Enter PCM total marks"
+                            className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                           />
                         </>
                       ) : (
-                        /* ─── Percentage Mode ─── */
                         <>
-                          <div className="border-2 rounded-xl p-4 text-center bg-gradient-to-br from-background to-muted/30 transition-all hover:border-primary/50">
-                            <div className="text-4xl font-bold text-primary">{pucPercentage}%</div>
-                            <div className="text-sm text-muted-foreground">Board Marks (PCM)</div>
+                          <div className="relative">
+                            <Input
+                              type="number"
+                              min="0"
+                              max="100"
+                              step="0.1"
+                              value={pucPercentage}
+                              onChange={(e) => setPucPercentage(Math.min(100, Math.max(0, Number(e.target.value))))}
+                              className="font-mono text-base font-bold pr-10 h-10"
+                              placeholder="Percentage"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground pointer-events-none">
+                              %
+                            </span>
                           </div>
                           <input
                             type="range"
@@ -755,300 +555,214 @@ const RankPredictor = () => {
                             max="100"
                             value={pucPercentage}
                             onChange={(e) => setPucPercentage(Number(e.target.value))}
-                            className="w-full h-3 bg-gradient-to-r from-red-200 via-yellow-200 to-green-200 rounded-full appearance-none cursor-pointer accent-primary"
-                          />
-                          <Input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={pucPercentage}
-                            onChange={(e) => setPucPercentage(Math.min(100, Math.max(0, Number(e.target.value))))}
-                            className="text-center font-mono"
-                            placeholder="Enter exact percentage"
+                            className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
                           />
                         </>
                       )}
+                      <p className="text-[11px] text-muted-foreground">Physics, Chemistry, and Mathematics aggregate</p>
                     </div>
                   </div>
 
-                  {/* Formula Display */}
-                  <div className="p-4 rounded-lg bg-muted/50 border">
-                    <div className="text-sm text-muted-foreground mb-2">Official KEA Formula:</div>
-                    <div className="font-mono text-sm">
-                      Composite = (KCET/180 × 50) + (PUC% × 0.5) = <span className="font-bold text-primary">{prediction?.composite.toFixed(2) || '--'}%</span>
-                    </div>
+                  {/* Normalization Math Formula Bar */}
+                  <div className="p-3 rounded-md bg-muted/40 border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs gap-2">
+                    <span className="text-muted-foreground">
+                      Formula: <code className="font-mono text-foreground">({kcetMarks}/180 Ã— 50) + ({pucPercentage}% Ã— 0.5)</code>
+                    </span>
+                    <span className="font-semibold text-foreground">
+                      Composite Aggregate: <strong className="font-mono text-primary text-sm">{prediction ? `${prediction.composite.toFixed(2)}%` : '--'}</strong>
+                    </span>
                   </div>
-
-                  {/* Confidence Gauge */}
-                  {prediction && (
-                    <div className="space-y-3 p-4 rounded-lg bg-gradient-to-r from-primary/5 to-indigo-500/5 border border-primary/20">
-                      <div className="flex items-center gap-2 text-sm font-medium">
-                        <Target className="h-4 w-4 text-primary" />
-                        Rank Confidence Range
-                      </div>
-                      <ConfidenceGauge low={prediction.low} medium={prediction.medium} high={prediction.high} />
-                    </div>
-                  )}
                 </CardContent>
               </Card>
 
+              {/* Action Buttons */}
+              {prediction && (
+                <div className="flex flex-wrap gap-2.5">
+                  <Button onClick={findColleges} className="flex-1 min-w-[200px] h-9 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs">
+                    <Search className="h-3.5 w-3.5 mr-1.5" /> Find Matching Colleges for Rank {prediction.rank2026.toLocaleString()}
+                  </Button>
+                  <Button onClick={downloadPNG} variant="outline" className="h-9 text-xs border-border">
+                    <Download className="h-3.5 w-3.5 mr-1.5" /> Export PNG Card
+                  </Button>
+                  <Button onClick={saveResult} variant="outline" className="h-9 text-xs border-border">
+                    Save to History
+                  </Button>
+                  <Button onClick={shareResult} variant="outline" className="h-9 text-xs border-border">
+                    <Share2 className="h-3.5 w-3.5 mr-1.5" /> Share
+                  </Button>
+                </div>
+              )}
             </div>
 
-            {/* Results Card */}
-            <div className="lg:sticky lg:top-4 space-y-4">
-              {/* 2025 Historical Rank Card */}
-              <Card className="border-2 border-amber-500/20 bg-card">
-                <CardContent className="p-4 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/30">
-                      2025 Data
+            {/* Prediction Output Column */}
+            <div className="space-y-4">
+              <Card className="border border-border bg-card shadow-xs">
+                <CardHeader className="pb-3 border-b border-border/60">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                      ESTIMATED OUTPUT
+                    </span>
+                    <Badge variant="secondary" className="font-mono text-[10px] bg-primary/10 text-primary border-primary/20">
+                      2026 PROJECTION
                     </Badge>
-                    <h3 className="text-sm font-medium text-muted-foreground">Your 2025 Rank</h3>
                   </div>
-                  <div className="py-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
-                    <div className="text-3xl font-bold tabular-nums tracking-tight text-amber-600">
-                      {prediction ? animatedRank2025.toLocaleString() : '---'}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">Based on 2025 calibrated data</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* 2026 Predicted Rank Card */}
-              <Card className="border-2 border-primary/20 bg-card">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Badge className="bg-primary/10 text-primary border-primary/30">
-                      2026 Predicted
-                    </Badge>
-                    <Sparkles className="h-4 w-[6px] text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-foreground">Your 2026 Predicted Rank</h3>
-
-                  {/* Main rank display */}
-                  <div className="py-6 mb-4 rounded-xl bg-gradient-to-br from-primary/10 to-indigo-500/10 border border-primary/20">
-                    <div className="text-5xl font-bold mb-1 tabular-nums tracking-tight text-primary">
-                      {prediction ? animatedRank2026.toLocaleString() : '---'}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Predicted Rank for KCET 2026</div>
-                    {prediction && (
-                      <div className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/10 text-red-600 text-xs">
-                        <TrendingUp className="h-3 w-3" />
-                        Delta {prediction.yearOverYearChange > 0 ? "+" : ""}{prediction.yearOverYearChange}% vs 2025
-                      </div>
-                    )}
-                  </div>
-
-                  {prediction && (
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between py-2 border-b border-border">
-                        <span className="text-muted-foreground">2025 Range</span>
-                        <span className="font-semibold text-foreground">{prediction.low.toLocaleString()} – {prediction.high.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-border">
-                        <span className="text-muted-foreground">Percentile</span>
-                        <span className="font-semibold text-foreground">{prediction.percentile || calculatePercentile(prediction.medium)}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-border">
-                        <span className="text-muted-foreground">Composite</span>
-                        <span className="font-semibold text-foreground">{prediction.composite.toFixed(1)}%</span>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Category</span>
-                        <Badge variant="outline" className="font-semibold">
-                          {prediction.rankBand}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-4">
-                        2026 estimate uses a difficulty normalization coefficient with participation drift calibration.
-                      </p>
-                    </div>
-                  )}
-
-                  {!prediction && (
-                    <p className="text-sm text-muted-foreground mt-4">Adjust the sliders to see your predicted rank</p>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Quick Actions - Full Width at Bottom */}
-          {prediction && (
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <Button
-                onClick={findColleges}
-                className="flex-1 h-12 text-base bg-gradient-to-r from-primary to-indigo-500 hover:from-primary/90 hover:to-indigo-500/90"
-              >
-                <Search className="h-5 w-5 mr-2" />
-                Find Colleges for Rank {prediction.rank2026.toLocaleString()}
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-              <div className="flex gap-3 sm:w-auto w-full">
-                <Button onClick={shareResult} className="flex-1 sm:flex-none h-12 bg-green-600 hover:bg-green-700 text-white border-0 shadow-lg shadow-green-500/20">
-                  <Share2 className="h-5 w-5 mr-2" />
-                  Share Result
-                </Button>
-                <Button onClick={saveResult} variant="outline" className="flex-1 sm:flex-none h-12">
-                  Save Result
-                </Button>
-              </div>
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="breakdown" className="space-y-6">
-          {prediction ? (
-            <>
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Score Breakdown</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>KCET PCM</span>
-                        <span className="font-medium">{kcetMarks}/180 ({((kcetMarks / 180) * 100).toFixed(1)}%)</span>
-                      </div>
-                      <Progress value={(kcetMarks / 180) * 100} className="h-3" />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>PUC PCM</span>
-                        <span className="font-medium">{pucPercentage}%</span>
-                      </div>
-                      <Progress value={pucPercentage} className="h-3" />
-                    </div>
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Composite Score</span>
-                        <span className="font-medium text-primary">{prediction.composite.toFixed(1)}%</span>
-                      </div>
-                      <Progress value={prediction.composite} className="h-3" />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Rank Insights</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <p className="text-3xl font-bold text-primary">{prediction.medium.toLocaleString()}</p>
-                      <p className="text-sm text-muted-foreground">Predicted Rank</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm">Range: {prediction.low.toLocaleString()}–{prediction.high.toLocaleString()}</p>
-                      <p className="text-sm">Percentile: {calculatePercentile(prediction.medium)}</p>
-                    </div>
-                    <div className="p-3 bg-gradient-to-r from-primary/10 to-indigo-500/10 border border-primary/20 rounded-lg">
-                      <p className="text-sm">{getRankAnalysis(prediction.medium)}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    College Suggestions
-                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {['general', 'obc', 'sc', 'st'].map((cat) => {
+                <CardContent className="p-5 space-y-4">
+                  {prediction ? (
+                    <>
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Estimated Rank Band</span>
+                        <div className="text-3xl font-bold font-mono tracking-tight text-foreground">
+                          {prediction.low.toLocaleString()} <span className="text-muted-foreground font-normal text-xl">â€“</span> {prediction.high.toLocaleString()}
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-md bg-muted/40 border border-border grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">Median Estimate</span>
+                          <span className="font-mono font-bold text-foreground text-sm">~{animatedRank2026.toLocaleString()}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground block text-[11px]">2025 Baseline</span>
+                          <span className="font-mono font-semibold text-muted-foreground text-sm">~{animatedRank2025.toLocaleString()}</span>
+                        </div>
+                        <div className="col-span-2 pt-2 border-t border-border/60 flex items-center justify-between text-[11px]">
+                          <span className="text-muted-foreground">Expected Percentile</span>
+                          <span className="font-mono font-bold text-emerald-500">{calculatePercentile(prediction.medium)}</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 text-xs text-muted-foreground">
+                        <div className="flex justify-between py-1 border-b border-border/40">
+                          <span>Competition Density</span>
+                          <span className="font-semibold text-foreground">{prediction.competitionLevel || 'Standard'}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/40">
+                          <span>Target Range Band</span>
+                          <span className="font-semibold text-foreground">{prediction.rankBand}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="py-8 text-center text-xs text-muted-foreground">
+                      Enter valid KCET and Board scores to compute projection.
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Quick College Suggestion Preview */}
+              {prediction && (
+                <Card className="border border-border bg-card shadow-xs">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-xs font-bold flex items-center gap-1.5">
+                      <Target className="h-3.5 w-3.5 text-primary" /> Top Qualifying Matches (GM)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 space-y-2">
+                    {['general', 'obc'].map((cat) => {
                       const college = getCollegeSuggestions(prediction.medium, cat)
                       return (
-                        <div key={cat} className="p-4 rounded-lg border bg-gradient-to-br from-background to-muted/30 hover:shadow-md transition-shadow">
-                          <Badge variant="secondary" className="mb-2">
-                            {cat.toUpperCase()}
-                          </Badge>
-                          <h4 className="font-semibold">{college.name}</h4>
-                          <p className="text-sm text-muted-foreground">{college.branch}</p>
+                        <div key={cat} className="p-2.5 rounded border border-border/80 bg-muted/20 text-xs">
+                          <div className="font-semibold text-foreground truncate">{college.name}</div>
+                          <div className="text-muted-foreground text-[11px] truncate">{college.branch}</div>
                         </div>
                       )
                     })}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Tab 2: Score Breakdown */}
+        <TabsContent value="breakdown" className="space-y-6">
+          {prediction ? (
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className="border border-border bg-card">
+                <CardHeader>
+                  <CardTitle className="text-sm font-bold">Component Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">KCET Exam (50% Weightage)</span>
+                      <span className="font-mono font-bold">{kcetMarks}/180 ({((kcetMarks / 180) * 100).toFixed(1)}%)</span>
+                    </div>
+                    <Progress value={(kcetMarks / 180) * 100} className="h-2" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Board PCM (50% Weightage)</span>
+                      <span className="font-mono font-bold">{pucPercentage}%</span>
+                    </div>
+                    <Progress value={pucPercentage} className="h-2" />
+                  </div>
+                  <div className="space-y-1.5 pt-2 border-t border-border/60">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold">Normalized Composite Score</span>
+                      <span className="font-mono font-bold text-primary">{prediction.composite.toFixed(2)}%</span>
+                    </div>
+                    <Progress value={prediction.composite} className="h-2" />
                   </div>
                 </CardContent>
               </Card>
 
-              <div className="flex gap-4 justify-center flex-wrap">
-                <Button onClick={shareResult} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white border-0 shadow-lg shadow-green-500/20">
-                  <Share2 className="h-4 w-4" />
-                  Share Result
-                </Button>
-                <Button onClick={downloadPNG} variant="outline" className="flex items-center gap-2">
-                  <Download className="h-4 w-4" />
-                  Download Rank Card
-                </Button>
-                <Button onClick={findColleges} className="flex items-center gap-2">
-                  <Search className="h-4 w-4" />
-                  Find Colleges
-                </Button>
-              </div>
-
-              <AdUnit className="my-6" />
-            </>
+              <Card className="border border-border bg-card">
+                <CardHeader>
+                  <CardTitle className="text-sm font-bold">Percentile & Position Analysis</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-xs">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {getRankAnalysis(prediction.medium)}
+                  </p>
+                  <div className="p-3 rounded bg-muted/40 border border-border space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Candidate Percentile:</span>
+                      <span className="font-mono font-bold text-foreground">{calculatePercentile(prediction.medium)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Confidence Range:</span>
+                      <span className="font-mono font-semibold text-foreground">{prediction.low.toLocaleString()} â€“ {prediction.high.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           ) : (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <Calculator className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Adjust inputs to see breakdown</h3>
-                <p className="text-muted-foreground">Move the sliders on the Predictor tab</p>
-              </CardContent>
+            <Card className="p-8 text-center text-xs text-muted-foreground">
+              Adjust score inputs to view breakdown metrics.
             </Card>
           )}
         </TabsContent>
 
+        {/* Tab 3: Competition & Gap */}
         <TabsContent value="analysis" className="space-y-6">
-          {prediction ? (
-            <>
-              <Card>
+          {prediction && (
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className="border border-border bg-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Rank Gap Analysis
+                  <CardTitle className="text-sm font-bold flex items-center gap-2">
+                    <BarChart3 className="h-4 w-4 text-primary" /> Candidate Density by Score Band
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {(() => {
                     const analysis = getRankGapAnalysis(prediction.composite)
                     return (
-                      <div className="grid gap-4 md:grid-cols-2">
-                        <div className="space-y-3">
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Rank Band:</span>
-                            <Badge variant="outline">{prediction.rankBand}</Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Competition Level:</span>
-                            <Badge variant={prediction.competitionLevel?.includes('High') ? 'destructive' : 'secondary'}>
-                              {prediction.competitionLevel}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Rank Range:</span>
-                            <span className="font-medium">{analysis.rankGap}</span>
-                          </div>
+                      <div className="space-y-2.5 text-xs">
+                        <div className="flex justify-between py-1 border-b border-border/40">
+                          <span className="text-muted-foreground">Score Band</span>
+                          <span className="font-mono font-semibold">{prediction.rankBand}</span>
                         </div>
-                        <div className="space-y-3">
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Candidates per 1%:</span>
-                            <span className="font-medium">{analysis.candidatesPerPercent}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Improvement Potential:</span>
-                            <Badge variant={analysis.improvementPotential === 'High' ? 'default' : 'outline'}>
-                              {analysis.improvementPotential}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Percentile:</span>
-                            <span className="font-medium">{prediction.percentile}</span>
-                          </div>
+                        <div className="flex justify-between py-1 border-b border-border/40">
+                          <span className="text-muted-foreground">Competitors per 1% Score</span>
+                          <span className="font-mono font-bold text-foreground">{analysis.candidatesPerPercent} candidates</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/40">
+                          <span className="text-muted-foreground">Rank Movement Sensitivity</span>
+                          <Badge variant="secondary" className="font-mono text-[10px]">{analysis.improvementPotential}</Badge>
                         </div>
                       </div>
                     )
@@ -1056,343 +770,82 @@ const RankPredictor = () => {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border border-border bg-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    KCET 2025 Cutoff Estimates
+                  <CardTitle className="text-sm font-bold flex items-center gap-2">
+                    <Target className="h-4 w-4 text-primary" /> Benchmark Aggregate Milestones
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {getCutoffEstimates().map((cutoff, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
-                        <span className="font-medium">{cutoff.targetRank}</span>
-                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                          {cutoff.expectedAggregate}
-                        </Badge>
+                <CardContent className="p-0">
+                  <div className="divide-y divide-border/50 text-xs">
+                    {getCutoffEstimates().slice(0, 5).map((cutoff, idx) => (
+                      <div key={idx} className="flex items-center justify-between px-4 py-2.5">
+                        <span className="font-medium text-foreground">{cutoff.targetRank}</span>
+                        <span className="font-mono font-semibold text-primary">{cutoff.expectedAggregate}</span>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Detailed Analysis
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="p-4 rounded-lg bg-gradient-to-r from-primary/10 to-indigo-500/10 border border-primary/20">
-                      <h4 className="font-semibold mb-2">Rank Analysis</h4>
-                      <p className="text-sm">{getRankAnalysis(prediction.medium)}</p>
-                    </div>
-
-                    <div className="p-4 rounded-lg bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20">
-                      <h4 className="font-semibold text-green-700 dark:text-green-400 mb-2">College Suggestions</h4>
-                      <p className="text-sm">
-                        Based on your rank of {prediction.medium.toLocaleString()},
-                        consider colleges like {getCollegeSuggestions(prediction.medium, 'general').name}
-                        for branches in {getCollegeSuggestions(prediction.medium, 'general').branch}.
-                      </p>
-                    </div>
-
-                    <Button onClick={findColleges} className="w-full" variant="outline">
-                      <Search className="h-4 w-4 mr-2" />
-                      Explore All Matching Colleges
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          ) : (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <BarChart3 className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Analysis Available</h3>
-                <p className="text-muted-foreground text-center">
-                  Adjust inputs on the Predictor tab to see analysis.
-                </p>
-              </CardContent>
-            </Card>
+            </div>
           )}
         </TabsContent>
 
-        <TabsContent value="methodology" className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="text-center space-y-2 mb-8 mt-4">
-            <h2 className="text-2xl font-bold tracking-tight">Prediction Methodology & Data</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Our predictor strictly models actual KCET 2025 outcome distribution to provide highly accurate 2026 estimates based on historical competition drop-off rates and category shifts.
-            </p>
-          </div>
-
-          <div className="mx-auto max-w-3xl">
-            <div className="p-4 rounded-xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-indigo-950/20 shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
-              <div className="flex items-start gap-3 sm:gap-4 flex-col sm:flex-row">
-                <div className="p-2 sm:p-2.5 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg shrink-0 mt-1 sm:mt-0">
-                  <Database className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
-                </div>
-                <div className="flex-1 space-y-2">
-                  <h3 className="font-semibold text-indigo-900 dark:text-indigo-200 text-sm sm:text-base leading-tight">Data Sources & Credits</h3>
-                  <div className="text-xs sm:text-sm text-indigo-800/80 dark:text-indigo-300 space-y-2">
-                    <p className="leading-relaxed">
-                      All datasets, trend points, and aggregate curves used across this predictor are carefully curated from community-driven analysis.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-2 mt-2">
-                      <a
-                        href="https://www.reddit.com/r/kcet/comments/1kug2p6/kcet_2025_complete_analysis/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center text-indigo-700 dark:text-indigo-400 font-medium hover:underline hover:text-indigo-600 transition-colors w-full sm:w-auto"
-                      >
-                        <FileText className="h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1" />
-                        Original Reddit Analysis Post
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-indigo-200 dark:border-indigo-800/50 flex flex-wrap gap-x-6 gap-y-2 text-xs sm:text-sm">
-                <span className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 shrink-0">
-                  Special thanks to
-                  <a
-                    href="https://reddit.com/u/Ok_Tackle1731"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 hover:underline"
-                  >
-                    <span className="w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-1 pb-[1px] text-[10px] shrink-0">u/</span>
-                    Ok_Tackle1731
-                  </a>
-                </span>
-                <span className="hidden sm:inline-block text-slate-300 dark:text-slate-600 shrink-0">•</span>
-                <span className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 shrink-0">
-                  Raw data provided by
-                  <a
-                    href="https://reddit.com/u/Upbeat-Sign-7525"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center font-medium text-orange-600 dark:text-orange-400 hover:text-orange-500 hover:underline"
-                  >
-                    <span className="w-4 h-4 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-1 pb-[1px] text-[10px] shrink-0">u/</span>
-                    Upbeat-Sign-7525
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Graphs Section */}
-          <Card className="border-2 border-primary/10 overflow-hidden">
-            <CardHeader className="bg-muted/30 border-b border-border/50">
-              <CardTitle className="flex items-center gap-2 text-primary">
-                <LineChartIcon className="h-5 w-5" />
-                Aggregate Percentage vs Rank Curve
+        {/* Tab 4: Historical Benchmarks */}
+        <TabsContent value="methodology" className="space-y-6">
+          <Card className="border border-border bg-card">
+            <CardHeader className="pb-3 border-b border-border/60">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <LineChartIcon className="h-4 w-4 text-primary" /> Aggregate Score vs Rank Curve (Historical KEA)
               </CardTitle>
+              <CardDescription className="text-xs">
+                Derived from verified candidate records across Karnataka CET 2023â€“2025.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
-              <Tabs defaultValue="250k" className="space-y-6">
-                <div className="flex justify-center">
-                  <TabsList className="grid grid-cols-3 w-full max-w-md bg-muted/50">
-                    <TabsTrigger value="250k" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">All Candidates</TabsTrigger>
-                    <TabsTrigger value="100k" className="data-[state=active]:bg-indigo-500 data-[state=active]:text-white">Top 1 Lakh</TabsTrigger>
-                    <TabsTrigger value="50k" className="data-[state=active]:bg-teal-500 data-[state=active]:text-white">Top 50,000</TabsTrigger>
-                  </TabsList>
-                </div>
-
-                <TabsContent value="250k">
-                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={kcet2025RankTable} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
-                        <XAxis
-                          dataKey="score"
-                          type="number"
-                          domain={['dataMin - 2', 'dataMax + 2']}
-                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
-                          tickFormatter={(v) => `${v}%`}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <YAxis
-                          dataKey="rank"
-                          domain={[0, 280000]}
-                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
-                          reversed={true}
-                          tickFormatter={(v) => v.toLocaleString()}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <RechartsTooltip
-                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
-                          labelFormatter={(label) => `Aggregate: ${label}%`}
-                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
-                        />
-                        <Line type="monotone" dataKey="rank" stroke="var(--theme-primary, #f59e0b)" strokeWidth={3} dot={{ r: 2, fill: "var(--theme-primary, #f59e0b)", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1500} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="100k">
-                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={kcet2025RankTable.filter(d => d.rank <= 100000)} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
-                        <XAxis
-                          dataKey="score"
-                          type="number"
-                          domain={['dataMin - 1', 'dataMax + 1']}
-                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
-                          tickFormatter={(v) => `${v}%`}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <YAxis
-                          dataKey="rank"
-                          domain={[0, 100000]}
-                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
-                          reversed={true}
-                          tickFormatter={(v) => v.toLocaleString()}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <RechartsTooltip
-                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
-                          labelFormatter={(label) => `Aggregate: ${label}%`}
-                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
-                        />
-                        <Line type="monotone" dataKey="rank" stroke="#6366f1" strokeWidth={3} dot={{ r: 2.5, fill: "#6366f1", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1000} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="50k">
-                  <div className="h-[400px] w-full bg-card rounded-xl border p-4 shadow-inner">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={kcet2025RankTable.filter(d => d.rank <= 50000)} margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
-                        <XAxis
-                          dataKey="score"
-                          type="number"
-                          domain={['dataMin - 1', 'dataMax + 1']}
-                          label={{ value: 'Aggregate Percentage', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.7 }}
-                          tickFormatter={(v) => `${v}%`}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <YAxis
-                          dataKey="rank"
-                          domain={[0, 50000]}
-                          label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.7 }}
-                          reversed={true}
-                          tickFormatter={(v) => v.toLocaleString()}
-                          tick={{ fill: 'currentColor', opacity: 0.7 }}
-                        />
-                        <RechartsTooltip
-                          formatter={(value: any) => [value.toLocaleString(), "Rank"]}
-                          labelFormatter={(label) => `Aggregate: ${label}%`}
-                          contentStyle={{ borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--background)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}
-                        />
-                        <Line type="monotone" dataKey="rank" stroke="#14b8a6" strokeWidth={3} dot={{ r: 3, fill: "#14b8a6", strokeWidth: 0 }} activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2 }} animationDuration={1000} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </TabsContent>
-              </Tabs>
+            <CardContent className="pt-4">
+              <div className="h-[320px] w-full bg-background rounded border border-border p-3">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={kcet2025RankTable.filter(d => d.rank <= 100000)} margin={{ top: 10, right: 20, bottom: 20, left: 10 }}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} vertical={false} />
+                    <XAxis
+                      dataKey="score"
+                      type="number"
+                      domain={['dataMin - 1', 'dataMax + 1']}
+                      label={{ value: 'Aggregate %', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.6, fontSize: 11 }}
+                      tickFormatter={(v) => `${v}%`}
+                      tick={{ fill: 'currentColor', opacity: 0.6, fontSize: 10 }}
+                    />
+                    <YAxis
+                      dataKey="rank"
+                      domain={[0, 100000]}
+                      label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.6, fontSize: 11 }}
+                      reversed={true}
+                      tickFormatter={(v) => v.toLocaleString()}
+                      tick={{ fill: 'currentColor', opacity: 0.6, fontSize: 10 }}
+                    />
+                    <RechartsTooltip
+                      formatter={(value: any) => [value.toLocaleString(), "Expected Rank"]}
+                      labelFormatter={(label) => `Aggregate: ${label}%`}
+                      contentStyle={{ borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--card)', color: 'var(--foreground)', fontSize: '12px' }}
+                    />
+                    <Line type="monotone" dataKey="rank" stroke="#2563eb" strokeWidth={2} dot={{ r: 1.5, fill: "#2563eb" }} activeDot={{ r: 5 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Tables Section */}
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3 border-b border-border/50">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <div className="p-2 bg-indigo-500/10 rounded-lg">
-                    <Target className="h-4 w-4 text-indigo-500" />
-                  </div>
-                  Target Rank Estimates
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-muted/50">
-                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Target Rank</th>
-                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Expected Aggregate</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/50">
-                      {getCutoffEstimates().map((row, i) => (
-                        <tr key={i} className="transition-colors hover:bg-muted/30">
-                          <td className="p-3.5 font-medium">{row.targetRank}</td>
-                          <td className="p-3.5">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
-                              {row.expectedAggregate}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3 border-b border-border/50">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <div className="p-2 bg-emerald-500/10 rounded-lg">
-                    <Table className="h-4 w-4 text-emerald-500" />
-                  </div>
-                  Rank Gap by Aggregate
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-muted/50">
-                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Band</th>
-                        <th className="text-left font-medium p-3.5 text-muted-foreground border-b border-border/50">Rank Range</th>
-                        <th className="text-right font-medium p-3.5 text-muted-foreground border-b border-border/50">Drop / 1%</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/50">
-                      {rankGapAnalysis.map((row, i) => (
-                        <tr key={i} className="transition-colors hover:bg-muted/30">
-                          <td className="p-3.5 font-medium whitespace-nowrap">{row.range}</td>
-                          <td className="p-3.5 text-muted-foreground whitespace-nowrap">{row.rankRange}</td>
-                          <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400 font-medium">
-                            {row.candidatesPer1Percent}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="flex justify-center pb-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-sm font-medium">
-              <Info className="h-4 w-4" />
-              Data calibrated exclusively for KCET predictions tracking ~2.59L aspirants
-            </div>
-          </div>
         </TabsContent>
 
-        <TabsContent value="progress" className="space-y-6">
+        {/* Tab 5: Saved History */}
+        <TabsContent value="progress" className="space-y-4">
           {savedResults.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Recent Predictions</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Stored Calculations (This Browser)</h3>
                 <Button
                   variant="outline"
                   size="sm"
+                  className="text-xs h-7"
                   onClick={() => {
                     localStorage.removeItem('kcetResults')
                     setSavedResults([])
@@ -1402,78 +855,47 @@ const RankPredictor = () => {
                   Clear History
                 </Button>
               </div>
-              {savedResults.slice().reverse().map((result, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="font-semibold text-lg">Rank: {result.rank.toLocaleString()}</p>
-                        <p className="text-sm text-muted-foreground">
-                          KCET: {result.cet}/180 | PUC: {result.puc}%
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Range: {result.range} | Percentile: {result.percentile}
-                        </p>
-                      </div>
-                      <Badge variant="outline">
-                        {new Date(result.timestamp).toLocaleDateString()}
-                      </Badge>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {savedResults.slice().reverse().map((result, index) => (
+                  <div key={index} className="p-3 rounded-md border border-border bg-card text-xs flex justify-between items-center shadow-xs">
+                    <div>
+                      <div className="font-mono font-bold text-sm text-foreground">Rank ~{result.rank.toLocaleString()}</div>
+                      <div className="text-muted-foreground text-[11px]">KCET: {result.cet}/180 â€¢ Board: {result.puc}%</div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <Badge variant="outline" className="font-mono text-[10px]">
+                      {new Date(result.timestamp).toLocaleDateString()}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <LineChartIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Predictions Saved</h3>
-                <p className="text-muted-foreground">Click "Save Result" to track your predictions!</p>
-              </CardContent>
+            <Card className="p-8 text-center text-xs text-muted-foreground">
+              No saved calculations on this device yet. Click "Save to History" on any prediction.
             </Card>
           )}
         </TabsContent>
 
-        <TabsContent value="disclaimer" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Important Disclaimer
+        {/* Tab 6: Policy & Disclaimer Notes */}
+        <TabsContent value="disclaimer" className="space-y-4">
+          <Card className="border border-border bg-card">
+            <CardHeader className="pb-3 border-b border-border/60">
+              <CardTitle className="text-sm font-bold flex items-center gap-2">
+                <Shield className="h-4 w-4 text-primary" /> Official Disclaimer & Policy Notes
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-4 text-sm">
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30">
-                  <Info className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong>Estimate Only:</strong> This tool provides rank predictions based on historical KCET data (2023–2025, ~3.12 lakh candidates). It is not an official KEA result.
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-950/30">
-                  <AlertCircle className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong>Accuracy Limitations:</strong> Predictions may vary due to score normalization, exam difficulty, or KEA policy changes.
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/30">
-                  <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong>Eligibility Restrictions:</strong> Per KEA 2024 rules, IIT/NIT students via JEE are barred from CET counseling.
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/30">
-                  <Shield className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong>Data Privacy:</strong> All inputs are processed locally. No data is stored or shared.
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-950/30">
-                  <Info className="h-5 w-5 text-gray-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <strong>Official Source:</strong> Always verify results at the official KEA website.
-                  </div>
-                </div>
+            <CardContent className="space-y-3 text-xs text-muted-foreground pt-4">
+              <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
+                <strong className="text-foreground block">Independent Statistical Model</strong>
+                <p className="leading-relaxed">
+                  KCET Coded rank projections are mathematical estimates derived from historical KEA cutoff patterns (2023â€“2025). Actual ranks published by Karnataka Examination Authority (cetonline.karnataka.gov.in) depend on overall candidate volume, question paper difficulty variance, and official Board normalization rules.
+                </p>
+              </div>
+              <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
+                <strong className="text-foreground block">Local Processing & Privacy</strong>
+                <p className="leading-relaxed">
+                  All mark calculations occur locally in your browser. No personal identifiable information is collected or shared during calculations.
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -1484,3 +906,4 @@ const RankPredictor = () => {
 }
 
 export default RankPredictor
+

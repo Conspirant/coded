@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ export function CommunityPollWidget({ className = "" }: { className?: string }) 
 
   if (loading) {
     return (
-      <Card className={`glass-strong border-white/10 ${className}`}>
+      <Card className={`glass-strong border-border ${className}`}>
         <CardContent className="p-6 flex items-center justify-center text-muted-foreground min-h-[140px]">
           <Loader2 className="h-5 w-5 animate-spin mr-2" />
           Loading community poll...
@@ -113,7 +113,7 @@ export function CommunityPollWidget({ className = "" }: { className?: string }) 
                 const isUserChoice = opt.id === votedOptionId;
 
                 return (
-                  <div key={opt.id} className="p-3 rounded-xl border border-white/10 bg-background/30 space-y-1.5">
+                  <div key={opt.id} className="p-3 rounded-md border border-border bg-background/30 space-y-1.5">
                     <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
                       <span className="font-medium text-foreground flex items-center gap-1.5 truncate">
                         <span className="truncate">{opt.text}</span>
@@ -138,7 +138,7 @@ export function CommunityPollWidget({ className = "" }: { className?: string }) 
               })}
             </div>
 
-            <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground border-t border-white/5">
+            <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground border-t border-border/60">
               <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5" /> You have voted
               </span>
@@ -156,10 +156,10 @@ export function CommunityPollWidget({ className = "" }: { className?: string }) 
                     key={opt.id}
                     type="button"
                     onClick={() => setSelectedOption(opt.id)}
-                    className={`w-full text-left p-3 rounded-xl border transition-all text-xs sm:text-sm font-medium flex items-center justify-between gap-3 ${
+                    className={`w-full text-left p-3 rounded-md border transition-all text-xs sm:text-sm font-medium flex items-center justify-between gap-3 ${
                       isSelected
                         ? "border-primary bg-primary/15 text-foreground shadow-sm shadow-primary/10"
-                        : "border-white/10 bg-background/40 hover:bg-background/80 hover:border-white/20 text-muted-foreground hover:text-foreground"
+                        : "border-border bg-background/40 hover:bg-background/80 hover:border-white/20 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <span className="leading-snug">{opt.text}</span>
@@ -196,3 +196,4 @@ export function CommunityPollWidget({ className = "" }: { className?: string }) 
     </Card>
   );
 }
+

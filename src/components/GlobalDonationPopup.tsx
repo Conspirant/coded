@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+﻿import { useEffect, useState } from "react"
 import { supabase } from "@/integrations/supabase/client"
 import { Button } from "@/components/ui/button"
 import { X, Heart } from "lucide-react"
@@ -170,10 +170,10 @@ export function GlobalDonationPopup() {
       />
 
       {/* Modal Card */}
-      <div className="relative max-w-md w-full bg-zinc-950 border border-zinc-800 text-zinc-200 rounded-xl shadow-2xl p-6 animate-in zoom-in-95 duration-200">
+      <div className="relative max-w-md w-full bg-card border border-border text-card-foreground rounded-md shadow-2xl p-6 animate-in zoom-in-95 duration-200">
         <button 
           onClick={handleDismiss} 
-          className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-200 transition-colors"
+          className="absolute top-4 right-4 text-muted-foreground hover:text-zinc-200 transition-colors"
         >
           <X className="h-4 w-4" />
         </button>
@@ -184,8 +184,8 @@ export function GlobalDonationPopup() {
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-base font-bold text-white tracking-tight">Support KCET Compass</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed px-1">
+            <h3 className="text-base font-bold text-foreground tracking-tight">Support KCET Compass</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed px-1">
               Maintaining this portal, servers, and database updates is supported entirely by candidate donations. If you have found our predictors, tools, and news updates useful, please consider a small contribution to help keep this service running.
             </p>
           </div>
@@ -194,13 +194,13 @@ export function GlobalDonationPopup() {
             <Button 
               variant="outline" 
               onClick={handleDismiss}
-              className="flex-1 border-zinc-800 bg-transparent text-zinc-400 hover:text-white hover:bg-zinc-900 text-xs font-semibold h-10 rounded-lg"
+              className="flex-1 border-border bg-transparent text-muted-foreground hover:text-foreground hover:bg-zinc-900 text-xs font-semibold h-10 rounded-md"
             >
               Dismiss
             </Button>
             <Button 
               onClick={handleDonate}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold h-10 rounded-lg shadow-lg shadow-indigo-500/10"
+              className="flex-1 bg-primary hover:bg-primary/90 text-foreground text-xs font-semibold h-10 rounded-md shadow-lg shadow-indigo-500/10"
             >
               Support Platform
             </Button>
@@ -210,3 +210,4 @@ export function GlobalDonationPopup() {
     </div>
   )
 }
+
