@@ -652,19 +652,43 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               </button>
             </div>
 
-            {/* Cloud & Forum Sync */}
+            {/* Cloud Pro & Account Sync */}
             <div className="p-3 rounded-md border border-border bg-muted/40 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-primary" />
                   <div>
-                    <h4 className="text-xs font-semibold text-foreground">Community & Forum Profile</h4>
+                    <h4 className="text-xs font-semibold text-foreground">Cloud Account & Sync</h4>
                     <p className="text-[11px] text-muted-foreground">
-                      {user ? `Signed in as ${user.email}` : "Sign in to participate in the Aspirant Forum."}
+                      {user ? `Signed in as ${user.email}` : "Sign in (optional) to use your profile & Pro features across all your devices."}
                     </p>
                   </div>
                 </div>
+                {user && (
+                  <Badge variant="outline" className="text-[9px] font-mono text-emerald-500 border-emerald-500/30">
+                    Synced
+                  </Badge>
+                )}
               </div>
+
+              {unlocked && (
+                <div className="p-2 rounded bg-background border border-border text-[11px] space-y-1">
+                  <div className="flex items-center justify-between font-medium text-foreground">
+                    <span className="flex items-center gap-1 text-amber-500">
+                      <Crown className="h-3 w-3 fill-amber-500" />
+                      {user ? "Pro Synced to Account" : "Pro Active on this Device"}
+                    </span>
+                    <span className="font-mono text-[10px] text-muted-foreground">
+                      {isUnlocked() ? "Unlocked" : ""}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    {user
+                      ? "Your Pro plan is linked to your Google/Email login. Signing in on any phone, tablet, or PC unlocks Pro automatically."
+                      : "Tip: Sign in with Google below to link Pro to your account so you can use it on any device without entering passcodes."}
+                  </p>
+                </div>
+              )}
 
               {user ? (
                 <div className="flex items-center justify-between pt-1">

@@ -191,12 +191,31 @@ export function getSavedAccessCode(): string | null {
   }
 }
 
+export async function syncProStatusToCloud(code?: string) {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return false;
+    const accessCode = code || getSavedAccessCode() || 'CODED-PRO-CLOUD';
+    const { error } = await supabase.from('profiles' as any).upsert({
+      id: user.id,
+      is_pro: true,
+      pro_access_code: accessCode,
+      updated_at: new Date().toISOString()
+    });
+    return !error;
+  } catch (err) {
+    console.error('Error syncing pro status to cloud:', err);
+    return false;
+  }
+}
+
 export function saveAccessCode(code: string) {
   if (!code) return;
   try {
     localStorage.setItem(SAVED_CODE_KEY, code.trim());
     localStorage.setItem(STORAGE_KEY, 'true');
   } catch {}
+  syncProStatusToCloud(code.trim());
   window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { unlocked: true, code } }));
 }
 

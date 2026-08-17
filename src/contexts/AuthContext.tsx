@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { saveAccessCode, unlockGlobally, isUnlocked, getSavedAccessCode, syncProStatusToCloud } from "@/lib/unlock";
 
 export interface UserProfile {
   id: string;
@@ -12,6 +13,8 @@ export interface UserProfile {
   comedk_rank?: number;
   badge?: string;
   is_admin?: boolean;
+  is_pro?: boolean;
+  pro_access_code?: string;
 }
 
 interface AuthContextType {
@@ -42,16 +45,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .maybeSingle();
 
       if (!error && data) {
-        setProfile(data as unknown as UserProfile);
+        const p = data as unknown as UserProfile;
+        setProfile(p);
+
+        // Auto-unlock this device if user's cloud account is Pro
+        if (p.is_pro || p.pro_access_code) {
+          if (p.pro_access_code) {
+            saveAccessCode(p.pro_access_code);
+          } else {
+            unlockGlobally();
+          }
+        } else {
+          // If this device was already unlocked locally, link it to this account
+          const localCode = getSavedAccessCode();
+          if (localCode || isUnlocked()) {
+            syncProStatusToCloud(localCode || undefined);
+          }
+        }
       } else {
         // Fallback default profile from local or auth state
         const fallbackName = email ? email.split("@")[0] : "KCET Aspirant";
-        setProfile({
+        const newFallback: UserProfile = {
           id: userId,
           display_name: fallbackName,
           kcet_category: "GM",
           badge: "Verified Student"
-        });
+        };
+        setProfile(newFallback);
+
+        // Link local Pro status if active
+        const localCode = getSavedAccessCode();
+        if (localCode || isUnlocked()) {
+          syncProStatusToCloud(localCode || undefined);
+        }
       }
     } catch {
       // Ignore profile fetch failure
