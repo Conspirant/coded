@@ -14,7 +14,9 @@ import {
   X,
   ArrowRight,
   CheckCircle2,
-  Activity
+  Activity,
+  Flame,
+  Radio
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,7 +24,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export interface SitePopupConfig {
   id?: string;
   enabled: boolean;
-  type: "maintenance" | "maintenance_announcement" | "feature_update" | "general_announcement";
+  type: "maintenance" | "maintenance_announcement" | "feature_update" | "general_announcement" | "announcement";
   title: string;
   subtitle?: string;
   message: string;
@@ -175,7 +177,7 @@ export function DynamicPopupManager({
       aria-modal="true"
       aria-labelledby="site-modal-title"
       aria-describedby="site-modal-description"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
     >
       <PopupCardContent
         popup={popup}
@@ -202,52 +204,57 @@ export function PopupCardContent({
   isPreview?: boolean;
 }) {
   const isMaintenance = popup.type === "maintenance";
-  const isMaintenanceUpdate = popup.type === "maintenance_announcement";
+  const isFeature = popup.type === "feature_update" || popup.type === "maintenance_announcement";
 
-  // Clean Theme Styles
+  // Dynamic Aesthetic Themes
   const theme = isMaintenance
     ? {
         border: "border-amber-500/30",
-        iconBox: "bg-amber-500/10 text-amber-500 border-amber-500/20",
-        pillBadge: "bg-amber-500/10 text-amber-500 border-amber-500/20 font-mono",
-        pillText: "MAINTENANCE UPDATE",
-        btnPrimary: "bg-amber-500 hover:bg-amber-600 text-black font-semibold"
+        glow: "from-amber-500/20 via-orange-500/10 to-transparent",
+        iconGradient: "from-amber-500/20 to-orange-500/20 text-amber-400 border-amber-500/30 shadow-amber-500/10",
+        pillBadge: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+        pillText: "MAINTENANCE NOTICE",
+        btnPrimary: "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-black font-bold shadow-amber-500/20"
       }
-    : isMaintenanceUpdate
+    : isFeature
     ? {
-        border: "border-primary/30",
-        iconBox: "bg-primary/10 text-primary border-primary/20",
-        pillBadge: "bg-primary/10 text-primary border-primary/20 font-mono",
-        pillText: "FEATURE UPDATE",
-        btnPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+        border: "border-primary/40",
+        glow: "from-primary/25 via-indigo-500/15 to-transparent",
+        iconGradient: "from-primary/25 to-indigo-600/20 text-primary border-primary/40 shadow-primary/10",
+        pillBadge: "bg-primary/15 text-primary border-primary/30",
+        pillText: "FEATURE LAUNCH",
+        btnPrimary: "bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold shadow-primary/25"
       }
     : {
-        border: "border-border",
-        iconBox: "bg-muted text-foreground border-border",
-        pillBadge: "bg-muted text-foreground border-border font-mono",
+        border: "border-emerald-500/30",
+        glow: "from-emerald-500/20 via-teal-500/10 to-transparent",
+        iconGradient: "from-emerald-500/20 to-teal-500/20 text-emerald-400 border-emerald-500/30 shadow-emerald-500/10",
+        pillBadge: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
         pillText: "ANNOUNCEMENT",
-        btnPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+        btnPrimary: "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold shadow-emerald-500/20"
       };
 
   const getIcon = () => {
     switch (popup.icon) {
       case "wrench":
-        return <Wrench className="h-5 w-5" />;
+        return <Wrench className="h-6 w-6" />;
       case "alert-triangle":
-        return <AlertTriangle className="h-5 w-5" />;
+        return <AlertTriangle className="h-6 w-6" />;
       case "stethoscope":
-        return <Stethoscope className="h-5 w-5" />;
+        return <Stethoscope className="h-6 w-6" />;
       case "megaphone":
-        return <Megaphone className="h-5 w-5" />;
+        return <Megaphone className="h-6 w-6" />;
       case "sparkles":
-        return <Sparkles className="h-5 w-5" />;
+        return <Sparkles className="h-6 w-6" />;
       case "shield":
-        return <ShieldAlert className="h-5 w-5" />;
+        return <ShieldAlert className="h-6 w-6" />;
+      case "flame":
+        return <Flame className="h-6 w-6" />;
       case "info":
-        return <Info className="h-5 w-5" />;
+        return <Info className="h-6 w-6" />;
       case "bell":
       default:
-        return <Bell className="h-5 w-5" />;
+        return <Bell className="h-6 w-6" />;
     }
   };
 
@@ -280,69 +287,77 @@ export function PopupCardContent({
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 10 }}
+      initial={{ opacity: 0, scale: 0.94, y: 15 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96, y: 10 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border ${theme.border} bg-card p-5 sm:p-6 text-card-foreground z-10 space-y-4 shadow-xl`}
+      exit={{ opacity: 0, scale: 0.94, y: 15 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border ${theme.border} bg-zinc-950/95 backdrop-blur-2xl p-6 text-zinc-100 z-10 space-y-5 shadow-2xl overflow-hidden`}
     >
-      {/* Top Banner Tag */}
-      <div className="flex items-center justify-between">
-        <div className={`px-2.5 py-0.5 rounded border text-[10px] uppercase font-semibold tracking-wider flex items-center gap-1.5 ${theme.pillBadge}`}>
-          <Activity className="h-3 w-3" />
+      {/* Ambient Top Glow Beam */}
+      <div className={`absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-48 bg-gradient-to-b ${theme.glow} blur-3xl pointer-events-none rounded-full`} />
+
+      {/* Top Header Tag Bar */}
+      <div className="relative z-10 flex items-center justify-between gap-2">
+        <div className={`px-3 py-1 rounded-full border text-[11px] font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm ${theme.pillBadge}`}>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-current" />
+          </span>
           <span>{popup.badgeText || theme.pillText}</span>
         </div>
 
         {isPreview ? (
-          <span className="text-[10px] font-mono text-amber-500 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-            ADMIN PREVIEW
-          </span>
+          <Badge variant="outline" className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 border-amber-500/30 px-2 py-0.5">
+            <Sparkles className="h-3 w-3 mr-1" /> ADMIN PREVIEW
+          </Badge>
         ) : (
           popup.dismissible && (
             <button
               onClick={onDismiss}
-              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors shrink-0"
+              className="h-7 w-7 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-all flex items-center justify-center shrink-0 cursor-pointer"
               aria-label="Close popup"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </button>
           )
         )}
       </div>
 
-      {/* Header Area */}
-      <div className="flex items-start gap-3 pt-0.5">
-        <div className={`p-2.5 rounded-md border shrink-0 ${theme.iconBox}`}>
+      {/* Main Title & Icon Banner */}
+      <div className="relative z-10 flex items-start gap-4">
+        <div className={`h-12 w-12 rounded-2xl border shadow-lg flex items-center justify-center shrink-0 bg-gradient-to-br ${theme.iconGradient} ring-2 ring-white/5`}>
           {getIcon()}
         </div>
-        <div className="space-y-0.5">
-          <h2 id="site-modal-title" className="text-lg sm:text-xl font-bold tracking-tight text-foreground leading-snug">
+        <div className="space-y-1">
+          <h2 id="site-modal-title" className="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-snug">
             {popup.title}
           </h2>
           {popup.subtitle && (
-            <p className="text-xs text-muted-foreground leading-snug">
+            <p className="text-xs text-zinc-400 font-medium leading-relaxed">
               {popup.subtitle}
             </p>
           )}
         </div>
       </div>
 
-      {/* Structured Content Area */}
-      <div id="site-modal-description" className="space-y-2.5">
-        {/* Intro Message */}
-        <div className="p-3 rounded-md bg-muted/30 border border-border text-xs text-muted-foreground leading-relaxed">
+      {/* Content Container */}
+      <div id="site-modal-description" className="relative z-10 space-y-3">
+        {/* Intro Text Box */}
+        <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
           {intro}
         </div>
 
-        {/* Structured Highlights / Bullets */}
+        {/* Structured Bullets / Feature Highlights */}
         {bullets.length > 0 && (
-          <div className="space-y-1.5 pt-0.5">
+          <div className="space-y-2 pt-1">
             {bullets.map((bullet, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-2.5 p-2.5 rounded-md border border-border bg-muted/20 text-xs text-foreground"
+                className="flex items-start gap-3 p-3 rounded-xl border border-zinc-800/60 bg-zinc-900/30 text-xs text-zinc-200 hover:border-zinc-700/80 transition-colors"
               >
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                <div className="p-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mt-0.5 shrink-0">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                </div>
                 <span className="leading-relaxed">{bullet}</span>
               </div>
             ))}
@@ -351,12 +366,12 @@ export function PopupCardContent({
       </div>
 
       {/* Action Footer */}
-      <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2 pt-2 border-t border-border/60">
+      <div className="relative z-10 flex flex-col-reverse sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-zinc-800/80">
         {popup.dismissible && (
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={onDismiss}
-            className="w-full sm:w-auto h-8 px-4 text-xs font-semibold border-border text-foreground hover:bg-muted"
+            className="w-full sm:w-auto h-9 px-4 text-xs font-semibold text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900 rounded-xl cursor-pointer"
           >
             {popup.secondaryActionText || "Dismiss"}
           </Button>
@@ -366,17 +381,17 @@ export function PopupCardContent({
           <Button
             onClick={onAction}
             disabled={actionDone}
-            className={`w-full sm:w-auto h-8 px-4 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs ${theme.btnPrimary}`}
+            className={`w-full sm:w-auto h-9 px-5 text-xs rounded-xl shadow-lg flex items-center justify-center gap-2 group cursor-pointer ${theme.btnPrimary}`}
           >
             {actionDone ? (
               <>
                 <CheckCircle2 className="h-3.5 w-3.5" />
-                <span>Recorded</span>
+                <span>Navigating...</span>
               </>
             ) : (
               <>
                 <span>{popup.actionText}</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
               </>
             )}
           </Button>
