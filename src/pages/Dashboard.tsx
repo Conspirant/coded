@@ -414,7 +414,7 @@ const Dashboard = () => {
       </div>
 
       {/* SPIDER-MAN COMPANION (ANDREW GARFIELD EDITION) */}
-      <SpidermanCompanion userRank={userProfile.rank} userCategory={userProfile.category} />
+      <SpidermanCompanion userRank={profile?.rank} userCategory={profile?.category} />
 
       {/* COMMUNITY LIVE POLL */}
       <CommunityPollWidget />
