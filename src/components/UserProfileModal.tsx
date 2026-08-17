@@ -34,15 +34,11 @@ import {
   Calculator,
   Compass,
   CheckCircle2,
-  Share2,
   Trash2,
   LogIn,
   LogOut,
-  Mail,
   ShieldCheck,
   Building,
-  BookOpen,
-  Award,
   Layers,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -127,7 +123,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   try {
     authContext = useAuth();
   } catch {
-    // Graceful fallback if used outside AuthProvider
+    // Fallback if rendered outside provider
   }
 
   const user = authContext?.user || null;
@@ -137,7 +133,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const signOut = authContext?.signOut;
   const updateUserProfile = authContext?.updateUserProfile;
 
-  // Local student profile state
   const [profile, setProfile] = useState<StoredUserProfile>(() => {
     try {
       const saved = localStorage.getItem("kcet_user_profile");
@@ -156,9 +151,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           };
         }
       }
-    } catch {
-      // fallback
-    }
+    } catch {}
     return {
       name: "Candidate",
       rank: 12500,
@@ -174,8 +167,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [emailInput, setEmailInput] = useState("");
   const [emailLoading, setEmailLoading] = useState(false);
   const [unlocked, setUnlocked] = useState(isUnlocked());
-
-  // Metrics from local storage
   const [bookmarkCount, setBookmarkCount] = useState(0);
   const [savedHistory, setSavedHistory] = useState<any[]>([]);
 
@@ -183,7 +174,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     if (!open) return;
     setUnlocked(isUnlocked());
 
-    // 1. Load profile
     try {
       const saved = localStorage.getItem("kcet_user_profile");
       if (saved) {
@@ -198,7 +188,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       }
     } catch {}
 
-    // 2. Load bookmarks count
     try {
       const bmarks = localStorage.getItem("kcet_bookmarks");
       if (bmarks) {
@@ -211,7 +200,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       setBookmarkCount(0);
     }
 
-    // 3. Load saved prediction history
     try {
       const hist = localStorage.getItem("kcetResults");
       if (hist) {
@@ -236,9 +224,10 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         });
       }
 
-      toast.success("Counseling Profile Updated!", {
+      toast.success("Profile Updated", {
         description: `Target set to Rank #${profile.rank?.toLocaleString() || "12,500"} (${profile.category || "GM"}).`,
       });
+      onOpenChange(false);
     } catch {
       toast.error("Failed to save profile.");
     }
@@ -277,7 +266,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   };
 
   const handleClearHistory = () => {
-    if (window.confirm("Are you sure you want to clear saved prediction calculations and local history?")) {
+    if (window.confirm("Clear saved prediction calculations from local storage?")) {
       localStorage.removeItem("kcetResults");
       setSavedHistory([]);
       toast.info("Prediction history cleared.");
@@ -285,517 +274,484 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   };
 
   const handleClearBookmarks = () => {
-    if (window.confirm("Are you sure you want to clear all bookmarked colleges?")) {
+    if (window.confirm("Clear all bookmarked colleges?")) {
       localStorage.removeItem("kcet_bookmarks");
       setBookmarkCount(0);
       toast.info("Bookmarked colleges cleared.");
     }
   };
 
-  const userInitial = (profile.name || user?.email || "C").charAt(0).toUpperCase();
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto bg-card border-border/80 text-foreground p-0 shadow-2xl rounded-2xl">
-        {/* Top Header Card */}
-        <div className="relative p-5 sm:p-6 bg-gradient-to-br from-primary/15 via-background to-secondary/30 border-b border-border/60">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3.5">
-              {/* Avatar Pill */}
-              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-indigo-600 font-extrabold text-lg text-primary-foreground shadow-md ring-2 ring-primary/30">
-                {userInitial}
-                <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-background" title="Active">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                </span>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h2 className="text-lg font-bold text-foreground">
-                    {profile.name || "KCET Aspirant"}
-                  </h2>
-                  {unlocked ? (
-                    <Badge className="bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 border-amber-500/30 text-[10px] font-mono px-2 py-0.5 flex items-center gap-1 font-bold">
-                      <Crown className="h-3 w-3 fill-amber-400" /> Pro Member
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="text-[10px] font-mono border-border text-muted-foreground">
-                      Free Plan
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
-                  <span>{examMode} 2026 Target</span>
-                  <span>•</span>
-                  <span className="font-mono font-semibold text-primary">
-                    #{profile.rank?.toLocaleString() || "12,500"} ({profile.category || "GM"})
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {!unlocked && onUpgradeClick && (
-              <Button
-                size="sm"
-                onClick={() => {
-                  onOpenChange(false);
-                  onUpgradeClick();
-                }}
-                className="shrink-0 h-8 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm flex items-center gap-1.5 rounded-lg"
-              >
-                <Crown className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Unlock Pro</span> (₹119)
-              </Button>
+      <DialogContent className="sm:max-w-lg z-[100] max-h-[90vh] overflow-y-auto mx-2 bg-card border-border shadow-lg">
+        <DialogHeader>
+          <div className="flex items-center justify-between">
+            <DialogTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+              <User className="h-4 w-4 text-primary" />
+              Student Profile & Preferences
+            </DialogTitle>
+            {unlocked ? (
+              <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[10px] font-mono px-2 py-0.5 font-semibold">
+                <Crown className="h-3 w-3 mr-1 fill-amber-400" /> Pro Active
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-[10px] font-mono border-border text-muted-foreground">
+                Free Tier
+              </Badge>
             )}
           </div>
+          <DialogDescription className="text-xs text-muted-foreground">
+            Configure your target rank, category, and preferences used across all predictor tools.
+          </DialogDescription>
+        </DialogHeader>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-border/40 text-center">
-            <div className="p-2 rounded-xl bg-background/50 border border-border/40">
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground block">Target Rank</span>
-              <span className="text-sm font-extrabold font-mono text-primary">
-                #{profile.rank?.toLocaleString() || "--"}
-              </span>
-            </div>
-            <div className="p-2 rounded-xl bg-background/50 border border-border/40">
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground block">Saved Cutoffs</span>
-              <span className="text-sm font-extrabold font-mono text-amber-400">
-                {bookmarkCount} Saved
-              </span>
-            </div>
-            <div className="p-2 rounded-xl bg-background/50 border border-border/40">
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground block">Board Aggregate</span>
-              <span className="text-sm font-extrabold font-mono text-emerald-400">
-                {profile.boardMarks ? `${profile.boardMarks}%` : "--"}
-              </span>
-            </div>
+        {/* Profile Summary Card */}
+        <div className="p-3 rounded-lg border border-border bg-muted/30 grid grid-cols-3 gap-2 text-center text-xs">
+          <div>
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">Target Rank</span>
+            <span className="font-mono font-bold text-foreground text-sm">
+              #{profile.rank?.toLocaleString() || "--"}
+            </span>
+          </div>
+          <div>
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">Category</span>
+            <span className="font-mono font-bold text-foreground text-sm">
+              {profile.category || "GM"}
+            </span>
+          </div>
+          <div>
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">Saved</span>
+            <span className="font-mono font-bold text-primary text-sm">
+              {bookmarkCount} {bookmarkCount === 1 ? "choice" : "choices"}
+            </span>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="p-4 sm:p-6 space-y-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-muted/60 p-1 rounded-xl">
-              <TabsTrigger value="profile" className="text-xs font-semibold rounded-lg flex items-center gap-1.5">
-                <GraduationCap className="h-3.5 w-3.5" />
-                <span>Academic Profile</span>
-              </TabsTrigger>
-              <TabsTrigger value="shortlists" className="text-xs font-semibold rounded-lg flex items-center gap-1.5">
-                <Bookmark className="h-3.5 w-3.5 text-amber-400" />
-                <span>Shortlists ({bookmarkCount})</span>
-              </TabsTrigger>
-              <TabsTrigger value="tools" className="text-xs font-semibold rounded-lg flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-primary" />
-                <span>Quick Hub</span>
-              </TabsTrigger>
-            </TabsList>
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
+          <TabsList className="grid w-full grid-cols-3 bg-muted p-0.5 rounded-md">
+            <TabsTrigger value="profile" className="text-xs font-medium rounded">
+              Academic Targets
+            </TabsTrigger>
+            <TabsTrigger value="shortlists" className="text-xs font-medium rounded">
+              Saved Shortlist
+            </TabsTrigger>
+            <TabsTrigger value="account" className="text-xs font-medium rounded">
+              Account & Sync
+            </TabsTrigger>
+          </TabsList>
 
-            {/* TAB 1: ACADEMIC PROFILE SETTINGS */}
-            <TabsContent value="profile" className="space-y-4 mt-4 focus-visible:outline-none">
-              <form onSubmit={handleSaveProfile} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-bold text-foreground">Candidate Name / Nickname</Label>
-                    <Input
-                      placeholder="e.g. Rohan Kumar"
-                      value={profile.name || ""}
-                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                      className="h-9 text-xs"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-bold text-foreground">KEA Reservation Category</Label>
-                    <Select
-                      value={profile.category || "GM"}
-                      onValueChange={(val) => setProfile({ ...profile, category: val })}
-                    >
-                      <SelectTrigger className="h-9 text-xs">
-                        <SelectValue placeholder="Select Category" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-56">
-                        {KEA_CATEGORIES.map((cat) => (
-                          <SelectItem key={cat.code} value={cat.code} className="text-xs">
-                            {cat.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+          {/* TAB 1: ACADEMIC PROFILE */}
+          <TabsContent value="profile" className="space-y-4 focus-visible:outline-none">
+            <form onSubmit={handleSaveProfile} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-foreground">Candidate Name / Tag</Label>
+                  <Input
+                    placeholder="e.g. Student Candidate"
+                    value={profile.name || ""}
+                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                    className="h-8 text-xs bg-background"
+                  />
                 </div>
 
-                {/* Target KCET Rank Input + Shortcuts */}
-                <div className="space-y-2 p-3.5 rounded-xl border border-border/50 bg-secondary/20">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                      <Target className="h-3.5 w-3.5 text-primary" />
-                      KCET Predicted / Target Rank
-                    </Label>
-                    <span className="text-[11px] text-muted-foreground">Used across predictors & dashboard</span>
-                  </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-foreground">KEA Reservation Category</Label>
+                  <Select
+                    value={profile.category || "GM"}
+                    onValueChange={(val) => setProfile({ ...profile, category: val })}
+                  >
+                    <SelectTrigger className="h-8 text-xs bg-background">
+                      <SelectValue placeholder="Select Category" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-56 z-[200]">
+                      {KEA_CATEGORIES.map((cat) => (
+                        <SelectItem key={cat.code} value={cat.code} className="text-xs">
+                          {cat.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Target Rank Input + Quick Presets */}
+              <div className="space-y-2 p-3 rounded-md border border-border bg-muted/40">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                    <Target className="h-3.5 w-3.5 text-primary" />
+                    KCET Target / Estimated Rank
+                  </Label>
+                  <span className="text-[10px] text-muted-foreground font-mono">1 to 3,50,000</span>
+                </div>
+                <Input
+                  type="number"
+                  min={1}
+                  max={350000}
+                  placeholder="e.g. 12500"
+                  value={profile.rank || ""}
+                  onChange={(e) => setProfile({ ...profile, rank: e.target.value ? parseInt(e.target.value, 10) : undefined })}
+                  className="h-8 font-mono font-semibold text-xs text-foreground bg-background"
+                />
+                <div className="flex items-center gap-1 flex-wrap pt-0.5">
+                  <span className="text-[10px] text-muted-foreground">Presets:</span>
+                  {[3000, 8000, 15000, 25000, 45000, 75000].map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => handleRankShortcut(r)}
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer ${
+                        profile.rank === r
+                          ? "bg-primary text-primary-foreground font-bold"
+                          : "bg-background border border-border text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      #{r >= 1000 ? `${r / 1000}k` : r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-foreground">12th / PUC PCM Board %</Label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min={0}
+                    max={100}
+                    placeholder="e.g. 91.5"
+                    value={profile.boardMarks || ""}
+                    onChange={(e) => setProfile({ ...profile, boardMarks: e.target.value ? parseFloat(e.target.value) : undefined })}
+                    className="h-8 text-xs font-mono bg-background"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-foreground">COMEDK Target Rank</Label>
                   <Input
                     type="number"
                     min={1}
-                    max={350000}
-                    placeholder="e.g. 12500"
-                    value={profile.rank || ""}
-                    onChange={(e) => setProfile({ ...profile, rank: e.target.value ? parseInt(e.target.value, 10) : undefined })}
-                    className="h-9 font-mono font-bold text-sm text-foreground bg-background"
+                    max={100000}
+                    placeholder="e.g. 8500"
+                    value={profile.comedkRank || ""}
+                    onChange={(e) => setProfile({ ...profile, comedkRank: e.target.value ? parseInt(e.target.value, 10) : undefined })}
+                    className="h-8 text-xs font-mono bg-background"
                   />
-                  <div className="flex items-center gap-1.5 flex-wrap pt-1">
-                    <span className="text-[10px] text-muted-foreground font-semibold">Quick Presets:</span>
-                    {[3000, 8000, 15000, 25000, 45000, 80000].map((r) => (
-                      <button
-                        key={r}
-                        type="button"
-                        onClick={() => handleRankShortcut(r)}
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-semibold transition-colors cursor-pointer ${
-                          profile.rank === r
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
-                        }`}
-                      >
-                        #{r >= 1000 ? `${r / 1000}k` : r}
-                      </button>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-foreground">Preferred Engineering Branch</Label>
+                <Select
+                  value={profile.preferredStream || ENGINEERING_STREAMS[0]}
+                  onValueChange={(val) => setProfile({ ...profile, preferredStream: val })}
+                >
+                  <SelectTrigger className="h-8 text-xs bg-background">
+                    <SelectValue placeholder="Select Preferred Branch" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-56 z-[200]">
+                    {ENGINEERING_STREAMS.map((st) => (
+                      <SelectItem key={st} value={st} className="text-xs">
+                        {st}
+                      </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-foreground">Dream College Goal</Label>
+                <Select
+                  value={profile.targetCollege || DREAM_COLLEGES[0]}
+                  onValueChange={(val) => setProfile({ ...profile, targetCollege: val })}
+                >
+                  <SelectTrigger className="h-8 text-xs bg-background">
+                    <SelectValue placeholder="Select Target College" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-56 z-[200]">
+                    {DREAM_COLLEGES.map((c) => (
+                      <SelectItem key={c} value={c} className="text-xs">
+                        {c}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="pt-2">
+                <Button
+                  type="submit"
+                  className="w-full h-8 font-semibold text-xs bg-primary hover:bg-primary/90 text-primary-foreground rounded-md"
+                >
+                  Save Profile Settings
+                </Button>
+              </div>
+            </form>
+          </TabsContent>
+
+          {/* TAB 2: SHORTLISTS & SAVED DATA */}
+          <TabsContent value="shortlists" className="space-y-3.5 focus-visible:outline-none">
+            {/* Bookmarks Section */}
+            <div className="p-3 rounded-md border border-border bg-muted/40 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Bookmark className="h-4 w-4 text-primary" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-foreground">Bookmarked Colleges</h4>
+                    <p className="text-[11px] text-muted-foreground">
+                      {bookmarkCount > 0
+                        ? `${bookmarkCount} college choices saved locally.`
+                        : "No colleges bookmarked yet."}
+                    </p>
                   </div>
                 </div>
+                <Badge variant="outline" className="font-mono text-xs font-bold">
+                  {bookmarkCount}
+                </Badge>
+              </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-bold text-foreground">12th / PUC PCM Board %</Label>
-                    <Input
-                      type="number"
-                      step="0.1"
-                      min={0}
-                      max={100}
-                      placeholder="e.g. 92.5"
-                      value={profile.boardMarks || ""}
-                      onChange={(e) => setProfile({ ...profile, boardMarks: e.target.value ? parseFloat(e.target.value) : undefined })}
-                      className="h-9 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-bold text-foreground">COMEDK Rank Target</Label>
-                    <Input
-                      type="number"
-                      min={1}
-                      max={100000}
-                      placeholder="e.g. 8500"
-                      value={profile.comedkRank || ""}
-                      onChange={(e) => setProfile({ ...profile, comedkRank: e.target.value ? parseInt(e.target.value, 10) : undefined })}
-                      className="h-9 text-xs font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-bold text-foreground">Preferred Engineering Branch</Label>
-                  <Select
-                    value={profile.preferredStream || ENGINEERING_STREAMS[0]}
-                    onValueChange={(val) => setProfile({ ...profile, preferredStream: val })}
-                  >
-                    <SelectTrigger className="h-9 text-xs">
-                      <SelectValue placeholder="Select Preferred Branch" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-56">
-                      {ENGINEERING_STREAMS.map((st) => (
-                        <SelectItem key={st} value={st} className="text-xs">
-                          {st}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-bold text-foreground">Dream Campus / College Goal</Label>
-                  <Select
-                    value={profile.targetCollege || DREAM_COLLEGES[0]}
-                    onValueChange={(val) => setProfile({ ...profile, targetCollege: val })}
-                  >
-                    <SelectTrigger className="h-9 text-xs">
-                      <SelectValue placeholder="Select Target College" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-56">
-                      {DREAM_COLLEGES.map((c) => (
-                        <SelectItem key={c} value={c} className="text-xs">
-                          {c}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="pt-2 flex items-center justify-between gap-3">
-                  <Button
-                    type="submit"
-                    className="w-full h-9 font-bold text-xs bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm rounded-lg"
-                  >
-                    <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
-                    Save & Apply Counseling Profile
-                  </Button>
-                </div>
-              </form>
-            </TabsContent>
-
-            {/* TAB 2: SAVED SHORTLISTS & BOOKMARKS */}
-            <TabsContent value="shortlists" className="space-y-4 mt-4 focus-visible:outline-none">
-              {/* Bookmarks Section */}
-              <div className="p-4 rounded-xl border border-border/50 bg-secondary/20 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Bookmark className="h-4 w-4 text-amber-400 fill-amber-400/20" />
-                    <div>
-                      <h4 className="text-xs font-bold text-foreground">Bookmarked Cutoffs</h4>
-                      <p className="text-[11px] text-muted-foreground">
-                        {bookmarkCount > 0
-                          ? `You have ${bookmarkCount} saved college choices in your personal shortlist.`
-                          : "No colleges bookmarked yet. Click the star icon on any cutoff row."}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge variant="outline" className="font-mono text-xs font-bold border-amber-500/30 text-amber-400 bg-amber-500/10">
-                    {bookmarkCount}
-                  </Badge>
-                </div>
-
-                <div className="flex items-center gap-2 pt-1">
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={handleQuickPredictor}
+                  className="flex-1 h-7 text-xs font-medium"
+                >
+                  View in Predictor
+                </Button>
+                {bookmarkCount > 0 && (
                   <Button
                     size="sm"
-                    onClick={handleQuickPredictor}
-                    className="flex-1 h-8 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded-lg"
+                    variant="outline"
+                    onClick={handleClearBookmarks}
+                    className="h-7 text-xs text-destructive hover:text-destructive hover:bg-destructive/10"
+                    title="Clear Bookmarks"
                   >
-                    <Compass className="h-3.5 w-3.5 mr-1.5" />
-                    View Shortlist in Predictor
+                    <Trash2 className="h-3.5 w-3.5" />
                   </Button>
-                  {bookmarkCount > 0 && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={handleClearBookmarks}
-                      className="h-8 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 border-border"
-                      title="Clear Bookmarks"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  )}
-                </div>
+                )}
+              </div>
+            </div>
+
+            {/* Saved Rank Calculations History */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                  <History className="h-3.5 w-3.5 text-muted-foreground" />
+                  Recent Rank Calculations
+                </h4>
+                {savedHistory.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClearHistory}
+                    className="h-6 text-[10px] text-muted-foreground hover:text-destructive p-0 px-1.5"
+                  >
+                    Clear
+                  </Button>
+                )}
               </div>
 
-              {/* Saved Rank Calculations History */}
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                    <History className="h-3.5 w-3.5 text-primary" />
-                    Recent Rank Predictions
-                  </h4>
-                  {savedHistory.length > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleClearHistory}
-                      className="h-6 text-[10px] text-muted-foreground hover:text-destructive p-0 px-2"
-                    >
-                      Clear History
-                    </Button>
-                  )}
-                </div>
-
-                {savedHistory.length > 0 ? (
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    {savedHistory
-                      .slice()
-                      .reverse()
-                      .slice(0, 4)
-                      .map((item, idx) => (
-                        <div
-                          key={idx}
-                          className="p-2.5 rounded-lg border border-border/40 bg-background/50 flex items-center justify-between text-xs"
-                        >
-                          <div>
-                            <div className="font-mono font-bold text-foreground">
-                              Predicted Rank: ~{item.rank?.toLocaleString()}
-                            </div>
-                            <div className="text-[10px] text-muted-foreground">
-                              CET: {item.cet}/180 • Board: {item.puc}% • {item.percentile || ""}
-                            </div>
+              {savedHistory.length > 0 ? (
+                <div className="space-y-1.5 max-h-40 overflow-y-auto pr-0.5">
+                  {savedHistory
+                    .slice()
+                    .reverse()
+                    .slice(0, 4)
+                    .map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-2 rounded border border-border bg-background flex items-center justify-between text-xs"
+                      >
+                        <div>
+                          <div className="font-mono font-semibold text-foreground">
+                            Rank ~{item.rank?.toLocaleString()}
                           </div>
-                          <Badge variant="secondary" className="font-mono text-[9px]">
-                            {new Date(item.timestamp).toLocaleDateString()}
-                          </Badge>
+                          <div className="text-[10px] text-muted-foreground">
+                            CET: {item.cet}/180 • Board: {item.puc}%
+                          </div>
                         </div>
-                      ))}
-                  </div>
-                ) : (
-                  <div className="p-4 rounded-xl border border-dashed border-border/60 text-center text-xs text-muted-foreground">
-                    No calculations saved yet. Calculate your rank on the Rank Predictor to save runs here.
-                  </div>
-                )}
-              </div>
-            </TabsContent>
-
-            {/* TAB 3: QUICK TOOLS & CLOUD SYNC */}
-            <TabsContent value="tools" className="space-y-4 mt-4 focus-visible:outline-none">
-              {/* Quick Launch Buttons */}
-              <div className="grid grid-cols-2 gap-2.5">
-                <button
-                  type="button"
-                  onClick={handleQuickPredictor}
-                  className="p-3 rounded-xl border border-border/50 bg-secondary/30 hover:bg-secondary/60 hover:border-primary/40 transition-all text-left space-y-1 group cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <Compass className="h-4 w-4 text-primary" />
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="font-bold text-xs text-foreground group-hover:text-primary transition-colors">
-                    College Predictor
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    Match rank #{profile.rank?.toLocaleString() || "12,500"} against cutoffs
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleQuickSimulator}
-                  className="p-3 rounded-xl border border-border/50 bg-secondary/30 hover:bg-secondary/60 hover:border-primary/40 transition-all text-left space-y-1 group cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <Layers className="h-4 w-4 text-indigo-400" />
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="font-bold text-xs text-foreground group-hover:text-indigo-400 transition-colors">
-                    Mock Simulator
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    Simulate real KEA Round 1, 2, & Extended allotment
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenChange(false);
-                    navigate("/rank-predictor");
-                  }}
-                  className="p-3 rounded-xl border border-border/50 bg-secondary/30 hover:bg-secondary/60 hover:border-primary/40 transition-all text-left space-y-1 group cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <Calculator className="h-4 w-4 text-emerald-400" />
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="font-bold text-xs text-foreground group-hover:text-emerald-400 transition-colors">
-                    Rank Predictor
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    Marks vs Rank normalization models
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenChange(false);
-                    navigate("/fee-calculator");
-                  }}
-                  className="p-3 rounded-xl border border-border/50 bg-secondary/30 hover:bg-secondary/60 hover:border-primary/40 transition-all text-left space-y-1 group cursor-pointer"
-                >
-                  <div className="flex items-center justify-between">
-                    <Building className="h-4 w-4 text-cyan-400" />
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="font-bold text-xs text-foreground group-hover:text-cyan-400 transition-colors">
-                    Fee Calculator
-                  </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    4-year tuition, hostel & scholarship check
-                  </p>
-                </button>
-              </div>
-
-              {/* Community & Cloud Account Sync */}
-              <div className="p-4 rounded-xl border border-border/60 bg-muted/20 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4 text-primary" />
-                    <div>
-                      <h4 className="text-xs font-bold text-foreground">Community & Cloud Account</h4>
-                      <p className="text-[11px] text-muted-foreground">
-                        {user ? `Connected as ${user.email}` : "Sign in to post questions on the KCET Forum & backup choices."}
-                      </p>
-                    </div>
-                  </div>
-                  {user && (
-                    <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] font-mono">
-                      Online
-                    </Badge>
-                  )}
+                        <Badge variant="secondary" className="font-mono text-[9px]">
+                          {new Date(item.timestamp).toLocaleDateString()}
+                        </Badge>
+                      </div>
+                    ))}
                 </div>
+              ) : (
+                <div className="p-4 rounded border border-dashed border-border text-center text-xs text-muted-foreground">
+                  No prediction history stored. Run Rank Predictor to save history here.
+                </div>
+              )}
+            </div>
+          </TabsContent>
 
-                {user ? (
-                  <div className="flex items-center justify-between pt-2">
+          {/* TAB 3: ACCOUNT & QUICK ACTIONS */}
+          <TabsContent value="account" className="space-y-3 focus-visible:outline-none">
+            {/* Quick Tools Navigation */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={handleQuickPredictor}
+                className="p-2.5 rounded-md border border-border bg-muted/30 hover:bg-muted/60 transition-colors text-left space-y-0.5 group cursor-pointer"
+              >
+                <div className="flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-primary">
+                  <span>College Predictor</span>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Match cutoff ranks
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleQuickSimulator}
+                className="p-2.5 rounded-md border border-border bg-muted/30 hover:bg-muted/60 transition-colors text-left space-y-0.5 group cursor-pointer"
+              >
+                <div className="flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-primary">
+                  <span>Mock Simulator</span>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Seat allotment practice
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onOpenChange(false);
+                  navigate("/rank-predictor");
+                }}
+                className="p-2.5 rounded-md border border-border bg-muted/30 hover:bg-muted/60 transition-colors text-left space-y-0.5 group cursor-pointer"
+              >
+                <div className="flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-primary">
+                  <span>Rank Predictor</span>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Marks vs rank model
+                </p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onOpenChange(false);
+                  navigate("/fee-calculator");
+                }}
+                className="p-2.5 rounded-md border border-border bg-muted/30 hover:bg-muted/60 transition-colors text-left space-y-0.5 group cursor-pointer"
+              >
+                <div className="flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-primary">
+                  <span>Fee Calculator</span>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Tuition & hostel costs
+                </p>
+              </button>
+            </div>
+
+            {/* Cloud & Forum Sync */}
+            <div className="p-3 rounded-md border border-border bg-muted/40 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  <div>
+                    <h4 className="text-xs font-semibold text-foreground">Community & Forum Profile</h4>
+                    <p className="text-[11px] text-muted-foreground">
+                      {user ? `Signed in as ${user.email}` : "Sign in to participate in the Aspirant Forum."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {user ? (
+                <div className="flex items-center justify-between pt-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      onOpenChange(false);
+                      navigate("/forum");
+                    }}
+                    className="h-7 text-xs font-medium"
+                  >
+                    Open Forum
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={async () => {
+                      if (signOut) await signOut();
+                    }}
+                    className="h-7 text-xs text-muted-foreground hover:text-destructive flex items-center gap-1"
+                  >
+                    <LogOut className="h-3 w-3" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <form onSubmit={handleEmailSignIn} className="space-y-2 pt-1">
+                  <div className="flex gap-1.5">
+                    <Input
+                      type="email"
+                      placeholder="Enter email to sign in"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="h-7 text-xs bg-background"
+                    />
                     <Button
+                      type="submit"
+                      size="sm"
+                      disabled={emailLoading}
+                      className="h-7 text-xs font-semibold shrink-0"
+                    >
+                      {emailLoading ? "Sending..." : "Send Link"}
+                    </Button>
+                  </div>
+                  {signInWithGoogle && (
+                    <Button
+                      type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => {
-                        onOpenChange(false);
-                        navigate("/forum");
-                      }}
-                      className="h-8 text-xs font-semibold"
+                      onClick={signInWithGoogle}
+                      className="w-full h-7 text-xs flex items-center justify-center gap-1.5"
                     >
-                      Open Aspirants Forum
+                      <LogIn className="h-3 w-3" />
+                      Sign in with Google
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={async () => {
-                        if (signOut) await signOut();
-                      }}
-                      className="h-8 text-xs text-muted-foreground hover:text-destructive flex items-center gap-1.5"
-                    >
-                      <LogOut className="h-3.5 w-3.5" />
-                      Sign Out
-                    </Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleEmailSignIn} className="space-y-2 pt-1">
-                    <div className="flex gap-2">
-                      <Input
-                        type="email"
-                        placeholder="Enter email to sync or login"
-                        value={emailInput}
-                        onChange={(e) => setEmailInput(e.target.value)}
-                        className="h-8 text-xs bg-background"
-                      />
-                      <Button
-                        type="submit"
-                        size="sm"
-                        disabled={emailLoading}
-                        className="h-8 text-xs font-bold shrink-0 bg-primary text-primary-foreground"
-                      >
-                        {emailLoading ? "Sending..." : "Send Link"}
-                      </Button>
-                    </div>
-                    {signInWithGoogle && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={signInWithGoogle}
-                        className="w-full h-8 text-xs border-border flex items-center justify-center gap-2"
-                      >
-                        <LogIn className="h-3.5 w-3.5" />
-                        Continue with Google
-                      </Button>
-                    )}
-                  </form>
-                )}
+                  )}
+                </form>
+              )}
+            </div>
+
+            {/* Pro Upgrade Shortcut */}
+            {!unlocked && onUpgradeClick && (
+              <div className="p-3 rounded-md border border-border bg-muted/40 flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <Crown className="h-3.5 w-3.5 text-amber-500" />
+                    Upgrade to Pro Plan
+                  </h4>
+                  <p className="text-[10px] text-muted-foreground">
+                    Get unlimited access to counseling predictors & AI assistant.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    onOpenChange(false);
+                    onUpgradeClick();
+                  }}
+                  className="h-7 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
+                >
+                  ₹119
+                </Button>
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

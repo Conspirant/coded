@@ -387,27 +387,17 @@ export function Layout({ children }: LayoutProps) {
             </Dialog>
             <Button
               variant="ghost"
-              size="sm"
+              size="icon"
               onClick={() => setUserProfileOpen(true)}
-              className="h-8 px-2 sm:px-2.5 hover:bg-muted/80 flex items-center gap-1.5 rounded-lg border border-transparent hover:border-border/60 transition-all cursor-pointer group"
-              title="Student Profile & Quick Center"
+              className="h-8 w-8 hover:bg-muted relative"
+              aria-label="Student Profile"
+              title="Student Profile & Preferences"
             >
-              <div className="relative flex items-center justify-center">
-                <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary/20 to-indigo-500/20 border border-primary/30 flex items-center justify-center text-[11px] font-bold text-primary group-hover:scale-105 transition-transform">
-                  {(userProfileData?.name || "C").charAt(0).toUpperCase()}
-                </div>
-                {unlocked ? (
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-amber-500 ring-1 ring-background">
-                    <Crown className="h-2 w-2 text-black fill-black" />
-                  </span>
-                ) : (
-                  <span className="absolute -bottom-0.5 -right-0.5 flex h-2 w-2 items-center justify-center rounded-full bg-emerald-500 ring-1 ring-background" />
-                )}
-              </div>
-              {userProfileData?.rank && (
-                <span className="hidden sm:inline font-mono font-bold text-[11px] text-muted-foreground group-hover:text-foreground transition-colors">
-                  #{userProfileData.rank >= 1000 ? `${(userProfileData.rank / 1000).toFixed(userProfileData.rank % 1000 === 0 ? 0 : 1)}k` : userProfileData.rank}
-                </span>
+              <User className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
+              {unlocked ? (
+                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-amber-400" />
+              ) : (
+                <span className="absolute bottom-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500" />
               )}
             </Button>
           </div>
