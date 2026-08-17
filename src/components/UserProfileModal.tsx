@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { useExamMode } from "@/contexts/ExamModeContext";
-import { isUnlocked } from "@/lib/unlock";
+import { isUnlocked, subscribeToUnlockState } from "@/lib/unlock";
 import { useNavigate } from "react-router-dom";
 import {
   User,

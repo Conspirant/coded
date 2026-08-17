@@ -246,8 +246,9 @@ export async function fetchProStatusFromCloud(userId: string, email?: string): P
         .eq('appl_no', key)
         .maybeSingle();
 
-      if (!error && data?.results_json?.is_pro) {
-        const proData = data.results_json;
+      const json = (data as any)?.results_json;
+      if (!error && json?.is_pro) {
+        const proData = json;
         // Automatically unlock this device!
         unlockGlobally();
         if (proData.pro_access_code) {
