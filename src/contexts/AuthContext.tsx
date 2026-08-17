@@ -2,7 +2,14 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { saveAccessCode, unlockGlobally, isUnlocked, getSavedAccessCode, syncProStatusToCloud } from "@/lib/unlock";
+import { 
+  saveAccessCode, 
+  unlockGlobally, 
+  isUnlocked, 
+  getSavedAccessCode, 
+  syncProStatusToCloud, 
+  fetchProStatusFromCloud 
+} from "@/lib/unlock";
 
 export interface UserProfile {
   id: string;
@@ -55,41 +62,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       setProfile(initialProfile);
-      fetchCloudProfile(currUser.id, initialProfile);
+      fetchCloudProfile(currUser);
     } else {
       setProfile(null);
     }
     setLoading(false);
   };
 
-  const fetchCloudProfile = async (userId: string, currentProfile: UserProfile) => {
+  const fetchCloudProfile = async (currUser: User) => {
     try {
-      const { data, error } = await supabase
-        .from("profiles" as any)
-        .select("*")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (!error && data) {
-        const p = data as unknown as UserProfile;
-        setProfile((prev) => ({ ...prev, ...p }));
-
-        if (p.is_pro || p.pro_access_code) {
-          if (p.pro_access_code) {
-            saveAccessCode(p.pro_access_code);
-          } else {
-            unlockGlobally();
-          }
-        }
-      } else {
-        // If device had local Pro, sync to cloud in background
-        const localCode = getSavedAccessCode();
-        if (localCode || isUnlocked()) {
-          syncProStatusToCloud(localCode || undefined);
-        }
+      // 1. Fetch Pro Status from guaranteed cloud DB
+      const proResult = await fetchProStatusFromCloud(currUser.id, currUser.email || undefined);
+      
+      // 2. If current device is already unlocked locally, immediately sync to cloud
+      if (isUnlocked() || getSavedAccessCode()) {
+        await syncProStatusToCloud(getSavedAccessCode() || undefined);
       }
-    } catch {
-      // Non-blocking fallback
+
+      if (proResult.is_pro) {
+        setProfile((prev) => prev ? { ...prev, is_pro: true, pro_access_code: proResult.code } : null);
+      }
+    } catch (e) {
+      console.warn("Cloud profile fetch fallback:", e);
     }
   };
 

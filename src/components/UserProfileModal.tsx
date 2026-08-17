@@ -166,8 +166,16 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [savedHistory, setSavedHistory] = useState<any[]>([]);
 
   useEffect(() => {
+    setUnlocked(isUnlocked() || Boolean(authProfile?.is_pro));
+    const unsub = subscribeToUnlockState((isNowUnlocked) => {
+      setUnlocked(isNowUnlocked || Boolean(authProfile?.is_pro));
+    });
+    return () => unsub();
+  }, [open, authProfile]);
+
+  useEffect(() => {
     if (!open) return;
-    setUnlocked(isUnlocked());
+    setUnlocked(isUnlocked() || Boolean(authProfile?.is_pro));
 
     try {
       const saved = localStorage.getItem("kcet_user_profile");

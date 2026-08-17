@@ -191,21 +191,77 @@ export function getSavedAccessCode(): string | null {
   }
 }
 
-export async function syncProStatusToCloud(code?: string) {
+export async function syncProStatusToCloud(code?: string): Promise<boolean> {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
-    const accessCode = code || getSavedAccessCode() || 'CODED-PRO-CLOUD';
-    const { error } = await supabase.from('profiles' as any).upsert({
-      id: user.id,
+    const accessCode = code || getSavedAccessCode() || 'CODED-PRO-ACTIVE';
+    
+    const cloudRecord = {
       is_pro: true,
+      user_id: user.id,
+      email: user.email,
       pro_access_code: accessCode,
-      updated_at: new Date().toISOString()
-    });
-    return !error;
+      unlocked_at: new Date().toISOString()
+    };
+
+    const keysToUpsert = [
+      `USER_PRO:${user.id}`,
+      ...(user.email ? [`USER_PRO:${user.email.toLowerCase().trim()}`] : [])
+    ];
+
+    for (const key of keysToUpsert) {
+      await supabase
+        .from('ugcet_results_cache' as any)
+        .upsert(
+          [
+            {
+              appl_no: key,
+              dob: "pro_cloud",
+              name: "pro_cloud",
+              results_json: cloudRecord
+            }
+          ],
+          { onConflict: 'appl_no' }
+        );
+    }
+    return true;
   } catch (err) {
     console.error('Error syncing pro status to cloud:', err);
     return false;
+  }
+}
+
+export async function fetchProStatusFromCloud(userId: string, email?: string): Promise<{ is_pro: boolean; code?: string }> {
+  try {
+    const keysToCheck = [
+      `USER_PRO:${userId}`,
+      ...(email ? [`USER_PRO:${email.toLowerCase().trim()}`] : [])
+    ];
+
+    for (const key of keysToCheck) {
+      const { data, error } = await supabase
+        .from('ugcet_results_cache' as any)
+        .select('results_json')
+        .eq('appl_no', key)
+        .maybeSingle();
+
+      if (!error && data?.results_json?.is_pro) {
+        const proData = data.results_json;
+        // Automatically unlock this device!
+        unlockGlobally();
+        if (proData.pro_access_code) {
+          try {
+            localStorage.setItem(SAVED_CODE_KEY, proData.pro_access_code);
+          } catch {}
+        }
+        return { is_pro: true, code: proData.pro_access_code };
+      }
+    }
+    return { is_pro: false };
+  } catch (e) {
+    console.warn('Error fetching pro status from cloud:', e);
+    return { is_pro: false };
   }
 }
 
