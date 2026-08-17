@@ -138,12 +138,16 @@ Dedicated COMEDK route also exists:
 
 ### 4.4 Community and quality loops
 
-| Feature | Purpose |
-| --- | --- |
-| Reviews | College reviews, ratings, filtering |
-| Review Reports | Community moderation intake |
-| Feature Request | Product feedback channel |
-| Admin moderation views | Operational triage and cleanup |
+| Feature | Purpose | Notes |
+| --- | --- | --- |
+| Discussion Forum (`/forum`) | Realtime community Q&A hub for aspirants | Supabase Cloud persistence + Realtime broadcast (`kcet-forum-realtime`), verified student badges, upvoting, categories |
+| Thread Detail (`/forum/thread/:id`) | Deep thread view with realtime answers | Upvoting, verified answers, student author context |
+| Student Profile Hub | Cloud-synced candidate profile & cross-device Pro sync | Google OAuth + Magic Link, saves rank/PCM marks/target colleges |
+| Reviews | College reviews, ratings, filtering | Community insights & verified student opinions |
+| Review Reports | Community moderation intake | Operational triage |
+| Feature Request | Product feedback channel | Student-submitted suggestions |
+| Admin moderation views | Operational triage and cleanup | Cloud database moderation |
+| Admin Dynamic Popups | Live announcement broadcast engine | Glassmorphic popup manager with route targeting & real-time trigger |
 
 ### 4.5 Practice and engagement
 
@@ -157,6 +161,7 @@ Dedicated COMEDK route also exists:
 
 | Feature | Purpose |
 | --- | --- |
+| College Compare (`/college-compare`) | Side-by-side college matrix with all 24 KEA categories |
 | Squad Finder | Group-fit college discovery for friends |
 | Metro Mapper | Metro-accessibility college filtering |
 | BMTC Mapper | Bus-route accessibility filtering |
@@ -168,6 +173,8 @@ Dedicated COMEDK route also exists:
 | --- | --- |
 | Command Palette (`Ctrl/Cmd + K`) | Fast navigation and command search |
 | Keyboard HUD (`?`) | Shortcut discoverability |
+| Cross-Device Pro Sync | Auto-restores Pro status across mobile, tablet, and PC |
+| Developer Support & Bug Reports | Direct Reddit channel (`u/Elegant_Compote9073`) |
 | Donation surfaces | `Donate` page + floating support button |
 | PWA install banner | Installability support |
 | Disclaimer banner | Continuous verification reminder |
@@ -176,27 +183,21 @@ Dedicated COMEDK route also exists:
 
 ## 5. Complete Route Map
 
-`src/App.tsx` currently contains:
-
-- `36` route declarations
-- `34` unique route paths
-- duplicate declaration for `/college-cutoffs`
-
 ### 5.1 Active unique routes
 
 | Route | Component | Context |
 | --- | --- | --- |
 | `/` | `Homepage` | Standalone |
-| `/daily-challenge` | `DailyChallenge` | Standalone |
-| `/cutoff-clash` | `CutoffClash` | Standalone |
 | `/dashboard` | `Dashboard` | Layout |
+| `/forum` | `Forum` | Layout (Realtime Cloud Q&A) |
+| `/forum/thread/:threadId` | `ThreadDetailPage` | Layout (Thread details & replies) |
 | `/rank-predictor` | `ExamAwareRankPredictor` | Mode-aware |
 | `/cutoff-explorer` | `ExamAwareCutoffExplorer` | Mode-aware |
 | `/comedk-explorer` | `ComedkExplorer` | Layout |
 | `/college-finder` | `CollegeFinder` | Layout |
+| `/college-compare` | `CollegeCompare` | Layout (24 KEA categories) |
 | `/mock-simulator` | `MockSimulator` | Layout |
 | `/round-tracker` | `RoundTracker` | Layout |
-| `/college-compare` | `CollegeCompare` | Layout |
 | `/planner` | `Planner` | Layout |
 | `/documents` | `Documents` | Layout |
 | `/reviews` | `Reviews` | Layout |
@@ -208,16 +209,18 @@ Dedicated COMEDK route also exists:
 | `/cet-news` | `CETNews` | Layout |
 | `/ai-counselor` | `AICounselor` | Layout |
 | `/college/:collegeCode` | `CollegeDetail` | Layout |
-| `/privacy` | `PrivacyPolicy` | Layout |
-| `/terms` | `Terms` | Layout |
-| `/about` | `About` | Layout |
-| `/request-feature` | `FeatureRequest` | Layout |
-| `/pyq-test` | `PYQTest` | Layout |
-| `/donate` | `Donate` | Layout |
+| `/daily-challenge` | `DailyChallenge` | Standalone |
+| `/cutoff-clash` | `CutoffClash` | Standalone |
 | `/squad-finder` | `SquadFinder` | Standalone |
 | `/metro-mapper` | `MetroMapper` | Standalone |
 | `/bmtc-mapper` | `BmtcMapper` | Standalone |
 | `/hidden-gems` | `HiddenGems` | Standalone |
+| `/pyq-test` | `PYQTest` | Layout |
+| `/donate` | `Donate` | Layout |
+| `/privacy` | `PrivacyPolicy` | Layout |
+| `/terms` | `Terms` | Layout |
+| `/about` | `About` | Layout |
+| `/request-feature` | `FeatureRequest` | Layout |
 | `/admin` | `AdminHub` | Hidden/admin |
 | `*` | `NotFound` | Fallback |
 
