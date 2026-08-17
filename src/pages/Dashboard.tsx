@@ -37,8 +37,8 @@ import {
 import { Link } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { useExamMode } from "@/contexts/ExamModeContext"
-import AdUnit from "@/components/AdUnit"
 import { CommunityPollWidget } from "@/components/CommunityPollWidget"
+import { SpidermanCompanion } from "@/components/SpidermanCompanion"
 import { AdminSuggestionsService } from "@/lib/admin-suggestions-service"
 import { supabase } from "@/integrations/supabase/client"
 import {
@@ -412,6 +412,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* SPIDER-MAN COMPANION (ANDREW GARFIELD EDITION) */}
+      <SpidermanCompanion userRank={userProfile.rank} userCategory={userProfile.category} />
 
       {/* COMMUNITY LIVE POLL */}
       <CommunityPollWidget />
