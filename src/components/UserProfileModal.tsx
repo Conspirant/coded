@@ -119,19 +119,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 }) => {
   const navigate = useNavigate();
   const { examMode } = useExamMode();
-  let authContext: any = null;
-  try {
-    authContext = useAuth();
-  } catch {
-    // Fallback if rendered outside provider
-  }
-
-  const user = authContext?.user || null;
-  const authProfile = authContext?.profile || null;
-  const signInWithEmail = authContext?.signInWithEmail;
-  const signInWithGoogle = authContext?.signInWithGoogle;
-  const signOut = authContext?.signOut;
-  const updateUserProfile = authContext?.updateUserProfile;
+  const {
+    user,
+    profile: authProfile,
+    signInWithEmail,
+    signInWithGoogle,
+    signOut,
+    updateUserProfile,
+  } = useAuth();
 
   const [profile, setProfile] = useState<StoredUserProfile>(() => {
     try {
