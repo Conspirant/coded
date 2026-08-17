@@ -1260,11 +1260,21 @@ const CollegePredictor = () => {
     if (!selectedYear || cutoffs.length === 0) return
     const yearSpecificRounds = [...new Set(
       cutoffs
-        .filter(c => c.year === selectedYear)
+        .filter(c => String(c.year) === String(selectedYear))
         .map(c => c.round)
-    )].sort()
+    )].sort((a, b) => {
+      const getOrder = (r: string) => {
+        if (r === 'MOCK' || r === 'MOCK1' || r === 'MR1') return 0
+        if (r === 'MOCK2' || r === 'MOCK_R2' || r === 'MR2') return 0.5
+        if (r === 'R1') return 1
+        if (r === 'R2') return 2
+        if (r === 'R3' || r === 'EXT') return 3
+        return 99
+      }
+      return getOrder(a) - getOrder(b)
+    })
     setAvailableRounds(['ALL', ...yearSpecificRounds])
-    if (!['ALL', ...yearSpecificRounds].includes(selectedRound)) {
+    if (selectedRound && !['ALL', ...yearSpecificRounds].includes(selectedRound)) {
       setSelectedRound('ALL')
     }
   }, [selectedYear, cutoffs])

@@ -87,6 +87,29 @@ const normalizeRound = (round: string): string => {
     return round
 }
 
+const roundOrder = (round: string) => {
+    const r = normalizeRound(round)
+    if (r === 'MOCK' || r === 'MOCK1') return 0
+    if (r === 'MOCK2') return 0.5
+    if (r === 'R1') return 1
+    if (r === 'R2') return 2
+    if (r === 'R3') return 3
+    return 99
+}
+
+const getRoundDisplayName = (round: string) => {
+    const r = normalizeRound(round)
+    switch (r) {
+        case 'MOCK': return 'MOCK 1'
+        case 'MOCK1': return 'MOCK 1'
+        case 'MOCK2': return 'MOCK 2'
+        case 'R1': return 'R1'
+        case 'R2': return 'R2'
+        case 'R3': return 'R3'
+        default: return round
+    }
+}
+
 // ─── College Matrix Card ────────────────────────────────────
 interface CollegeMatrixProps {
     collegeCode: string
@@ -349,7 +372,7 @@ const CollegeMatrix = ({
 const CollegeCutoffs = () => {
     const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([])
     const [loading, setLoading] = useState(true)
-    const [selectedYear, setSelectedYear] = useState("2025")
+    const [selectedYear, setSelectedYear] = useState("2026")
     const [selectedRound, setSelectedRound] = useState("R1")
     const [selectedType, setSelectedType] = useState("All")
     const [selectedCategory, setSelectedCategory] = useState("ALL")
@@ -357,7 +380,6 @@ const CollegeCutoffs = () => {
     const [expandedColleges, setExpandedColleges] = useState<Set<string>>(new Set())
     const [searchQuery, setSearchQuery] = useState("")
     const [years, setYears] = useState<string[]>([])
-    const [rounds, setRounds] = useState<string[]>([])
     const [showFilters, setShowFilters] = useState(false)
 
     // Load cutoff data
@@ -409,11 +431,9 @@ const CollegeCutoffs = () => {
 
                 setAllCutoffs(cutoffs)
 
-                // Extract unique years & rounds
+                // Extract unique years
                 const uniqueYears = [...new Set(cutoffs.map(c => c.year))].sort((a, b) => b.localeCompare(a))
-                const uniqueRounds = [...new Set(cutoffs.map(c => normalizeRound(c.round)))].sort()
                 setYears(uniqueYears)
-                setRounds(uniqueRounds)
 
                 // Default to latest year
                 if (uniqueYears.length > 0) setSelectedYear(uniqueYears[0])
@@ -426,6 +446,21 @@ const CollegeCutoffs = () => {
 
         loadData()
     }, [])
+
+    // Dynamic available rounds for the selected year only
+    const availableRounds = useMemo(() => {
+        if (!selectedYear || allCutoffs.length === 0) return []
+        const yearCutoffs = allCutoffs.filter(c => String(c.year) === String(selectedYear))
+        const unique = [...new Set(yearCutoffs.map(c => normalizeRound(c.round)))]
+        return unique.sort((a, b) => roundOrder(a) - roundOrder(b))
+    }, [allCutoffs, selectedYear])
+
+    // Ensure selectedRound is valid for the chosen year
+    useEffect(() => {
+        if (availableRounds.length > 0 && !availableRounds.includes(selectedRound)) {
+            setSelectedRound(availableRounds[0])
+        }
+    }, [availableRounds, selectedRound])
 
     // Build college list
     const colleges = useMemo(() => {
@@ -597,12 +632,12 @@ const CollegeCutoffs = () => {
                         </div>
 
                         {/* Round */}
-                        <div className="w-28">
+                        <div className="w-32">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Round</label>
                             <Select value={selectedRound} onValueChange={setSelectedRound}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
                                 <SelectContent>
-                                    {rounds.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                                    {availableRounds.map(r => <SelectItem key={r} value={r}>{getRoundDisplayName(r)}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -684,7 +719,7 @@ const CollegeCutoffs = () => {
                                     <Select value={selectedRound} onValueChange={setSelectedRound}>
                                         <SelectTrigger className="bg-white/5 border-white/10 h-10 w-full"><SelectValue /></SelectTrigger>
                                         <SelectContent>
-                                            {rounds.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+                                            {availableRounds.map(r => <SelectItem key={r} value={r}>{getRoundDisplayName(r)}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
                                 </div>

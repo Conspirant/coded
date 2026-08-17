@@ -396,6 +396,24 @@ const CutoffExplorer = () => {
     loadCutoffData()
   }, [])
 
+  // Dynamically update available rounds when selectedYear changes
+  useEffect(() => {
+    if (allCutoffs.length === 0) return
+    const relevantCutoffs = (selectedYear && selectedYear !== 'ALL')
+      ? allCutoffs.filter(item => String(item.year) === String(selectedYear))
+      : allCutoffs
+
+    const uniqueRounds = [...new Set(relevantCutoffs.map(item => normalizeRound(item.round)))]
+      .sort((a, b) => roundOrder(a) - roundOrder(b))
+
+    const newRounds = ['ALL', ...uniqueRounds]
+    setAvailableRounds(newRounds)
+
+    if (selectedRound && selectedRound !== 'ALL' && !uniqueRounds.includes(normalizeRound(selectedRound))) {
+      setSelectedRound('ALL')
+    }
+  }, [selectedYear, allCutoffs])
+
   useEffect(() => {
     if (allCutoffs.length > 0) {
       filterData()

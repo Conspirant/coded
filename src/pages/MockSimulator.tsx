@@ -699,20 +699,28 @@ const MockSimulator = () => {
   // Update available rounds when year changes
   useEffect(() => {
     if (selectedYear && cutoffs.length > 0) {
+      const getOrder = (r: string) => {
+        const up = r.toUpperCase()
+        if (up === 'MOCK' || up === 'MOCK1' || up === 'MR1') return 0
+        if (up === 'MOCK2' || up === 'MOCK_R2' || up === 'MR2') return 0.5
+        if (up === 'R1') return 1
+        if (up === 'R2') return 2
+        if (up === 'R3' || up === 'EXT') return 3
+        const num = parseInt(up.replace(/\D/g, '')) || 0
+        return num || 99
+      }
+
       const rounds = [...new Set(
         cutoffs
-          .filter(c => c.year === selectedYear)
+          .filter(c => String(c.year) === String(selectedYear))
           .map(c => c.round)
-      )].sort((a, b) => {
-        // Sort rounds naturally (Round 1, Round 2...)
-        const numA = parseInt(a.replace(/\D/g, '')) || 0
-        const numB = parseInt(b.replace(/\D/g, '')) || 0
-        return numA - numB
-      })
+      )].sort((a, b) => getOrder(a) - getOrder(b))
 
       setAvailableRounds(rounds)
       if (rounds.length > 0) {
-        setSelectedRound(rounds[0])
+        if (!selectedRound || !rounds.includes(selectedRound)) {
+          setSelectedRound(rounds[0])
+        }
       } else {
         setSelectedRound("")
       }

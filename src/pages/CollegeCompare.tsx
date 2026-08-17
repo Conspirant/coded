@@ -45,6 +45,38 @@ const cleanCourseName = (course: string): string => {
 
 const getCourseKey = (course: string): string => cleanCourseName(course).toLowerCase().trim()
 
+const normalizeRound = (round: string): string => {
+  const r = round.toUpperCase().trim()
+  if (r === "EXT" || r.includes("R3") || r.includes("EXTENDED") || r.includes("ROUND 3")) return "R3"
+  if (r === "MOCK2" || r === "MOCK 2" || r === "MOCK ROUND 2" || r === "MOCK R2" || r === "MOCK_R2") return "MOCK2"
+  if (r === "MOCK" || r === "MOCK 1" || r === "MOCK1" || r === "MOCK ROUND 1" || r.includes("MOCK")) return "MOCK"
+  if (r === "R2" || r.includes("ROUND 2")) return "R2"
+  if (r === "R1" || r.includes("ROUND 1")) return "R1"
+  return round
+}
+
+const roundOrder = (round: string) => {
+  const r = normalizeRound(round)
+  if (r === 'MOCK' || r === 'MOCK1') return 0
+  if (r === 'MOCK2') return 0.5
+  if (r === 'R1') return 1
+  if (r === 'R2') return 2
+  if (r === 'R3') return 3
+  return 99
+}
+
+const getRoundDisplayName = (round: string) => {
+  const r = normalizeRound(round)
+  switch (r) {
+    case 'MOCK': return 'Mock Round 1'
+    case 'MOCK2': return 'Mock Round 2'
+    case 'R1': return 'Round 1'
+    case 'R2': return 'Round 2'
+    case 'R3': return 'Round 3'
+    default: return round
+  }
+}
+
 const CollegeCompare = () => {
   const [selectedColleges, setSelectedColleges] = useState<CollegeInfo[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -57,6 +89,25 @@ const CollegeCompare = () => {
   const [cutoffYear, setCutoffYear] = useState("2026")
   const [cutoffRound, setCutoffRound] = useState("R1")
   const [cutoffCategory, setCutoffCategory] = useState("GM")
+
+  const availableYears = useMemo(() => {
+    if (cutoffData.length === 0) return ['2026', '2025', '2024', '2023']
+    const unique = [...new Set(cutoffData.map(c => String(c.year)))].sort((a, b) => b.localeCompare(a))
+    return unique.length > 0 ? unique : ['2026', '2025', '2024', '2023']
+  }, [cutoffData])
+
+  const availableRounds = useMemo(() => {
+    if (cutoffData.length === 0 || !cutoffYear) return ['MOCK', 'MOCK2', 'R1']
+    const yearCutoffs = cutoffData.filter(c => String(c.year) === String(cutoffYear))
+    const unique = [...new Set(yearCutoffs.map(c => normalizeRound(c.round)))]
+    return unique.sort((a, b) => roundOrder(a) - roundOrder(b))
+  }, [cutoffData, cutoffYear])
+
+  useEffect(() => {
+    if (availableRounds.length > 0 && !availableRounds.includes(normalizeRound(cutoffRound))) {
+      setCutoffRound(availableRounds[0])
+    }
+  }, [availableRounds, cutoffRound])
 
   // Load cutoffs on mount
   useEffect(() => {
@@ -202,8 +253,8 @@ const CollegeCompare = () => {
     const codes = activeColleges.map(c => c.code.toUpperCase())
     return cutoffData.filter(c =>
       codes.includes(c.institute_code.toUpperCase()) &&
-      c.year === cutoffYear &&
-      c.round === cutoffRound &&
+      String(c.year) === String(cutoffYear) &&
+      normalizeRound(c.round) === normalizeRound(cutoffRound) &&
       c.category.toUpperCase() === cutoffCategory.toUpperCase()
     )
   }, [activeColleges, cutoffData, cutoffYear, cutoffRound, cutoffCategory])
@@ -212,8 +263,8 @@ const CollegeCompare = () => {
   const getCollegeCutoffs = (collegeCode: string) => {
     const filtered = cutoffData.filter(c =>
       c.institute_code.toUpperCase() === collegeCode.toUpperCase() &&
-      c.year === cutoffYear &&
-      c.round === cutoffRound &&
+      String(c.year) === String(cutoffYear) &&
+      normalizeRound(c.round) === normalizeRound(cutoffRound) &&
       c.category.toUpperCase() === cutoffCategory.toUpperCase()
     )
 
@@ -605,25 +656,23 @@ const CollegeCompare = () => {
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="2026" className="text-xs">2026</SelectItem>
-                      <SelectItem value="2025" className="text-xs">2025</SelectItem>
-                      <SelectItem value="2024" className="text-xs">2024</SelectItem>
-                      <SelectItem value="2023" className="text-xs">2023</SelectItem>
+                      {availableYears.map(y => (
+                        <SelectItem key={y} value={y} className="text-xs">{y}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* Round Select */}
-                <div className="w-28">
+                <div className="w-32">
                   <Select value={cutoffRound} onValueChange={setCutoffRound}>
                     <SelectTrigger className="bg-slate-950/40 border-white/10 h-8.5 text-xs">
                       <SelectValue placeholder="Round" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="R1" className="text-xs">Round 1</SelectItem>
-                      <SelectItem value="R2" className="text-xs">Round 2</SelectItem>
-                      <SelectItem value="R3" className="text-xs">Round 3</SelectItem>
-                      <SelectItem value="MOCK" className="text-xs">Mock Round</SelectItem>
+                      {availableRounds.map(r => (
+                        <SelectItem key={r} value={r} className="text-xs">{getRoundDisplayName(r)}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

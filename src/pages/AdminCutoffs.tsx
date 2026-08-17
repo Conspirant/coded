@@ -745,7 +745,29 @@ const AdminCutoffs = () => {
 
     // Unique values for filters
     const years = useMemo(() => AdminCutoffService.getUniqueYears(), [data])
-    const rounds = useMemo(() => AdminCutoffService.getUniqueRounds(), [data])
+    const rounds = useMemo(() => {
+        const relevant = (filterYear && filterYear !== 'ALL')
+            ? data.filter(e => String(e.year) === String(filterYear))
+            : data
+        const unique = [...new Set(relevant.map(e => e.round))].filter(Boolean) as string[]
+        const getOrder = (r: string) => {
+            const up = r.toUpperCase()
+            if (up === 'MOCK' || up === 'MOCK1') return 0
+            if (up === 'MOCK2') return 0.5
+            if (up === 'R1') return 1
+            if (up === 'R2') return 2
+            if (up === 'R3') return 3
+            return 99
+        }
+        return unique.sort((a, b) => getOrder(a) - getOrder(b))
+    }, [data, filterYear])
+
+    useEffect(() => {
+        if (filterRound !== 'ALL' && !rounds.includes(filterRound)) {
+            setFilterRound('ALL')
+        }
+    }, [rounds, filterRound])
+
     const categories = useMemo(() => AdminCutoffService.getUniqueCategories(), [data])
 
     // Handlers

@@ -260,7 +260,6 @@ const ComedkExplorer = () => {
           });
 
         setAvailableYears(["ALL", ...years]);
-        setAvailableRounds(["ALL", ...rounds]);
         setAvailableCategories(["ALL", ...categories]);
         setAvailableInstitutes(institutes);
         setAvailableCourses(courses);
@@ -278,6 +277,24 @@ const ComedkExplorer = () => {
 
     loadData();
   }, [toast]);
+
+  // Dynamically update available rounds when selectedYear changes
+  useEffect(() => {
+    if (!allCutoffs.length) return;
+    const relevant = (selectedYear && selectedYear !== "ALL")
+      ? allCutoffs.filter((row) => String(row.year) === selectedYear)
+      : allCutoffs;
+
+    const rounds = [...new Set(relevant.map((row) => normalizeRound(row.round)))]
+      .sort((a, b) => roundOrder(a) - roundOrder(b));
+
+    const newRounds = ["ALL", ...rounds];
+    setAvailableRounds(newRounds);
+
+    if (selectedRound && selectedRound !== "ALL" && !rounds.includes(normalizeRound(selectedRound))) {
+      setSelectedRound("ALL");
+    }
+  }, [allCutoffs, selectedYear]);
 
   useEffect(() => {
     if (!allCutoffs.length) return;
