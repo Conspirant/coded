@@ -112,25 +112,31 @@ Dedicated COMEDK route also exists:
 | --- | --- | --- |
 | Rank Predictor | KCET expected-rank modeling from marks + PUC% | Share/download workflows included |
 | COMEDK Rank Predictor | COMEDK marks-to-rank model | Community point driven (2025 set) |
+| Cutoff Predictor (`/cutoff-predictor`, `/round-predictor`) | Mathematical round-by-round cutoff drift predictor | Simulates cutoff shifts from Mock to Round 1, Round 2, and Extended Round |
+| Cutoff Trends (`/cutoff-trends`) | Multi-year cutoff trend visualization | Interactive Recharts multi-year (2023–2025) progression graphs |
 | Cutoff Explorer | High-volume KCET cutoff search/filter | Source-linked PDF mapping support |
 | COMEDK Explorer | COMEDK-focused cutoff exploration | GM/HKR/KKR + round/year filtering |
-| College Finder | Rank/category based college-branch matching | Bookmarking, comparison, export |
+| College Predictor (`/college-predictor`) | Rank/category based college-branch matching | Probability sorting, bookmarking, and export |
 | College Cutoffs | College-first matrix view | Category group filtering |
+| College Info Hub (`/colleges`) | Directory of 232+ engineering institutions | Accreditations, contact info, and cutoff sheets |
 | College Detail | Per-college trend context | Branch/cutoff detail surface |
 
 ### 4.2 Planning and execution support
 
 | Feature | Purpose | Notes |
 | --- | --- | --- |
+| Fee Calculator (`/fee-calculator`) | Comprehensive 4-year tuition & living expense calculator | CET vs Management vs COMEDK fee structures + hostel/mess estimates |
 | Mock Simulator | Preference-order simulation | Beta-toned, uses historical data |
 | Planner | Option-entry PDF parse + handoff | Wrapped in error boundary |
 | Round Tracker | Process timeline guidance | Planning support |
-| Documents | Counseling checklist | Readiness support |
+| Documents (`/documents`) | Counseling checklist | Readiness support |
+| Mock Verification (`/document-verification`) | Interactive KEA document verification simulator | Validates Rural/Kannada BEO seals, caste/income certificates |
 
 ### 4.3 Knowledge and guidance
 
 | Feature | Purpose |
 | --- | --- |
+| Blog & Insights (`/blog`, `/blog/:slug`) | In-depth counseling articles, branch reviews, and admission guidance |
 | Info Centre | Long-form counseling explanations |
 | CET News | Curated/generated KCET update feed |
 | Materials | Resource shelf |
@@ -143,6 +149,7 @@ Dedicated COMEDK route also exists:
 | Discussion Forum (`/forum`) | Realtime community Q&A hub for aspirants | Supabase Cloud persistence + Realtime broadcast (`kcet-forum-realtime`), verified student badges, upvoting, categories |
 | Thread Detail (`/forum/thread/:id`) | Deep thread view with realtime answers | Upvoting, verified answers, student author context |
 | Student Profile Hub | Cloud-synced candidate profile & cross-device Pro sync | Google OAuth + Magic Link, saves rank/PCM marks/target colleges |
+| Supporters Wall (`/supporters`) | Public recognition wall for contributors | Realtime cloud list of donors and community backers |
 | Reviews | College reviews, ratings, filtering | Community insights & verified student opinions |
 | Review Reports | Community moderation intake | Operational triage |
 | Feature Request | Product feedback channel | Student-submitted suggestions |
@@ -156,6 +163,9 @@ Dedicated COMEDK route also exists:
 | Daily Challenge | Daily question flow with streak persistence |
 | PYQ Test | Chapter/quiz-based previous-year practice |
 | Cutoff Clash | Higher/lower style cutoff intuition game |
+| Calibrate 2027 Simulator | Early marks-to-rank calibration for next-gen aspirants |
+| Focus Music Player | Built-in Lo-Fi and ambient study audio player |
+| Global Community Polls | Live student voting on cutoffs, rank inflation, and exam difficulty |
 
 ### 4.6 Labs and practical decision surfaces
 
@@ -175,6 +185,7 @@ Dedicated COMEDK route also exists:
 | Keyboard HUD (`?`) | Shortcut discoverability |
 | Cross-Device Pro Sync | Auto-restores Pro status across mobile, tablet, and PC |
 | Developer Support & Bug Reports | Direct Reddit channel (`u/Elegant_Compote9073`) |
+| Presence & Abuse Shield | Realtime visitor counts and security protection |
 | Donation surfaces | `Donate` page + floating support button |
 | PWA install banner | Installability support |
 | Disclaimer banner | Continuous verification reminder |
@@ -190,25 +201,32 @@ Dedicated COMEDK route also exists:
 | `/` | `Homepage` | Standalone |
 | `/dashboard` | `Dashboard` | Layout |
 | `/forum` | `Forum` | Layout (Realtime Cloud Q&A) |
-| `/forum/thread/:threadId` | `ThreadDetailPage` | Layout (Thread details & replies) |
+| `/forum/:postId` | `ThreadDetailPage` | Layout (Thread details & replies) |
 | `/rank-predictor` | `ExamAwareRankPredictor` | Mode-aware |
 | `/cutoff-explorer` | `ExamAwareCutoffExplorer` | Mode-aware |
 | `/comedk-explorer` | `ComedkExplorer` | Layout |
-| `/college-finder` | `CollegeFinder` | Layout |
+| `/college-predictor` | `CollegePredictor` | Layout |
+| `/cutoff-predictor` | `RoundPredictor` | Layout (Round drift modeling) |
+| `/round-predictor` | `RoundPredictor` | Layout (Alias) |
+| `/cutoff-trends` | `CutoffTrends` | Layout (Multi-year graph) |
 | `/college-compare` | `CollegeCompare` | Layout (24 KEA categories) |
+| `/fee-calculator` | `FeeCalculator` | Layout (4-year cost model) |
 | `/mock-simulator` | `MockSimulator` | Layout |
 | `/round-tracker` | `RoundTracker` | Layout |
 | `/planner` | `Planner` | Layout |
 | `/documents` | `Documents` | Layout |
+| `/document-verification` | `MockVerification` | Layout (KEA verification checklist) |
+| `/colleges` | `CollegeInfoHub` | Layout (232+ college directory) |
+| `/college-cutoffs` | `CollegeCutoffs` | Layout |
+| `/college/:collegeCode` | `CollegeDetail` | Layout |
 | `/reviews` | `Reviews` | Layout |
 | `/reviews/:collegeCode` | `CollegeReviewPage` | Layout |
-| `/college-list` | `CollegeCutoffs` | Layout alias |
-| `/college-cutoffs` | `CollegeCutoffs` | Layout |
+| `/blog` | `BlogList` | Layout (Counseling articles) |
+| `/blog/:slug` | `BlogPostDetail` | Layout |
 | `/info-centre` | `InfoCentre` | Layout |
 | `/materials` | `Materials` | Layout |
 | `/cet-news` | `CETNews` | Layout |
 | `/ai-counselor` | `AICounselor` | Layout |
-| `/college/:collegeCode` | `CollegeDetail` | Layout |
 | `/daily-challenge` | `DailyChallenge` | Standalone |
 | `/cutoff-clash` | `CutoffClash` | Standalone |
 | `/squad-finder` | `SquadFinder` | Standalone |
@@ -216,9 +234,11 @@ Dedicated COMEDK route also exists:
 | `/bmtc-mapper` | `BmtcMapper` | Standalone |
 | `/hidden-gems` | `HiddenGems` | Standalone |
 | `/pyq-test` | `PYQTest` | Layout |
+| `/supporters` | `Supporters` | Layout (Supporter recognition) |
 | `/donate` | `Donate` | Layout |
 | `/privacy` | `PrivacyPolicy` | Layout |
 | `/terms` | `Terms` | Layout |
+| `/payment-policy` | `PaymentPolicy` | Layout |
 | `/about` | `About` | Layout |
 | `/request-feature` | `FeatureRequest` | Layout |
 | `/admin` | `AdminHub` | Hidden/admin |
