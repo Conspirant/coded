@@ -28,7 +28,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { DonationCertificateModal } from "./DonationCertificateModal";
-import { Copy, CheckCheck, LogIn, Sparkles, ArrowRight } from "lucide-react";
+import { Copy, CheckCheck, LogIn, Sparkles, ArrowRight, ExternalLink } from "lucide-react";
 
 interface PremiumUpgradeModalProps {
   open: boolean;
