@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,160 +16,110 @@ import {
   CheckCircle2,
   Activity,
   Flame,
-  Radio
+  Globe
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { PopupService } from "@/lib/popup-service";
+import { SitePopup } from "@/types/popup";
 
-export interface SitePopupConfig {
-  id?: string;
-  enabled: boolean;
-  type: "maintenance" | "maintenance_announcement" | "feature_update" | "general_announcement" | "announcement";
-  title: string;
-  subtitle?: string;
-  message: string;
-  badgeText?: string;
-  icon?: string;
-  actionText?: string;
-  actionUrl?: string;
-  dismissible: boolean;
-  secondaryActionText?: string;
-  version?: number;
-  scheduled_at?: string;
-  expires_at?: string;
-}
+export type SitePopupConfig = SitePopup;
 
 export function DynamicPopupManager({
   isPreview = false,
   previewConfig = null
 }: {
   isPreview?: boolean;
-  previewConfig?: SitePopupConfig | null;
+  previewConfig?: SitePopup | null;
 }) {
-  const [popup, setPopup] = useState<SitePopupConfig | null>(null);
+  const [activePopup, setActivePopup] = useState<SitePopup | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [actionDone, setActionDone] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const evaluateAndShowPopup = useCallback(async () => {
     if (isPreview && previewConfig) {
-      setPopup(previewConfig);
+      setActivePopup(previewConfig);
       setIsOpen(true);
       return;
     }
 
-    const fetchConfig = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("ugcet_results_cache")
-          .select("results_json")
-          .eq("appl_no", "CONFIG:site_popup_modal")
-          .maybeSingle();
+    try {
+      const activeList = await PopupService.getActivePopups();
+      const currentPath = location.pathname;
 
-        if (!error && data?.results_json) {
-          const cfg = data.results_json as SitePopupConfig;
+      // Find the first matching enabled popup for this page
+      const match = activeList.find((popup) => {
+        if (!popup.enabled) return false;
+        
+        // Match target route
+        const targets = popup.targetPages && popup.targetPages.length > 0 ? popup.targetPages : ["*"];
+        const matchesRoute = targets.some((t) => {
+          const cleanTarget = t.trim();
+          if (cleanTarget === "*" || cleanTarget === "") return true;
+          if (cleanTarget.endsWith("*")) return currentPath.startsWith(cleanTarget.replace(/\*$/, ""));
+          return cleanTarget === currentPath || `${cleanTarget}/` === currentPath || currentPath === cleanTarget;
+        });
 
-          if (cfg.enabled) {
-            // Check expiry
-            if (cfg.expires_at && new Date(cfg.expires_at) < new Date()) {
-              setIsOpen(false);
-              return;
-            }
+        if (!matchesRoute) return false;
 
-            // Check if dismissed
-            const dismissedKey = `dismissed_popup_${cfg.id || "default"}_v${cfg.version || 1}`;
-            const isDismissed = localStorage.getItem(dismissedKey);
+        // If forced, show regardless of prior dismissal
+        if (popup.isForced) return true;
 
-            if (!isDismissed) {
-              setPopup(cfg);
-              setIsOpen(true);
-            }
-          }
-        }
-      } catch (err) {
-        console.error("Failed to load site popup modal config:", err);
+        // Check if dismissed
+        const dismissedKey = `dismissed_popup_${popup.id}_${popup.updatedAt || popup.createdAt || "v1"}`;
+        const isDismissed = localStorage.getItem(dismissedKey);
+        return !isDismissed;
+      });
+
+      if (match) {
+        setActivePopup(match);
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+        setActivePopup(null);
       }
-    };
+    } catch (e) {
+      console.error("Error evaluating site popups:", e);
+    }
+  }, [isPreview, previewConfig, location.pathname]);
 
-    fetchConfig();
+  useEffect(() => {
+    evaluateAndShowPopup();
 
-    // Subscribe to realtime changes
-    const channel = supabase
-      .channel("site-popup-modal-realtime")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "ugcet_results_cache",
-          filter: "appl_no=eq.CONFIG:site_popup_modal"
-        },
-        (payload) => {
-          const newCfg = (payload.new as any)?.results_json as SitePopupConfig;
-          if (newCfg?.enabled) {
-            const dismissedKey = `dismissed_popup_${newCfg.id || "default"}_v${newCfg.version || 1}`;
-            const isDismissed = localStorage.getItem(dismissedKey);
-            if (!isDismissed) {
-              setPopup(newCfg);
-              setIsOpen(true);
-            }
-          } else {
-            setIsOpen(false);
-          }
-        }
-      )
-      .on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "ugcet_results_cache",
-          filter: "appl_no=eq.CONFIG:site_popup_modal"
-        },
-        (payload) => {
-          const newCfg = (payload.new as any)?.results_json as SitePopupConfig;
-          if (newCfg?.enabled) {
-            const dismissedKey = `dismissed_popup_${newCfg.id || "default"}_v${newCfg.version || 1}`;
-            const isDismissed = localStorage.getItem(dismissedKey);
-            if (!isDismissed) {
-              setPopup(newCfg);
-              setIsOpen(true);
-            }
-          } else {
-            setIsOpen(false);
-          }
-        }
-      )
-      .subscribe();
+    // Subscribe to admin updates in real-time
+    const unsubscribe = PopupService.subscribeToPopups(() => {
+      evaluateAndShowPopup();
+    });
 
     return () => {
-      supabase.removeChannel(channel);
+      unsubscribe();
     };
-  }, [isPreview, previewConfig]);
+  }, [evaluateAndShowPopup]);
 
   const handleDismiss = () => {
-    if (popup) {
-      const dismissedKey = `dismissed_popup_${popup.id || "default"}_v${popup.version || 1}`;
+    if (activePopup) {
+      const dismissedKey = `dismissed_popup_${activePopup.id}_${activePopup.updatedAt || activePopup.createdAt || "v1"}`;
       localStorage.setItem(dismissedKey, "true");
     }
     setIsOpen(false);
   };
 
   const handleAction = () => {
-    if (!popup?.actionUrl) return;
+    if (!activePopup?.actionUrl) return;
 
     setActionDone(true);
     setTimeout(() => {
-      if (popup.actionUrl?.startsWith("http")) {
-        window.open(popup.actionUrl, "_blank", "noopener,noreferrer");
+      if (activePopup.actionUrl?.startsWith("http")) {
+        window.open(activePopup.actionUrl, "_blank", "noopener,noreferrer");
       } else {
-        navigate(popup.actionUrl!);
+        navigate(activePopup.actionUrl!);
       }
       handleDismiss();
     }, 250);
   };
 
-  if (!isOpen || !popup) return null;
+  if (!isOpen || !activePopup) return null;
 
   return (
     <div
@@ -180,7 +130,7 @@ export function DynamicPopupManager({
       className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-300"
     >
       <PopupCardContent
-        popup={popup}
+        popup={activePopup}
         onDismiss={handleDismiss}
         onAction={handleAction}
         actionDone={actionDone}
@@ -197,7 +147,7 @@ export function PopupCardContent({
   actionDone,
   isPreview = false
 }: {
-  popup: SitePopupConfig | any;
+  popup: SitePopup | any;
   onDismiss?: () => void;
   onAction?: () => void;
   actionDone?: boolean;
@@ -350,7 +300,7 @@ export function PopupCardContent({
         {/* Structured Bullets / Feature Highlights */}
         {bullets.length > 0 && (
           <div className="space-y-2 pt-1">
-            {bullets.map((bullet, idx) => (
+            {bullets.map((bullet: string, idx: number) => (
               <div
                 key={idx}
                 className="flex items-start gap-3 p-3 rounded-xl border border-zinc-800/60 bg-zinc-900/30 text-xs text-zinc-200 hover:border-zinc-700/80 transition-colors"
