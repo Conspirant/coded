@@ -629,19 +629,42 @@ const CollegeCompare = () => {
                 </div>
 
                 {/* Category Select */}
-                <div className="w-24">
+                <div className="w-32 sm:w-44">
                   <Select value={cutoffCategory} onValueChange={setCutoffCategory}>
                     <SelectTrigger className="bg-slate-950/40 border-white/10 h-8.5 text-xs">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="GM" className="text-xs">GM</SelectItem>
-                      <SelectItem value="GMK" className="text-xs">GMK</SelectItem>
-                      <SelectItem value="GMR" className="text-xs">GMR</SelectItem>
-                      <SelectItem value="2AG" className="text-xs">2AG</SelectItem>
-                      <SelectItem value="3BG" className="text-xs">3BG</SelectItem>
-                      <SelectItem value="SCG" className="text-xs">SCG</SelectItem>
-                      <SelectItem value="STG" className="text-xs">STG</SelectItem>
+                    <SelectContent className="max-h-64 overflow-y-auto bg-slate-950 border-white/10">
+                      {[
+                        { code: "GM", label: "GM - General Merit" },
+                        { code: "GMK", label: "GMK - General (Kannada)" },
+                        { code: "GMR", label: "GMR - General (Rural)" },
+                        { code: "1G", label: "1G - Category 1 (General)" },
+                        { code: "1K", label: "1K - Category 1 (Kannada)" },
+                        { code: "1R", label: "1R - Category 1 (Rural)" },
+                        { code: "2AG", label: "2AG - Category 2A (General)" },
+                        { code: "2AK", label: "2AK - Category 2A (Kannada)" },
+                        { code: "2AR", label: "2AR - Category 2A (Rural)" },
+                        { code: "2BG", label: "2BG - Category 2B (General)" },
+                        { code: "2BK", label: "2BK - Category 2B (Kannada)" },
+                        { code: "2BR", label: "2BR - Category 2B (Rural)" },
+                        { code: "3AG", label: "3AG - Category 3A (General)" },
+                        { code: "3AK", label: "3AK - Category 3A (Kannada)" },
+                        { code: "3AR", label: "3AR - Category 3A (Rural)" },
+                        { code: "3BG", label: "3BG - Category 3B (General)" },
+                        { code: "3BK", label: "3BK - Category 3B (Kannada)" },
+                        { code: "3BR", label: "3BR - Category 3B (Rural)" },
+                        { code: "SCG", label: "SCG - Scheduled Caste (General)" },
+                        { code: "SCK", label: "SCK - Scheduled Caste (Kannada)" },
+                        { code: "SCR", label: "SCR - Scheduled Caste (Rural)" },
+                        { code: "STG", label: "STG - Scheduled Tribe (General)" },
+                        { code: "STK", label: "STK - Scheduled Tribe (Kannada)" },
+                        { code: "STR", label: "STR - Scheduled Tribe (Rural)" },
+                      ].map((cat) => (
+                        <SelectItem key={cat.code} value={cat.code} className="text-xs">
+                          {cat.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
