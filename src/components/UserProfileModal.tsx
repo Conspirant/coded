@@ -40,6 +40,8 @@ import {
   ShieldCheck,
   Building,
   Layers,
+  MessageSquare,
+  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -771,12 +773,34 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     onOpenChange(false);
                     onUpgradeClick();
                   }}
-                  className="h-7 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="h-7 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
                 >
                   ₹119
                 </Button>
               </div>
             )}
+
+            {/* Developer Support & Bug Report Card */}
+            <div className="p-3 rounded-md border border-orange-500/25 bg-orange-950/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+              <div className="space-y-0.5">
+                <div className="text-xs font-bold text-orange-400 flex items-center gap-1.5">
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  Developer Support & Bug Report
+                </div>
+                <p className="text-[10.5px] text-muted-foreground">
+                  Found a bug, have a payment issue, or need a free code? Contact directly on Reddit:
+                </p>
+              </div>
+              <a
+                href="https://www.reddit.com/user/Elegant_Compote9073/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-7 px-3 text-[11px] font-bold rounded-md bg-orange-600 hover:bg-orange-500 text-white flex items-center justify-center gap-1.5 shadow-sm shadow-orange-600/20 transition-all shrink-0 cursor-pointer"
+              >
+                <span>u/Elegant_Compote9073</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
           </TabsContent>
         </Tabs>
       </DialogContent>

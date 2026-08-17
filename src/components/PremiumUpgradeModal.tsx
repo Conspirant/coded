@@ -280,17 +280,38 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                     })}
                   </div>
 
-                  {/* Developer note */}
-                  <div className="text-[10.5px] leading-relaxed text-zinc-400 bg-zinc-900/30 border border-zinc-800 rounded-xl p-3 space-y-2">
+                  {/* Developer note & Reddit Contact */}
+                  <div className="text-[10.5px] leading-relaxed text-zinc-400 bg-zinc-900/40 border border-zinc-800 rounded-xl p-3 space-y-2.5">
                     <p className="font-semibold text-zinc-200">Hosting Resource Update</p>
                     <p>
                       Due to high traffic, nominal contributions help sustain server infrastructure costs. A small contribution of <strong className="text-emerald-400">₹19</strong> grants full access to all premium tools.
                     </p>
-                    <div className="p-2.5 rounded-lg border border-zinc-800 bg-zinc-900/50 space-y-1">
-                      <p className="font-semibold text-zinc-300">Need free access?</p>
-                      <p>
-                        If you prefer not to pay or cannot afford to contribute, you can receive a <strong>100% free access code</strong>. Please join our <a href="https://discord.gg/QZcjtJKjYJ" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold underline transition-colors">Discord Server</a> or message the developer on <a href="https://www.reddit.com/user/Elegant_Compote9073/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 font-bold underline transition-colors">Reddit</a> to get a key directly. We understand student budgets and truly never wanted to place a financial burden on anyone, so please feel entirely comfortable requesting a free access code without hesitation.
+
+                    {/* Highly Visible Reddit & Discord Support Card */}
+                    <div className="p-3 rounded-xl border border-orange-500/30 bg-orange-950/20 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs text-orange-400 flex items-center gap-1.5">
+                          <MessageSquare className="h-3.5 w-3.5" />
+                          Found a bug or need a free code?
+                        </span>
+                        <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/30 text-[9px] font-mono">
+                          DIRECT DEV SUPPORT
+                        </Badge>
+                      </div>
+                      <p className="text-[11px] text-zinc-300 leading-relaxed">
+                        If you encounter any payment/sync issue or need a 100% free student access code, message the developer directly on Reddit:
                       </p>
+                      <div className="flex items-center gap-2 pt-0.5">
+                        <a
+                          href="https://www.reddit.com/user/Elegant_Compote9073/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-orange-600/30 transition-all cursor-pointer"
+                        >
+                          <span>DM on Reddit: u/Elegant_Compote9073</span>
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
                     </div>
                   </div>
 

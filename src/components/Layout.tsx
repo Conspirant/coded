@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2, Copy } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2, Copy, MessageSquare, ExternalLink } from "lucide-react"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -51,7 +51,7 @@ export function Layout({ children }: LayoutProps) {
       try {
         const saved = localStorage.getItem("kcet_user_profile")
         if (saved) setUserProfileData(JSON.parse(saved))
-      } catch {}
+      } catch { }
     }
     window.addEventListener("kcet_user_profile_updated", handleProfileUpdate)
     window.addEventListener("storage", handleProfileUpdate)
@@ -141,8 +141,8 @@ export function Layout({ children }: LayoutProps) {
             <div className="hidden md:inline-flex relative h-8 w-[9.5rem] items-center rounded-md border border-border bg-muted p-0.5">
               <span
                 className={`absolute left-0.5 h-7 w-[4.5rem] rounded transition-all duration-200 ease-in-out ${examMode === "COMEDK"
-                    ? "translate-x-[4.5rem] bg-amber-500 text-black shadow-xs"
-                    : "translate-x-0 bg-primary text-primary-foreground shadow-xs"
+                  ? "translate-x-[4.5rem] bg-amber-500 text-black shadow-xs"
+                  : "translate-x-0 bg-primary text-primary-foreground shadow-xs"
                   }`}
               />
               <button
@@ -187,8 +187,8 @@ export function Layout({ children }: LayoutProps) {
                     <div className="relative inline-flex h-9 w-[10.5rem] items-center rounded-md border border-border bg-muted p-0.5">
                       <span
                         className={`absolute left-0.5 h-8 w-[5rem] rounded transition-all duration-200 ease-in-out ${examMode === "COMEDK"
-                            ? "translate-x-[5rem] bg-amber-500"
-                            : "translate-x-0 bg-primary"
+                          ? "translate-x-[5rem] bg-amber-500"
+                          : "translate-x-0 bg-primary"
                           }`}
                       />
                       <button
@@ -376,11 +376,34 @@ export function Layout({ children }: LayoutProps) {
                             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs h-8 rounded-md flex items-center justify-center gap-1.5"
                           >
                             <Crown className="h-3.5 w-3.5" />
-                            Unlock Pro (₹119)
+                            Unlock Pro (₹19)
                           </Button>
                         </div>
                       </div>
                     )}
+
+                    {/* Developer Support & Bug Report Link */}
+                    <div className="pt-2 border-t border-border">
+                      <a
+                        href="https://www.reddit.com/user/Elegant_Compote9073/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full p-2.5 rounded-md border border-orange-500/25 bg-orange-950/20 hover:bg-orange-950/40 transition-colors flex items-center justify-between text-xs group cursor-pointer"
+                      >
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4 text-orange-400" />
+                          <div className="text-left">
+                            <span className="font-semibold text-foreground text-[11px] block">
+                              Report Bugs & Contact Developer
+                            </span>
+                            <span className="text-[10px] text-muted-foreground">
+                              Reddit: u/Elegant_Compote9073
+                            </span>
+                          </div>
+                        </div>
+                        <ExternalLink className="h-3.5 w-3.5 text-orange-400 group-hover:translate-x-0.5 transition-transform" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </DialogContent>
