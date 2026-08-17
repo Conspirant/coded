@@ -12,7 +12,10 @@ export interface ForumReply {
   id: string;
   postId: string;
   parentId?: string | null;
+  authorId?: string;
   authorName: string;
+  authorEmail?: string;
+  authorAvatar?: string;
   authorRank?: string;
   authorBadge?: string;
   content: string;
@@ -28,9 +31,12 @@ export interface ForumPost {
   content: string;
   category: ForumCategory;
   tags: string[];
+  authorId?: string;
   authorName: string;
+  authorEmail?: string;
+  authorAvatar?: string;
   authorRank?: string;
-  authorBadge?: "Verified Student" | "KCET Aspirant" | "COMEDK Aspirant" | "Senior Mentor" | "Top Contributor";
+  authorBadge?: "Verified Student" | "KCET Aspirant" | "COMEDK Aspirant" | "Senior Mentor" | "Top Contributor" | "Pro Member";
   createdAt: string;
   upvotes: number;
   replyCount: number;
@@ -40,9 +46,11 @@ export interface ForumPost {
   replies: ForumReply[];
 }
 
-const STORAGE_KEY = "kcet_forum_posts_v1";
+const STORAGE_KEY = "kcet_forum_posts_v2";
+const CONFIG_KEY = "CONFIG:forum_posts_cloud";
+const REALTIME_CHANNEL = "kcet-forum-realtime";
 
-// 🌟 Seed Posts for offline resilience & immediate display
+// Initial seed posts
 const INITIAL_POSTS: ForumPost[] = [
   {
     id: "post-1",
@@ -187,115 +195,140 @@ const INITIAL_POSTS: ForumPost[] = [
   }
 ];
 
+let memoryCachePosts: ForumPost[] | null = null;
+
 export function getStoredPosts(): ForumPost[] {
+  if (memoryCachePosts && memoryCachePosts.length > 0) {
+    return memoryCachePosts;
+  }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_POSTS));
+      memoryCachePosts = INITIAL_POSTS;
       return INITIAL_POSTS;
     }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_POSTS;
+    const valid = Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_POSTS;
+    memoryCachePosts = valid;
+    return valid;
   } catch {
+    memoryCachePosts = INITIAL_POSTS;
     return INITIAL_POSTS;
   }
 }
 
 export function saveStoredPosts(posts: ForumPost[]): void {
   try {
+    memoryCachePosts = posts;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
   } catch (err) {
     console.error("Failed to save forum posts:", err);
   }
 }
 
-// 🌐 Asynchronously sync with Supabase Cloud DB
+/**
+ * Broadcast realtime event to all connected forum tabs
+ */
+async function broadcastForumUpdate(eventType: string, payload?: any) {
+  try {
+    const channel = supabase.channel(REALTIME_CHANNEL);
+    await channel.send({
+      type: "broadcast",
+      event: "forum_updated",
+      payload: { eventType, timestamp: Date.now(), ...payload }
+    });
+  } catch (e) {
+    console.warn("Realtime forum broadcast notice:", e);
+  }
+}
+
+/**
+ * Synchronize full forum state from Supabase Cloud DB
+ */
 export async function syncPostsFromSupabase(): Promise<ForumPost[]> {
   try {
-    const { data: dbPosts, error: postErr } = await supabase
-      .from("forum_posts" as any)
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("ugcet_results_cache" as any)
+      .select("results_json")
+      .eq("appl_no", CONFIG_KEY)
+      .maybeSingle();
 
-    if (postErr || !dbPosts || dbPosts.length === 0) {
-      return getStoredPosts();
+    if (!error && data?.results_json && Array.isArray((data as any).results_json?.posts)) {
+      const cloudPosts = (data as any).results_json.posts as ForumPost[];
+      if (cloudPosts.length > 0) {
+        saveStoredPosts(cloudPosts);
+        return cloudPosts;
+      }
     }
 
-    const { data: dbReplies } = await supabase
-      .from("forum_replies" as any)
-      .select("*")
-      .order("created_at", { ascending: true });
-
-    const repliesList = (dbReplies || []) as any[];
-
-    const remotePosts: ForumPost[] = (dbPosts as any[]).map((p) => {
-      const postReplies: ForumReply[] = repliesList
-        .filter((r) => r.post_id === p.id)
-        .map((r) => ({
-          id: r.id,
-          postId: r.post_id,
-          parentId: r.parent_id,
-          authorName: r.author_name,
-          authorRank: r.author_rank,
-          authorBadge: r.author_badge,
-          content: r.content,
-          createdAt: r.created_at,
-          upvotes: r.upvotes || 1,
-          isSolution: r.is_solution,
-        }));
-
-      return {
-        id: p.id,
-        title: p.title,
-        content: p.content,
-        category: p.category,
-        tags: p.tags || [],
-        authorName: p.author_name,
-        authorRank: p.author_rank,
-        authorBadge: p.author_badge || "Verified Student",
-        createdAt: p.created_at,
-        upvotes: p.upvotes || 1,
-        replyCount: postReplies.length,
-        isSolved: p.is_solved || postReplies.some((r) => r.isSolution),
-        pinned: p.pinned,
-        replies: postReplies,
-      };
-    });
-
-    // Merge with initial seed posts so default guides are preserved
-    const existingLocal = getStoredPosts();
-    const remoteIds = new Set(remotePosts.map((p) => p.id));
-    const merged = [
-      ...remotePosts,
-      ...existingLocal.filter((p) => !remoteIds.has(p.id)),
-    ];
-
-    saveStoredPosts(merged);
-    return merged;
+    // If first time or empty, seed the cloud DB
+    const current = getStoredPosts();
+    await savePostsToSupabase(current);
+    return current;
   } catch (err) {
     console.warn("Supabase forum fetch fallback to local:", err);
     return getStoredPosts();
   }
 }
 
-export function createForumPost(input: {
+/**
+ * Persist full forum state to Supabase Cloud DB
+ */
+export async function savePostsToSupabase(posts: ForumPost[]): Promise<boolean> {
+  saveStoredPosts(posts);
+  try {
+    const { error } = await supabase
+      .from("ugcet_results_cache" as any)
+      .upsert(
+        [
+          {
+            appl_no: CONFIG_KEY,
+            dob: "forum_db",
+            name: "forum_db",
+            results_json: { posts, updatedAt: new Date().toISOString() }
+          }
+        ],
+        { onConflict: "appl_no" }
+      );
+
+    if (error) throw error;
+    await broadcastForumUpdate("posts_saved");
+    return true;
+  } catch (e) {
+    console.error("Error persisting forum posts to Supabase:", e);
+    return false;
+  }
+}
+
+/**
+ * Create a new forum question/thread
+ */
+export async function createForumPost(input: {
   title: string;
   content: string;
   category: ForumCategory;
   tags: string[];
+  authorId?: string;
   authorName: string;
+  authorEmail?: string;
+  authorAvatar?: string;
   authorRank?: string;
-}): ForumPost {
+  authorBadge?: ForumPost["authorBadge"];
+}): Promise<ForumPost> {
   const posts = getStoredPosts();
   const newPost: ForumPost = {
-    id: `post-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    id: `post-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     title: input.title.trim(),
     content: input.content.trim(),
     category: input.category,
     tags: input.tags.map((t) => t.trim().replace(/^#/, "")).filter(Boolean),
-    authorName: input.authorName.trim() || "Anonymous Student",
+    authorId: input.authorId,
+    authorName: input.authorName.trim() || "KCET Aspirant",
+    authorEmail: input.authorEmail,
+    authorAvatar: input.authorAvatar,
     authorRank: input.authorRank?.trim() || undefined,
-    authorBadge: input.authorRank ? "KCET Aspirant" : "Verified Student",
+    authorBadge: input.authorBadge || (input.authorRank ? "KCET Aspirant" : "Verified Student"),
     createdAt: new Date().toISOString(),
     upvotes: 1,
     userVoted: true,
@@ -305,31 +338,14 @@ export function createForumPost(input: {
   };
 
   const updated = [newPost, ...posts];
-  saveStoredPosts(updated);
-
-  // Sync to Supabase
-  try {
-    void supabase.from("forum_posts" as any).insert({
-      id: newPost.id,
-      title: newPost.title,
-      content: newPost.content,
-      category: newPost.category,
-      tags: newPost.tags,
-      author_name: newPost.authorName,
-      author_rank: newPost.authorRank,
-      author_badge: newPost.authorBadge,
-      created_at: newPost.createdAt,
-      upvotes: 1,
-      reply_count: 0,
-      is_solved: false,
-      pinned: false,
-    });
-  } catch {}
-
+  await savePostsToSupabase(updated);
   return newPost;
 }
 
-export function toggleUpvotePost(postId: string): ForumPost | null {
+/**
+ * Toggle upvote for a thread
+ */
+export async function toggleUpvotePost(postId: string): Promise<ForumPost | null> {
   const posts = getStoredPosts();
   const index = posts.findIndex((p) => p.id === postId);
   if (index === -1) return null;
@@ -344,38 +360,39 @@ export function toggleUpvotePost(postId: string): ForumPost | null {
     userVoted,
   };
 
-  saveStoredPosts(posts);
-
-  // Sync to Supabase
-  try {
-    void supabase
-      .from("forum_posts" as any)
-      .update({ upvotes: newUpvotes })
-      .eq("id", postId);
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return posts[index];
 }
 
-export function addReplyToPost(input: {
+/**
+ * Add a reply/answer to a post
+ */
+export async function addReplyToPost(input: {
   postId: string;
   parentId?: string | null;
   content: string;
+  authorId?: string;
   authorName: string;
+  authorEmail?: string;
+  authorAvatar?: string;
   authorRank?: string;
-}): ForumReply | null {
+  authorBadge?: string;
+}): Promise<ForumReply | null> {
   const posts = getStoredPosts();
   const index = posts.findIndex((p) => p.id === input.postId);
   if (index === -1) return null;
 
   const target = posts[index];
   const newReply: ForumReply = {
-    id: `reply-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    id: `reply-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     postId: input.postId,
     parentId: input.parentId || null,
-    authorName: input.authorName.trim() || "Anonymous Student",
+    authorId: input.authorId,
+    authorName: input.authorName.trim() || "KCET Aspirant",
+    authorEmail: input.authorEmail,
+    authorAvatar: input.authorAvatar,
     authorRank: input.authorRank?.trim() || undefined,
-    authorBadge: input.authorRank ? "KCET Aspirant" : "Verified Student",
+    authorBadge: input.authorBadge || (input.authorRank ? "KCET Aspirant" : "Verified Student"),
     content: input.content.trim(),
     createdAt: new Date().toISOString(),
     upvotes: 1,
@@ -389,33 +406,14 @@ export function addReplyToPost(input: {
     replyCount: updatedReplies.length,
   };
 
-  saveStoredPosts(posts);
-
-  // Sync to Supabase
-  try {
-    void supabase.from("forum_replies" as any).insert({
-      id: newReply.id,
-      post_id: newReply.postId,
-      parent_id: newReply.parentId,
-      author_name: newReply.authorName,
-      author_rank: newReply.authorRank,
-      author_badge: newReply.authorBadge,
-      content: newReply.content,
-      created_at: newReply.createdAt,
-      upvotes: 1,
-      is_solution: false,
-    });
-
-    void supabase
-      .from("forum_posts" as any)
-      .update({ reply_count: updatedReplies.length })
-      .eq("id", input.postId);
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return newReply;
 }
 
-export function toggleUpvoteReply(postId: string, replyId: string): boolean {
+/**
+ * Toggle upvote on a reply
+ */
+export async function toggleUpvoteReply(postId: string, replyId: string): Promise<boolean> {
   const posts = getStoredPosts();
   const pIdx = posts.findIndex((p) => p.id === postId);
   if (pIdx === -1) return false;
@@ -434,19 +432,14 @@ export function toggleUpvoteReply(postId: string, replyId: string): boolean {
     userVoted,
   };
 
-  saveStoredPosts(posts);
-
-  try {
-    void supabase
-      .from("forum_replies" as any)
-      .update({ upvotes: newUpvotes })
-      .eq("id", replyId);
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return true;
 }
 
-export function markReplyAsSolution(postId: string, replyId: string): boolean {
+/**
+ * Mark a reply as the verified solution
+ */
+export async function markReplyAsSolution(postId: string, replyId: string): Promise<boolean> {
   const posts = getStoredPosts();
   const pIdx = posts.findIndex((p) => p.id === postId);
   if (pIdx === -1) return false;
@@ -458,30 +451,13 @@ export function markReplyAsSolution(postId: string, replyId: string): boolean {
   }));
   post.isSolved = post.replies.some((r) => r.isSolution);
 
-  saveStoredPosts(posts);
-
-  try {
-    void supabase
-      .from("forum_posts" as any)
-      .update({ is_solved: post.isSolved })
-      .eq("id", postId);
-
-    void supabase
-      .from("forum_replies" as any)
-      .update({ is_solution: false })
-      .eq("post_id", postId);
-
-    if (post.isSolved) {
-      void supabase
-        .from("forum_replies" as any)
-        .update({ is_solution: true })
-        .eq("id", replyId);
-    }
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return true;
 }
 
+/**
+ * Check admin privileges
+ */
 export function checkIsAdmin(): boolean {
   try {
     return (
@@ -494,39 +470,35 @@ export function checkIsAdmin(): boolean {
   }
 }
 
-export function togglePinPost(postId: string): boolean {
+/**
+ * Pin or unpin a thread
+ */
+export async function togglePinPost(postId: string): Promise<boolean> {
   if (!checkIsAdmin()) return false;
   const posts = getStoredPosts();
   const index = posts.findIndex((p) => p.id === postId);
   if (index === -1) return false;
 
   posts[index].pinned = !posts[index].pinned;
-  saveStoredPosts(posts);
-
-  try {
-    void supabase
-      .from("forum_posts" as any)
-      .update({ pinned: posts[index].pinned })
-      .eq("id", postId);
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return true;
 }
 
-export function deletePost(postId: string): boolean {
+/**
+ * Delete a thread
+ */
+export async function deletePost(postId: string): Promise<boolean> {
   if (!checkIsAdmin()) return false;
   const posts = getStoredPosts();
   const filtered = posts.filter((p) => p.id !== postId);
-  saveStoredPosts(filtered);
-
-  try {
-    void supabase.from("forum_posts" as any).delete().eq("id", postId);
-  } catch {}
-
+  await savePostsToSupabase(filtered);
   return true;
 }
 
-export function deleteReply(postId: string, replyId: string): boolean {
+/**
+ * Delete a reply
+ */
+export async function deleteReply(postId: string, replyId: string): Promise<boolean> {
   if (!checkIsAdmin()) return false;
   const posts = getStoredPosts();
   const index = posts.findIndex((p) => p.id === postId);
@@ -534,11 +506,25 @@ export function deleteReply(postId: string, replyId: string): boolean {
 
   posts[index].replies = posts[index].replies.filter((r) => r.id !== replyId);
   posts[index].replyCount = posts[index].replies.length;
-  saveStoredPosts(posts);
-
-  try {
-    void supabase.from("forum_replies" as any).delete().eq("id", replyId);
-  } catch {}
-
+  await savePostsToSupabase(posts);
   return true;
+}
+
+/**
+ * Real-time listener across all browser tabs
+ */
+export function subscribeToForumUpdates(onUpdate: () => void): () => void {
+  const channel = supabase.channel(REALTIME_CHANNEL);
+
+  channel
+    .on("broadcast", { event: "forum_updated" }, () => {
+      syncPostsFromSupabase().then(() => {
+        onUpdate();
+      });
+    })
+    .subscribe();
+
+  return () => {
+    channel.unsubscribe();
+  };
 }

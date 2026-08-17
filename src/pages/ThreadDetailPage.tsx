@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import {
   ForumPost,
   getStoredPosts,
+  syncPostsFromSupabase,
   addReplyToPost,
   toggleUpvotePost,
   toggleUpvoteReply,
@@ -17,7 +18,9 @@ import {
   togglePinPost,
   deletePost,
   deleteReply,
+  subscribeToForumUpdates,
 } from "@/lib/forum-service";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   ThumbsUp,
   MessageSquare,
@@ -32,6 +35,8 @@ import {
   ShieldCheck,
   Trash2,
   ShieldAlert,
+  LogIn,
+  Sparkles
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
@@ -39,6 +44,7 @@ import { toast } from "sonner";
 const ThreadDetailPage: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
+  const { user, profile, signInWithGoogle } = useAuth();
 
   const [post, setPost] = useState<ForumPost | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -46,6 +52,7 @@ const ThreadDetailPage: React.FC = () => {
   const [replyRank, setReplyRank] = useState("");
   const [replyingToId, setReplyingToId] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const loadPost = () => {
     if (!postId) return;
@@ -60,8 +67,31 @@ const ThreadDetailPage: React.FC = () => {
 
   useEffect(() => {
     loadPost();
+    syncPostsFromSupabase().then(() => loadPost());
     setIsAdmin(checkIsAdmin());
-  }, [postId]);
+
+    // Auto-prefill author details
+    if (user) {
+      const name = user.user_metadata?.full_name || 
+                   user.user_metadata?.name || 
+                   profile?.display_name || 
+                   (user.email ? user.email.split("@")[0] : "Student Aspirant");
+      setReplyAuthor(name);
+
+      if (profile?.kcet_rank) {
+        setReplyRank(`Rank #${profile.kcet_rank.toLocaleString()} (${profile.kcet_category || "GM"})`);
+      }
+    }
+
+    // Subscribe to realtime updates
+    const unsubscribe = subscribeToForumUpdates(() => {
+      loadPost();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [postId, user, profile]);
 
   if (!post) {
     return (
@@ -69,7 +99,7 @@ const ThreadDetailPage: React.FC = () => {
         <SEO title="Thread Not Found | KCET Coded Forum" description="The requested discussion thread was not found or has been removed." url="https://kcetcoded.dev/forum" />
         <h2 className="text-2xl font-bold">Thread Not Found</h2>
         <p className="text-slate-400 text-sm">The discussion thread you are looking for does not exist or has been removed.</p>
-        <Button onClick={() => navigate("/forum")} className="bg-primary text-white">
+        <Button onClick={() => navigate("/forum")} className="bg-primary text-white cursor-pointer">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Discussion Forum
         </Button>
@@ -79,67 +109,105 @@ const ThreadDetailPage: React.FC = () => {
 
   const timeAgo = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
 
-  const handlePostUpvote = () => {
-    toggleUpvotePost(post.id);
+  const handlePostUpvote = async () => {
+    if (!user) {
+      toast.info("Please sign in to upvote questions!", {
+        description: "Sign in with Google to support verified topics.",
+        action: {
+          label: "Sign In",
+          onClick: () => signInWithGoogle()
+        }
+      });
+      return;
+    }
+    await toggleUpvotePost(post.id);
     loadPost();
   };
 
-  const handleReplyUpvote = (replyId: string) => {
-    toggleUpvoteReply(post.id, replyId);
+  const handleReplyUpvote = async (replyId: string) => {
+    if (!user) {
+      toast.info("Please sign in to upvote answers!", {
+        description: "Sign in with Google to support helpful replies.",
+        action: {
+          label: "Sign In",
+          onClick: () => signInWithGoogle()
+        }
+      });
+      return;
+    }
+    await toggleUpvoteReply(post.id, replyId);
     loadPost();
   };
 
-  const handleMarkSolution = (replyId: string) => {
+  const handleMarkSolution = async (replyId: string) => {
     if (!isAdmin) {
       toast.error("Only Forum Administrators can mark solutions.");
       return;
     }
-    markReplyAsSolution(post.id, replyId);
+    await markReplyAsSolution(post.id, replyId);
     toast.success("Updated solution status!");
     loadPost();
   };
 
-  const handleTogglePin = () => {
+  const handleTogglePin = async () => {
     if (!isAdmin) return;
-    togglePinPost(post.id);
+    await togglePinPost(post.id);
     toast.success(post.pinned ? "Unpinned thread" : "Pinned thread to top!");
     loadPost();
   };
 
-  const handleDeletePost = () => {
+  const handleDeletePost = async () => {
     if (!isAdmin) return;
     if (window.confirm("Are you sure you want to delete this discussion thread?")) {
-      deletePost(post.id);
+      await deletePost(post.id);
       toast.success("Thread deleted.");
       navigate("/forum");
     }
   };
 
-  const handleDeleteReply = (replyId: string) => {
+  const handleDeleteReply = async (replyId: string) => {
     if (!isAdmin) return;
     if (window.confirm("Are you sure you want to delete this reply?")) {
-      deleteReply(post.id, replyId);
+      await deleteReply(post.id, replyId);
       toast.success("Reply deleted.");
       loadPost();
     }
   };
 
-  const handleAddReply = (e: React.FormEvent) => {
+  const handleAddReply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!replyText.trim()) return;
 
-    addReplyToPost({
-      postId: post.id,
-      parentId: replyingToId,
-      content: replyText,
-      authorName: replyAuthor.trim() || "Anonymous Student",
-      authorRank: replyRank.trim() || undefined,
-    });
+    if (!user) {
+      toast.info("Please sign in with Google to post your answer!", {
+        description: "Signing in ensures authentic student answers and keeps the community helpful."
+      });
+      return;
+    }
 
-    toast.success("Your response has been published!");
-    setReplyText("");
-    setReplyingToId(null);
-    loadPost();
+    try {
+      setIsSubmitting(true);
+      await addReplyToPost({
+        postId: post.id,
+        parentId: replyingToId,
+        content: replyText,
+        authorId: user.id,
+        authorName: replyAuthor.trim() || user.email?.split("@")[0] || "KCET Aspirant",
+        authorEmail: user.email || undefined,
+        authorAvatar: user.user_metadata?.avatar_url || profile?.avatar_url,
+        authorRank: replyRank.trim() || (profile?.kcet_rank ? `Rank #${profile.kcet_rank} (${profile.kcet_category || "GM"})` : undefined),
+        authorBadge: profile?.is_pro ? "Pro Member" : profile?.kcet_rank ? "KCET Aspirant" : "Verified Student",
+      });
+
+      toast.success("Your response has been published live! 🎉");
+      setReplyText("");
+      setReplyingToId(null);
+      loadPost();
+    } catch (err) {
+      toast.error("Failed to publish reply.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleShare = () => {
@@ -179,7 +247,7 @@ const ThreadDetailPage: React.FC = () => {
                 variant="outline"
                 size="sm"
                 onClick={handleTogglePin}
-                className="text-xs bg-white/5 border-white/10 text-amber-300 hover:bg-white/10"
+                className="text-xs bg-white/5 border-white/10 text-amber-300 hover:bg-white/10 cursor-pointer"
               >
                 <Pin className="h-3.5 w-3.5 mr-1" />
                 {post.pinned ? "Unpin" : "Pin Thread"}
@@ -188,7 +256,7 @@ const ThreadDetailPage: React.FC = () => {
                 variant="destructive"
                 size="sm"
                 onClick={handleDeletePost}
-                className="text-xs"
+                className="text-xs cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5 mr-1" />
                 Delete Thread
@@ -218,95 +286,113 @@ const ThreadDetailPage: React.FC = () => {
                 Solved
               </Badge>
             )}
+            <span className="text-xs text-slate-400 flex items-center gap-1 ml-auto">
+              <Clock className="h-3.5 w-3.5" />
+              {timeAgo}
+            </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
             {post.title}
           </h1>
 
-          {/* Author Meta */}
-          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-400 pb-2 border-b border-white/10">
-            <div className="flex items-center gap-2 font-medium text-slate-200">
-              <User className="h-4 w-4 text-primary" />
-              <span>{post.authorName}</span>
+          {/* Author Banner */}
+          <div className="flex items-center justify-between pt-2 pb-4 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              {post.authorAvatar ? (
+                <img
+                  src={post.authorAvatar}
+                  alt={post.authorName}
+                  className="w-10 h-10 rounded-full border border-indigo-500/40"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-xl bg-primary/20 text-primary flex items-center justify-center font-bold font-mono">
+                  {post.authorName[0]?.toUpperCase() || "A"}
+                </div>
+              )}
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-white text-sm">{post.authorName}</span>
+                  <Badge variant="outline" className="text-[10px] bg-white/5 border-white/10 text-slate-300">
+                    {post.authorBadge || "Verified Student"}
+                  </Badge>
+                </div>
+                {post.authorRank && (
+                  <div className="text-xs text-indigo-400 font-mono mt-0.5">
+                    {post.authorRank}
+                  </div>
+                )}
+              </div>
             </div>
-            {post.authorRank && (
-              <span className="px-2 py-0.5 rounded bg-primary/10 text-primary-foreground border border-primary/20 font-mono text-xs font-semibold">
-                {post.authorRank}
-              </span>
-            )}
-            <span className="text-slate-600">•</span>
-            <div className="flex items-center gap-1 text-slate-400">
-              <Clock className="h-4 w-4" />
-              <span>{timeAgo}</span>
-            </div>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleShare}
+              className="text-slate-400 hover:text-white text-xs cursor-pointer"
+            >
+              <Share2 className="h-4 w-4 mr-1.5" />
+              Share
+            </Button>
           </div>
 
-          {/* Detailed Question Body */}
-          <div className="text-slate-200 text-sm sm:text-base leading-relaxed whitespace-pre-wrap bg-white/[0.02] p-5 rounded-xl border border-white/5">
+          {/* Content Body */}
+          <div className="text-slate-200 text-base leading-relaxed whitespace-pre-wrap">
             {post.content}
           </div>
 
           {/* Tags */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-1">
-              {post.tags.map((tag, idx) => (
-                <span key={idx} className="text-xs px-2.5 py-1 rounded-md bg-white/5 text-slate-400 border border-white/5">
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 pt-2">
+              {post.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="text-xs px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300 font-mono"
+                >
                   #{tag}
                 </span>
               ))}
             </div>
           )}
 
-          {/* Interactive Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePostUpvote}
-                className={`flex items-center gap-2 rounded-xl text-xs font-semibold px-4 ${
-                  post.userVoted
-                    ? "bg-primary/20 text-primary border-primary/50 shadow-[0_0_15px_-3px_rgba(99,102,241,0.4)]"
-                    : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
-                }`}
-              >
-                <ThumbsUp className={`h-4 w-4 ${post.userVoted ? "fill-primary" : ""}`} />
-                <span className="font-bold font-mono">{post.upvotes}</span>
-                <span>Upvote</span>
-              </Button>
+          {/* Footer Upvote & Stats */}
+          <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+            <Button
+              onClick={handlePostUpvote}
+              variant="outline"
+              size="sm"
+              className={`rounded-xl text-xs gap-1.5 cursor-pointer ${
+                post.userVoted
+                  ? "bg-primary/20 border-primary text-primary font-bold shadow-[0_0_15px_-3px_rgba(99,102,241,0.5)]"
+                  : "bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <ThumbsUp className="h-3.5 w-3.5" />
+              <span>Helpful / Upvote ({post.upvotes})</span>
+            </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleShare}
-                className="text-slate-400 hover:text-white flex items-center gap-1.5 text-xs"
-              >
-                <Share2 className="h-4 w-4" />
-                Share Thread
-              </Button>
-            </div>
-
-            <div className="flex items-center gap-1.5 text-slate-400 font-mono text-xs">
-              <MessageSquare className="h-4 w-4 text-indigo-400" />
-              <span>{post.replyCount} Replies</span>
-            </div>
+            <span className="text-xs text-slate-400 flex items-center gap-1.5 ml-auto font-mono">
+              <MessageSquare className="h-3.5 w-3.5 text-primary" />
+              {post.replyCount} {post.replyCount === 1 ? "Answer" : "Answers"}
+            </span>
           </div>
         </div>
 
-        {/* Responses & Answers Section */}
+        {/* Answers / Discussion Feed */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <MessageSquare className="h-5 w-5 text-primary" />
-              Discussion Responses ({post.replies.length})
+              Answers & Insights ({post.replyCount})
             </h3>
           </div>
 
           {topLevelReplies.length === 0 ? (
-            <div className="text-center py-12 bg-slate-900/30 rounded-2xl border border-dashed border-white/10 space-y-2">
-              <p className="text-slate-400 text-sm">No answers posted yet. Be the first to share your insights!</p>
+            <div className="p-8 rounded-2xl bg-slate-900/30 border border-dashed border-white/10 text-center space-y-2">
+              <p className="text-slate-400 text-sm font-medium">
+                No answers yet. Be the first senior or aspirant to help out!
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -315,43 +401,64 @@ const ThreadDetailPage: React.FC = () => {
                 return (
                   <div
                     key={reply.id}
-                    className={`p-5 rounded-2xl border transition-all ${
+                    className={`p-6 rounded-2xl border transition-all ${
                       reply.isSolution
-                        ? "bg-emerald-950/20 border-emerald-500/40 shadow-[0_0_25px_-5px_rgba(16,185,129,0.2)]"
-                        : "bg-slate-900/50 border-white/10"
+                        ? "bg-emerald-950/20 border-emerald-500/40 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]"
+                        : "bg-slate-900/60 border-white/10"
                     }`}
                   >
-                    {/* Reply Header */}
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-bold text-slate-100">{reply.authorName}</span>
-                        {reply.authorRank && (
-                          <span className="px-2 py-0.5 rounded bg-white/5 text-slate-300 font-mono text-xs">
-                            {reply.authorRank}
-                          </span>
+                    {/* Reply Author & Badge Header */}
+                    <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                      <div className="flex items-center gap-2.5">
+                        {reply.authorAvatar ? (
+                          <img
+                            src={reply.authorAvatar}
+                            alt={reply.authorName}
+                            className="w-8 h-8 rounded-full border border-indigo-500/30"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-xl bg-white/5 text-slate-300 flex items-center justify-center text-xs font-bold font-mono">
+                            {reply.authorName[0]?.toUpperCase() || "R"}
+                          </div>
                         )}
-                        {reply.isSolution && (
-                          <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-xs py-0.5 px-2">
-                            <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-emerald-400" /> Accepted Answer
-                          </Badge>
-                        )}
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-white text-xs">{reply.authorName}</span>
+                            <Badge variant="outline" className="text-[10px] bg-white/5 border-white/10 text-slate-400">
+                              {reply.authorBadge || "Verified Student"}
+                            </Badge>
+                          </div>
+                          {reply.authorRank && (
+                            <div className="text-[11px] text-indigo-400 font-mono">
+                              {reply.authorRank}
+                            </div>
+                          )}
+                        </div>
                       </div>
 
-                      <span className="text-xs text-slate-400">
-                        {formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true })}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {reply.isSolution && (
+                          <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[10px] flex items-center gap-1">
+                            <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                            Verified Solution
+                          </Badge>
+                        )}
+                        <span className="text-[11px] text-slate-400">
+                          {formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true })}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Reply Body */}
-                    <p className="text-sm text-slate-200 mt-3 leading-relaxed whitespace-pre-wrap">
+                    {/* Content */}
+                    <div className="pt-3 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
                       {reply.content}
-                    </p>
+                    </div>
 
                     {/* Reply Footer Actions */}
                     <div className="flex items-center gap-4 mt-4 pt-3 border-t border-white/5 text-xs">
                       <button
                         onClick={() => handleReplyUpvote(reply.id)}
-                        className={`flex items-center gap-1.5 hover:text-primary transition-colors ${
+                        className={`flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer ${
                           reply.userVoted ? "text-primary font-bold" : "text-slate-400"
                         }`}
                       >
@@ -361,7 +468,7 @@ const ThreadDetailPage: React.FC = () => {
 
                       <button
                         onClick={() => setReplyingToId(replyingToId === reply.id ? null : reply.id)}
-                        className="text-slate-400 hover:text-white flex items-center gap-1"
+                        className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
                       >
                         <CornerDownRight className="h-3.5 w-3.5" />
                         Reply
@@ -372,13 +479,13 @@ const ThreadDetailPage: React.FC = () => {
                         <div className="ml-auto flex items-center gap-3">
                           <button
                             onClick={() => handleMarkSolution(reply.id)}
-                            className="text-amber-400 hover:text-emerald-400 font-medium transition-colors"
+                            className="text-amber-400 hover:text-emerald-400 font-medium transition-colors cursor-pointer"
                           >
                             {reply.isSolution ? "Unmark Solution" : "Mark as Solution"}
                           </button>
                           <button
                             onClick={() => handleDeleteReply(reply.id)}
-                            className="text-rose-400 hover:text-rose-300 transition-colors"
+                            className="text-rose-400 hover:text-rose-300 transition-colors cursor-pointer"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </button>
@@ -408,56 +515,82 @@ const ThreadDetailPage: React.FC = () => {
             </div>
           )}
 
-          {/* Add Answer Form */}
-          <form onSubmit={handleAddReply} className="bg-slate-900/60 p-6 rounded-2xl border border-white/10 space-y-4">
-            <div className="flex items-center justify-between">
-              <Label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                {replyingToId ? "Replying to Comment" : "Post an Answer"}
-              </Label>
-              {replyingToId && (
-                <button
-                  type="button"
-                  onClick={() => setReplyingToId(null)}
-                  className="text-xs text-amber-400 hover:underline"
-                >
-                  Cancel replying to specific comment
-                </button>
-              )}
-            </div>
-
-            <Textarea
-              placeholder="Share your experience, cutoff advice, or helpful insights..."
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-              className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-500 text-sm min-h-[100px] focus:ring-primary"
-              required
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Input
-                placeholder="Your Name (e.g. Senior_RVTCE)"
-                value={replyAuthor}
-                onChange={(e) => setReplyAuthor(e.target.value)}
-                className="bg-white/5 border-white/10 text-white rounded-xl text-xs placeholder:text-slate-500"
-              />
-              <Input
-                placeholder="Your Rank / Tag (e.g. Rank #14,200 GM)"
-                value={replyRank}
-                onChange={(e) => setReplyRank(e.target.value)}
-                className="bg-white/5 border-white/10 text-white rounded-xl text-xs placeholder:text-slate-500"
-              />
-            </div>
-
-            <div className="flex justify-end pt-1">
+          {/* Add Answer Form / Auth Prompt */}
+          {!user ? (
+            <div className="p-6 rounded-2xl bg-indigo-950/20 border border-indigo-500/20 text-center space-y-3">
+              <div className="mx-auto w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <h4 className="text-base font-bold text-white">Join the Discussion</h4>
+              <p className="text-xs text-slate-300 max-w-md mx-auto">
+                Sign in with Google to post your answers, share college insights, and earn candidate badges.
+              </p>
               <Button
-                type="submit"
-                className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-semibold rounded-xl text-xs px-6 py-2 shadow-lg shadow-primary/25"
+                type="button"
+                onClick={() => signInWithGoogle()}
+                className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold text-xs h-9 px-6 rounded-xl shadow-md cursor-pointer"
               >
-                <Send className="h-4 w-4 mr-2" />
-                Submit Answer
+                <LogIn className="h-4 w-4 mr-2" />
+                Sign in with Google to Answer
               </Button>
             </div>
-          </form>
+          ) : (
+            <form onSubmit={handleAddReply} className="bg-slate-900/60 p-6 rounded-2xl border border-white/10 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    {replyingToId ? "Replying to Comment" : "Post an Answer"}
+                  </Label>
+                  <span className="text-[11px] text-emerald-400 font-semibold">
+                    (Replying as {replyAuthor})
+                  </span>
+                </div>
+                {replyingToId && (
+                  <button
+                    type="button"
+                    onClick={() => setReplyingToId(null)}
+                    className="text-xs text-amber-400 hover:underline cursor-pointer"
+                  >
+                    Cancel replying to specific comment
+                  </button>
+                )}
+              </div>
+
+              <Textarea
+                placeholder="Share your experience, cutoff advice, or helpful insights..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="bg-white/5 border-white/10 text-white rounded-xl placeholder:text-slate-500 text-sm min-h-[100px] focus:ring-primary"
+                required
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Input
+                  placeholder="Your Name (e.g. Senior_RVCE)"
+                  value={replyAuthor}
+                  onChange={(e) => setReplyAuthor(e.target.value)}
+                  className="bg-white/5 border-white/10 text-white rounded-xl text-xs placeholder:text-slate-500"
+                />
+                <Input
+                  placeholder="Your Rank / Tag (e.g. Rank #14,200 GM)"
+                  value={replyRank}
+                  onChange={(e) => setReplyRank(e.target.value)}
+                  className="bg-white/5 border-white/10 text-white rounded-xl text-xs placeholder:text-slate-500"
+                />
+              </div>
+
+              <div className="flex justify-end pt-1">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-semibold rounded-xl text-xs px-6 py-2 shadow-lg shadow-primary/25 cursor-pointer"
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  {isSubmitting ? "Publishing..." : "Submit Answer"}
+                </Button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

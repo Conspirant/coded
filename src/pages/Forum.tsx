@@ -10,9 +10,12 @@ import {
   getStoredPosts,
   syncPostsFromSupabase,
   toggleUpvotePost,
+  subscribeToForumUpdates,
 } from "@/lib/forum-service";
 import { ThreadCard } from "@/components/forum/ThreadCard";
 import { CreateThreadModal } from "@/components/forum/CreateThreadModal";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import {
   MessageSquare,
   Search,
@@ -25,6 +28,8 @@ import {
   Sparkles,
   Flame,
   Filter,
+  LogIn,
+  Radio
 } from "lucide-react";
 
 type SortOption = "trending" | "latest" | "unanswered" | "solved";
@@ -41,19 +46,34 @@ const CATEGORIES: ("All" | ForumCategory)[] = [
 
 const Forum: React.FC = () => {
   const navigate = useNavigate();
+  const { user, signInWithGoogle } = useAuth();
+
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<"All" | ForumCategory>("All");
   const [sortOption, setSortOption] = useState<SortOption>("trending");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [realtimeConnected, setRealtimeConnected] = useState(true);
 
   const refreshPosts = () => {
     setPosts(getStoredPosts());
-    syncPostsFromSupabase().then((data) => setPosts([...data]));
+    syncPostsFromSupabase().then((data) => {
+      setPosts([...data]);
+      setRealtimeConnected(true);
+    });
   };
 
   useEffect(() => {
     refreshPosts();
+
+    // Subscribe to realtime broadcast events
+    const unsubscribe = subscribeToForumUpdates(() => {
+      refreshPosts();
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // Filter & Sort Posts
@@ -95,8 +115,19 @@ const Forum: React.FC = () => {
 
   const handleUpvote = (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleUpvotePost(postId);
-    refreshPosts();
+    if (!user) {
+      toast.info("Please sign in to upvote questions!", {
+        description: "Sign in with Google to support helpful answers and topics.",
+        action: {
+          label: "Sign In",
+          onClick: () => signInWithGoogle()
+        }
+      });
+      return;
+    }
+    toggleUpvotePost(postId).then(() => {
+      refreshPosts();
+    });
   };
 
   const handleCardClick = (post: ForumPost) => {
@@ -105,6 +136,10 @@ const Forum: React.FC = () => {
 
   const handlePostCreated = () => {
     refreshPosts();
+  };
+
+  const handleAskClick = () => {
+    setIsCreateOpen(true);
   };
 
   const stats = useMemo(() => {
@@ -129,10 +164,21 @@ const Forum: React.FC = () => {
         <div className="max-w-6xl mx-auto space-y-6 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
-                <Sparkles className="h-3.5 w-3.5" />
-                KCET & COMEDK Peer Community
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  KCET & COMEDK Peer Community
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-mono">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  </span>
+                  Live Realtime Sync
+                </div>
               </div>
+
               <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-400">
                 Student Discussion Forum
               </h1>
@@ -141,14 +187,16 @@ const Forum: React.FC = () => {
               </p>
             </div>
 
-            <Button
-              onClick={() => setIsCreateOpen(true)}
-              size="lg"
-              className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_30px_-5px_rgba(99,102,241,0.5)] transition-all duration-300"
-            >
-              <PlusCircle className="h-5 w-5 mr-2" />
-              Ask a Question
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={handleAskClick}
+                size="lg"
+                className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_30px_-5px_rgba(99,102,241,0.5)] transition-all duration-300 cursor-pointer"
+              >
+                <PlusCircle className="h-5 w-5 mr-2" />
+                Ask a Question
+              </Button>
+            </div>
           </div>
 
           {/* Stats Bar */}
@@ -196,7 +244,7 @@ const Forum: React.FC = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border ${
+                className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border cursor-pointer ${
                   isActive
                     ? "bg-primary text-white border-primary shadow-[0_0_15px_-3px_rgba(99,102,241,0.5)]"
                     : "bg-slate-900/60 text-slate-300 border-white/10 hover:border-white/20 hover:bg-slate-900"
@@ -227,7 +275,7 @@ const Forum: React.FC = () => {
               variant={sortOption === "trending" ? "default" : "ghost"}
               size="sm"
               onClick={() => setSortOption("trending")}
-              className={`rounded-xl text-xs ${
+              className={`rounded-xl text-xs cursor-pointer ${
                 sortOption === "trending"
                   ? "bg-primary text-white"
                   : "text-slate-400 hover:text-white"
@@ -241,7 +289,7 @@ const Forum: React.FC = () => {
               variant={sortOption === "latest" ? "default" : "ghost"}
               size="sm"
               onClick={() => setSortOption("latest")}
-              className={`rounded-xl text-xs ${
+              className={`rounded-xl text-xs cursor-pointer ${
                 sortOption === "latest"
                   ? "bg-primary text-white"
                   : "text-slate-400 hover:text-white"
@@ -255,7 +303,7 @@ const Forum: React.FC = () => {
               variant={sortOption === "unanswered" ? "default" : "ghost"}
               size="sm"
               onClick={() => setSortOption("unanswered")}
-              className={`rounded-xl text-xs ${
+              className={`rounded-xl text-xs cursor-pointer ${
                 sortOption === "unanswered"
                   ? "bg-primary text-white"
                   : "text-slate-400 hover:text-white"
@@ -269,7 +317,7 @@ const Forum: React.FC = () => {
               variant={sortOption === "solved" ? "default" : "ghost"}
               size="sm"
               onClick={() => setSortOption("solved")}
-              className={`rounded-xl text-xs ${
+              className={`rounded-xl text-xs cursor-pointer ${
                 sortOption === "solved"
                   ? "bg-primary text-white"
                   : "text-slate-400 hover:text-white"
@@ -294,8 +342,8 @@ const Forum: React.FC = () => {
               </p>
             </div>
             <Button
-              onClick={() => setIsCreateOpen(true)}
-              className="bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl text-xs px-5"
+              onClick={handleAskClick}
+              className="bg-primary hover:bg-primary/90 text-white font-semibold rounded-xl text-xs px-5 cursor-pointer"
             >
               Ask a Question
             </Button>

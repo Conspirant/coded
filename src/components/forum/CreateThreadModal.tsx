@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ForumCategory, createForumPost, ForumPost } from "@/lib/forum-service";
-import { Sparkles, MessageSquarePlus, Tag, User, Award } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Sparkles, MessageSquarePlus, Tag, User, Award, LogIn, CheckCircle2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
 interface CreateThreadModalProps {
@@ -41,6 +42,8 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
   onOpenChange,
   onPostCreated,
 }) => {
+  const { user, profile, signInWithGoogle } = useAuth();
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<ForumCategory>("Option Entry");
   const [content, setContent] = useState("");
@@ -49,10 +52,32 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
   const [authorRank, setAuthorRank] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Sync author details when user opens or auth changes
+  useEffect(() => {
+    if (user) {
+      const name = user.user_metadata?.full_name || 
+                   user.user_metadata?.name || 
+                   profile?.display_name || 
+                   (user.email ? user.email.split("@")[0] : "Student Aspirant");
+      setAuthorName(name);
+
+      if (profile?.kcet_rank) {
+        setAuthorRank(`Rank #${profile.kcet_rank.toLocaleString()} (${profile.kcet_category || "GM"})`);
+      }
+    }
+  }, [user, profile, open]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) {
       toast.error("Please fill in both the discussion title and details.");
+      return;
+    }
+
+    if (!user) {
+      toast.info("Please sign in with Google to post your question!", {
+        description: "Signing in ensures your questions are linked to your profile and prevents spam."
+      });
       return;
     }
 
@@ -63,16 +88,22 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
         .map((t) => t.trim())
         .filter(Boolean);
 
-      const post = createForumPost({
+      const post = await createForumPost({
         title,
         content,
         category,
         tags,
-        authorName: authorName.trim() || "KCET Aspirant",
-        authorRank: authorRank.trim() || undefined,
+        authorId: user.id,
+        authorName: authorName.trim() || user.email?.split("@")[0] || "KCET Aspirant",
+        authorEmail: user.email || undefined,
+        authorAvatar: user.user_metadata?.avatar_url || profile?.avatar_url,
+        authorRank: authorRank.trim() || (profile?.kcet_rank ? `Rank #${profile.kcet_rank} (${profile.kcet_category || "GM"})` : undefined),
+        authorBadge: profile?.is_pro ? "Pro Member" : profile?.kcet_rank ? "KCET Aspirant" : "Verified Student",
       });
 
-      toast.success("Question posted successfully! Community members can now answer.");
+      toast.success("Question published live! 🎉", {
+        description: "Community mentors and aspirants can now view and answer your thread."
+      });
       onPostCreated(post);
       onOpenChange(false);
 
@@ -80,8 +111,6 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
       setTitle("");
       setContent("");
       setTagsInput("");
-      setAuthorName("");
-      setAuthorRank("");
     } catch (err) {
       toast.error("Failed to post question. Please try again.");
     } finally {
@@ -103,6 +132,55 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
             Ask about college options, KCET/COMEDK cutoffs, or document verification. Get answers from seniors and fellow aspirants.
           </DialogDescription>
         </DialogHeader>
+
+        {/* Auth Banner if not signed in */}
+        {!user ? (
+          <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-950/30 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold text-indigo-300">
+              <ShieldCheck className="h-4 w-4 text-indigo-400" />
+              <span>Sign in Required to Post</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              To keep discussions high quality and verified, please sign in with Google. It takes 1-click and links your questions to your profile.
+            </p>
+            <Button
+              type="button"
+              onClick={() => signInWithGoogle()}
+              className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white font-bold text-xs h-9 rounded-xl flex items-center justify-center gap-2 shadow-md cursor-pointer"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign in with Google to Post
+            </Button>
+          </div>
+        ) : (
+          <div className="p-3 rounded-xl border border-emerald-500/20 bg-emerald-950/20 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              {user.user_metadata?.avatar_url ? (
+                <img
+                  src={user.user_metadata.avatar_url}
+                  alt={authorName}
+                  className="w-8 h-8 rounded-full border border-emerald-500/40"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold font-mono">
+                  {authorName[0]?.toUpperCase() || "S"}
+                </div>
+              )}
+              <div>
+                <div className="text-xs font-bold text-emerald-300 flex items-center gap-1">
+                  <span>{authorName}</span>
+                  <CheckCircle2 className="h-3 w-3 text-emerald-400" />
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  {authorRank || user.email}
+                </div>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-semibold">
+              Verified Candidate
+            </span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4 pt-2">
           {/* Category Select */}
@@ -170,12 +248,12 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
             />
           </div>
 
-          {/* Author Details (Optional / Contextual) */}
+          {/* Author Badge Details */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <div className="space-y-1">
               <Label className="text-xs text-slate-400 flex items-center gap-1">
                 <User className="h-3 w-3 text-slate-400" />
-                Your Name / Handle
+                Display Name / Handle
               </Label>
               <Input
                 placeholder="e.g., Rohan_S"
@@ -188,7 +266,7 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
             <div className="space-y-1">
               <Label className="text-xs text-slate-400 flex items-center gap-1">
                 <Award className="h-3 w-3 text-primary" />
-                Your Rank (Optional Badge)
+                Your Rank / Category Badge
               </Label>
               <Input
                 placeholder="e.g., Rank #12,450 (GM)"
@@ -205,17 +283,17 @@ export const CreateThreadModal: React.FC<CreateThreadModalProps> = ({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-white/10 text-slate-300 hover:bg-white/5"
+              className="border-white/10 text-slate-300 hover:bg-white/5 cursor-pointer"
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              disabled={isSubmitting}
-              className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white shadow-lg shadow-primary/25 font-semibold px-6"
+              disabled={isSubmitting || !user}
+              className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-500 text-white shadow-lg shadow-primary/25 font-semibold px-6 cursor-pointer"
             >
               <Sparkles className="h-4 w-4 mr-2" />
-              Post Question
+              {isSubmitting ? "Publishing..." : "Post Question"}
             </Button>
           </div>
         </form>
