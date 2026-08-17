@@ -1,145 +1,190 @@
 import { SEO } from "@/components/SEO"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Shield, Lock, Eye, FileText, Globe, Server } from "lucide-react"
+import { Shield, Lock, Eye, FileText, Globe, Server, UserCheck, Key, Database, RefreshCw } from "lucide-react"
 
 const PrivacyPolicy = () => {
-    const lastUpdated = "February 15, 2026"
+    const lastUpdated = "August 17, 2026"
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 space-y-8">
-      <SEO
-        title="Privacy Policy"
-        description="Privacy policy for KCET Coded. Learn how we handle your data, what information we collect, and your privacy rights."
-        url="https://kcetcoded.dev/privacy"
-      />
+            <SEO
+                title="Privacy Policy"
+                description="Privacy policy for KCET Coded. Learn how we handle your data, authentication, optional accounts, and your privacy rights."
+                url="https://kcetcoded.dev/privacy"
+            />
+
             {/* Header */}
             <div className="text-center space-y-4">
-                <h1 className="text-4xl font-bold tracking-tight">Privacy Policy</h1>
-                <p className="text-muted-foreground">
+                <h1 className="text-4xl font-extrabold tracking-tight">Privacy Policy</h1>
+                <p className="text-muted-foreground text-sm">
                     Last Updated: {lastUpdated}
                 </p>
             </div>
 
-            <Card className="border-2">
+            {/* Commitment Card */}
+            <Card className="border-2 border-primary/20 bg-card">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Shield className="h-6 w-6 text-primary" />
-                        Commitment to Privacy
+                        Our Commitment to Student Privacy
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4 text-muted-foreground">
+                <CardContent className="space-y-4 text-muted-foreground text-sm leading-relaxed">
                     <p>
-                        At <strong>KCET Coded</strong> ("we", "our", "us"), we prioritize the privacy regarding your personal information.
-                        This Privacy Policy document contains types of information that is collected and recorded by KCET Coded and how we use it.
+                        At <strong>KCET Coded</strong> ("we", "our", "us"), accessible from <a href="https://kcetcoded.dev" className="text-primary hover:underline font-semibold">kcetcoded.dev</a>, we are committed to protecting the personal data and privacy of every KCET & COMEDK aspirant.
                     </p>
                     <p>
-                        By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+                        This document outlines what data we collect, how it is stored, how authentication works, and your rights regarding your personal information. By using our website and services, you consent to this Privacy Policy.
                     </p>
                 </CardContent>
             </Card>
 
+            {/* Policy Sections Grid */}
             <div className="grid gap-6 md:grid-cols-2">
-                <Card>
+                {/* 1. Authentication & Optional Sign-In */}
+                <Card className="border border-border">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-lg">
-                            <Server className="h-5 w-5 text-blue-500" />
-                            1. Data Collection & Storage
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <UserCheck className="h-5 w-5 text-indigo-400" />
+                            1. Optional User Accounts & Sign-In
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground space-y-2">
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
                         <p>
-                            <strong>Local Storage:</strong> Most of your data (such as bookmarked colleges, rank prediction history, and checklist progress) is stored locally on your device using "Local Storage". We do not transmit this data to our servers.
+                            <strong>100% Optional:</strong> Signing in is entirely optional. You can explore cutoff archives, simulate seat allocations, predict marks-vs-rank, and calculate fees without creating an account.
                         </p>
                         <p>
-                            <strong>No Personal Accounts:</strong> We do not currently require you to create an account or sign in. Therefore, we do not store your name, email, or phone number in our database.
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-lg">
-                            <Eye className="h-5 w-5 text-green-500" />
-                            2. Log Files & Analytics
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground space-y-2">
-                        <p>
-                            Like many other websites, KCET Coded makes use of log files. These files merely log visitors to the site. The information collected includes:
+                            <strong>Why Sign In?</strong> When you choose to sign in (via Google OAuth or Email Magic Link), it allows you to:
                         </p>
                         <ul className="list-disc pl-5 space-y-1">
-                            <li>Internet Protocol (IP) addresses</li>
-                            <li>Browser type and version</li>
-                            <li>Date and time stamp</li>
-                            <li>Referring/exit pages</li>
+                            <li>Sync your Pro membership & access across multiple devices (phone, laptop, tablet).</li>
+                            <li>Save counseling target ranks, reservation categories, and preferred colleges to your cloud profile.</li>
+                            <li>Post and answer questions on the KCET Student Discussion Forum.</li>
+                        </ul>
+                    </CardContent>
+                </Card>
+
+                {/* 2. Google OAuth & Collected Data */}
+                <Card className="border border-border">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <Key className="h-5 w-5 text-emerald-400" />
+                            2. Information Collected via Sign-In
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
+                        <p>
+                            When you sign in with Google or Email, we only receive and store basic identity details necessary for account identification:
+                        </p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li><strong>Email Address:</strong> To identify your account and restore your Pro subscription.</li>
+                            <li><strong>Display Name & Profile Picture:</strong> To show your forum username and candidate badge.</li>
+                            <li><strong>Zero Passwords:</strong> We utilize secure passwordless authentication (Google OAuth & Email OTP) — we never see or store passwords.</li>
                         </ul>
                         <p>
-                            This data is used for analyzing trends, administering the site, and gathering demographic information to improve user experience. It is not linked to any information that is personally identifiable.
+                            We will <strong>never sell, rent, or share</strong> your email address with third-party advertisers or spammers.
                         </p>
                     </CardContent>
                 </Card>
 
-                <Card>
+                {/* 3. Local Storage vs Cloud Storage */}
+                <Card className="border border-border">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-lg">
-                            <Lock className="h-5 w-5 text-orange-500" />
-                            3. Cookies and Web Beacons
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <Database className="h-5 w-5 text-blue-400" />
+                            3. Data Storage & Security
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground space-y-2">
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
                         <p>
-                            KCET Coded uses 'cookies'. These cookies are used to store information including visitors' preferences (like theme mode) and the pages on the website that the visitor accessed or visited.
+                            <strong>Local-First Storage:</strong> For guest visitors, all preferences, saved cutoffs, and mock choice lists remain stored solely in your browser's local storage.
                         </p>
                         <p>
-                            You can choose to disable cookies through your individual browser options.
+                            <strong>Cloud Database Security:</strong> For logged-in users, authentication sessions and forum discussions are encrypted and securely stored using Supabase (PostgreSQL with Row Level Security).
                         </p>
                     </CardContent>
                 </Card>
 
-                <Card>
+                {/* 4. Log Files & Analytics */}
+                <Card className="border border-border">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-lg">
-                            <Globe className="h-5 w-5 text-purple-500" />
-                            4. Third Party Policies
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <Eye className="h-5 w-5 text-amber-400" />
+                            4. Log Files & Analytics
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground space-y-2">
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
                         <p>
-                            KCET Coded's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party servers for more detailed information.
+                            Like most web applications, our servers automatically collect non-personally identifiable diagnostic information such as IP addresses, browser types, timestamps, and page visits.
                         </p>
                         <p>
-                            <strong>Google Analytics / Vercel Analytics:</strong> We may use these services to understand website traffic. They collect anonymous data about your visit.
+                            This data is solely used to detect system errors, monitor server performance during high-traffic KEA result days, and improve user experience.
                         </p>
+                    </CardContent>
+                </Card>
+
+                {/* 5. Cookies */}
+                <Card className="border border-border">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <Lock className="h-5 w-5 text-orange-400" />
+                            5. Cookies & Session Tokens
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
+                        <p>
+                            We use standard browser cookies and local storage tokens to remember your theme preference (Dark/Light mode) and keep you signed in between browser tabs.
+                        </p>
+                        <p>
+                            You can clear cookies or storage at any time through your browser settings.
+                        </p>
+                    </CardContent>
+                </Card>
+
+                {/* 6. Third-Party Services */}
+                <Card className="border border-border">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-lg text-foreground">
+                            <Globe className="h-5 w-5 text-purple-400" />
+                            6. Third-Party Service Providers
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground space-y-2.5 leading-relaxed">
+                        <p>We rely on trusted third-party providers to power platform features:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li><strong>Google Identity Services:</strong> For optional one-click sign-in.</li>
+                            <li><strong>Supabase:</strong> For secure database hosting and token management.</li>
+                            <li><strong>Razorpay:</strong> For secure payment gateway processing (we never see or store card/bank details).</li>
+                            <li><strong>Vercel:</strong> For CDN and web hosting.</li>
+                        </ul>
                     </CardContent>
                 </Card>
             </div>
 
-            <Card>
+            {/* User Rights Card */}
+            <Card className="border border-border">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        GDPR & CCPA Rights
+                        <FileText className="h-5 w-5 text-primary" />
+                        7. Your Privacy Rights & Data Deletion
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <CardContent className="space-y-4 text-sm text-muted-foreground leading-relaxed">
                     <p>
-                        Depending on your location, you may have rights regarding your data:
+                        You have complete control over your personal data:
                     </p>
-                    <ul className="list-disc pl-5 space-y-1">
-                        <li><strong>The right to access:</strong> You have the right to request copies of your personal data.</li>
-                        <li><strong>The right to rectification:</strong> You have the right to request that we correct any information you believe is inaccurate.</li>
-                        <li><strong>The right to erasure:</strong> You have the right to request that we erase your personal data, under certain conditions.</li>
+                    <ul className="list-disc pl-5 space-y-1.5">
+                        <li><strong>Right to Sign Out:</strong> You can sign out anytime with a single click from the Profile / Settings modal.</li>
+                        <li><strong>Right to Access & Rectify:</strong> You can update your candidate nickname, target rank, or reservation category anytime.</li>
+                        <li><strong>Right to Erasure (Account Deletion):</strong> You have the right to request full deletion of your user profile and forum history. Simply email us with your registered address.</li>
                     </ul>
-                    <p>
-                        Since we rely primarily on Local Storage, you can exercise these rights instantly by clearing your browser cache/storage for our site.
-                    </p>
                 </CardContent>
             </Card>
 
-            <div className="text-center text-sm text-muted-foreground pt-8">
-                <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
-                <p className="mt-2">Email: support@kcetcoded.com</p>
+            {/* Contact Footer */}
+            <div className="text-center text-sm text-muted-foreground pt-4 space-y-1">
+                <p>If you have any questions, concerns, or data requests regarding this Privacy Policy, reach out to us:</p>
+                <p className="font-semibold text-foreground">Email: <a href="mailto:support@kcetcoded.dev" className="text-primary hover:underline">support@kcetcoded.dev</a></p>
             </div>
         </div>
     )
