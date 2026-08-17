@@ -94,23 +94,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    // 1. Check active session on mount
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      syncUserAndProfile(initialSession);
-      if (window.location.hash && window.location.hash.includes("access_token")) {
-        window.history.replaceState(null, "", window.location.pathname + window.location.search);
-      }
-    });
+    let mounted = true;
 
-    // 2. Subscribe to auth state changes (OAuth redirects, logins, logouts)
+    const handleAuthInit = async () => {
+      // If there is an OAuth hash token in the URL (#access_token=...)
+      if (typeof window !== "undefined" && window.location.hash && window.location.hash.includes("access_token")) {
+        try {
+          const hashClean = window.location.hash.replace(/^#/, "");
+          const params = new URLSearchParams(hashClean);
+          const accessToken = params.get("access_token");
+          const refreshToken = params.get("refresh_token");
+
+          if (accessToken) {
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || accessToken,
+            });
+
+            if (!error && data?.session && mounted) {
+              syncUserAndProfile(data.session);
+              window.history.replaceState(null, "", window.location.pathname + window.location.search);
+              return;
+            }
+          }
+        } catch (e) {
+          console.error("Manual token exchange failed:", e);
+        }
+      }
+
+      // Check existing session
+      const { data: { session: existingSession } } = await supabase.auth.getSession();
+      if (mounted) {
+        syncUserAndProfile(existingSession);
+      }
+    };
+
+    handleAuthInit();
+
+    // Subscribe to auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
-      syncUserAndProfile(currentSession);
-      if (window.location.hash && window.location.hash.includes("access_token")) {
-        window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      if (mounted) {
+        syncUserAndProfile(currentSession);
+        if (currentSession && window.location.hash && window.location.hash.includes("access_token")) {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
       }
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
