@@ -184,9 +184,46 @@ const CollegePredictor = () => {
     return Object.entries(groups)
   }, [availableCourses])
 
+  const [searchParams] = useSearchParams()
+
   // User inputs
-  const [userRank, setUserRank] = useState<number>(50000)
-  const [userCategory, setUserCategory] = useState("")
+  const [userRank, setUserRank] = useState<number>(() => {
+    const qRank = searchParams.get('rank')
+    if (qRank && !isNaN(Number(qRank))) return Number(qRank)
+    try {
+      const saved = localStorage.getItem('kcet_user_profile')
+      if (saved) {
+        const p = JSON.parse(saved)
+        if (p.rank) return p.rank
+      }
+    } catch {}
+    return 50000
+  })
+
+  const [userCategory, setUserCategory] = useState<string>(() => {
+    const qCat = searchParams.get('category')
+    if (qCat) return qCat
+    try {
+      const saved = localStorage.getItem('kcet_user_profile')
+      if (saved) {
+        const p = JSON.parse(saved)
+        if (p.category) return p.category
+      }
+    } catch {}
+    return ""
+  })
+
+  useEffect(() => {
+    const qRank = searchParams.get('rank')
+    const qCat = searchParams.get('category')
+    if (qRank && !isNaN(Number(qRank))) {
+      setUserRank(Number(qRank))
+    }
+    if (qCat) {
+      setUserCategory(qCat)
+    }
+  }, [searchParams])
+
   const [selectedYear, setSelectedYear] = useState("")
   const [selectedRound, setSelectedRound] = useState("")
   const [selectedInstitute, setSelectedInstitute] = useState("")
@@ -207,7 +244,6 @@ const CollegePredictor = () => {
   const isMobile = useIsMobile()
   const { toast } = useToast()
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
 
   // Bookmarked colleges (persisted to localStorage)
   const [bookmarks, setBookmarks] = useState<Set<string>>(() => {

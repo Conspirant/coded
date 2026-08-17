@@ -60,6 +60,7 @@ import Forum from "./pages/Forum";
 import ThreadDetailPage from "./pages/ThreadDetailPage";
 import AdminHub from "./pages/AdminHub";
 import { ExamModeProvider, useExamMode } from "./contexts/ExamModeContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { DisclaimerBanner } from "./components/DisclaimerBanner";
 import { ResourceLimitModal } from "@/components/ResourceLimitModal";
 import { Calibrate2027Modal } from "./components/Calibrate2027Modal";
@@ -85,9 +86,10 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <ExamModeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
           <Analytics />
           <BrowserRouter
             future={{
@@ -160,6 +162,7 @@ const App = () => (
             </PresenceAndBlockProvider>
           </BrowserRouter>
           </TooltipProvider>
+        </AuthProvider>
       </ExamModeProvider>
     </QueryClientProvider>
   </HelmetProvider>

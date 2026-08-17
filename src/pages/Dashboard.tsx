@@ -213,10 +213,26 @@ const Dashboard = () => {
     return () => { isMounted = false }
   }, [])
 
+  useEffect(() => {
+    const handleProfileSync = () => {
+      try {
+        const saved = localStorage.getItem("kcet_user_profile")
+        if (saved) setProfile(JSON.parse(saved))
+      } catch {}
+    }
+    window.addEventListener("kcet_user_profile_updated", handleProfileSync)
+    window.addEventListener("storage", handleProfileSync)
+    return () => {
+      window.removeEventListener("kcet_user_profile_updated", handleProfileSync)
+      window.removeEventListener("storage", handleProfileSync)
+    }
+  }, [])
+
   const updateProfile = useCallback((updates: Partial<UserProfile>) => {
     setProfile(prev => {
       const next = { ...prev, ...updates }
       localStorage.setItem("kcet_user_profile", JSON.stringify(next))
+      window.dispatchEvent(new CustomEvent("kcet_user_profile_updated", { detail: next }))
       return next
     })
     toast.success("Profile updated", { duration: 1500 })

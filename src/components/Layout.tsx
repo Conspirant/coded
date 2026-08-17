@@ -1,4 +1,4 @@
-﻿import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -19,6 +19,7 @@ import { toast } from "sonner"
 import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
 import { GlobalDonationPopup } from "./GlobalDonationPopup"
 import { LiveVisitorCounter } from "./LiveVisitorCounter"
+import { UserProfileModal, type StoredUserProfile } from "./UserProfileModal"
 
 import { Logo } from "./ui/Logo"
 
@@ -35,6 +36,30 @@ export function Layout({ children }: LayoutProps) {
   const [settingsKeyLoading, setSettingsKeyLoading] = useState(false)
   const [showSettingsKey, setShowSettingsKey] = useState(false)
   const [premiumUpgradeOpen, setPremiumUpgradeOpen] = useState(false)
+  const [userProfileOpen, setUserProfileOpen] = useState(false)
+  const [userProfileData, setUserProfileData] = useState<StoredUserProfile | null>(() => {
+    try {
+      const saved = localStorage.getItem("kcet_user_profile")
+      return saved ? JSON.parse(saved) : null
+    } catch {
+      return null
+    }
+  })
+
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      try {
+        const saved = localStorage.getItem("kcet_user_profile")
+        if (saved) setUserProfileData(JSON.parse(saved))
+      } catch {}
+    }
+    window.addEventListener("kcet_user_profile_updated", handleProfileUpdate)
+    window.addEventListener("storage", handleProfileUpdate)
+    return () => {
+      window.removeEventListener("kcet_user_profile_updated", handleProfileUpdate)
+      window.removeEventListener("storage", handleProfileUpdate)
+    }
+  }, [])
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked)
@@ -360,8 +385,30 @@ export function Layout({ children }: LayoutProps) {
                 </div>
               </DialogContent>
             </Dialog>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted">
-              <User className="h-4 w-4 text-muted-foreground" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setUserProfileOpen(true)}
+              className="h-8 px-2 sm:px-2.5 hover:bg-muted/80 flex items-center gap-1.5 rounded-lg border border-transparent hover:border-border/60 transition-all cursor-pointer group"
+              title="Student Profile & Quick Center"
+            >
+              <div className="relative flex items-center justify-center">
+                <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary/20 to-indigo-500/20 border border-primary/30 flex items-center justify-center text-[11px] font-bold text-primary group-hover:scale-105 transition-transform">
+                  {(userProfileData?.name || "C").charAt(0).toUpperCase()}
+                </div>
+                {unlocked ? (
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-amber-500 ring-1 ring-background">
+                    <Crown className="h-2 w-2 text-black fill-black" />
+                  </span>
+                ) : (
+                  <span className="absolute -bottom-0.5 -right-0.5 flex h-2 w-2 items-center justify-center rounded-full bg-emerald-500 ring-1 ring-background" />
+                )}
+              </div>
+              {userProfileData?.rank && (
+                <span className="hidden sm:inline font-mono font-bold text-[11px] text-muted-foreground group-hover:text-foreground transition-colors">
+                  #{userProfileData.rank >= 1000 ? `${(userProfileData.rank / 1000).toFixed(userProfileData.rank % 1000 === 0 ? 0 : 1)}k` : userProfileData.rank}
+                </span>
+              )}
             </Button>
           </div>
         </header>
@@ -381,6 +428,7 @@ export function Layout({ children }: LayoutProps) {
         </main>
       </div>
       <PremiumUpgradeModal open={premiumUpgradeOpen} onOpenChange={setPremiumUpgradeOpen} />
+      <UserProfileModal open={userProfileOpen} onOpenChange={setUserProfileOpen} onUpgradeClick={() => setPremiumUpgradeOpen(true)} />
       <GlobalDonationPopup />
     </SidebarProvider>
   )
