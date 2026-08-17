@@ -200,34 +200,34 @@ const Forum: React.FC = () => {
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-3 gap-3 max-w-xl pt-2">
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-xl pt-2">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-2 sm:gap-3">
+              <div className="p-1.5 sm:p-2 rounded-lg bg-indigo-500/10 text-indigo-400 shrink-0">
                 <MessageSquare className="h-4 w-4" />
               </div>
-              <div>
-                <div className="text-lg font-bold font-mono text-white">{stats.total}</div>
-                <div className="text-[11px] text-slate-400">Discussions</div>
+              <div className="min-w-0">
+                <div className="text-base sm:text-lg font-bold font-mono text-white leading-tight">{stats.total}</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 truncate">Discussions</div>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-2 sm:gap-3">
+              <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
-              <div>
-                <div className="text-lg font-bold font-mono text-white">{stats.solved}</div>
-                <div className="text-[11px] text-slate-400">Solved</div>
+              <div className="min-w-0">
+                <div className="text-base sm:text-lg font-bold font-mono text-white leading-tight">{stats.solved}</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 truncate">Solved</div>
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+            <div className="p-2.5 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center gap-2 sm:gap-3">
+              <div className="p-1.5 sm:p-2 rounded-lg bg-amber-500/10 text-amber-400 shrink-0">
                 <Users className="h-4 w-4" />
               </div>
-              <div>
-                <div className="text-lg font-bold font-mono text-white">{stats.totalReplies}</div>
-                <div className="text-[11px] text-slate-400">Answers</div>
+              <div className="min-w-0">
+                <div className="text-base sm:text-lg font-bold font-mono text-white leading-tight">{stats.totalReplies}</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 truncate">Answers</div>
               </div>
             </div>
           </div>
@@ -235,7 +235,7 @@ const Forum: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="max-w-6xl mx-auto py-6 space-y-6">
         {/* Category Pills Bar */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {CATEGORIES.map((cat) => {

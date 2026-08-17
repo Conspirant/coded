@@ -376,7 +376,7 @@ const CollegeInfoHub = () => {
       </div>
 
       {/* ═══ Sticky Search + Filter Bar ═══ */}
-      <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-white/5">
+      <div className="sticky top-14 z-30 bg-background/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             {/* Search */}

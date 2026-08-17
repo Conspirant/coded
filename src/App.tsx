@@ -11,7 +11,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
-import { PWAInstallBanner } from "./components/PWAInstallBanner";
 import { DonationButton } from "./components/DonationButton";
 import { CommandPalette } from "./components/CommandPalette";
 import { KonamiEasterEgg, KeyboardShortcutsHUD } from "./components/EasterEggs";
@@ -157,7 +156,6 @@ const App = () => (
             </Routes>
             <DonationButton />
             <MusicPlayer />
-            <PWAInstallBanner />
             <GlobalPollPopup />
             </PresenceAndBlockProvider>
           </BrowserRouter>

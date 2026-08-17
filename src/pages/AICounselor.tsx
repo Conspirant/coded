@@ -285,7 +285,7 @@ const AICounselor = () => {
                 </DialogContent>
             </Dialog>
 
-            <div className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] -m-4 md:-m-6">
+            <div className="flex flex-col h-[calc(100dvh-5.5rem)] md:h-[calc(100vh-5rem)] -m-3 sm:-m-4 md:-m-6">
                 {/* Header - Compact on mobile */}
                 <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     <div className="flex items-center gap-2 md:gap-3">

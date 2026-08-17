@@ -46,7 +46,7 @@ const Materials = () => {
     ];
 
     return (
-        <div className="container mx-auto p-6 space-y-8 max-w-7xl animate-fade-in">
+        <div className="space-y-6 max-w-7xl mx-auto animate-fade-in">
       <SEO
         title="KCET 2026 Study Materials – PYQs, Notes & Resources"
         description="Free KCET 2026 study materials including previous year papers (PYQs), chapter-wise notes, important formulas & preparation resources for Physics, Chemistry & Maths."

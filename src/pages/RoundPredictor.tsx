@@ -472,7 +472,7 @@ const RoundPredictor = () => {
         description="Predict KCET 2026 Round 2 and Round 3 cutoffs using actual R1 data + 3 years of historical round-drift patterns. R1-anchored predictions for utmost accuracy."
       />
 
-      <div className="max-w-6xl mx-auto space-y-6 px-4 py-8">
+      <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-3">

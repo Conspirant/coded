@@ -427,8 +427,8 @@ export function Layout({ children }: LayoutProps) {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-3 sm:p-4 md:p-6 pb-12 w-full">
-          <div className="max-w-7xl mx-auto w-full">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 pb-24 md:pb-12 w-full min-w-0 overflow-x-hidden">
+          <div className="max-w-7xl mx-auto w-full min-w-0">
             {children}
           </div>
 

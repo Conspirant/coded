@@ -302,7 +302,7 @@ export default function MockVerification() {
                       <HelpCircle className="h-4 w-4 text-indigo-400 shrink-0" />
                       Have you studied for a minimum of 7 academic years in Karnataka between 1st standard and 2nd PUC/12th standard?
                     </Label>
-                    <RadioGroup value={clauseA} onValueChange={setClauseA} className="flex gap-4">
+                    <RadioGroup value={clauseA} onValueChange={setClauseA} className="flex flex-wrap gap-3 sm:gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="clause-yes" />
                         <Label htmlFor="clause-yes" className="cursor-pointer">Yes (Meets Clause A)</Label>
@@ -319,7 +319,7 @@ export default function MockVerification() {
                       <HelpCircle className="h-4 w-4 text-indigo-400 shrink-0" />
                       Do you have printed copies of your UGCET Online Application Form, Admit Card (Hall Ticket), and the final Confirmation Slip?
                     </Label>
-                    <RadioGroup value={printedDocs} onValueChange={setPrintedDocs} className="flex gap-4">
+                    <RadioGroup value={printedDocs} onValueChange={setPrintedDocs} className="flex flex-wrap gap-3 sm:gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="print-yes" />
                         <Label htmlFor="print-yes" className="cursor-pointer">Yes</Label>
@@ -341,7 +341,7 @@ export default function MockVerification() {
                       <HelpCircle className="h-4 w-4 text-indigo-400 shrink-0" />
                       Do the spellings of your Name and your Parents' Names match EXACTLY across your SSLC (10th) Marks Card, PU (12th) Marks Card, and KCET Application Form?
                     </Label>
-                    <RadioGroup value={namesMatch} onValueChange={setNamesMatch} className="flex gap-4">
+                    <RadioGroup value={namesMatch} onValueChange={setNamesMatch} className="flex flex-wrap gap-3 sm:gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="names-yes" />
                         <Label htmlFor="names-yes" className="cursor-pointer">Yes, they match exactly</Label>
@@ -358,7 +358,7 @@ export default function MockVerification() {
                       <HelpCircle className="h-4 w-4 text-indigo-400 shrink-0" />
                       Do you have the Transfer Certificate (TC) issued by your Class 12 / PU College?
                     </Label>
-                    <RadioGroup value={hasTC} onValueChange={setHasTC} className="flex gap-4">
+                    <RadioGroup value={hasTC} onValueChange={setHasTC} className="flex flex-wrap gap-3 sm:gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="tc-yes" />
                         <Label htmlFor="tc-yes" className="cursor-pointer">Yes</Label>
@@ -380,7 +380,7 @@ export default function MockVerification() {
                       <HelpCircle className="h-4 w-4 text-indigo-400 shrink-0" />
                       Is your Karnataka Study Certificate (confirming study in standard 1 to 12) signed and stamped by the Block Education Officer (BEO) or DDPI?
                     </Label>
-                    <RadioGroup value={studyCertBEO} onValueChange={setStudyCertBEO} className="flex gap-4">
+                    <RadioGroup value={studyCertBEO} onValueChange={setStudyCertBEO} className="flex flex-wrap gap-3 sm:gap-4">
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="yes" id="beo-yes" />
                         <Label htmlFor="beo-yes" className="cursor-pointer">Yes, signed & stamped by BEO</Label>
@@ -444,7 +444,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Is your Category certificate issued by a competent Tahsildar in Karnataka?
                         </Label>
-                        <RadioGroup value={casteTahisldar} onValueChange={setCasteTahisldar} className="flex gap-4">
+                        <RadioGroup value={casteTahisldar} onValueChange={setCasteTahisldar} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="caste-tah-yes" />
                             <Label htmlFor="caste-tah-yes" className="text-xs cursor-pointer">Yes</Label>
@@ -459,7 +459,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Does your Category certificate have a valid, digital Revenue Department (RD) number starting with RD?
                         </Label>
-                        <RadioGroup value={casteRD} onValueChange={setCasteRD} className="flex gap-4">
+                        <RadioGroup value={casteRD} onValueChange={setCasteRD} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="caste-rd-yes" />
                             <Label htmlFor="caste-rd-yes" className="text-xs cursor-pointer">Yes</Label>
@@ -480,7 +480,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Is your annual family income less than ₹8,00,000 (8 LPA) shown on your Income certificate?
                         </Label>
-                        <RadioGroup value={incomeLimit} onValueChange={setIncomeLimit} className="flex gap-4">
+                        <RadioGroup value={incomeLimit} onValueChange={setIncomeLimit} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="inc-yes" />
                             <Label htmlFor="inc-yes" className="text-xs cursor-pointer">Yes</Label>
@@ -501,7 +501,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Have you studied in rural areas of Karnataka for 10 full years from 1st standard to 10th standard?
                         </Label>
-                        <RadioGroup value={rural10Years} onValueChange={setRural10Years} className="flex gap-4">
+                        <RadioGroup value={rural10Years} onValueChange={setRural10Years} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="rur-10-yes" />
                             <Label htmlFor="rur-10-yes" className="text-xs cursor-pointer">Yes</Label>
@@ -516,7 +516,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Is your Rural Certificate signed by your School Headmaster and countersigned by the respective BEO?
                         </Label>
-                        <RadioGroup value={ruralBEO} onValueChange={setRuralBEO} className="flex gap-4">
+                        <RadioGroup value={ruralBEO} onValueChange={setRuralBEO} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="rur-beo-yes" />
                             <Label htmlFor="rur-beo-yes" className="text-xs cursor-pointer">Yes, verified by BEO</Label>
@@ -537,7 +537,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Have you studied in Kannada Medium standard 1 to 10 for full 10 academic years?
                         </Label>
-                        <RadioGroup value={kannada10Years} onValueChange={setKannada10Years} className="flex gap-4">
+                        <RadioGroup value={kannada10Years} onValueChange={setKannada10Years} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="kan-10-yes" />
                             <Label htmlFor="kan-10-yes" className="text-xs cursor-pointer">Yes</Label>
@@ -552,7 +552,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Is your Kannada Medium certificate countersigned by the Block Education Officer (BEO)?
                         </Label>
-                        <RadioGroup value={kannadaBEO} onValueChange={setKannadaBEO} className="flex gap-4">
+                        <RadioGroup value={kannadaBEO} onValueChange={setKannadaBEO} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="kan-beo-yes" />
                             <Label htmlFor="kan-beo-yes" className="text-xs cursor-pointer">Yes, verified by BEO</Label>
@@ -573,7 +573,7 @@ export default function MockVerification() {
                         <Label className="text-xs font-semibold text-slate-300">
                           Do you possess the Article 371(j) Annexure-A certificate issued by the competent Assistant Commissioner?
                         </Label>
-                        <RadioGroup value={hkAnnexureA} onValueChange={setHkAnnexureA} className="flex gap-4">
+                        <RadioGroup value={hkAnnexureA} onValueChange={setHkAnnexureA} className="flex flex-wrap gap-3 sm:gap-4">
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id="hk-yes" />
                             <Label htmlFor="hk-yes" className="text-xs cursor-pointer">Yes</Label>

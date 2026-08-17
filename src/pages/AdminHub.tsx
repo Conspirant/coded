@@ -2557,7 +2557,7 @@ export default function AdminHub() {
                 </div>
 
                 {/* Content */}
-                <main className="flex-1 p-6 md:p-8 max-w-7xl">
+                <main className="flex-1 p-3.5 sm:p-6 md:p-8 max-w-7xl min-w-0 w-full overflow-x-hidden">
                     {activeSection === "forum-control" && <AdminForumControlSection />}
                     {activeSection === "pyq" && <AdminPYQSection />}
                     {activeSection === "certificates" && <AdminCertificateGeneratorSection />}

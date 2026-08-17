@@ -229,7 +229,7 @@ const ThreadDetailPage: React.FC = () => {
 
       {/* Top Header Navigation */}
       <div className="border-b border-white/10 bg-slate-900/40 backdrop-blur-md py-4 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
           <Link
             to="/forum"
             className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition-colors"
@@ -239,7 +239,7 @@ const ThreadDetailPage: React.FC = () => {
           </Link>
 
           {isAdmin && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 flex items-center gap-1 text-xs">
                 <ShieldCheck className="h-3.5 w-3.5 text-amber-400" /> Admin Mode
               </Badge>
@@ -267,8 +267,8 @@ const ThreadDetailPage: React.FC = () => {
       </div>
 
       {/* Thread Main Content Body */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <div className="bg-slate-900/60 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+        <div className="bg-slate-900/60 border border-white/10 rounded-2xl p-4 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
           {/* Header Badges */}
           <div className="flex flex-wrap items-center gap-2">
             {post.pinned && (

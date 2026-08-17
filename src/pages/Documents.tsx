@@ -181,32 +181,32 @@ const Documents = () => {
             <CardContent>
               <div className="space-y-4">
                 {category.documents.map((doc, docIndex) => (
-                  <div key={docIndex} className="flex items-start justify-between p-4 border rounded-lg bg-muted/30">
-                    <div className="flex-1 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">{doc.name}</h3>
+                  <div key={docIndex} className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 p-3.5 sm:p-4 border rounded-lg bg-muted/30">
+                    <div className="flex-1 space-y-2 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-semibold text-sm sm:text-base">{doc.name}</h3>
                         {doc.required ? (
                           <Badge variant="destructive" className="text-xs">Required</Badge>
                         ) : (
                           <Badge variant="secondary" className="text-xs">If Applicable</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-foreground/70">{doc.description}</p>
+                      <p className="text-xs sm:text-sm text-foreground/70">{doc.description}</p>
                     </div>
-                    <div className="flex items-center gap-2 ml-4">
-                      <div className="text-right">
-                        <div className="flex items-center gap-1 text-sm font-medium">
-                          <Copy className="h-4 w-4" />
+                    <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 shrink-0">
+                      <div className="text-left sm:text-right">
+                        <div className="flex items-center gap-1 text-xs sm:text-sm font-medium">
+                          <Copy className="h-3.5 w-3.5" />
                           {doc.type}
                         </div>
-                        <div className="text-xs text-foreground/70">
+                        <div className="text-[11px] text-foreground/70">
                           {doc.copies} {doc.copies === 1 ? 'copy' : 'copies'}
                         </div>
                       </div>
                       {doc.required ? (
-                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
                       ) : (
-                        <AlertCircle className="h-5 w-5 text-yellow-600" />
+                        <AlertCircle className="h-5 w-5 text-yellow-600 shrink-0" />
                       )}
                     </div>
                   </div>

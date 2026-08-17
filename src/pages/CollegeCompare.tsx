@@ -391,7 +391,7 @@ const CollegeCompare = () => {
       ) : (
         <div className="space-y-10">
           {/* Comparison Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 ${activeColleges.length === 1 ? 'md:grid-cols-1 max-w-lg mx-auto' : activeColleges.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6`}>
             {activeColleges.map((college, idx) => (
               <Card key={college.code} className="border-white/10 bg-slate-900/10 backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 {/* Header highlight if best value */}
@@ -727,7 +727,7 @@ const CollegeCompare = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className={`grid grid-cols-1 md:grid-cols-${activeColleges.length} gap-6`}>
+              <div className={`grid grid-cols-1 ${activeColleges.length === 1 ? 'md:grid-cols-1' : activeColleges.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6`}>
                 {activeColleges.map(col => {
                   const collegeCutoffs = getCollegeCutoffs(col.code)
                   return (
