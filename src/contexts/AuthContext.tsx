@@ -114,10 +114,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
+      const redirectPath = window.location.pathname.startsWith("/forum") ? "/forum" : "/dashboard";
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/forum`
+          redirectTo: `${window.location.origin}${redirectPath}`
         }
       });
       if (error) throw error;
@@ -132,10 +133,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithEmail = async (email: string) => {
     try {
+      const redirectPath = window.location.pathname.startsWith("/forum") ? "/forum" : "/dashboard";
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
-          emailRedirectTo: `${window.location.origin}/forum`
+          emailRedirectTo: `${window.location.origin}${redirectPath}`
         }
       });
       if (error) throw error;
