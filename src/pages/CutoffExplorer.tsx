@@ -1,4 +1,4 @@
-﻿import { CutoffService } from "@/lib/cutoff-service";
+import { CutoffService } from "@/lib/cutoff-service";
 import { SEO } from "@/components/SEO"
 import AdUnit from "@/components/AdUnit"
 import { useState, useEffect } from "react"
@@ -620,7 +620,7 @@ const CutoffExplorer = () => {
                       <SelectItem value="ALL">All Courses</SelectItem>
                       {COURSES.map((c) => (
                         <SelectItem key={c.code} value={c.code}>
-                          {c.code} â€” {c.name}
+                          {c.code} — {c.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -868,7 +868,7 @@ const CutoffExplorer = () => {
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
                       <span className="hidden sm:inline">Previous</span>
-                      <span className="sm:hidden">â†</span>
+                      <span className="sm:hidden">←</span>
                     </Button>
                     <div className="flex items-center px-3 py-2 text-sm font-medium bg-background border rounded-md min-h-[44px]">
                       Page {page}
@@ -881,7 +881,7 @@ const CutoffExplorer = () => {
                       className="min-h-[44px] min-w-[44px] touch-manipulation"
                     >
                       <span className="hidden sm:inline">Next</span>
-                      <span className="sm:hidden">â†’</span>
+                      <span className="sm:hidden">→</span>
                     </Button>
                   </div>
                 </div>

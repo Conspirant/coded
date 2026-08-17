@@ -1,4 +1,4 @@
-﻿import { SEO } from "@/components/SEO"
+import { SEO } from "@/components/SEO"
 import AdUnit from "@/components/AdUnit"
 import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -229,7 +229,7 @@ const RankPredictor = () => {
       cet: kcetMarks,
       puc: pucPercentage,
       rank: prediction.medium,
-      range: `${prediction.low.toLocaleString()} â€“ ${prediction.high.toLocaleString()}`,
+      range: `${prediction.low.toLocaleString()} – ${prediction.high.toLocaleString()}`,
       percentile: calculatePercentile(prediction.medium),
       timestamp: new Date().toISOString()
     }
@@ -299,7 +299,7 @@ const RankPredictor = () => {
 
     ctx.fillStyle = '#64748B'
     ctx.font = '500 13px "Plus Jakarta Sans", sans-serif'
-    ctx.fillText(`Estimated Median Range: ${prediction.low.toLocaleString()} â€“ ${prediction.high.toLocaleString()}`, 300, 145)
+    ctx.fillText(`Estimated Median Range: ${prediction.low.toLocaleString()} – ${prediction.high.toLocaleString()}`, 300, 145)
 
     // Details box
     ctx.fillStyle = '#1E293B'
@@ -310,15 +310,15 @@ const RankPredictor = () => {
     ctx.fillStyle = '#F8FAFC'
     ctx.font = '500 13px "JetBrains Mono", monospace'
     ctx.textAlign = 'left'
-    ctx.fillText(`â€¢ KCET Score: ${kcetMarks} / 180 (${((kcetMarks / 180) * 100).toFixed(1)}%)`, 60, 210)
-    ctx.fillText(`â€¢ Board PCM: ${pucPercentage}% (Weightage: 50%)`, 60, 240)
-    ctx.fillText(`â€¢ Composite Score: ${prediction.composite.toFixed(2)}%`, 60, 270)
-    ctx.fillText(`â€¢ Expected Percentile: ${calculatePercentile(prediction.medium)}`, 60, 300)
+    ctx.fillText(`• KCET Score: ${kcetMarks} / 180 (${((kcetMarks / 180) * 100).toFixed(1)}%)`, 60, 210)
+    ctx.fillText(`• Board PCM: ${pucPercentage}% (Weightage: 50%)`, 60, 240)
+    ctx.fillText(`• Composite Score: ${prediction.composite.toFixed(2)}%`, 60, 270)
+    ctx.fillText(`• Expected Percentile: ${calculatePercentile(prediction.medium)}`, 60, 300)
 
     ctx.fillStyle = '#64748B'
     ctx.font = '400 11px sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('Generated via KCET Coded (kcetcoded.dev) â€¢ Verified KEA Normalization Modeling', 300, 345)
+    ctx.fillText('Generated via KCET Coded (kcetcoded.dev) • Verified KEA Normalization Modeling', 300, 345)
 
     const link = document.createElement('a')
     link.href = canvas.toDataURL('image/png')
@@ -334,8 +334,8 @@ const RankPredictor = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
       <SEO
-        title="KCET 2026 Rank Predictor â€“ Marks vs Rank Calculator (Free)"
-        description="Calculate your predicted Karnataka CET 2026 rank from marks using multi-year KEA normalized data (2023â€“2025). 50% KCET + 50% Board formula."
+        title="KCET 2026 Rank Predictor – Marks vs Rank Calculator (Free)"
+        description="Calculate your predicted Karnataka CET 2026 rank from marks using multi-year KEA normalized data (2023–2025). 50% KCET + 50% Board formula."
         url="https://kcetcoded.dev/rank-predictor"
         keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction"
       />
@@ -566,7 +566,7 @@ const RankPredictor = () => {
                   {/* Normalization Math Formula Bar */}
                   <div className="p-3 rounded-md bg-muted/40 border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs gap-2">
                     <span className="text-muted-foreground">
-                      Formula: <code className="font-mono text-foreground">({kcetMarks}/180 Ã— 50) + ({pucPercentage}% Ã— 0.5)</code>
+                      Formula: <code className="font-mono text-foreground">({kcetMarks}/180 × 50) + ({pucPercentage}% × 0.5)</code>
                     </span>
                     <span className="font-semibold text-foreground">
                       Composite Aggregate: <strong className="font-mono text-primary text-sm">{prediction ? `${prediction.composite.toFixed(2)}%` : '--'}</strong>
@@ -613,7 +613,7 @@ const RankPredictor = () => {
                       <div>
                         <span className="text-xs text-muted-foreground block mb-1">Estimated Rank Band</span>
                         <div className="text-3xl font-bold font-mono tracking-tight text-foreground">
-                          {prediction.low.toLocaleString()} <span className="text-muted-foreground font-normal text-xl">â€“</span> {prediction.high.toLocaleString()}
+                          {prediction.low.toLocaleString()} <span className="text-muted-foreground font-normal text-xl">–</span> {prediction.high.toLocaleString()}
                         </div>
                       </div>
 
@@ -724,7 +724,7 @@ const RankPredictor = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Confidence Range:</span>
-                      <span className="font-mono font-semibold text-foreground">{prediction.low.toLocaleString()} â€“ {prediction.high.toLocaleString()}</span>
+                      <span className="font-mono font-semibold text-foreground">{prediction.low.toLocaleString()} – {prediction.high.toLocaleString()}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -799,7 +799,7 @@ const RankPredictor = () => {
                 <LineChartIcon className="h-4 w-4 text-primary" /> Aggregate Score vs Rank Curve (Historical KEA)
               </CardTitle>
               <CardDescription className="text-xs">
-                Derived from verified candidate records across Karnataka CET 2023â€“2025.
+                Derived from verified candidate records across Karnataka CET 2023–2025.
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-4">
@@ -860,7 +860,7 @@ const RankPredictor = () => {
                   <div key={index} className="p-3 rounded-md border border-border bg-card text-xs flex justify-between items-center shadow-xs">
                     <div>
                       <div className="font-mono font-bold text-sm text-foreground">Rank ~{result.rank.toLocaleString()}</div>
-                      <div className="text-muted-foreground text-[11px]">KCET: {result.cet}/180 â€¢ Board: {result.puc}%</div>
+                      <div className="text-muted-foreground text-[11px]">KCET: {result.cet}/180 • Board: {result.puc}%</div>
                     </div>
                     <Badge variant="outline" className="font-mono text-[10px]">
                       {new Date(result.timestamp).toLocaleDateString()}
@@ -888,7 +888,7 @@ const RankPredictor = () => {
               <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
                 <strong className="text-foreground block">Independent Statistical Model</strong>
                 <p className="leading-relaxed">
-                  KCET Coded rank projections are mathematical estimates derived from historical KEA cutoff patterns (2023â€“2025). Actual ranks published by Karnataka Examination Authority (cetonline.karnataka.gov.in) depend on overall candidate volume, question paper difficulty variance, and official Board normalization rules.
+                  KCET Coded rank projections are mathematical estimates derived from historical KEA cutoff patterns (2023–2025). Actual ranks published by Karnataka Examination Authority (cetonline.karnataka.gov.in) depend on overall candidate volume, question paper difficulty variance, and official Board normalization rules.
                 </p>
               </div>
               <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
