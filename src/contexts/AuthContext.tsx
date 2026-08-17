@@ -36,7 +36,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = async (userId: string, email?: string) => {
+  const syncUserAndProfile = (currSession: Session | null) => {
+    setSession(currSession);
+    const currUser = currSession?.user ?? null;
+    setUser(currUser);
+
+    if (currUser) {
+      const name = currUser.user_metadata?.full_name || 
+                   currUser.user_metadata?.name || 
+                   (currUser.email ? currUser.email.split("@")[0] : "KCET Aspirant");
+      
+      const initialProfile: UserProfile = {
+        id: currUser.id,
+        display_name: name,
+        avatar_url: currUser.user_metadata?.avatar_url,
+        kcet_category: "GM",
+        badge: "Verified Student"
+      };
+
+      setProfile(initialProfile);
+      fetchCloudProfile(currUser.id, initialProfile);
+    } else {
+      setProfile(null);
+    }
+    setLoading(false);
+  };
+
+  const fetchCloudProfile = async (userId: string, currentProfile: UserProfile) => {
     try {
       const { data, error } = await supabase
         .from("profiles" as any)
@@ -46,107 +72,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!error && data) {
         const p = data as unknown as UserProfile;
-        setProfile(p);
+        setProfile((prev) => ({ ...prev, ...p }));
 
-        // Auto-unlock this device if user's cloud account is Pro
         if (p.is_pro || p.pro_access_code) {
           if (p.pro_access_code) {
             saveAccessCode(p.pro_access_code);
           } else {
             unlockGlobally();
           }
-        } else {
-          // If this device was already unlocked locally, link it to this account
-          const localCode = getSavedAccessCode();
-          if (localCode || isUnlocked()) {
-            syncProStatusToCloud(localCode || undefined);
-          }
         }
       } else {
-        // Fallback default profile from local or auth state
-        const fallbackName = email ? email.split("@")[0] : "KCET Aspirant";
-        const newFallback: UserProfile = {
-          id: userId,
-          display_name: fallbackName,
-          kcet_category: "GM",
-          badge: "Verified Student"
-        };
-        setProfile(newFallback);
-
-        // Link local Pro status if active
+        // If device had local Pro, sync to cloud in background
         const localCode = getSavedAccessCode();
         if (localCode || isUnlocked()) {
           syncProStatusToCloud(localCode || undefined);
         }
       }
     } catch {
-      // Ignore profile fetch failure
+      // Non-blocking fallback
     }
   };
 
   useEffect(() => {
-    let isMounted = true;
-
-    const initAuth = async () => {
-      // 1. If returning from OAuth redirect with hash parameters (#access_token=...)
+    // 1. Check active session on mount
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      syncUserAndProfile(initialSession);
       if (window.location.hash && window.location.hash.includes("access_token")) {
-        try {
-          const hashStr = window.location.hash.startsWith("#") ? window.location.hash.substring(1) : window.location.hash;
-          const hashParams = new URLSearchParams(hashStr);
-          const accessToken = hashParams.get("access_token");
-          const refreshToken = hashParams.get("refresh_token") || "";
-
-          if (accessToken) {
-            const { data, error } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken,
-            });
-
-            if (!error && data?.session && isMounted) {
-              setSession(data.session);
-              setUser(data.session.user);
-              await fetchProfile(data.session.user.id, data.session.user.email);
-              // Clean up token hash from browser URL without triggering reload
-              window.history.replaceState(null, "", window.location.pathname + window.location.search);
-              setLoading(false);
-              return;
-            }
-          }
-        } catch (err) {
-          console.error("Error parsing OAuth hash token:", err);
-        }
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
       }
+    });
 
-      // 2. Standard getSession check
-      const { data: { session } } = await supabase.auth.getSession();
-      if (isMounted) {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id, session.user.email);
-        }
-        setLoading(false);
-      }
-    };
-
-    initAuth();
-
-    // 3. Listen for subsequent auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (isMounted) {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id, session.user.email);
-        } else {
-          setProfile(null);
-        }
-        setLoading(false);
+    // 2. Subscribe to auth state changes (OAuth redirects, logins, logouts)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
+      syncUserAndProfile(currentSession);
+      if (window.location.hash && window.location.hash.includes("access_token")) {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
       }
     });
 
     return () => {
-      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -192,9 +156,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await supabase.auth.signOut();
     } catch (err) {
-      console.warn("Supabase signOut error:", err);
+      console.warn("Sign out notice:", err);
     } finally {
-      // Clear Supabase session tokens from localStorage
       try {
         const keysToRemove: string[] = [];
         for (let i = 0; i < localStorage.length; i++) {
