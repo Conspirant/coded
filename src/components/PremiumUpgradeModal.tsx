@@ -23,10 +23,12 @@ import {
   Loader2,
   Award
 } from "lucide-react";
-import { verifyAndUnlockAccessKey, initiatePremiumPayment, restorePurchase } from "@/lib/unlock";
+import { verifyAndUnlockAccessKey, initiatePremiumPayment, restorePurchase, getSavedAccessCode } from "@/lib/unlock";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { DonationCertificateModal } from "./DonationCertificateModal";
+import { Copy, CheckCheck, LogIn, Sparkles, ArrowRight } from "lucide-react";
 
 interface PremiumUpgradeModalProps {
   open: boolean;
@@ -37,11 +39,15 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
   const [accessKey, setAccessKey] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState<string>("");
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   const [showKeyForm, setShowKeyForm] = useState(false);
   const [totalAmount, setTotalAmount] = useState<number>(78);
   const [showCert, setShowCert] = useState(false);
+
+  const { user, signInWithGoogle } = useAuth();
 
   useEffect(() => {
     const fetchTotalAmount = async () => {
@@ -66,10 +72,11 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
   const handlePayment = async () => {
     setIsPaying(true);
     await initiatePremiumPayment(
-      () => {
+      (code?: string) => {
         setIsPaying(false);
+        const activeCode = code || getSavedAccessCode() || "CODED-PRO";
+        setGeneratedCode(activeCode);
         setSuccess(true);
-        setShowCert(true);
         setTotalAmount(prev => prev + 19);
       },
       () => {
@@ -92,8 +99,8 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
     setLoading(false);
     
     if (res.success) {
+      setGeneratedCode(res.code || accessKey);
       setSuccess(true);
-      setShowCert(true);
       toast.success("Access Restored! 🎉", {
         description: "Your premium features are now fully unlocked."
       });
@@ -103,6 +110,14 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
         description: res.error || "Could not verify your access key or payment ID."
       });
     }
+  };
+
+  const handleCopyCode = () => {
+    if (!generatedCode) return;
+    navigator.clipboard.writeText(generatedCode);
+    setCopied(true);
+    toast.success("Passcode copied to clipboard!");
+    setTimeout(() => setCopied(false), 2500);
   };
 
   const premiumFeatures = [
@@ -145,10 +160,12 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
               </div>
               
               <DialogTitle className="text-base font-bold tracking-tight text-white text-center">
-                Unlock Premium Features
+                {success ? "Pro Unlocked Successfully! 🎉" : "Unlock Premium Features"}
               </DialogTitle>
               <DialogDescription className="text-zinc-400 text-xs leading-relaxed text-center mt-1">
-                Sustain our platform and get full access to advanced planning tools.
+                {success 
+                  ? "All premium counseling & prediction tools are now active on your device."
+                  : "Sustain our platform and get full access to advanced planning tools."}
               </DialogDescription>
             </DialogHeader>
 
@@ -160,22 +177,82 @@ export const PremiumUpgradeModal = ({ open, onOpenChange }: PremiumUpgradeModalP
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="text-center py-6 space-y-4"
+                  className="space-y-3.5 py-2 text-left"
                 >
-                  <div className="mx-auto w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-                    <Check className="h-5 w-5 text-emerald-400" />
+                  {/* Passcode Box */}
+                  <div className="p-3 rounded-xl border border-zinc-800 bg-zinc-900/50 space-y-1.5">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="text-zinc-400 font-medium">Your Access Passcode:</span>
+                      <span className="text-[10px] text-emerald-400 font-mono">Saved in Settings</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-black/60 border border-zinc-800 rounded-lg px-3 py-1.5 font-mono text-sm font-bold text-amber-400 tracking-wider">
+                        {generatedCode || getSavedAccessCode() || "CODED-PRO-ACTIVE"}
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={handleCopyCode}
+                        className="h-8 px-2.5 text-xs border-zinc-700 hover:bg-zinc-800 text-zinc-300"
+                      >
+                        {copied ? <CheckCheck className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                      </Button>
+                    </div>
                   </div>
-                  <h4 className="text-lg font-semibold text-emerald-400">Access Granted!</h4>
-                  <p className="text-sm text-zinc-400">Enjoy the full power of KCETCoded premium features.</p>
 
-                  <Button
-                    type="button"
-                    onClick={() => setShowCert(true)}
-                    className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs h-10 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-amber-500/20"
-                  >
-                    <Award className="h-4 w-4" />
-                    View Official Premium Certificate 📜
-                  </Button>
+                  {/* Optional Cross-Device Sync Callout */}
+                  <div className="p-3 rounded-xl border border-indigo-500/20 bg-indigo-950/20 space-y-2 text-xs">
+                    <div className="flex items-center gap-1.5 font-semibold text-indigo-300">
+                      <Sparkles className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
+                      <span>Use on your Phone, Tablet, or PC</span>
+                    </div>
+                    {user ? (
+                      <p className="text-[11px] text-zinc-400 leading-relaxed">
+                        ✅ <strong className="text-zinc-200">Synced to {user.email}</strong>. Simply sign in with this account on any device to use Pro features automatically.
+                      </p>
+                    ) : (
+                      <>
+                        <p className="text-[11px] text-zinc-400 leading-relaxed">
+                          <strong className="text-zinc-200">Optional:</strong> Sign in with Google to link Pro to your account so you don't need passcodes on other devices. (You can also do this anytime later in Settings or just close this window).
+                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            signInWithGoogle();
+                          }}
+                          className="w-full h-8 text-xs border-zinc-700 hover:bg-zinc-800 text-zinc-200 flex items-center justify-center gap-2"
+                        >
+                          <LogIn className="h-3.5 w-3.5 text-indigo-400" />
+                          Link Pro with Google Sign In
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Primary & Secondary Close Buttons */}
+                  <div className="space-y-2 pt-1">
+                    <Button
+                      type="button"
+                      onClick={() => onOpenChange(false)}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-9 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20"
+                    >
+                      Done • Start Exploring Tools
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => setShowCert(true)}
+                      className="w-full text-zinc-400 hover:text-zinc-200 text-xs h-7"
+                    >
+                      <Award className="h-3.5 w-3.5 mr-1 text-amber-400" />
+                      View Supporter Certificate 📜
+                    </Button>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
