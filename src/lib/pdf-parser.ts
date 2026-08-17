@@ -1,8 +1,9 @@
 /**
  * KEA Option Entry PDF Parser - Anchor & Content-Based Approach
- * 1. Uses "E..." code and Fee "1,23..." patterns as anchors for every row.
+ * 1. Uses College+Course code and Fee patterns as anchors for every row.
  * 2. Learns column boundaries dynamically from anchored rows.
  * 3. Splits text based on these anchors, ensuring 100% data separation.
+ * 4. Includes fallback stream parser and scanned-PDF detection.
  */
 
 import { pdfjsLib, configurePDFJS, pdfjsWorker } from './pdf-config';
@@ -59,6 +60,8 @@ export class PDFParser {
 
       const allOptions: ParsedOption[] = [];
       let pendingOption: any = null;
+      let totalItemsCount = 0;
+      const pagesTextItems: TextItem[][] = [];
 
       // Reset boundaries to reasonable defaults
       this.feeStartX = 300;
@@ -77,22 +80,25 @@ export class PDFParser {
             y: item.transform[5]
           }));
 
-        // Sort by Y desc, then X asc
+        totalItemsCount += items.length;
+        pagesTextItems.push(items);
+
+        // Sort by Y desc (top to bottom), then X asc (left to right)
         items.sort((a, b) => b.y - a.y || a.x - b.x);
 
-        // 2. Group into Visual Rows
+        // 2. Group into Visual Rows with a fixed baseline to avoid line-drift staircasing
         const rows: TextItem[][] = [];
         let currentRow: TextItem[] = [];
-        let currentY = -1;
+        let rowBaselineY = -1;
 
         for (const item of items) {
-          if (currentY === -1 || Math.abs(item.y - currentY) < 10) {
+          if (rowBaselineY === -1 || Math.abs(item.y - rowBaselineY) <= 8) {
             currentRow.push(item);
-            currentY = item.y;
+            if (rowBaselineY === -1) rowBaselineY = item.y;
           } else {
             rows.push(currentRow);
             currentRow = [item];
-            currentY = item.y;
+            rowBaselineY = item.y;
           }
         }
         if (currentRow.length > 0) rows.push(currentRow);
@@ -105,7 +111,7 @@ export class PDFParser {
           }
 
           // Extract data using Anchors
-          const { optNo, code, courseName, fee, collegeName, isAnchored } = this.parseRowWithAnchors(row);
+          const { optNo, code, courseName, fee, collegeName } = this.parseRowWithAnchors(row);
 
           if (code) {
             // New Option
@@ -128,6 +134,21 @@ export class PDFParser {
 
       if (pendingOption) this.finalizeOption(pendingOption, allOptions);
 
+      // Check if PDF was an image / scanned copy with no selectable text
+      if (totalItemsCount === 0) {
+        throw new Error("This PDF appears to be a scanned image or photo without selectable digital text. Please download the official digital PDF from the KEA portal.");
+      }
+
+      // Stream fallback if row-based grouping yielded 0 options but digital text exists
+      if (allOptions.length === 0 && totalItemsCount > 0) {
+        console.log('🔄 Row-based parsing returned 0 options. Attempting stream fallback...');
+        const streamOptions = this.parseStreamFallback(pagesTextItems);
+        if (streamOptions.length > 0) {
+          console.log(`✅ Stream fallback parsed ${streamOptions.length} valid options`);
+          return streamOptions;
+        }
+      }
+
       console.log(`✅ Parsed ${allOptions.length} valid options`);
       return allOptions;
 
@@ -138,36 +159,40 @@ export class PDFParser {
   }
 
   private static findOptionCode(row: TextItem[]): { code: string; codeItemIndex: number; isCombined: boolean } {
-    // 1. Try concatenated format (e.g., E005CS or E005CSE or P001PH)
-    const combinedIndex = row.findIndex(i => /^[A-Z]\d{3}[A-Z]{2,4}$/i.test(i.text.trim()));
-    if (combinedIndex !== -1) {
-      const match = row[combinedIndex].text.trim().match(/[A-Z]\d{3}[A-Z]{2,4}/i);
+    // 1. Try single item containing combined or spaced code (e.g., E005CS, E005 CS, E005-CS, E001AIML, A001AR, P001PH)
+    for (let i = 0; i < row.length; i++) {
+      const clean = row[i].text.trim().replace(/^[\(\[\{]/, '').replace(/[\)\]\}]$/, '');
+      const match = clean.match(/^([A-Z]\d{2,4})\s*[-/]?\s*([A-Z]{2,5})$/i);
       if (match) {
         return {
-          code: match[0].toUpperCase(),
-          codeItemIndex: combinedIndex,
+          code: (match[1] + match[2]).toUpperCase(),
+          codeItemIndex: i,
           isCombined: true
         };
       }
     }
 
-    // 2. Try split format (e.g., E002 in one cell, CS in another)
-    const collegeIndex = row.findIndex(i => /^[A-Z]\d{3}$/i.test(i.text.trim()));
+    // 2. Try split format (e.g., E002 in one cell, CS in another in the same row)
+    const collegeIndex = row.findIndex(i => {
+      const clean = i.text.trim().replace(/^[\(\[\{]/, '').replace(/[\)\]\}]$/, '');
+      return /^[A-Z]\d{2,4}$/i.test(clean);
+    });
+
     if (collegeIndex !== -1) {
       const collegeItem = row[collegeIndex];
-      const collegeCode = collegeItem.text.trim().toUpperCase();
+      const collegeCode = collegeItem.text.trim().replace(/^[\(\[\{]/, '').replace(/[\)\]\}]$/, '').toUpperCase();
 
-      // Find a course code: exactly 2 to 4 letters, no numbers, and horizontally close to the college code
+      // Find a course code: 2 to 5 letters, no numbers, not common stop words
       const courseIndex = row.findIndex((item, idx) => {
         if (idx === collegeIndex) return false;
-        const text = item.text.trim();
-        return /^[A-Z]{2,4}$/i.test(text) && 
-               !/^[0-9]+$/.test(text) && 
-               Math.abs(item.x - collegeItem.x) < 80;
+        const text = item.text.trim().replace(/^[\(\[\{]/, '').replace(/[\)\]\}]$/, '');
+        if (!/^[A-Z]{2,5}$/i.test(text)) return false;
+        if (/^(AND|THE|FOR|NEW|OLD|DAY|EVE|POST|ROAD|NEAR|MAIN|CITY|TOWN|GOVT|AIDED)$/i.test(text)) return false;
+        return Math.abs(item.x - collegeItem.x) < 250;
       });
 
       if (courseIndex !== -1) {
-        const courseCode = row[courseIndex].text.trim().toUpperCase();
+        const courseCode = row[courseIndex].text.trim().replace(/^[\(\[\{]/, '').replace(/[\)\]\}]$/, '').toUpperCase();
         return {
           code: collegeCode + courseCode,
           codeItemIndex: collegeIndex,
@@ -195,22 +220,19 @@ export class PDFParser {
     let courseItemIndex = -1;
     if (code && !parsed.isCombined) {
       const collegeIndex = codeItemIndex;
-      const collegeCode = code.substring(0, 4);
       const courseCode = code.substring(4);
       courseItemIndex = row.findIndex((item, idx) => {
         return idx !== collegeIndex && item.text.trim().toUpperCase() === courseCode;
       });
     }
 
-    // 2. Find Fee Anchor (digits with comma)
+    // 2. Find Fee Anchor (digits with comma, e.g. 1,07,000 or 98,000)
     const feeItemIndex = row.findIndex(i => /\d{1,3}(?:,\d{2,3})+/.test(i.text));
     let feeX = -1;
 
     if (feeItemIndex !== -1) {
       feeX = row[feeItemIndex].x;
-      // Update dynamic boundary
-      this.feeStartX = feeX - 10; // Fee starts slightly left of its numbers
-      // Also set college start slightly right of fee end (approx width of fee is 60)
+      this.feeStartX = feeX - 10;
       this.collegeStartX = feeX + 80;
     }
 
@@ -230,34 +252,19 @@ export class PDFParser {
         // Left of Code -> OptNo
         if (/^\d+$/.test(txt)) optNo = txt;
       } else {
-        // Right of Code (or continuation row)
-        // Use Fee Anchor X to split Branch Name vs College Name
-
-        // Determine if this text belongs to Fee, Course, or College
-
-        // If we found a fee in this row, use its index to split
         if (feeItemIndex !== -1) {
           if (i < feeItemIndex && (!code || i > codeItemIndex)) {
             courseName += (courseName ? ' ' : '') + txt;
           } else if (i > feeItemIndex) {
             collegeName += (collegeName ? ' ' : '') + txt;
           }
-        }
-        else {
-          // No fee in this row (continuation). Use learned boundaries.
-          // If text X is left of learned fee start -> Course Name
-          // IF text X is right of learned college start -> College Name
-          // Middle overlaps? Assign based on proximity.
-
+        } else {
           if (x < this.feeStartX) {
             courseName += (courseName ? ' ' : '') + txt;
           } else if (x > this.collegeStartX) {
             collegeName += (collegeName ? ' ' : '') + txt;
           } else {
-            // Ambiguous zone (Fee column empty row)
-            // Usually fee column is empty in continuation rows
-            // Check text content?
-            if (/College|Institute|University|Engineering|Adyar|Road|Post|Dist/i.test(txt)) {
+            if (/College|Institute|University|Engineering|Adyar|Road|Post|Dist|Campus|Bengaluru|Bangalore|Mysuru|Mangaluru/i.test(txt)) {
               collegeName += (collegeName ? ' ' : '') + txt;
             } else {
               courseName += (courseName ? ' ' : '') + txt;
@@ -269,6 +276,52 @@ export class PDFParser {
 
     const isAnchored = !!code;
     return { optNo, code, courseName, fee, collegeName, isAnchored };
+  }
+
+  /**
+   * Fallback stream parser in case visual row alignment fails on non-standard PDFs
+   */
+  private static parseStreamFallback(pages: TextItem[][]): ParsedOption[] {
+    const list: ParsedOption[] = [];
+    const codePattern = /\b([A-Z]\d{2,4})\s*[-/]?\s*([A-Z]{2,5})\b/g;
+
+    let globalPriority = 1;
+
+    for (const pageItems of pages) {
+      // Sort in reading order
+      const sorted = [...pageItems].sort((a, b) => b.y - a.y || a.x - b.x);
+      const fullPageText = sorted.map(i => i.text).join(' ');
+
+      let match: RegExpExecArray | null;
+      while ((match = codePattern.exec(fullPageText)) !== null) {
+        const collegeCode = match[1].toUpperCase();
+        const branchCode = match[2].toUpperCase();
+        const code = collegeCode + branchCode;
+
+        // Skip false positives
+        if (/^(AND|THE|FOR|NEW|OLD|DAY|EVE|POST|ROAD|NEAR)$/i.test(branchCode)) continue;
+
+        const branchName = this.getBranchName(branchCode);
+        const collegeName = `College ${collegeCode}`;
+
+        list.push({
+          id: `opt-stream-${globalPriority}-${code}`,
+          priority: globalPriority,
+          collegeCourse: code,
+          collegeCode,
+          branchCode,
+          branchName,
+          collegeName,
+          location: 'Karnataka',
+          courseFee: 'Not specified',
+          collegeAddress: collegeName
+        });
+
+        globalPriority++;
+      }
+    }
+
+    return list;
   }
 
   private static finalizeOption(data: any, list: ParsedOption[]) {
@@ -308,7 +361,7 @@ export class PDFParser {
 
     list.push({
       id: `opt-${data.optNo}-${data.code}`,
-      priority: parseInt(data.optNo),
+      priority: parseInt(data.optNo) || (list.length + 1),
       collegeCourse: data.code,
       collegeCode,
       branchCode,
@@ -327,6 +380,7 @@ export class PDFParser {
       'AI': 'Artificial Intelligence and Machine Learning',
       'AM': 'Computer Science (AI & Machine Learning)',
       'CS': 'Computer Science and Engineering',
+      'CSE': 'Computer Science and Engineering',
       'CA': 'Computer Science (AI & Machine Learning)',
       'CF': 'Computer Science (Artificial Intelligence)',
       'CY': 'Computer Science (Cyber Security)',
@@ -340,19 +394,37 @@ export class PDFParser {
       'LG': 'Computer Science and Engineering',
       'LD': 'Computer Science (Data Science)',
       'EC': 'Electronics and Communication Engineering',
+      'ECE': 'Electronics and Communication Engineering',
       'BB': 'Electronics and Communication Engineering',
       'EE': 'Electrical and Electronics Engineering',
+      'EEE': 'Electrical and Electronics Engineering',
       'BJ': 'Electrical and Electronics Engineering',
       'IE': 'Information Science and Engineering',
       'IS': 'Information Science and Engineering',
+      'ISE': 'Information Science and Engineering',
       'CU': 'Information Science and Engineering',
       'LH': 'Information Science and Engineering',
       'ME': 'Mechanical Engineering',
+      'MECH': 'Mechanical Engineering',
       'DB': 'Mechanical Engineering',
       'CE': 'Civil Engineering',
+      'CIVIL': 'Civil Engineering',
       'BP': 'Civil Engineering',
       'BT': 'Biotechnology',
-      'BM': 'Biomedical Engineering'
+      'BM': 'Biomedical Engineering',
+      'AR': 'Architecture',
+      'AT': 'Architecture',
+      'CH': 'Chemical Engineering',
+      'AE': 'Aeronautical Engineering',
+      'AS': 'Aerospace Engineering',
+      'RA': 'Robotics and Automation',
+      'RO': 'Robotics and Artificial Intelligence',
+      'CB': 'Computer Science and Business Systems',
+      'CSBS': 'Computer Science and Business Systems',
+      'ET': 'Electronics and Telecommunication Engineering',
+      'EI': 'Electronics and Instrumentation Engineering',
+      'MD': 'Medical Electronics Engineering',
+      'AU': 'Automobile Engineering'
     };
     return names[code] || `${code} Engineering`;
   }
@@ -362,7 +434,7 @@ export class PDFParser {
   }
 
   private static extractLocation(text: string): string {
-    const locs = ['Bangalore', 'Bengaluru', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum', 'Tumkur', 'Varthur', 'Davangere'];
+    const locs = ['Bangalore', 'Bengaluru', 'Mysore', 'Mysuru', 'Mangalore', 'Mangaluru', 'Hubli', 'Hubballi', 'Belgaum', 'Belagavi', 'Tumkur', 'Tumakuru', 'Varthur', 'Davangere', 'Udupi', 'Manipal', 'Shimoga', 'Shivamogga'];
     const u = (text || '').toUpperCase();
     for (const loc of locs) {
       if (u.includes(loc.toUpperCase())) return loc;
