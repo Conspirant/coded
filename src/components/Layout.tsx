@@ -126,7 +126,7 @@ export function Layout({ children }: LayoutProps) {
             <SidebarHint />
             <div className="flex flex-col min-w-0 ml-1">
               <div className="flex items-center gap-2">
-                <Logo mode={examMode} iconSize={20} textSize="text-sm sm:text-base font-bold text-foreground" />
+                <Logo mode={examMode} iconSize={26} textSize="text-sm sm:text-base font-bold text-foreground" />
                 <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider font-mono">
                   BETA
                 </Badge>

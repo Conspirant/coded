@@ -1,4 +1,4 @@
-﻿import {
+import {
   Calculator,
   Search,
   Target,
@@ -323,8 +323,8 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
           <Logo
             mode={examMode}
             showText={state !== "collapsed"}
-            iconSize={20}
-            textSize="text-xs font-bold tracking-tight text-slate-100"
+            iconSize={24}
+            textSize="text-sm font-bold tracking-tight text-slate-100"
           />
         </div>
 

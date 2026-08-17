@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import { GraduationCap, Heart, Users, ArrowRight, CheckCircle2, Sparkles, MessageSquare, Send } from "lucide-react";
+import { Heart, Users, ArrowRight, CheckCircle2, Sparkles, MessageSquare, Send } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 
 // Generate or retrieve a persistent session ID
 const getSessionId = (): string => {
@@ -184,12 +185,7 @@ const PausedNotice = () => {
         transition={{ duration: 0.8 }}
         className="flex items-center gap-3 mb-12"
       >
-        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25">
-          <GraduationCap className="h-6 w-6 text-white" />
-        </div>
-        <span className="text-2xl font-bold bg-gradient-to-r from-amber-200 via-orange-300 to-amber-200 bg-clip-text text-transparent">
-          KCET Coded
-        </span>
+        <Logo mode="default" iconSize={36} textSize="text-2xl font-extrabold" />
       </motion.div>
 
       {/* ═══ Main Card ═══ */}

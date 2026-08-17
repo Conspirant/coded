@@ -189,7 +189,7 @@ const Homepage = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-14">
                         <div className="flex items-center gap-2.5">
-                            <Logo mode="default" iconSize={20} textSize="text-base font-bold tracking-tight text-foreground" />
+                            <Logo mode="default" iconSize={26} textSize="text-base sm:text-lg font-bold tracking-tight text-foreground" />
                             <Badge variant="secondary" className="bg-muted text-muted-foreground border-border text-[10px] font-mono font-medium px-1.5 py-0 hidden sm:inline-flex">
                                 2026
                             </Badge>
@@ -507,7 +507,7 @@ const Homepage = () => {
                         {/* Col 1: Brand & Info */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <Logo mode="default" iconSize={22} textSize="text-base font-bold text-foreground" />
+                                <Logo mode="default" iconSize={26} textSize="text-base sm:text-lg font-bold text-foreground" />
                             </div>
                             <p className="text-xs text-muted-foreground leading-relaxed">
                                 Free, independent counseling analytics and admission modeling tools built to simplify Karnataka CET seat selection for every aspirant.

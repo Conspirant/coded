@@ -1,110 +1,154 @@
-import React from "react"
+import React, { useId } from "react"
 
-interface LogoProps {
+export interface LogoProps {
   className?: string
   iconSize?: number
   showText?: boolean
   textSize?: string
   mode?: "KCET" | "COMEDK" | "default"
+  variant?: "default" | "badge" | "glyph"
 }
 
 export function Logo({
   className = "",
-  iconSize = 32,
+  iconSize = 28,
   showText = true,
-  textSize = "text-xl",
+  textSize = "text-base sm:text-lg",
   mode = "default",
+  variant = "default",
 }: LogoProps) {
-  // Define gradient color schemes for different modes
-  const getGradientId = () => {
-    if (mode === "KCET") return "logo-grad-kcet"
-    if (mode === "COMEDK") return "logo-grad-comedk"
-    return "logo-grad-default"
-  }
+  const uniqueId = useId()
+
+  // Dynamic theme gradients tuned for engineering rigor & clarity
+  const theme = {
+    KCET: {
+      top1: "#93C5FD",
+      top2: "#60A5FA",
+      top3: "#4F46E5",
+      spine1: "#4F46E5",
+      spine2: "#312E81",
+      base1: "#6366F1",
+      base2: "#4338CA",
+      core1: "#38BDF8",
+      core2: "#818CF8",
+      dot: "bg-sky-400",
+      prefix: "KCET",
+    },
+    COMEDK: {
+      top1: "#FEF08A",
+      top2: "#F59E0B",
+      top3: "#D97706",
+      spine1: "#D97706",
+      spine2: "#78350F",
+      base1: "#F59E0B",
+      base2: "#9A3412",
+      core1: "#FBBF24",
+      core2: "#F97316",
+      dot: "bg-amber-400",
+      prefix: "COMEDK",
+    },
+    default: {
+      top1: "#93C5FD",
+      top2: "#60A5FA",
+      top3: "#4F46E5",
+      spine1: "#4F46E5",
+      spine2: "#312E81",
+      base1: "#6366F1",
+      base2: "#4338CA",
+      core1: "#38BDF8",
+      core2: "#818CF8",
+      dot: "bg-sky-400",
+      prefix: "KCET",
+    },
+  }[mode]
+
+  const idTop = `hex-top-${uniqueId}`
+  const idSpine = `hex-spine-${uniqueId}`
+  const idBase = `hex-base-${uniqueId}`
+  const idCore = `hex-core-${uniqueId}`
 
   return (
-    <div className={`flex items-center gap-2.5 select-none ${className}`}>
-      {/* Dynamic Brand Mark SVG */}
+    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
+      {/* Precision Hex-Prism Monogram Emblem */}
       <svg
         width={iconSize}
         height={iconSize}
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="shrink-0"
+        className="shrink-0 transition-transform duration-200 ease-out hover:scale-105"
+        aria-hidden="true"
       >
         <defs>
-          {/* KCET Mode Gradient (Indigo to Violet) */}
-          <linearGradient id="logo-grad-kcet" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+          <linearGradient id={idTop} x1="6" y1="5.25" x2="26" y2="13.6" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor={theme.top1} />
+            <stop offset="40%" stopColor={theme.top2} />
+            <stop offset="100%" stopColor={theme.top3} />
           </linearGradient>
-
-          {/* COMEDK Mode Gradient (Amber to Orange) */}
-          <linearGradient id="logo-grad-comedk" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="100%" stopColor="#ea580c" />
+          <linearGradient id={idSpine} x1="6" y1="9.25" x2="13.5" y2="22.75" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor={theme.spine1} />
+            <stop offset="100%" stopColor={theme.spine2} />
           </linearGradient>
-
-          {/* Default Gradient (Indigo to Orange mix) */}
-          <linearGradient id="logo-grad-default" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="50%" stopColor="#f59e0b" />
-            <stop offset="100%" stopColor="#e11d48" />
+          <linearGradient id={idBase} x1="13.5" y1="18.3" x2="26" y2="26.75" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor={theme.base1} />
+            <stop offset="100%" stopColor={theme.base2} />
+          </linearGradient>
+          <linearGradient id={idCore} x1="18" y1="13.5" x2="24.5" y2="18.5" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor={theme.core1} />
+            <stop offset="100%" stopColor={theme.core2} />
           </linearGradient>
         </defs>
 
-        {/* Outer subtle shield container */}
-        <rect
-          x="1"
-          y="1"
-          width="30"
-          height="30"
-          rx="8"
-          fill="rgba(255, 255, 255, 0.03)"
-          stroke="rgba(255, 255, 255, 0.08)"
-          strokeWidth="1"
-        />
+        {variant !== "glyph" && (
+          <>
+            {/* Dark Obsidian Housing Squircle */}
+            <rect
+              x="0.75"
+              y="0.75"
+              width="30.5"
+              height="30.5"
+              rx="7.5"
+              fill="#080C16"
+              stroke="rgba(255, 255, 255, 0.14)"
+              strokeWidth="0.9"
+            />
+            {/* Subtle Inner Highlight */}
+            <rect
+              x="1.75"
+              y="1.75"
+              width="28.5"
+              height="28.5"
+              rx="6.5"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.03)"
+              strokeWidth="0.5"
+            />
+          </>
+        )}
 
-        {/* Diamond (top of graduation cap / data node diamond) */}
-        <path
-          d="M16 7L24 11L16 15L8 11L16 7Z"
-          fill={`url(#${getGradientId()})`}
-          opacity="0.95"
-        />
+        {/* 1. Top Arm Facet (Hexagon Upper Crest) */}
+        <path d="M16 5.25 L26 11 L21.5 13.625 L13.5 9.25 L16 5.25 Z" fill={`url(#${idTop})`} />
 
-        {/* Cap Base (engineering shield / graph connection) */}
-        <path
-          d="M10 14.5V19.5C10 21.5 16 23.5 16 23.5C16 23.5 22 21.5 22 19.5V14.5"
-          stroke={`url(#${getGradientId()})`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        {/* 2. Left Spine Facet (Code Bracket < ) */}
+        <path d="M13.5 9.25 L6 13.5 V18.5 L13.5 22.75 L13.5 17.5 L10.5 16 L13.5 14.5 Z" fill={`url(#${idSpine})`} />
 
-        {/* Data node connection points */}
-        <circle cx="16" cy="11" r="1.5" fill="#ffffff" />
-        <circle cx="8" cy="11" r="1" fill="#ffffff" opacity="0.8" />
-        <circle cx="24" cy="11" r="1" fill="#ffffff" opacity="0.8" />
+        {/* 3. Bottom Arm Facet (Hexagon Lower Foundation) */}
+        <path d="M13.5 22.75 L16 26.75 L26 21 L21.5 18.375 L13.5 22.75 Z" fill={`url(#${idBase})`} />
 
-        {/* Tassel line morphing into data point */}
-        <path
-          d="M20 13L24 16.5C24.5 17 25 18 24.5 19C24 20 22.5 19.5 22 19"
-          stroke={`url(#${getGradientId()})`}
-          strokeWidth="1.2"
-          strokeDasharray="1.5 1.5"
-          fill="none"
-        />
-        <circle cx="22" cy="19" r="1" fill="#ffffff" />
+        {/* 4. Forward Code Prompt Chevron ( > Admission Compass Vector ) */}
+        <path d="M18 14.25 L22.5 16 L18 17.75 L19 18.5 L24.5 16 L19 13.5 Z" fill={`url(#${idCore})`} />
       </svg>
 
-      {/* Brand Text */}
+      {/* Unified Cohesive Typography Lockup */}
       {showText && (
-        <span className={`${textSize} font-extrabold tracking-tight font-brand flex items-center`}>
-          <span className="text-muted-foreground/80 font-normal mr-1 text-[0.85em] uppercase tracking-wide">
-            {mode === "default" ? "KCET" : mode}
+        <span className={`inline-flex items-center tracking-tight leading-none font-brand ${textSize}`}>
+          <span className="font-bold text-foreground/90 mr-1.5">
+            {theme.prefix}
           </span>
-          <span className="bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent">Coded</span>
+          <span className="font-extrabold text-foreground flex items-center">
+            Coded
+            <span className={`inline-block w-1.5 h-1.5 rounded-full ml-1 ${theme.dot}`} />
+          </span>
         </span>
       )}
     </div>

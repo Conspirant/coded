@@ -42,20 +42,27 @@ The platform utilizes a dual-font structure to balance modern aesthetics with de
 
 ## 3. Brand Mark & Logo
 
-The logo represents a graduation cap intersecting with a data node linkage, representing counseling intelligence and official KEA statistics. It is loaded via the reusable React component:
+The brand mark is the **Hex-Prism Monogram**—an architectural 3D-isometric mark engineered from precision vector facets:
+- **Monogram "C" Envelope:** The outer isometric hexagon sculpts a bold, dimensional letter **"C"** representing **Coded**.
+- **Code Bracket `<` (Left Spine):** Forms the structural opening bracket `<` representing data ingestion (historical cutoffs, reservation matrices, candidate rank scores).
+- **Forward Terminal Prompt `>` (Inner Vector):** The luminous cyan execution chevron `>` represents actionable output (rank calculations, branch matches, option list optimization). Together, `<` and `>` embody the **`<coded/>`** engineering syntax.
+- **Top Facet (Academic Aspiration):** An angled isometric plane representing academic achievement and top-tier college attainment.
+- **Isometric Perspective (30°/60° Grid):** Rooted in classic engineering drafting principles, eliminating generic AI tropes in favor of deterministic precision.
+
+It is loaded via the reusable React component:
 
 ```tsx
 import { Logo } from "@/components/ui/Logo"
 
 // Renders the dynamic logo matching active exam context
 <Logo mode="KCET" iconSize={24} />
+<Logo mode="COMEDK" iconSize={24} />
+<Logo mode="default" iconSize={24} />
 ```
 
-### Dynamic Logo Gradients
-The logo gradient automatically adjusts based on the active exam mode state:
-- **KCET mode:** Indigo to Violet (`#6366f1` to `#8b5cf6`).
-- **COMEDK mode:** Amber to Orange (`#f59e0b` to `#ea580c`).
-- **Default mode:** Red-yellow-indigo sunset gradient.
+### Color Systems & Hierarchy
+- **KCET / Default mode:** Electric Indigo & Cobalt (`#93C5FD` -> `#60A5FA` -> `#4F46E5` with `#38BDF8` cyan prompt).
+- **COMEDK mode:** Warm Amber Bronze (`#FEF08A` -> `#F59E0B` -> `#D97706` with `#FBBF24` gold prompt).
 
 ---
 
