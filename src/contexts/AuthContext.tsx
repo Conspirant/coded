@@ -85,29 +85,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    // 1. Fetch active session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id, session.user.email);
-      }
-      setLoading(false);
-    });
+    let isMounted = true;
 
-    // 2. Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchProfile(session.user.id, session.user.email);
-      } else {
-        setProfile(null);
+    const initAuth = async () => {
+      // 1. If returning from OAuth redirect with hash parameters (#access_token=...)
+      if (window.location.hash && window.location.hash.includes("access_token")) {
+        try {
+          const hashStr = window.location.hash.startsWith("#") ? window.location.hash.substring(1) : window.location.hash;
+          const hashParams = new URLSearchParams(hashStr);
+          const accessToken = hashParams.get("access_token");
+          const refreshToken = hashParams.get("refresh_token") || "";
+
+          if (accessToken) {
+            const { data, error } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+            if (!error && data?.session && isMounted) {
+              setSession(data.session);
+              setUser(data.session.user);
+              await fetchProfile(data.session.user.id, data.session.user.email);
+              // Clean up token hash from browser URL without triggering reload
+              window.history.replaceState(null, "", window.location.pathname + window.location.search);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (err) {
+          console.error("Error parsing OAuth hash token:", err);
+        }
       }
-      setLoading(false);
+
+      // 2. Standard getSession check
+      const { data: { session } } = await supabase.auth.getSession();
+      if (isMounted) {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          await fetchProfile(session.user.id, session.user.email);
+        }
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+
+    // 3. Listen for subsequent auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (isMounted) {
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          await fetchProfile(session.user.id, session.user.email);
+        } else {
+          setProfile(null);
+        }
+        setLoading(false);
+      }
     });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
