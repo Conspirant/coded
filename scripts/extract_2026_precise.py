@@ -28,17 +28,21 @@ CUTOFFS_DIR = PUBLIC / "cutoffs"
 DATA_DIR = PUBLIC / "data"
 
 PDF_MOCK = ROOT / "2026 mock cutoff.pdf"
+PDF_MOCK_R2 = ROOT / "2026 mock r2.pdf"
 PDF_R1 = ROOT / "2026 round 1 provisional.pdf"
 
 OUTPUT_MOCK_RAW = ROOT / "cutoff_2026_extracted.json"
+OUTPUT_MOCK_R2_RAW = ROOT / "cutoff_2026_mock_r2_extracted.json"
 OUTPUT_R1_RAW = ROOT / "cutoff_2026_r1_extracted.json"
 OUTPUT_SERVING_2026 = DATA_DIR / "cutoffs-2026.json"
 
 # Canonical PDF locations
 DEST_MOCK_PUBLIC = CUTOFFS_DIR / "kcet-2026-mock-round1-cutoffs.pdf"
+DEST_MOCK_R2_PUBLIC = CUTOFFS_DIR / "kcet-2026-mock-round2-cutoffs.pdf"
 DEST_R1_PUBLIC = CUTOFFS_DIR / "kcet-2026-round1-cutoffs.pdf"
 
 DEST_MOCK_ROOT = ROOT / "kcet-2026-mock-round1-cutoffs.pdf"
+DEST_MOCK_R2_ROOT = ROOT / "kcet-2026-mock-round2-cutoffs.pdf"
 DEST_R1_ROOT = ROOT / "kcet-2026-round1-cutoffs.pdf"
 
 ALL_CATEGORIES = {
@@ -50,6 +54,11 @@ ALL_CATEGORIES = {
     'GM', 'GMK', 'GMR',
     'SCG', 'SCK', 'SCR',
     'STG', 'STK', 'STR',
+    'S1G', 'S1K', 'S1R',
+    'S2G', 'S2K', 'S2R',
+    'S3G', 'S3K', 'S3R',
+    'S4G', 'S4K', 'S4R',
+    'GMP', 'NRI', 'OPN', 'OTH'
 }
 
 # ─── Utility Functions ────────────────────────────────────────────────────────
@@ -239,6 +248,13 @@ def deduplicate(results):
         unique.append(r)
     return unique
 
+def resolve_pdf_source(preferred_path, fallback_path):
+    if preferred_path.exists():
+        return preferred_path
+    if fallback_path.exists():
+        return fallback_path
+    return None
+
 def main():
     # Fix Windows console encoding
     import io
@@ -248,45 +264,73 @@ def main():
     print("  Extracting 2026 Cutoff Data with High Precision (Coordinates)")
     print("=" * 70)
 
-    # 1. Extract Mock
-    if PDF_MOCK.exists():
-        print(f"Extracting mock cutoffs from: {PDF_MOCK.name}")
-        mock_data = extract_pdf_coordinate_based(PDF_MOCK, "2026", "MOCK")
+    CUTOFFS_DIR.mkdir(parents=True, exist_ok=True)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    # 1. Extract Mock 1
+    mock_src = resolve_pdf_source(PDF_MOCK, DEST_MOCK_PUBLIC)
+    if mock_src:
+        print(f"Extracting Mock 1 cutoffs from: {mock_src.name}")
+        mock_data = extract_pdf_coordinate_based(mock_src, "2026", "MOCK")
         mock_data = deduplicate(mock_data)
         save_json(mock_data, OUTPUT_MOCK_RAW)
         
-        # Copy to canonical PDF paths
-        CUTOFFS_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(PDF_MOCK, DEST_MOCK_PUBLIC)
-        shutil.copy2(PDF_MOCK, DEST_MOCK_ROOT)
-        print(f"Copied Mock PDF to: {DEST_MOCK_PUBLIC.name} and root")
+        # Ensure copy to canonical paths
+        if mock_src != DEST_MOCK_PUBLIC:
+            shutil.copy2(mock_src, DEST_MOCK_PUBLIC)
+        if mock_src != DEST_MOCK_ROOT:
+            shutil.copy2(mock_src, DEST_MOCK_ROOT)
+        print(f"Verified Mock 1 PDF at canonical locations")
     else:
-        print(f"ERROR: {PDF_MOCK.name} not found!")
+        print(f"ERROR: Mock 1 PDF not found!")
         sys.exit(1)
 
-    # 2. Extract R1
-    if PDF_R1.exists():
-        print(f"\nExtracting Round 1 cutoffs from: {PDF_R1.name}")
-        r1_data = extract_pdf_coordinate_based(PDF_R1, "2026", "R1")
+    # 2. Extract Mock 2
+    mock_r2_src = resolve_pdf_source(PDF_MOCK_R2, DEST_MOCK_R2_PUBLIC)
+    if mock_r2_src:
+        print(f"\nExtracting Mock Round 2 cutoffs from: {mock_r2_src.name}")
+        mock_r2_data = extract_pdf_coordinate_based(mock_r2_src, "2026", "MOCK2")
+        mock_r2_data = deduplicate(mock_r2_data)
+        save_json(mock_r2_data, OUTPUT_MOCK_R2_RAW)
+        
+        # Ensure copy to canonical paths
+        if mock_r2_src != DEST_MOCK_R2_PUBLIC:
+            shutil.copy2(mock_r2_src, DEST_MOCK_R2_PUBLIC)
+        if mock_r2_src != DEST_MOCK_R2_ROOT:
+            shutil.copy2(mock_r2_src, DEST_MOCK_R2_ROOT)
+        print(f"Copied Mock 2 PDF to canonical locations: {DEST_MOCK_R2_PUBLIC.name} and root")
+    else:
+        print(f"ERROR: Mock 2 PDF ({PDF_MOCK_R2.name}) not found!")
+        sys.exit(1)
+
+    # 3. Extract R1
+    r1_src = resolve_pdf_source(PDF_R1, DEST_R1_PUBLIC)
+    if r1_src:
+        print(f"\nExtracting Round 1 cutoffs from: {r1_src.name}")
+        r1_data = extract_pdf_coordinate_based(r1_src, "2026", "R1")
         r1_data = deduplicate(r1_data)
         save_json(r1_data, OUTPUT_R1_RAW)
         
-        # Copy to canonical PDF paths
-        shutil.copy2(PDF_R1, DEST_R1_PUBLIC)
-        shutil.copy2(PDF_R1, DEST_R1_ROOT)
-        print(f"Copied R1 PDF to: {DEST_R1_PUBLIC.name} and root")
+        # Ensure copy to canonical paths
+        if r1_src != DEST_R1_PUBLIC:
+            shutil.copy2(r1_src, DEST_R1_PUBLIC)
+        if r1_src != DEST_R1_ROOT:
+            shutil.copy2(r1_src, DEST_R1_ROOT)
+        print(f"Verified Round 1 PDF at canonical locations")
     else:
-        print(f"ERROR: {PDF_R1.name} not found!")
+        print(f"ERROR: Round 1 PDF not found!")
         sys.exit(1)
 
-    # 3. Save combined flat list to cutoffs-2026.json
-    combined = mock_data + r1_data
+    # 4. Save combined flat list to cutoffs-2026.json
+    combined = mock_data + mock_r2_data + r1_data
     combined_unique = deduplicate(combined)
     
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_SERVING_2026, 'w', encoding='utf-8') as f:
         json.dump(combined_unique, f, ensure_ascii=False)
     print(f"\nCombined serving 2026 file saved: {OUTPUT_SERVING_2026} ({len(combined_unique):,} entries)")
+    print(f"  - Mock 1: {len(mock_data):,}")
+    print(f"  - Mock 2: {len(mock_r2_data):,}")
+    print(f"  - Round 1: {len(r1_data):,}")
     print("=" * 70)
 
 if __name__ == "__main__":

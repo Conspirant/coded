@@ -43,7 +43,7 @@ const DATA_URLS = [
   "/kcet_cutoffs.dat",
 ]
 
-const ROUND_PRIORITY = ["R2", "R1", "R3", "MOCK"]
+const ROUND_PRIORITY = ["R2", "R1", "R3", "MOCK", "MOCK2"]
 const CATEGORY_PRIORITY = ["GM", "1G", "2AG", "3AG", "GMR"]
 
 const TOP_COLLEGE_CODES = new Set([
@@ -81,7 +81,8 @@ const normalizeRound = (round: string) => {
   ) {
     return "R3"
   }
-  if (value === "MOCK" || value === "MOCK ROUND 1") return "MOCK"
+  if (value === "MOCK" || value === "MOCK 1" || value === "MOCK1" || value === "MOCK ROUND 1" || value === "MOCK R1") return "MOCK"
+  if (value === "MOCK2" || value === "MOCK 2" || value === "MOCK ROUND 2" || value === "MOCK R2" || value === "MOCK_R2") return "MOCK2"
   return value
 }
 

@@ -19,6 +19,7 @@ DATA_DIR = PUBLIC / "data"
 
 # Input 2026 extracted data files
 CUTOFF_MOCK = ROOT / "cutoff_2026_extracted.json"
+CUTOFF_MOCK_R2 = ROOT / "cutoff_2026_mock_r2_extracted.json"
 CUTOFF_R1 = ROOT / "cutoff_2026_r1_extracted.json"
 
 # Targets to update
@@ -26,10 +27,16 @@ TARGET_JSON_PATHS = [
     DATA_DIR / "kcet_cutoffs_master.json",
     DATA_DIR / "kcet_cutoffs_high_volume.json",
     DATA_DIR / "kcet_cutoffs_consolidated.json",
+    DATA_DIR / "kcet_cutoffs_master.dat",
+    DATA_DIR / "kcet_cutoffs_high_volume.dat",
+    DATA_DIR / "kcet_cutoffs_consolidated.dat",
     PUBLIC / "kcet_cutoffs_master.json",
     PUBLIC / "kcet_cutoffs_high_volume.json",
     PUBLIC / "kcet_cutoffs_consolidated.json",
-    PUBLIC / "kcet_cutoffs.json",
+    PUBLIC / "kcet_cutoffs_master.dat",
+    PUBLIC / "kcet_cutoffs_high_volume.dat",
+    PUBLIC / "kcet_cutoffs_consolidated.dat",
+    PUBLIC / "kcet_cutoffs.dat",
     PUBLIC / "kcet_cutoffs_consolidated (2).json",
 ]
 
@@ -63,17 +70,19 @@ def main():
     print("=" * 70)
 
     # 1. Load extracted 2026 data
-    if not CUTOFF_MOCK.exists() or not CUTOFF_R1.exists():
+    if not CUTOFF_MOCK.exists() or not CUTOFF_MOCK_R2.exists() or not CUTOFF_R1.exists():
         print("ERROR: Extracted 2026 JSON files not found! Run extract_2026_precise.py first.")
         sys.exit(1)
 
     with open(CUTOFF_MOCK, 'r', encoding='utf-8') as f:
         mock_data = json.load(f)
+    with open(CUTOFF_MOCK_R2, 'r', encoding='utf-8') as f:
+        mock_r2_data = json.load(f)
     with open(CUTOFF_R1, 'r', encoding='utf-8') as f:
         r1_data = json.load(f)
 
-    new_2026_data = mock_data + r1_data
-    print(f"Loaded {len(mock_data):,} Mock entries and {len(r1_data):,} R1 entries.")
+    new_2026_data = mock_data + mock_r2_data + r1_data
+    print(f"Loaded {len(mock_data):,} Mock 1 entries, {len(mock_r2_data):,} Mock 2 entries, and {len(r1_data):,} R1 entries.")
     print(f"Total new 2026 entries: {len(new_2026_data):,}")
 
     for target in TARGET_JSON_PATHS:
@@ -151,9 +160,9 @@ def main():
         print(f"   Successfully updated {target.name} ({target_size_mb:.2f} MB, {len(unique_cutoffs):,} entries)")
 
     # 4. Rebuild statistics for cutoffs-summary.json based on updated data
-    # We will load from public/data/kcet_cutoffs_consolidated.json to get the latest combined state
     print(f"\nUpdating summary stats at: {SUMMARY_JSON_PATH.relative_to(ROOT)}")
-    with open(DATA_DIR / "kcet_cutoffs_consolidated.json", 'r', encoding='utf-8') as f:
+    source_stat_file = DATA_DIR / "kcet_cutoffs_consolidated.dat" if (DATA_DIR / "kcet_cutoffs_consolidated.dat").exists() else DATA_DIR / "kcet_cutoffs_consolidated.json"
+    with open(source_stat_file, 'r', encoding='utf-8') as f:
         master_data = json.load(f)
     
     master_cutoffs = master_data.get("cutoffs", [])

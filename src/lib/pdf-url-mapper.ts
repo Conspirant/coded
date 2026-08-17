@@ -49,12 +49,17 @@ export function getPdfUrl(year: string, round: string): string | null {
         'R3': 'round3',
         'EXT': 'round3(extended)',
         'MOCK': 'mock-round1',
+        'MOCK1': 'mock-round1',
+        'MOCK2': 'mock-round2',
+        'MOCK_R2': 'mock-round2',
+        'MOCK R2': 'mock-round2',
         // Also handle full round names that might be in the data
         'Round 1': 'round1',
         'Round 2': 'round2',
         'Round 3': 'round3',
         'Round 3 (Extended)': 'round3(extended)',
         'Mock Round 1': 'mock-round1',
+        'Mock Round 2': 'mock-round2',
     };
 
     const roundSlug = roundMap[round];
@@ -122,6 +127,9 @@ export function getRoundDisplayName(round: string): string {
         'R3': 'Round 3',
         'EXT': 'Round 3 (Extended)',
         'MOCK': 'Mock Round 1',
+        'MOCK1': 'Mock Round 1',
+        'MOCK2': 'Mock Round 2',
+        'MOCK_R2': 'Mock Round 2',
     };
     return displayMap[round] || round;
 }

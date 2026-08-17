@@ -395,7 +395,7 @@ function AddEntryForm({ onClose, onAdded, templateEntry }: AddEntryFormProps) {
                     <Select value={form.round} onValueChange={v => { setForm(p => ({ ...p, round: v })); setFieldErrors(e => ({ ...e, round: undefined })) }}>
                         <SelectTrigger className={`bg-white/5 border-white/10 ${fieldErrors.round && !fieldErrors.round.startsWith('⚠') ? 'border-red-500/50' : ''}`}><SelectValue /></SelectTrigger>
                         <SelectContent>
-                            {['MOCK', 'R1', 'R2', 'R3'].map(r => (
+                            {['MOCK', 'MOCK2', 'R1', 'R2', 'R3'].map(r => (
                                 <SelectItem key={r} value={r}>{r}</SelectItem>
                             ))}
                         </SelectContent>

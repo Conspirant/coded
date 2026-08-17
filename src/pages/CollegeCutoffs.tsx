@@ -78,10 +78,11 @@ const cleanCourseName = (course: string): string => {
 const getCourseKey = (course: string): string => cleanCourseName(course).toLowerCase().trim()
 
 const normalizeRound = (round: string): string => {
-    const r = round.toUpperCase()
+    const r = round.toUpperCase().trim()
     if (r === "EXT" || r.includes("R3") || r.includes("EXTENDED") || r.includes("ROUND 3")) return "R3"
+    if (r === "MOCK2" || r === "MOCK 2" || r === "MOCK ROUND 2" || r === "MOCK R2" || r === "MOCK_R2") return "MOCK2"
+    if (r === "MOCK" || r === "MOCK 1" || r === "MOCK1" || r === "MOCK ROUND 1" || r.includes("MOCK")) return "MOCK"
     if (r === "R2" || r.includes("ROUND 2")) return "R2"
-    if (r === "MOCK" || r.includes("MOCK")) return "MOCK"
     if (r === "R1" || r.includes("ROUND 1")) return "R1"
     return round
 }

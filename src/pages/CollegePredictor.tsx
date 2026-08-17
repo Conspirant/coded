@@ -1503,7 +1503,11 @@ const CollegePredictor = () => {
       'R3': 'Round 3 (Extended)',
       'EXT': 'Round 3 (Extended)',
       'MR1': 'Mock Round 1',
-      'MOCK': 'Mock Round 1'
+      'MOCK': 'Mock Round 1',
+      'MOCK1': 'Mock Round 1',
+      'MR2': 'Mock Round 2',
+      'MOCK2': 'Mock Round 2',
+      'MOCK_R2': 'Mock Round 2'
     }
     return roundNames[round] || round
   }

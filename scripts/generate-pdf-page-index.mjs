@@ -33,6 +33,7 @@ const PDF_FILES = [
     { file: 'kcet-2025-round2-cutoffs.pdf', year: '2025', round: 'R2' },
     { file: 'kcet-2025-round3-cutoffs.pdf', year: '2025', round: 'R3' },
     { file: 'kcet-2026-mock-round1-cutoffs.pdf', year: '2026', round: 'MOCK' },
+    { file: 'kcet-2026-mock-round2-cutoffs.pdf', year: '2026', round: 'MOCK2' },
     { file: 'kcet-2026-round1-cutoffs.pdf', year: '2026', round: 'R1' },
 ];
 
@@ -161,6 +162,10 @@ async function main() {
     };
 
     fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 2), 'utf8');
+    
+    // Also save as .dat for runtime compatibility
+    const datPath = path.join(rootDir, 'public', 'data', 'pdf-page-index.dat');
+    fs.writeFileSync(datPath, JSON.stringify(outputData), 'utf8');
 
     console.log('\n');
     console.log('╔══════════════════════════════════════════════════════════════════╗');

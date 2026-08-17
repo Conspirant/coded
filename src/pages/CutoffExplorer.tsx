@@ -46,7 +46,8 @@ const normalizeRound = (round: string) => {
   if (r === 'R1' || r === 'ROUND 1') return 'R1'
   if (r === 'R2' || r === 'ROUND 2') return 'R2'
   if (r === 'R3' || r === 'ROUND 3' || r === 'EXT' || r === 'ROUND 3 EXTENDED' || r === 'ROUND 3 (EXTENDED)') return 'R3'
-  if (r === 'MOCK' || r === 'MOCK ROUND 1') return 'MOCK'
+  if (r === 'MOCK' || r === 'MOCK 1' || r === 'MOCK1' || r === 'MOCK ROUND 1' || r === 'MOCK R1' || r === 'MOCK_R1') return 'MOCK'
+  if (r === 'MOCK2' || r === 'MOCK 2' || r === 'MOCK ROUND 2' || r === 'MOCK R2' || r === 'MOCK_R2') return 'MOCK2'
   return r
 }
 
@@ -83,7 +84,8 @@ const instituteCodeOrder = (code: string) => {
 
 const roundOrder = (round: string) => {
   const r = normalizeRound(round)
-  if (r === 'MOCK') return 0
+  if (r === 'MOCK' || r === 'MOCK1') return 0
+  if (r === 'MOCK2') return 0.5
   if (r === 'R1') return 1
   if (r === 'R2') return 2
   if (r === 'R3') return 3
@@ -432,12 +434,15 @@ const CutoffExplorer = () => {
       case 'R1': return 'R1'
       case 'R2': return 'R2'
       case 'R3': return 'R3'
-      case 'MOCK': return 'MOCK'
+      case 'MOCK': return 'MOCK 1'
+      case 'MOCK1': return 'MOCK 1'
+      case 'MOCK2': return 'MOCK 2'
       case 'Round 1': return 'Round 1'
       case 'Round 2': return 'Round 2'
       case 'Round 3': return 'Round 3'
       case 'Round 3 (Extended)': return 'Round 3 (Extended)'
       case 'Mock Round 1': return 'Mock Round 1'
+      case 'Mock Round 2': return 'Mock Round 2'
       default: return round
     }
   }

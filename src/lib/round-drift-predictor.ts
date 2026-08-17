@@ -108,7 +108,8 @@ function normalizeRound(round: string): string {
   if (r === 'R1' || r === 'ROUND 1') return 'R1'
   if (r === 'R2' || r === 'ROUND 2') return 'R2'
   if (r === 'R3' || r === 'ROUND 3' || r === 'EXT' || r.includes('EXTENDED')) return 'R3'
-  if (r === 'MOCK' || r.includes('MOCK')) return 'MOCK'
+  if (r === 'MOCK2' || r === 'MOCK 2' || r === 'MOCK ROUND 2' || r === 'MOCK R2' || r === 'MOCK_R2') return 'MOCK2'
+  if (r === 'MOCK' || r === 'MOCK 1' || r === 'MOCK1' || r === 'MOCK ROUND 1' || r.includes('MOCK')) return 'MOCK'
   return r
 }
 

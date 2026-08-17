@@ -334,6 +334,7 @@ export class XLSXLoader {
    */
   private static determineRound(filename: string): string {
     const filenameLower = filename.toLowerCase()
+    if (filenameLower.includes('mock') && (filenameLower.includes('round2') || filenameLower.includes('r2') || filenameLower.includes('2'))) return 'MOCK2'
     if (filenameLower.includes('round1')) return 'R1'
     if (filenameLower.includes('round2')) return 'R2'
     if (filenameLower.includes('round3') || filenameLower.includes('extended')) return 'EXT'
