@@ -763,13 +763,13 @@ export async function predictR2R3(
     r2Predicted = r2Actual
     effectiveR2Drift = r1Actual > 0 ? r2Actual / r1Actual : 1.0
     r2ChangePct = r1Actual > 0 ? Math.round(((r2Actual / r1Actual) - 1) * 100) : 0
-    // High-precision prediction: Direct R2 Actual × Empirical R3/R2 Drift
-    r3Predicted = Math.max(r2Actual, Math.round(r2Actual * r3r2Drift))
+    // High-precision prediction: Direct R2 Actual × Empirical R3/R2 Drift × NEET Multiplier
+    r3Predicted = Math.max(r2Actual, Math.round(r2Actual * r3r2Drift * neetMultiplier))
   } else {
     r2Predicted = Math.max(1, Math.round(r1Actual * r2Drift * neetMultiplier))
     effectiveR2Drift = r1Actual > 0 ? r2Predicted / r1Actual : 1.0
     r2ChangePct = Math.round((effectiveR2Drift - 1) * 100)
-    r3Predicted = Math.max(r2Predicted, Math.round(r2Predicted * r3r2Drift))
+    r3Predicted = Math.max(r2Predicted, Math.round(r2Predicted * r3r2Drift * neetMultiplier))
   }
 
   // Re-calculate effective multipliers & percentages for UI
