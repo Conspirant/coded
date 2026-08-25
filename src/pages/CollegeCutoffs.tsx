@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { ChevronDown, ChevronUp, Building2, Search, Grid3X3, SlidersHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { getCollegeInfo } from "@/data/collegeDatabase"
 
 // Types for the cutoff data
 interface CutoffData {
@@ -17,6 +18,37 @@ interface CutoffData {
     round: string
     total_seats?: number
     available_seats?: number
+}
+
+// Format clean college display name without messy raw postal address strings
+const formatCollegeDisplayName = (code: string, rawName: string): string => {
+    const info = getCollegeInfo(code)
+    if (info && info.name) return info.name
+
+    let clean = (rawName || '')
+        .replace(/^E:\s*/i, '')
+        .replace(/^:\s*/, '')
+        .replace(/\(AUTONOMOUS\)/gi, '')
+        .replace(/\(Const\..+?\)/gi, '')
+        .replace(/\bPOST\s+BOX\s+NO.*$/gi, '')
+        .replace(/\bVIDYANIKETAN\s+POST.*$/gi, '')
+        .replace(/\bVIDYA\s+SOUDHA.*$/gi, '')
+        .replace(/\bAMBEDKAR\s+VEEDHI.*$/gi, '')
+        .replace(/\bOUTER\s+RING\s+ROAD.*$/gi, '')
+        .replace(/\bSHAVIGE\s+MALLESHWARA.*$/gi, '')
+        .replace(/\bK\.?R\.?\s*ROAD.*$/gi, '')
+        .replace(/,\s*BANGALORE-\d+.*$/gi, '')
+        .replace(/,\s*BENGALURU-\d+.*$/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+
+    if (clean.length > 55 && clean.includes(',')) {
+        const parts = clean.split(',')
+        if (parts[0].length >= 15) {
+            clean = parts[0].trim() + (parts[1] && parts[1].trim().length < 20 ? `, ${parts[1].trim()}` : '')
+        }
+    }
+    return clean || rawName || code
 }
 
 // Ordered categories matching the official KEA format
@@ -231,12 +263,6 @@ const CollegeMatrix = ({
 
     return (
         <div className="bg-card/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden mb-4 transition-all hover:border-white/10">
-      <SEO
-        title="KCET College Cutoffs 2023-2025 – Branch & Category Wise"
-        description="View complete KCET college cutoffs for 2023, 2024 & 2025 — branch-wise and category-wise. Compare GM, OBC, SC, ST cutoff ranks for all engineering colleges in Karnataka."
-        url="https://kcetcoded.dev/college-cutoffs"
-        keywords="KCET college cutoffs, KCET branch wise cutoff, KCET category wise cutoff, KCET 2025 cutoff, KCET 2024 cutoff, KCET GM cutoff, KCET OBC cutoff"
-      />
             {/* College Header */}
             <button
                 onClick={onToggle}
@@ -310,11 +336,11 @@ const CollegeMatrix = ({
                                                                 : 'text-muted-foreground/20'
                                                                 }`}
                                                             title={rank
-                                                                ? `${course.display} / ${cat} = ${rank.toLocaleString()}`
+                                                                ? `${course.display} / ${cat} = ${rank.toLocaleString('en-IN')}`
                                                                 : `No data for ${course.display} / ${cat}`
                                                             }
                                                         >
-                                                            {rank ? rank.toLocaleString() : '--'}
+                                                            {rank ? rank.toLocaleString('en-IN') : '--'}
                                                         </td>
                                                     )
                                                 })}
@@ -350,7 +376,7 @@ const CollegeMatrix = ({
                                                                 {cat}
                                                             </span>
                                                             <span className="font-mono text-xs font-semibold text-indigo-400">
-                                                                {rank.toLocaleString()}
+                                                                {rank.toLocaleString('en-IN')}
                                                             </span>
                                                         </div>
                                                     )
@@ -373,7 +399,7 @@ const CollegeCutoffs = () => {
     const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedYear, setSelectedYear] = useState("2026")
-    const [selectedRound, setSelectedRound] = useState("R1")
+    const [selectedRound, setSelectedRound] = useState("R2")
     const [selectedType, setSelectedType] = useState("All")
     const [selectedCategory, setSelectedCategory] = useState("ALL")
     const [sortBy, setSortBy] = useState<"none" | "asc" | "desc">("none")
@@ -458,7 +484,7 @@ const CollegeCutoffs = () => {
     // Ensure selectedRound is valid for the chosen year
     useEffect(() => {
         if (availableRounds.length > 0 && !availableRounds.includes(selectedRound)) {
-            setSelectedRound(availableRounds[0])
+            setSelectedRound(availableRounds[availableRounds.length - 1])
         }
     }, [availableRounds, selectedRound])
 
@@ -487,15 +513,16 @@ const CollegeCutoffs = () => {
 
             if (!collegeMap.has(code)) {
                 // Get best name
-                let bestName = code
+                let bestRaw = code
                 const names = collegeNames.get(code)
                 if (names) {
                     let bestCount = -1
                     for (const [n, count] of names) {
-                        if (count > bestCount) { bestName = n; bestCount = count }
+                        if (count > bestCount) { bestRaw = n; bestCount = count }
                     }
                 }
-                collegeMap.set(code, { code, name: bestName, cutoffs: [] })
+                const displayName = formatCollegeDisplayName(code, bestRaw)
+                collegeMap.set(code, { code, name: displayName, cutoffs: [] })
             }
             collegeMap.get(code)!.cutoffs.push(cutoff)
         })
@@ -585,6 +612,12 @@ const CollegeCutoffs = () => {
 
     return (
         <div className="min-h-screen bg-background">
+            <SEO
+                title="KCET College Cutoffs 2023–2026 – Official Branch & Category Wise Matrix"
+                description="Explore official KCET college cutoffs for 2023, 2024, 2025 & 2026 Round 1 and Round 2 across GM, 2A, 2B, 3A, 3B, SC, ST, Rural and Kannada quotas for all 269+ engineering institutes."
+                url="https://kcetcoded.dev/college-cutoffs"
+                keywords="KCET college cutoffs, KCET cutoff matrix, KCET 2026 round 2 cutoffs, KCET round 1 cutoffs, KCET branch wise cutoff, KCET category wise cutoff, KCET GM cutoff, KCET 2AG cutoff"
+            />
             {/* Sticky Header */}
             <div className="bg-background/80 backdrop-blur-xl border-b border-white/5 px-4 py-4 lg:sticky lg:top-16 z-20">
                 <div className="max-w-[1600px] mx-auto">
