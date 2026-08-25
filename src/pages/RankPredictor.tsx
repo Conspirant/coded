@@ -229,7 +229,7 @@ const RankPredictor = () => {
       cet: kcetMarks,
       puc: pucPercentage,
       rank: prediction.medium,
-      range: `${prediction.low.toLocaleString()} – ${prediction.high.toLocaleString()}`,
+      range: `${prediction.low.toLocaleString('en-IN')} – ${prediction.high.toLocaleString('en-IN')}`,
       percentile: calculatePercentile(prediction.medium),
       timestamp: new Date().toISOString()
     }
@@ -240,14 +240,14 @@ const RankPredictor = () => {
 
     toast({
       title: "Result Saved",
-      description: `Rank ${prediction.medium.toLocaleString()} saved to local history.`,
+      description: `Rank ${prediction.medium.toLocaleString('en-IN')} saved to local history.`,
     })
   }
 
   const shareResult = async () => {
     if (!prediction) return
     const title = 'My KCET 2026 Rank Prediction'
-    const text = `Predicted KCET 2026 Rank: ~${prediction.medium.toLocaleString()} (Range: ${prediction.low.toLocaleString()} - ${prediction.high.toLocaleString()}). Explore KCET Coded:`
+    const text = `Predicted KCET 2026 Rank: ~${prediction.medium.toLocaleString('en-IN')} (Range: ${prediction.low.toLocaleString('en-IN')} - ${prediction.high.toLocaleString('en-IN')}). Explore KCET Coded:`
     const shareUrl = `${window.location.origin}/rank-predictor`
 
     if (navigator.share) {
@@ -295,11 +295,11 @@ const RankPredictor = () => {
     // Rank
     ctx.fillStyle = '#3B82F6'
     ctx.font = '700 48px "JetBrains Mono", monospace'
-    ctx.fillText(`~${prediction.medium.toLocaleString()}`, 300, 115)
+    ctx.fillText(`~${prediction.medium.toLocaleString('en-IN')}`, 300, 115)
 
     ctx.fillStyle = '#64748B'
     ctx.font = '500 13px "Plus Jakarta Sans", sans-serif'
-    ctx.fillText(`Estimated Median Range: ${prediction.low.toLocaleString()} – ${prediction.high.toLocaleString()}`, 300, 145)
+    ctx.fillText(`Estimated Median Range: ${prediction.low.toLocaleString('en-IN')} – ${prediction.high.toLocaleString('en-IN')}`, 300, 145)
 
     // Details box
     ctx.fillStyle = '#1E293B'
@@ -579,7 +579,7 @@ const RankPredictor = () => {
               {prediction && (
                 <div className="flex flex-wrap gap-2.5">
                   <Button onClick={findColleges} className="flex-1 min-w-[200px] h-9 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs">
-                    <Search className="h-3.5 w-3.5 mr-1.5" /> Find Matching Colleges for Rank {prediction.rank2026.toLocaleString()}
+                    <Search className="h-3.5 w-3.5 mr-1.5" /> Find Matching Colleges for Rank {prediction.rank2026.toLocaleString('en-IN')}
                   </Button>
                   <Button onClick={downloadPNG} variant="outline" className="h-9 text-xs border-border">
                     <Download className="h-3.5 w-3.5 mr-1.5" /> Export PNG Card
@@ -613,18 +613,18 @@ const RankPredictor = () => {
                       <div>
                         <span className="text-xs text-muted-foreground block mb-1">Estimated Rank Band</span>
                         <div className="text-3xl font-bold font-mono tracking-tight text-foreground">
-                          {prediction.low.toLocaleString()} <span className="text-muted-foreground font-normal text-xl">–</span> {prediction.high.toLocaleString()}
+                          {prediction.low.toLocaleString('en-IN')} <span className="text-muted-foreground font-normal text-xl">–</span> {prediction.high.toLocaleString('en-IN')}
                         </div>
                       </div>
 
                       <div className="p-3 rounded-md bg-muted/40 border border-border grid grid-cols-2 gap-2 text-xs">
                         <div>
                           <span className="text-muted-foreground block text-[11px]">Median Estimate</span>
-                          <span className="font-mono font-bold text-foreground text-sm">~{animatedRank2026.toLocaleString()}</span>
+                          <span className="font-mono font-bold text-foreground text-sm">~{animatedRank2026.toLocaleString('en-IN')}</span>
                         </div>
                         <div>
                           <span className="text-muted-foreground block text-[11px]">2025 Baseline</span>
-                          <span className="font-mono font-semibold text-muted-foreground text-sm">~{animatedRank2025.toLocaleString()}</span>
+                          <span className="font-mono font-semibold text-muted-foreground text-sm">~{animatedRank2025.toLocaleString('en-IN')}</span>
                         </div>
                         <div className="col-span-2 pt-2 border-t border-border/60 flex items-center justify-between text-[11px]">
                           <span className="text-muted-foreground">Expected Percentile</span>
@@ -724,7 +724,7 @@ const RankPredictor = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Confidence Range:</span>
-                      <span className="font-mono font-semibold text-foreground">{prediction.low.toLocaleString()} – {prediction.high.toLocaleString()}</span>
+                      <span className="font-mono font-semibold text-foreground">{prediction.low.toLocaleString('en-IN')} – {prediction.high.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -753,7 +753,7 @@ const RankPredictor = () => {
                     return (
                       <div className="space-y-2.5 text-xs">
                         <div className="flex justify-between py-1 border-b border-border/40">
-                          <span className="text-muted-foreground">Score Band</span>
+                           <span className="text-muted-foreground">Score Band</span>
                           <span className="font-mono font-semibold">{prediction.rankBand}</span>
                         </div>
                         <div className="flex justify-between py-1 border-b border-border/40">
@@ -820,11 +820,11 @@ const RankPredictor = () => {
                       domain={[0, 100000]}
                       label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.6, fontSize: 11 }}
                       reversed={true}
-                      tickFormatter={(v) => v.toLocaleString()}
+                      tickFormatter={(v) => v.toLocaleString('en-IN')}
                       tick={{ fill: 'currentColor', opacity: 0.6, fontSize: 10 }}
                     />
                     <RechartsTooltip
-                      formatter={(value: any) => [value.toLocaleString(), "Expected Rank"]}
+                      formatter={(value: any) => [value.toLocaleString('en-IN'), "Expected Rank"]}
                       labelFormatter={(label) => `Aggregate: ${label}%`}
                       contentStyle={{ borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--card)', color: 'var(--foreground)', fontSize: '12px' }}
                     />
@@ -859,7 +859,7 @@ const RankPredictor = () => {
                 {savedResults.slice().reverse().map((result, index) => (
                   <div key={index} className="p-3 rounded-md border border-border bg-card text-xs flex justify-between items-center shadow-xs">
                     <div>
-                      <div className="font-mono font-bold text-sm text-foreground">Rank ~{result.rank.toLocaleString()}</div>
+                      <div className="font-mono font-bold text-sm text-foreground">Rank ~{result.rank.toLocaleString('en-IN')}</div>
                       <div className="text-muted-foreground text-[11px]">KCET: {result.cet}/180 • Board: {result.puc}%</div>
                     </div>
                     <Badge variant="outline" className="font-mono text-[10px]">

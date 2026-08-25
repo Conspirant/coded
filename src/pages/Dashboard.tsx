@@ -382,21 +382,21 @@ const Dashboard = () => {
           <div className="p-3 rounded-xl border border-border/40 bg-background/40 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Cutoff Records</p>
-              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalRecords || 197831).toLocaleString()}</p>
+              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalRecords || 240804).toLocaleString('en-IN')}</p>
             </div>
             <Database className="h-4 w-4 text-primary/70" />
           </div>
           <div className="p-3 rounded-xl border border-border/40 bg-background/40 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Karnataka Institutes</p>
-              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalColleges || 269).toLocaleString()}</p>
+              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalColleges || 269).toLocaleString('en-IN')}</p>
             </div>
             <GraduationCap className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="p-3 rounded-xl border border-border/40 bg-background/40 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Branches & Streams</p>
-              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalBranches || 496).toLocaleString()}</p>
+              <p className="text-base font-extrabold font-mono text-foreground">{(stats?.totalBranches || 525).toLocaleString('en-IN')}</p>
             </div>
             <BookOpen className="h-4 w-4 text-amber-400" />
           </div>
@@ -506,7 +506,7 @@ const Dashboard = () => {
               <div className="space-y-1">
                 <div className="flex justify-between items-center text-xs">
                   <Label className="text-muted-foreground font-medium">Rank ({examMode})</Label>
-                  <span className="font-mono font-bold text-primary">#{profile.rank.toLocaleString()}</span>
+                  <span className="font-mono font-bold text-primary">#{profile.rank.toLocaleString('en-IN')}</span>
                 </div>
                 <Input
                   type="number"
@@ -583,7 +583,7 @@ const Dashboard = () => {
                     Matched Institutes
                   </CardTitle>
                   <CardDescription className="text-[11px]">
-                    Odds for Rank #{profile.rank.toLocaleString()} ({profile.category})
+                    Odds for Rank #{profile.rank.toLocaleString('en-IN')} ({profile.category})
                   </CardDescription>
                 </div>
                 <Link to="/college-predictor">
@@ -607,7 +607,7 @@ const Dashboard = () => {
                     </div>
                     <h3 className="font-semibold text-xs text-foreground group-hover:text-primary transition-colors truncate">{c.name}</h3>
                     <p className="text-[10px] text-muted-foreground font-mono">
-                      Cutoff: #{c.cutoffRank.toLocaleString()}
+                      Cutoff: #{c.cutoffRank.toLocaleString('en-IN')}
                     </p>
                   </div>
 

@@ -79,7 +79,7 @@ const ThreadDetailPage: React.FC = () => {
       setReplyAuthor(name);
 
       if (profile?.kcet_rank) {
-        setReplyRank(`Rank #${profile.kcet_rank.toLocaleString()} (${profile.kcet_category || "GM"})`);
+        setReplyRank(`Rank #${profile.kcet_rank.toLocaleString('en-IN')} (${profile.kcet_category || "GM"})`);
       }
     }
 

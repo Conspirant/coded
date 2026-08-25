@@ -334,7 +334,7 @@ export const HiddenGems = () => {
                     <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                             <Label className="text-[11px] font-semibold text-muted-foreground uppercase">Max Cutoff Rank Limit ({selectedCategory})</Label>
-                            <span className="text-xs font-mono font-bold text-foreground">#{maxRank.toLocaleString()}</span>
+                            <span className="text-xs font-mono font-bold text-foreground">#{maxRank.toLocaleString('en-IN')}</span>
                         </div>
                         <Input
                             type="range"
@@ -406,7 +406,7 @@ export const HiddenGems = () => {
                                         </div>
                                         <div className="p-2 rounded bg-muted/40 border border-border/60">
                                             <span className="text-[9px] uppercase font-mono font-semibold text-muted-foreground block">{selectedCategory} Cutoff</span>
-                                            <span className="font-bold font-mono text-foreground text-xs">#{college.cutoff.toLocaleString()}</span>
+                                            <span className="font-bold font-mono text-foreground text-xs">#{college.cutoff.toLocaleString('en-IN')}</span>
                                         </div>
                                         <div className="p-2 rounded bg-muted/40 border border-border/60">
                                             <span className="text-[9px] uppercase font-mono font-semibold text-muted-foreground block">Annual Fee</span>

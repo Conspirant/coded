@@ -210,7 +210,7 @@ export default function FeeCalculator() {
                   >
                     <div className="font-semibold text-foreground flex justify-between items-center">
                       <span>{key.replace("_", " ").toUpperCase()}</span>
-                      <span className="font-mono text-primary font-bold">₹{item.tuitionFee.toLocaleString()}/yr</span>
+                      <span className="font-mono text-primary font-bold">₹{item.tuitionFee.toLocaleString('en-IN')}/yr</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-1 line-clamp-2">{item.description}</p>
                   </button>
@@ -372,10 +372,10 @@ export default function FeeCalculator() {
               <div className="p-4 rounded-xl border border-primary/30 bg-primary/10 text-center space-y-1">
                 <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total 4-Year Cost (Degree)</span>
                 <p className="text-2xl sm:text-3xl font-extrabold font-mono text-primary">
-                  ₹{calculations.total4YearCost.toLocaleString()}
+                  ₹{calculations.total4YearCost.toLocaleString('en-IN')}
                 </p>
                 <p className="text-[11px] text-muted-foreground">
-                  (₹{calculations.grandAnnualTotal.toLocaleString()} per year × 4 years)
+                  (₹{calculations.grandAnnualTotal.toLocaleString('en-IN')} per year × 4 years)
                 </p>
               </div>
 
@@ -383,54 +383,54 @@ export default function FeeCalculator() {
               <div className="space-y-2.5 text-xs">
                 <div className="flex justify-between py-1.5 border-b border-border/40">
                   <span className="text-muted-foreground">Base Tuition Fee:</span>
-                  <span className="font-mono font-semibold">₹{calculations.baseTuition.toLocaleString()}</span>
+                  <span className="font-mono font-semibold">₹{calculations.baseTuition.toLocaleString('en-IN')}</span>
                 </div>
 
                 {calculations.snqDiscount > 0 && (
                   <div className="flex justify-between py-1.5 border-b border-border/40 text-emerald-400 font-semibold">
                     <span className="flex items-center gap-1"><Sparkles className="h-3 w-3" /> SNQ Waiver (100%):</span>
-                    <span className="font-mono">- ₹{calculations.snqDiscount.toLocaleString()}</span>
+                    <span className="font-mono">- ₹{calculations.snqDiscount.toLocaleString('en-IN')}</span>
                   </div>
                 )}
 
                 {calculations.scholarshipDeduction > 0 && (
                   <div className="flex justify-between py-1.5 border-b border-border/40 text-emerald-400 font-semibold">
                     <span className="flex items-center gap-1"><TrendingDown className="h-3 w-3" /> Category Scholarship (SSP):</span>
-                    <span className="font-mono">- ₹{calculations.scholarshipDeduction.toLocaleString()}</span>
+                    <span className="font-mono">- ₹{calculations.scholarshipDeduction.toLocaleString('en-IN')}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between py-1.5 border-b border-border/40">
                   <span className="text-muted-foreground">Net Tuition Payable:</span>
-                  <span className="font-mono font-bold text-foreground">₹{calculations.netTuition.toLocaleString()}</span>
+                  <span className="font-mono font-bold text-foreground">₹{calculations.netTuition.toLocaleString('en-IN')}</span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-border/40">
                   <span className="text-muted-foreground">VTU / University Regulatory Fee:</span>
-                  <span className="font-mono">₹{calculations.uniFee.toLocaleString()}</span>
+                  <span className="font-mono">₹{calculations.uniFee.toLocaleString('en-IN')}</span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-border/40">
                   <span className="text-muted-foreground">College Misc / Lab / Library Fee:</span>
-                  <span className="font-mono">₹{calculations.miscFee.toLocaleString()}</span>
+                  <span className="font-mono">₹{calculations.miscFee.toLocaleString('en-IN')}</span>
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-border/40">
                   <span className="text-muted-foreground">Exam Fees:</span>
-                  <span className="font-mono">₹{calculations.examFee.toLocaleString()}</span>
+                  <span className="font-mono">₹{calculations.examFee.toLocaleString('en-IN')}</span>
                 </div>
 
                 {calculations.annualLiving > 0 && (
                   <div className="flex justify-between py-1.5 border-b border-border/40 text-amber-400">
                     <span>Hostel / PG Rent + Food:</span>
-                    <span className="font-mono font-semibold">₹{calculations.annualLiving.toLocaleString()}</span>
+                    <span className="font-mono font-semibold">₹{calculations.annualLiving.toLocaleString('en-IN')}</span>
                   </div>
                 )}
 
                 {calculations.annualTransport > 0 && (
                   <div className="flex justify-between py-1.5 border-b border-border/40 text-cyan-400">
                     <span>Bus / Transport:</span>
-                    <span className="font-mono font-semibold">₹{calculations.annualTransport.toLocaleString()}</span>
+                    <span className="font-mono font-semibold">₹{calculations.annualTransport.toLocaleString('en-IN')}</span>
                   </div>
                 )}
               </div>

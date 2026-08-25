@@ -254,7 +254,7 @@ export const SquadFinder = () => {
                                             </div>
                                             <div>
                                                 <p className="font-semibold text-foreground">{friend.name}</p>
-                                                <p className="text-[11px] font-mono text-muted-foreground">Rank: #{friend.rank.toLocaleString()}</p>
+                                                <p className="text-[11px] font-mono text-muted-foreground">Rank: #{friend.rank.toLocaleString('en-IN')}</p>
                                             </div>
                                         </div>
                                         <Button variant="ghost" size="icon" onClick={() => removeFriend(friend.id)} className="h-7 w-7 text-muted-foreground hover:text-rose-400">
@@ -355,7 +355,7 @@ export const SquadFinder = () => {
                                             <div className="flex flex-wrap gap-1.5">
                                                 {college.branches.slice(0, 5).map((b, idx) => (
                                                     <Badge key={idx} variant="secondary" className="text-[10px] font-medium bg-muted text-foreground border-border">
-                                                        {b.name} (Cutoff: #{b.cutoff.toLocaleString()})
+                                                        {b.name} (Cutoff: #{b.cutoff.toLocaleString('en-IN')})
                                                     </Badge>
                                                 ))}
                                                 {college.branches.length > 5 && (
