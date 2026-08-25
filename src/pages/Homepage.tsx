@@ -51,9 +51,9 @@ const HERO_WORDS = ["College Decisions", "Branch Cutoffs", "Rank Normalization",
 
 const Homepage = () => {
     const [stats, setStats] = useState<DataStats>({
-        totalRecords: 197831,
+        totalRecords: 240804,
         totalColleges: 269,
-        totalBranches: 496,
+        totalBranches: 525,
         years: ['2026', '2025', '2024', '2023'],
         loading: false
     })
@@ -63,6 +63,24 @@ const Homepage = () => {
     const { scrollYProgress } = useScroll()
     const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0])
     const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.98])
+
+    // Load live statistics from cutoffs summary if available
+    useEffect(() => {
+        fetch('/data/cutoffs-summary.json')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.totals) {
+                    setStats({
+                        totalRecords: data.totals.records || 240804,
+                        totalColleges: data.totals.colleges || 269,
+                        totalBranches: data.totals.branches || 525,
+                        years: data.years ? Object.keys(data.years).reverse() : ['2026', '2025', '2024', '2023'],
+                        loading: false
+                    })
+                }
+            })
+            .catch(err => console.warn('Could not load cutoff summary:', err))
+    }, [])
 
     // Word cycling
     useEffect(() => {
@@ -80,7 +98,7 @@ const Homepage = () => {
             description: "Instant admission probability matching using multi-year KEA cutoff benchmarks and category quotas.",
             icon: Target,
             href: "/college-predictor",
-            stat: `${stats.totalColleges}+ Colleges`
+            stat: `${stats.totalColleges.toLocaleString('en-IN')}+ Colleges`
         },
         {
             title: "Rank Predictor",
@@ -121,11 +139,11 @@ const Homepage = () => {
 
     // 2. Counseling & Verification Resources
     const counselingTools = [
+        { title: "Round 3 Cutoff Predictor", description: "High-precision Round 3 cutoff forecasts anchored on 2026 Round 1 & Round 2 provisional allotment data.", icon: Target, href: "/round-predictor" },
         { title: "Round Tracker", description: "Real-time counseling calendar, choice entry windows, and seat allotment alerts.", icon: Bell, href: "/round-tracker" },
         { title: "Fee Structure Calculator", description: "Calculate exact tuition, university, and hostel fees across Govt vs Private seats.", icon: Calculator, href: "/fee-calculator" },
         { title: "College Directory", description: "Comprehensive profiles of 269+ engineering campuses with branch seats & placement stats.", icon: GraduationCap, href: "/colleges" },
         { title: "Mock Document Verification", description: "Verify study certificates, rural/kannada medium certificates, and RD numbers.", icon: BookOpenCheck, href: "/document-verification" },
-        { title: "Counseling Documents Guide", description: "Complete documentation checklist and official formatting guidelines.", icon: FileText, href: "/documents" },
         { title: "Official CET News", description: "Real-time notifications, circulars, and announcements directly from KEA.", icon: Newspaper, href: "/cet-news" }
     ]
 
@@ -237,7 +255,7 @@ const Homepage = () => {
                     >
                         <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         <span className="text-xs font-medium text-muted-foreground">
-                            {`${stats.totalRecords.toLocaleString()} Verified Records • 2023–2026 Database`}
+                            {`${stats.totalRecords.toLocaleString('en-IN')} Verified Records • 2023–2026 Database`}
                         </span>
                     </motion.div>
 
@@ -297,15 +315,15 @@ const Homepage = () => {
                     >
                         <div className="p-3.5 rounded-lg border border-border bg-card shadow-xs">
                             <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">Official Records</span>
-                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalRecords.toLocaleString()}</span>
+                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalRecords.toLocaleString('en-IN')}</span>
                         </div>
                         <div className="p-3.5 rounded-lg border border-border bg-card shadow-xs">
                             <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">Institutes Covered</span>
-                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalColleges}+</span>
+                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalColleges.toLocaleString('en-IN')}+</span>
                         </div>
                         <div className="p-3.5 rounded-lg border border-border bg-card shadow-xs">
                             <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">Branches & Streams</span>
-                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalBranches}</span>
+                            <span className="text-xl font-bold font-mono text-foreground mt-0.5 block">{stats.totalBranches.toLocaleString('en-IN')}</span>
                         </div>
                         <div className="p-3.5 rounded-lg border border-border bg-card shadow-xs">
                             <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">Dataset Timeline</span>

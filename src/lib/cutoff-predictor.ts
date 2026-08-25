@@ -997,7 +997,45 @@ export async function predictCutoff(
     }
   }
 
-  // ═══ Signal 5: Round-Drift Model ═══
+  // ═══ Signal 5: Round-Drift Model & 2026 Round 2 Anchor ═══
+  // For 2026 Round 3 predictions, check if we have 2026 Round 2 actual ground truth data
+  if (targetYear === 2026 && normRound === 'R3') {
+    const r2Ck = comboKey(codeUpper, normCourse, category, 'R2')
+    const r2_2026 = idx.byCombination.get(r2Ck)?.get(2026)
+    if (r2_2026 && r2_2026 > 0) {
+      const driftRatio = getRoundDriftRatio(idx, normCourse, category, 'R2', 'R3') || 1.05
+      const anchorRank = Math.round(r2_2026 * driftRatio)
+      const anchorPct = normalizeRankToPercentile(anchorRank, 2026)
+
+      if (anchorPct > 0) {
+        signals.push({
+          name: `2026 R2 Actual Anchor (Rank ${r2_2026.toLocaleString('en-IN')}) + R3 Drift (×${driftRatio.toFixed(3)})`,
+          value: anchorPct,
+          weight: 0.65,
+          dataPoints: 4,
+        })
+      }
+    } else {
+      // Fallback to 2026 R1 anchor if R2 not present for this combo
+      const r1Ck = comboKey(codeUpper, normCourse, category, 'R1')
+      const r1_2026 = idx.byCombination.get(r1Ck)?.get(2026)
+      if (r1_2026 && r1_2026 > 0) {
+        const driftRatio = getRoundDriftRatio(idx, normCourse, category, 'R1', 'R3') || 1.10
+        const anchorRank = Math.round(r1_2026 * driftRatio)
+        const anchorPct = normalizeRankToPercentile(anchorRank, 2026)
+
+        if (anchorPct > 0) {
+          signals.push({
+            name: `2026 R1 Actual Anchor (Rank ${r1_2026.toLocaleString('en-IN')}) + R3 Drift (×${driftRatio.toFixed(3)})`,
+            value: anchorPct,
+            weight: 0.50,
+            dataPoints: 3,
+          })
+        }
+      }
+    }
+  }
+
   // If predicting for a specific round but data is sparse, check if
   // we can predict from another round's data + drift ratio
   if (dataYears <= 1) {

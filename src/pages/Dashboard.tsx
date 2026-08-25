@@ -217,7 +217,7 @@ const Dashboard = () => {
       try {
         const saved = localStorage.getItem("kcet_user_profile")
         if (saved) setProfile(JSON.parse(saved))
-      } catch {}
+      } catch { }
     }
     window.addEventListener("kcet_user_profile_updated", handleProfileSync)
     window.addEventListener("storage", handleProfileSync)
@@ -357,22 +357,20 @@ const Dashboard = () => {
             <button
               type="button"
               onClick={() => setExamMode("KCET")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
-                examMode === "KCET"
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${examMode === "KCET"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
-              }`}
+                }`}
             >
               KCET 2026
             </button>
             <button
               type="button"
               onClick={() => setExamMode("COMEDK")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
-                examMode === "COMEDK"
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${examMode === "COMEDK"
                   ? "bg-amber-500 text-black shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
-              }`}
+                }`}
             >
               COMEDK
             </button>
@@ -616,13 +614,12 @@ const Dashboard = () => {
                   <div className="shrink-0 flex items-center gap-2">
                     <Badge
                       variant="outline"
-                      className={`text-[9px] font-bold ${
-                        c.status === "Safe"
+                      className={`text-[9px] font-bold ${c.status === "Safe"
                           ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
                           : c.status === "Target"
                             ? "border-amber-500/30 text-amber-400 bg-amber-500/10"
                             : "border-rose-500/30 text-rose-400 bg-rose-500/10"
-                      }`}
+                        }`}
                     >
                       {c.status}
                     </Badge>
@@ -755,7 +752,7 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        
+
       </section>
     </div>
   )

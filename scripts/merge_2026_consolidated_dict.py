@@ -21,6 +21,7 @@ DATA_DIR = PUBLIC / "data"
 CUTOFF_MOCK = ROOT / "cutoff_2026_extracted.json"
 CUTOFF_MOCK_R2 = ROOT / "cutoff_2026_mock_r2_extracted.json"
 CUTOFF_R1 = ROOT / "cutoff_2026_r1_extracted.json"
+CUTOFF_R2 = ROOT / "cutoff_2026_r2_extracted.json"
 
 # Targets to update
 TARGET_JSON_PATHS = [
@@ -70,7 +71,7 @@ def main():
     print("=" * 70)
 
     # 1. Load extracted 2026 data
-    if not CUTOFF_MOCK.exists() or not CUTOFF_MOCK_R2.exists() or not CUTOFF_R1.exists():
+    if not CUTOFF_MOCK.exists() or not CUTOFF_MOCK_R2.exists() or not CUTOFF_R1.exists() or not CUTOFF_R2.exists():
         print("ERROR: Extracted 2026 JSON files not found! Run extract_2026_precise.py first.")
         sys.exit(1)
 
@@ -80,9 +81,11 @@ def main():
         mock_r2_data = json.load(f)
     with open(CUTOFF_R1, 'r', encoding='utf-8') as f:
         r1_data = json.load(f)
+    with open(CUTOFF_R2, 'r', encoding='utf-8') as f:
+        r2_data = json.load(f)
 
-    new_2026_data = mock_data + mock_r2_data + r1_data
-    print(f"Loaded {len(mock_data):,} Mock 1 entries, {len(mock_r2_data):,} Mock 2 entries, and {len(r1_data):,} R1 entries.")
+    new_2026_data = mock_data + mock_r2_data + r1_data + r2_data
+    print(f"Loaded {len(mock_data):,} Mock 1, {len(mock_r2_data):,} Mock 2, {len(r1_data):,} R1, and {len(r2_data):,} R2 entries.")
     print(f"Total new 2026 entries: {len(new_2026_data):,}")
 
     for target in TARGET_JSON_PATHS:

@@ -216,16 +216,14 @@ function SidebarNavItem({
             item.onClick?.()
             if (isMobile) setOpenMobile(false)
           }}
-          className={`flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors w-full text-left group ${
-            item.isPremiumTrigger
+          className={`flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors w-full text-left group ${item.isPremiumTrigger
               ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-semibold border border-emerald-500/20"
               : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-100"
-          }`}
+            }`}
         >
           <item.icon
-            className={`h-4 w-4 flex-shrink-0 transition-colors ${
-              item.isPremiumTrigger ? "text-emerald-400" : "text-slate-400 group-hover:text-slate-200"
-            }`}
+            className={`h-4 w-4 flex-shrink-0 transition-colors ${item.isPremiumTrigger ? "text-emerald-400" : "text-slate-400 group-hover:text-slate-200"
+              }`}
           />
           {state !== "collapsed" && (
             <span className="truncate text-xs font-medium">{item.title}</span>
@@ -269,10 +267,9 @@ function SidebarNavItem({
             if (isMobile) setOpenMobile(false)
           }}
           className={({ isActive }) =>
-            `flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors group relative ${
-              isActive
-                ? "pill-indicator bg-slate-800/90 text-slate-100 font-semibold"
-                : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-100"
+            `flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors group relative ${isActive
+              ? "pill-indicator bg-slate-800/90 text-slate-100 font-semibold"
+              : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-100"
             }`
           }
         >

@@ -80,47 +80,47 @@ export function CommandPalette() {
         return COMMANDS
             .filter((cmd) => cmd.id !== "comedk-explorer")
             .map((cmd) => {
-            if (cmd.id === "cutoff-explorer") {
-                return examMode === "COMEDK"
-                    ? {
-                        ...cmd,
-                        title: "COMEDK Explorer",
-                        description: "Browse COMEDK cutoffs with source PDFs",
-                        keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"],
-                    }
-                    : {
-                        ...cmd,
-                        title: "Cutoff Explorer",
-                        description: "Analyze KCET cutoff trends",
-                        keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
-                    }
-            }
+                if (cmd.id === "cutoff-explorer") {
+                    return examMode === "COMEDK"
+                        ? {
+                            ...cmd,
+                            title: "COMEDK Explorer",
+                            description: "Browse COMEDK cutoffs with source PDFs",
+                            keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"],
+                        }
+                        : {
+                            ...cmd,
+                            title: "Cutoff Explorer",
+                            description: "Analyze KCET cutoff trends",
+                            keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
+                        }
+                }
 
-            if (cmd.id === "rank-predictor") {
-                return examMode === "COMEDK"
-                    ? {
-                        ...cmd,
-                        title: "COMEDK Rank Predictor",
-                        description: "Predict COMEDK rank from marks",
-                        keywords: ["comedk", "rank", "predict", "marks", "score"],
-                    }
-                    : cmd
-            }
+                if (cmd.id === "rank-predictor") {
+                    return examMode === "COMEDK"
+                        ? {
+                            ...cmd,
+                            title: "COMEDK Rank Predictor",
+                            description: "Predict COMEDK rank from marks",
+                            keywords: ["comedk", "rank", "predict", "marks", "score"],
+                        }
+                        : cmd
+                }
 
-            if (cmd.id === "kcet") {
-                return examMode === "COMEDK"
-                    ? {
-                        ...cmd,
-                        title: "r/COMEDK",
-                        description: "Open COMEDK community",
-                        href: "https://www.reddit.com/r/comedk/",
-                        keywords: ["comedk", "reddit", "community", "discussion"],
-                    }
-                    : cmd
-            }
+                if (cmd.id === "kcet") {
+                    return examMode === "COMEDK"
+                        ? {
+                            ...cmd,
+                            title: "r/COMEDK",
+                            description: "Open COMEDK community",
+                            href: "https://www.reddit.com/r/comedk/",
+                            keywords: ["comedk", "reddit", "community", "discussion"],
+                        }
+                        : cmd
+                }
 
-            return cmd
-        })
+                return cmd
+            })
     }, [examMode])
 
     // Filter commands

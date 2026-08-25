@@ -97,7 +97,7 @@ const CollegeCompare = () => {
   }, [cutoffData])
 
   const availableRounds = useMemo(() => {
-    if (cutoffData.length === 0 || !cutoffYear) return ['MOCK', 'MOCK2', 'R1']
+    if (cutoffData.length === 0 || !cutoffYear) return ['MOCK', 'MOCK2', 'R1', 'R2']
     const yearCutoffs = cutoffData.filter(c => String(c.year) === String(cutoffYear))
     const unique = [...new Set(yearCutoffs.map(c => normalizeRound(c.round)))]
     return unique.sort((a, b) => roundOrder(a) - roundOrder(b))

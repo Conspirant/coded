@@ -89,76 +89,76 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-          <Analytics />
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true
-            }}
-          >
-            <PresenceAndBlockProvider>
-              <CommandPalette />
-            <KonamiEasterEgg />
-            <KeyboardShortcutsHUD />
-            <DisclaimerBanner />
-            <ResourceLimitModal />
-            <Calibrate2027Modal />
-            <DynamicPopupManager />
+            <Analytics />
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true
+              }}
+            >
+              <PresenceAndBlockProvider>
+                <CommandPalette />
+                <KonamiEasterEgg />
+                <KeyboardShortcutsHUD />
+                <DisclaimerBanner />
+                <ResourceLimitModal />
+                <Calibrate2027Modal />
+                <DynamicPopupManager />
 
-            <Routes>
-              <Route path="/" element={<Homepage />} />
-              <Route path="/daily-challenge" element={<DailyChallenge />} />
-              <Route path="/cutoff-clash" element={<CutoffClash />} />
-              <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-              <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
-              <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
-              <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
-              <Route path="/college-predictor" element={<Layout><CollegePredictor /></Layout>} />
-              <Route path="/college-finder" element={<Navigate to="/college-predictor" replace />} />
-              <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
-              <Route path="/cutoff-predictor" element={<Layout><RoundPredictor /></Layout>} />
-              <Route path="/round-predictor" element={<Layout><RoundPredictor /></Layout>} />
-              <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
-              <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
-              <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
-              <Route path="/fee-calculator" element={<Layout><FeeCalculator /></Layout>} />
-              <Route path="/documents" element={<Layout><Documents /></Layout>} />
-              <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
-              <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
-              <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
-              <Route path="/colleges" element={<Layout><CollegeInfoHub /></Layout>} />
-              <Route path="/college-list" element={<Layout><CollegeInfoHub /></Layout>} />
-              <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
-              <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
-              <Route path="/materials" element={<Layout><Materials /></Layout>} />
-              <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
-              <Route path="/blog" element={<Layout><BlogList /></Layout>} />
-              <Route path="/blog/:slug" element={<Layout><BlogPostDetail /></Layout>} />
-              <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
-              <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
-              <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
-              <Route path="/terms" element={<Layout><Terms /></Layout>} />
-              <Route path="/payment-policy" element={<Layout><PaymentPolicy /></Layout>} />
-              <Route path="/about" element={<Layout><About /></Layout>} />
-              <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
-              <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
-              <Route path="/donate" element={<Layout><Donate /></Layout>} />
-              <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
-              <Route path="/squad-finder" element={<Layout><SquadFinder /></Layout>} />
-              <Route path="/forum" element={<Layout><Forum /></Layout>} />
-              <Route path="/forum/:postId" element={<Layout><ThreadDetailPage /></Layout>} />
-              <Route path="/community" element={<Navigate to="/forum" replace />} />
-              <Route path="/metro-mapper" element={<Layout><MetroMapper /></Layout>} />
-              <Route path="/bmtc-mapper" element={<Layout><BmtcMapper /></Layout>} />
-              <Route path="/hidden-gems" element={<Layout><HiddenGems /></Layout>} />
-              <Route path="/admin" element={<AdminHub />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <DonationButton />
-            <MusicPlayer />
-            <GlobalPollPopup />
-            </PresenceAndBlockProvider>
-          </BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Homepage />} />
+                  <Route path="/daily-challenge" element={<DailyChallenge />} />
+                  <Route path="/cutoff-clash" element={<CutoffClash />} />
+                  <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+                  <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
+                  <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
+                  <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
+                  <Route path="/college-predictor" element={<Layout><CollegePredictor /></Layout>} />
+                  <Route path="/college-finder" element={<Navigate to="/college-predictor" replace />} />
+                  <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />
+                  <Route path="/cutoff-predictor" element={<Layout><RoundPredictor /></Layout>} />
+                  <Route path="/round-predictor" element={<Layout><RoundPredictor /></Layout>} />
+                  <Route path="/mock-simulator" element={<Layout><MockSimulator /></Layout>} />
+                  <Route path="/round-tracker" element={<Layout><RoundTracker /></Layout>} />
+                  <Route path="/college-compare" element={<Layout><CollegeCompare /></Layout>} />
+                  <Route path="/fee-calculator" element={<Layout><FeeCalculator /></Layout>} />
+                  <Route path="/documents" element={<Layout><Documents /></Layout>} />
+                  <Route path="/document-verification" element={<Layout><MockVerification /></Layout>} />
+                  <Route path="/reviews" element={<Layout><Reviews /></Layout>} />
+                  <Route path="/reviews/:collegeCode" element={<Layout><CollegeReviewPage /></Layout>} />
+                  <Route path="/colleges" element={<Layout><CollegeInfoHub /></Layout>} />
+                  <Route path="/college-list" element={<Layout><CollegeInfoHub /></Layout>} />
+                  <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
+                  <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
+                  <Route path="/materials" element={<Layout><Materials /></Layout>} />
+                  <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
+                  <Route path="/blog" element={<Layout><BlogList /></Layout>} />
+                  <Route path="/blog/:slug" element={<Layout><BlogPostDetail /></Layout>} />
+                  <Route path="/ai-counselor" element={<Layout><AICounselor /></Layout>} />
+                  <Route path="/college/:collegeCode" element={<Layout><CollegeDetail /></Layout>} />
+                  <Route path="/privacy" element={<Layout><PrivacyPolicy /></Layout>} />
+                  <Route path="/terms" element={<Layout><Terms /></Layout>} />
+                  <Route path="/payment-policy" element={<Layout><PaymentPolicy /></Layout>} />
+                  <Route path="/about" element={<Layout><About /></Layout>} />
+                  <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
+                  <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
+                  <Route path="/donate" element={<Layout><Donate /></Layout>} />
+                  <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
+                  <Route path="/squad-finder" element={<Layout><SquadFinder /></Layout>} />
+                  <Route path="/forum" element={<Layout><Forum /></Layout>} />
+                  <Route path="/forum/:postId" element={<Layout><ThreadDetailPage /></Layout>} />
+                  <Route path="/community" element={<Navigate to="/forum" replace />} />
+                  <Route path="/metro-mapper" element={<Layout><MetroMapper /></Layout>} />
+                  <Route path="/bmtc-mapper" element={<Layout><BmtcMapper /></Layout>} />
+                  <Route path="/hidden-gems" element={<Layout><HiddenGems /></Layout>} />
+                  <Route path="/admin" element={<AdminHub />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <DonationButton />
+                <MusicPlayer />
+                <GlobalPollPopup />
+              </PresenceAndBlockProvider>
+            </BrowserRouter>
           </TooltipProvider>
         </AuthProvider>
       </ExamModeProvider>
