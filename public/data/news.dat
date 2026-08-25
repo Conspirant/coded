@@ -1,68 +1,68 @@
 [
   {
-    "id": "kea-ugcet-2026-round1-choice-entry",
-    "title": "📢 KEA UGCET 2026 Round 1 Choice Selection & Fee Payment Portal Active",
+    "id": "kea-ugcet-2026-round2-final-allotment-choice",
+    "title": "KEA UGCET 2026 Round 2 Final Seat Allotment Declared — Choice Selection & Fee Payment Active",
     "image": "/placeholder.svg",
     "url": "https://cetonline.karnataka.gov.in",
     "source": "KEA Official Portal",
-    "publishedAt": "2026-07-16",
+    "publishedAt": "2026-08-25",
     "type": "official",
     "priority": 1,
-    "summary": "KEA has activated the online Choice Selection portal for candidates allotted seats in Round 1 UGCET 2026. Candidates can choose between Choice 1 (Accept & Join), Choice 2 (Accept & Upgrade in R2), Choice 3 (Reject & Upgrade in R2), or Choice 4 (Reject & Exit). Online fee payment link and challan generation are live."
+    "summary": "Karnataka Examinations Authority (KEA) has officially published the Round 2 Final Seat Allotment results for UGCET 2026. Allotted candidates can now log in to exercise Choice 1 (Accept & Freeze) or Choice 4 (Exit), complete online tuition fee payment, and download their official Admission Order."
   },
   {
-    "id": "kea-round1-allotment-result-declared",
-    "title": "🎉 KCET 2026 Round 1 Final Seat Allotment Results Declared",
-    "image": "/placeholder.svg",
-    "url": "https://cetonline.karnataka.gov.in",
-    "source": "Karnataka Examinations Authority",
-    "publishedAt": "2026-07-15",
-    "type": "official",
-    "priority": 1,
-    "summary": "The Karnataka Examinations Authority (KEA) has officially published the final seat allotment results for UGCET 2026 Engineering, Architecture, and Agriculture courses. Candidates can log in with their CET No. to view allotment status and cutoffs."
-  },
-  {
-    "id": "comedk-2026-counseling-update",
-    "title": "⚡ COMEDK 2026 Round 1 Seat Allotment & Decision Making Schedule",
-    "image": "/placeholder.svg",
-    "url": "https://www.comedk.org",
-    "source": "COMEDK Official",
-    "publishedAt": "2026-07-14",
-    "type": "announcement",
-    "priority": 2,
-    "summary": "COMEDK has released the Round 1 allotment decision making schedule. Candidates who are allotted seats must confirm their choice (Accept & Freeze or Accept & Upgrade) and pay tuition fees online before the deadline."
-  },
-  {
-    "id": "kea-document-reporting-guidelines-2026",
-    "title": "📋 Important Document Reporting Guidelines for Choice 1 Candidates",
+    "id": "kea-round2-college-reporting-deadline-aug28",
+    "title": "KEA Round 2 College Reporting Deadline: August 28, 2026 (5:30 PM)",
     "image": "/placeholder.svg",
     "url": "https://cetonline.karnataka.gov.in",
     "source": "KEA Press Note",
-    "publishedAt": "2026-07-13",
+    "publishedAt": "2026-08-24",
+    "type": "official",
+    "priority": 1,
+    "summary": "Candidates accepting their Round 2 allotment (Choice 1) must report in person to their respective allotted engineering or agriculture colleges along with original documents, fee receipt, and admission order on or before August 28, 2026 by 5:30 PM."
+  },
+  {
+    "id": "comedk-2026-round4-final-schedule",
+    "title": "COMEDK 2026 Round 4 (Final Round) Choice Filling Starts August 26 at 4:00 PM",
+    "image": "/placeholder.svg",
+    "url": "https://www.comedk.org",
+    "source": "COMEDK Official",
+    "publishedAt": "2026-08-25",
+    "type": "announcement",
+    "priority": 2,
+    "summary": "COMEDK has released the detailed schedule for Round 4 counseling. Online choice filling is scheduled from August 26 (4 PM) to August 28 (4 PM). Final seat allotment results will be declared on September 1, 2026."
+  },
+  {
+    "id": "kea-round2-provisional-cutoffs-released",
+    "title": "Official KCET 2026 Round 2 Cutoff Ranks Published Across All Categories",
+    "image": "/placeholder.svg",
+    "url": "https://kcetcoded.dev/college-cutoffs",
+    "source": "KEA Cutoff Repository",
+    "publishedAt": "2026-08-23",
     "type": "official",
     "priority": 2,
-    "summary": "Candidates selecting Choice 1 must report to their respective allotted engineering/farm science colleges with original verification slip, marks cards, study certificates, caste/income certificates, and admission order."
+    "summary": "KEA has released the category-wise cutoff ranks for Round 2. Engineering cutoffs for GM, 2A, 2B, 3A, 3B, SC, ST, Rural, and Kannada medium quotas across 269+ Karnataka engineering colleges are now available on KCET Coded."
   },
   {
-    "id": "vtu-fee-concession-2026",
-    "title": "🏛️ VTU & Government Engineering Colleges Fee Concession Notice 2026",
+    "id": "kea-round3-extended-mopup-forecast",
+    "title": "KCET 2026 Round 3 / Second Extended Round Schedule Expected in September",
     "image": "/placeholder.svg",
-    "url": "https://vtu.ac.in",
-    "source": "VTU Updates",
-    "publishedAt": "2026-07-10",
-    "type": "news",
-    "priority": 3,
-    "summary": "Government engineering colleges across Karnataka offer 50% tuition fee concessions for eligible category candidates. Verification slip from KEA is mandatory during reporting."
-  },
-  {
-    "id": "kea-mock-allotment-analysis-2026",
-    "title": "📊 KCET 2026 Mock Allotment & Cutoff Trend Analysis",
-    "image": "/placeholder.svg",
-    "url": "https://kcetcoded.dev/cutoff-explorer",
-    "source": "KCET Coded Analytics",
-    "publishedAt": "2026-07-06",
+    "url": "https://cetonline.karnataka.gov.in",
+    "source": "KEA Updates",
+    "publishedAt": "2026-08-22",
     "type": "announcement",
     "priority": 3,
-    "summary": "Analysis of 2026 mock allotment cutoffs shows steady demand in Computer Science, AI/ML, and Information Science branches across top Bengaluru and Mysuru engineering institutes."
+    "summary": "Following the conclusion of Round 2 college reporting on August 28, KEA will publish the seat vacancy matrix for Round 3 (Extended Mop-Up Round) in early September 2026 for unfilled engineering, architecture, and farm science seats."
+  },
+  {
+    "id": "vtu-first-year-academic-calendar-2026",
+    "title": "VTU Notifies First-Year B.E. / B.Tech Induction & Commencement Timeline 2026",
+    "image": "/placeholder.svg",
+    "url": "https://vtu.ac.in",
+    "source": "VTU Belagavi",
+    "publishedAt": "2026-08-19",
+    "type": "news",
+    "priority": 3,
+    "summary": "Visvesvaraya Technological University (VTU) has issued guidelines for first-year engineering student induction programs and bridge courses across all affiliated and autonomous engineering institutions in Karnataka."
   }
 ]
