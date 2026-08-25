@@ -1046,12 +1046,12 @@ const MockSimulator = () => {
     visiblePreferences.forEach(pref => {
       levels.set(
         pref.id,
-        getPreferenceSafetyLevel(userRank, pref, safetyCutoffs, selectedYear, userCategory)
+        getPreferenceSafetyLevel(userRank, pref, cutoffs, selectedYear, userCategory)
       )
     })
 
     return levels
-  }, [visiblePreferences, userRank, safetyCutoffs, selectedYear, userCategory])
+  }, [visiblePreferences, userRank, cutoffs, selectedYear, userCategory])
 
   const getSafetyBadge = (pref: PreferenceOption) => {
     const level = visiblePreferenceSafety.get(pref.id) ?? 'unknown'

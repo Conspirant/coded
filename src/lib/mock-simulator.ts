@@ -481,12 +481,20 @@ export function getPreferenceSafetyLevel(
 ): 'safe' | 'moderate' | 'risky' | 'unknown' {
     const eligibleCategories = getEligibleCategories(category);
 
-    // Get cutoffs across all rounds for this year/category
+    // 1. Try selected year first
     const relevantCutoffs = cutoffs.filter(c =>
         c.year === year && eligibleCategories.includes(c.category)
     );
 
-    const matchedCutoffs = findCutoffsForPreference(relevantCutoffs, preference);
+    let matchedCutoffs = findCutoffsForPreference(relevantCutoffs, preference);
+
+    // 2. Fallback: If no cutoffs in selected year, search all available historical years (e.g. 2025, 2024, 2023)
+    if (matchedCutoffs.length === 0) {
+        const historicalCutoffs = cutoffs.filter(c =>
+            eligibleCategories.includes(c.category)
+        );
+        matchedCutoffs = findCutoffsForPreference(historicalCutoffs, preference);
+    }
 
     if (matchedCutoffs.length === 0) return 'unknown';
 
