@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { ChevronDown, ChevronUp, Building2, Search, Grid3X3, SlidersHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { getCollegeInfo } from "@/data/collegeDatabase"
 
 // Types for the cutoff data
 interface CutoffData {
@@ -18,37 +17,6 @@ interface CutoffData {
     round: string
     total_seats?: number
     available_seats?: number
-}
-
-// Format clean college display name without messy raw postal address strings
-const formatCollegeDisplayName = (code: string, rawName: string): string => {
-    const info = getCollegeInfo(code)
-    if (info && info.name) return info.name
-
-    let clean = (rawName || '')
-        .replace(/^E:\s*/i, '')
-        .replace(/^:\s*/, '')
-        .replace(/\(AUTONOMOUS\)/gi, '')
-        .replace(/\(Const\..+?\)/gi, '')
-        .replace(/\bPOST\s+BOX\s+NO.*$/gi, '')
-        .replace(/\bVIDYANIKETAN\s+POST.*$/gi, '')
-        .replace(/\bVIDYA\s+SOUDHA.*$/gi, '')
-        .replace(/\bAMBEDKAR\s+VEEDHI.*$/gi, '')
-        .replace(/\bOUTER\s+RING\s+ROAD.*$/gi, '')
-        .replace(/\bSHAVIGE\s+MALLESHWARA.*$/gi, '')
-        .replace(/\bK\.?R\.?\s*ROAD.*$/gi, '')
-        .replace(/,\s*BANGALORE-\d+.*$/gi, '')
-        .replace(/,\s*BENGALURU-\d+.*$/gi, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-
-    if (clean.length > 55 && clean.includes(',')) {
-        const parts = clean.split(',')
-        if (parts[0].length >= 15) {
-            clean = parts[0].trim() + (parts[1] && parts[1].trim().length < 20 ? `, ${parts[1].trim()}` : '')
-        }
-    }
-    return clean || rawName || code
 }
 
 // Ordered categories matching the official KEA format
@@ -399,7 +367,7 @@ const CollegeCutoffs = () => {
     const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedYear, setSelectedYear] = useState("2026")
-    const [selectedRound, setSelectedRound] = useState("R2")
+    const [selectedRound, setSelectedRound] = useState("R1")
     const [selectedType, setSelectedType] = useState("All")
     const [selectedCategory, setSelectedCategory] = useState("ALL")
     const [sortBy, setSortBy] = useState<"none" | "asc" | "desc">("none")
@@ -484,7 +452,7 @@ const CollegeCutoffs = () => {
     // Ensure selectedRound is valid for the chosen year
     useEffect(() => {
         if (availableRounds.length > 0 && !availableRounds.includes(selectedRound)) {
-            setSelectedRound(availableRounds[availableRounds.length - 1])
+            setSelectedRound(availableRounds[0])
         }
     }, [availableRounds, selectedRound])
 
@@ -513,16 +481,15 @@ const CollegeCutoffs = () => {
 
             if (!collegeMap.has(code)) {
                 // Get best name
-                let bestRaw = code
+                let bestName = code
                 const names = collegeNames.get(code)
                 if (names) {
                     let bestCount = -1
                     for (const [n, count] of names) {
-                        if (count > bestCount) { bestRaw = n; bestCount = count }
+                        if (count > bestCount) { bestName = n; bestCount = count }
                     }
                 }
-                const displayName = formatCollegeDisplayName(code, bestRaw)
-                collegeMap.set(code, { code, name: displayName, cutoffs: [] })
+                collegeMap.set(code, { code, name: bestName, cutoffs: [] })
             }
             collegeMap.get(code)!.cutoffs.push(cutoff)
         })
@@ -639,22 +606,22 @@ const CollegeCutoffs = () => {
                     </div>
 
                     {/* Desktop Filters */}
-                    <div className="hidden lg:flex flex-wrap items-end gap-3">
+                    <div className="hidden lg:flex items-end gap-3 w-full">
                         {/* Search */}
-                        <div className="flex-1 min-w-[200px] max-w-sm">
+                        <div className="flex-1 min-w-[240px]">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     placeholder="Search colleges..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 bg-white/5 border-white/10 h-10"
+                                    className="pl-10 bg-white/5 border-white/10 h-10 w-full"
                                 />
                             </div>
                         </div>
 
                         {/* Year */}
-                        <div className="w-28">
+                        <div className="w-28 shrink-0">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Year</label>
                             <Select value={selectedYear} onValueChange={setSelectedYear}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
@@ -665,7 +632,7 @@ const CollegeCutoffs = () => {
                         </div>
 
                         {/* Round */}
-                        <div className="w-32">
+                        <div className="w-32 shrink-0">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Round</label>
                             <Select value={selectedRound} onValueChange={setSelectedRound}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
@@ -676,7 +643,7 @@ const CollegeCutoffs = () => {
                         </div>
 
                         {/* Category Type */}
-                        <div className="w-32">
+                        <div className="w-32 shrink-0">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Cat. Type</label>
                             <Select value={selectedType} onValueChange={(v) => { setSelectedType(v); setSelectedCategory('ALL') }}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
@@ -687,7 +654,7 @@ const CollegeCutoffs = () => {
                         </div>
 
                         {/* Specific Category */}
-                        <div className="w-28">
+                        <div className="w-28 shrink-0">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Category</label>
                             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
@@ -699,7 +666,7 @@ const CollegeCutoffs = () => {
                         </div>
 
                         {/* Sort By */}
-                        <div className="w-36">
+                        <div className="w-36 shrink-0">
                             <label className="text-[10px] text-muted-foreground mb-1 block uppercase tracking-wider font-semibold">Sort By</label>
                             <Select value={sortBy} onValueChange={(v: "none" | "asc" | "desc") => setSortBy(v)}>
                                 <SelectTrigger className="bg-white/5 border-white/10 h-10"><SelectValue /></SelectTrigger>
