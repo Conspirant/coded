@@ -778,9 +778,9 @@ export async function predictR2R3(
   const r3ChangePct = r1Actual > 0 ? Math.round(((r3Predicted / r1Actual) - 1) * 100) : 0
   const r3ChangePctFromR2 = r2Predicted > 0 ? Math.round(((r3Predicted / r2Predicted) - 1) * 100) : 0
 
-  // Tighten uncertainty because R2 is known ground truth
+  // Calibrate uncertainty band for R3
   const baseUncertainty = getUncertaintyMultiplier(drift)
-  const r3Uncertainty = isR2Actual ? baseUncertainty * 0.55 : baseUncertainty * 1.3
+  const r3Uncertainty = isR2Actual ? Math.max(0.06, baseUncertainty * 0.8) : baseUncertainty * 1.3
 
   const r2Low = isR2Actual ? r2Actual : Math.max(1, Math.round(r2Predicted * (1 - baseUncertainty)))
   const r2High = isR2Actual ? r2Actual : Math.round(r2Predicted * (1 + baseUncertainty))
