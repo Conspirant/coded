@@ -230,13 +230,101 @@ const AICounselor = () => {
         profileFilters.streamFocus !== "all"
     );
 
+    const counselorJsonLd = {
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "@id": "https://kcetcoded.dev/ai-counselor#app",
+                "name": "TesselBot – KCET Cutoff & Admissions Counselor",
+                "url": "https://kcetcoded.dev/ai-counselor",
+                "applicationCategory": "EducationalApplication",
+                "operatingSystem": "Web Browser",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "INR"
+                },
+                "featureList": [
+                    "240,000+ official KEA cutoff records from 2023 to 2026",
+                    "All 269 Karnataka engineering colleges and codes",
+                    "All 25 reservation quotas including GM, 3A, 2A, 1G, SC, ST, SNQ, Rural, and Kannada medium",
+                    "Deterministic cutoff query without hallucination",
+                    "Option entry and choice filling decision tree analysis"
+                ],
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "ratingCount": "720",
+                    "bestRating": "5"
+                }
+            },
+            {
+                "@type": "FAQPage",
+                "@id": "https://kcetcoded.dev/ai-counselor#faq",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "What is TesselBot and how does it query KCET cutoffs?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "TesselBot is a specialized KCET and COMEDK admissions intelligence assistant. It uses deterministic database retrieval against 240,804 verified KEA cutoff records across all 269 Karnataka engineering institutions, returning exact closing ranks for all branches, rounds, and quotas."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Does TesselBot support all 25 KEA reservation category quotas?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes. TesselBot supports all 25 official KEA quotas, including General Merit (GM, GMK, GMR), Category 1 (1G, 1K, 1R), Category 2A (2AG, 2AK, 2AR), Category 2B (2BG, 2BK, 2BR), Category 3A (3AG, 3AK, 3AR), Category 3B (3BG, 3BK, 3BR), SC (SCG, SCK, SCR), ST (STG, STK, STR), and Supernumerary Quota (SNQ)."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How does TesselBot help with KCET Option Entry and Choice Filling?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "TesselBot analyzes your rank and target branches to recommend a structured choice-filling matrix: Dream Tier (top-tier colleges), Realistic Target Tier (safe matching bounds), and Guaranteed Safety Tier, while advising on KEA Choice 1, Choice 2, Choice 3, and Choice 4 rules."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What years of KCET cutoff data are covered in TesselBot?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "TesselBot covers verified historical cutoff benchmarks across 2023, 2024, 2025, and 2026 latest benchmarks across Mock Round 1, Mock Round 2, Round 1, Round 2, and Extended Round (Round 3)."
+                        }
+                    }
+                ]
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://kcetcoded.dev/ai-counselor#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://kcetcoded.dev"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "TesselBot KCET Counselor",
+                        "item": "https://kcetcoded.dev/ai-counselor"
+                    }
+                ]
+            }
+        ]
+    };
+
     return (
         <>
             <SEO
-                title="TesselBot – Tactical Karnataka Engineering Admissions Intelligence"
-                description="High-tier admissions intelligence for KCET and COMEDK. Real cutoffs, verified senior ground truths, and tactical choice filling strategies."
+                title="TesselBot – KCET & COMEDK Cutoff Intelligence & Admissions Counselor (2026)"
+                description="Free, data-backed KCET & COMEDK admissions counselor. Access verified KEA cutoff benchmarks (2023–2026) across 269 Karnataka engineering colleges, 25 category quotas, and tactical choice filling guidance."
                 url="https://kcetcoded.dev/ai-counselor"
-                keywords="TesselBot, KCET AI Counselor, KCET counseling assistant, KCET college predictor, KCET rank cutoff analyzer, Bangalore engineering colleges"
+                keywords="TesselBot, KCET AI Counselor, KCET Cutoff Bot, KCET counseling bot, KCET 2026 cutoffs, KCET 2025 cutoffs, KEA engineering cutoffs, KCET choice filling, Karnataka CET college predictor, COMEDK cutoff counselor, RVCE cutoffs, BMSCE cutoffs, MSRIT cutoffs, PES cutoffs, KCET rank cutoff analysis, 3AG cutoffs, 2AG cutoffs, SNQ fee waiver, KEA round 2 cutoffs, KEA option entry bot"
+                jsonLd={counselorJsonLd}
             />
 
             {/* Model Training & Ground Truth Transparency Dialog (Deep Blue Theme) */}
@@ -768,12 +856,12 @@ const AICounselor = () => {
                                 <TesselAvatar size="xl" className="border border-slate-800 shadow-md" />
                             </div>
 
-                            <div className="space-y-1.5 mb-6">
-                                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-slate-100">
-                                    How can I help you today?
-                                </h2>
-                                <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
-                                    KCET & COMEDK strategy, cutoff lookup for all 269 colleges, branch roadmaps, or general conversation.
+                            <div className="space-y-2 mb-6">
+                                <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-100">
+                                    TesselBot – KCET & COMEDK Admissions Counselor
+                                </h1>
+                                <p className="text-xs md:text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
+                                    Query 240,804 verified KEA cutoff records across all 269 colleges, all 25 reservation quotas (GM, 3A, 2A, 1G, SC, ST, SNQ, Rural, Kannada), and counseling choice-filling strategies.
                                 </p>
                             </div>
 

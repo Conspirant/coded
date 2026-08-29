@@ -94,6 +94,13 @@ const Homepage = () => {
     // 1. Core Admissions & Cutoffs
     const admissionTools = [
         {
+            title: "TesselBot AI Counselor",
+            description: "Instant cutoff query and admissions advisor backed by 240,804 verified KEA records across all 269 colleges and 25 quotas.",
+            icon: Bot,
+            href: "/ai-counselor",
+            stat: "240k+ Cutoff Rows"
+        },
+        {
             title: "College Predictor",
             description: "Instant admission probability matching using multi-year KEA cutoff benchmarks and category quotas.",
             icon: Target,
