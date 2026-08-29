@@ -561,6 +561,183 @@ function cleanAiResponse(text: string): string {
     return cleaned.trim();
 }
 
+function handleConversationalCutoffStep(
+    userMessage: string,
+    profileFilters?: StudentProfileFilters,
+    dataset?: CutoffEntry[]
+): { handled: boolean; response: string; quickReplies: string[]; cutoffSelector?: any } | null {
+    const raw = userMessage.trim();
+    const lower = raw.toLowerCase();
+
+    // 1. Check if user is asking to start cutoff flow
+    const isGenericCutoffTrigger = (
+        lower === "cutoffs" ||
+        lower === "cutoff" ||
+        lower === "show cutoffs" ||
+        lower === "check cutoffs" ||
+        lower === "cutoff explorer" ||
+        lower === "explore cutoffs" ||
+        lower === "college cutoffs" ||
+        lower === "step by step cutoffs" ||
+        lower === "cutoffs please" ||
+        lower === "cutoff finder"
+    );
+
+    if (isGenericCutoffTrigger) {
+        return {
+            handled: true,
+            response: `### Step 1: Select College\n\nWhich college's KCET cutoffs would you like to explore? Tap any of the popular colleges below or type any college code / name (e.g. \`E126 BMSIT\`, \`E005 RVCE\`, \`E006 MSRIT\`, \`E173 Sai Vidya\`):`,
+            quickReplies: [
+                "E005 RVCE",
+                "E003 BMSCE",
+                "E006 MSRIT",
+                "E126 BMSIT",
+                "E007 DSCE",
+                "E001 UVCE",
+                "E173 Sai Vidya",
+                "E099 NHCE"
+            ]
+        };
+    }
+
+    // 2. Identify College, Year, Round, Category from query
+    const matchedCol = matchCollegeFromDatabase(userMessage);
+    const codeMatch = userMessage.toUpperCase().match(/E\d{3}/);
+    const collegeCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
+    const collegeName = matchedCol ? (matchedCol.shortName || matchedCol.name) : (collegeCode || "");
+
+    if (!collegeCode) {
+        return null; // Not a specific college query, let general AI handle it
+    }
+
+    const yearMatch = userMessage.match(/\b(202[3-6])\b/);
+    const foundYear = yearMatch ? yearMatch[1] : null;
+
+    const isR1 = /\b(r1|round\s*1|round1)\b/i.test(userMessage);
+    const isR2 = /\b(r2|round\s*2|round2)\b/i.test(userMessage);
+    const isR3 = /\b(r3|round\s*3|ext|extended)\b/i.test(userMessage);
+    const isMock = /\b(mock|mock1|mock2)\b/i.test(userMessage);
+    const foundRound = isR1 ? "R1" : isR2 ? "R2" : isR3 ? "R3" : isMock ? "MOCK" : null;
+
+    const catMatch = userMessage.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+    const foundCategory = catMatch ? catMatch[0].toUpperCase() : null;
+
+    // Check if this is a complex comparison / rank review sentence that needs full neural generation
+    const isComplexQuery = lower.includes("better") || lower.includes("compare") || lower.includes("scope") || lower.includes("placement") || lower.includes("review") || (lower.includes("rank") && /\d{4,6}/.test(lower));
+
+    if (isComplexQuery) {
+        return null; // Let LLM answer
+    }
+
+    // STEP 2: College identified, but Year is missing
+    if (!foundYear) {
+        return {
+            handled: true,
+            response: `### Step 2: Select KCET Year for ${collegeName} (${collegeCode})\n\nWhich allotment year would you like to inspect?`,
+            quickReplies: [
+                `${collegeCode} ${collegeName} 2026`,
+                `${collegeCode} ${collegeName} 2025`,
+                `${collegeCode} ${collegeName} 2024`,
+                `${collegeCode} ${collegeName} 2023`
+            ],
+            cutoffSelector: {
+                collegeCode,
+                collegeName,
+                currentYear: "2026",
+                currentRound: "R2",
+                currentCategory: "3AG"
+            }
+        };
+    }
+
+    // STEP 3: College & Year identified, but Round is missing
+    if (!foundRound) {
+        return {
+            handled: true,
+            response: `### Step 3: Select Counseling Round for ${collegeName} (${foundYear})\n\nWhich counseling round do you want to view?`,
+            quickReplies: [
+                `${collegeCode} ${collegeName} ${foundYear} Round 2`,
+                `${collegeCode} ${collegeName} ${foundYear} Round 1`,
+                `${collegeCode} ${collegeName} ${foundYear} Round 3 / Extended`,
+                `${collegeCode} ${collegeName} ${foundYear} Mock Round`
+            ],
+            cutoffSelector: {
+                collegeCode,
+                collegeName,
+                currentYear: foundYear,
+                currentRound: "R2",
+                currentCategory: "3AG"
+            }
+        };
+    }
+
+    // STEP 4: College, Year & Round identified, but Category is missing
+    if (!foundCategory) {
+        return {
+            handled: true,
+            response: `### Step 4: Select Reservation Category Quota\n\nWhich category quota do you want to inspect for **${collegeName} (${collegeCode}) — ${foundYear} Round ${foundRound}**?`,
+            quickReplies: [
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 3AG`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} GM`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2AG`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 1G`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2BG`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 3BG`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} SCG`,
+                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} STG`
+            ],
+            cutoffSelector: {
+                collegeCode,
+                collegeName,
+                currentYear: foundYear,
+                currentRound: foundRound,
+                currentCategory: "3AG"
+            }
+        };
+    }
+
+    // STEP 5: All 4 parameters are known! Generate the complete branch cutoff table directly from verified dataset
+    if (dataset && dataset.length > 0) {
+        const matches = dataset.filter(c =>
+            c.institute_code.toUpperCase() === collegeCode.toUpperCase() &&
+            c.year === foundYear &&
+            c.round.toUpperCase() === foundRound.toUpperCase() &&
+            c.category.toUpperCase() === foundCategory.toUpperCase()
+        ).sort((a, b) => a.cutoff_rank - b.cutoff_rank);
+
+        if (matches.length > 0) {
+            let table = `### ${collegeName} (${collegeCode})\n`;
+            table += `**${foundYear} KCET Cutoffs — Round ${foundRound} (${foundCategory} Quota)**\n\n`;
+            table += `| Branch / Engineering Course | Quota | Closing Cutoff Rank |\n`;
+            table += `| :--- | :--- | :--- |\n`;
+            matches.forEach(m => {
+                table += `| ${m.course} | **${m.category}** | **${m.cutoff_rank.toLocaleString()}** |\n`;
+            });
+            table += `\n*Verified data from official KEA master dataset (${matches.length} branches).*`;
+
+            return {
+                handled: true,
+                response: table,
+                quickReplies: [
+                    `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} GM`,
+                    `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2AG`,
+                    `${collegeCode} ${collegeName} 2025 vs 2026 Cutoff Trend`,
+                    "Explore another college"
+                ],
+                cutoffSelector: {
+                    collegeCode,
+                    collegeName,
+                    currentYear: foundYear,
+                    currentRound: foundRound,
+                    currentCategory: foundCategory
+                }
+            };
+        }
+    }
+
+    return null;
+}
+
 export async function sendMessage(
     userMessage: string,
     conversationHistory: Message[],
@@ -583,6 +760,25 @@ export async function sendMessage(
     let toolContext = "";
 
     if (onStatusUpdate) onStatusUpdate("Analyzing query & student preferences...");
+
+    // Check conversational step-by-step questionnaire first
+    try {
+        const statusFn = onStatusUpdate || (() => {});
+        const data = await fetchCutoffData(statusFn);
+        const stepResult = handleConversationalCutoffStep(userMessage, profileFilters, data);
+        if (stepResult && stepResult.handled) {
+            const actionChips = buildActionChips(stepResult.response, userMessage, profileFilters);
+            return {
+                response: stepResult.response,
+                recommendations: [],
+                actionChips,
+                quickReplies: stepResult.quickReplies,
+                cutoffSelector: stepResult.cutoffSelector
+            };
+        }
+    } catch (e) {
+        console.error("Step handler check error:", e);
+    }
 
     try {
         const toolResult = await executeToolsForQuery(userMessage, profileFilters);
@@ -735,6 +931,17 @@ Please tailor your suggestions specifically to these parameters.`;
 
 // Categorized quick suggestion prompts (NO EMOJIS)
 export const PROMPT_CATEGORIES = [
+    {
+        name: "Cutoff Explorer",
+        prompts: [
+            "Step-by-step cutoff finder",
+            "E126 BMSIT cutoffs",
+            "E005 RVCE cutoffs",
+            "E006 MSRIT cutoffs",
+            "E007 DSCE cutoffs",
+            "E173 Sai Vidya cutoffs",
+        ]
+    },
     {
         name: "General & Tech Life",
         prompts: [
