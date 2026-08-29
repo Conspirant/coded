@@ -116,7 +116,7 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
     {
       label: "Coded Labs & AI",
       items: [
-        { title: "Admissions Assistant", url: "/ai-counselor", icon: Bot },
+        { title: "TesselBot", url: "/ai-counselor", icon: Bot, isNew: true },
         { title: "Squad Finder", url: "/squad-finder", icon: Users, isNew: true },
         { title: "Metro Mapper", url: "/metro-mapper", icon: MapPin, isNew: true },
         { title: "Hidden Gems", url: "/hidden-gems", icon: Gem, isNew: true },

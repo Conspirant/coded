@@ -19,6 +19,8 @@
     "build:summary": "node scripts/build-summary.mjs",
     "fetch:kcet": "node scripts/fetch-kcet-news.mjs",
     "news:webhook": "node scripts/news-webhook.mjs",
+    "fetch:reddit": "node scripts/fetch-reddit-data.mjs",
+    "seed:reddit": "node scripts/seed-reddit-insights.mjs",
     "test": "vitest",
     "test:ui": "vitest --ui"
   },

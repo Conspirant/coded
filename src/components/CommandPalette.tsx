@@ -26,7 +26,8 @@ import {
     Sword,
     Newspaper,
     ShieldCheck,
-    Brain
+    Brain,
+    Gamepad2
 } from "lucide-react"
 import { useExamMode } from "@/contexts/ExamModeContext"
 
@@ -64,7 +65,8 @@ const COMMANDS: CommandItem[] = [
     { id: "materials", title: "Study Materials", description: "Preparation resources", icon: Book, href: "/materials", keywords: ["materials", "study", "resources", "prep"], category: "tools" },
     { id: "kcet", title: "r/kcet", description: "Open KCET community", icon: ArrowRight, href: "https://www.reddit.com/r/kcet/", keywords: ["kcet", "reddit", "community", "discussion"], category: "tools", external: true },
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
-    { id: "ai-counselor", title: "Admissions Assistant", description: "Interactive reference assistant", icon: Bot, href: "/ai-counselor", keywords: ["assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
+    { id: "ai-counselor", title: "TesselBot", description: "KCET & COMEDK counseling intelligence", icon: Bot, href: "/ai-counselor", keywords: ["tesselbot", "tessel", "bot", "ai", "assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
+    { id: "dino-game", title: "Chrome Dino Game", description: "Play classic T-Rex runner mini-game", icon: Gamepad2, href: "/dino", keywords: ["dino", "game", "t-rex", "runner", "arcade", "offline", "chromedino", "easter egg"], category: "tools" },
 ]
 
 export function CommandPalette() {

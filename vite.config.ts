@@ -106,7 +106,7 @@ const devAiListerPlugin = (nvidiaApiKey: string): Plugin => ({
           return;
         }
 
-        const data = (await response.json()) as Record<string, unknown>;
+        const data = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
         const content = data.choices?.[0]?.message?.content ?? "";
         const jsonText = extractJson(content);
         if (!jsonText) {
@@ -129,6 +129,76 @@ const devAiListerPlugin = (nvidiaApiKey: string): Plugin => ({
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify({
           error: "AI lister failed",
+          message: error instanceof Error ? error.message : "Unknown error",
+        }));
+      }
+    });
+  },
+});
+
+const devNvidiaChatPlugin = (nvidiaApiKey: string): Plugin => ({
+  name: "dev-nvidia-chat-api",
+  configureServer(server) {
+    server.middlewares.use("/api/nvidia-chat", async (req, res) => {
+      if (req.method !== "POST") {
+        res.statusCode = 405;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+      }
+
+      if (!nvidiaApiKey) {
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "NVIDIA API key not configured" }));
+        return;
+      }
+
+      try {
+        const body = await readRequestBody(req);
+        const { messages } = body;
+
+        if (!messages || !Array.isArray(messages)) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "messages array is required" }));
+          return;
+        }
+
+        const response = await fetch(NVIDIA_API_URL, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${nvidiaApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: NVIDIA_MODEL,
+            messages,
+            temperature: 0.6,
+            max_tokens: 4096,
+            stream: false,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text().catch(() => "Unknown error");
+          res.statusCode = response.status;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: `NVIDIA API error: ${response.status}`, details: errorText }));
+          return;
+        }
+
+        const data = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
+        const content = data.choices?.[0]?.message?.content ?? "";
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ content, model: NVIDIA_MODEL }));
+      } catch (error) {
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({
+          error: "NVIDIA chat failed",
           message: error instanceof Error ? error.message : "Unknown error",
         }));
       }
@@ -531,6 +601,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       devAiListerPlugin(env.NVIDIA_API_KEY || process.env.NVIDIA_API_KEY || ""),
+      devNvidiaChatPlugin(env.NVIDIA_API_KEY || process.env.NVIDIA_API_KEY || ""),
       devCheckResultPlugin(
         env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "",
         env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ""

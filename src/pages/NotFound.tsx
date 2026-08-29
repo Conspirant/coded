@@ -1,10 +1,14 @@
+import { useState } from "react"
 import { SEO } from "@/components/SEO"
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Home, ArrowLeft, Rocket } from "lucide-react"
+import { Home, ArrowLeft, Rocket, Gamepad2 } from "lucide-react"
+import { DinoGameModal } from "@/components/DinoGameModal"
 
 const NotFound = () => {
+  const [dinoModalOpen, setDinoModalOpen] = useState(false)
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
       <SEO
@@ -12,6 +16,8 @@ const NotFound = () => {
         description="The page you're looking for doesn't exist. Head back to KCET Coded to explore rank predictor, cutoff explorer, college predictor and more."
         url="https://kcetcoded.dev/404"
       />
+      {/* Dino Game Modal */}
+      <DinoGameModal open={dinoModalOpen} onClose={() => setDinoModalOpen(false)} />
       {/* Aurora Background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 animate-aurora opacity-50" />
@@ -106,6 +112,14 @@ const NotFound = () => {
               <Home className="mr-2 h-4 w-4" /> Go Home
             </Button>
           </Link>
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-xl border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 transition-all"
+            onClick={() => setDinoModalOpen(true)}
+          >
+            <Gamepad2 className="mr-2 h-4 w-4 text-indigo-400" /> Play Dino Game
+          </Button>
           <Button variant="outline" size="lg" className="rounded-xl border-white/10 bg-white/5 hover:bg-white/10" onClick={() => window.history.back()}>
             <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
           </Button>

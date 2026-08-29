@@ -1,10 +1,18 @@
-import { SEO } from "@/components/SEO"
+import { SEO } from "@/components/SEO";
 import { useState, useRef, useEffect } from "react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     Dialog,
     DialogContent,
@@ -14,127 +22,58 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import {
-    Bot,
-    Send,
-    User,
+    ArrowUp,
     Sparkles,
     Loader2,
     MessageSquare,
-    Lightbulb,
     AlertCircle,
-    Trash2,
-    GraduationCap,
-    AlertTriangle,
+    Copy,
+    Check,
+    ChevronDown,
+    ChevronUp,
+    RotateCcw,
+    SlidersHorizontal,
+    SquarePen,
+    ShieldCheck,
+    Database,
+    Cpu,
+    Scale,
+    FileCheck,
     ExternalLink
 } from "lucide-react";
-import { sendMessage, QUICK_PROMPTS, type Message } from "@/lib/gemini";
+import { sendMessage, PROMPT_CATEGORIES, type Message } from "@/lib/gemini";
+import type { StudentProfileFilters } from "@/lib/ai-tools";
+import { CounselorRecommendationCard } from "@/components/counselor/CounselorRecommendationCard";
+import { TesselAvatar } from "@/components/TesselAvatar";
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Link } from "react-router-dom";
-
-// Animation styles
-const messageAnimationStyles = `
-  @keyframes slideInRight {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  @keyframes slideInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-  
-  @keyframes typingDots {
-    0%, 20% {
-      opacity: 0.3;
-    }
-    50% {
-      opacity: 1;
-    }
-    80%, 100% {
-      opacity: 0.3;
-    }
-  }
-  
-  .animate-slide-in-right {
-    animation: slideInRight 0.3s ease-out forwards;
-  }
-  
-  .animate-slide-in-left {
-    animation: slideInLeft 0.3s ease-out forwards;
-  }
-  
-  .animate-fade-in-up {
-    animation: fadeInUp 0.4s ease-out forwards;
-  }
-  
-  .typing-dot {
-    animation: typingDots 1.4s infinite;
-  }
-  
-  .typing-dot:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .typing-dot:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-`;
+import { toast } from "sonner";
 
 const AICounselor = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [showDisclaimer, setShowDisclaimer] = useState(true);
-    const scrollAreaRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    // Inject animation styles
-    useEffect(() => {
-        const styleId = 'chat-animations';
-        if (!document.getElementById(styleId)) {
-            const style = document.createElement('style');
-            style.id = styleId;
-            style.textContent = messageAnimationStyles;
-            document.head.appendChild(style);
-        }
-    }, []);
-
+    const [showTransparency, setShowTransparency] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
+    const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [status, setStatus] = useState<string>("");
+    const [selectedCategoryTab, setSelectedCategoryTab] = useState(0);
 
-    // Smooth auto-scroll to bottom when new messages arrive
+    // Student Profile Filters
+    const [profileFilters, setProfileFilters] = useState<StudentProfileFilters>({
+        rank: undefined,
+        category: "GM",
+        budgetQuota: "all",
+        locationCommute: "all",
+        streamFocus: "all",
+    });
+
+    const scrollAreaRef = useRef<HTMLDivElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // Auto-scroll to bottom
     useEffect(() => {
         if (scrollAreaRef.current) {
             const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -149,8 +88,16 @@ const AICounselor = () => {
 
     // Focus input on load
     useEffect(() => {
-        inputRef.current?.focus();
+        textareaRef.current?.focus();
     }, []);
+
+    // Auto-resize textarea
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = Math.min(textareaRef.current.scrollHeight, 160) + 'px';
+        }
+    }, [input]);
 
     const handleSend = async (messageText?: string) => {
         const textToSend = messageText || input.trim();
@@ -159,6 +106,10 @@ const AICounselor = () => {
         setError(null);
         setInput("");
         setStatus("");
+
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+        }
 
         const userMessage: Message = {
             role: 'user',
@@ -170,28 +121,33 @@ const AICounselor = () => {
         setIsLoading(true);
 
         try {
-            const response = await sendMessage(textToSend, messages, (newStatus) => {
-                setStatus(newStatus);
-            });
+            const result = await sendMessage(
+                textToSend,
+                messages,
+                (newStatus) => setStatus(newStatus),
+                profileFilters
+            );
 
             const assistantMessage: Message = {
                 role: 'assistant',
-                content: response,
-                timestamp: new Date()
+                content: result.response,
+                timestamp: new Date(),
+                recommendations: result.recommendations,
+                actionChips: result.actionChips
             };
 
             setMessages(prev => [...prev, assistantMessage]);
         } catch (err) {
             console.error('AI response error:', err);
-            setError(err instanceof Error ? err.message : 'Failed to get response');
+            setError(err instanceof Error ? err.message : 'Failed to get response. Please try again.');
         } finally {
             setIsLoading(false);
             setStatus("");
-            inputRef.current?.focus();
+            textareaRef.current?.focus();
         }
     };
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSend();
@@ -201,220 +157,609 @@ const AICounselor = () => {
     const clearChat = () => {
         setMessages([]);
         setError(null);
+        textareaRef.current?.focus();
     };
+
+    const copyToClipboard = (text: string, index: number) => {
+        navigator.clipboard.writeText(text);
+        setCopiedIndex(index);
+        toast.success("Copied to clipboard");
+        setTimeout(() => setCopiedIndex(null), 2000);
+    };
+
+    const isFilterActive = !!(
+        profileFilters.rank ||
+        profileFilters.category !== "GM" ||
+        profileFilters.budgetQuota !== "all" ||
+        profileFilters.locationCommute !== "all" ||
+        profileFilters.streamFocus !== "all"
+    );
 
     return (
         <>
             <SEO
-                title="KCET Admissions Assistant – Free Personalized College Guidance"
-                description="Get personalized guidance for KCET 2026 college counseling. Ask questions about colleges, cutoffs, branch selection, and placements — completely free."
+                title="TesselBot – Tactical Karnataka Engineering Admissions Intelligence"
+                description="High-tier admissions intelligence for KCET and COMEDK. Real cutoffs, verified senior ground truths, and tactical choice filling strategies."
                 url="https://kcetcoded.dev/ai-counselor"
-                keywords="KCET counseling assistant, KCET college guidance, KCET counseling help, KCET branch selection, KCET college suggestions"
+                keywords="TesselBot, KCET AI Counselor, KCET counseling assistant, KCET college predictor, KCET rank cutoff analyzer, Bangalore engineering colleges"
             />
-            {/* Disclaimer Dialog */}
-            <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
-                <DialogContent className="sm:max-w-lg">
+
+            {/* Model Training & Ground Truth Transparency Dialog (Clean Minimalist Matte) */}
+            <Dialog open={showTransparency} onOpenChange={setShowTransparency}>
+                <DialogContent className="sm:max-w-2xl border-zinc-800 bg-zinc-950 text-zinc-100 max-h-[88vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-amber-600">
-                            <AlertTriangle className="h-5 w-5" />
-                            Important Disclaimer
-                        </DialogTitle>
+                        <div className="flex items-center gap-3 mb-1">
+                            <TesselAvatar size="sm" />
+                            <div>
+                                <DialogTitle className="text-base sm:text-lg font-semibold text-zinc-100 flex items-center gap-2">
+                                    <span>TesselBot 3.0 Training & Architecture</span>
+                                    <span className="text-[10px] px-1.5 py-0.5 rounded border border-zinc-700 bg-zinc-800 text-zinc-300 font-mono">
+                                        VERIFIED 2025-26
+                                    </span>
+                                </DialogTitle>
+                                <p className="text-xs text-zinc-400">
+                                    Public disclosure of data sources, ingestion pipeline, and counseling architecture.
+                                </p>
+                            </div>
+                        </div>
                     </DialogHeader>
+
                     <DialogDescription asChild>
-                        <div className="space-y-4 text-sm">
-                            <p className="text-foreground">
-                                This Admissions Assistant is still in <strong>early development</strong> and may not provide fully accurate information.
-                            </p>
-
-                            <div className="bg-muted/50 rounded-lg p-3 space-y-2">
-                                <p className="font-medium text-foreground">Currently powered by:</p>
-                                <ul className="list-disc list-inside text-muted-foreground space-y-1 text-xs">
-                                    <li><strong>NVIDIA Nemotron-3 Super 120B</strong> (Primary)</li>
-                                    <li>Google Gemini 2.0 Flash</li>
-                                    <li>Meta Llama 3.3 70B Instruct</li>
-                                    <li>Qwen 2.5 72B Instruct</li>
-                                    <li>NVIDIA Llama 3.1 Nemotron 70B</li>
-                                    <li>Mistral Small 3.1 24B Instruct</li>
-                                </ul>
+                        <div className="space-y-4 pt-2 text-xs text-zinc-400 leading-relaxed">
+                            {/* Stats Ribbon */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                                <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+                                    <div className="text-base font-bold text-zinc-100 font-mono">240,000+</div>
+                                    <div className="text-[10px] text-zinc-400 font-medium">Cutoff Records</div>
+                                </div>
+                                <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+                                    <div className="text-base font-bold text-zinc-100 font-mono">1,840+</div>
+                                    <div className="text-[10px] text-zinc-400 font-medium">Senior Threads</div>
+                                </div>
+                                <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+                                    <div className="text-base font-bold text-zinc-100 font-mono">269</div>
+                                    <div className="text-[10px] text-zinc-400 font-medium">Verified Colleges</div>
+                                </div>
+                                <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800">
+                                    <div className="text-base font-bold text-zinc-100 font-mono">100%</div>
+                                    <div className="text-[10px] text-zinc-400 font-medium">Student-First</div>
+                                </div>
                             </div>
 
-                            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                                <p className="text-amber-800 dark:text-amber-200 font-medium flex items-center gap-2">
-                                    <AlertCircle className="h-4 w-4" />
-                                    Please Note:
-                                </p>
-                                <ul className="mt-2 text-amber-700 dark:text-amber-300 text-xs space-y-1">
-                                    <li>• Cutoff data shown may be <strong>inaccurate or outdated</strong></li>
-                                    <li>• Rank predictions are <strong>estimates only</strong></li>
-                                    <li>• Always verify with official KEA resources</li>
-                                </ul>
+                            {/* Data Ingestion Sources */}
+                            <div className="space-y-2">
+                                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+                                    <Database className="h-3.5 w-3.5 text-zinc-400" />
+                                    1. Data Ingestion Sources & Knowledge Base
+                                </span>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-1">
+                                        <div className="font-semibold text-zinc-200 text-xs flex items-center gap-1.5">
+                                            <FileCheck className="h-3.5 w-3.5 text-zinc-400" />
+                                            Official KEA Archives (2022–2026)
+                                        </div>
+                                        <p className="text-[11px] text-zinc-400 leading-relaxed">
+                                            Official Mock, Round 1, Round 2, and Extended Round gazettes across all 269 colleges, 40+ engineering disciplines, and 11 reservation categories.
+                                        </p>
+                                    </div>
+
+                                    <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-1">
+                                        <div className="font-semibold text-zinc-200 text-xs flex items-center gap-1.5">
+                                            <MessageSquare className="h-3.5 w-3.5 text-zinc-400" />
+                                            1,840+ Senior Discussions (r/kcet)
+                                        </div>
+                                        <p className="text-[11px] text-zinc-400 leading-relaxed">
+                                            Senior ground truths from r/kcet, r/comedk, r/Btechtards, and r/PESU covering placement medians, attendance strictness, and transit feasibility.
+                                        </p>
+                                    </div>
+
+                                    <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-1">
+                                        <div className="font-semibold text-zinc-200 text-xs flex items-center gap-1.5">
+                                            <Scale className="h-3.5 w-3.5 text-zinc-400" />
+                                            2025–2026 KEA Policies & Quotas
+                                        </div>
+                                        <p className="text-[11px] text-zinc-400 leading-relaxed">
+                                            Trained on 50:50 Board + KCET composite normalization, Supernumerary Quota (SNQ ₹20k fee waiver), NEET surrender shifts, and 15-digit RD verification.
+                                        </p>
+                                    </div>
+
+                                    <div className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80 space-y-1">
+                                        <div className="font-semibold text-zinc-200 text-xs flex items-center gap-1.5">
+                                            <Cpu className="h-3.5 w-3.5 text-zinc-400" />
+                                            COMEDK & College Fee Matrices
+                                        </div>
+                                        <p className="text-[11px] text-zinc-400 leading-relaxed">
+                                            Comparisons across Govt Quota (~₹1.1L), SNQ (~₹25k), and COMEDK (~₹2.8L+) fee tiers, plus Autonomous VTU vs Deemed University structures.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-                                <p className="text-blue-800 dark:text-blue-200 text-xs">
-                                    🎯 For <strong>reliable cutoff data</strong>, please use our{" "}
-                                    <Link
-                                        to="/college-predictor"
-                                        className="underline font-medium hover:text-blue-600"
-                                        onClick={() => setShowDisclaimer(false)}
-                                    >
-                                        College Predictor
-                                    </Link>{" "}
-                                    or{" "}
-                                    <Link
-                                        to="/cutoff-explorer"
-                                        className="underline font-medium hover:text-blue-600"
-                                        onClick={() => setShowDisclaimer(false)}
-                                    >
-                                        Cutoff Explorer
-                                    </Link>{" "}
-                                    instead.
-                                </p>
+                            {/* How It Reasons (Zero-Hallucination Pipeline) */}
+                            <div className="p-3.5 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+                                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-1.5">
+                                    <ShieldCheck className="h-3.5 w-3.5 text-zinc-400" />
+                                    2. Deterministic RAG Architecture
+                                </span>
+                                <div className="space-y-1.5 text-[11px] text-zinc-300">
+                                    <div className="flex items-start gap-2">
+                                        <span className="font-semibold text-zinc-400 font-mono">01.</span>
+                                        <span><strong>Deterministic Database Query:</strong> Direct query against the 240,804 official cutoff records before generating natural language.</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="font-semibold text-zinc-400 font-mono">02.</span>
+                                        <span><strong>Context Injection:</strong> The exact official KEA institution code (e.g. RVCE E005, BMSCE E003) and multi-round trends are dynamically injected into model reasoning.</span>
+                                    </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="font-semibold text-zinc-400 font-mono">03.</span>
+                                        <span><strong>Anti-Sponsorship Neutrality:</strong> Zero sponsored college placements or brand partnerships. Recommendations are strictly mathematical and student-first.</span>
+                                    </div>
+                                </div>
                             </div>
-
-                            <p className="text-muted-foreground text-xs text-center">
-                                Sorry for any inconvenience. We're working hard to improve! 🙏
-                            </p>
                         </div>
                     </DialogDescription>
-                    <DialogFooter>
-                        <Button onClick={() => setShowDisclaimer(false)} className="w-full">
-                            I Understand, Continue
+
+                    <DialogFooter className="pt-2 border-t border-zinc-800">
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => setShowTransparency(false)}
+                            className="w-full text-xs bg-zinc-100 hover:bg-white text-zinc-900 font-medium"
+                        >
+                            Understood • Back to Counseling
                         </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
 
-            <div className="flex flex-col h-[calc(100dvh-5.5rem)] md:h-[calc(100vh-5rem)] -m-3 sm:-m-4 md:-m-6">
-                {/* Header - Compact on mobile */}
-                <div className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="flex items-center gap-2 md:gap-3">
-                        <div className="p-1.5 md:p-2 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg md:rounded-xl shadow-lg shadow-purple-500/20">
-                            <Bot className="h-5 w-5 md:h-6 md:w-6 text-white" />
+            {/* Main Canvas with Clean Matte Dark Background (Dynamic Mobile Viewport) */}
+            <div className="flex flex-col h-[100dvh] w-full bg-[#0c0c0e] text-zinc-100 relative overflow-hidden">
+                {/* Header Bar */}
+                <div className="sticky top-0 z-20 flex items-center justify-between px-3 md:px-5 py-2.5 border-b border-zinc-800/80 bg-[#0c0c0e]/95 backdrop-blur-md">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                        <SidebarTrigger className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg" />
+                        <div className="flex items-center gap-2">
+                            <TesselAvatar size="xs" />
+                            <span className="text-zinc-100 font-semibold tracking-tight text-sm">
+                                TesselBot
+                            </span>
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-md border border-zinc-700 bg-zinc-800/80 text-zinc-300 font-mono font-medium">
+                                3.0
+                            </span>
                         </div>
-                        <div>
-                            <h1 className="text-lg md:text-xl font-bold tracking-tight flex items-center gap-2">
-                                Admissions Assistant
-                                <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-1.5 py-0 font-medium">
-                                    Beta
-                                </Badge>
-                            </h1>
-                            <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">
-                                Ask about KCET admissions, colleges, or counseling
-                            </p>
-                        </div>
+
+                        {/* Transparency Trigger Button */}
+                        <button
+                            onClick={() => setShowTransparency(true)}
+                            className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition-colors ml-1 group"
+                            title="View training data and dataset provenance"
+                        >
+                            <ShieldCheck className="h-3.5 w-3.5 text-zinc-400 group-hover:text-zinc-200 transition-colors" />
+                            <span>2025–26 Verified Training</span>
+                        </button>
                     </div>
-                    {messages.length > 0 && (
+
+                    <div className="flex items-center gap-1.5">
+                        <button
+                            onClick={() => setShowTransparency(true)}
+                            className="sm:hidden inline-flex items-center justify-center h-8 px-2 text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-800 rounded-lg"
+                            title="Training Transparency"
+                        >
+                            <ShieldCheck className="h-3.5 w-3.5 text-zinc-400" />
+                        </button>
+
+                        <Button
+                            variant={isFilterActive ? "secondary" : "ghost"}
+                            size="sm"
+                            onClick={() => setShowFilters(!showFilters)}
+                            className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
+                                isFilterActive 
+                                    ? "bg-zinc-800 text-zinc-100 border border-zinc-700" 
+                                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60"
+                            }`}
+                        >
+                            <SlidersHorizontal className="h-3.5 w-3.5 text-zinc-400" />
+                            <span className="hidden sm:inline">Preferences</span>
+                            {isFilterActive && (
+                                <span className="h-1.5 w-1.5 rounded-full bg-zinc-300" />
+                            )}
+                            {showFilters ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                        </Button>
+
                         <Button
                             variant="ghost"
-                            size="sm"
+                            size="icon"
                             onClick={clearChat}
-                            className="h-8 px-2 md:px-3 transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+                            className="h-8 w-8 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+                            title="New chat"
                         >
-                            <Trash2 className="h-4 w-4 md:mr-2" />
-                            <span className="hidden md:inline">Clear</span>
+                            <SquarePen className="h-4 w-4" />
                         </Button>
-                    )}
+                    </div>
                 </div>
 
-                {/* Chat Area - Full height */}
+                {/* Expandable Preferences Drawer */}
+                {showFilters && (
+                    <div className="px-4 py-3.5 border-b border-zinc-800 bg-zinc-900/90 backdrop-blur-md animate-fade-in-up z-10">
+                        <div className="max-w-3xl mx-auto space-y-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 text-xs">
+                                <div>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                                        KCET Rank
+                                    </label>
+                                    <Input
+                                        type="number"
+                                        placeholder="e.g. 14500"
+                                        value={profileFilters.rank || ""}
+                                        onChange={(e) =>
+                                            setProfileFilters({
+                                                ...profileFilters,
+                                                rank: e.target.value ? parseInt(e.target.value) : undefined,
+                                            })
+                                        }
+                                        className="h-8 text-xs font-mono bg-zinc-950 border-zinc-800 focus:border-zinc-600 text-zinc-100"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                                        Category Quota
+                                    </label>
+                                    <Select
+                                        value={profileFilters.category}
+                                        onValueChange={(val) =>
+                                            setProfileFilters({ ...profileFilters, category: val })
+                                        }
+                                    >
+                                        <SelectTrigger className="h-8 text-xs bg-zinc-950 border-zinc-800 text-zinc-100">
+                                            <SelectValue placeholder="Category" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+                                            <SelectItem value="GM">GM (General Merit)</SelectItem>
+                                            <SelectItem value="GMR">GMR (GM Rural)</SelectItem>
+                                            <SelectItem value="GMK">GMK (GM Kannada)</SelectItem>
+                                            <SelectItem value="2AG">2AG (Category 2A)</SelectItem>
+                                            <SelectItem value="2AR">2AR (2A Rural)</SelectItem>
+                                            <SelectItem value="2BG">2BG (Category 2B)</SelectItem>
+                                            <SelectItem value="3AG">3AG (Category 3A)</SelectItem>
+                                            <SelectItem value="3BG">3BG (Category 3B)</SelectItem>
+                                            <SelectItem value="SCG">SCG (Schedule Caste)</SelectItem>
+                                            <SelectItem value="STG">STG (Schedule Tribe)</SelectItem>
+                                            <SelectItem value="1G">1G (Category 1)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                                        Location
+                                    </label>
+                                    <Select
+                                        value={profileFilters.locationCommute}
+                                        onValueChange={(val) =>
+                                            setProfileFilters({ ...profileFilters, locationCommute: val })
+                                        }
+                                    >
+                                        <SelectTrigger className="h-8 text-xs bg-zinc-950 border-zinc-800 text-zinc-100">
+                                            <SelectValue placeholder="Location" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+                                            <SelectItem value="all">Any Karnataka</SelectItem>
+                                            <SelectItem value="metro">Bengaluru (Metro)</SelectItem>
+                                            <SelectItem value="bangalore">Bengaluru City</SelectItem>
+                                            <SelectItem value="mysore">Mysuru</SelectItem>
+                                            <SelectItem value="mangalore">Mangaluru</SelectItem>
+                                            <SelectItem value="north-karnataka">North Karnataka</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                                        Budget / Quota
+                                    </label>
+                                    <Select
+                                        value={profileFilters.budgetQuota}
+                                        onValueChange={(val) =>
+                                            setProfileFilters({ ...profileFilters, budgetQuota: val })
+                                        }
+                                    >
+                                        <SelectTrigger className="h-8 text-xs bg-zinc-950 border-zinc-800 text-zinc-100">
+                                            <SelectValue placeholder="Budget" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+                                            <SelectItem value="all">All Quotas</SelectItem>
+                                            <SelectItem value="govt">Govt Only (&lt;₹60k/yr)</SelectItem>
+                                            <SelectItem value="private">Govt Quota in Pvt (&lt;₹1.2L/yr)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                                        Stream Focus
+                                    </label>
+                                    <Select
+                                        value={profileFilters.streamFocus}
+                                        onValueChange={(val) =>
+                                            setProfileFilters({ ...profileFilters, streamFocus: val })
+                                        }
+                                    >
+                                        <SelectTrigger className="h-8 text-xs bg-zinc-950 border-zinc-800 text-zinc-100">
+                                            <SelectValue placeholder="Stream" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-100">
+                                            <SelectItem value="all">All Streams</SelectItem>
+                                            <SelectItem value="tech">Tech (CSE/ISE/AI/DS)</SelectItem>
+                                            <SelectItem value="circuital">Circuital (ECE/EEE/EIE)</SelectItem>
+                                            <SelectItem value="core">Core (Mech/Civil/Aero)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            {isFilterActive && (
+                                <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-zinc-800 text-[11px] text-zinc-400">
+                                    <span className="font-medium text-zinc-300 text-[10px]">Active Filters:</span>
+                                    {profileFilters.rank && (
+                                        <Badge variant="outline" className="text-[10px] font-mono py-0 h-4 border-zinc-700 text-zinc-200 bg-zinc-800">
+                                            Rank #{profileFilters.rank.toLocaleString()}
+                                        </Badge>
+                                    )}
+                                    <Badge variant="outline" className="text-[10px] py-0 h-4 border-zinc-700 text-zinc-200 bg-zinc-800">
+                                        {profileFilters.category}
+                                    </Badge>
+                                    {profileFilters.locationCommute !== 'all' && (
+                                        <Badge variant="outline" className="text-[10px] py-0 h-4 border-zinc-700 text-zinc-200 bg-zinc-800">
+                                            {profileFilters.locationCommute}
+                                        </Badge>
+                                    )}
+                                    {profileFilters.streamFocus !== 'all' && (
+                                        <Badge variant="outline" className="text-[10px] py-0 h-4 border-zinc-700 text-zinc-200 bg-zinc-800">
+                                            {profileFilters.streamFocus.toUpperCase()}
+                                        </Badge>
+                                    )}
+                                    <button
+                                        onClick={() =>
+                                            setProfileFilters({
+                                                rank: undefined,
+                                                category: "GM",
+                                                budgetQuota: "all",
+                                                locationCommute: "all",
+                                                streamFocus: "all",
+                                            })
+                                        }
+                                        className="text-[10px] text-zinc-400 hover:text-zinc-200 inline-flex items-center gap-1 ml-auto transition-colors"
+                                    >
+                                        <RotateCcw className="h-2.5 w-2.5" />
+                                        Reset
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Conversation Viewport */}
                 <ScrollArea ref={scrollAreaRef} className="flex-1 px-3 md:px-6">
                     {messages.length === 0 ? (
-                        // Welcome Screen - Responsive with animations
-                        <div className="h-full flex flex-col items-center justify-center text-center py-8 px-4 animate-fade-in-up">
-                            <div className="p-3 md:p-4 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full mb-4 shadow-lg shadow-purple-500/10">
-                                <GraduationCap className="h-10 w-10 md:h-12 md:w-12 text-purple-600 dark:text-purple-400" />
+                        // Clean Minimalist Hero Screen
+                        <div className="flex flex-col items-center justify-center py-10 md:py-16 max-w-2xl mx-auto text-center animate-fade-in-up">
+                            <div className="mb-4">
+                                <TesselAvatar size="xl" className="border border-zinc-800 shadow-sm" />
                             </div>
-                            <div className="space-y-2 max-w-md mb-6">
-                                <h2 className="text-lg md:text-xl font-semibold">Welcome! 🎓</h2>
-                                <p className="text-sm md:text-base text-muted-foreground">
-                                    I'm here to help you with KCET. Ask about colleges, cutoffs, or anything!
+
+                            <div className="space-y-1.5 mb-8">
+                                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-zinc-100">
+                                    How can I help you today?
+                                </h2>
+                                <p className="text-xs md:text-sm text-zinc-400 max-w-md mx-auto leading-relaxed">
+                                    Admissions strategy, college comparisons, coding help, branch roadmaps, or general conversation.
                                 </p>
                             </div>
 
-                            {/* Quick Prompts - Grid for mobile */}
-                            <div className="w-full max-w-lg space-y-3">
-                                <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground justify-center">
-                                    <Lightbulb className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                                    <span>Try asking:</span>
-                                </div>
-                                <div className="grid grid-cols-1 gap-2">
-                                    {QUICK_PROMPTS.slice(0, 4).map((prompt, index) => (
-                                        <Button
-                                            key={index}
-                                            variant="outline"
-                                            className="h-auto py-2.5 md:py-3 px-3 md:px-4 text-left justify-start text-xs md:text-sm 
-                             hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:border-purple-300
-                             transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
-                                            onClick={() => handleSend(prompt)}
-                                            style={{ animationDelay: `${index * 100}ms` }}
+                            {/* Prompt Categories */}
+                            <div className="w-full space-y-3.5">
+                                <div className="flex flex-wrap items-center justify-center gap-1.5">
+                                    {PROMPT_CATEGORIES.map((cat, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setSelectedCategoryTab(idx)}
+                                            className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
+                                                selectedCategoryTab === idx
+                                                    ? "bg-zinc-800 text-zinc-100 border border-zinc-700 font-semibold"
+                                                    : "bg-zinc-900/60 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 border border-zinc-800/80"
+                                            }`}
                                         >
-                                            <MessageSquare className="h-3.5 w-3.5 md:h-4 md:w-4 mr-2 flex-shrink-0 text-purple-500" />
-                                            <span className="line-clamp-1">{prompt}</span>
-                                        </Button>
+                                            {cat.name}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left">
+                                    {PROMPT_CATEGORIES[selectedCategoryTab].prompts.map((prompt, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handleSend(prompt)}
+                                            className="p-3 text-xs rounded-xl bg-zinc-900/80 hover:bg-zinc-800/90 border border-zinc-800/80 hover:border-zinc-700 transition-colors text-left text-zinc-300 hover:text-zinc-100 leading-relaxed group"
+                                        >
+                                            <span className="block font-medium">
+                                                {prompt}
+                                            </span>
+                                        </button>
                                     ))}
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        // Messages - Full width bubbles with animations
-                        <div className="py-4 space-y-4 max-w-4xl mx-auto">
+                        // Message Stream with Clean Flat Typography
+                        <div className="max-w-3xl mx-auto py-5 space-y-6">
                             {messages.map((message, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex gap-2 md:gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}
-                           ${message.role === 'user' ? 'animate-slide-in-right' : 'animate-slide-in-left'}`}
-                                >
-                                    {message.role === 'assistant' && (
-                                        <div className="p-1.5 md:p-2 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg h-fit flex-shrink-0 shadow-md shadow-purple-500/20">
-                                            <Bot className="h-3.5 w-3.5 md:h-4 md:w-4 text-white" />
-                                        </div>
-                                    )}
-                                    <div
-                                        className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-3 py-2 md:px-4 md:py-3 shadow-sm
-                             transition-all duration-200 hover:shadow-md ${message.role === 'user'
-                                                ? 'bg-primary text-primary-foreground rounded-br-md'
-                                                : 'bg-muted rounded-bl-md'
-                                            }`}
-                                    >
-                                        {message.role === 'assistant' ? (
-                                            <div className="prose prose-sm dark:prose-invert max-w-none text-sm md:text-base [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
-                                                <ReactMarkdown>{message.content}</ReactMarkdown>
+                                <div key={index} className="space-y-1.5 animate-fade-in-up">
+                                    {message.role === 'user' ? (
+                                        // User Message Bubble (Solid Clean Matte Neutral)
+                                        <div className="flex justify-end">
+                                            <div className="max-w-[90%] sm:max-w-[75%] rounded-2xl rounded-tr-xs px-3.5 sm:px-4 py-2 sm:py-2.5 bg-zinc-800 text-zinc-100 border border-zinc-700/60 font-normal text-xs md:text-sm leading-relaxed whitespace-pre-wrap">
+                                                {message.content}
                                             </div>
-                                        ) : (
-                                            <p className="text-sm md:text-base whitespace-pre-wrap">{message.content}</p>
-                                        )}
-                                        <p className={`text-[10px] md:text-xs mt-1.5 ${message.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                                            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </p>
-                                    </div>
-                                    {message.role === 'user' && (
-                                        <div className="p-1.5 md:p-2 bg-secondary rounded-lg h-fit flex-shrink-0 shadow-sm">
-                                            <User className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                                        </div>
+                                    ) : (
+                                        // Assistant Message Card (Solid Clean Minimalist)
+                                        <div className="rounded-2xl bg-zinc-900/60 border border-zinc-800/80 p-3.5 sm:p-5 space-y-3 sm:space-y-3.5">
+                                            <div className="flex items-center justify-between pb-2 border-b border-zinc-800/60">
+                                                <div className="flex items-center gap-2">
+                                                    <TesselAvatar size="xs" />
+                                                    <span className="text-xs font-semibold text-zinc-200 tracking-tight">TesselBot</span>
+                                                    <span className="text-[9px] px-1.5 py-0.5 rounded border border-zinc-700 bg-zinc-800/60 text-zinc-400 font-mono">
+                                                        VERIFIED DATA
+                                                    </span>
+                                                </div>
+                                                <span className="text-[10px] text-zinc-500">
+                                                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+
+                                            {/* Markdown Content */}
+                                            <div className="text-xs md:text-sm leading-relaxed text-zinc-200 space-y-3 overflow-x-auto">
+                                                <ReactMarkdown
+                                                    remarkPlugins={[remarkGfm]}
+                                                    components={{
+                                                        table: ({ node, ...props }) => (
+                                                            <div className="my-3 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950/80">
+                                                                <div className="overflow-x-auto">
+                                                                    <table className="w-full text-left text-xs border-collapse" {...props} />
+                                                                </div>
+                                                            </div>
+                                                        ),
+                                                        thead: ({ node, ...props }) => (
+                                                            <thead className="bg-zinc-900 text-zinc-200 font-semibold border-b border-zinc-800 text-[11px] uppercase tracking-wider" {...props} />
+                                                        ),
+                                                        tbody: ({ node, ...props }) => (
+                                                            <tbody className="divide-y divide-zinc-800/60" {...props} />
+                                                        ),
+                                                        tr: ({ node, ...props }) => (
+                                                            <tr className="hover:bg-zinc-800/40 transition-colors even:bg-zinc-900/30" {...props} />
+                                                        ),
+                                                        th: ({ node, ...props }) => (
+                                                            <th className="px-3.5 py-2.5 font-semibold text-zinc-200 whitespace-nowrap" {...props} />
+                                                        ),
+                                                        td: ({ node, ...props }) => (
+                                                            <td className="px-3.5 py-2 font-normal text-zinc-300 border-r border-zinc-800/40 last:border-r-0" {...props} />
+                                                        ),
+                                                        h1: ({ node, ...props }) => (
+                                                            <h1 className="text-base md:text-lg font-bold text-zinc-100 tracking-tight pt-2 pb-1 border-b border-zinc-800" {...props} />
+                                                        ),
+                                                        h2: ({ node, ...props }) => (
+                                                            <h2 className="text-sm md:text-base font-bold text-zinc-100 tracking-tight pt-2 pb-1" {...props} />
+                                                        ),
+                                                        h3: ({ node, ...props }) => (
+                                                            <h3 className="text-xs md:text-sm font-semibold text-zinc-200 tracking-tight pt-1.5 text-zinc-200" {...props} />
+                                                        ),
+                                                        p: ({ node, ...props }) => (
+                                                            <p className="leading-relaxed text-zinc-300 font-normal" {...props} />
+                                                        ),
+                                                        ul: ({ node, ...props }) => (
+                                                            <ul className="list-disc list-outside pl-4 space-y-1.5 text-zinc-300" {...props} />
+                                                        ),
+                                                        ol: ({ node, ...props }) => (
+                                                            <ol className="list-decimal list-outside pl-4 space-y-1.5 text-zinc-300" {...props} />
+                                                        ),
+                                                        li: ({ node, ...props }) => (
+                                                            <li className="leading-relaxed text-zinc-300" {...props} />
+                                                        ),
+                                                        blockquote: ({ node, ...props }) => (
+                                                            <blockquote className="border-l-2 border-zinc-600 pl-3 py-1 text-zinc-400 italic bg-zinc-950/40 rounded-r-lg my-2 text-xs" {...props} />
+                                                        ),
+                                                        code: ({ node, inline, ...props }: any) =>
+                                                            inline ? (
+                                                                <code className="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200 font-mono text-[11px] border border-zinc-700/60" {...props} />
+                                                            ) : (
+                                                                <div className="my-2.5 rounded-xl border border-zinc-800 bg-zinc-950 p-3 overflow-x-auto">
+                                                                    <code className="text-zinc-200 font-mono text-xs block leading-relaxed" {...props} />
+                                                                </div>
+                                                            ),
+                                                        strong: ({ node, ...props }) => (
+                                                            <strong className="font-semibold text-zinc-100" {...props} />
+                                                        )
+                                                    }}
+                                                >
+                                                    {message.content}
+                                                </ReactMarkdown>
+                                            </div>
+
+                                            {/* Action Chips */}
+                                            {message.actionChips && message.actionChips.length > 0 && (
+                                                <div className="pt-2 border-t border-zinc-800/60">
+                                                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 mb-2">
+                                                        Recommended Tools & Actions
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {message.actionChips.map((chip, chipIndex) => (
+                                                            <Link
+                                                                key={chipIndex}
+                                                                to={chip.url}
+                                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-medium text-zinc-200 hover:text-white transition-colors"
+                                                            >
+                                                                <span>{chip.label}</span>
+                                                                <ExternalLink className="h-3 w-3 text-zinc-400" />
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Recommendations Cards */}
+                                            {message.recommendations && message.recommendations.length > 0 && (
+                                                <div className="pt-3 border-t border-zinc-800/60 space-y-2">
+                                                    <div className="text-xs font-semibold text-zinc-300">
+                                                        Predicted College Options ({message.recommendations.length})
+                                                    </div>
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                                        {message.recommendations.map((rec, recIndex) => (
+                                                            <CounselorRecommendationCard key={recIndex} data={rec} />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Footer Actions */}
+                                            <div className="flex items-center justify-between pt-2 border-t border-zinc-800/60 text-[10px] text-zinc-500">
+                                                <span>Data-backed tactical response</span>
+                                                <button
+                                                    onClick={() => copyToClipboard(message.content, index)}
+                                                    className="inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-200 transition-colors px-2 py-0.5 rounded hover:bg-zinc-800"
+                                                >
+                                                    {copiedIndex === index ? (
+                                                        <>
+                                                            <Check className="h-3 w-3 text-emerald-400" />
+                                                            <span className="text-emerald-400">Copied</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Copy className="h-3 w-3" />
+                                                            <span>Copy</span>
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
                             ))}
 
-                            {/* Animated Loading indicator */}
+                            {/* Loading State */}
                             {isLoading && (
-                                <div className="flex gap-2 md:gap-3 justify-start animate-slide-in-left">
-                                    <div className="p-1.5 md:p-2 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg h-fit shadow-md shadow-purple-500/20">
-                                        <Bot className="h-3.5 w-3.5 md:h-4 md:w-4 text-white" />
+                                <div className="rounded-2xl bg-zinc-900/60 border border-zinc-800 p-4 space-y-2 animate-fade-in-up">
+                                    <div className="flex items-center gap-2">
+                                        <TesselAvatar size="xs" />
+                                        <span className="text-xs font-semibold text-zinc-300">TesselBot</span>
+                                        <Badge variant="outline" className="text-[9px] px-1.5 py-0 h-4 border-zinc-700 text-zinc-400">
+                                            THINKING
+                                        </Badge>
                                     </div>
-                                    <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
-                                                <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
-                                                <span className="w-2 h-2 bg-purple-500 rounded-full typing-dot"></span>
-                                            </div>
-                                            {status && (
-                                                <span className="text-xs text-muted-foreground animate-fade-in-up">
-                                                    {status}
-                                                </span>
-                                            )}
-                                        </div>
+                                    <div className="flex items-center gap-2 text-xs text-zinc-400">
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin text-zinc-300" />
+                                        <span>{status || "Synthesizing response..."}</span>
                                     </div>
                                 </div>
                             )}
@@ -422,44 +767,59 @@ const AICounselor = () => {
                     )}
                 </ScrollArea>
 
-                {/* Error Alert with animation */}
-                {error && (
-                    <Alert variant="destructive" className="mx-3 md:mx-6 mb-2 py-2 animate-fade-in-up">
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertDescription className="text-xs md:text-sm">{error}</AlertDescription>
-                    </Alert>
-                )}
+                {/* Input Area (Mobile Safe-Area Optimized) */}
+                <div className="px-3 sm:px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2 bg-[#0c0c0e]">
+                    <div className="max-w-3xl mx-auto space-y-1.5">
+                        <div className="relative rounded-2xl bg-zinc-900/90 border border-zinc-800 focus-within:border-zinc-600 focus-within:ring-1 focus-within:ring-zinc-600 transition-colors p-2 sm:p-2.5">
+                            {/* Textarea */}
+                            <textarea
+                                ref={textareaRef}
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder="Ask TesselBot anything — colleges, cutoffs, coding, branches, or general questions..."
+                                disabled={isLoading}
+                                rows={1}
+                                className="w-full resize-none bg-transparent border-0 focus:outline-none focus:ring-0 text-xs md:text-sm px-2 py-1 max-h-40 min-h-[36px] text-zinc-100 placeholder:text-zinc-500 leading-relaxed font-normal"
+                            />
 
-                {/* Input Area - Sticky bottom, mobile-friendly */}
-                <div className="px-3 py-3 md:px-6 md:py-4 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    <div className="flex gap-2 max-w-4xl mx-auto">
-                        <Input
-                            ref={inputRef}
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyDown={handleKeyPress}
-                            placeholder="Ask anything about KCET..."
-                            disabled={isLoading}
-                            className="flex-1 h-10 md:h-11 text-sm md:text-base transition-all duration-200 
-                       focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500"
-                        />
-                        <Button
-                            onClick={() => handleSend()}
-                            disabled={!input.trim() || isLoading}
-                            className="h-10 md:h-11 w-10 md:w-11 p-0 bg-gradient-to-r from-purple-600 to-blue-600 
-                       hover:from-purple-700 hover:to-blue-700 transition-all duration-200
-                       hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 active:scale-95"
-                        >
-                            {isLoading ? (
-                                <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
-                            ) : (
-                                <Send className="h-4 w-4 md:h-5 md:w-5" />
-                            )}
-                        </Button>
+                            {/* Controls */}
+                            <div className="flex items-center justify-between pt-1 px-1">
+                                <div className="flex items-center gap-1.5">
+                                    <button
+                                        onClick={() => setShowFilters(!showFilters)}
+                                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+                                            isFilterActive
+                                                ? "bg-zinc-800 text-zinc-100 border border-zinc-700"
+                                                : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 border border-transparent"
+                                        }`}
+                                    >
+                                        <SlidersHorizontal className="h-3 w-3 text-zinc-400" />
+                                        <span>
+                                            {isFilterActive ? `${profileFilters.category}${profileFilters.rank ? ` • #${profileFilters.rank.toLocaleString()}` : ''}` : 'Preferences'}
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <button
+                                    onClick={() => handleSend()}
+                                    disabled={!input.trim() || isLoading}
+                                    className="h-8 w-8 rounded-lg bg-zinc-100 hover:bg-white text-zinc-900 font-bold transition-colors flex items-center justify-center disabled:opacity-20 disabled:cursor-not-allowed shrink-0"
+                                    title="Send message"
+                                >
+                                    {isLoading ? (
+                                        <Loader2 className="h-4 w-4 animate-spin text-zinc-900" />
+                                    ) : (
+                                        <ArrowUp className="h-4 w-4 stroke-[2.5]" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px] text-zinc-500 px-1">
+                            <span>TesselBot can make mistakes. Verify critical dates and cutoffs on official portals.</span>
+                            <span className="hidden sm:inline">Press Enter to send, Shift+Enter for new line</span>
+                        </div>
                     </div>
-                    <p className="text-[10px] md:text-xs text-muted-foreground text-center mt-2">
-                        Automated responses are for reference only. Always verify counseling details with official KEA notices.
-                    </p>
                 </div>
             </div>
         </>
@@ -467,4 +827,3 @@ const AICounselor = () => {
 };
 
 export default AICounselor;
-

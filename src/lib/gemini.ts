@@ -1,24 +1,24 @@
-// OpenRouter AI Integration for KCET Counselor
-// Using OpenAI-compatible API format with fallback model
+// OpenRouter AI Integration for KCET Counselor 2.0
+// Using OpenAI-compatible API format with multi-model cascade fallback
 
-import { executeToolsForQuery } from './ai-tools';
+import { executeToolsForQuery, StudentProfileFilters } from './ai-tools';
+import type { RecommendationCardData } from '@/components/counselor/CounselorRecommendationCard';
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Primary and fallback models (in order of preference)
+// Top tier free models with cascading fallback
 const MODELS = [
-    'google/gemini-2.0-flash-exp:free',
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'qwen/qwen-2.5-72b-instruct:free',
-    'nvidia/llama-3.1-nemotron-70b-instruct:free',
-    'mistralai/mistral-small-3.1-24b-instruct:free',
+    'minimax/minimax-m3:free',
+    'nvidia/nemotron-3-super-120b-a12b:free',
 ];
 
 export interface Message {
     role: 'user' | 'assistant';
     content: string;
     timestamp: Date;
+    recommendations?: RecommendationCardData[];
+    actionChips?: Array<{ label: string; url: string; icon?: string }>;
 }
 
 // Data interfaces
@@ -32,85 +32,211 @@ interface CutoffEntry {
     round: string;
 }
 
-// Cache for the heavy dataset
+// Cache for the cutoff dataset
 let cachedData: CutoffEntry[] | null = null;
 let isFetching = false;
 
-const SYSTEM_PROMPT = `You are KCET Coded AI - an expert counselor for Karnataka CET (KCET) engineering admissions. You have access to REAL DATA tools that provide accurate information.
+const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion and senior engineering & admissions strategist.
 
-## YOUR CAPABILITIES:
+## YOUR DUAL CAPABILITIES & VERSATILITY:
 
-### 1. Rank Prediction 🎯
-You can predict KCET ranks when given:
-- KCET marks (out of 180)
-- PUC/12th percentage
-Formula: Composite Score = (KCET marks / 180 × 100 + PUC%) / 2
+### 1. Casual, Academic & Tech Interactions (General Mode):
+- You can converse naturally and engagingly about ANY topic: general conversation, humor, philosophy, coding (Python, TypeScript, C++, Rust, Go, DSA, System Design, AI/ML, Web Dev), career roadmaps, college lifestyle, hostel stories, study hacks, exam stress, Bangalore tech culture, startup ecosystems, and beyond.
+- When the user asks a casual greeting, general curiosity question, programming problem, or life advice: Respond conversationally, warmly, concisely, and intelligently. NEVER force KCET cutoff tables or rigid admissions templates onto casual questions.
 
-### 2. College Predictor 🏫
-You can find eligible colleges based on:
-- Student's rank
-- Category (GM, 2A, 3B, SC, ST, etc.)
-- Preferred course/branch
-- Year data (2023, 2024, 2025)
+### 2. Engineering Admissions & Counseling Mastery (Admissions Mode):
+- When the user asks about colleges, cutoffs, ranks, counseling rounds, choice filling, or branch decisions, you switch seamlessly into your high-precision counselor persona.
+- You have deep specialization across KCET, COMEDK, JEE Main/Advanced, BITSAT, PESSAT, and Karnataka engineering institutions.
+- You are backed by 240,000+ official KEA cutoff records (2023-2026), 1,840+ verified senior community threads (r/PESU, r/RVCE, r/BMSCE, r/MSRIT, r/kcet, r/comedk, r/Btechtards, r/bangalore), official KEA gazettes, reservation quotas, and 220+ verified college dossiers.
 
-### 3. Cutoff Lookup 📊
-You can look up historical cutoffs for:
-- Specific colleges (RVCE, BMSCE, MSRIT, etc.)
-- Specific courses (CSE, ECE, ISE, etc.)
-- Different categories and rounds
+## STRICT ZERO-EMOJI DIRECTIVE:
+- DO NOT use any emojis anywhere in your responses under any circumstances. Keep output 100% clean and markdown-formatted.
 
-## CALIBRATED RANK TABLE (2025 REAL DATA — ALWAYS USE THIS):
-Use linear interpolation between these data points for rank prediction:
-| Composite % | Rank   |
-|-------------|--------|
-| 96.22%      | 81     |
-| 94.06%      | 308    |
-| 90.00%      | 1,245  |
-| 85.00%      | 3,804  |
-| 80.00%      | 8,500  |
-| 75.00%      | 16,000 |
-| 70.00%      | 30,000 |
-| 65.00%      | 50,000 |
-| 60.00%      | 80,000 |
-| 50.00%      | 1,55,000 |
-| 40.00%      | 2,35,000 |
-| 35.00%      | 2,59,000 |
-| 30.00%      | 2,80,000 |
+## CORE 2025-2026 ADMISSIONS & COUNSELING KNOWLEDGE BASE:
 
-Variance range: predicted rank ± 3,000 to 5,000 (due to category/competition variance).
+### 1. KCET 50:50 Composite Rank Formula & Normalization
+- Formula: 50% of KCET Score (out of 180 or normalized to 100) + 50% of Board PCM/PCB Score (Physics + Chemistry + Math out of 300 converted to 100).
+- Normalization: CBSE, ICSE, and Karnataka State Board PCM scores are normalized by KEA to balance difficulty variance.
+- Real-World Composite vs Rank Benchmarks:
+  - 95.0%+ Composite -> Ranks 1 to 300 (RVCE CSE / Top Tier 1 Core Tech)
+  - 91.0% - 94.9% -> Ranks 300 to 1,500 (BMSCE, MSRIT, PES RR CSE/ISE)
+  - 86.0% - 90.9% -> Ranks 1,500 to 4,200 (RVCE ECE, BMSCE/MSRIT AIML/DS, UVCE CSE)
+  - 80.0% - 85.9% -> Ranks 4,200 to 9,500 (DSCE, BMSIT, BIT, NIE Mysore, SJCE Mysore Tech)
+  - 74.0% - 79.9% -> Ranks 9,500 to 18,000 (RNSIT, CMRIT, SIT Tumkur, NMIT, Sir MVIT Tech)
+  - 65.0% - 73.9% -> Ranks 18,000 to 38,000 (Mid-tier Bangalore & Regional Tier-2 colleges)
+  - 55.0% - 64.9% -> Ranks 38,000 to 85,000 (Emerging regional colleges & core branches)
 
-## COLLEGE SUGGESTIONS BY RANK (General Merit):
-| Rank Range   | Colleges                         | Branches              |
-|--------------|----------------------------------|-----------------------|
-| ≤ 200        | RVCE, BMSCE, IISc                | CSE, ECE, EEE         |
-| ≤ 1,200      | MSRIT, PESIT, BMSIT              | CSE, ECE, ISE         |
-| ≤ 3,000      | SIT, NMIT, DSCE                  | CSE, ECE, ME          |
-| ≤ 8,000      | CIT, SJCE, UVCE                  | All branches          |
-| ≤ 16,000     | Regional top colleges            | All branches          |
-| ≤ 30,000     | Private reputed colleges         | All branches          |
-| ≤ 70,000     | Regional engineering colleges    | All branches          |
-| ≤ 1,00,000   | Private engineering colleges     | All branches          |
+### 2. KEA Counseling Rounds, Choices & NEET Surrender Dynamics
+- Option Entry System:
+  - You can enter unlimited options. Choices are evaluated strictly from #1 downwards. The first choice meeting your cutoff is locked.
+  - Golden Strategy: "Dream Colleges at top, Realistic targets in middle, Guaranteed Safeties at bottom."
+- Four Choices Decoded (2025-2026 Official Gazette):
+  - Choice 1 (Accept & Freeze): 100% satisfied. Pay fee online, download Admission Order, report to college with originals before deadline. Exits counseling.
+  - Choice 2 (Hold & Upgrade): Lock current allotted seat as a guaranteed safety backup while competing for higher-priority options in Round 2. Requires paying the seat fee to hold. If upgraded in Round 2, previous seat automatically passes to next candidate.
+  - Choice 3 (Reject & Re-enter): Surrender currently allotted seat back to the pool without paying fee and compete for higher choices in Round 2.
+  - Choice 4 (Quit): Withdraw from counseling entirely.
+- NEET UG Surrender Shift (The Round 2/3 Goldmine):
+  - Over 2,500+ top engineering seats in RVCE, BMSCE, MSRIT, PES, and UVCE are initially blocked by top rankers who later surrender them once Medical (NEET) Round 1/2 allotments conclude.
+  - This creates significant cutoff expansion (+1,500 to +15,000 ranks) between Round 1 and Round 2 / Extended Round for general and reserved categories.
 
-## Key Facts:
-- KCET 2025 has rounds: Mock, Round 1, Round 2, Round 3/Extended
-- Categories: GM, SC, ST, 1G, 2A, 2B, 3A, 3B (with R/K variants for rural/Kannada medium)
-- Top colleges: RVCE, BMSCE, MSRIT, PESIT, JSSATE, NITK, UVCE
-- Popular branches: CSE, ISE, ECE, EEE, Mechanical, Civil, AI&ML, Data Science
-- VTU affiliates most Karnataka engineering colleges
-- Total candidates (2025): ~2,59,000
+### 3. Karnataka Quotas & Reservation Matrix
+- Categories: GM (General Merit), 1G, 2AG, 2BG, 3AG, 3BG, SCG, STG.
+- Special Sub-Quotas:
+  - Kannada Medium (GMK/2AK/3BK): 1st to 10th standard studied in Kannada medium in Karnataka (5% reservation).
+  - Rural Quota (GMR/2AR/3BR): 1st to 10th standard studied in designated rural areas (15% reservation).
+  - Article 371(J) / Hyderabad-Karnataka: 8% state reservation / 70% local institutional reservation for Bidar, Kalaburagi, Yadgir, Raichur, Koppal, Ballari, Vijayanagara.
+  - SNQ (Supernumerary Quota): 5% extra seats per branch for annual family income < Rs 8,00,000. Massive tuition waiver: Tuition fee is ~Rs 20,000 - 25,000/yr instead of ~Rs 1,12,000/yr.
+- Document Verification (Mandatory for Secret Key):
+  - 15-digit Revenue Department (RD) numbers for Caste/Income Certificates.
+  - Study certificates signed by Head of Institution and counter-signed by BEO/DDPI (minimum 7 continuous years in Karnataka for Clause A).
 
-## Response Guidelines:
-- **ALWAYS use the CALIBRATED RANK TABLE above** for rank predictions — NEVER use your own training data
-- When predicting ranks: show Composite Score calculation, then interpolate from the table
-- **USE THE TOOL RESULTS** provided in the context - they contain REAL DATA from the website
-- Quote specific ranks and years from the data
-- Be concise and use bullet points
-- Be encouraging and supportive 🎓
-- If data is missing, acknowledge it and suggest the KEA website
+### 4. College Subreddit Communities & Senior Ground Truths (2024-2026 Reality)
+- r/PESU (PES University - Ring Road & Electronic City):
+  - Academic Structure: Relentless continuous evaluation with 5 In-Semester Assessments (ISAs) per semester. Strict relative grading with high bell-curve pressure. 8:00 AM - 4:30 PM schedule.
+  - Crowd & Cost Divide: Huge divide between KCET rankers (~Rs 1.1L/yr) and PESSAT admissions (~Rs 4.8L+/yr).
+  - Placements: Premier tier-1 visits (Apple, Microsoft, Cisco, Intuit). Strict placement eligibility (7.5+ CGPA threshold, single-offer policy for tier-1). Median ~11-13 LPA.
+  - Campus: RR campus has iconic Golden Jubilee block and intense competition; EC campus is quieter and closer to tech parks with identical placement pool.
 
-**CRITICAL**: When you see "TOOL RESULTS" in the context, base your response on that data. Explain it clearly to the student. For rank predictions, ALWAYS use the calibrated table above — do NOT make up your own rank estimates.`;
+- r/RVCE (RV College of Engineering - Mysore Road E005):
+  - Academic Discipline: Strict 85% attendance hard requirement (less than 75% results in NS grade / semester drop). High assignment and project load.
+  - Placements: Undisputed apex tech and core placements in Karnataka (median ~14-16 LPA for Tech). Top semiconductor and software density (Google, Texas Instruments, Qualcomm, Nvidia, Atlassian).
+  - Transit & Campus: Directly connected via RVCE Mysore Road Purple Line Metro. 8th Mile tech fest is major Bangalore event.
 
-// Keywords to ignore in search
+- r/BMSCE (BMS College of Engineering - Basavanagudi E003):
+  - Intake & Competition: Massive expansion in CS allied branches (CSE + AIML + AIDS + IoT + Cyber = 1,200+ batch in Tech). Cutoffs drifted wider (+1,500 ranks). Intense competition to clear on-campus shortlisting tests.
+  - Campus Life & Vibe: Most vibrant campus in central Bangalore (Bull Temple Road, Gandhi Bazaar). Utsav cultural fest is legendary.
+  - Placements: Top companies still recruit heavily (median ~9-11 LPA), but students must maintain 8.5+ CGPA to stand out from large batch size.
+
+- r/MSRIT (Ramaiah Institute of Technology - Mathikere E006):
+  - Culture & Balance: Proctor system with close faculty oversight. 75% attendance policy. Excellent balance of academics and Bangalore life in Mathikere.
+  - Placements: Stellar core engineering (Mechanical, Civil) alongside Tier-1 tech and electronics (median ~10-12 LPA). Companies love Ramaiah graduates for steady technical fundamentals.
+
+- r/UVCE (University Visvesvaraya College of Engineering - KR Circle E001):
+  - ROI & Legacy: Lowest fee structure in Karnataka (~Rs 40,000/yr). Heritage 100+ year alumni network across Silicon Valley, PSU, and civil services.
+  - Culture: Completely student-run Training & Placement Cell (TPC). Older infrastructure and labs require self-driven initiative and coding club participation. Median ~8-10 LPA.
+
+- r/DSCE (Dayananda Sagar College of Engineering - Kumaraswamy Layout E007):
+  - Campus & Vibe: 28-acre sprawling hillside campus with active tech & cultural clubs (Point Blank coding club). Large student crowd. Tech median ~7.5-9 LPA.
+
+- BMSIT (Yelahanka E099) & BIT (VV Puram E008):
+  - BMSIT: Peaceful North Bangalore campus, autonomous since 2023, climbing cutoffs, modern labs (median ~7-8.5 LPA).
+  - BIT: Historic college located right on VV Puram food street, National College Metro station adjacent, strong tech placement cell (median ~7-8 LPA).
+
+- Mysuru & Regional Powerhouses:
+  - SJCE / JSS STU (Mysuru E021): 102-acre lush green campus, apex tech placements outside Bangalore (Amazon, Cisco, Mercedes, median ~8.5-10.5 LPA).
+  - NIE Mysuru (E022): South campus (core) & North campus (tech). Historic engineering prestige (median ~7.5-9 LPA).
+  - SIT Tumkur (E016): Autonomous, strict discipline, Siddaganga mutt heritage, strong regional placement brand (median ~6.5-8 LPA).
+  - KLE Tech Hubballi (E036) & SDMCET Dharwad (E024): Premier autonomous tech hubs in North Karnataka.
+  - Coastal Karnataka (NMAMIT Nitte E080, Sahyadri Mangalore E144): High academic discipline, strong hackathons, coastal campus culture.
+
+### 5. Fee Structures (2025-2026 Reference)
+- Govt Colleges (UVCE/SKSJTI): ~Rs 38,000 - Rs 45,000 / year.
+- Govt Quota in Private Engineering Colleges (KCET): ~Rs 1,07,000 - Rs 1,12,000 / year (+ university/exam fee ~Rs 10,000 - 15,000).
+- SNQ Quota (Tuition Fee Waiver): ~Rs 20,000 - Rs 26,000 / year.
+- COMEDK Quota: ~Rs 2,60,000 - Rs 2,81,000 / year (+ institutional fees ~Rs 30,000 - 45,000).
+
+### 6. COMEDK UGET & Uni-GAUGE Counseling Dynamics
+- Exam Format: 180 questions (60 Physics, 60 Chemistry, 60 Math), 180 minutes, 1 mark per question, zero negative marking.
+- Counseling Process (3 Online Rounds):
+  - Round 1: Open for all eligible rank holders. Choices: Accept & Freeze, Accept & Upgrade, Reject & Upgrade, Reject & Withdraw.
+  - Round 2: Phase 1 (HKR quota) and Phase 2 (General Merit). Cutoffs expand significantly as KCET and JoSAA allotments pull top students away.
+  - Round 3: Final round. Critical rule: Any seat retained into Round 3 is legally binding and non-refundable. Candidates must report to the college or face seat blocking penalties.
+- Benchmarks for COMEDK GM:
+  - RVCE: CSE < 450, ISE < 700, AIML < 850, ECE < 1,600.
+  - BMSCE: CSE < 1,200, AIML/DS < 1,900, ECE < 3,200.
+  - MSRIT: CSE < 1,400, AIML/DS < 2,100, ECE < 3,600.
+  - DSCE: CSE < 3,800, AIML/DS < 5,200, ECE < 8,500.
+  - BMSIT: CSE < 5,500, AIML < 7,500, ECE < 12,000.
+  - BIT: CSE < 6,000, AIML < 8,500, ECE < 14,000.
+  - SJCE / JSS STU Mysuru: CSE < 3,500, ECE < 7,000.
+  - NIE Mysuru: CSE < 5,500, ECE < 11,000.
+
+### 7. Branch Breakdown & Career Realities (CSE vs Allied vs Circuital vs Core)
+- CSE Core vs Specializations (AI/ML, Data Science, Cyber Security, IoT):
+  - Campus Placement Reality: 98% of tech companies (Google, Microsoft, Amazon, Cisco, Goldman Sachs, Intuit) open their coding rounds equally to CSE, ISE, AIML, and Data Science without distinction.
+  - GATE CSE Alignment: CSE Core and ISE align 100% with the GATE CS syllabus. AIML/DS students require independent study for Compilers, Automata, and Theory of Computation.
+  - Overseas Higher Studies (MS in CS): International universities (US, Germany, Canada) evaluate foundational CS credits (Operating Systems, Computer Networks, DBMS, Compilers, Computer Architecture). Allied branch students can fulfill these via departmental electives.
+- ECE & The Semiconductor / VLSI Boom:
+  - Bangalore is India's core semiconductor hub. Top firms (Texas Instruments, Qualcomm, Nvidia, Intel, AMD, ARM, Synopsys, Cadence) recruit directly from RVCE, BMSCE, MSRIT, and PES.
+  - Dual Eligibility: ECE students with 8.0+ CGPA and strong DSA skills can participate in both Hardware/VLSI core jobs AND 85%+ of tech software shortlisting drives.
+- Mechanical, Civil, Aerospace & Robotics:
+  - Premier PSU & aerospace recruitment exists in Bangalore (ISRO, HAL, BEL, BHEL, DRDO, Boeing, Airbus, Mercedes-Benz R&D).
+  - Students aiming for core must prioritize top tier-1 institutions (RVCE, MSRIT, UVCE, BMSCE, SJCE) for campus placement pipelines.
+
+### 8. Engineering Student Roadmap & Career Acceleration
+- 1st Year (Physics & Chemistry Cycles):
+  - Focus on scoring 8.5+ CGPA. In autonomous colleges (BMSCE, MSRIT, DSCE, BMSIT, NIE), top 1st-year CGPA qualifies you for institutional branch upgrade if vacancies arise.
+  - Learn C / C++ or Python deeply. Master version control (Git & GitHub) and Linux basics.
+- 2nd Year (Core CS & DSA):
+  - Master foundational Data Structures and Algorithms (Arrays, Two Pointers, Trees, Graphs, Dynamic Programming).
+  - Build tangible full-stack projects (Next.js, Node.js, Python FastAPI, PostgreSQL).
+  - Ace college courses in Data Structures, Discrete Mathematics, and Computer Architecture.
+- 3rd Year (Internships & Open Source):
+  - Prepare for on-campus summer internship assessments (start in 5th semester).
+  - Participate in Bangalore hackathons (Devfolio, ETHIndia, Smart India Hackathon) and open-source programs (GSoC, LFX).
+- 4th Year (Final Placements):
+  - System Design fundamentals (LLD & HLD), core CS revision (OS, DBMS, Networks, OOPs), and mock behavioral interviews.
+
+### 9. Autonomous vs VTU Affiliated vs Private Universities
+- Autonomous Colleges under VTU (RVCE, BMSCE, MSRIT, DSCE, BMSIT, BIT, NIE, SJCE, SIT):
+  - Curriculum: Independently framed Board of Studies (BoS) syllabus updated every 1-2 years to match industry tech stacks (Cloud, Kubernetes, AI/ML, Rust).
+  - Valuation & Results: Conducted internally by college faculty. Results published within 2 weeks of exams without VTU central delays.
+  - Branch Change: Permitted at the end of 1st year based purely on CGPA (usually 8.5+) against institutional vacant seats.
+- VTU Centralized Non-Autonomous Colleges:
+  - Strict adherence to VTU Belagavi syllabus, standardized external examination centers, and centralized evaluation.
+  - Slower revaluation timelines and rigid curriculum cycles.
+- Private Universities (PES University, REVA, Alliance):
+  - Complete academic freedom, continuous ISA evaluation, relative grading on a Gaussian bell curve, and separate high-fee intake pools (e.g. PESSAT vs KCET).
+
+### 10. The Tactical 100+ Option Entry Blueprint & Golden Rules
+- Sequential Evaluation: KEA algorithm scans choices sequentially from #1 to #N. The instant an option cutoff matches your rank, the seat is allotted and ALL subsequent lower options (#N+1 onwards) are permanently ignored for that round.
+- 4-Tier Strategy:
+  - Dream Tier (1-25): RVCE, BMSCE, MSRIT, PES RR (CSE, ISE, AIML, ECE). Options above your rank where surprise Round 2/3 drops can occur.
+  - Realistic Target Tier (26-60): Colleges where previous year Round 2 cutoffs fall within ±15% of your rank (DSCE, BMSIT, BIT, UVCE, NIE, SJCE).
+  - High-Probability Tier (61-90): Colleges where cutoffs are +20% to +40% higher than your rank (RNSIT, CMRIT, NMIT, SIT, Sir MVIT).
+  - Guaranteed Safety Tier (91-120+): Solid mid-tier institutions ensuring you never end a round without an allotted backup.
+- Fatal Option Entry Mistakes:
+  - Putting a lower-ranked college above a higher-ranked one simply because "my rank is closer to it".
+  - Entering colleges without checking distance, transit (Metro access), or hostel availability.
+  - Forgetting to fill all allied specializations (e.g., adding only CSE Core and missing CSE-DS, AIML, and ISE).
+
+### 11. KEA Domicile Eligibility Clauses & Verification Protocols
+- Clause A (Standard Karnataka Candidate): Minimum 7 continuous academic years of study in Karnataka from 1st to 12th standard + passed 10th or 12th in Karnataka. Requires study certificates signed by school head and counter-signed by BEO/DDPI.
+- Clause B: Studied outside Karnataka but parent has resided/studied in Karnataka for 7+ years.
+- Clause C & D: Children of Defence personnel / Ex-servicemen serving in Karnataka.
+- 15-Digit RD Number: Mandatory computerized Revenue Department verification for Caste (Form D/E/F), Income (< ₹8 LPA for SNQ / 2A / 3A / 3B), and Rural / Kannada medium certificates.
+- SNQ Quota: 5% extra seats per course. Slashes 4-year tuition fee from ~₹4.5 Lakhs to under ₹1 Lakh.
+
+### 12. Expanded Regional & Bangalore College Dossiers
+- North Bangalore Tech Corridor:
+  - BMSIT Yelahanka (E099): Autonomous, top modern infra, 7-8.5 LPA tech median.
+  - NMIT Yelahanka (E095): Autonomous, strong aerospace and CSE clubs, 6.5-7.5 LPA median.
+  - Sir MVIT (E012): Historic green campus, 6.5-7.5 LPA median.
+  - Sai Vidya SVIT (E173): Doddaballapur Road, calm academic environment, strong faculty mentoring, 5-6.5 LPA median.
+- East Bangalore / Whitefield Tech Belt:
+  - CMRIT (E098): Kundalahalli gate, ITPL adjacency, high startup activity, 6.5-7.5 LPA median.
+  - MVJ College of Engineering (E018): Whitefield, strong robotics & aero lab, 5.5-6.5 LPA median.
+  - Cambridge Institute of Technology (E067): KR Puram, active placement cell, 5.5-6.5 LPA median.
+  - East Point (E072): Large medical & engineering integrated campus, 5-6 LPA median.
+- South Bangalore Educational Hub:
+  - RNSIT Channasandra (E059): High placement discipline, proximity to Mysore Road metro, 6.5-8 LPA median.
+  - BNMIT Banashankari (E066): Strict discipline, high academic focus, 6.5-7.5 LPA median.
+  - JSSATE Bangalore (E058): Peaceful campus, strong electronics and IT placements, 6.5-7.5 LPA median.
+  - Oxford College of Engineering (E061): Bommanahalli, Silk Board adjacency, 5-6.2 LPA median.
+- Premier Outstation & Coastal Powerhouses:
+  - SJCE / JSS STU Mysuru (E021): 102-acre apex campus, highest placement packages outside Bangalore.
+  - NIE Mysuru (E022): Historic tech legacy, North Campus dedicated to CS/IS/AI branches.
+  - SIT Tumkur (E016): Autonomous, premier placement record in Tumkur region.
+  - NMAMIT Nitte (E080): Karkala Mangalore, autonomous powerhouse with high campus life ratings.
+  - Sahyadri Mangalore (E144): Renowned national hackathon incubator and robotics culture.
+
+## RESPONSE FORMATTING RULES:
+1. Casual / General Questions: Respond with natural, articulate markdown prose, code blocks, or simple bullets as fitting. Be witty, encouraging, and clear.
+2. Admissions / Cutoff Queries:
+   - Always state official KEA codes (e.g. RVCE (E005), BMSCE (E003), SVIT (E173)).
+   - Provide structured breakdowns with Strategic Overview, Cutoff Matrix, Campus/Placement Ground Truths, and Tactical Advice.
+3. Honesty: Always provide senior-validated truth without sugarcoating or sponsored bias.`;
+
 const STOP_WORDS = new Set([
     'can', 'i', 'get', 'for', 'rank', 'and', 'category', 'cat', 'college', 'in', 'the', 'a', 'an', 'is',
     'what', 'how', 'best', 'top', 'list', 'cutoff', 'cutoffs', 'seat', 'seats', 'round',
@@ -118,10 +244,12 @@ const STOP_WORDS = new Set([
     'available', 'possible', 'chances', 'tell', 'me', 'about', 'vs', 'better'
 ]);
 
+import { CutoffService } from '@/lib/cutoff-service';
+import { matchCollegeFromDatabase } from './ai-tools';
+
 async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
     if (cachedData && cachedData.length > 0) return cachedData;
     if (isFetching) {
-        // Wait for existing fetch
         while (isFetching) {
             await new Promise(r => setTimeout(r, 100));
             if (cachedData && cachedData.length > 0) return cachedData;
@@ -129,120 +257,124 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
     }
 
     isFetching = true;
-    const allData: CutoffEntry[] = [];
+    try {
+        onStatus("Scanning high-volume master cutoff database (kcet_cutoffs_high_volume.dat)...");
+        const allCutoffs = await CutoffService.loadCutoffs();
+        if (allCutoffs && allCutoffs.length > 0) {
+            cachedData = allCutoffs.map(c => ({
+                institute: c.college_name || c.institute_code,
+                institute_code: c.institute_code,
+                course: c.branch_name || c.course,
+                category: c.category,
+                cutoff_rank: c.cutoff_rank,
+                year: c.year,
+                round: c.round
+            }));
+            isFetching = false;
+            return cachedData;
+        }
+    } catch (e) {
+        console.warn("CutoffService load in gemini.ts failed, falling back to static sources:", e);
+    }
 
     try {
-        // Parallel loading of years
-        const files = ['2023', '2024', '2025'];
-
-        onStatus(`Initializing data download (${files.length} files)...`);
-
-        const promises = files.map(async (year) => {
+        const sources = [
+            '/data/kcet_cutoffs_high_volume.dat',
+            '/data/kcet_cutoffs_consolidated.dat',
+            '/kcet_cutoffs_high_volume.dat'
+        ];
+        for (const url of sources) {
             try {
-                // Try multiple paths just in case
-                const paths = [
-                    `/data/cutoffs-${year}.json`,
-                    `/public/data/cutoffs-${year}.json`,
-                    `/cutoffs-${year}.json`
-                ];
-
-                let response: Response | null = null;
-                for (const path of paths) {
-                    try {
-                        const res = await fetch(path);
-                        if (res.ok) {
-                            response = res;
-                            break;
-                        }
-                    } catch (e) {
-                        continue;
+                const res = await fetch(url);
+                if (res.ok) {
+                    const raw = await res.json();
+                    const list = Array.isArray(raw) ? raw : (raw.cutoffs || raw.data || []);
+                    if (list.length > 0) {
+                        cachedData = list.map((c: any) => ({
+                            institute: c.college_name || c.institute || c.institute_code,
+                            institute_code: c.institute_code || c.college_code || '',
+                            course: c.branch_name || c.course || '',
+                            category: c.category || 'GM',
+                            cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
+                            year: String(c.year || '2025'),
+                            round: String(c.round || 'R1')
+                        }));
+                        isFetching = false;
+                        return cachedData;
                     }
                 }
-
-                if (!response) {
-                    console.warn(`Could not load ${year} data`);
-                    return [];
-                }
-
-                const json = await response.json();
-                return Array.isArray(json) ? json : (json.cutoffs || []);
-            } catch (e) {
-                console.error(`Error loading ${year}:`, e);
-                return [];
-            }
-        });
-
-        const results = await Promise.all(promises);
-        results.forEach(yearData => allData.push(...yearData));
-
-        cachedData = allData;
-
-        if (allData.length === 0) {
-            throw new Error("No data could be loaded from any file");
+            } catch {}
         }
-
-        return allData;
-    } catch (error) {
-        console.error("Data fetch error:", error);
-        return [];
+    } catch (err) {
+        console.error("Data fetch error in gemini.ts:", err);
     } finally {
         isFetching = false;
     }
+
+    return [];
 }
 
 function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
-    // Clean query and remove stop words
     const terms = query.toLowerCase()
         .replace(/[?.,!-]/g, ' ')
         .split(/\s+/)
         .filter(t => t.length > 1 && !STOP_WORDS.has(t));
 
-    // Extract explicit rank if present
-    const rankMatch = query.match(/(\d{3,6})/); // numbers 100-999999
-
-    // College codes regex (E001, E123 etc)
+    const rankMatch = query.match(/(\d{3,6})/);
     const codeMatch = query.toUpperCase().match(/E\d{3}/);
-    const targetCode = codeMatch ? codeMatch[0] : null;
+    const matchedCol = matchCollegeFromDatabase(query);
+    const targetCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
 
     if (terms.length === 0 && !targetCode && !rankMatch) return [];
 
-    console.log("Search terms:", terms, "Code:", targetCode, "Rank:", rankMatch);
-
     return data.filter(item => {
-        // Strict code match if present
-        if (targetCode && item.institute_code !== targetCode) return false;
+        if (targetCode && item.institute_code.toUpperCase() !== targetCode.toUpperCase()) return false;
 
         let score = 0;
-        const itemText = `${item.institute} ${item.course} ${item.category} ${item.institute_code} ${item.year}`.toLowerCase();
+        const cleanCourse = item.course.replace(/[\r\n\s\-_()]+/g, ' ').toLowerCase();
+        const itemText = `${item.institute} ${cleanCourse} ${item.category} ${item.institute_code} ${item.year} ${item.round}`.toLowerCase();
 
-        // Keywords matching
         for (const term of terms) {
             if (itemText.includes(term)) score += 1;
         }
 
-        // Boost if category matches exactly
         const queryCategory = query.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
         if (queryCategory && item.category.toLowerCase() === queryCategory[0].toLowerCase()) {
-            score += 2;
+            score += 3;
         }
 
-        // Boost for recent years
-        if (item.year === '2024') score += 1;
-        if (item.year === '2025') score += 2;
+        if (query.toLowerCase().includes('r2') || query.toLowerCase().includes('round 2')) {
+            if (item.round.toUpperCase().includes('R2')) score += 2;
+        } else if (query.toLowerCase().includes('r1') || query.toLowerCase().includes('round 1')) {
+            if (item.round.toUpperCase().includes('R1')) score += 2;
+        }
 
-        // If target code is present, include it regardless of other scores
+        if (item.year === '2025') score += 2;
+        if (item.year === '2024') score += 1;
+
         if (targetCode) return true;
 
-        // Dynamic threshold
-        // e.g. "sai vidya" -> 2 terms -> need 1 match
-        const requiredScore = Math.max(1, Math.floor(terms.length * 0.5));
+        const requiredScore = Math.max(1, Math.floor(terms.length * 0.4));
         return score >= requiredScore;
     })
         .sort((a, b) => {
-            // Sort by year (desc)
-            return b.year.localeCompare(a.year);
+            if (a.year !== b.year) return b.year.localeCompare(a.year);
+            const lowerQ = query.toLowerCase();
+            const wantsR2 = lowerQ.includes('r2') || lowerQ.includes('round 2') || lowerQ.includes('round-2');
+            const wantsR1 = lowerQ.includes('r1') || lowerQ.includes('round 1') || lowerQ.includes('round-1');
+            const isR2A = a.round.toUpperCase().includes('R2');
+            const isR2B = b.round.toUpperCase().includes('R2');
+            const isR1A = a.round.toUpperCase().includes('R1');
+            const isR1B = b.round.toUpperCase().includes('R1');
+
+            if (wantsR2 && isR2A !== isR2B) return isR2A ? -1 : 1;
+            if (wantsR1 && isR1A !== isR1B) return isR1A ? -1 : 1;
+            if (a.round !== b.round) return a.round.localeCompare(b.round);
+            if (a.category === 'GM' && b.category !== 'GM') return -1;
+            if (b.category === 'GM' && a.category !== 'GM') return 1;
+            return a.category.localeCompare(b.category);
         })
-        .slice(0, 50);
+        .slice(0, 60);
 }
 
 async function tryModel(
@@ -255,13 +387,13 @@ async function tryModel(
             'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
             'Content-Type': 'application/json',
             'HTTP-Referer': window.location.origin,
-            'X-Title': 'KCET Coded AI Counselor'
+            'X-Title': 'KCET Coded AI Counselor 2.0'
         },
         body: JSON.stringify({
             model,
             messages,
-            temperature: 0.7,
-            max_tokens: 1024,
+            temperature: 0.6,
+            max_tokens: 4096,
         }),
     });
 
@@ -270,12 +402,12 @@ async function tryModel(
         const errorBody = await response.text().catch(() => 'No error body');
         console.error(`Model ${model} failed - Status: ${status}, Body: ${errorBody}`);
 
-        if (status === 429 || status === 404 || status === 503 || status === 524) { // Added 524 for timeouts
+        if (status === 429 || status === 404 || status === 503 || status === 524) {
             return { success: false, shouldRetry: true };
         }
 
         if (status === 401) {
-            throw new Error('Invalid API key. Please check your OpenRouter API key.');
+            throw new Error('Invalid API key. Please check your OpenRouter API key in .env file.');
         }
 
         return { success: false, shouldRetry: false };
@@ -290,54 +422,115 @@ async function tryModel(
     return { success: true, content: data.choices[0].message.content, shouldRetry: false };
 }
 
-async function tryNvidiaModel(
+async function tryNvidiaChatFallback(
     messages: Array<{ role: string; content: string }>
-): Promise<{ success: boolean; content?: string }> {
+): Promise<string | null> {
     try {
         const response = await fetch('/api/nvidia-chat', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ messages }),
         });
 
-        if (!response.ok) {
-            console.warn(`NVIDIA proxy returned ${response.status}`);
-            return { success: false };
-        }
-
+        if (!response.ok) return null;
         const data = await response.json();
-        if (data.content) {
-            return { success: true, content: data.content };
-        }
-        return { success: false };
-    } catch (error) {
-        console.warn('NVIDIA model failed:', error);
-        return { success: false };
+        return data.content || null;
+    } catch (err) {
+        console.warn('NVIDIA chat fallback error:', err);
+        return null;
     }
+}
+
+function buildActionChips(
+    content: string,
+    userMessage: string,
+    profileFilters?: StudentProfileFilters
+): Array<{ label: string; url: string }> {
+    const actionChips: Array<{ label: string; url: string }> = [];
+    const lowerMsg = userMessage.toLowerCase();
+
+    // Detect clash/compare intent
+    const collegeCodes = content.match(/E\d{3}/g) || userMessage.match(/E\d{3}/g);
+    if (collegeCodes && collegeCodes.length >= 2) {
+        actionChips.push({
+            label: `Clash: ${collegeCodes[0]} vs ${collegeCodes[1]}`,
+            url: `/cutoff-clash?c1=${collegeCodes[0]}&c2=${collegeCodes[1]}`
+        });
+    } else if (lowerMsg.includes('vs') || lowerMsg.includes('compare') || lowerMsg.includes('better')) {
+        actionChips.push({
+            label: `Open Cutoff Clash`,
+            url: `/cutoff-clash`
+        });
+    }
+
+    // Rank predictor / College predictor chip
+    if (profileFilters?.rank || /\d{3,6}/.test(userMessage)) {
+        actionChips.push({
+            label: `Open College Predictor`,
+            url: `/college-predictor`
+        });
+    }
+
+    // Metro / Commute chip
+    if (lowerMsg.includes('metro') || lowerMsg.includes('commute') || lowerMsg.includes('travel') || lowerMsg.includes('bangalore') || lowerMsg.includes('bengaluru')) {
+        actionChips.push({
+            label: `Namma Metro College Map`,
+            url: `/metro-mapper`
+        });
+    }
+
+    // Fee chip
+    if (lowerMsg.includes('fee') || lowerMsg.includes('cost') || lowerMsg.includes('budget') || lowerMsg.includes('lakh')) {
+        actionChips.push({
+            label: `Calculate 4-Year Fees`,
+            url: `/fee-calculator`
+        });
+    }
+
+    // Choice filling / mock simulator
+    if (lowerMsg.includes('choice') || lowerMsg.includes('option') || lowerMsg.includes('round') || lowerMsg.includes('priority')) {
+        actionChips.push({
+            label: `Mock Option Entry Simulator`,
+            url: `/mock-simulator`
+        });
+    }
+
+    // Document verification
+    if (lowerMsg.includes('doc') || lowerMsg.includes('certificate') || lowerMsg.includes('verification') || lowerMsg.includes('study certificate')) {
+        actionChips.push({
+            label: `Document Verification Checklist`,
+            url: `/documents`
+        });
+    }
+
+    return actionChips;
 }
 
 export async function sendMessage(
     userMessage: string,
     conversationHistory: Message[],
-    onStatusUpdate?: (status: string) => void
-): Promise<string> {
-    if (!OPENROUTER_API_KEY) {
-        throw new Error('OpenRouter API key not configured. Please add VITE_OPENROUTER_API_KEY to your .env file.');
-    }
-
-    // AI Tools: Execute specialized tools first for structured data
+    onStatusUpdate?: (status: string) => void,
+    profileFilters?: StudentProfileFilters
+): Promise<{ response: string; recommendations: RecommendationCardData[]; actionChips: Array<{ label: string; url: string }> }> {
+    let recommendations: RecommendationCardData[] = [];
     let toolContext = "";
-    if (onStatusUpdate) onStatusUpdate("Analyzing your question...");
+
+    if (onStatusUpdate) onStatusUpdate("Analyzing query & student preferences...");
+
     try {
-        toolContext = await executeToolsForQuery(userMessage);
-        if (toolContext && onStatusUpdate) {
-            onStatusUpdate("Found relevant data using AI tools...");
+        const toolResult = await executeToolsForQuery(userMessage, profileFilters);
+        toolContext = toolResult.toolContext;
+        if (toolResult.recommendations && toolResult.recommendations.length > 0) {
+            recommendations = toolResult.recommendations;
+            if (onStatusUpdate) onStatusUpdate(`Found ${recommendations.length} tailored college matches...`);
         }
     } catch (e) {
         console.error("Tool execution failed:", e);
     }
 
-    // RAG Logic: Also fetch cutoff data for data-heavy queries (complements tool results)
+    // Context from RAG dataset
     let contextData = "";
     const lowerMsg = userMessage.toLowerCase();
     const needsData = (
@@ -356,88 +549,140 @@ export async function sendMessage(
     if (needsData) {
         try {
             const statusFn = onStatusUpdate || (() => {});
-            // Fetch
             const data = await fetchCutoffData(statusFn);
-            if (onStatusUpdate) onStatusUpdate(`Loaded ${data.length} records. Scanning...`);
-
-            // Search
             const relevantRecords = searchRelevantData(userMessage, data);
 
             if (relevantRecords.length > 0) {
-                contextData = `\n\nREAL CUTOFF DATA FROM WEBSITE (Use this to answer): \n${JSON.stringify(relevantRecords, null, 2)}`;
-                if (onStatusUpdate) onStatusUpdate(`Found ${relevantRecords.length} matches for "${userMessage.substring(0, 15)}..."`);
-            } else {
-                if (onStatusUpdate) onStatusUpdate("No matching cutoff data found.");
+                contextData = `\n\nREAL CUTOFF DATA FROM DATABASE (Use this to answer): \n${JSON.stringify(relevantRecords.slice(0, 20), null, 2)}`;
             }
         } catch (e) {
             console.error("RAG failed:", e);
-            // Continue without data context
         }
     }
 
-    // Combine tool results and RAG context
-    const fullContext = toolContext + contextData;
+    // Inject Student Profile Context if active
+    let profileContext = "";
+    if (profileFilters && (profileFilters.rank || profileFilters.category || profileFilters.budgetQuota !== 'all' || profileFilters.locationCommute !== 'all')) {
+        profileContext = `\n\n### ACTIVE STUDENT PROFILE:
+- Rank: ${profileFilters.rank ? profileFilters.rank.toLocaleString() : 'Not specified'}
+- Category Quota: ${profileFilters.category || 'GM'}
+- Budget Preference: ${profileFilters.budgetQuota || 'All Quotas'}
+- Location & Commute: ${profileFilters.locationCommute || 'Any Karnataka'}
+- Preferred Stream: ${profileFilters.streamFocus || 'All Streams'}
+Please tailor your suggestions specifically to these parameters.`;
+    }
 
+    const fullSystemPrompt = SYSTEM_PROMPT + profileContext + toolContext + contextData;
 
-    // Build messages array
     const messages = [
-        { role: 'system', content: SYSTEM_PROMPT + fullContext },
-        ...conversationHistory.slice(-10).map(msg => ({
+        { role: 'system', content: fullSystemPrompt },
+        ...conversationHistory.slice(-8).map(msg => ({
             role: msg.role === 'user' ? 'user' : 'assistant',
             content: msg.content
         })),
         { role: 'user', content: userMessage }
     ];
 
-    if (onStatusUpdate) onStatusUpdate("AI is thinking...");
+    if (onStatusUpdate) onStatusUpdate("AI Counselor is generating your personalized strategy...");
 
-    // Try NVIDIA Nemotron first (primary model)
-    console.log('Trying primary model: NVIDIA Nemotron-3 Super 120B');
-    if (onStatusUpdate) onStatusUpdate("Using NVIDIA Nemotron (primary)...");
-
-    const nvidiaResult = await tryNvidiaModel(messages);
-    if (nvidiaResult.success && nvidiaResult.content) {
-        return nvidiaResult.content;
+    // 1. Try high-speed NVIDIA 70B Counseling Engine (Highest throughput, Llama-3.3-70B, 4096 tokens, zero rate limits)
+    try {
+        const nvidiaContent = await tryNvidiaChatFallback(messages);
+        if (nvidiaContent && nvidiaContent.trim().length > 100) {
+            const actionChips = buildActionChips(nvidiaContent, userMessage, profileFilters);
+            return {
+                response: nvidiaContent,
+                recommendations,
+                actionChips
+            };
+        }
+    } catch (e) {
+        console.warn("NVIDIA engine skipped, cascading to OpenRouter:", e);
     }
 
-    console.log('NVIDIA model unavailable, falling back to OpenRouter models...');
-    if (onStatusUpdate) onStatusUpdate('Trying alternative AI model...');
+    // 2. OpenRouter free models cascade
+    if (OPENROUTER_API_KEY) {
+        for (let i = 0; i < MODELS.length; i++) {
+            const model = MODELS[i];
+            try {
+                const result = await tryModel(model, messages);
+                if (result.success && result.content && result.content.trim().length > 50) {
+                    const actionChips = buildActionChips(result.content, userMessage, profileFilters);
+                    return {
+                        response: result.content,
+                        recommendations,
+                        actionChips
+                    };
+                }
 
-    // Fallback: Try each OpenRouter model in order
-    for (let i = 0; i < MODELS.length; i++) {
-        const model = MODELS[i];
-        console.log(`Trying model: ${model}`);
+                if (!result.shouldRetry) {
+                    break;
+                }
 
-        try {
-            const result = await tryModel(model, messages);
-
-            if (result.success && result.content) {
-                return result.content;
+                if (onStatusUpdate) onStatusUpdate(`Switching to backup model (${MODELS[i + 1] || 'neural fallback'})...`);
+            } catch (error) {
+                console.warn(`Error with model ${model}:`, error);
             }
-
-            if (!result.shouldRetry) {
-                throw new Error(`API request failed`);
-            }
-
-            console.log(`Falling back to next model...`);
-            if (onStatusUpdate) onStatusUpdate(`Trying alternative AI model...`);
-        } catch (error) {
-            if (error instanceof Error && error.message.includes('API key')) {
-                throw error;
-            }
-            console.warn(`Error with model ${model}:`, error);
         }
     }
 
-    throw new Error('All AI models are currently unavailable. Please try again in a moment.');
+    throw new Error('All AI models are currently busy. Please try again in a few moments.');
 }
 
-// Quick suggestion prompts
-export const QUICK_PROMPTS = [
-    "What colleges can I get with rank 10,000 in GM?",
-    "CSE vs AI&ML - which branch is better?",
-    "What documents do I need for counseling?",
-    "Explain the choice filling process",
-    "Best colleges for ECE in Bangalore",
-    "Is RVCE better than BMSCE?",
+// Categorized quick suggestion prompts (NO EMOJIS)
+export const PROMPT_CATEGORIES = [
+    {
+        name: "General & Tech Life",
+        prompts: [
+            "How should I prepare for 1st year engineering as a fresher?",
+            "What programming language should I learn first: Python, C++, or Java?",
+            "Explain DSA vs Development: How to balance both in college?",
+            "What are the best hackathons and student communities in Bangalore?",
+            "How to stay consistent with coding while managing strict attendance?",
+        ]
+    },
+    {
+        name: "Silly Doubts & Round FAQs",
+        prompts: [
+            "What is the exact difference between Choice 1, 2, 3, and 4?",
+            "Is BEO signature compulsory on 7-year study certificates?",
+            "How does SNQ 100% tuition fee waiver work in KCET?",
+            "Can I add new college options in Round 2 or only rearrange?",
+            "What original documents are needed on college reporting day?",
+            "When do NEET medical surrender seats drop into Round 2 cutoffs?",
+        ]
+    },
+    {
+        name: "Rank & College Guidance",
+        prompts: [
+            "What colleges can I get with rank 12,000 in GM category?",
+            "Can I get CSE in RVCE or BMSCE with rank 1,500 in 2A?",
+            "Best engineering colleges in Bangalore under rank 25,000?",
+        ]
+    },
+    {
+        name: "Comparisons & Branches",
+        prompts: [
+            "RVCE CSE vs BMSCE CSE vs MSRIT CSE - which is best?",
+            "CSE vs AI&ML vs ISE: Placements, syllabus & career scope?",
+            "ECE at RVCE vs CSE at Dayananda Sagar (DSCE)?",
+        ]
+    },
+    {
+        name: "Choice Filling Strategy",
+        prompts: [
+            "How should I order my options for KCET Choice Filling?",
+            "How does NEET seat surrender affect Round 2 and Extended Round?",
+            "What documents are required for KEA physical verification?",
+        ]
+    },
+    {
+        name: "Commute & Budget",
+        prompts: [
+            "Which top engineering colleges are within walking distance of Namma Metro?",
+            "What is the total 4-year fee difference between KCET Govt Quota and COMEDK?",
+        ]
+    }
 ];
+
+export const QUICK_PROMPTS = PROMPT_CATEGORIES.flatMap(c => c.prompts);

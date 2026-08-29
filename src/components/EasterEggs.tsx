@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Sparkles, Command, HelpCircle, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
+import { DinoGameModal } from "./DinoGameModal"
 
 /* ═══════════════════════════════════════════════════
    KONAMI CODE PARTY MODE 🎉
@@ -138,6 +139,7 @@ const SHORTCUTS: Shortcut[] = [
     { keys: ["Ctrl", "K"], description: "Open command palette — search anything", category: "Navigation" },
     { keys: ["?"], description: "Show this shortcuts panel", category: "Navigation" },
     { keys: ["↑↑↓↓←→←→BA"], description: "Activate party mode 🎉", category: "Easter Eggs" },
+    { keys: ["d", "i", "n", "o"], description: "Play Chrome Dino runner 🦖", category: "Easter Eggs" },
     { keys: ["Esc"], description: "Close any open panel or dialog", category: "General" },
     { keys: ["↑", "↓"], description: "Navigate command palette results", category: "Command Palette" },
     { keys: ["Enter"], description: "Select highlighted result", category: "Command Palette" },
@@ -237,3 +239,34 @@ export function KeyboardShortcutsHUD() {
         </AnimatePresence>
     )
 }
+
+/* ═══════════════════════════════════════════════════
+   DINO RUNNER EASTER EGG 🦖
+   Typing "dino" opens the arcade runner modal
+   ═══════════════════════════════════════════════════ */
+
+export function DinoEasterEgg() {
+    const [open, setOpen] = useState(false)
+    const bufferRef = useRef<string[]>([])
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+
+            // Handle secret trigger sequence "dino"
+            bufferRef.current.push(e.key.toLowerCase())
+            if (bufferRef.current.length > 4) bufferRef.current.shift()
+
+            if (bufferRef.current.join("") === "dino") {
+                bufferRef.current = []
+                setOpen(true)
+            }
+        }
+
+        window.addEventListener("keydown", handleKeyDown)
+        return () => window.removeEventListener("keydown", handleKeyDown)
+    }, [])
+
+    return <DinoGameModal open={open} onClose={() => setOpen(false)} />
+}
+

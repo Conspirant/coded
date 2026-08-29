@@ -13,7 +13,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
 import { DonationButton } from "./components/DonationButton";
 import { CommandPalette } from "./components/CommandPalette";
-import { KonamiEasterEgg, KeyboardShortcutsHUD } from "./components/EasterEggs";
+import { KonamiEasterEgg, KeyboardShortcutsHUD, DinoEasterEgg } from "./components/EasterEggs";
 import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import RankPredictor from "./pages/RankPredictor";
@@ -34,6 +34,7 @@ import AICounselor from "./pages/AICounselor";
 import NotFound from "./pages/NotFound";
 import DailyChallenge from "./pages/DailyChallenge";
 import CutoffClash from "./pages/CutoffClash";
+import DinoGame from "./pages/DinoGame";
 import CETNews from "./pages/CETNews";
 import BlogList from "./pages/BlogList";
 import BlogPostDetail from "./pages/BlogPostDetail";
@@ -99,6 +100,7 @@ const App = () => (
               <PresenceAndBlockProvider>
                 <CommandPalette />
                 <KonamiEasterEgg />
+                <DinoEasterEgg />
                 <KeyboardShortcutsHUD />
                 <DisclaimerBanner />
                 <ResourceLimitModal />
@@ -109,6 +111,8 @@ const App = () => (
                   <Route path="/" element={<Homepage />} />
                   <Route path="/daily-challenge" element={<DailyChallenge />} />
                   <Route path="/cutoff-clash" element={<CutoffClash />} />
+                  <Route path="/dino" element={<DinoGame />} />
+                  <Route path="/game" element={<Navigate to="/dino" replace />} />
                   <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
                   <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
                   <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
