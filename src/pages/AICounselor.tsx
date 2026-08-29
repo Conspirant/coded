@@ -410,14 +410,15 @@ const AICounselor = () => {
                                 setShowCutoffBar(!showCutoffBar);
                                 if (showFilters) setShowFilters(false);
                             }}
-                            className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
+                            className={`h-8 px-2.5 sm:px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
                                 showCutoffBar 
                                     ? "bg-blue-600 text-white font-semibold shadow-md" 
                                     : "bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900/60 border border-blue-800/40"
                             }`}
                         >
-                            <Filter className="h-3.5 w-3.5 text-blue-400" />
-                            <span>Cutoff Explorer (269)</span>
+                            <Filter className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                            <span className="hidden sm:inline">Cutoff Explorer (269)</span>
+                            <span className="sm:hidden text-[11px]">Cutoffs</span>
                         </Button>
 
                         <Button
@@ -843,14 +844,14 @@ const AICounselor = () => {
                                                     remarkPlugins={[remarkGfm]}
                                                     components={{
                                                         table: ({ node, ...props }) => (
-                                                            <div className="my-3 overflow-hidden rounded-xl border border-slate-800 bg-[#080d1a]/90">
-                                                                <div className="overflow-x-auto">
-                                                                    <table className="w-full text-left text-xs border-collapse" {...props} />
+                                                            <div className="my-3 overflow-hidden rounded-xl border border-slate-800/80 bg-[#080d1a]/95 shadow-md">
+                                                                <div className="overflow-x-auto w-full touch-pan-x scrollbar-thin scrollbar-thumb-slate-800">
+                                                                    <table className="w-full text-left text-xs border-collapse min-w-[280px] sm:min-w-[400px]" {...props} />
                                                                 </div>
                                                             </div>
                                                         ),
                                                         thead: ({ node, ...props }) => (
-                                                            <thead className="bg-slate-900/90 text-blue-400 font-semibold border-b border-slate-800 text-[11px] uppercase tracking-wider" {...props} />
+                                                            <thead className="bg-slate-900/90 text-blue-400 font-semibold border-b border-slate-800 text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
                                                         ),
                                                         tbody: ({ node, ...props }) => (
                                                             <tbody className="divide-y divide-slate-800/60" {...props} />
@@ -859,10 +860,10 @@ const AICounselor = () => {
                                                             <tr className="hover:bg-slate-800/40 transition-colors even:bg-slate-900/30" {...props} />
                                                         ),
                                                         th: ({ node, ...props }) => (
-                                                            <th className="px-3.5 py-2.5 font-semibold text-blue-400 whitespace-nowrap" {...props} />
+                                                            <th className="px-3 sm:px-4 py-2.5 font-semibold text-blue-400 whitespace-nowrap text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
                                                         ),
                                                         td: ({ node, ...props }) => (
-                                                            <td className="px-3.5 py-2 font-normal text-slate-300 border-r border-slate-800/40 last:border-r-0" {...props} />
+                                                            <td className="px-3 sm:px-4 py-2 font-normal text-slate-200 border-r border-slate-800/40 last:border-r-0 text-xs sm:text-sm" {...props} />
                                                         ),
                                                         h1: ({ node, ...props }) => (
                                                             <h1 className="text-base md:text-lg font-bold text-slate-100 tracking-tight pt-2 pb-1 border-b border-slate-800" {...props} />
@@ -926,7 +927,7 @@ const AICounselor = () => {
                                                                     <ChevronsUpDown className="ml-1 h-3.5 w-3.5 shrink-0 opacity-60" />
                                                                 </Button>
                                                             </PopoverTrigger>
-                                                            <PopoverContent className="w-[320px] sm:w-[420px] p-0 bg-slate-950 border-slate-800 text-slate-200 z-50">
+                                                            <PopoverContent className="w-[calc(100vw-2.5rem)] sm:w-[420px] max-w-md p-0 bg-slate-950 border-slate-800 text-slate-200 z-50">
                                                                 <Command className="bg-slate-950 text-slate-200">
                                                                     <CommandInput placeholder="Type college name or code (e.g. E126, RVCE, BMSIT)..." className="h-9 text-xs text-slate-200" />
                                                                     <CommandList className="max-h-64">
