@@ -704,16 +704,21 @@ const AICounselor = () => {
 
                                             {/* In-Chat Quick Reply Chips */}
                                             {message.quickReplies && message.quickReplies.length > 0 && (
-                                                <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                                                    {message.quickReplies.map((qr, qIdx) => (
-                                                        <button
-                                                            key={qIdx}
-                                                            onClick={() => handleSend(qr)}
-                                                            className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-blue-600 hover:text-white border border-slate-700/80 text-[11px] text-slate-300 font-mono transition-colors"
-                                                        >
-                                                            {qr}
-                                                        </button>
-                                                    ))}
+                                                <div className="pt-2.5 border-t border-slate-800/60">
+                                                    <div className="text-[10px] uppercase font-mono font-semibold text-blue-400/90 tracking-wider mb-2">
+                                                        Select an option:
+                                                    </div>
+                                                    <div className="flex flex-wrap items-center gap-1.5">
+                                                        {message.quickReplies.map((qr, qIdx) => (
+                                                            <button
+                                                                key={qIdx}
+                                                                onClick={() => handleSend(qr)}
+                                                                className="px-3 py-1.5 rounded-lg bg-blue-950/40 hover:bg-blue-600 hover:text-white border border-blue-800/40 text-xs text-blue-200 font-medium transition-all shadow-sm active:scale-95"
+                                                            >
+                                                                {qr}
+                                                            </button>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             )}
 

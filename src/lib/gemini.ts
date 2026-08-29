@@ -563,6 +563,7 @@ function cleanAiResponse(text: string): string {
 
 function handleConversationalCutoffStep(
     userMessage: string,
+    conversationHistory: Message[] = [],
     profileFilters?: StudentProfileFilters,
     dataset?: CutoffEntry[]
 ): { handled: boolean; response: string; quickReplies: string[]; cutoffSelector?: any } | null {
@@ -571,22 +572,24 @@ function handleConversationalCutoffStep(
 
     // 1. Check if user is asking to start cutoff flow
     const isGenericCutoffTrigger = (
+        lower.includes("step-by-step") ||
+        lower.includes("step by step") ||
+        lower.includes("cutoff finder") ||
+        lower.includes("cutoff explorer") ||
         lower === "cutoffs" ||
         lower === "cutoff" ||
         lower === "show cutoffs" ||
         lower === "check cutoffs" ||
-        lower === "cutoff explorer" ||
         lower === "explore cutoffs" ||
         lower === "college cutoffs" ||
-        lower === "step by step cutoffs" ||
         lower === "cutoffs please" ||
-        lower === "cutoff finder"
+        lower.includes("explore another college")
     );
 
     if (isGenericCutoffTrigger) {
         return {
             handled: true,
-            response: `### Step 1: Select College\n\nWhich college's KCET cutoffs would you like to explore? Tap any of the popular colleges below or type any college code / name (e.g. \`E126 BMSIT\`, \`E005 RVCE\`, \`E006 MSRIT\`, \`E173 Sai Vidya\`):`,
+            response: `### Step 1: Select College\n\nWhich college's KCET cutoffs would you like to explore? Tap any of the popular colleges below or type any college code or name:`,
             quickReplies: [
                 "E005 RVCE",
                 "E003 BMSCE",
@@ -600,33 +603,84 @@ function handleConversationalCutoffStep(
         };
     }
 
-    // 2. Identify College, Year, Round, Category from query
-    const matchedCol = matchCollegeFromDatabase(userMessage);
-    const codeMatch = userMessage.toUpperCase().match(/E\d{3}/);
-    const collegeCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
-    const collegeName = matchedCol ? (matchedCol.shortName || matchedCol.name) : (collegeCode || "");
+    // 2. Extract College from userMessage first, then conversation history
+    let matchedCol = matchCollegeFromDatabase(userMessage);
+    let codeMatch = userMessage.toUpperCase().match(/E\d{3}/);
+    let collegeCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
 
-    if (!collegeCode) {
-        return null; // Not a specific college query, let general AI handle it
+    if (!collegeCode && conversationHistory && conversationHistory.length > 0) {
+        for (let i = conversationHistory.length - 1; i >= 0; i--) {
+            const histText = conversationHistory[i].content;
+            const histCodeMatch = histText.toUpperCase().match(/E\d{3}/);
+            const histCol = matchCollegeFromDatabase(histText);
+            if (histCol) {
+                matchedCol = histCol;
+                collegeCode = histCol.code;
+                break;
+            } else if (histCodeMatch) {
+                collegeCode = histCodeMatch[0];
+                break;
+            }
+        }
     }
 
-    const yearMatch = userMessage.match(/\b(202[3-6])\b/);
+    if (!collegeCode) {
+        return null; // Not a college cutoff flow, let general AI handle it
+    }
+
+    const collegeName = matchedCol ? (matchedCol.shortName || matchedCol.name) : (collegeCode || "");
+
+    // 3. Extract Year from userMessage, then history
+    let yearMatch = userMessage.match(/\b(202[3-6])\b/);
+    if (!yearMatch && conversationHistory && conversationHistory.length > 0) {
+        for (let i = conversationHistory.length - 1; i >= 0; i--) {
+            const ym = conversationHistory[i].content.match(/\b(202[3-6])\b/);
+            if (ym) {
+                yearMatch = ym;
+                break;
+            }
+        }
+    }
     const foundYear = yearMatch ? yearMatch[1] : null;
 
+    // 4. Extract Round from userMessage, then history
+    let foundRound: string | null = null;
     const isR1 = /\b(r1|round\s*1|round1)\b/i.test(userMessage);
     const isR2 = /\b(r2|round\s*2|round2)\b/i.test(userMessage);
     const isR3 = /\b(r3|round\s*3|ext|extended)\b/i.test(userMessage);
     const isMock = /\b(mock|mock1|mock2)\b/i.test(userMessage);
-    const foundRound = isR1 ? "R1" : isR2 ? "R2" : isR3 ? "R3" : isMock ? "MOCK" : null;
+    if (isR1) foundRound = "R1";
+    else if (isR2) foundRound = "R2";
+    else if (isR3) foundRound = "R3";
+    else if (isMock) foundRound = "MOCK";
+    else if (conversationHistory && conversationHistory.length > 0) {
+        for (let i = conversationHistory.length - 1; i >= 0; i--) {
+            const h = conversationHistory[i].content;
+            if (/\b(r1|round\s*1|round1)\b/i.test(h)) { foundRound = "R1"; break; }
+            if (/\b(r2|round\s*2|round2)\b/i.test(h)) { foundRound = "R2"; break; }
+            if (/\b(r3|round\s*3|ext|extended)\b/i.test(h)) { foundRound = "R3"; break; }
+            if (/\b(mock|mock1|mock2)\b/i.test(h)) { foundRound = "MOCK"; break; }
+        }
+    }
 
-    const catMatch = userMessage.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+    // 5. Extract Category from userMessage, then history
+    let catMatch = userMessage.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+    if (!catMatch && conversationHistory && conversationHistory.length > 0) {
+        for (let i = conversationHistory.length - 1; i >= 0; i--) {
+            const cm = conversationHistory[i].content.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+            if (cm) {
+                catMatch = cm;
+                break;
+            }
+        }
+    }
     const foundCategory = catMatch ? catMatch[0].toUpperCase() : null;
 
-    // Check if this is a complex comparison / rank review sentence that needs full neural generation
+    // Check if this is a complex comparison inquiry
     const isComplexQuery = lower.includes("better") || lower.includes("compare") || lower.includes("scope") || lower.includes("placement") || lower.includes("review") || (lower.includes("rank") && /\d{4,6}/.test(lower));
 
     if (isComplexQuery) {
-        return null; // Let LLM answer
+        return null;
     }
 
     // STEP 2: College identified, but Year is missing
@@ -635,10 +689,10 @@ function handleConversationalCutoffStep(
             handled: true,
             response: `### Step 2: Select KCET Year for ${collegeName} (${collegeCode})\n\nWhich allotment year would you like to inspect?`,
             quickReplies: [
-                `${collegeCode} ${collegeName} 2026`,
-                `${collegeCode} ${collegeName} 2025`,
-                `${collegeCode} ${collegeName} 2024`,
-                `${collegeCode} ${collegeName} 2023`
+                "2026",
+                "2025",
+                "2024",
+                "2023"
             ],
             cutoffSelector: {
                 collegeCode,
@@ -656,10 +710,10 @@ function handleConversationalCutoffStep(
             handled: true,
             response: `### Step 3: Select Counseling Round for ${collegeName} (${foundYear})\n\nWhich counseling round do you want to view?`,
             quickReplies: [
-                `${collegeCode} ${collegeName} ${foundYear} Round 2`,
-                `${collegeCode} ${collegeName} ${foundYear} Round 1`,
-                `${collegeCode} ${collegeName} ${foundYear} Round 3 / Extended`,
-                `${collegeCode} ${collegeName} ${foundYear} Mock Round`
+                "Round 2",
+                "Round 1",
+                "Round 3 / Extended",
+                "Mock Round"
             ],
             cutoffSelector: {
                 collegeCode,
@@ -677,14 +731,14 @@ function handleConversationalCutoffStep(
             handled: true,
             response: `### Step 4: Select Reservation Category Quota\n\nWhich category quota do you want to inspect for **${collegeName} (${collegeCode}) — ${foundYear} Round ${foundRound}**?`,
             quickReplies: [
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 3AG`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} GM`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2AG`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 1G`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2BG`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 3BG`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} SCG`,
-                `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} STG`
+                "3AG",
+                "GM",
+                "2AG",
+                "1G",
+                "2BG",
+                "3BG",
+                "SCG",
+                "STG"
             ],
             cutoffSelector: {
                 collegeCode,
@@ -719,8 +773,8 @@ function handleConversationalCutoffStep(
                 handled: true,
                 response: table,
                 quickReplies: [
-                    `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} GM`,
-                    `${collegeCode} ${collegeName} ${foundYear} Round ${foundRound} 2AG`,
+                    "GM",
+                    "2AG",
                     `${collegeCode} ${collegeName} 2025 vs 2026 Cutoff Trend`,
                     "Explore another college"
                 ],
@@ -765,7 +819,7 @@ export async function sendMessage(
     try {
         const statusFn = onStatusUpdate || (() => {});
         const data = await fetchCutoffData(statusFn);
-        const stepResult = handleConversationalCutoffStep(userMessage, profileFilters, data);
+        const stepResult = handleConversationalCutoffStep(userMessage, conversationHistory, profileFilters, data);
         if (stepResult && stepResult.handled) {
             const actionChips = buildActionChips(stepResult.response, userMessage, profileFilters);
             return {
