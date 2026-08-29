@@ -585,15 +585,25 @@ export async function toolGetCutoffs(
             }
         }
 
+        const targetCatNorm = category ? category.toUpperCase().replace(/\s+/g, '') : null;
+
         // Smart sorting:
         // 1. Year descending (2026, 2025, 2024, 2023)
         // 2. Round weight: if preferredRound is specified (e.g. R2), R2 ranks highest. Otherwise R2 > R1 > R3 > MOCK
-        // 3. Category: GM first, then alphabetical
+        // 3. Requested target category first (e.g. 3AG), then GM, then alphabetical
         matches.sort((a, b) => {
             if (a.year !== b.year) return b.year.localeCompare(a.year);
             const wA = getRoundWeight(a.round, preferredRound);
             const wB = getRoundWeight(b.round, preferredRound);
             if (wA !== wB) return wB - wA;
+
+            if (targetCatNorm) {
+                const isCatA = a.category.toUpperCase().replace(/\s+/g, '') === targetCatNorm || a.category.toUpperCase().startsWith(targetCatNorm);
+                const isCatB = b.category.toUpperCase().replace(/\s+/g, '') === targetCatNorm || b.category.toUpperCase().startsWith(targetCatNorm);
+                if (isCatA && !isCatB) return -1;
+                if (isCatB && !isCatA) return 1;
+            }
+
             if (a.category === 'GM' && b.category !== 'GM') return -1;
             if (b.category === 'GM' && a.category !== 'GM') return 1;
             return a.category.localeCompare(b.category);

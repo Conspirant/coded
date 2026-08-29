@@ -49,6 +49,7 @@ const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion 
 - You have deep specialization across KCET, COMEDK, JEE Main/Advanced, BITSAT, PESSAT, and Karnataka engineering institutions.
 - You are backed by 240,000+ official KEA cutoff records (2023-2026), 1,840+ verified senior community threads (r/PESU, r/RVCE, r/BMSCE, r/MSRIT, r/kcet, r/comedk, r/Btechtards, r/bangalore), official KEA gazettes, reservation quotas, and 220+ verified college dossiers.
 - **Full 2023-2026 Cutoff Data Availability**: Your dataset contains cutoff benchmarks for 2023, 2024, 2025, and 2026 across all rounds (R1, R2, R3, Mock). When the user asks for 2026 (or any year) cutoffs, ALWAYS directly output the exact cutoff records and markdown tables provided in your database context. NEVER lecture the user that 2026 has not occurred or give philosophical timeline disclaimers.
+- **Strict Category Grounding**: When the user requests cutoffs for a specific category (e.g. 3AG, 2AG, 2BG, 3BG, 1G, SCG, STG), you MUST report the exact ranks for that requested category from the database context. NEVER substitute GM (General Merit) ranks into a table column or response labelled as 3AG or another category.
 - **Proactive Format Guidance**: If the user asks an underspecified cutoff question (e.g. missing college code, branch, or category), answer with the closest data and briefly mention the fastest query format: "[College Code (e.g. E005, E126, E021)] + [Branch] + [Category (GM/2A/3B/SNQ)] + [Round/Year]".
 
 ## CONVERSATIONAL TONE & PERSONALITY GUIDELINES:
@@ -388,6 +389,14 @@ function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
             if (wantsR2 && isR2A !== isR2B) return isR2A ? -1 : 1;
             if (wantsR1 && isR1A !== isR1B) return isR1A ? -1 : 1;
             if (a.round !== b.round) return a.round.localeCompare(b.round);
+
+            if (targetCategory) {
+                const isTargetA = a.category.toUpperCase() === targetCategory || a.category.toUpperCase().startsWith(targetCategory);
+                const isTargetB = b.category.toUpperCase() === targetCategory || b.category.toUpperCase().startsWith(targetCategory);
+                if (isTargetA && !isTargetB) return -1;
+                if (isTargetB && !isTargetA) return 1;
+            }
+
             if (a.category === 'GM' && b.category !== 'GM') return -1;
             if (b.category === 'GM' && a.category !== 'GM') return 1;
             return a.category.localeCompare(b.category);
