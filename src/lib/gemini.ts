@@ -7,10 +7,10 @@ import type { RecommendationCardData } from '@/components/counselor/CounselorRec
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Top tier free models with cascading fallback
+// Top tier free models with cascading fallback (Fastest first)
 const MODELS = [
-    'minimax/minimax-m3:free',
     'nvidia/nemotron-3-super-120b-a12b:free',
+    'minimax/minimax-m3:free',
 ];
 
 export interface Message {
@@ -440,19 +440,22 @@ async function tryNvidiaChatFallback(
     messages: Array<{ role: string; content: string }>
 ): Promise<string | null> {
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1500);
         const response = await fetch('/api/nvidia-chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ messages }),
+            signal: controller.signal,
         });
+        clearTimeout(timeoutId);
 
         if (!response.ok) return null;
         const data = await response.json();
         return data.content || null;
     } catch (err) {
-        console.warn('NVIDIA chat fallback error:', err);
         return null;
     }
 }
