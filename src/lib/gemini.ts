@@ -81,7 +81,7 @@ const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion 
 - Official KEA Seat Cancellation, Surrender & Rs 5,000 Penalty Protocol:
   - Scenario A (Choice 4 in Round 1 before paying any fee): 100% Free. Rs 0 penalty. You simply exit counseling online; no payment link or visit needed.
   - Scenario B (Surrendering seat AFTER paying fee via Choice 1 / Choice 2, before official surrender deadline):
-    - **KEA's Official Online Penalty Payment Link**: KEA releases a dedicated online payment link on the official portal (`cetonline.karnataka.gov.in`) titled *"Payment of Penalty for Seat Cancellation / Surrender"*.
+    - **KEA's Official Online Penalty Payment Link**: KEA releases a dedicated online payment link on the official portal (cetonline.karnataka.gov.in) titled *"Payment of Penalty for Seat Cancellation / Surrender"*.
     - Candidates log in with their CET number, pay the **Rs 5,000 penalty online directly via the KEA link** (UPI/Netbanking/Debit Card), and download the official Seat Surrender Acknowledgment.
     - The remaining paid tuition fee balance is processed and refunded to the candidate's registered bank account.
     - **No Physical Visit to KEA Office**: Everything is completed online via KEA's official penalty link—students do NOT need to go to KEA Malleshwaram office in person.
@@ -131,7 +131,7 @@ const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion 
 - r/DSCE (Dayananda Sagar College of Engineering - Kumaraswamy Layout E007):
   - Campus & Vibe: 28-acre sprawling hillside campus with active tech & cultural clubs (Point Blank coding club). Large student crowd. Tech median ~7.5-9 LPA.
 
-- BMSIT (Yelahanka E099) & BIT (VV Puram E008):
+- BMSIT (Yelahanka E126) & BIT (VV Puram E008):
   - BMSIT: Peaceful North Bangalore campus, autonomous since 2023, climbing cutoffs, modern labs (median ~7-8.5 LPA).
   - BIT: Historic college located right on VV Puram food street, National College Metro station adjacent, strong tech placement cell (median ~7-8 LPA).
 
@@ -222,7 +222,8 @@ const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion 
 
 ### 12. Expanded Regional & Bangalore College Dossiers
 - North Bangalore Tech Corridor:
-  - BMSIT Yelahanka (E099): Autonomous, top modern infra, 7-8.5 LPA tech median.
+  - BMSIT Yelahanka (E126): Autonomous, top modern infra, 7-8.5 LPA tech median.
+  - NHCE Marathahalli / Ring Road (E099): Autonomous, prominent Outer Ring Road tech corridor hub, 7-8.5 LPA median.
   - NMIT Yelahanka (E095): Autonomous, strong aerospace and CSE clubs, 6.5-7.5 LPA median.
   - Sir MVIT (E012): Historic green campus, 6.5-7.5 LPA median.
   - Sai Vidya SVIT (E173): Doddaballapur Road, calm academic environment, strong faculty mentoring, 5-6.5 LPA median.

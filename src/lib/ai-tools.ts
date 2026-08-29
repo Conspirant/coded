@@ -455,10 +455,10 @@ const ALIAS_MAP = [
     { code: 'E091', aliases: ['atria', 'atria institute', 'atria institute of technology'] },
     { code: 'E095', aliases: ['nmit', 'nitte meenakshi', 'nitte meenakshi institute'] },
     { code: 'E098', aliases: ['cmrit', 'cmr institute', 'cmr institute of technology'] },
-    { code: 'E099', aliases: ['bmsit', 'bms institute', 'bms institute of technology', 'bmsit yelahanka'] },
+    { code: 'E099', aliases: ['new horizon', 'nhce', 'new horizon college of engineering', 'new horizon college', 'new horizon bangalore'] },
     { code: 'E112', aliases: ['reva', 'reva university', 'reva institute'] },
     { code: 'E114', aliases: ['alliance', 'alliance university', 'alliance college'] },
-    { code: 'E126', aliases: ['new horizon', 'nhce', 'new horizon college of engineering'] },
+    { code: 'E126', aliases: ['bmsit', 'bms institute', 'bms institute of technology', 'bmsit yelahanka', 'bms it', 'bmsitm', 'b m s institute'] },
     { code: 'E144', aliases: ['sahyadri', 'sahyadri mangalore', 'sahyadri college of engineering'] },
     { code: 'E146', aliases: ['canara', 'canara engineering college', 'canara mangalore'] },
     { code: 'E150', aliases: ['st joseph', 'sjec', 'st joseph engineering college mangalore'] },
@@ -474,18 +474,33 @@ export function matchCollegeFromDatabase(query: string) {
     const l = query.toLowerCase().replace(/[^\w\s]/g, ' ').trim();
     const queryWords = new Set(l.split(/\s+/).filter(w => w.length >= 2));
 
-    // 1. Direct College Code match (e.g. E173, E001, E005, E269)
+    // 1. Direct College Code match (e.g. E173, E001, E005, E126, E099, E269)
     const codeMatch = query.toUpperCase().match(/\b(E\d{3})\b/);
     if (codeMatch) {
         const found = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === codeMatch[1]);
         if (found) return found;
     }
 
-    // 2. High-priority alias map
+    // 2. High-priority alias map (sorted by alias length descending so specific matches like "bmsit" match before "bms")
+    const flatAliases: Array<{ code: string; alias: string }> = [];
     for (const item of ALIAS_MAP) {
-        if (item.aliases.some(alias => l.includes(alias) || queryWords.has(alias))) {
-            const found = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === item.code);
-            if (found) return found;
+        for (const alias of item.aliases) {
+            flatAliases.push({ code: item.code, alias: alias.toLowerCase() });
+        }
+    }
+    flatAliases.sort((a, b) => b.alias.length - a.alias.length);
+
+    for (const item of flatAliases) {
+        if (item.alias.includes(' ')) {
+            if (l.includes(item.alias)) {
+                const found = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === item.code);
+                if (found) return found;
+            }
+        } else {
+            if (queryWords.has(item.alias)) {
+                const found = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === item.code);
+                if (found) return found;
+            }
         }
     }
 
@@ -493,7 +508,7 @@ export function matchCollegeFromDatabase(query: string) {
     for (const c of COLLEGE_DATABASE) {
         if (c.shortName) {
             const cleanShort = c.shortName.toLowerCase().replace(/[^\w\s]/g, ' ').trim();
-            if (cleanShort.length >= 3 && (queryWords.has(cleanShort) || l.includes(cleanShort))) {
+            if (cleanShort.length >= 2 && queryWords.has(cleanShort)) {
                 return c;
             }
         }
@@ -502,7 +517,7 @@ export function matchCollegeFromDatabase(query: string) {
     // 4. College Name clean direct match
     for (const c of COLLEGE_DATABASE) {
         const cleanName = (c.name || '').toLowerCase().split(',')[0].replace(/[^\w\s]/g, ' ').trim();
-        if (cleanName.length >= 4 && l.includes(cleanName)) {
+        if (cleanName.length >= 6 && l.includes(cleanName)) {
             return c;
         }
     }
