@@ -21,7 +21,7 @@ export const TesselAvatar: React.FC<TesselAvatarProps> = ({
 }) => {
     return (
         <div
-            className={`relative flex items-center justify-center shrink-0 select-none bg-zinc-900 border border-zinc-800 shadow-sm overflow-hidden ${sizeMap[size]} ${className}`}
+            className={`relative flex items-center justify-center shrink-0 select-none bg-slate-900 border border-slate-800 shadow-sm overflow-hidden ${sizeMap[size]} ${className}`}
         >
             {/* Pure Vector Geometric Tessellation Mark */}
             <svg
