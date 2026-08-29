@@ -107,19 +107,7 @@ export class CutoffService {
     }
 
     this.loadPromise = (async () => {
-      // 1. Try In-Memory DataVault (vault_core.bin)
-      try {
-        const vaultRecords = await DataVault.loadVault();
-        if (vaultRecords && vaultRecords.length > 0) {
-          this.cutoffs = vaultRecords;
-          this.isLoaded = true;
-          return this.cutoffs;
-        }
-      } catch (e) {
-        console.warn('Vault loader skipped, trying fallback .dat sources:', e);
-      }
-
-      // 2. Fallback to static .dat file sources
+      // 1. Primary: Load complete high-volume master dataset (240,804 records, 2023-2026)
       try {
         const sources = [
           '/data/kcet_cutoffs_high_volume.dat',
@@ -133,7 +121,7 @@ export class CutoffService {
         let response: Response | null = null;
         for (const url of sources) {
           try {
-            const r = await fetch(url, { cache: 'no-store' });
+            const r = await fetch(url);
             if (r.ok) {
               response = r;
               break;
@@ -168,7 +156,19 @@ export class CutoffService {
           }
         }
       } catch (err) {
-        console.error('Fallback .dat fetch failed:', err);
+        console.error('High volume .dat fetch failed, trying vault fallback:', err);
+      }
+
+      // 2. Fallback to DataVault
+      try {
+        const vaultRecords = await DataVault.loadVault();
+        if (vaultRecords && vaultRecords.length > 0) {
+          this.cutoffs = vaultRecords;
+          this.isLoaded = true;
+          return this.cutoffs;
+        }
+      } catch (e) {
+        console.warn('Vault fallback loader skipped:', e);
       }
 
       // Safe static fallback
