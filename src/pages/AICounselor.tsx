@@ -596,57 +596,27 @@ const AICounselor = () => {
                                 </p>
                             </div>
 
-                            {/* Interactive Step-by-Step Cutoff Finder Hero Card */}
-                            <div className="w-full bg-gradient-to-r from-blue-950/70 via-slate-900/80 to-blue-950/70 border border-blue-500/30 rounded-xl p-3.5 text-left mb-4 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
-                                        <Filter className="w-4 h-4" />
+                            {/* Minimalist Action & Format Bar */}
+                            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2.5 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-5 text-left">
+                                <div className="flex items-center gap-2.5 px-1">
+                                    <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                                        <Filter className="w-3.5 h-3.5" />
                                     </div>
-                                    <div>
-                                        <div className="font-semibold text-slate-100 text-xs sm:text-sm flex items-center gap-2">
-                                            Interactive Cutoff Wizard
-                                            <Badge className="bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-[9px]">
-                                                2023-2026 Live
-                                            </Badge>
-                                        </div>
-                                        <div className="text-[11px] text-slate-400 mt-0.5">
-                                            Step-by-step: College → Year → Round → Category to view cutoffs for all branches.
-                                        </div>
+                                    <div className="text-xs">
+                                        <span className="font-medium text-slate-200">Interactive Cutoff Matrix</span>
+                                        <span className="text-slate-500 ml-1.5 hidden sm:inline">• College, Year, Round & Quota</span>
                                     </div>
                                 </div>
-                                <Button
-                                    size="sm"
-                                    onClick={() => setShowCutoffWizard(!showCutoffWizard)}
-                                    className="w-full sm:w-auto h-8 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-md shrink-0"
-                                >
-                                    <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
-                                    {showCutoffWizard ? "Hide Wizard" : "Launch Wizard"}
-                                </Button>
-                            </div>
 
-                            {/* Query Formats & Pro-Tip Banner */}
-                            <div className="w-full bg-slate-900/80 border border-blue-500/20 rounded-xl p-3.5 text-left mb-6 shadow-sm">
-                                <div className="flex items-center gap-2 mb-2 text-blue-400 font-semibold text-xs">
-                                    <Sparkles className="w-3.5 h-3.5" />
-                                    <span>Fast & Exact Cutoff Formats (All 269 Colleges)</span>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-300">
-                                    <div className="bg-[#080d1a] p-2.5 rounded-lg border border-slate-800/80">
-                                        <div className="text-blue-400/90 text-[10px] uppercase font-bold tracking-wider mb-1">Exact College Cutoff Query</div>
-                                        <div className="font-mono text-slate-200 text-[11px]">[College Code / Name] + [Branch] + [Category] + [Round/Year]</div>
-                                        <div className="text-slate-400 text-[10px] mt-1.5 flex items-center gap-1">
-                                            <span>Example:</span>
-                                            <span className="font-mono text-blue-300 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">E126 BMSIT CSE 3AG Round 2 2026</span>
-                                        </div>
-                                    </div>
-                                    <div className="bg-[#080d1a] p-2.5 rounded-lg border border-slate-800/80">
-                                        <div className="text-blue-400/90 text-[10px] uppercase font-bold tracking-wider mb-1">Rank-Based College Predictor</div>
-                                        <div className="font-mono text-slate-200 text-[11px]">Rank [Number] + [Category] + [Branch Preference]</div>
-                                        <div className="text-slate-400 text-[10px] mt-1.5 flex items-center gap-1">
-                                            <span>Example:</span>
-                                            <span className="font-mono text-blue-300 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">Rank 12500 2AG - which colleges for AIML?</span>
-                                        </div>
-                                    </div>
+                                <div className="flex items-center gap-2 w-full sm:w-auto">
+                                    <Button
+                                        size="sm"
+                                        onClick={() => setShowCutoffWizard(!showCutoffWizard)}
+                                        className="w-full sm:w-auto h-7 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-sm"
+                                    >
+                                        <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
+                                        {showCutoffWizard ? "Hide Matrix" : "Open Cutoffs"}
+                                    </Button>
                                 </div>
                             </div>
 
