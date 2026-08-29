@@ -146,17 +146,40 @@ function getRoundWeight(round: string, preferredRound?: string): number {
     return 10;
 }
 
+let globalCutoffCache: CutoffEntry[] = [];
+
 /**
  * Load cutoff data from master .dat database and DataVault
  */
 async function loadCutoffData(): Promise<CutoffEntry[]> {
-    let cutoffCache: CutoffEntry[] = [];
-    if (cutoffCache && cutoffCache.length > 0) return cutoffCache;
+    if (globalCutoffCache && globalCutoffCache.length > 0) return globalCutoffCache;
+
+    try {
+        const res = await fetch('/data/kcet_cutoffs_high_volume.dat', { cache: 'no-cache' });
+        if (res.ok) {
+            const data = await res.json();
+            const list = Array.isArray(data) ? data : (data.cutoffs || data.data || []);
+            if (list.length > 0) {
+                globalCutoffCache = list.map((c: any) => ({
+                    institute: c.college_name || c.institute || c.institute_code,
+                    institute_code: c.institute_code || c.college_code || '',
+                    course: c.branch_name || c.course || '',
+                    category: c.category || 'GM',
+                    cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
+                    year: String(c.year || '2026'),
+                    round: String(c.round || 'R1')
+                }));
+                return globalCutoffCache;
+            }
+        }
+    } catch (e) {
+        console.warn("Direct fetch in ai-tools failed, trying CutoffService:", e);
+    }
 
     try {
         const raw = await CutoffService.loadCutoffs();
         if (raw && raw.length > 0) {
-            cutoffCache = raw.map(c => ({
+            globalCutoffCache = raw.map(c => ({
                 institute: c.college_name || c.institute_code,
                 institute_code: c.institute_code,
                 course: c.branch_name || c.course,
@@ -165,39 +188,10 @@ async function loadCutoffData(): Promise<CutoffEntry[]> {
                 year: c.year,
                 round: c.round
             }));
-            return cutoffCache;
+            return globalCutoffCache;
         }
     } catch (e) {
-        console.warn("CutoffService load in ai-tools failed, checking static fallback:", e);
-    }
-
-    const sources = [
-        '/data/kcet_cutoffs_high_volume.dat',
-        '/data/kcet_cutoffs_consolidated.dat',
-        '/kcet_cutoffs_high_volume.dat',
-        '/kcet_cutoffs_consolidated.dat'
-    ];
-
-    for (const url of sources) {
-        try {
-            const res = await fetch(url);
-            if (res.ok) {
-                const data = await res.json();
-                const list = Array.isArray(data) ? data : (data.cutoffs || data.data || []);
-                if (list.length > 0) {
-                    cutoffCache = list.map((c: any) => ({
-                        institute: c.college_name || c.institute || c.institute_code,
-                        institute_code: c.institute_code || c.college_code || '',
-                        course: c.branch_name || c.course || '',
-                        category: c.category || 'GM',
-                        cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
-                        year: String(c.year || '2025'),
-                        round: String(c.round || 'R1')
-                    }));
-                    return cutoffCache;
-                }
-            }
-        } catch {}
+        console.warn("CutoffService load in ai-tools failed:", e);
     }
 
     return [];
@@ -564,8 +558,8 @@ export async function toolGetCutoffs(
         const searchTerm = collegeName.toLowerCase();
 
         let matches = cutoffs.filter(c => {
-            if (targetCode && c.institute_code.toUpperCase() === targetCode.toUpperCase()) {
-                return true;
+            if (targetCode) {
+                return c.institute_code.toUpperCase() === targetCode.toUpperCase();
             }
             return c.institute.toLowerCase().includes(searchTerm) || c.institute_code.toLowerCase().includes(searchTerm);
         });

@@ -275,6 +275,29 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
     isFetching = true;
     try {
         onStatus("Scanning high-volume master cutoff database (kcet_cutoffs_high_volume.dat)...");
+        const res = await fetch('/data/kcet_cutoffs_high_volume.dat', { cache: 'no-cache' });
+        if (res.ok) {
+            const raw = await res.json();
+            const list = Array.isArray(raw) ? raw : (raw.cutoffs || raw.data || []);
+            if (list.length > 0) {
+                cachedData = list.map((c: any) => ({
+                    institute: c.college_name || c.institute || c.institute_code,
+                    institute_code: c.institute_code || c.college_code || '',
+                    course: c.branch_name || c.course || '',
+                    category: c.category || 'GM',
+                    cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
+                    year: String(c.year || '2026'),
+                    round: String(c.round || 'R1')
+                }));
+                isFetching = false;
+                return cachedData;
+            }
+        }
+    } catch (e) {
+        console.warn("Direct fetch in gemini.ts failed, falling back to CutoffService:", e);
+    }
+
+    try {
         const allCutoffs = await CutoffService.loadCutoffs();
         if (allCutoffs && allCutoffs.length > 0) {
             cachedData = allCutoffs.map(c => ({
@@ -290,39 +313,7 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
             return cachedData;
         }
     } catch (e) {
-        console.warn("CutoffService load in gemini.ts failed, falling back to static sources:", e);
-    }
-
-    try {
-        const sources = [
-            '/data/kcet_cutoffs_high_volume.dat',
-            '/data/kcet_cutoffs_consolidated.dat',
-            '/kcet_cutoffs_high_volume.dat'
-        ];
-        for (const url of sources) {
-            try {
-                const res = await fetch(url);
-                if (res.ok) {
-                    const raw = await res.json();
-                    const list = Array.isArray(raw) ? raw : (raw.cutoffs || raw.data || []);
-                    if (list.length > 0) {
-                        cachedData = list.map((c: any) => ({
-                            institute: c.college_name || c.institute || c.institute_code,
-                            institute_code: c.institute_code || c.college_code || '',
-                            course: c.branch_name || c.course || '',
-                            category: c.category || 'GM',
-                            cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
-                            year: String(c.year || '2025'),
-                            round: String(c.round || 'R1')
-                        }));
-                        isFetching = false;
-                        return cachedData;
-                    }
-                }
-            } catch {}
-        }
-    } catch (err) {
-        console.error("Data fetch error in gemini.ts:", err);
+        console.warn("CutoffService load in gemini.ts failed:", e);
     } finally {
         isFetching = false;
     }
