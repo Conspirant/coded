@@ -534,6 +534,21 @@ function buildActionChips(
     return actionChips;
 }
 
+function cleanAiResponse(text: string): string {
+    if (!text) return '';
+    let cleaned = text;
+
+    // Remove trailing or standalone meta-commentary in parentheses or brackets
+    cleaned = cleaned.replace(/\s*\([^\n)]*(?:zero\s*(?:fluff|emoji|emojis|hallucination)|no\s*emojis?|adheres?\s*to|senior\s*fixes|strict\s*professionalism|guidelines?|rules?)[^\n)]*\)\s*$/gim, '');
+    cleaned = cleaned.replace(/^\s*\([^\n)]*(?:zero\s*(?:fluff|emoji|emojis|hallucination)|no\s*emojis?|adheres?\s*to|senior\s*fixes|strict\s*professionalism|guidelines?|rules?)[^\n)]*\)\s*$/gim, '');
+    cleaned = cleaned.replace(/\s*\[[^\n\]]*(?:zero\s*(?:fluff|emoji|emojis)|no\s*emojis?|adheres?\s*to|senior\s*fixes|strict\s*professionalism)[^\n\]]*\]\s*$/gim, '');
+
+    // Remove any leftover emojis
+    cleaned = cleaned.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F018}-\u{1F270}\u{2388}-\u{23FF}]/gu, '');
+
+    return cleaned.trim();
+}
+
 export async function sendMessage(
     userMessage: string,
     conversationHistory: Message[],
@@ -615,9 +630,10 @@ Please tailor your suggestions specifically to these parameters.`;
     try {
         const nvidiaContent = await tryNvidiaChatFallback(messages);
         if (nvidiaContent && nvidiaContent.trim().length > 100) {
-            const actionChips = buildActionChips(nvidiaContent, userMessage, profileFilters);
+            const sanitized = cleanAiResponse(nvidiaContent);
+            const actionChips = buildActionChips(sanitized, userMessage, profileFilters);
             return {
-                response: nvidiaContent,
+                response: sanitized,
                 recommendations,
                 actionChips
             };
@@ -633,9 +649,10 @@ Please tailor your suggestions specifically to these parameters.`;
             try {
                 const result = await tryModel(model, messages);
                 if (result.success && result.content && result.content.trim().length > 50) {
-                    const actionChips = buildActionChips(result.content, userMessage, profileFilters);
+                    const sanitized = cleanAiResponse(result.content);
+                    const actionChips = buildActionChips(sanitized, userMessage, profileFilters);
                     return {
-                        response: result.content,
+                        response: sanitized,
                         recommendations,
                         actionChips
                     };
