@@ -245,7 +245,7 @@ const STOP_WORDS = new Set([
 ]);
 
 import { CutoffService } from '@/lib/cutoff-service';
-import { matchCollegeFromDatabase } from './ai-tools';
+import { matchCollegeFromDatabase, matchesCourseBranch } from './ai-tools';
 
 async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
     if (cachedData && cachedData.length > 0) return cachedData;
@@ -325,43 +325,54 @@ function searchRelevantData(query: string, data: CutoffEntry[]): CutoffEntry[] {
     const matchedCol = matchCollegeFromDatabase(query);
     const targetCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
 
+    const courseMatch = query.match(/\b(data\s*science|data\s*sc|ai\s*&?\s*ml|aiml|artificial\s*intelligence|cyber\s*security|cyber|iot|computer\s*science|information\s*science|cse|cs|ise|is|ece|eee|mech|civil|ete|eie|vlsi|robotics|biotech|chemical|it|tc|ei)\b/i);
+    const targetCourse = courseMatch ? courseMatch[0] : undefined;
+
+    const queryCategoryMatch = query.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+    const targetCategory = queryCategoryMatch ? queryCategoryMatch[0].toUpperCase() : undefined;
+
+    const lowerQ = query.toLowerCase();
+    const wantsR2 = lowerQ.includes('r2') || lowerQ.includes('round 2') || lowerQ.includes('round-2') || lowerQ.includes('round2') || lowerQ.includes('2nd round');
+    const wantsR1 = lowerQ.includes('r1') || lowerQ.includes('round 1') || lowerQ.includes('round-1') || lowerQ.includes('round1') || lowerQ.includes('1st round');
+
+    const yearMatch = query.match(/\b(202[3-6])\b/);
+    const targetYear = yearMatch ? yearMatch[1] : undefined;
+
     if (terms.length === 0 && !targetCode && !rankMatch) return [];
 
-    return data.filter(item => {
+    let filtered = data.filter(item => {
         if (targetCode && item.institute_code.toUpperCase() !== targetCode.toUpperCase()) return false;
+        if (targetCourse && !matchesCourseBranch(item.course, targetCourse)) return false;
+        if (targetCategory && item.category.toUpperCase() !== targetCategory && !item.category.toUpperCase().startsWith(targetCategory)) return false;
+        if (targetYear && item.year !== targetYear) return false;
+        return true;
+    });
 
-        let score = 0;
-        const cleanCourse = item.course.replace(/[\r\n\s\-_()]+/g, ' ').toLowerCase();
-        const itemText = `${item.institute} ${cleanCourse} ${item.category} ${item.institute_code} ${item.year} ${item.round}`.toLowerCase();
+    if (filtered.length === 0) {
+        filtered = data.filter(item => {
+            if (targetCode && item.institute_code.toUpperCase() !== targetCode.toUpperCase()) return false;
+            if (targetCourse && !matchesCourseBranch(item.course, targetCourse)) return false;
+            return true;
+        });
+    }
 
-        for (const term of terms) {
-            if (itemText.includes(term)) score += 1;
-        }
+    if (filtered.length === 0) {
+        filtered = data.filter(item => {
+            if (targetCode && item.institute_code.toUpperCase() !== targetCode.toUpperCase()) return false;
+            let score = 0;
+            const cleanCourse = item.course.replace(/[\r\n\s\-_()]+/g, ' ').toLowerCase();
+            const itemText = `${item.institute} ${cleanCourse} ${item.category} ${item.institute_code} ${item.year} ${item.round}`.toLowerCase();
+            for (const term of terms) {
+                if (itemText.includes(term)) score += 1;
+            }
+            return score >= Math.max(1, Math.floor(terms.length * 0.4));
+        });
+    }
 
-        const queryCategory = query.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
-        if (queryCategory && item.category.toLowerCase() === queryCategory[0].toLowerCase()) {
-            score += 3;
-        }
-
-        if (query.toLowerCase().includes('r2') || query.toLowerCase().includes('round 2')) {
-            if (item.round.toUpperCase().includes('R2')) score += 2;
-        } else if (query.toLowerCase().includes('r1') || query.toLowerCase().includes('round 1')) {
-            if (item.round.toUpperCase().includes('R1')) score += 2;
-        }
-
-        if (item.year === '2025') score += 2;
-        if (item.year === '2024') score += 1;
-
-        if (targetCode) return true;
-
-        const requiredScore = Math.max(1, Math.floor(terms.length * 0.4));
-        return score >= requiredScore;
-    })
+    return filtered
         .sort((a, b) => {
             if (a.year !== b.year) return b.year.localeCompare(a.year);
-            const lowerQ = query.toLowerCase();
-            const wantsR2 = lowerQ.includes('r2') || lowerQ.includes('round 2') || lowerQ.includes('round-2');
-            const wantsR1 = lowerQ.includes('r1') || lowerQ.includes('round 1') || lowerQ.includes('round-1');
+
             const isR2A = a.round.toUpperCase().includes('R2');
             const isR2B = b.round.toUpperCase().includes('R2');
             const isR1A = a.round.toUpperCase().includes('R1');

@@ -48,38 +48,92 @@ function matchesCourseBranch(courseDb: string, targetCourse?: string): boolean {
     const normDb = normalizeCourseText(courseDb);
     const normTarget = normalizeCourseText(targetCourse);
 
-    if (cleanDb.includes(cleanTarget) || cleanTarget.includes(cleanDb)) return true;
-    if (normDb.includes(normTarget) || normTarget.includes(normDb)) return true;
+    if (cleanDb === cleanTarget || normDb === normTarget) return true;
 
+    // 1. Electronics & Instrumentation (EIE / EI) - Checked first to avoid false match with ECE
+    if (normTarget.includes('eie') || normTarget.includes('instrument') || normTarget.includes('inst') || normTarget === 'ei') {
+        return normDb.includes('instrument') || normDb.includes('inst') || normDb.startsWith('ei') || normDb.includes('eie');
+    }
+
+    // 2. Electronics & Telecommunication (ETE / TC / TE)
+    if (normTarget.includes('ete') || normTarget.includes('telecom') || normTarget.includes('telecommunicat') || normTarget === 'et' || normTarget === 'tc') {
+        return normDb.includes('telecom') || normDb.includes('telecommunicat') || normDb.startsWith('et') || normDb.includes('ete');
+    }
+
+    // 3. VLSI Design & Technology
+    if (normTarget.includes('vlsi') || normTarget === 'ev') {
+        return normDb.includes('vlsi') || normDb.startsWith('ev');
+    }
+
+    // 4. Robotics & AI / Automation
+    if (normTarget.includes('robotics') || normTarget.includes('robot') || normTarget === 'ra' || normTarget === 'rai') {
+        return normDb.includes('robotic') || normDb.includes('robot') || normDb.startsWith('ra');
+    }
+
+    // 5. Data Science / Analytics (DS / CSDS / AIDS)
     if (normTarget.includes('datasc') || normTarget.includes('datascience') || normTarget.includes('data') || (normTarget.startsWith('ds') && !normTarget.includes('design'))) {
-        return normDb.includes('datasc') || normDb.includes('datascience') || normDb.includes('data') || (normDb.startsWith('ds') && !normDb.includes('design'));
+        return normDb.includes('datasc') || normDb.includes('datascience') || normDb.includes('data') || (normDb.startsWith('ds') && !normDb.includes('design')) || normDb.includes('cd');
     }
+
+    // 6. AI & Machine Learning (AIML / AI / CACS)
     if (normTarget.includes('aiml') || normTarget.includes('ai') || normTarget.includes('artificial') || normTarget.includes('machinelearning')) {
-        return normDb.includes('ai') || normDb.includes('artificial') || normDb.includes('machinelearning') || normDb.includes('aiml') || normDb.includes('cacs');
+        return normDb.includes('ai') || normDb.includes('artificial') || normDb.includes('machinelearning') || normDb.includes('aiml') || normDb.includes('cacs') || normDb.includes('ad');
     }
-    if (normTarget.includes('cyber') || normTarget.includes('security')) {
-        return normDb.includes('cyber') || normDb.includes('security');
+
+    // 7. Cyber Security / IoT / Blockchain
+    if (normTarget.includes('cyber') || normTarget.includes('security') || normTarget.includes('iot') || normTarget.includes('blockchain')) {
+        return normDb.includes('cyber') || normDb.includes('security') || normDb.includes('iot') || normDb.includes('blockchain') || normDb.includes('cy') || normDb.includes('cb');
     }
-    if (normTarget.includes('business') || normTarget.includes('bs')) {
-        return normDb.includes('business');
-    }
+
+    // 8. Computer Science & Engineering Core (CSE)
     if (normTarget.includes('cse') || normTarget.includes('computerscience') || normTarget === 'cs' || normTarget.includes('computer')) {
         return normDb.includes('computer') || normDb.includes('cs') || normDb.includes('cse');
     }
-    if (normTarget.includes('ise') || normTarget.includes('infoscience') || normTarget.includes('information') || normTarget === 'is') {
-        return normDb.includes('information') || normDb.includes('info') || normDb.includes('ise') || normDb.startsWith('ie');
+
+    // 9. Information Science & Engineering (ISE / IT)
+    if (normTarget.includes('ise') || normTarget.includes('infoscience') || normTarget.includes('information') || normTarget === 'is' || normTarget === 'it') {
+        return normDb.includes('information') || normDb.includes('info') || normDb.includes('ise') || normDb.startsWith('ie') || normDb.includes('it');
     }
+
+    // 10. Electrical & Electronics (EEE)
+    if (normTarget.includes('eee') || normTarget.includes('electrical') || normTarget === 'ee') {
+        return (normDb.includes('electrical') && !normDb.includes('telecom')) || normDb.includes('eee') || normDb.startsWith('ee');
+    }
+
+    // 11. Electronics & Communication (ECE)
     if (normTarget.includes('ece') || normTarget.includes('electronics') || normTarget === 'ec') {
+        if (normDb.includes('instrument') || normDb.includes('telecom') || normDb.includes('vlsi')) {
+            return false;
+        }
         return normDb.includes('electronics') || normDb.includes('ece') || normDb.startsWith('ec');
     }
+
+    // 12. Mechanical Engineering
     if (normTarget.includes('mech') || normTarget === 'me' || normTarget.includes('mechanical')) {
         return normDb.includes('mechanical') || normDb.includes('mech') || normDb.startsWith('me');
     }
+
+    // 13. Civil Engineering
     if (normTarget.includes('civil') || normTarget === 'cv' || normTarget === 'ce') {
         return normDb.includes('civil') || normDb.startsWith('ce') || normDb.startsWith('cv');
     }
 
-    return false;
+    // 14. Aerospace & Aeronautical
+    if (normTarget.includes('aero') || normTarget.includes('aerospace') || normTarget.includes('aeronautical') || normTarget === 'ae') {
+        return normDb.includes('aero') || normDb.startsWith('ae');
+    }
+
+    // 15. Biotechnology / Biomedical
+    if (normTarget.includes('biotech') || normTarget.includes('biotechnology') || normTarget.includes('biomedical') || normTarget === 'bt' || normTarget === 'bm') {
+        return normDb.includes('biotech') || normDb.includes('biomed') || normDb.startsWith('bt') || normDb.startsWith('bm');
+    }
+
+    // 16. Chemical Engineering
+    if (normTarget.includes('chemical') || normTarget === 'ch') {
+        return normDb.includes('chemical') || normDb.startsWith('ch');
+    }
+
+    return cleanDb.includes(cleanTarget) || cleanTarget.includes(cleanDb);
 }
 
 function getRoundWeight(round: string, preferredRound?: string): number {
@@ -509,8 +563,17 @@ export async function toolGetCutoffs(
             const normCat = category.toUpperCase().replace(/\s+/g, '');
             matches = matches.filter(c => c.category.toUpperCase().replace(/\s+/g, '') === normCat || c.category.toUpperCase().startsWith(normCat));
         }
-        if (year && year !== '2026') {
-            matches = matches.filter(c => c.year === year);
+        if (year) {
+            const yearMatches = matches.filter(c => c.year === year);
+            if (yearMatches.length > 0) {
+                matches = yearMatches;
+            }
+        }
+        if (preferredRound) {
+            const roundMatches = matches.filter(c => c.round.toUpperCase().includes(preferredRound.toUpperCase()) || c.round.toUpperCase() === preferredRound.toUpperCase());
+            if (roundMatches.length > 0) {
+                matches = roundMatches;
+            }
         }
 
         // Smart sorting:
@@ -694,9 +757,9 @@ export function parseQueryForTools(query: string, defaultProfile?: StudentProfil
 
     // Extract course/branch (prioritize specific specializations first)
     const coursePatterns = [
-        /\b(data\s*science|data\s*sc|ai\s*&?\s*ml|aiml|artificial\s*intelligence|cyber\s*security|cyber|iot|computer\s*science|information\s*science|cse|cs|ise|is|ece|eee|mech|civil|ete|eie|it)\b/i,
+        /\b(data\s*science|data\s*sc|ai\s*&?\s*ml|aiml|artificial\s*intelligence|cyber\s*security|cyber|iot|computer\s*science|information\s*science|cse|cs|ise|is|ece|eee|mech|civil|ete|eie|vlsi|robotics|biotech|chemical|it|tc|ei)\b/i,
         /(?:branch|course)\s*(?:is|:)?\s*([A-Za-z\s&]+)/i,
-        /\bfor\s+(cse|cs|ece|ise|mechanical|civil|computer science|electronics|data science|aiml)\b/i
+        /\bfor\s+(cse|cs|ece|ise|eie|ete|vlsi|mechanical|civil|computer science|electronics|data science|aiml)\b/i
     ];
 
     for (const pattern of coursePatterns) {
@@ -712,12 +775,14 @@ export function parseQueryForTools(query: string, defaultProfile?: StudentProfil
     if (yearMatch) result.year = yearMatch[1];
 
     // Extract round
-    if (lowerQuery.includes('r2') || lowerQuery.includes('round 2') || lowerQuery.includes('round-2') || lowerQuery.includes('2nd round')) {
+    if (lowerQuery.includes('r2') || lowerQuery.includes('round 2') || lowerQuery.includes('round-2') || lowerQuery.includes('round2') || lowerQuery.includes('2nd round')) {
         result.round = 'R2';
-    } else if (lowerQuery.includes('r1') || lowerQuery.includes('round 1') || lowerQuery.includes('round-1') || lowerQuery.includes('1st round')) {
+    } else if (lowerQuery.includes('r1') || lowerQuery.includes('round 1') || lowerQuery.includes('round-1') || lowerQuery.includes('round1') || lowerQuery.includes('1st round')) {
         result.round = 'R1';
-    } else if (lowerQuery.includes('r3') || lowerQuery.includes('extended') || lowerQuery.includes('round 3') || lowerQuery.includes('3rd round')) {
+    } else if (lowerQuery.includes('r3') || lowerQuery.includes('extended') || lowerQuery.includes('round 3') || lowerQuery.includes('round-3') || lowerQuery.includes('round3') || lowerQuery.includes('3rd round')) {
         result.round = 'R3';
+    } else if (lowerQuery.includes('mock2') || lowerQuery.includes('mock 2')) {
+        result.round = 'MOCK2';
     } else if (lowerQuery.includes('mock')) {
         result.round = 'MOCK';
     }
