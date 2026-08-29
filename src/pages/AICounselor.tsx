@@ -39,13 +39,12 @@ import {
     Cpu,
     Scale,
     FileCheck,
-    ExternalLink,
-    Filter
+    ExternalLink
 } from "lucide-react";
 import { sendMessage, PROMPT_CATEGORIES, type Message } from "@/lib/gemini";
 import type { StudentProfileFilters } from "@/lib/ai-tools";
 import { CounselorRecommendationCard } from "@/components/counselor/CounselorRecommendationCard";
-import { InteractiveCutoffWizard } from "@/components/counselor/InteractiveCutoffWizard";
+import { InChatMessageCutoffSelector } from "@/components/counselor/InChatMessageCutoffSelector";
 import { TesselAvatar } from "@/components/TesselAvatar";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -59,7 +58,6 @@ const AICounselor = () => {
     const [error, setError] = useState<string | null>(null);
     const [showTransparency, setShowTransparency] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
-    const [showCutoffWizard, setShowCutoffWizard] = useState(false);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [status, setStatus] = useState<string>("");
     const [selectedCategoryTab, setSelectedCategoryTab] = useState(0);
@@ -136,7 +134,9 @@ const AICounselor = () => {
                 content: result.response,
                 timestamp: new Date(),
                 recommendations: result.recommendations,
-                actionChips: result.actionChips
+                actionChips: result.actionChips,
+                quickReplies: result.quickReplies,
+                cutoffSelector: result.cutoffSelector
             };
 
             setMessages(prev => [...prev, assistantMessage]);
@@ -352,29 +352,9 @@ const AICounselor = () => {
                         </button>
 
                         <Button
-                            variant={showCutoffWizard ? "secondary" : "ghost"}
-                            size="sm"
-                            onClick={() => {
-                                setShowCutoffWizard(!showCutoffWizard);
-                                if (showFilters) setShowFilters(false);
-                            }}
-                            className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
-                                showCutoffWizard 
-                                    ? "bg-blue-600 text-white font-semibold shadow-md" 
-                                    : "bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900/60 border border-blue-800/40"
-                            }`}
-                        >
-                            <Filter className="h-3.5 w-3.5 text-blue-400" />
-                            <span>Cutoff Wizard</span>
-                        </Button>
-
-                        <Button
                             variant={isFilterActive ? "secondary" : "ghost"}
                             size="sm"
-                            onClick={() => {
-                                setShowFilters(!showFilters);
-                                if (showCutoffWizard) setShowCutoffWizard(false);
-                            }}
+                            onClick={() => setShowFilters(!showFilters)}
                             className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
                                 isFilterActive 
                                     ? "bg-blue-600/20 text-blue-400 border border-blue-500/30 font-semibold" 
@@ -563,21 +543,6 @@ const AICounselor = () => {
                     </div>
                 )}
 
-                {/* Expandable Interactive Cutoff Wizard Drawer */}
-                {showCutoffWizard && (
-                    <div className="px-4 py-3.5 border-b border-blue-900/40 bg-[#080d1a]/95 backdrop-blur-md animate-fade-in-up z-10">
-                        <div className="max-w-4xl mx-auto">
-                            <InteractiveCutoffWizard
-                                onSelectForChat={(prompt) => {
-                                    setShowCutoffWizard(false);
-                                    handleSend(prompt);
-                                }}
-                                onClose={() => setShowCutoffWizard(false)}
-                            />
-                        </div>
-                    </div>
-                )}
-
                 {/* Conversation Viewport */}
                 <ScrollArea ref={scrollAreaRef} className="flex-1 px-3 md:px-6">
                     {messages.length === 0 ? (
@@ -594,30 +559,6 @@ const AICounselor = () => {
                                 <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
                                     KCET & COMEDK strategy, cutoff lookup for all 269 colleges, branch roadmaps, or general conversation.
                                 </p>
-                            </div>
-
-                            {/* Minimalist Action & Format Bar */}
-                            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-2.5 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-5 text-left">
-                                <div className="flex items-center gap-2.5 px-1">
-                                    <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
-                                        <Filter className="w-3.5 h-3.5" />
-                                    </div>
-                                    <div className="text-xs">
-                                        <span className="font-medium text-slate-200">Interactive Cutoff Matrix</span>
-                                        <span className="text-slate-500 ml-1.5 hidden sm:inline">• College, Year, Round & Quota</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-2 w-full sm:w-auto">
-                                    <Button
-                                        size="sm"
-                                        onClick={() => setShowCutoffWizard(!showCutoffWizard)}
-                                        className="w-full sm:w-auto h-7 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-sm"
-                                    >
-                                        <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
-                                        {showCutoffWizard ? "Hide Matrix" : "Open Cutoffs"}
-                                    </Button>
-                                </div>
                             </div>
 
                             {/* Prompt Categories */}
@@ -748,6 +689,33 @@ const AICounselor = () => {
                                                     {message.content}
                                                 </ReactMarkdown>
                                             </div>
+
+                                            {/* In-Chat Interactive Cutoff Controls */}
+                                            {message.cutoffSelector && (
+                                                <InChatMessageCutoffSelector
+                                                    collegeCode={message.cutoffSelector.collegeCode}
+                                                    collegeName={message.cutoffSelector.collegeName}
+                                                    currentYear={message.cutoffSelector.currentYear}
+                                                    currentRound={message.cutoffSelector.currentRound}
+                                                    currentCategory={message.cutoffSelector.currentCategory}
+                                                    onSelectCombination={(q) => handleSend(q)}
+                                                />
+                                            )}
+
+                                            {/* In-Chat Quick Reply Chips */}
+                                            {message.quickReplies && message.quickReplies.length > 0 && (
+                                                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                                                    {message.quickReplies.map((qr, qIdx) => (
+                                                        <button
+                                                            key={qIdx}
+                                                            onClick={() => handleSend(qr)}
+                                                            className="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-blue-600 hover:text-white border border-slate-700/80 text-[11px] text-slate-300 font-mono transition-colors"
+                                                        >
+                                                            {qr}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
 
                                             {/* Action Chips */}
                                             {message.actionChips && message.actionChips.length > 0 && (

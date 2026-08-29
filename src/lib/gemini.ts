@@ -19,6 +19,14 @@ export interface Message {
     timestamp: Date;
     recommendations?: RecommendationCardData[];
     actionChips?: Array<{ label: string; url: string; icon?: string }>;
+    quickReplies?: string[];
+    cutoffSelector?: {
+        collegeCode: string;
+        collegeName: string;
+        currentYear?: string;
+        currentRound?: string;
+        currentCategory?: string;
+    };
 }
 
 // Data interfaces
@@ -558,7 +566,19 @@ export async function sendMessage(
     conversationHistory: Message[],
     onStatusUpdate?: (status: string) => void,
     profileFilters?: StudentProfileFilters
-): Promise<{ response: string; recommendations: RecommendationCardData[]; actionChips: Array<{ label: string; url: string }> }> {
+): Promise<{
+    response: string;
+    recommendations: RecommendationCardData[];
+    actionChips: Array<{ label: string; url: string }>;
+    quickReplies?: string[];
+    cutoffSelector?: {
+        collegeCode: string;
+        collegeName: string;
+        currentYear?: string;
+        currentRound?: string;
+        currentCategory?: string;
+    };
+}> {
     let recommendations: RecommendationCardData[] = [];
     let toolContext = "";
 
@@ -575,9 +595,42 @@ export async function sendMessage(
         console.error("Tool execution failed:", e);
     }
 
+    // Detect matched college for in-chat cutoff controls
+    let cutoffSelector: { collegeCode: string; collegeName: string; currentYear?: string; currentRound?: string; currentCategory?: string } | undefined;
+    let quickReplies: string[] = [];
+
+    const lowerMsg = userMessage.toLowerCase();
+    const matchedCol = matchCollegeFromDatabase(userMessage);
+    const codeMatch = userMessage.toUpperCase().match(/E\d{3}/);
+    const foundCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
+
+    if (foundCode && (lowerMsg.includes('cutoff') || lowerMsg.includes('cut off') || lowerMsg.includes('round') || lowerMsg.includes('branch') || lowerMsg.includes('rank') || lowerMsg.includes('college'))) {
+        const foundName = matchedCol ? (matchedCol.shortName || matchedCol.name) : foundCode;
+        const yearMatch = userMessage.match(/\b(202[3-6])\b/);
+        const curYear = yearMatch ? yearMatch[1] : "2026";
+        const isR1 = lowerMsg.includes('r1') || lowerMsg.includes('round 1') || lowerMsg.includes('round1');
+        const curRound = isR1 ? "R1" : "R2";
+        const catMatch = userMessage.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
+        const curCat = catMatch ? catMatch[0].toUpperCase() : (profileFilters?.category || "3AG");
+
+        cutoffSelector = {
+            collegeCode: foundCode,
+            collegeName: foundName,
+            currentYear: curYear,
+            currentRound: curRound,
+            currentCategory: curCat
+        };
+
+        quickReplies = [
+            `${foundCode} 3AG Round 2 2026`,
+            `${foundCode} GM Round 2 2026`,
+            `${foundCode} 2AG Round 2 2026`,
+            `${foundCode} 2025 vs 2026 Cutoff Trend`
+        ];
+    }
+
     // Context from RAG dataset
     let contextData = "";
-    const lowerMsg = userMessage.toLowerCase();
     const needsData = (
         lowerMsg.includes('cutoff') ||
         lowerMsg.includes('rank') ||
@@ -639,7 +692,9 @@ Please tailor your suggestions specifically to these parameters.`;
             return {
                 response: sanitized,
                 recommendations,
-                actionChips
+                actionChips,
+                quickReplies,
+                cutoffSelector
             };
         }
     } catch (e) {
@@ -658,7 +713,9 @@ Please tailor your suggestions specifically to these parameters.`;
                     return {
                         response: sanitized,
                         recommendations,
-                        actionChips
+                        actionChips,
+                        quickReplies,
+                        cutoffSelector
                     };
                 }
 
