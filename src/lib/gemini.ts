@@ -20,6 +20,7 @@ export interface Message {
     recommendations?: RecommendationCardData[];
     actionChips?: Array<{ label: string; url: string; icon?: string }>;
     quickReplies?: string[];
+    stepType?: 'college' | 'year' | 'round' | 'category';
 }
 
 // Data interfaces
@@ -559,7 +560,7 @@ function handleConversationalCutoffStep(
     conversationHistory: Message[] = [],
     profileFilters?: StudentProfileFilters,
     dataset?: CutoffEntry[]
-): { handled: boolean; response: string; quickReplies: string[] } | null {
+): { handled: boolean; response: string; quickReplies: string[]; stepType?: 'college' | 'year' | 'round' | 'category' } | null {
     const raw = userMessage.trim();
     const lower = raw.toLowerCase();
 
@@ -582,7 +583,7 @@ function handleConversationalCutoffStep(
     if (isGenericCutoffTrigger) {
         return {
             handled: true,
-            response: `### Step 1: Select College\n\nWhich college's KCET cutoffs would you like to explore? Tap any of the popular colleges below or type any college code or name:`,
+            response: `### Step 1: Select College\n\nWhich college's KCET cutoffs would you like to explore? Choose from all 269 colleges using the searchable dropdown below, or tap a popular choice:`,
             quickReplies: [
                 "E005 RVCE",
                 "E003 BMSCE",
@@ -592,7 +593,8 @@ function handleConversationalCutoffStep(
                 "E001 UVCE",
                 "E173 Sai Vidya",
                 "E099 NHCE"
-            ]
+            ],
+            stepType: "college"
         };
     }
 
@@ -686,7 +688,8 @@ function handleConversationalCutoffStep(
                 "2025",
                 "2024",
                 "2023"
-            ]
+            ],
+            stepType: "year"
         };
     }
 
@@ -700,7 +703,8 @@ function handleConversationalCutoffStep(
                 "Round 1",
                 "Round 3 / Extended",
                 "Mock Round"
-            ]
+            ],
+            stepType: "round"
         };
     }
 
@@ -708,7 +712,7 @@ function handleConversationalCutoffStep(
     if (!foundCategory) {
         return {
             handled: true,
-            response: `### Step 4: Select Reservation Category Quota\n\nWhich category quota do you want to inspect for **${collegeName} (${collegeCode}) — ${foundYear} Round ${foundRound}**?`,
+            response: `### Step 4: Select Reservation Category Quota\n\nWhich category quota do you want to inspect for **${collegeName} (${collegeCode}) — ${foundYear} Round ${foundRound}**? Choose any of all 25 categories from the dropdown below or tap a quick quota:`,
             quickReplies: [
                 "3AG",
                 "GM",
@@ -735,7 +739,8 @@ function handleConversationalCutoffStep(
                 "GMK",
                 "GMR",
                 "SNQ"
-            ]
+            ],
+            stepType: "category"
         };
     }
 
@@ -785,6 +790,7 @@ export async function sendMessage(
     recommendations: RecommendationCardData[];
     actionChips: Array<{ label: string; url: string }>;
     quickReplies?: string[];
+    stepType?: 'college' | 'year' | 'round' | 'category';
 }> {
     let recommendations: RecommendationCardData[] = [];
     let toolContext = "";
@@ -802,7 +808,8 @@ export async function sendMessage(
                 response: stepResult.response,
                 recommendations: [],
                 actionChips,
-                quickReplies: stepResult.quickReplies
+                quickReplies: stepResult.quickReplies,
+                stepType: stepResult.stepType
             };
         }
     } catch (e) {

@@ -54,7 +54,8 @@ import {
     Scale,
     FileCheck,
     ExternalLink,
-    Filter
+    Filter,
+    Search
 } from "lucide-react";
 import { sendMessage, PROMPT_CATEGORIES, type Message } from "@/lib/gemini";
 import type { StudentProfileFilters } from "@/lib/ai-tools";
@@ -186,7 +187,8 @@ const AICounselor = () => {
                 timestamp: new Date(),
                 recommendations: result.recommendations,
                 actionChips: result.actionChips,
-                quickReplies: result.quickReplies
+                quickReplies: result.quickReplies,
+                stepType: result.stepType
             };
 
             setMessages(prev => [...prev, assistantMessage]);
@@ -907,6 +909,84 @@ const AICounselor = () => {
                                                     {message.content}
                                                 </ReactMarkdown>
                                             </div>
+
+                                            {/* In-Message 269-College Searchable Dropdown */}
+                                            {message.stepType === 'college' && (
+                                                <div className="pt-2.5 pb-1 border-t border-slate-800/60 space-y-2">
+                                                    <div className="text-[10px] uppercase font-mono font-semibold text-blue-400/90 tracking-wider">
+                                                        Search & Select Any of all 269 Colleges:
+                                                    </div>
+                                                    <div className="max-w-md">
+                                                        <Popover>
+                                                            <PopoverTrigger asChild>
+                                                                <Button
+                                                                    variant="outline"
+                                                                    role="combobox"
+                                                                    className="w-full h-9 justify-between text-xs bg-slate-900/90 border-blue-800/50 text-slate-200 hover:bg-slate-800 hover:text-white font-normal truncate shadow-sm"
+                                                                >
+                                                                    <span className="truncate flex items-center gap-1.5 font-mono text-slate-300">
+                                                                        <Search className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                                                                        Choose any College from all 269...
+                                                                    </span>
+                                                                    <ChevronsUpDown className="ml-1 h-3.5 w-3.5 shrink-0 opacity-60" />
+                                                                </Button>
+                                                            </PopoverTrigger>
+                                                            <PopoverContent className="w-[320px] sm:w-[420px] p-0 bg-slate-950 border-slate-800 text-slate-200 z-50">
+                                                                <Command className="bg-slate-950 text-slate-200">
+                                                                    <CommandInput placeholder="Type college name or code (e.g. E126, RVCE, BMSIT)..." className="h-9 text-xs text-slate-200" />
+                                                                    <CommandList className="max-h-64">
+                                                                        <CommandEmpty className="text-xs p-3 text-slate-500">No college found.</CommandEmpty>
+                                                                        <CommandGroup heading="All 269 Karnataka Engineering Colleges">
+                                                                            {COLLEGE_DATABASE.map((c) => (
+                                                                                <CommandItem
+                                                                                    key={c.code}
+                                                                                    value={`${c.code} ${c.name} ${c.shortName} ${c.city}`}
+                                                                                    onSelect={() => {
+                                                                                        handleSend(`${c.code} ${c.shortName || c.name}`);
+                                                                                    }}
+                                                                                    className="text-xs hover:bg-blue-600/20 cursor-pointer flex items-center justify-between py-2"
+                                                                                >
+                                                                                    <div className="flex flex-col truncate">
+                                                                                        <span className="font-semibold text-slate-100 font-mono text-xs">
+                                                                                            {c.code} - {c.shortName}
+                                                                                        </span>
+                                                                                        <span className="text-[10px] text-slate-400 truncate">
+                                                                                            {c.name} ({c.city})
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </CommandItem>
+                                                                            ))}
+                                                                        </CommandGroup>
+                                                                    </CommandList>
+                                                                </Command>
+                                                            </PopoverContent>
+                                                        </Popover>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* In-Message Category Dropdown */}
+                                            {message.stepType === 'category' && (
+                                                <div className="pt-2.5 pb-1 border-t border-slate-800/60 space-y-2">
+                                                    <div className="text-[10px] uppercase font-mono font-semibold text-blue-400/90 tracking-wider">
+                                                        Select from all 25 Reservation Quotas:
+                                                    </div>
+                                                    <div className="max-w-xs">
+                                                        <Select onValueChange={(val) => handleSend(val)}>
+                                                            <SelectTrigger className="h-9 text-xs bg-slate-900/90 border-blue-800/50 text-slate-200">
+                                                                <SelectValue placeholder="Choose any Category Quota (All 25)..." />
+                                                            </SelectTrigger>
+                                                            <SelectContent className="bg-slate-950 border-slate-800 text-slate-200 max-h-64 z-50">
+                                                                {ALL_KEA_CATEGORIES.map((cat) => (
+                                                                    <SelectItem key={cat.code} value={cat.code} className="text-xs">
+                                                                        {cat.label}
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             {/* In-Chat Quick Reply Chips */}
                                             {message.quickReplies && message.quickReplies.length > 0 && (
