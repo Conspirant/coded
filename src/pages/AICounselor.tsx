@@ -680,7 +680,17 @@ const AICounselor = () => {
                                 </div>
 
                                 {/* 2. Year Select */}
-                                <Select value={cutoffYear} onValueChange={setCutoffYear}>
+                                <Select 
+                                    value={cutoffYear} 
+                                    onValueChange={(yr) => {
+                                        setCutoffYear(yr);
+                                        if (yr === "2026" && cutoffRound === "R3") {
+                                            setCutoffRound("R2");
+                                        } else if (yr === "2023" && (cutoffRound === "MOCK" || cutoffRound === "MOCK2")) {
+                                            setCutoffRound("R2");
+                                        }
+                                    }}
+                                >
                                     <SelectTrigger className="h-8 text-[11px] bg-slate-900 border-slate-800 text-slate-200">
                                         <SelectValue placeholder="Year" />
                                     </SelectTrigger>
@@ -692,7 +702,7 @@ const AICounselor = () => {
                                     </SelectContent>
                                 </Select>
 
-                                {/* 3. Round Select */}
+                                {/* 3. Round Select (Filtered by Year) */}
                                 <Select value={cutoffRound} onValueChange={setCutoffRound}>
                                     <SelectTrigger className="h-8 text-[11px] bg-slate-900 border-slate-800 text-slate-200">
                                         <SelectValue placeholder="Round" />
@@ -700,8 +710,15 @@ const AICounselor = () => {
                                     <SelectContent className="bg-slate-950 border-slate-800 text-slate-200 z-50">
                                         <SelectItem value="R2">Round 2 (R2)</SelectItem>
                                         <SelectItem value="R1">Round 1 (R1)</SelectItem>
-                                        <SelectItem value="R3">Round 3 / Extended</SelectItem>
-                                        <SelectItem value="MOCK">Mock Allotment</SelectItem>
+                                        {cutoffYear !== "2026" && (
+                                            <SelectItem value="R3">Round 3 / Extended</SelectItem>
+                                        )}
+                                        {cutoffYear !== "2023" && (
+                                            <SelectItem value="MOCK">Mock Round</SelectItem>
+                                        )}
+                                        {cutoffYear === "2026" && (
+                                            <SelectItem value="MOCK2">Mock Round 2</SelectItem>
+                                        )}
                                     </SelectContent>
                                 </Select>
 

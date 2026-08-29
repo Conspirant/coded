@@ -695,15 +695,58 @@ function handleConversationalCutoffStep(
 
     // STEP 3: College & Year identified, but Round is missing
     if (!foundRound) {
+        const ROUND_NAME_MAP: Record<string, string> = {
+            "R1": "Round 1",
+            "R2": "Round 2",
+            "R3": "Round 3 / Extended",
+            "MOCK": "Mock Round",
+            "MOCK1": "Mock Round 1",
+            "MOCK2": "Mock Round 2",
+            "EXT": "Extended Round"
+        };
+
+        let availableRounds: string[] = [];
+        if (dataset && dataset.length > 0) {
+            const rawRounds = new Set<string>();
+            dataset.forEach(c => {
+                if (c.year === foundYear && (!collegeCode || c.institute_code.toUpperCase() === collegeCode.toUpperCase())) {
+                    rawRounds.add(c.round.toUpperCase());
+                }
+            });
+
+            // If college-specific query returned 0, fallback to general year rounds
+            if (rawRounds.size === 0) {
+                dataset.forEach(c => {
+                    if (c.year === foundYear) {
+                        rawRounds.add(c.round.toUpperCase());
+                    }
+                });
+            }
+
+            const preferredOrder = ["R2", "R1", "R3", "MOCK", "MOCK2", "MOCK1", "EXT"];
+            availableRounds = preferredOrder.filter(r => rawRounds.has(r));
+            rawRounds.forEach(r => {
+                if (!availableRounds.includes(r)) availableRounds.push(r);
+            });
+        }
+
+        // Fallback depending on year
+        if (availableRounds.length === 0) {
+            if (foundYear === "2026") {
+                availableRounds = ["R2", "R1", "MOCK", "MOCK2"];
+            } else if (foundYear === "2023") {
+                availableRounds = ["R2", "R1", "R3"];
+            } else {
+                availableRounds = ["R2", "R1", "R3", "MOCK"];
+            }
+        }
+
+        const roundLabels = availableRounds.map(r => ROUND_NAME_MAP[r] || r);
+
         return {
             handled: true,
-            response: `### Step 3: Select Counseling Round for ${collegeName} (${foundYear})\n\nWhich counseling round do you want to view?`,
-            quickReplies: [
-                "Round 2",
-                "Round 1",
-                "Round 3 / Extended",
-                "Mock Round"
-            ],
+            response: `### Step 3: Select Counseling Round for ${collegeName} (${foundYear})\n\nWhich counseling round do you want to view? (Showing available rounds for ${foundYear}):`,
+            quickReplies: roundLabels,
             stepType: "round"
         };
     }
