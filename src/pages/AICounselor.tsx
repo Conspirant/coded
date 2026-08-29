@@ -776,28 +776,6 @@ const AICounselor = () => {
                                 </p>
                             </div>
 
-                            {/* Quick Cutoff Trigger Bar in Hero Screen */}
-                            <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-5 text-left">
-                                <div className="flex items-center gap-2.5 px-1">
-                                    <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
-                                        <Filter className="w-3.5 h-3.5" />
-                                    </div>
-                                    <div className="text-xs">
-                                        <span className="font-semibold text-slate-200">College Cutoff Explorer</span>
-                                        <span className="text-slate-500 ml-1.5 hidden sm:inline">• Choose from all 269 colleges and 25 reservation quotas</span>
-                                    </div>
-                                </div>
-
-                                <Button
-                                    size="sm"
-                                    onClick={() => setShowCutoffBar(!showCutoffBar)}
-                                    className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-sm shrink-0"
-                                >
-                                    <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
-                                    {showCutoffBar ? "Close Filter" : "Open 269 Colleges Dropdown"}
-                                </Button>
-                            </div>
-
                             {/* Prompt Categories */}
                             <div className="w-full space-y-3.5">
                                 <div className="flex flex-wrap items-center justify-center gap-1.5">
