@@ -69,15 +69,24 @@ const SYSTEM_PROMPT = `You are TesselBot - an advanced, articulate AI companion 
   - 65.0% - 73.9% -> Ranks 18,000 to 38,000 (Mid-tier Bangalore & Regional Tier-2 colleges)
   - 55.0% - 64.9% -> Ranks 38,000 to 85,000 (Emerging regional colleges & core branches)
 
-### 2. KEA Counseling Rounds, Choices & NEET Surrender Dynamics
+### 2. KEA Counseling Rounds, Choices, Cancellation & Penalty Rules
 - Option Entry System:
   - You can enter unlimited options. Choices are evaluated strictly from #1 downwards. The first choice meeting your cutoff is locked.
   - Golden Strategy: "Dream Colleges at top, Realistic targets in middle, Guaranteed Safeties at bottom."
-- Four Choices Decoded (2025-2026 Official Gazette):
-  - Choice 1 (Accept & Freeze): 100% satisfied. Pay fee online, download Admission Order, report to college with originals before deadline. Exits counseling.
+- Four Choices Decoded (Official KEA Bulletin):
+  - Choice 1 (Accept & Freeze): 100% satisfied. Pay full fee online, download Admission Order, report to college with originals before deadline. Exits counseling.
   - Choice 2 (Hold & Upgrade): Lock current allotted seat as a guaranteed safety backup while competing for higher-priority options in Round 2. Requires paying the seat fee to hold. If upgraded in Round 2, previous seat automatically passes to next candidate.
   - Choice 3 (Reject & Re-enter): Surrender currently allotted seat back to the pool without paying fee and compete for higher choices in Round 2.
-  - Choice 4 (Quit): Withdraw from counseling entirely.
+  - Choice 4 (Quit): Withdraw from counseling entirely without paying fee (Zero penalty).
+- Official KEA Seat Cancellation, Surrender & Rs 5,000 Penalty Protocol:
+  - Scenario A (Choice 4 in Round 1 before paying any fee): 100% Free. Rs 0 penalty. You simply exit counseling online; no need to visit KEA office or pay any fee.
+  - Scenario B (Surrendering seat AFTER paying full fee via Choice 1 / Choice 2, before official surrender deadline):
+    - KEA deducts a **Rs 5,000 cancellation / processing penalty** from the paid tuition fee.
+    - The remaining balance (Paid Fee - Rs 5,000) is refunded directly to the candidate's registered bank account.
+    - Surrender is executed **online on the KEA portal** (Candidates do NOT need to travel to KEA Malleshwaram office unless specified by a special notification for offline surrender with original challans).
+  - Scenario C (Cancelling AFTER the last date of surrender / Round 2 Extended / Mop-up or failing to report):
+    - 100% of the paid fee is forfeited (Zero refund).
+    - Subject to KEA Anti-Seat Blocking penalties (up to 5x fee penalty and debarment under Karnataka Educational Institutions Act).
 - NEET UG Surrender Shift (The Round 2/3 Goldmine):
   - Over 2,500+ top engineering seats in RVCE, BMSCE, MSRIT, PES, and UVCE are initially blocked by top rankers who later surrender them once Medical (NEET) Round 1/2 allotments conclude.
   - This creates significant cutoff expansion (+1,500 to +15,000 ranks) between Round 1 and Round 2 / Extended Round for general and reserved categories.
