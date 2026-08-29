@@ -137,16 +137,17 @@ export class CutoffService {
             ? raw
             : (raw.cutoffs ?? raw.data ?? raw.cutoffs_data ?? []);
 
+          const cleanStr = (s: any): string => typeof s === 'string' ? s.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim() : (s ? String(s) : '');
           if (dataArray.length > 0) {
             this.cutoffs = dataArray.map((item: any) => ({
-              year: String(item.year || item.Year || "2025"),
-              round: String(item.round || item.Round || "R1"),
-              institute_code: String(item.institute_code || item.college_code || item.instituteCode || ""),
-              course: String(item.course || item.branch_code || item.Course || ""),
-              category: String(item.category || item.Category || "GM"),
+              year: cleanStr(item.year || item.Year || "2025"),
+              round: cleanStr(item.round || item.Round || "R1"),
+              institute_code: cleanStr(item.institute_code || item.college_code || item.instituteCode || ""),
+              course: cleanStr(item.course || item.branch_code || item.Course || ""),
+              category: cleanStr(item.category || item.Category || "GM"),
               cutoff_rank: parseInt(item.cutoff_rank || item.cutoffRank || "0") || 0,
-              college_name: String(item.college_name || item.collegeName || item.institute || ""),
-              branch_name: String(item.branch_name || item.branchName || ""),
+              college_name: cleanStr(item.college_name || item.collegeName || item.institute || ""),
+              branch_name: cleanStr(item.branch_name || item.branchName || ""),
               total_seats: parseInt(item.total_seats || item.totalSeats || "0") || 0,
               available_seats: parseInt(item.available_seats || item.availableSeats || "0") || 0,
             }));

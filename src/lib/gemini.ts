@@ -266,6 +266,11 @@ const STOP_WORDS = new Set([
 import { CutoffService } from '@/lib/cutoff-service';
 import { matchCollegeFromDatabase, matchesCourseBranch } from './ai-tools';
 
+function cleanStr(val: any): string {
+    if (typeof val !== 'string') return val ? String(val) : '';
+    return val.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 async function fetchCutoffData(onStatus: (status: string) => void): Promise<CutoffEntry[]> {
     if (cachedData && cachedData.length > 0) return cachedData;
     if (isFetching) {
@@ -284,13 +289,13 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
             const list = Array.isArray(raw) ? raw : (raw.cutoffs || raw.data || []);
             if (list.length > 0) {
                 cachedData = list.map((c: any) => ({
-                    institute: c.college_name || c.institute || c.institute_code,
-                    institute_code: c.institute_code || c.college_code || '',
-                    course: c.branch_name || c.course || '',
-                    category: c.category || 'GM',
+                    institute: cleanStr(c.college_name || c.institute || c.institute_code),
+                    institute_code: cleanStr(c.institute_code || c.college_code || ''),
+                    course: cleanStr(c.branch_name || c.course || ''),
+                    category: cleanStr(c.category || 'GM'),
                     cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
-                    year: String(c.year || '2026'),
-                    round: String(c.round || 'R1')
+                    year: cleanStr(c.year || '2026'),
+                    round: cleanStr(c.round || 'R1')
                 }));
                 isFetching = false;
                 return cachedData;
@@ -304,13 +309,13 @@ async function fetchCutoffData(onStatus: (status: string) => void): Promise<Cuto
         const allCutoffs = await CutoffService.loadCutoffs();
         if (allCutoffs && allCutoffs.length > 0) {
             cachedData = allCutoffs.map(c => ({
-                institute: c.college_name || c.institute_code,
-                institute_code: c.institute_code,
-                course: c.branch_name || c.course,
-                category: c.category,
+                institute: cleanStr(c.college_name || c.institute_code),
+                institute_code: cleanStr(c.institute_code),
+                course: cleanStr(c.branch_name || c.course),
+                category: cleanStr(c.category),
                 cutoff_rank: c.cutoff_rank,
-                year: c.year,
-                round: c.round
+                year: cleanStr(c.year),
+                round: cleanStr(c.round)
             }));
             isFetching = false;
             return cachedData;
@@ -540,6 +545,68 @@ function buildActionChips(
     return actionChips;
 }
 
+function repairMarkdownTables(markdown: string): string {
+    const lines = markdown.split('\n');
+    const result: string[] = [];
+    let inTable = false;
+    let accumulatedRow = '';
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        const isPipeLine = line.startsWith('|') || line.endsWith('|');
+        const isDivider = /^\|?(\s*:?-+:?\s*\|)+\s*:?-+:?\s*\|?$/.test(line);
+
+        if (isDivider) {
+            inTable = true;
+            if (accumulatedRow) {
+                result.push(accumulatedRow);
+                accumulatedRow = '';
+            }
+            result.push(line);
+            continue;
+        }
+
+        if (isPipeLine) {
+            if (accumulatedRow) {
+                result.push(accumulatedRow);
+                accumulatedRow = '';
+            }
+            const pipeCount = (line.match(/\|/g) || []).length;
+            if (pipeCount >= 2 && line.startsWith('|') && line.endsWith('|')) {
+                result.push(line);
+                inTable = true;
+            } else if (pipeCount >= 1 && line.startsWith('|')) {
+                accumulatedRow = line;
+                inTable = true;
+            } else {
+                result.push(line);
+            }
+        } else if (inTable) {
+            if (line === '') {
+                if (accumulatedRow) {
+                    result.push(accumulatedRow);
+                    accumulatedRow = '';
+                }
+                inTable = false;
+                result.push(line);
+            } else if (accumulatedRow) {
+                accumulatedRow += ' ' + line;
+            } else if (i + 1 < lines.length && (lines[i + 1].trim().includes('|') || lines[i + 1].trim().endsWith('|'))) {
+                accumulatedRow = '| ' + line;
+            } else {
+                inTable = false;
+                result.push(line);
+            }
+        } else {
+            result.push(line);
+        }
+    }
+    if (accumulatedRow) {
+        result.push(accumulatedRow);
+    }
+    return result.join('\n');
+}
+
 function cleanAiResponse(text: string): string {
     if (!text) return '';
     let cleaned = text;
@@ -551,6 +618,9 @@ function cleanAiResponse(text: string): string {
 
     // Remove any leftover emojis
     cleaned = cleaned.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1F018}-\u{1F270}\u{2388}-\u{23FF}]/gu, '');
+
+    // Repair broken markdown tables
+    cleaned = repairMarkdownTables(cleaned);
 
     return cleaned.trim();
 }
@@ -800,9 +870,11 @@ function handleConversationalCutoffStep(
             let table = `### ${collegeName} (${collegeCode})\n`;
             table += `**${foundYear} KCET Cutoffs — Round ${foundRound} (${foundCategory} Quota)**\n\n`;
             table += `| Branch / Engineering Course | Quota | Closing Cutoff Rank |\n`;
-            table += `| :--- | :--- | :--- |\n`;
+            table += `| :--- | :---: | :---: |\n`;
             matches.forEach(m => {
-                table += `| ${m.course} | **${m.category}** | **${m.cutoff_rank.toLocaleString()}** |\n`;
+                const branch = cleanStr(m.course);
+                const quota = cleanStr(m.category);
+                table += `| ${branch} | **${quota}** | **${m.cutoff_rank.toLocaleString()}** |\n`;
             });
             table += `\n*Verified data from official KEA master dataset (${matches.length} branches).*`;
 

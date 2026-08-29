@@ -844,26 +844,26 @@ const AICounselor = () => {
                                                     remarkPlugins={[remarkGfm]}
                                                     components={{
                                                         table: ({ node, ...props }) => (
-                                                            <div className="my-3 overflow-hidden rounded-xl border border-slate-800/80 bg-[#080d1a]/95 shadow-md">
+                                                            <div className="my-3 overflow-hidden rounded-xl border border-slate-800 bg-[#080d1a]/95 shadow-md">
                                                                 <div className="overflow-x-auto w-full touch-pan-x scrollbar-thin scrollbar-thumb-slate-800">
-                                                                    <table className="w-full text-left text-xs border-collapse min-w-[280px] sm:min-w-[400px]" {...props} />
+                                                                    <table className="w-full text-left text-xs border-collapse min-w-[320px] sm:min-w-[460px]" {...props} />
                                                                 </div>
                                                             </div>
                                                         ),
                                                         thead: ({ node, ...props }) => (
-                                                            <thead className="bg-slate-900/90 text-blue-400 font-semibold border-b border-slate-800 text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
+                                                            <thead className="bg-slate-900 text-blue-400 font-semibold border-b border-slate-800 text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
                                                         ),
                                                         tbody: ({ node, ...props }) => (
                                                             <tbody className="divide-y divide-slate-800/60" {...props} />
                                                         ),
                                                         tr: ({ node, ...props }) => (
-                                                            <tr className="hover:bg-slate-800/40 transition-colors even:bg-slate-900/30" {...props} />
+                                                            <tr className="hover:bg-slate-800/50 transition-colors even:bg-slate-900/40" {...props} />
                                                         ),
                                                         th: ({ node, ...props }) => (
-                                                            <th className="px-3 sm:px-4 py-2.5 font-semibold text-blue-400 whitespace-nowrap text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
+                                                            <th className="px-3.5 sm:px-4 py-2.5 font-semibold text-blue-400 whitespace-nowrap text-[10px] sm:text-[11px] uppercase tracking-wider" {...props} />
                                                         ),
                                                         td: ({ node, ...props }) => (
-                                                            <td className="px-3 sm:px-4 py-2 font-normal text-slate-200 border-r border-slate-800/40 last:border-r-0 text-xs sm:text-sm" {...props} />
+                                                            <td className="px-3.5 sm:px-4 py-2.5 font-normal text-slate-200 border-r border-slate-800/40 last:border-r-0 text-xs sm:text-sm" {...props} />
                                                         ),
                                                         h1: ({ node, ...props }) => (
                                                             <h1 className="text-base md:text-lg font-bold text-slate-100 tracking-tight pt-2 pb-1 border-b border-slate-800" {...props} />

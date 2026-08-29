@@ -148,6 +148,11 @@ function getRoundWeight(round: string, preferredRound?: string): number {
 
 let globalCutoffCache: CutoffEntry[] = [];
 
+function cleanStr(val: any): string {
+    if (typeof val !== 'string') return val ? String(val) : '';
+    return val.replace(/[\r\n\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 /**
  * Load cutoff data from master .dat database and DataVault
  */
@@ -161,13 +166,13 @@ async function loadCutoffData(): Promise<CutoffEntry[]> {
             const list = Array.isArray(data) ? data : (data.cutoffs || data.data || []);
             if (list.length > 0) {
                 globalCutoffCache = list.map((c: any) => ({
-                    institute: c.college_name || c.institute || c.institute_code,
-                    institute_code: c.institute_code || c.college_code || '',
-                    course: c.branch_name || c.course || '',
-                    category: c.category || 'GM',
+                    institute: cleanStr(c.college_name || c.institute || c.institute_code),
+                    institute_code: cleanStr(c.institute_code || c.college_code || ''),
+                    course: cleanStr(c.branch_name || c.course || ''),
+                    category: cleanStr(c.category || 'GM'),
                     cutoff_rank: parseInt(c.cutoff_rank || '0') || 0,
-                    year: String(c.year || '2026'),
-                    round: String(c.round || 'R1')
+                    year: cleanStr(c.year || '2026'),
+                    round: cleanStr(c.round || 'R1')
                 }));
                 return globalCutoffCache;
             }
@@ -180,13 +185,13 @@ async function loadCutoffData(): Promise<CutoffEntry[]> {
         const raw = await CutoffService.loadCutoffs();
         if (raw && raw.length > 0) {
             globalCutoffCache = raw.map(c => ({
-                institute: c.college_name || c.institute_code,
-                institute_code: c.institute_code,
-                course: c.branch_name || c.course,
-                category: c.category,
+                institute: cleanStr(c.college_name || c.institute_code),
+                institute_code: cleanStr(c.institute_code),
+                course: cleanStr(c.branch_name || c.course),
+                category: cleanStr(c.category),
                 cutoff_rank: c.cutoff_rank,
-                year: c.year,
-                round: c.round
+                year: cleanStr(c.year),
+                round: cleanStr(c.round)
             }));
             return globalCutoffCache;
         }
