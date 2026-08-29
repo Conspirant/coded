@@ -39,11 +39,13 @@ import {
     Cpu,
     Scale,
     FileCheck,
-    ExternalLink
+    ExternalLink,
+    Filter
 } from "lucide-react";
 import { sendMessage, PROMPT_CATEGORIES, type Message } from "@/lib/gemini";
 import type { StudentProfileFilters } from "@/lib/ai-tools";
 import { CounselorRecommendationCard } from "@/components/counselor/CounselorRecommendationCard";
+import { InteractiveCutoffWizard } from "@/components/counselor/InteractiveCutoffWizard";
 import { TesselAvatar } from "@/components/TesselAvatar";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -57,6 +59,7 @@ const AICounselor = () => {
     const [error, setError] = useState<string | null>(null);
     const [showTransparency, setShowTransparency] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
+    const [showCutoffWizard, setShowCutoffWizard] = useState(false);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [status, setStatus] = useState<string>("");
     const [selectedCategoryTab, setSelectedCategoryTab] = useState(0);
@@ -349,9 +352,29 @@ const AICounselor = () => {
                         </button>
 
                         <Button
+                            variant={showCutoffWizard ? "secondary" : "ghost"}
+                            size="sm"
+                            onClick={() => {
+                                setShowCutoffWizard(!showCutoffWizard);
+                                if (showFilters) setShowFilters(false);
+                            }}
+                            className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
+                                showCutoffWizard 
+                                    ? "bg-blue-600 text-white font-semibold shadow-md" 
+                                    : "bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900/60 border border-blue-800/40"
+                            }`}
+                        >
+                            <Filter className="h-3.5 w-3.5 text-blue-400" />
+                            <span>Cutoff Wizard</span>
+                        </Button>
+
+                        <Button
                             variant={isFilterActive ? "secondary" : "ghost"}
                             size="sm"
-                            onClick={() => setShowFilters(!showFilters)}
+                            onClick={() => {
+                                setShowFilters(!showFilters);
+                                if (showCutoffWizard) setShowCutoffWizard(false);
+                            }}
                             className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
                                 isFilterActive 
                                     ? "bg-blue-600/20 text-blue-400 border border-blue-500/30 font-semibold" 
@@ -540,6 +563,21 @@ const AICounselor = () => {
                     </div>
                 )}
 
+                {/* Expandable Interactive Cutoff Wizard Drawer */}
+                {showCutoffWizard && (
+                    <div className="px-4 py-3.5 border-b border-blue-900/40 bg-[#080d1a]/95 backdrop-blur-md animate-fade-in-up z-10">
+                        <div className="max-w-4xl mx-auto">
+                            <InteractiveCutoffWizard
+                                onSelectForChat={(prompt) => {
+                                    setShowCutoffWizard(false);
+                                    handleSend(prompt);
+                                }}
+                                onClose={() => setShowCutoffWizard(false)}
+                            />
+                        </div>
+                    </div>
+                )}
+
                 {/* Conversation Viewport */}
                 <ScrollArea ref={scrollAreaRef} className="flex-1 px-3 md:px-6">
                     {messages.length === 0 ? (
@@ -556,6 +594,34 @@ const AICounselor = () => {
                                 <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
                                     KCET & COMEDK strategy, cutoff lookup for all 269 colleges, branch roadmaps, or general conversation.
                                 </p>
+                            </div>
+
+                            {/* Interactive Step-by-Step Cutoff Finder Hero Card */}
+                            <div className="w-full bg-gradient-to-r from-blue-950/70 via-slate-900/80 to-blue-950/70 border border-blue-500/30 rounded-xl p-3.5 text-left mb-4 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                                        <Filter className="w-4 h-4" />
+                                    </div>
+                                    <div>
+                                        <div className="font-semibold text-slate-100 text-xs sm:text-sm flex items-center gap-2">
+                                            Interactive Cutoff Wizard
+                                            <Badge className="bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-[9px]">
+                                                2023-2026 Live
+                                            </Badge>
+                                        </div>
+                                        <div className="text-[11px] text-slate-400 mt-0.5">
+                                            Step-by-step: College → Year → Round → Category to view cutoffs for all branches.
+                                        </div>
+                                    </div>
+                                </div>
+                                <Button
+                                    size="sm"
+                                    onClick={() => setShowCutoffWizard(!showCutoffWizard)}
+                                    className="w-full sm:w-auto h-8 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-md shrink-0"
+                                >
+                                    <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
+                                    {showCutoffWizard ? "Hide Wizard" : "Launch Wizard"}
+                                </Button>
                             </div>
 
                             {/* Query Formats & Pro-Tip Banner */}
