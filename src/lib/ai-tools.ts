@@ -41,7 +41,7 @@ function normalizeCourseText(s: string): string {
     return (s || '').replace(/[\r\n\s\-_()]+/g, '').toLowerCase();
 }
 
-function matchesCourseBranch(courseDb: string, targetCourse?: string): boolean {
+export function matchesCourseBranch(courseDb: string, targetCourse?: string): boolean {
     if (!targetCourse) return true;
     const cleanDb = courseDb.replace(/[\r\n\s\-_()]+/g, ' ').toLowerCase();
     const cleanTarget = targetCourse.replace(/[\r\n\s\-_()]+/g, ' ').toLowerCase();
