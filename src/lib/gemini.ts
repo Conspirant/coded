@@ -650,6 +650,25 @@ function handleConversationalCutoffStep(
         lower.includes("explore another college")
     );
 
+    const isExplicitCutoffQuery = (
+        lower.includes("cutoff") ||
+        lower.includes("cut off") ||
+        lower.includes("closing rank") ||
+        lower.includes("opening rank") ||
+        /E\d{3}\s+(cutoff|202[3-6]|round|r[1-3]|gm|2a|3a|3b|sc|st|snq)/i.test(userMessage)
+    );
+
+    // Check if user is actively replying to a step questionnaire
+    const lastAssistantMsg = conversationHistory && conversationHistory.length > 0
+        ? conversationHistory.slice().reverse().find(m => m.role === 'assistant')
+        : undefined;
+    const isReplyingToStep = Boolean(lastAssistantMsg?.stepType);
+
+    // If not in a step flow, not asking for cutoffs, and not starting cutoff flow: let conversational AI respond!
+    if (!isGenericCutoffTrigger && !isReplyingToStep && !isExplicitCutoffQuery) {
+        return null;
+    }
+
     if (isGenericCutoffTrigger) {
         return {
             handled: true,
@@ -668,22 +687,22 @@ function handleConversationalCutoffStep(
         };
     }
 
-    // 2. Extract College from userMessage first, then conversation history
+    // 2. Extract College from userMessage first, then from history ONLY if currently in step flow
     let matchedCol = matchCollegeFromDatabase(userMessage);
-    let codeMatch = userMessage.toUpperCase().match(/E\d{3}/);
-    let collegeCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
+    let codeMatch = userMessage.toUpperCase().match(/\b(E\d{3})\b/);
+    let collegeCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[1] : null);
 
-    if (!collegeCode && conversationHistory && conversationHistory.length > 0) {
+    if (!collegeCode && isReplyingToStep && conversationHistory && conversationHistory.length > 0) {
         for (let i = conversationHistory.length - 1; i >= 0; i--) {
             const histText = conversationHistory[i].content;
-            const histCodeMatch = histText.toUpperCase().match(/E\d{3}/);
+            const histCodeMatch = histText.toUpperCase().match(/\b(E\d{3})\b/);
             const histCol = matchCollegeFromDatabase(histText);
             if (histCol) {
                 matchedCol = histCol;
                 collegeCode = histCol.code;
                 break;
             } else if (histCodeMatch) {
-                collegeCode = histCodeMatch[0];
+                collegeCode = histCodeMatch[1];
                 break;
             }
         }
@@ -962,15 +981,13 @@ export async function sendMessage(
     let contextData = "";
     const needsData = (
         lowerMsg.includes('cutoff') ||
-        lowerMsg.includes('rank') ||
-        lowerMsg.includes('college') ||
-        lowerMsg.includes('seat') ||
-        lowerMsg.includes('branch') ||
-        lowerMsg.includes('marks') ||
-        lowerMsg.includes('kcet') ||
-        lowerMsg.includes('predict') ||
-        /E\d{3}/i.test(userMessage) ||
-        /\d{3,6}/.test(userMessage)
+        lowerMsg.includes('cut off') ||
+        lowerMsg.includes('closing rank') ||
+        lowerMsg.includes('seat matrix') ||
+        lowerMsg.includes('option entry') ||
+        (lowerMsg.includes('round') && (lowerMsg.includes('allotment') || lowerMsg.includes('cutoff') || lowerMsg.includes('seat'))) ||
+        (/\bE\d{3}\b/i.test(userMessage) && (lowerMsg.includes('cutoff') || lowerMsg.includes('rank') || lowerMsg.includes('branch') || lowerMsg.includes('admission') || lowerMsg.includes('round') || lowerMsg.includes('seat'))) ||
+        (/\d{3,6}/.test(userMessage) && (lowerMsg.includes('get') || lowerMsg.includes('chance') || lowerMsg.includes('possible') || lowerMsg.includes('admission') || lowerMsg.includes('cutoff') || lowerMsg.includes('rank')))
     );
 
     if (needsData) {

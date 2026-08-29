@@ -466,6 +466,16 @@ const ALIAS_MAP = [
     { code: 'E202', aliases: ['gitam', 'gitam bangalore'] }
 ];
 
+const GENERIC_COLLEGE_WORDS = new Set([
+    'college', 'engineering', 'institute', 'technology', 'academy', 'society', 'group', 'trust',
+    'polytechnic', 'education', 'campus', 'science', 'sciences', 'center', 'centre', 'road',
+    'post', 'dist', 'district', 'karnataka', 'bangalore', 'bengaluru', 'mysore', 'mysuru',
+    'mangalore', 'mangaluru', 'city', 'rural', 'north', 'south', 'east', 'west', 'central',
+    'state', 'national', 'memorial', 'shree', 'sri', 'dr', 'prof', 'the', 'and', 'for', 'of',
+    'in', 'at', 'to', 'with', 'from', 'by', 'is', 'are', 'was', 'were', 'can', 'you', 'what',
+    'tell', 'how', 'best', 'top', 'good', 'new', 'about', 'who', 'help', 'doing', 'your', 'name'
+]);
+
 /**
  * Helper: Find matching college from complete COLLEGE_DATABASE (All 269 Karnataka Colleges)
  */
@@ -496,7 +506,7 @@ export function matchCollegeFromDatabase(query: string) {
                 if (found) return found;
             }
         } else {
-            if (queryWords.has(item.alias)) {
+            if (queryWords.has(item.alias) && !GENERIC_COLLEGE_WORDS.has(item.alias)) {
                 const found = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === item.code);
                 if (found) return found;
             }
@@ -507,7 +517,7 @@ export function matchCollegeFromDatabase(query: string) {
     for (const c of COLLEGE_DATABASE) {
         if (c.shortName) {
             const cleanShort = c.shortName.toLowerCase().replace(/[^\w\s]/g, ' ').trim();
-            if (cleanShort.length >= 2 && queryWords.has(cleanShort)) {
+            if (cleanShort.length >= 3 && !GENERIC_COLLEGE_WORDS.has(cleanShort) && queryWords.has(cleanShort)) {
                 return c;
             }
         }
@@ -516,24 +526,28 @@ export function matchCollegeFromDatabase(query: string) {
     // 4. College Name clean direct match
     for (const c of COLLEGE_DATABASE) {
         const cleanName = (c.name || '').toLowerCase().split(',')[0].replace(/[^\w\s]/g, ' ').trim();
-        if (cleanName.length >= 6 && l.includes(cleanName)) {
+        if (cleanName.length >= 8 && l.includes(cleanName)) {
             return c;
         }
     }
 
-    // 5. Smart Token Overlap Match across all 269 colleges
+    // 5. Smart Token Overlap Match across distinct non-generic words
+    const distinctiveWords = Array.from(queryWords).filter(w => w.length >= 4 && !GENERIC_COLLEGE_WORDS.has(w));
+    if (distinctiveWords.length === 0) return null;
+
     let bestMatch: typeof COLLEGE_DATABASE[0] | null = null;
     let highestScore = 0;
 
     for (const c of COLLEGE_DATABASE) {
-        const targetString = `${c.name} ${c.shortName || ''} ${c.city || ''} ${c.district || ''}`.toLowerCase();
+        const targetString = `${c.name} ${c.shortName || ''}`.toLowerCase();
         let score = 0;
-        for (const word of queryWords) {
-            if (word.length > 2 && targetString.includes(word)) {
-                score += word.length >= 4 ? 2 : 1;
+        for (const word of distinctiveWords) {
+            const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
+            if (wordRegex.test(targetString)) {
+                score += word.length >= 5 ? 3 : 2;
             }
         }
-        if (score > highestScore && score >= 3) {
+        if (score > highestScore && score >= 4) {
             highestScore = score;
             bestMatch = c;
         }
