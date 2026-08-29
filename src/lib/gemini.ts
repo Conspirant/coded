@@ -559,7 +559,7 @@ function handleConversationalCutoffStep(
     conversationHistory: Message[] = [],
     profileFilters?: StudentProfileFilters,
     dataset?: CutoffEntry[]
-): { handled: boolean; response: string; quickReplies: string[]; cutoffSelector?: any } | null {
+): { handled: boolean; response: string; quickReplies: string[] } | null {
     const raw = userMessage.trim();
     const lower = raw.toLowerCase();
 
@@ -900,8 +900,7 @@ Please tailor your suggestions specifically to these parameters.`;
                 response: sanitized,
                 recommendations,
                 actionChips,
-                quickReplies,
-                cutoffSelector
+                quickReplies
             };
         }
     } catch (e) {
@@ -921,8 +920,7 @@ Please tailor your suggestions specifically to these parameters.`;
                         response: sanitized,
                         recommendations,
                         actionChips,
-                        quickReplies,
-                        cutoffSelector
+                        quickReplies
                     };
                 }
 
