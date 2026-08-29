@@ -549,13 +549,39 @@ const AICounselor = () => {
                                 <TesselAvatar size="xl" className="border border-slate-800 shadow-md" />
                             </div>
 
-                            <div className="space-y-1.5 mb-8">
+                            <div className="space-y-1.5 mb-6">
                                 <h2 className="text-xl md:text-2xl font-bold tracking-tight text-slate-100">
                                     How can I help you today?
                                 </h2>
                                 <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
-                                    Admissions strategy, college comparisons, coding help, branch roadmaps, or general conversation.
+                                    KCET & COMEDK strategy, cutoff lookup for all 269 colleges, branch roadmaps, or general conversation.
                                 </p>
+                            </div>
+
+                            {/* Query Formats & Pro-Tip Banner */}
+                            <div className="w-full bg-slate-900/80 border border-blue-500/20 rounded-xl p-3.5 text-left mb-6 shadow-sm">
+                                <div className="flex items-center gap-2 mb-2 text-blue-400 font-semibold text-xs">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                    <span>Fast & Exact Cutoff Formats (All 269 Colleges)</span>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-300">
+                                    <div className="bg-[#080d1a] p-2.5 rounded-lg border border-slate-800/80">
+                                        <div className="text-blue-400/90 text-[10px] uppercase font-bold tracking-wider mb-1">Exact College Cutoff Query</div>
+                                        <div className="font-mono text-slate-200 text-[11px]">[College Code / Name] + [Branch] + [Category] + [Round/Year]</div>
+                                        <div className="text-slate-400 text-[10px] mt-1.5 flex items-center gap-1">
+                                            <span>Example:</span>
+                                            <span className="font-mono text-blue-300 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">E126 BMSIT CSE 3AG Round 2 2026</span>
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#080d1a] p-2.5 rounded-lg border border-slate-800/80">
+                                        <div className="text-blue-400/90 text-[10px] uppercase font-bold tracking-wider mb-1">Rank-Based College Predictor</div>
+                                        <div className="font-mono text-slate-200 text-[11px]">Rank [Number] + [Category] + [Branch Preference]</div>
+                                        <div className="text-slate-400 text-[10px] mt-1.5 flex items-center gap-1">
+                                            <span>Example:</span>
+                                            <span className="font-mono text-blue-300 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">Rank 12500 2AG - which colleges for AIML?</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Prompt Categories */}
@@ -777,7 +803,7 @@ const AICounselor = () => {
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Ask TesselBot anything — colleges, cutoffs, coding, branches, or general questions..."
+                                placeholder="Ask TesselBot (e.g. 'E126 BMSIT CSE 3AG Round 2 2026' or 'Rank 12000 GM colleges')..."
                                 disabled={isLoading}
                                 rows={1}
                                 className="w-full resize-none bg-transparent border-0 focus:outline-none focus:ring-0 text-xs md:text-sm px-2 py-1 max-h-40 min-h-[36px] text-slate-100 placeholder:text-slate-500 leading-relaxed font-normal"
