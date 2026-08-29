@@ -20,13 +20,6 @@ export interface Message {
     recommendations?: RecommendationCardData[];
     actionChips?: Array<{ label: string; url: string; icon?: string }>;
     quickReplies?: string[];
-    cutoffSelector?: {
-        collegeCode: string;
-        collegeName: string;
-        currentYear?: string;
-        currentRound?: string;
-        currentCategory?: string;
-    };
 }
 
 // Data interfaces
@@ -693,14 +686,7 @@ function handleConversationalCutoffStep(
                 "2025",
                 "2024",
                 "2023"
-            ],
-            cutoffSelector: {
-                collegeCode,
-                collegeName,
-                currentYear: "2026",
-                currentRound: "R2",
-                currentCategory: "3AG"
-            }
+            ]
         };
     }
 
@@ -714,14 +700,7 @@ function handleConversationalCutoffStep(
                 "Round 1",
                 "Round 3 / Extended",
                 "Mock Round"
-            ],
-            cutoffSelector: {
-                collegeCode,
-                collegeName,
-                currentYear: foundYear,
-                currentRound: "R2",
-                currentCategory: "3AG"
-            }
+            ]
         };
     }
 
@@ -738,15 +717,25 @@ function handleConversationalCutoffStep(
                 "2BG",
                 "3BG",
                 "SCG",
-                "STG"
-            ],
-            cutoffSelector: {
-                collegeCode,
-                collegeName,
-                currentYear: foundYear,
-                currentRound: foundRound,
-                currentCategory: "3AG"
-            }
+                "STG",
+                "3AR",
+                "2AR",
+                "1R",
+                "2BR",
+                "3BR",
+                "SCR",
+                "STR",
+                "3AK",
+                "2AK",
+                "1K",
+                "2BK",
+                "3BK",
+                "SCK",
+                "STK",
+                "GMK",
+                "GMR",
+                "SNQ"
+            ]
         };
     }
 
@@ -775,16 +764,10 @@ function handleConversationalCutoffStep(
                 quickReplies: [
                     "GM",
                     "2AG",
+                    "3AG",
                     `${collegeCode} ${collegeName} 2025 vs 2026 Cutoff Trend`,
                     "Explore another college"
-                ],
-                cutoffSelector: {
-                    collegeCode,
-                    collegeName,
-                    currentYear: foundYear,
-                    currentRound: foundRound,
-                    currentCategory: foundCategory
-                }
+                ]
             };
         }
     }
@@ -802,13 +785,6 @@ export async function sendMessage(
     recommendations: RecommendationCardData[];
     actionChips: Array<{ label: string; url: string }>;
     quickReplies?: string[];
-    cutoffSelector?: {
-        collegeCode: string;
-        collegeName: string;
-        currentYear?: string;
-        currentRound?: string;
-        currentCategory?: string;
-    };
 }> {
     let recommendations: RecommendationCardData[] = [];
     let toolContext = "";
@@ -826,8 +802,7 @@ export async function sendMessage(
                 response: stepResult.response,
                 recommendations: [],
                 actionChips,
-                quickReplies: stepResult.quickReplies,
-                cutoffSelector: stepResult.cutoffSelector
+                quickReplies: stepResult.quickReplies
             };
         }
     } catch (e) {
@@ -845,8 +820,6 @@ export async function sendMessage(
         console.error("Tool execution failed:", e);
     }
 
-    // Detect matched college for in-chat cutoff controls
-    let cutoffSelector: { collegeCode: string; collegeName: string; currentYear?: string; currentRound?: string; currentCategory?: string } | undefined;
     let quickReplies: string[] = [];
 
     const lowerMsg = userMessage.toLowerCase();
@@ -855,22 +828,6 @@ export async function sendMessage(
     const foundCode = matchedCol ? matchedCol.code : (codeMatch ? codeMatch[0] : null);
 
     if (foundCode && (lowerMsg.includes('cutoff') || lowerMsg.includes('cut off') || lowerMsg.includes('round') || lowerMsg.includes('branch') || lowerMsg.includes('rank') || lowerMsg.includes('college'))) {
-        const foundName = matchedCol ? (matchedCol.shortName || matchedCol.name) : foundCode;
-        const yearMatch = userMessage.match(/\b(202[3-6])\b/);
-        const curYear = yearMatch ? yearMatch[1] : "2026";
-        const isR1 = lowerMsg.includes('r1') || lowerMsg.includes('round 1') || lowerMsg.includes('round1');
-        const curRound = isR1 ? "R1" : "R2";
-        const catMatch = userMessage.match(/\b(1G|1R|1K|2AG|2AR|2AK|2BG|2BR|2BK|3AG|3AR|3AK|3BG|3BR|3BK|GM|GMR|GMK|SCG|SCR|SCK|STG|STR|STK)\b/i);
-        const curCat = catMatch ? catMatch[0].toUpperCase() : (profileFilters?.category || "3AG");
-
-        cutoffSelector = {
-            collegeCode: foundCode,
-            collegeName: foundName,
-            currentYear: curYear,
-            currentRound: curRound,
-            currentCategory: curCat
-        };
-
         quickReplies = [
             `${foundCode} 3AG Round 2 2026`,
             `${foundCode} GM Round 2 2026`,

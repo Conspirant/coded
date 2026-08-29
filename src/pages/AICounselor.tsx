@@ -22,6 +22,19 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command";
+import {
     ArrowUp,
     Sparkles,
     Loader2,
@@ -31,6 +44,7 @@ import {
     Check,
     ChevronDown,
     ChevronUp,
+    ChevronsUpDown,
     RotateCcw,
     SlidersHorizontal,
     SquarePen,
@@ -39,17 +53,46 @@ import {
     Cpu,
     Scale,
     FileCheck,
-    ExternalLink
+    ExternalLink,
+    Filter
 } from "lucide-react";
 import { sendMessage, PROMPT_CATEGORIES, type Message } from "@/lib/gemini";
 import type { StudentProfileFilters } from "@/lib/ai-tools";
+import { COLLEGE_DATABASE } from "@/data/collegeDatabase";
 import { CounselorRecommendationCard } from "@/components/counselor/CounselorRecommendationCard";
-import { InChatMessageCutoffSelector } from "@/components/counselor/InChatMessageCutoffSelector";
 import { TesselAvatar } from "@/components/TesselAvatar";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+
+export const ALL_KEA_CATEGORIES = [
+    { code: "GM", label: "GM - General Merit" },
+    { code: "3AG", label: "3AG - Category 3A (General)" },
+    { code: "3AR", label: "3AR - Category 3A (Rural)" },
+    { code: "3AK", label: "3AK - Category 3A (Kannada Medium)" },
+    { code: "2AG", label: "2AG - Category 2A (General)" },
+    { code: "2AR", label: "2AR - Category 2A (Rural)" },
+    { code: "2AK", label: "2AK - Category 2A (Kannada Medium)" },
+    { code: "1G", label: "1G - Category 1 (General)" },
+    { code: "1R", label: "1R - Category 1 (Rural)" },
+    { code: "1K", label: "1K - Category 1 (Kannada Medium)" },
+    { code: "2BG", label: "2BG - Category 2B (General)" },
+    { code: "2BR", label: "2BR - Category 2B (Rural)" },
+    { code: "2BK", label: "2BK - Category 2B (Kannada Medium)" },
+    { code: "3BG", label: "3BG - Category 3B (General)" },
+    { code: "3BR", label: "3BR - Category 3B (Rural)" },
+    { code: "3BK", label: "3BK - Category 3B (Kannada Medium)" },
+    { code: "SCG", label: "SCG - Scheduled Caste (General)" },
+    { code: "SCR", label: "SCR - Scheduled Caste (Rural)" },
+    { code: "SCK", label: "SCK - Scheduled Caste (Kannada Medium)" },
+    { code: "STG", label: "STG - Scheduled Tribe (General)" },
+    { code: "STR", label: "STR - Scheduled Tribe (Rural)" },
+    { code: "STK", label: "STK - Scheduled Tribe (Kannada Medium)" },
+    { code: "GMK", label: "GMK - General Merit (Kannada Medium)" },
+    { code: "GMR", label: "GMR - General Merit (Rural)" },
+    { code: "SNQ", label: "SNQ - Supernumerary Quota (100% Waiver)" }
+];
 
 const AICounselor = () => {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -58,9 +101,17 @@ const AICounselor = () => {
     const [error, setError] = useState<string | null>(null);
     const [showTransparency, setShowTransparency] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
+    const [showCutoffBar, setShowCutoffBar] = useState(false);
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const [status, setStatus] = useState<string>("");
     const [selectedCategoryTab, setSelectedCategoryTab] = useState(0);
+
+    // 269 College Dropdown Cutoff Selector State
+    const [cutoffCollegeCode, setCutoffCollegeCode] = useState<string>("E126");
+    const [cutoffYear, setCutoffYear] = useState<string>("2026");
+    const [cutoffRound, setCutoffRound] = useState<string>("R2");
+    const [cutoffCategory, setCutoffCategory] = useState<string>("3AG");
+    const [collegeSearchOpen, setCollegeSearchOpen] = useState(false);
 
     // Student Profile Filters
     const [profileFilters, setProfileFilters] = useState<StudentProfileFilters>({
@@ -135,8 +186,7 @@ const AICounselor = () => {
                 timestamp: new Date(),
                 recommendations: result.recommendations,
                 actionChips: result.actionChips,
-                quickReplies: result.quickReplies,
-                cutoffSelector: result.cutoffSelector
+                quickReplies: result.quickReplies
             };
 
             setMessages(prev => [...prev, assistantMessage]);
@@ -352,9 +402,29 @@ const AICounselor = () => {
                         </button>
 
                         <Button
+                            variant={showCutoffBar ? "secondary" : "ghost"}
+                            size="sm"
+                            onClick={() => {
+                                setShowCutoffBar(!showCutoffBar);
+                                if (showFilters) setShowFilters(false);
+                            }}
+                            className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
+                                showCutoffBar 
+                                    ? "bg-blue-600 text-white font-semibold shadow-md" 
+                                    : "bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900/60 border border-blue-800/40"
+                            }`}
+                        >
+                            <Filter className="h-3.5 w-3.5 text-blue-400" />
+                            <span>Cutoff Explorer (269)</span>
+                        </Button>
+
+                        <Button
                             variant={isFilterActive ? "secondary" : "ghost"}
                             size="sm"
-                            onClick={() => setShowFilters(!showFilters)}
+                            onClick={() => {
+                                setShowFilters(!showFilters);
+                                if (showCutoffBar) setShowCutoffBar(false);
+                            }}
                             className={`h-8 px-3 text-xs font-medium gap-1.5 rounded-lg transition-colors ${
                                 isFilterActive 
                                     ? "bg-blue-600/20 text-blue-400 border border-blue-500/30 font-semibold" 
@@ -543,6 +613,132 @@ const AICounselor = () => {
                     </div>
                 )}
 
+                {/* 269-College Quick Cutoff Dropdown Bar */}
+                {showCutoffBar && (
+                    <div className="p-3 border-b border-blue-900/40 bg-[#080d1a]/95 backdrop-blur-md animate-fade-in-up z-20">
+                        <div className="max-w-4xl mx-auto space-y-2.5">
+                            <div className="flex items-center justify-between">
+                                <span className="text-[11px] font-semibold text-slate-200 uppercase font-mono tracking-wider flex items-center gap-1.5">
+                                    <Filter className="w-3.5 h-3.5 text-blue-400" />
+                                    <span>Cutoff Explorer (All 269 Colleges & 25 Quotas)</span>
+                                </span>
+                                <span className="text-[10px] text-slate-500 font-mono">240,804 Live Records</span>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                                {/* 1. College Dropdown (All 269 Colleges) */}
+                                <div className="relative">
+                                    <Popover open={collegeSearchOpen} onOpenChange={setCollegeSearchOpen}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                className="w-full h-8 justify-between text-[11px] bg-slate-900 border-slate-800 text-slate-200 hover:bg-slate-800 hover:text-white font-normal truncate"
+                                            >
+                                                <span className="truncate font-mono">
+                                                    {cutoffCollegeCode} - {COLLEGE_DATABASE.find(c => c.code.toUpperCase() === cutoffCollegeCode.toUpperCase())?.shortName || 'Select College'}
+                                                </span>
+                                                <ChevronsUpDown className="ml-1 h-3 w-3 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[300px] sm:w-[360px] p-0 bg-slate-950 border-slate-800 text-slate-200 z-50">
+                                            <Command className="bg-slate-950 text-slate-200">
+                                                <CommandInput placeholder="Search 269 colleges (e.g. E126, RVCE, BMSIT)..." className="h-8 text-xs text-slate-200" />
+                                                <CommandList className="max-h-56">
+                                                    <CommandEmpty className="text-xs p-2 text-slate-500">No college found.</CommandEmpty>
+                                                    <CommandGroup heading="All 269 Karnataka Colleges">
+                                                        {COLLEGE_DATABASE.map((c) => (
+                                                            <CommandItem
+                                                                key={c.code}
+                                                                value={`${c.code} ${c.name} ${c.shortName} ${c.city}`}
+                                                                onSelect={() => {
+                                                                    setCutoffCollegeCode(c.code);
+                                                                    setCollegeSearchOpen(false);
+                                                                }}
+                                                                className="text-xs hover:bg-slate-800 cursor-pointer flex items-center justify-between"
+                                                            >
+                                                                <div className="flex flex-col truncate">
+                                                                    <span className="font-semibold text-slate-100 font-mono text-[11px]">
+                                                                        {c.code} - {c.shortName}
+                                                                    </span>
+                                                                    <span className="text-[10px] text-slate-400 truncate">
+                                                                        {c.name} ({c.city})
+                                                                    </span>
+                                                                </div>
+                                                                {cutoffCollegeCode === c.code && (
+                                                                    <Check className="ml-2 h-3.5 w-3.5 text-blue-400 shrink-0" />
+                                                                )}
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+
+                                {/* 2. Year Select */}
+                                <Select value={cutoffYear} onValueChange={setCutoffYear}>
+                                    <SelectTrigger className="h-8 text-[11px] bg-slate-900 border-slate-800 text-slate-200">
+                                        <SelectValue placeholder="Year" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-950 border-slate-800 text-slate-200 z-50">
+                                        <SelectItem value="2026">2026 Latest Benchmark</SelectItem>
+                                        <SelectItem value="2025">2025 Cutoffs</SelectItem>
+                                        <SelectItem value="2024">2024 Cutoffs</SelectItem>
+                                        <SelectItem value="2023">2023 Cutoffs</SelectItem>
+                                    </SelectContent>
+                                </Select>
+
+                                {/* 3. Round Select */}
+                                <Select value={cutoffRound} onValueChange={setCutoffRound}>
+                                    <SelectTrigger className="h-8 text-[11px] bg-slate-900 border-slate-800 text-slate-200">
+                                        <SelectValue placeholder="Round" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-950 border-slate-800 text-slate-200 z-50">
+                                        <SelectItem value="R2">Round 2 (R2)</SelectItem>
+                                        <SelectItem value="R1">Round 1 (R1)</SelectItem>
+                                        <SelectItem value="R3">Round 3 / Extended</SelectItem>
+                                        <SelectItem value="MOCK">Mock Allotment</SelectItem>
+                                    </SelectContent>
+                                </Select>
+
+                                {/* 4. Category Select (All 25 Categories) */}
+                                <Select value={cutoffCategory} onValueChange={setCutoffCategory}>
+                                    <SelectTrigger className="h-8 text-[11px] bg-slate-900 border-slate-800 text-slate-200">
+                                        <SelectValue placeholder="Category" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-950 border-slate-800 text-slate-200 max-h-60 z-50">
+                                        {ALL_KEA_CATEGORIES.map((cat) => (
+                                            <SelectItem key={cat.code} value={cat.code} className="text-xs">
+                                                {cat.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-1">
+                                <span className="text-[10px] text-slate-400">
+                                    Selected: <span className="font-mono text-blue-300 font-medium">{cutoffCollegeCode}</span> • <span className="font-mono text-blue-300">{cutoffYear}</span> • <span className="font-mono text-blue-300">{cutoffRound}</span> • <span className="font-mono text-blue-300">{cutoffCategory}</span>
+                                </span>
+                                <Button
+                                    size="sm"
+                                    onClick={() => {
+                                        const col = COLLEGE_DATABASE.find(c => c.code.toUpperCase() === cutoffCollegeCode.toUpperCase());
+                                        const colName = col ? col.shortName : cutoffCollegeCode;
+                                        handleSend(`${cutoffCollegeCode} ${colName} ${cutoffCategory} Round ${cutoffRound} ${cutoffYear} cutoffs`);
+                                    }}
+                                    className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-sm"
+                                >
+                                    <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
+                                    View Official Cutoffs
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Conversation Viewport */}
                 <ScrollArea ref={scrollAreaRef} className="flex-1 px-3 md:px-6">
                     {messages.length === 0 ? (
@@ -559,6 +755,28 @@ const AICounselor = () => {
                                 <p className="text-xs md:text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
                                     KCET & COMEDK strategy, cutoff lookup for all 269 colleges, branch roadmaps, or general conversation.
                                 </p>
+                            </div>
+
+                            {/* Quick Cutoff Trigger Bar in Hero Screen */}
+                            <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-5 text-left">
+                                <div className="flex items-center gap-2.5 px-1">
+                                    <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                                        <Filter className="w-3.5 h-3.5" />
+                                    </div>
+                                    <div className="text-xs">
+                                        <span className="font-semibold text-slate-200">College Cutoff Explorer</span>
+                                        <span className="text-slate-500 ml-1.5 hidden sm:inline">• Choose from all 269 colleges and 25 reservation quotas</span>
+                                    </div>
+                                </div>
+
+                                <Button
+                                    size="sm"
+                                    onClick={() => setShowCutoffBar(!showCutoffBar)}
+                                    className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-500 text-white font-medium shadow-sm shrink-0"
+                                >
+                                    <Sparkles className="w-3 h-3 mr-1 text-blue-200" />
+                                    {showCutoffBar ? "Close Filter" : "Open 269 Colleges Dropdown"}
+                                </Button>
                             </div>
 
                             {/* Prompt Categories */}
@@ -689,18 +907,6 @@ const AICounselor = () => {
                                                     {message.content}
                                                 </ReactMarkdown>
                                             </div>
-
-                                            {/* In-Chat Interactive Cutoff Controls */}
-                                            {message.cutoffSelector && (
-                                                <InChatMessageCutoffSelector
-                                                    collegeCode={message.cutoffSelector.collegeCode}
-                                                    collegeName={message.cutoffSelector.collegeName}
-                                                    currentYear={message.cutoffSelector.currentYear}
-                                                    currentRound={message.cutoffSelector.currentRound}
-                                                    currentCategory={message.cutoffSelector.currentCategory}
-                                                    onSelectCombination={(q) => handleSend(q)}
-                                                />
-                                            )}
 
                                             {/* In-Chat Quick Reply Chips */}
                                             {message.quickReplies && message.quickReplies.length > 0 && (
