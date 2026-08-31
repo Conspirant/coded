@@ -126,11 +126,11 @@ export default function NeetTrendsPage() {
 
       {/* Statistical Overview Bar */}
       {stats && (
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          <div className="p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+          <div className="p-3 sm:p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
             <p className="text-[10px] text-muted-foreground uppercase font-semibold">Average Shift</p>
             <p
-              className={`text-2xl font-extrabold font-mono ${
+              className={`text-xl sm:text-2xl font-extrabold font-mono ${
                 stats.avg > 0 ? "text-amber-400" : stats.avg < 0 ? "text-emerald-400" : "text-foreground"
               }`}
             >
@@ -138,21 +138,21 @@ export default function NeetTrendsPage() {
               {stats.avg.toLocaleString("en-IN")}
             </p>
           </div>
-          <div className="p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
+          <div className="p-3 sm:p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
             <p className="text-[10px] text-muted-foreground uppercase font-semibold">Relaxed (Easier)</p>
-            <p className="text-2xl font-extrabold font-mono text-amber-400">{stats.relaxed}</p>
+            <p className="text-xl sm:text-2xl font-extrabold font-mono text-amber-400">{stats.relaxed}</p>
           </div>
-          <div className="p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
+          <div className="p-3 sm:p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
             <p className="text-[10px] text-muted-foreground uppercase font-semibold">Tightened (Harder)</p>
-            <p className="text-2xl font-extrabold font-mono text-emerald-400">{stats.tightened}</p>
+            <p className="text-xl sm:text-2xl font-extrabold font-mono text-emerald-400">{stats.tightened}</p>
           </div>
-          <div className="p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
+          <div className="p-3 sm:p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
             <p className="text-[10px] text-muted-foreground uppercase font-semibold">Max Relaxed</p>
-            <p className="text-2xl font-extrabold font-mono text-rose-400">+{stats.max.toLocaleString("en-IN")}</p>
+            <p className="text-xl sm:text-2xl font-extrabold font-mono text-rose-400">+{stats.max.toLocaleString("en-IN")}</p>
           </div>
-          <div className="p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
+          <div className="col-span-2 sm:col-span-1 lg:col-span-1 p-3 sm:p-4 rounded-2xl border border-border/50 bg-card/60 text-center space-y-1">
             <p className="text-[10px] text-muted-foreground uppercase font-semibold">Max Tightened</p>
-            <p className="text-2xl font-extrabold font-mono text-emerald-400">{stats.min.toLocaleString("en-IN")}</p>
+            <p className="text-xl sm:text-2xl font-extrabold font-mono text-emerald-400">{stats.min.toLocaleString("en-IN")}</p>
           </div>
         </div>
       )}

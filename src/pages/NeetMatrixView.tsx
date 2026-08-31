@@ -364,19 +364,19 @@ export default function NeetMatrixView() {
             {/* Header Row */}
             <thead className="bg-muted/40 sticky top-0 z-20 shadow-sm">
               <tr className="border-b border-border/60">
-                <th className="p-2.5 text-left w-12 font-mono text-[10px] text-muted-foreground uppercase sticky left-0 z-30 bg-muted/90 backdrop-blur-md">
+                <th className="hidden sm:table-cell p-2.5 text-left w-10 font-mono text-[10px] text-muted-foreground uppercase sticky left-0 z-30 bg-muted/90 backdrop-blur-md">
                   #
                 </th>
-                <th className="p-2.5 text-left w-20 font-mono text-[10px] text-muted-foreground uppercase sticky left-12 z-30 bg-muted/90 backdrop-blur-md">
+                <th className="p-2.5 text-left w-16 sm:w-20 font-mono text-[10px] text-muted-foreground uppercase sticky left-0 sm:left-10 z-30 bg-muted/95 backdrop-blur-md border-r sm:border-r-0 border-border/40">
                   Code
                 </th>
-                <th className="p-2.5 text-left min-w-[240px] max-w-[280px] text-[10px] text-muted-foreground uppercase sticky left-32 z-30 bg-muted/90 backdrop-blur-md border-r border-border/50">
+                <th className="p-2.5 text-left min-w-[200px] sm:min-w-[240px] max-w-[280px] text-[10px] text-muted-foreground uppercase sm:sticky sm:left-30 z-20 sm:z-30 bg-muted/90 backdrop-blur-md border-r border-border/50">
                   College Name
                 </th>
                 {activeCategories.map((cat) => (
                   <th
                     key={cat}
-                    className="p-2 text-center font-mono text-[11px] font-bold text-rose-300 min-w-[90px] whitespace-nowrap"
+                    className="p-2 text-center font-mono text-[11px] font-bold text-rose-300 min-w-[80px] sm:min-w-[90px] whitespace-nowrap"
                     title={getCategoryLabel(cat)}
                   >
                     {cat}
@@ -393,17 +393,17 @@ export default function NeetMatrixView() {
                 return (
                   <tr key={row.college_code + idx} className="hover:bg-muted/30 transition-colors">
                     {/* Index */}
-                    <td className="p-2.5 font-mono text-muted-foreground sticky left-0 z-10 bg-card/90 backdrop-blur-md">
+                    <td className="hidden sm:table-cell p-2.5 font-mono text-muted-foreground sticky left-0 z-10 bg-card/90 backdrop-blur-md">
                       {idx + 1}
                     </td>
 
                     {/* Code */}
-                    <td className="p-2.5 font-mono font-bold text-rose-400 sticky left-12 z-10 bg-card/90 backdrop-blur-md">
+                    <td className="p-2.5 font-mono font-bold text-rose-400 sticky left-0 sm:left-10 z-10 bg-card/95 backdrop-blur-md border-r sm:border-r-0 border-border/40">
                       {row.college_code}
                     </td>
 
                     {/* College Name & Meta */}
-                    <td className="p-2.5 sticky left-32 z-10 bg-card/90 backdrop-blur-md border-r border-border/50">
+                    <td className="p-2.5 sm:sticky sm:left-30 z-10 bg-card/90 backdrop-blur-md border-r border-border/50">
                       <div className="space-y-0.5">
                         <p className="font-semibold text-foreground line-clamp-1 text-xs" title={row.college_name}>
                           {row.college_name}

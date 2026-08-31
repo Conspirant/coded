@@ -496,7 +496,7 @@ export function OptionEntryBuilder() {
               return (
                 <div
                   key={opt.id}
-                  className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                  className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl border transition-all ${
                     isDream
                       ? "border-rose-500/30 bg-rose-950/15 hover:bg-rose-950/25"
                       : isTarget
@@ -504,78 +504,82 @@ export function OptionEntryBuilder() {
                       : "border-emerald-500/30 bg-emerald-950/15 hover:bg-emerald-950/25"
                   }`}
                 >
-                  {/* Order Number Badge */}
-                  <div className="flex flex-col items-center justify-center w-8 h-8 rounded-lg bg-background/80 border border-border/60 shrink-0">
-                    <span className="text-[10px] text-muted-foreground font-semibold">#{idx + 1}</span>
+                  <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                    {/* Order Number Badge */}
+                    <div className="flex flex-col items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-background/80 border border-border/60 shrink-0 mt-0.5 sm:mt-0">
+                      <span className="text-[10px] text-muted-foreground font-semibold">#{idx + 1}</span>
+                    </div>
+
+                    {/* College & Course Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs font-bold text-foreground truncate max-w-[240px] sm:max-w-[450px]">
+                          {opt.college_name}
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={`text-[9px] h-4 px-1 font-mono ${
+                            isDream
+                              ? "border-rose-400 text-rose-300"
+                              : isTarget
+                              ? "border-amber-400 text-amber-300"
+                              : "border-emerald-400 text-emerald-300"
+                          }`}
+                        >
+                          {opt.tier.toUpperCase()}
+                        </Badge>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground flex-wrap">
+                        <span className="font-mono text-foreground/80 font-medium">[{opt.course_code}]</span>
+                        <span>•</span>
+                        <span>{opt.course_name}</span>
+                        <span>•</span>
+                        <span className="text-foreground/70">{opt.seat_type}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* College & Course Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-bold text-foreground truncate max-w-[320px] sm:max-w-[450px]">
-                        {opt.college_name}
-                      </span>
-                      <Badge
-                        variant="outline"
-                        className={`text-[9px] h-4 px-1 font-mono ${
-                          isDream
-                            ? "border-rose-400 text-rose-300"
-                            : isTarget
-                            ? "border-amber-400 text-amber-300"
-                            : "border-emerald-400 text-emerald-300"
-                        }`}
+                  {/* Closing Rank, Fee & Action Buttons */}
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/30">
+                    <div className="text-left sm:text-right space-y-0.5">
+                      <p className="text-xs font-mono font-bold text-foreground">
+                        Close: <span className="text-rose-400">#{opt.closing_rank.toLocaleString("en-IN")}</span>
+                      </p>
+                      <p className="text-[10px] font-mono text-muted-foreground">
+                        {opt.course_fees ? formatFee(opt.course_fees) + "/yr" : "—"}
+                      </p>
+                    </div>
+
+                    {/* Actions (Move Up, Down, Delete) */}
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        disabled={idx === 0}
+                        onClick={() => moveUp(idx)}
+                        className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground"
                       >
-                        {opt.tier.toUpperCase()}
-                      </Badge>
+                        <ArrowUp className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        disabled={idx === options.length - 1}
+                        onClick={() => moveDown(idx)}
+                        className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground"
+                      >
+                        <ArrowDown className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeOption(opt.id)}
+                        className="h-7 w-7 rounded-md text-muted-foreground hover:text-rose-400"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
-
-                    <div className="flex items-center gap-2 mt-0.5 text-[11px] text-muted-foreground flex-wrap">
-                      <span className="font-mono text-foreground/80 font-medium">[{opt.course_code}]</span>
-                      <span>•</span>
-                      <span>{opt.course_name}</span>
-                      <span>•</span>
-                      <span className="text-foreground/70">{opt.seat_type}</span>
-                    </div>
-                  </div>
-
-                  {/* Closing & Fee */}
-                  <div className="text-right shrink-0 space-y-0.5">
-                    <p className="text-xs font-mono font-bold text-foreground">
-                      Close: <span className="text-rose-400">#{opt.closing_rank.toLocaleString("en-IN")}</span>
-                    </p>
-                    <p className="text-[10px] font-mono text-muted-foreground">
-                      {opt.course_fees ? formatFee(opt.course_fees) + "/yr" : "—"}
-                    </p>
-                  </div>
-
-                  {/* Actions (Move Up, Down, Delete) */}
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      disabled={idx === 0}
-                      onClick={() => moveUp(idx)}
-                      className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground"
-                    >
-                      <ArrowUp className="h-3.5 w-3.5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      disabled={idx === options.length - 1}
-                      onClick={() => moveDown(idx)}
-                      className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground"
-                    >
-                      <ArrowDown className="h-3.5 w-3.5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeOption(opt.id)}
-                      className="h-7 w-7 rounded-md text-muted-foreground hover:text-rose-400"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
                   </div>
                 </div>
               );
