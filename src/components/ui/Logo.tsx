@@ -5,7 +5,7 @@ export interface LogoProps {
   iconSize?: number
   showText?: boolean
   textSize?: string
-  mode?: "KCET" | "COMEDK" | "default"
+  mode?: "KCET" | "COMEDK" | "NEET" | "default"
   variant?: "default" | "badge" | "glyph"
 }
 
@@ -19,7 +19,7 @@ export function Logo({
 }: LogoProps) {
   const uniqueId = useId()
 
-  // Dynamic theme gradients tuned for engineering rigor & clarity
+  // Dynamic theme gradients tuned for engineering & medical rigor & clarity
   const theme = {
     KCET: {
       top1: "#93C5FD",
@@ -46,6 +46,19 @@ export function Logo({
       core2: "#F97316",
       dot: "bg-amber-400",
       prefix: "COMEDK",
+    },
+    NEET: {
+      top1: "#FECDD3",
+      top2: "#FB7185",
+      top3: "#E11D48",
+      spine1: "#E11D48",
+      spine2: "#881337",
+      base1: "#F43F5E",
+      base2: "#9F1239",
+      core1: "#FDA4AF",
+      core2: "#E11D48",
+      dot: "bg-rose-500",
+      prefix: "NEET",
     },
     default: {
       top1: "#93C5FD",

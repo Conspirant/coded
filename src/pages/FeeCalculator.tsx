@@ -60,13 +60,6 @@ const QUOTA_FEE_STRUCTURES: Record<string, FeeStructure> = {
     examFee: 5000,
     description: "Private Deemed / Unitary Universities (e.g. PESU, REVA, MS RUAS KCET Quota)"
   },
-  comedk: {
-    tuitionFee: 242156,
-    universityFee: 15000,
-    collegeMiscFee: 25000,
-    examFee: 5000,
-    description: "COMEDK UGET Allotment (Government Capped Maximum Tuition Fee)"
-  },
   management: {
     tuitionFee: 450000,
     universityFee: 20000,
@@ -77,10 +70,8 @@ const QUOTA_FEE_STRUCTURES: Record<string, FeeStructure> = {
 }
 
 export default function FeeCalculator() {
-  const { examMode } = useExamMode()
-
   // State inputs
-  const [quota, setQuota] = useState<string>(examMode === "COMEDK" ? "comedk" : "kcet_private_vtu")
+  const [quota, setQuota] = useState<string>("kcet_private_vtu")
   const [category, setCategory] = useState<string>("GM")
   const [isSNQ, setIsSNQ] = useState<boolean>(false)
   const [accommodation, setAccommodation] = useState<"hostel" | "pg" | "dayscholar">("dayscholar")
@@ -157,8 +148,8 @@ export default function FeeCalculator() {
   return (
     <div className="space-y-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-foreground font-sans animate-scale-in">
       <SEO
-        title="KCET & COMEDK Fee Calculator 2026 – Tuition, Govt Fees & 4-Year Cost"
-        description="Calculate exact tuition fees, college extra fees, SSP scholarships, hostel charges, and total 4-year engineering cost for KCET & COMEDK."
+        title="KCET Fee Calculator 2026 – Tuition, Govt Fees & 4-Year Cost"
+        description="Calculate exact tuition fees, college extra fees, SSP scholarships, hostel charges, and total 4-year engineering cost for KCET."
         url="https://kcetcoded.dev/fee-calculator"
       />
 
@@ -171,7 +162,7 @@ export default function FeeCalculator() {
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2">
           <Calculator className="h-7 w-7 text-primary" />
-          KCET & COMEDK Fee Calculator
+          KCET Fee Calculator
         </h1>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
           Estimate tuition fees, SSP/ePASS category scholarships, hostel/PG expenses, and total 4-year engineering cost.
@@ -406,7 +397,7 @@ export default function FeeCalculator() {
                 </div>
 
                 <div className="flex justify-between py-1.5 border-b border-border/40">
-                  <span className="text-muted-foreground">VTU / University Regulatory Fee:</span>
+                  <span className="text-muted-foreground">University / Regulatory Fee:</span>
                   <span className="font-mono">₹{calculations.uniFee.toLocaleString('en-IN')}</span>
                 </div>
 

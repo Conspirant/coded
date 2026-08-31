@@ -27,7 +27,10 @@ import {
     Newspaper,
     ShieldCheck,
     Brain,
-    Gamepad2
+    Gamepad2,
+    HeartPulse,
+    ListOrdered,
+    Grid3X3,
 } from "lucide-react"
 import { useExamMode } from "@/contexts/ExamModeContext"
 
@@ -67,6 +70,10 @@ const COMMANDS: CommandItem[] = [
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
     { id: "ai-counselor", title: "TesselBot", description: "KCET & COMEDK counseling intelligence", icon: Bot, href: "/ai-counselor", keywords: ["tesselbot", "tessel", "bot", "ai", "assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
     { id: "dino-game", title: "Chrome Dino Game", description: "Play classic T-Rex runner mini-game", icon: Gamepad2, href: "/dino", keywords: ["dino", "game", "t-rex", "runner", "arcade", "offline", "chromedino", "easter egg"], category: "tools" },
+    { id: "neet-hub", title: "NEET Medical Hub", description: "Karnataka UG-NEET Medical & Dental admissions dashboard", icon: HeartPulse, href: "/neet", keywords: ["neet", "medical", "mbbs", "bds", "kea", "hospital", "doctor"], category: "main" },
+    { id: "neet-predictor", title: "NEET College Predictor", description: "Predict MBBS & BDS colleges by NEET AIR", icon: Target, href: "/neet-predictor", keywords: ["neet", "predictor", "mbbs", "bds", "air", "medical"], category: "tools" },
+    { id: "neet-matrix", title: "NEET Cutoff Matrix", description: "Comprehensive category-wise medical cutoff matrix", icon: Grid3X3, href: "/neet-matrix", keywords: ["neet", "matrix", "grid", "cutoffs", "category"], category: "tools" },
+    { id: "neet-option-builder", title: "NEET Option Entry Builder", description: "Build 3-tier priority sequence for KEA medical choice entry", icon: ListOrdered, href: "/neet-option-builder", keywords: ["neet", "option", "entry", "builder", "priority", "dream", "target"], category: "tools" },
 ]
 
 export function CommandPalette() {
@@ -80,45 +87,35 @@ export function CommandPalette() {
 
     const commands = useMemo(() => {
         return COMMANDS
-            .filter((cmd) => cmd.id !== "comedk-explorer")
+            .filter((cmd) => cmd.id !== "comedk-explorer" && cmd.id !== "comedk")
             .map((cmd) => {
                 if (cmd.id === "cutoff-explorer") {
-                    return examMode === "COMEDK"
-                        ? {
+                    if (examMode === "NEET") {
+                        return {
                             ...cmd,
-                            title: "COMEDK Explorer",
-                            description: "Browse COMEDK cutoffs with source PDFs",
-                            keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"],
+                            title: "NEET Medical Cutoffs",
+                            description: "Browse Karnataka UG-NEET cutoffs & hospital beds",
+                            keywords: ["neet", "medical", "cutoff", "mbbs", "bds", "gmp", "bmcri"],
                         }
-                        : {
-                            ...cmd,
-                            title: "Cutoff Explorer",
-                            description: "Analyze KCET cutoff trends",
-                            keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
-                        }
+                    }
+                    return {
+                        ...cmd,
+                        title: "Cutoff Explorer",
+                        description: "Analyze KCET cutoff trends",
+                        keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
+                    }
                 }
 
                 if (cmd.id === "rank-predictor") {
-                    return examMode === "COMEDK"
-                        ? {
+                    if (examMode === "NEET") {
+                        return {
                             ...cmd,
-                            title: "COMEDK Rank Predictor",
-                            description: "Predict COMEDK rank from marks",
-                            keywords: ["comedk", "rank", "predict", "marks", "score"],
+                            title: "NEET Marks vs Rank Predictor",
+                            description: "Predict NEET AIR and Karnataka State Rank",
+                            keywords: ["neet", "rank", "score", "air", "mbbs", "predictor"],
                         }
-                        : cmd
-                }
-
-                if (cmd.id === "kcet") {
-                    return examMode === "COMEDK"
-                        ? {
-                            ...cmd,
-                            title: "r/COMEDK",
-                            description: "Open COMEDK community",
-                            href: "https://www.reddit.com/r/comedk/",
-                            keywords: ["comedk", "reddit", "community", "discussion"],
-                        }
-                        : cmd
+                    }
+                    return cmd
                 }
 
                 return cmd

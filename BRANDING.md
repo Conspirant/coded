@@ -57,12 +57,14 @@ import { Logo } from "@/components/ui/Logo"
 // Renders the dynamic logo matching active exam context
 <Logo mode="KCET" iconSize={24} />
 <Logo mode="COMEDK" iconSize={24} />
+<Logo mode="NEET" iconSize={24} />
 <Logo mode="default" iconSize={24} />
 ```
 
 ### Color Systems & Hierarchy
 - **KCET / Default mode:** Electric Indigo & Cobalt (`#93C5FD` -> `#60A5FA` -> `#4F46E5` with `#38BDF8` cyan prompt).
 - **COMEDK mode:** Warm Amber Bronze (`#FEF08A` -> `#F59E0B` -> `#D97706` with `#FBBF24` gold prompt).
+- **NEET mode:** Medical Crimson & Rose (`#FECDD3` -> `#FB7185` -> `#E11D48` with `#FDA4AF` rose prompt).
 
 ---
 
@@ -74,6 +76,7 @@ Each counseling context is branded with a distinct accent color theme, which dyn
 | :--- | :--- | :--- | :--- |
 | **KCET** | Indigo (`#6366f1`) | Indigo to Purple | `bg-indigo-500/10 text-indigo-400 border-indigo-500/20` |
 | **COMEDK** | Amber (`#f59e0b`) | Amber to Orange | `bg-amber-500/10 text-amber-400 border-amber-500/20` |
+| **NEET** | Crimson (`#e11d48`) | Rose to Crimson | `bg-rose-500/10 text-rose-400 border-rose-500/20` |
 | **Common/Admin** | Emerald (`#10b981`) | Teal to Emerald | `bg-emerald-500/10 text-emerald-400 border-emerald-500/20` |
 
 Ensure that all interactive states (hover indicators, sliders, buttons) adapt to `hsl(var(--primary))` or active mode variables rather than hardcoded tailwind colors where applicable.

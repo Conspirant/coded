@@ -9,7 +9,7 @@ export interface VoteRecord {
   pollId: string;
   optionId: string;
   votedAt: string;
-  examMode?: 'kcet' | 'comedk' | 'all';
+  examMode?: 'kcet' | 'comedk' | 'neet' | 'all';
 }
 
 export interface Poll {
@@ -19,7 +19,7 @@ export interface Poll {
   status: 'active' | 'closed';
   createdAt: string;
   updatedAt: string;
-  examMode: 'all' | 'kcet' | 'comedk';
+  examMode: 'all' | 'kcet' | 'comedk' | 'neet';
   displayType?: 'widget' | 'popup' | 'both';
   totalVotes: number;
   voteHistory?: VoteRecord[];

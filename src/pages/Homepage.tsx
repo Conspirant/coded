@@ -236,6 +236,12 @@ const Homepage = () => {
                                     Rank Predictor
                                 </Button>
                             </Link>
+                            <Link to="/neet">
+                                <Button variant="ghost" size="sm" className="text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 text-xs h-8 font-semibold">
+                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-pulse" />
+                                    NEET Hub
+                                </Button>
+                            </Link>
                             <Link to="/dashboard">
                                 <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs h-8 px-3.5 shadow-xs">
                                     Open Dashboard <ArrowRight className="ml-1.5 h-3.5 w-3.5" />

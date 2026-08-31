@@ -339,7 +339,7 @@ const Dashboard = () => {
             <div className="flex items-center gap-2 mb-1.5">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {examMode} 2026 Counseling Workspace
+                KCET 2026 Counseling Workspace
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -350,30 +350,6 @@ const Dashboard = () => {
                 ? devMessage
                 : "Real-time rank predictions, seat odds, cutoff analytics & option entry tools."}
             </p>
-          </div>
-
-          {/* Mode Switcher */}
-          <div className="flex items-center gap-2 shrink-0 bg-secondary/50 p-1.5 rounded-full border border-border/40">
-            <button
-              type="button"
-              onClick={() => setExamMode("KCET")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${examMode === "KCET"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              KCET 2026
-            </button>
-            <button
-              type="button"
-              onClick={() => setExamMode("COMEDK")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${examMode === "COMEDK"
-                  ? "bg-amber-500 text-black shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-                }`}
-            >
-              COMEDK
-            </button>
           </div>
         </header>
 

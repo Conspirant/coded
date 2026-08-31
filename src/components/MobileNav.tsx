@@ -26,9 +26,10 @@ import {
     Sword,
     MessageSquare,
     ExternalLink,
-    TrendingUp
+    TrendingUp,
+    Stethoscope
 } from "lucide-react"
-import { useExamMode } from "@/contexts/ExamModeContext"
+import { useExamMode, ExamMode } from "@/contexts/ExamModeContext"
 
 /* ═══════════════════════════════════════════════════
    MOBILE DOCK — iOS-style bottom navigation
@@ -45,67 +46,37 @@ interface MoreItem extends DockItem {
     external?: boolean
 }
 
-const getDockItems = (examMode: "KCET" | "COMEDK"): DockItem[] =>
-    examMode === "COMEDK"
-        ? [
-            { icon: Home, label: "Home", href: "/" },
-            { icon: LayoutDashboard, label: "Dash", href: "/dashboard" },
-            { icon: BarChart3, label: "COMEDK", href: "/cutoff-explorer" },
-            { icon: Calculator, label: "Predict", href: "/rank-predictor" },
-        ]
-        : [
-            { icon: Home, label: "Home", href: "/" },
-            { icon: Search, label: "Predictor", href: "/college-predictor" },
-            { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
-            { icon: Calculator, label: "Predict", href: "/rank-predictor" },
-        ]
+const dockItems: DockItem[] = [
+    { icon: Home, label: "Home", href: "/" },
+    { icon: Search, label: "Predictor", href: "/college-predictor" },
+    { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
+    { icon: Calculator, label: "Predict", href: "/rank-predictor" },
+]
 
-const getMoreItems = (examMode: "KCET" | "COMEDK"): MoreItem[] => {
-    if (examMode === "COMEDK") {
-        return [
-            { icon: MessageSquare, label: "Forum", href: "/forum" },
-            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
-            { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
-            { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-            { icon: Building2, label: "Colleges", href: "/colleges" },
-            { icon: Bell, label: "Rounds", href: "/round-tracker" },
-            { icon: FileText, label: "Documents", href: "/documents" },
-            { icon: Star, label: "Reviews", href: "/reviews" },
-            { icon: Info, label: "Info", href: "/info-centre" },
-            { icon: Book, label: "Materials", href: "/materials" },
-            { icon: Bot, label: "TesselBot", href: "/ai-counselor" },
-            { icon: ExternalLink, label: "r/COMEDK", href: "https://www.reddit.com/r/comedk/", external: true },
-        ]
-    }
-
-    return [
-        { icon: MessageSquare, label: "Forum", href: "/forum" },
-        { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
-        { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
-        { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
-        { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-        { icon: Building2, label: "Colleges", href: "/colleges" },
-        { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
-        { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
-        { icon: TrendingUp, label: "Trends", href: "/cutoff-trends" },
-        { icon: Bell, label: "Rounds", href: "/round-tracker" },
-        { icon: FileText, label: "Documents", href: "/documents" },
-        { icon: Star, label: "Reviews", href: "/reviews" },
-        { icon: Info, label: "Info", href: "/info-centre" },
-        { icon: Book, label: "Materials", href: "/materials" },
-        { icon: Bot, label: "TesselBot", href: "/ai-counselor" },
-        { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
-        { icon: Shuffle, label: "Mock Sim", href: "/mock-simulator" },
-    ]
-}
+const moreItems: MoreItem[] = [
+    { icon: Stethoscope, label: "NEET Hub", href: "/neet" },
+    { icon: MessageSquare, label: "Forum", href: "/forum" },
+    { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
+    { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
+    { icon: Sword, label: "VS Clash", href: "/cutoff-clash" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+    { icon: Building2, label: "Colleges", href: "/colleges" },
+    { icon: Target, label: "Mock Sim", href: "/mock-simulator" },
+    { icon: Building2, label: "Cutoffs", href: "/college-cutoffs" },
+    { icon: TrendingUp, label: "Trends", href: "/cutoff-trends" },
+    { icon: Bell, label: "Rounds", href: "/round-tracker" },
+    { icon: FileText, label: "Documents", href: "/documents" },
+    { icon: Star, label: "Reviews", href: "/reviews" },
+    { icon: Info, label: "Info", href: "/info-centre" },
+    { icon: Book, label: "Materials", href: "/materials" },
+    { icon: Bot, label: "TesselBot", href: "/ai-counselor" },
+    { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
+]
 
 export function MobileDock() {
     const [moreOpen, setMoreOpen] = useState(false)
     const location = useLocation()
     const sheetRef = useRef<HTMLDivElement>(null)
-    const { examMode } = useExamMode()
-    const dockItems = getDockItems(examMode)
-    const moreItems = getMoreItems(examMode)
 
     // Close sheet on route change
     useEffect(() => {
@@ -282,20 +253,30 @@ function DockIcon({ item }: { item: DockItem }) {
    FLOATING ACTION BUTTON — radial quick actions
    ═══════════════════════════════════════════════════ */
 
-const getFabActions = (examMode: "KCET" | "COMEDK") =>
-    examMode === "COMEDK"
-        ? [
+const getFabActions = (examMode: ExamMode | "COMEDK") => {
+    if (examMode === "NEET") {
+        return [
+            { icon: Search, label: "Find College", href: "/neet-predictor", color: "from-rose-500 to-pink-500" },
+            { icon: BarChart3, label: "NEET Cutoffs", href: "/neet-explorer", color: "from-amber-500 to-rose-400" },
+            { icon: Calculator, label: "Predict Rank", href: "/neet-rank-predictor", color: "from-purple-500 to-pink-400" },
+            { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+        ]
+    }
+    if (examMode === "COMEDK") {
+        return [
             { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
             { icon: BarChart3, label: "COMEDK Explorer", href: "/cutoff-explorer", color: "from-amber-500 to-orange-500" },
             { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
             { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
         ]
-        : [
-            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
-            { icon: Search, label: "Find College", href: "/college-predictor", color: "from-blue-500 to-cyan-400" },
-            { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
-            { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
-        ]
+    }
+    return [
+        { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
+        { icon: Search, label: "Find College", href: "/college-predictor", color: "from-blue-500 to-cyan-400" },
+        { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
+        { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
+    ]
+}
 
 export function FloatingActionButton() {
     const [open, setOpen] = useState(false)

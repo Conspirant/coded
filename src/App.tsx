@@ -18,8 +18,19 @@ import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import RankPredictor from "./pages/RankPredictor";
 import ComedkRankPredictor from "./pages/ComedkRankPredictor";
+import NeetRankPredictor from "./pages/NeetRankPredictor";
 import CutoffExplorer from "./pages/CutoffExplorer";
 import ComedkExplorer from "./pages/ComedkExplorer";
+import NeetExplorer from "./pages/NeetExplorer";
+import NeetHub from "./pages/NeetHub";
+import NeetCollegePredictor from "./pages/NeetCollegePredictor";
+import NeetOptionBuilder from "./pages/NeetOptionBuilder";
+import NeetChoiceSimulatorPage from "./pages/NeetChoiceSimulatorPage";
+import NeetComparePage from "./pages/NeetCompare";
+import NeetFeeCalculator from "./pages/NeetFeeCalculator";
+import NeetTrendsPage from "./pages/NeetTrends";
+import NeetQuotasPage from "./pages/NeetQuotas";
+import NeetMatrixView from "./pages/NeetMatrixView";
 import CollegePredictor from "./pages/CollegePredictor";
 import MockSimulator from "./pages/MockSimulator";
 import RoundTracker from "./pages/RoundTracker";
@@ -72,16 +83,6 @@ import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
 
 const queryClient = new QueryClient();
 
-const ExamAwareCutoffExplorer = () => {
-  const { examMode } = useExamMode();
-  return examMode === "COMEDK" ? <ComedkExplorer /> : <CutoffExplorer />;
-};
-
-const ExamAwareRankPredictor = () => {
-  const { examMode } = useExamMode();
-  return examMode === "COMEDK" ? <ComedkRankPredictor /> : <RankPredictor />;
-};
-
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -114,9 +115,25 @@ const App = () => (
                   <Route path="/dino" element={<DinoGame />} />
                   <Route path="/game" element={<Navigate to="/dino" replace />} />
                   <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-                  <Route path="/rank-predictor" element={<Layout><ExamAwareRankPredictor /></Layout>} />
-                  <Route path="/cutoff-explorer" element={<Layout><ExamAwareCutoffExplorer /></Layout>} />
-                  <Route path="/comedk-explorer" element={<Layout><ComedkExplorer /></Layout>} />
+                  <Route path="/rank-predictor" element={<Layout><RankPredictor /></Layout>} />
+                  <Route path="/cutoff-explorer" element={<Layout><CutoffExplorer /></Layout>} />
+                  <Route path="/neet" element={<Layout><NeetHub /></Layout>} />
+                  <Route path="/neetcoded" element={<Navigate to="/neet" replace />} />
+                  <Route path="/neet-predictor" element={<Layout><NeetCollegePredictor /></Layout>} />
+                  <Route path="/neet-college-predictor" element={<Navigate to="/neet-predictor" replace />} />
+                  <Route path="/neet-option-builder" element={<Layout><NeetOptionBuilder /></Layout>} />
+                  <Route path="/neet-choice-simulator" element={<Layout><NeetChoiceSimulatorPage /></Layout>} />
+                  <Route path="/neet-explorer" element={<Layout><NeetExplorer /></Layout>} />
+                  <Route path="/neet-cutoffs" element={<Navigate to="/neet-explorer" replace />} />
+                  <Route path="/neet-rank-predictor" element={<Layout><NeetRankPredictor /></Layout>} />
+                  <Route path="/neet-compare" element={<Layout><NeetComparePage /></Layout>} />
+                  <Route path="/neet-trends" element={<Layout><NeetTrendsPage /></Layout>} />
+                  <Route path="/neet-fees" element={<Layout><NeetFeeCalculator /></Layout>} />
+                  <Route path="/neet-fee-calculator" element={<Navigate to="/neet-fees" replace />} />
+                  <Route path="/neet-quotas" element={<Layout><NeetQuotasPage /></Layout>} />
+                  <Route path="/neet-guidelines" element={<Navigate to="/neet-quotas" replace />} />
+                  <Route path="/neet-matrix" element={<Layout><NeetMatrixView /></Layout>} />
+                  <Route path="/neet-matrix-view" element={<Navigate to="/neet-matrix" replace />} />
                   <Route path="/college-predictor" element={<Layout><CollegePredictor /></Layout>} />
                   <Route path="/college-finder" element={<Navigate to="/college-predictor" replace />} />
                   <Route path="/cutoff-trends" element={<Layout><CutoffTrends /></Layout>} />

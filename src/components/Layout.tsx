@@ -68,6 +68,16 @@ export function Layout({ children }: LayoutProps) {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
+  // Strict route-based exam mode isolation: NEET routes are NEET, all other routes are KCET
+  useEffect(() => {
+    const isNeet = location.pathname.startsWith('/neet') || location.pathname === '/neetcoded'
+    if (isNeet && examMode !== "NEET") {
+      setExamMode("NEET")
+    } else if (!isNeet && examMode === "NEET") {
+      setExamMode("KCET")
+    }
+  }, [location.pathname, examMode, setExamMode])
+
   const handleSettingsUnlock = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!settingsKey.trim()) {
@@ -136,36 +146,12 @@ export function Layout({ children }: LayoutProps) {
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground hidden sm:block">
-                  {examMode === "COMEDK" ? "COMEDK Counseling Reference" : "KCET Counseling Reference"}
+                  {examMode === "NEET" ? "Karnataka UG-NEET Admissions" : "KCET Counseling Reference"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2">
               <LiveVisitorCounter variant="compact" />
-              <div className="hidden md:inline-flex relative h-8 w-[9.5rem] items-center rounded-md border border-border bg-muted p-0.5">
-                <span
-                  className={`absolute left-0.5 h-7 w-[4.5rem] rounded transition-all duration-200 ease-in-out ${examMode === "COMEDK"
-                    ? "translate-x-[4.5rem] bg-amber-500 text-black shadow-xs"
-                    : "translate-x-0 bg-primary text-primary-foreground shadow-xs"
-                    }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setExamMode("KCET")}
-                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded text-xs font-semibold transition-colors duration-150 ${examMode === "KCET" ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                >
-                  KCET
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setExamMode("COMEDK")}
-                  className={`relative z-10 flex h-7 w-[4.5rem] items-center justify-center rounded text-xs font-semibold transition-colors duration-150 ${examMode === "COMEDK" ? "text-black font-bold" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                >
-                  COMEDK
-                </button>
-              </div>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted" aria-label="Settings" onClick={() => setOpen(true)}>
@@ -186,33 +172,6 @@ export function Layout({ children }: LayoutProps) {
                     </p>
                   </DialogHeader>
                   <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Exam Track</Label>
-                      <div className="relative inline-flex h-9 w-[10.5rem] items-center rounded-md border border-border bg-muted p-0.5">
-                        <span
-                          className={`absolute left-0.5 h-8 w-[5rem] rounded transition-all duration-200 ease-in-out ${examMode === "COMEDK"
-                            ? "translate-x-[5rem] bg-amber-500"
-                            : "translate-x-0 bg-primary"
-                            }`}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setExamMode("KCET")}
-                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded text-xs font-semibold transition-colors duration-150 ${examMode === "KCET" ? "text-primary-foreground font-bold" : "text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                          KCET
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setExamMode("COMEDK")}
-                          className={`relative z-10 flex h-8 w-[5rem] items-center justify-center rounded text-xs font-semibold transition-colors duration-150 ${examMode === "COMEDK" ? "text-black font-bold" : "text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                          COMEDK
-                        </button>
-                      </div>
-                    </div>
 
                     {/* Theme */}
                     <div className="space-y-2">

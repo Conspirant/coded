@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export type ExamMode = "KCET" | "COMEDK";
+export type ExamMode = "KCET" | "NEET";
 
 interface ExamModeContextValue {
   examMode: ExamMode;
@@ -18,8 +18,8 @@ export function ExamModeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(EXAM_MODE_STORAGE_KEY);
-      if (stored === "KCET" || stored === "COMEDK") {
-        setExamModeState(stored);
+      if (stored === "KCET" || stored === "NEET") {
+        setExamModeState(stored as ExamMode);
       }
     } catch {
       // Ignore storage errors and continue with default mode.
@@ -39,7 +39,7 @@ export function ExamModeProvider({ children }: { children: React.ReactNode }) {
     () => ({
       examMode,
       setExamMode,
-      toggleExamMode: () => setExamMode(examMode === "KCET" ? "COMEDK" : "KCET"),
+      toggleExamMode: () => setExamMode(examMode === "KCET" ? "NEET" : "KCET"),
     }),
     [examMode],
   );
