@@ -212,18 +212,20 @@ export default function NeetMatrixView() {
       </Helmet>
 
       {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-              Category Matrix Grid
+      <div className="p-6 rounded-2xl border border-border/40 bg-card/60 backdrop-blur-md shadow-sm space-y-4">
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Karnataka UG-NEET 2026 Admissions Workspace
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              Karnataka Medical <span className="text-foreground">Cutoff Matrix</span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Medical & Dental <span className="text-foreground font-black">Cutoff Matrix</span>
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
-              Explore closing ranks across all reservation categories in an interactive high-density matrix. Highlight eligible colleges against your NEET AIR in real-time.
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 leading-relaxed max-w-3xl">
+              Category-wise closing ranks grid across 107 Karnataka institutions. Enter your NEET AIR in the toolbar below to highlight eligible seat allotments across all quotas in real-time.
             </p>
           </div>
 
@@ -232,19 +234,19 @@ export default function NeetMatrixView() {
               variant="outline"
               size="sm"
               onClick={exportMatrixCSV}
-              className="border-border/70 text-xs h-8 text-foreground"
+              className="border-border/60 text-xs h-9 text-foreground"
             >
-              <Download className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
-              Export Matrix CSV
+              <Download className="mr-1.5 h-4 w-4 text-muted-foreground" />
+              Export CSV
             </Button>
-            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
+            <Button asChild variant="outline" size="sm" className="border-border/60 text-xs h-9 text-foreground">
               <Link to="/neet-predictor">
-                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" />
+                <Target className="mr-1.5 h-4 w-4 text-rose-500" />
                 Predictor
               </Link>
             </Button>
           </div>
-        </div>
+        </header>
       </div>
 
       {/* Matrix Controls & Highlight Toolbar */}
