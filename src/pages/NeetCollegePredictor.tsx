@@ -21,6 +21,7 @@ import {
   FileSpreadsheet,
   FileText,
   RotateCcw,
+  Grid3X3,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ import {
 } from "@/data/neet2026Data";
 
 interface CollegeMatchItem extends NeetCutoffEntry {
-  probability: "High" | "Moderate" | "Borderline";
+  probability: "High" | "Moderate" | "Borderline" | "Ambitious";
   marginPercent: number;
 }
 
@@ -108,16 +109,16 @@ export default function NeetCollegePredictor() {
     const results: CollegeMatchItem[] = [];
     for (const c of filtered) {
       const margin = ((c.closing_rank - rank) / c.closing_rank) * 100;
-      let probability: "High" | "Moderate" | "Borderline";
+      let probability: "High" | "Moderate" | "Borderline" | "Ambitious";
 
       if (rank <= c.closing_rank * 0.85) {
         probability = "High";
       } else if (rank <= c.closing_rank) {
         probability = "Moderate";
-      } else if (rank <= c.closing_rank * 1.15) {
+      } else if (rank <= c.closing_rank * 1.25) {
         probability = "Borderline";
       } else {
-        continue; // Exclude out-of-reach beyond 15%
+        probability = "Ambitious";
       }
 
       if (probabilityFilter !== "ALL" && probability !== probabilityFilter) {
@@ -164,14 +165,16 @@ export default function NeetCollegePredictor() {
     document.body.removeChild(link);
   };
 
-  const getProbBadge = (prob: "High" | "Moderate" | "Borderline") => {
+  const getProbBadge = (prob: "High" | "Moderate" | "Borderline" | "Ambitious") => {
     switch (prob) {
       case "High":
-        return <Badge className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[10px]">High Chance</Badge>;
+        return <Badge className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[10px]">High Chance (Safe)</Badge>;
       case "Moderate":
-        return <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[10px]">Moderate</Badge>;
+        return <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[10px]">Moderate Chance</Badge>;
       case "Borderline":
-        return <Badge className="bg-rose-500/15 text-rose-400 border-rose-500/30 text-[10px]">Borderline / Stretch</Badge>;
+        return <Badge className="bg-orange-500/15 text-orange-400 border-orange-500/30 text-[10px]">Borderline (R2 Shift)</Badge>;
+      case "Ambitious":
+        return <Badge className="bg-rose-500/15 text-rose-400 border-rose-500/30 text-[10px]">Ambitious (Dream)</Badge>;
     }
   };
 
@@ -343,12 +346,13 @@ export default function NeetCollegePredictor() {
 
           <div className="flex items-center gap-2">
             <Select value={probabilityFilter} onValueChange={setProbabilityFilter}>
-              <SelectTrigger className="h-8 text-xs w-32 bg-background"><SelectValue /></SelectTrigger>
+              <SelectTrigger className="h-8 text-xs w-36 bg-background"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="ALL" className="text-xs">All Odds</SelectItem>
-                <SelectItem value="High" className="text-xs">High Chance</SelectItem>
-                <SelectItem value="Moderate" className="text-xs">Moderate</SelectItem>
-                <SelectItem value="Borderline" className="text-xs">Borderline</SelectItem>
+                <SelectItem value="High" className="text-xs">High Chance (Safe)</SelectItem>
+                <SelectItem value="Moderate" className="text-xs">Moderate (Target)</SelectItem>
+                <SelectItem value="Borderline" className="text-xs">Borderline (R2 Shift)</SelectItem>
+                <SelectItem value="Ambitious" className="text-xs">Ambitious (Dream)</SelectItem>
               </SelectContent>
             </Select>
 
@@ -366,16 +370,18 @@ export default function NeetCollegePredictor() {
       </div>
 
       {/* ═══ RESULTS COUNT & OVERVIEW ═══ */}
-      <div className="flex items-center justify-between text-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
         <span className="font-semibold text-muted-foreground">
           Found <strong className="text-foreground">{matches.length}</strong> matching options for AIR {rank.toLocaleString("en-IN")} in {category}
         </span>
-        <div className="flex items-center gap-2 text-[10px]">
-          <span className="text-emerald-400 font-semibold">{matches.filter((m) => m.probability === "High").length} High</span>
+        <div className="flex items-center gap-2 text-[10px] flex-wrap">
+          <span className="text-emerald-400 font-semibold">{matches.filter((m) => m.probability === "High").length} High (Safe)</span>
           <span>•</span>
           <span className="text-amber-400 font-semibold">{matches.filter((m) => m.probability === "Moderate").length} Moderate</span>
           <span>•</span>
-          <span className="text-rose-400 font-semibold">{matches.filter((m) => m.probability === "Borderline").length} Borderline</span>
+          <span className="text-orange-400 font-semibold">{matches.filter((m) => m.probability === "Borderline").length} Borderline</span>
+          <span>•</span>
+          <span className="text-rose-400 font-semibold">{matches.filter((m) => m.probability === "Ambitious").length} Ambitious</span>
         </div>
       </div>
 
