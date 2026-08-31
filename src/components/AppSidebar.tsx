@@ -172,7 +172,6 @@ const getNeetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
         { title: "Cutoff Matrix Grid", url: "/neet-matrix", icon: Grid3X3, isNew: true },
         { title: "Choice 1/2/3/4 Simulator", url: "/neet-choice-simulator", icon: HelpCircle, isNew: true },
         { title: "Medical Cutoffs Explorer", url: "/neet-explorer", icon: Search },
-        { title: "Score vs Rank Predictor", url: "/neet-rank-predictor", icon: Calculator },
         { title: "Compare Medical Colleges", url: "/neet-compare", icon: GitCompare, isNew: true },
         { title: "Mock vs Final Trends", url: "/neet-trends", icon: TrendingUp, isNew: true },
         { title: "Fee & Cost Explorer (107)", url: "/neet-fees", icon: IndianRupee, isNew: true },

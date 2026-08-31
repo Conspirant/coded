@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import {
   HeartPulse,
   Search,
   Target,
-  Calculator,
   ListOrdered,
   Scale,
   TrendingUp,
@@ -13,7 +12,6 @@ import {
   ShieldCheck,
   Grid3X3,
   Building2,
-  Sparkles,
   ArrowRight,
   ChevronRight,
   HelpCircle,
@@ -24,32 +22,17 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useExamMode } from "@/contexts/ExamModeContext";
 import {
-  MEDICAL_FINAL_CUTOFFS,
-  DENTAL_FINAL_CUTOFFS,
-  FEE_STRUCTURE,
-  TOP_CATEGORIES,
-  getCategoryLabel,
   formatFee,
 } from "@/data/neet2026Data";
-import { calculateNeetPrediction } from "@/lib/neet-rank-predictor";
 
 const HERO_WORDS = [
   "MBBS Admissions 2026",
   "Govt Medical Cutoffs",
-  "State Merit Rank",
   "Option Entry Ordering",
   "Choice 1/2/3/4 Decision",
+  "Seat Matrix & Quotas",
 ];
 
 const PREMIER_COLLEGES = [
@@ -121,20 +104,9 @@ const PREMIER_COLLEGES = [
   },
 ];
 
-const SCORE_DISTRIBUTION_DATA = [
-  { scoreRange: "680+", air: "AIR 1 - 2,500", odds: "Top Govt MBBS" },
-  { scoreRange: "620 - 679", air: "AIR 2,500 - 15,000", odds: "Govt Medical" },
-  { scoreRange: "560 - 619", air: "AIR 15,000 - 55,000", odds: "Govt Quota in Pvt" },
-  { scoreRange: "480 - 559", air: "AIR 55,000 - 1,40,000", odds: "GMP / Pvt Quota" },
-  { scoreRange: "380 - 479", air: "AIR 1.4L - 3.2L", odds: "Govt BDS / Deemed" },
-  { scoreRange: "135 - 379", air: "AIR 3.2L - 10L+", odds: "Private BDS / Mgmt" },
-];
-
 export default function NeetHub() {
   const { setExamMode } = useExamMode();
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
-  const [scoreInput, setScoreInput] = useState<number>(605);
-  const [selectedCategory, setSelectedCategory] = useState<string>("GM");
 
   useEffect(() => {
     setExamMode("NEET");
@@ -147,10 +119,6 @@ export default function NeetHub() {
     }, 3200);
     return () => clearInterval(timer);
   }, []);
-
-  const prediction = useMemo(() => {
-    return calculateNeetPrediction(scoreInput, selectedCategory);
-  }, [scoreInput, selectedCategory]);
 
   const tools = [
     {
@@ -224,15 +192,15 @@ export default function NeetHub() {
         <title>NEETCoded | Karnataka Medical & Dental Admissions Hub 2026</title>
         <meta
           name="description"
-          content="Minimalist intelligence portal for Karnataka UG-NEET medical & dental admissions. Predict your AIR, view category cutoffs, and plan option entry."
+          content="Minimalist intelligence portal for Karnataka UG-NEET medical & dental admissions. Predict eligible colleges by AIR, view category cutoffs, and plan option entry."
         />
       </Helmet>
 
       {/* ═══ 1. MINIMALIST HERO SECTION ═══ */}
       <section className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 sm:p-8 backdrop-blur-sm shadow-sm">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Title & Info */}
-          <div className="lg:col-span-7 space-y-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          {/* Main Title & Info */}
+          <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-xs font-medium tracking-wide">
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
               <span>Karnataka UG-NEET Admissions 2026</span>
@@ -250,15 +218,20 @@ export default function NeetHub() {
             </p>
 
             {/* Quick Action Links */}
-            <div className="flex flex-wrap gap-2.5 pt-2">
+            <div className="flex flex-wrap gap-2.5 pt-1">
               <Button asChild size="sm" className="bg-foreground text-background hover:bg-foreground/90 font-semibold text-xs h-8 px-4">
                 <Link to="/neet-predictor">
-                  <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" /> Launch Predictor
+                  <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" /> College Predictor (AIR)
                 </Link>
               </Button>
               <Button asChild variant="outline" size="sm" className="border-border/70 hover:bg-muted/40 text-xs h-8 px-3.5 text-foreground">
                 <Link to="/neet-matrix">
-                  <Grid3X3 className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" /> Cutoff Matrix
+                  <Grid3X3 className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" /> Cutoff Matrix Grid
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm" className="border-border/70 hover:bg-muted/40 text-xs h-8 px-3.5 text-foreground">
+                <Link to="/neet-option-builder">
+                  <ListOrdered className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" /> Option Entry Builder
                 </Link>
               </Button>
               <Button asChild variant="ghost" size="sm" className="text-xs h-8 px-3 text-muted-foreground hover:text-foreground">
@@ -269,73 +242,31 @@ export default function NeetHub() {
             </div>
           </div>
 
-          {/* Right Column: Score Estimator Card */}
-          <div className="lg:col-span-5">
-            <div className="p-4 sm:p-5 rounded-xl border border-border/70 bg-background/60 space-y-3.5 shadow-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <Calculator className="h-3.5 w-3.5 text-rose-500" /> Quick Score Estimator
-                </span>
-                <Badge variant="outline" className="text-[9px] font-mono border-border/80 text-muted-foreground">
-                  2026 Model
-                </Badge>
+          {/* Right Highlights Pill */}
+          <div className="lg:w-80 p-4 rounded-xl border border-border/70 bg-background/50 space-y-2.5 text-xs">
+            <div className="flex items-center justify-between pb-2 border-b border-border/40">
+              <span className="font-bold text-foreground">KEA Counseling Fast Facts</span>
+              <Badge variant="outline" className="text-[9px] font-mono border-border/70 text-muted-foreground">
+                2026 R1
+              </Badge>
+            </div>
+            <div className="space-y-1.5 text-muted-foreground">
+              <div className="flex justify-between">
+                <span>Government MBBS Pool:</span>
+                <span className="font-mono font-bold text-foreground">24 Colleges</span>
               </div>
-
-              {/* Slider */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-muted-foreground">NEET Score:</span>
-                  <span className="font-mono font-bold text-base text-foreground">
-                    {scoreInput} <span className="text-xs font-normal text-muted-foreground">/ 720</span>
-                  </span>
-                </div>
-                <Slider
-                  value={[scoreInput]}
-                  min={120}
-                  max={720}
-                  step={1}
-                  onValueChange={(v) => setScoreInput(v[0])}
-                  className="py-1"
-                />
+              <div className="flex justify-between">
+                <span>Private & Deemed MBBS:</span>
+                <span className="font-mono font-bold text-foreground">44 Colleges</span>
               </div>
-
-              {/* Category Picker */}
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase font-semibold text-muted-foreground">Category</label>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="h-7 text-xs bg-card/60 border-border/70"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {TOP_CATEGORIES.map((cat) => (
-                      <SelectItem key={cat} value={cat} className="text-xs">
-                        {cat} — {getCategoryLabel(cat)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div className="flex justify-between">
+                <span>Karnataka Domicile:</span>
+                <span className="font-mono font-bold text-foreground">85% State Quota</span>
               </div>
-
-              {/* Metric Result Blocks */}
-              <div className="grid grid-cols-2 gap-2 pt-0.5">
-                <div className="p-2 rounded-lg bg-card/50 border border-border/60 text-center">
-                  <span className="text-[9px] uppercase font-semibold text-muted-foreground block">Estimated AIR</span>
-                  <span className="font-mono font-bold text-base text-foreground block mt-0.5">
-                    #{prediction.air.toLocaleString("en-IN")}
-                  </span>
-                </div>
-                <div className="p-2 rounded-lg bg-card/50 border border-border/60 text-center">
-                  <span className="text-[9px] uppercase font-semibold text-muted-foreground block">State Rank</span>
-                  <span className="font-mono font-bold text-base text-muted-foreground block mt-0.5">
-                    ~{prediction.karnatakaStateRank.toLocaleString("en-IN")}
-                  </span>
-                </div>
+              <div className="flex justify-between">
+                <span>Mandatory Rural Bond:</span>
+                <span className="font-mono font-bold text-foreground">1 Year Service</span>
               </div>
-
-              {/* Bottom CTA */}
-              <Button asChild variant="outline" className="w-full text-xs h-7 border-border hover:bg-muted text-foreground font-medium">
-                <Link to={`/neet-predictor?rank=${prediction.air}&category=${selectedCategory}`}>
-                  View Matches for #{prediction.air.toLocaleString()} <ArrowRight className="ml-1.5 h-3 w-3 text-rose-500" />
-                </Link>
-              </Button>
             </div>
           </div>
         </div>
@@ -374,10 +305,10 @@ export default function NeetHub() {
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             Admissions Toolkit
           </h2>
-          <span className="text-xs text-muted-foreground font-mono">9 Tools Available</span>
+          <span className="text-xs text-muted-foreground font-mono">8 Tools Available</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {tools.map((tool) => (
             <Link
               key={tool.title}
@@ -448,28 +379,6 @@ export default function NeetHub() {
                   <span className="font-mono font-bold text-foreground">{formatFee(col.govtFee)}/yr</span>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ═══ 5. SCORE BAND SPECTRUM (MINIMAL) ═══ */}
-      <section className="p-4 sm:p-5 rounded-2xl border border-border/60 bg-card/40 space-y-3">
-        <div className="space-y-0.5">
-          <h3 className="text-xs font-bold tracking-tight uppercase text-muted-foreground">
-            Score Bands vs Expected Karnataka Admission Bounds
-          </h3>
-          <p className="text-[11px] text-muted-foreground">
-            Estimated seat allocations across marks ranges based on KEA historical cutoff dynamics.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-          {SCORE_DISTRIBUTION_DATA.map((band) => (
-            <div key={band.scoreRange} className="p-2.5 rounded-lg border border-border/40 bg-background/40 space-y-0.5 text-center">
-              <span className="font-mono font-bold text-xs text-foreground block">{band.scoreRange}</span>
-              <span className="text-[9px] text-muted-foreground block font-mono">{band.air}</span>
-              <span className="text-[10px] text-muted-foreground font-medium block pt-0.5">{band.odds}</span>
             </div>
           ))}
         </div>

@@ -27,7 +27,8 @@ import {
     MessageSquare,
     ExternalLink,
     TrendingUp,
-    Stethoscope
+    Stethoscope,
+    Grid3X3
 } from "lucide-react"
 import { useExamMode, ExamMode } from "@/contexts/ExamModeContext"
 
@@ -258,7 +259,7 @@ const getFabActions = (examMode: ExamMode | "COMEDK") => {
         return [
             { icon: Search, label: "Find College", href: "/neet-predictor", color: "from-rose-500 to-pink-500" },
             { icon: BarChart3, label: "NEET Cutoffs", href: "/neet-explorer", color: "from-amber-500 to-rose-400" },
-            { icon: Calculator, label: "Predict Rank", href: "/neet-rank-predictor", color: "from-purple-500 to-pink-400" },
+            { icon: Grid3X3, label: "Cutoff Matrix", href: "/neet-matrix", color: "from-blue-500 to-indigo-500" },
             { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
         ]
     }

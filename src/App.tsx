@@ -18,7 +18,6 @@ import Homepage from "./pages/Homepage";
 import Dashboard from "./pages/Dashboard";
 import RankPredictor from "./pages/RankPredictor";
 import ComedkRankPredictor from "./pages/ComedkRankPredictor";
-import NeetRankPredictor from "./pages/NeetRankPredictor";
 import CutoffExplorer from "./pages/CutoffExplorer";
 import ComedkExplorer from "./pages/ComedkExplorer";
 import NeetExplorer from "./pages/NeetExplorer";
@@ -125,7 +124,7 @@ const App = () => (
                   <Route path="/neet-choice-simulator" element={<Layout><NeetChoiceSimulatorPage /></Layout>} />
                   <Route path="/neet-explorer" element={<Layout><NeetExplorer /></Layout>} />
                   <Route path="/neet-cutoffs" element={<Navigate to="/neet-explorer" replace />} />
-                  <Route path="/neet-rank-predictor" element={<Layout><NeetRankPredictor /></Layout>} />
+                  <Route path="/neet-rank-predictor" element={<Navigate to="/neet-predictor" replace />} />
                   <Route path="/neet-compare" element={<Layout><NeetComparePage /></Layout>} />
                   <Route path="/neet-trends" element={<Layout><NeetTrendsPage /></Layout>} />
                   <Route path="/neet-fees" element={<Layout><NeetFeeCalculator /></Layout>} />
