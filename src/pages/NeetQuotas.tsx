@@ -34,15 +34,15 @@ export default function NeetQuotasPage() {
       </Helmet>
 
       {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-cyan-500/25 bg-gradient-to-r from-cyan-950/40 via-card to-background p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 text-[11px] font-semibold uppercase tracking-wider">
-              <ShieldCheck className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               KEA Eligibility & Legal Guidelines
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              Karnataka Medical <span className="text-cyan-400">Quota & Rural Bond Guide</span>
+              Karnataka Medical <span className="text-foreground">Quota & Rural Bond Guide</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               Understand seat classification across Government, Private, and Deemed colleges, domicile reservation sub-quotas, and mandatory 1-year rural service bond terms.
@@ -50,15 +50,15 @@ export default function NeetQuotasPage() {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-explorer">
-                <Search className="mr-1.5 h-3.5 w-3.5 text-blue-400" />
+                <Search className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Cutoff Explorer
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-predictor">
-                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-400" />
+                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" />
                 Predictor
               </Link>
             </Button>

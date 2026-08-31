@@ -33,15 +33,15 @@ export default function NeetOptionBuilderPage() {
       </Helmet>
 
       {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-amber-500/25 bg-gradient-to-r from-amber-950/40 via-card to-background p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[11px] font-semibold uppercase tracking-wider">
-              <ListOrdered className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               KEA Medical Strategy Tool
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              NEET Option Entry <span className="text-amber-400">Priority Builder</span>
+              NEET Option Entry <span className="text-foreground">Priority Builder</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               Construct an optimized choice list divided into Dream, Target, and Safety Net tiers to maximize your admission chances without risking seat loss.
@@ -49,15 +49,15 @@ export default function NeetOptionBuilderPage() {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-choice-simulator">
-                <HelpCircle className="mr-1.5 h-3.5 w-3.5 text-emerald-400" />
+                <HelpCircle className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Choice 1/2/3/4 Guide
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-predictor">
-                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-400" />
+                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" />
                 Predictor
               </Link>
             </Button>

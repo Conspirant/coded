@@ -186,15 +186,15 @@ export default function NeetCollegePredictor() {
       </Helmet>
 
       {/* ═══ HEADER ═══ */}
-      <div className="relative overflow-hidden rounded-2xl border border-rose-500/20 bg-gradient-to-r from-rose-950/40 via-card to-background p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-400 text-[11px] font-semibold uppercase tracking-wider">
-              <Target className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               NEET AIR Recommendation Engine
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              Karnataka Medical <span className="text-rose-500">College Predictor</span>
+              Karnataka Medical <span className="text-foreground">College Predictor</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               Match your exact NEET All India Rank with verified Round 1 closing cutoffs across 107 Karnataka colleges.
@@ -202,15 +202,15 @@ export default function NeetCollegePredictor() {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8">
               <Link to="/neet-option-builder">
-                <ListOrdered className="mr-1.5 h-3.5 w-3.5 text-rose-400" />
+                <ListOrdered className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Option Entry Builder
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8">
               <Link to="/neet-compare">
-                <Scale className="mr-1.5 h-3.5 w-3.5 text-purple-400" />
+                <Scale className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Compare
               </Link>
             </Button>

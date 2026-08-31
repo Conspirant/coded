@@ -110,15 +110,15 @@ export default function NeetExplorer() {
       </Helmet>
 
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-blue-500/25 bg-gradient-to-r from-blue-950/40 via-card to-background p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-400 text-[11px] font-semibold uppercase tracking-wider">
-              <BarChart3 className="h-3.5 w-3.5" />
-              Official KEA Cutoff Archive 2026
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              Official Cutoff Archive 2026
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              Karnataka Medical <span className="text-blue-400">Cutoff Explorer</span>
+              Karnataka Medical <span className="text-foreground">Cutoff Explorer</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               Search and filter official Round 1 closing ranks across <strong>5,336 category records</strong> for MBBS and BDS institutes in Karnataka.
@@ -130,14 +130,14 @@ export default function NeetExplorer() {
               variant="outline"
               size="sm"
               onClick={exportCSV}
-              className="border-border/60 text-xs h-8"
+              className="border-border/70 text-xs h-8 text-foreground"
             >
-              <Download className="mr-1.5 h-3.5 w-3.5 text-blue-400" />
+              <Download className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
               Export CSV
             </Button>
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-predictor">
-                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-400" />
+                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" />
                 Predictor
               </Link>
             </Button>

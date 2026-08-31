@@ -33,15 +33,15 @@ export default function NeetComparePage() {
       </Helmet>
 
       {/* Hero Header */}
-      <div className="relative overflow-hidden rounded-2xl border border-purple-500/25 bg-gradient-to-r from-purple-950/40 via-card to-background p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-card/60 p-6 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-400 text-[11px] font-semibold uppercase tracking-wider">
-              <Scale className="h-3.5 w-3.5" />
-              Side-by-Side Evaluation Matrix
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-muted/60 border border-border/70 text-muted-foreground text-[11px] font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              Side-by-Side Comparison
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-brand text-foreground">
-              Medical College <span className="text-purple-400">Comparator</span>
+              Medical College <span className="text-foreground">Comparator</span>
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
               Evaluate tuition fees, hospital patient capacity, total seats, and category cutoffs side-by-side to make confident decisions.
@@ -49,15 +49,15 @@ export default function NeetComparePage() {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-explorer">
-                <Search className="mr-1.5 h-3.5 w-3.5 text-blue-400" />
+                <Search className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Cutoff Explorer
               </Link>
             </Button>
-            <Button asChild variant="outline" className="border-border/60 text-xs h-8">
+            <Button asChild variant="outline" className="border-border/70 text-xs h-8 text-foreground">
               <Link to="/neet-predictor">
-                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-400" />
+                <Target className="mr-1.5 h-3.5 w-3.5 text-rose-500" />
                 Predictor
               </Link>
             </Button>
