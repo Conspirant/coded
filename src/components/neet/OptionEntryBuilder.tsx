@@ -56,7 +56,9 @@ export function OptionEntryBuilder() {
   const [courseType, setCourseType] = useState<"MBBS" | "BDS">("MBBS");
   const [seatTypeFilter, setSeatTypeFilter] = useState<string>("ALL");
   const [maxBudget, setMaxBudget] = useState<number>(0);
+  const [listScope, setListScope] = useState<"all" | "curated">("all");
   const [copied, setCopied] = useState<boolean>(false);
+  const [manualSelectCode, setManualSelectCode] = useState<string>("");
 
   // Selected Option List
   const [options, setOptions] = useState<OptionItem[]>([]);
@@ -66,10 +68,8 @@ export function OptionEntryBuilder() {
     return courseType === "MBBS" ? MEDICAL_FINAL_CUTOFFS : DENTAL_FINAL_CUTOFFS;
   }, [courseType]);
 
-  // Generate Smart Tiered Options based on rank
-  const generateSmartList = () => {
-    if (!rank || rank <= 0) return;
-
+  // All filtered unique colleges matching current category and seat type filters
+  const allMatchingColleges = useMemo(() => {
     const filtered = sourceCutoffs.filter((c) => {
       if (c.allotted_category !== category) return false;
       if (seatTypeFilter !== "ALL" && c.seat_type !== seatTypeFilter) return false;
@@ -77,70 +77,133 @@ export function OptionEntryBuilder() {
       return true;
     });
 
-    // Unique by course_code
     const seen = new Set<string>();
-    const unique = filtered.filter((c) => {
+    return filtered.filter((c) => {
       if (seen.has(c.course_code)) return false;
       seen.add(c.course_code);
       return true;
     });
+  }, [sourceCutoffs, category, seatTypeFilter, maxBudget]);
 
-    // Dream: Closing rank between 0.7 * rank and 0.95 * rank (harder than user rank)
-    const dream = unique
-      .filter((c) => c.closing_rank < rank && c.closing_rank >= rank * 0.65)
-      .sort((a, b) => a.closing_rank - b.closing_rank)
-      .slice(0, 5)
-      .map((c) => ({
-        id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
-        course_code: c.course_code,
-        college_code: c.college_code,
-        college_name: c.college_name,
-        course_name: c.course_name,
-        seat_type: c.seat_type,
-        allotted_category: c.allotted_category,
-        closing_rank: c.closing_rank,
-        course_fees: c.course_fees,
-        tier: "dream" as const,
-      }));
+  // Generate Smart Tiered Options based on rank
+  const generateSmartList = () => {
+    if (!rank || rank <= 0) return;
 
-    // Target: Closing rank between 0.95 * rank and 1.25 * rank (very realistic)
-    const target = unique
-      .filter((c) => c.closing_rank >= rank * 0.95 && c.closing_rank <= rank * 1.35)
-      .sort((a, b) => a.closing_rank - b.closing_rank)
-      .slice(0, 7)
-      .map((c) => ({
-        id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
-        course_code: c.course_code,
-        college_code: c.college_code,
-        college_name: c.college_name,
-        course_name: c.course_name,
-        seat_type: c.seat_type,
-        allotted_category: c.allotted_category,
-        closing_rank: c.closing_rank,
-        course_fees: c.course_fees,
-        tier: "target" as const,
-      }));
+    // Dream: Closing rank < rank (aspirational, highly competitive)
+    const dreamPool = allMatchingColleges
+      .filter((c) => c.closing_rank < rank)
+      .sort((a, b) => a.closing_rank - b.closing_rank);
 
-    // Safe: Closing rank > 1.35 * rank (guaranteed safety net)
-    const safe = unique
+    // Target: Closing rank between rank and 1.35 * rank (realistic safety cushion)
+    const targetPool = allMatchingColleges
+      .filter((c) => c.closing_rank >= rank && c.closing_rank <= rank * 1.35)
+      .sort((a, b) => a.closing_rank - b.closing_rank);
+
+    // Safe: Closing rank > 1.35 * rank (high probability safety net)
+    const safePool = allMatchingColleges
       .filter((c) => c.closing_rank > rank * 1.35)
-      .sort((a, b) => a.closing_rank - b.closing_rank)
-      .slice(0, 5)
-      .map((c) => ({
-        id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
-        course_code: c.course_code,
-        college_code: c.college_code,
-        college_name: c.college_name,
-        course_name: c.course_name,
-        seat_type: c.seat_type,
-        allotted_category: c.allotted_category,
-        closing_rank: c.closing_rank,
-        course_fees: c.course_fees,
-        tier: "safe" as const,
-      }));
+      .sort((a, b) => a.closing_rank - b.closing_rank);
+
+    const dream = (listScope === "curated" ? dreamPool.slice(0, 6) : dreamPool).map((c) => ({
+      id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
+      course_code: c.course_code,
+      college_code: c.college_code,
+      college_name: c.college_name,
+      course_name: c.course_name,
+      seat_type: c.seat_type,
+      allotted_category: c.allotted_category,
+      closing_rank: c.closing_rank,
+      course_fees: c.course_fees,
+      tier: "dream" as const,
+    }));
+
+    const target = (listScope === "curated" ? targetPool.slice(0, 10) : targetPool).map((c) => ({
+      id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
+      course_code: c.course_code,
+      college_code: c.college_code,
+      college_name: c.college_name,
+      course_name: c.course_name,
+      seat_type: c.seat_type,
+      allotted_category: c.allotted_category,
+      closing_rank: c.closing_rank,
+      course_fees: c.course_fees,
+      tier: "target" as const,
+    }));
+
+    const safe = (listScope === "curated" ? safePool.slice(0, 6) : safePool).map((c) => ({
+      id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
+      course_code: c.course_code,
+      college_code: c.college_code,
+      college_name: c.college_name,
+      course_name: c.course_name,
+      seat_type: c.seat_type,
+      allotted_category: c.allotted_category,
+      closing_rank: c.closing_rank,
+      course_fees: c.course_fees,
+      tier: "safe" as const,
+    }));
 
     const combined = [...dream, ...target, ...safe];
     setOptions(combined);
+  };
+
+  // Add individual college manually
+  const handleAddManualCollege = () => {
+    if (!manualSelectCode) return;
+    const match = allMatchingColleges.find((c) => c.course_code === manualSelectCode);
+    if (!match) return;
+
+    if (options.some((o) => o.course_code === match.course_code)) {
+      return;
+    }
+
+    let tier: "dream" | "target" | "safe" = "target";
+    if (match.closing_rank < rank) tier = "dream";
+    else if (match.closing_rank > rank * 1.35) tier = "safe";
+
+    const newItem: OptionItem = {
+      id: `${match.course_code}-${match.allotted_category}-${Math.random()}`,
+      course_code: match.course_code,
+      college_code: match.college_code,
+      college_name: match.college_name,
+      course_name: match.course_name,
+      seat_type: match.seat_type,
+      allotted_category: match.allotted_category,
+      closing_rank: match.closing_rank,
+      course_fees: match.course_fees,
+      tier,
+    };
+
+    setOptions((prev) => [...prev, newItem]);
+    setManualSelectCode("");
+  };
+
+  // Add all matching colleges directly
+  const handleAddAllColleges = () => {
+    const allItems: OptionItem[] = allMatchingColleges.map((c) => {
+      let tier: "dream" | "target" | "safe" = "target";
+      if (c.closing_rank < rank) tier = "dream";
+      else if (c.closing_rank > rank * 1.35) tier = "safe";
+
+      return {
+        id: `${c.course_code}-${c.allotted_category}-${Math.random()}`,
+        course_code: c.course_code,
+        college_code: c.college_code,
+        college_name: c.college_name,
+        course_name: c.course_name,
+        seat_type: c.seat_type,
+        allotted_category: c.allotted_category,
+        closing_rank: c.closing_rank,
+        course_fees: c.course_fees,
+        tier,
+      };
+    });
+    setOptions(allItems.sort((a, b) => a.closing_rank - b.closing_rank));
+  };
+
+  // Clear list
+  const handleClearList = () => {
+    setOptions([]);
   };
 
   // Move Option Up
@@ -234,7 +297,7 @@ export function OptionEntryBuilder() {
         </div>
 
         {/* Inputs */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-1">
+        <div className="grid grid-cols-2 sm:grid-cols-6 gap-3 pt-1">
           <div className="space-y-1">
             <label className="text-[10px] uppercase font-semibold text-muted-foreground">Your NEET AIR</label>
             <Input
@@ -265,8 +328,8 @@ export function OptionEntryBuilder() {
             <Select value={courseType} onValueChange={(v) => setCourseType(v as any)}>
               <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="MBBS" className="text-xs">MBBS</SelectItem>
-                <SelectItem value="BDS" className="text-xs">BDS</SelectItem>
+                <SelectItem value="MBBS" className="text-xs">MBBS ({MEDICAL_FINAL_CUTOFFS.length > 0 ? "68 Colleges" : ""})</SelectItem>
+                <SelectItem value="BDS" className="text-xs">BDS ({DENTAL_FINAL_CUTOFFS.length > 0 ? "39 Colleges" : ""})</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -283,17 +346,68 @@ export function OptionEntryBuilder() {
             </Select>
           </div>
 
-          <div className="space-y-1 col-span-2 sm:col-span-1">
+          <div className="space-y-1">
             <label className="text-[10px] uppercase font-semibold text-muted-foreground">Max Fee</label>
             <Select value={String(maxBudget)} onValueChange={(v) => setMaxBudget(Number(v))}>
               <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="0" className="text-xs">No Budget Limit</SelectItem>
+                <SelectItem value="0" className="text-xs">No Fee Limit</SelectItem>
                 <SelectItem value="70000" className="text-xs">≤ ₹70K (Govt)</SelectItem>
                 <SelectItem value="160000" className="text-xs">≤ ₹1.6L (Govt Quota)</SelectItem>
                 <SelectItem value="1300000" className="text-xs">≤ ₹13L (Private)</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-1 col-span-2 sm:col-span-1">
+            <label className="text-[10px] uppercase font-semibold text-muted-foreground">List Depth</label>
+            <Select value={listScope} onValueChange={(v: any) => setListScope(v)}>
+              <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all" className="text-xs">All Matching ({allMatchingColleges.length} Total)</SelectItem>
+                <SelectItem value="curated" className="text-xs">Curated Top 20</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Manual College Adder and Database Counter */}
+        <div className="pt-2 border-t border-border/40 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="font-semibold text-foreground">{allMatchingColleges.length}</span> matching {courseType} colleges in database for {category}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Select value={manualSelectCode} onValueChange={setManualSelectCode}>
+              <SelectTrigger className="h-8 text-xs min-w-[220px] max-w-[320px] truncate">
+                <SelectValue placeholder="Add specific college..." />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px]">
+                {allMatchingColleges.map((c) => {
+                  const alreadyAdded = options.some((o) => o.course_code === c.course_code);
+                  return (
+                    <SelectItem
+                      key={c.course_code}
+                      value={c.course_code}
+                      disabled={alreadyAdded}
+                      className="text-xs"
+                    >
+                      [{c.course_code}] {c.college_name.split(",")[0]} (Close: #{c.closing_rank.toLocaleString("en-IN")}) {alreadyAdded ? "✓ Added" : ""}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleAddManualCollege}
+              disabled={!manualSelectCode}
+              variant="outline"
+              className="h-8 text-xs border-rose-500/30 hover:bg-rose-500/10 text-rose-300"
+            >
+              <Plus className="h-3.5 w-3.5 mr-1" /> Add
+            </Button>
           </div>
         </div>
       </div>
@@ -330,7 +444,18 @@ export function OptionEntryBuilder() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {options.length < allMatchingColleges.length && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleAddAllColleges}
+                  className="h-7 text-xs border-rose-500/30 text-rose-300 hover:bg-rose-500/10"
+                >
+                  <Plus className="h-3 w-3 mr-1" />
+                  Add All ({allMatchingColleges.length})
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
@@ -348,6 +473,15 @@ export function OptionEntryBuilder() {
               >
                 <Download className="h-3 w-3 mr-1" />
                 Export CSV
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearList}
+                className="h-7 text-xs text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 px-2"
+                title="Clear entire priority list"
+              >
+                Clear
               </Button>
             </div>
           </div>
@@ -449,13 +583,30 @@ export function OptionEntryBuilder() {
           </div>
         </div>
       ) : (
-        <div className="p-8 text-center rounded-2xl border border-dashed border-border/60 bg-card/30 space-y-3">
-          <ListOrdered className="h-8 w-8 text-muted-foreground mx-auto" />
+        <div className="p-8 text-center rounded-2xl border border-dashed border-border/60 bg-card/30 space-y-4">
+          <ListOrdered className="h-8 w-8 text-rose-400 mx-auto" />
           <div className="space-y-1">
             <p className="text-sm font-semibold text-foreground">No Option Entry List Generated Yet</p>
             <p className="text-xs text-muted-foreground max-w-md mx-auto">
-              Enter your NEET AIR and category above, then click <strong>"Generate Priority List"</strong> to build an optimized 3-tier sequence.
+              Found <strong className="text-foreground">{allMatchingColleges.length}</strong> matching {courseType} colleges in Karnataka for {category}. Generate a tiered sequence or load all colleges directly.
             </p>
+          </div>
+          <div className="flex items-center justify-center gap-3 pt-1">
+            <Button
+              onClick={generateSmartList}
+              className="bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs h-9 shadow-sm"
+            >
+              <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+              Generate Priority List ({listScope === "all" ? `All ${allMatchingColleges.length}` : "Top 20"})
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleAddAllColleges}
+              className="border-rose-500/30 text-rose-300 hover:bg-rose-500/10 text-xs h-9"
+            >
+              <Plus className="h-3.5 w-3.5 mr-1.5" />
+              Load All {allMatchingColleges.length} Colleges
+            </Button>
           </div>
         </div>
       )}
