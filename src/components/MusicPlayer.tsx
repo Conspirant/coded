@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { TRACKS as DEFAULT_TRACKS, LANGUAGE_LABELS, type Track, type Language } from '@/data/musicPlayerData';
 import { getActiveTracks } from '@/components/admin/AdminMusicManager';
+import { AdminSuggestionsService } from '@/lib/admin-suggestions-service';
+import { supabase } from '@/integrations/supabase/client';
 
 /* ─── YouTube IFrame API bootstrap ──────────────────── */
 let ytApiReady = false;
@@ -47,6 +49,15 @@ function save(p: Partial<Saved>) {
 export function MusicPlayer() {
   const init = useRef(load()).current;
   const [tracks, setTracks] = useState<Track[]>(getActiveTracks());
+
+  // Global disabled state (Supabase + localStorage + Realtime)
+  const [globallyDisabled, setGloballyDisabled] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('kcet_music_globally_disabled') === 'true';
+    } catch {
+      return false;
+    }
+  });
 
   if (init.idx < 0 || init.idx >= tracks.length) init.idx = 0;
 
@@ -93,6 +104,50 @@ export function MusicPlayer() {
     window.addEventListener('kcet_music_tracks_updated', handleUpdate);
     return () => window.removeEventListener('kcet_music_tracks_updated', handleUpdate);
   }, []);
+
+  // Fetch and subscribe to global music disable status
+  useEffect(() => {
+    let isMounted = true;
+    AdminSuggestionsService.isMusicDisabledGlobally().then((disabled) => {
+      if (isMounted) {
+        setGloballyDisabled(disabled);
+      }
+    });
+
+    const handleStatusUpdate = (e: any) => {
+      if (e.detail?.disabled !== undefined && isMounted) {
+        setGloballyDisabled(e.detail.disabled);
+      }
+    };
+    window.addEventListener('kcet_music_global_status_updated', handleStatusUpdate);
+
+    const channel = supabase.channel('global-alerts');
+    channel
+      .on('broadcast', { event: 'music_player_global_status_updated' }, (payload: any) => {
+        if (payload?.payload?.disabled !== undefined && isMounted) {
+          setGloballyDisabled(payload.payload.disabled);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('kcet_music_global_status_updated', handleStatusUpdate);
+      channel.unsubscribe();
+    };
+  }, []);
+
+  // Stop playback immediately if music gets disabled globally
+  useEffect(() => {
+    if (globallyDisabled) {
+      try {
+        ytRef.current?.pauseVideo();
+        ytRef.current?.stopVideo?.();
+      } catch {}
+      setPlaying(false);
+      setOpen(false);
+    }
+  }, [globallyDisabled]);
 
   const track: Track | undefined = tracks[idx] ?? tracks[0];
 
@@ -271,6 +326,10 @@ export function MusicPlayer() {
     };
     return map[l];
   };
+
+  if (globallyDisabled) {
+    return null;
+  }
 
   /* ═══ Circular SVG Progress Ring calculation ═══ */
   const strokeDasharray = 2 * Math.PI * 20; // radius = 20 -> 125.66

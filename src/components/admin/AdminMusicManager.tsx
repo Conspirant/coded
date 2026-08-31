@@ -4,13 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Music, Plus, Trash2, Youtube, RotateCcw, Search, ExternalLink, CheckCircle2 } from "lucide-react";
+import { Music, Plus, Trash2, Youtube, RotateCcw, Search, ExternalLink, CheckCircle2, Volume2, VolumeX, Loader2, Power } from "lucide-react";
 import { TRACKS as DEFAULT_TRACKS, type Track, type Language, LANGUAGE_LABELS } from "@/data/musicPlayerData";
+import { AdminSuggestionsService } from "@/lib/admin-suggestions-service";
+import { supabase } from "@/integrations/supabase/client";
 
 const CUSTOM_MUSIC_KEY = "kcet_custom_music_tracks";
 const MUSIC_EVENT_NAME = "kcet_music_tracks_updated";
+const MUSIC_GLOBAL_STATUS_EVENT = "kcet_music_global_status_updated";
 
 /** Helper: Extract YouTube ID from link or raw ID */
 export function extractYouTubeId(input: string): string {
@@ -56,6 +60,17 @@ export function AdminMusicManager() {
   const [filterLang, setFilterLang] = useState<string>("all");
   const [search, setSearch] = useState("");
 
+  // Global disable state
+  const [isGloballyDisabled, setIsGloballyDisabled] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('kcet_music_globally_disabled') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
+  const [togglingStatus, setTogglingStatus] = useState<boolean>(false);
+
   // Form state
   const [youtubeInput, setYoutubeInput] = useState("");
   const [title, setTitle] = useState("");
@@ -71,6 +86,77 @@ export function AdminMusicManager() {
     window.addEventListener(MUSIC_EVENT_NAME, handleUpdate);
     return () => window.removeEventListener(MUSIC_EVENT_NAME, handleUpdate);
   }, []);
+
+  // Fetch and subscribe to global music disable status
+  useEffect(() => {
+    let isMounted = true;
+    const loadGlobalStatus = async () => {
+      try {
+        const disabled = await AdminSuggestionsService.isMusicDisabledGlobally();
+        if (isMounted) {
+          setIsGloballyDisabled(disabled);
+          setLoadingStatus(false);
+        }
+      } catch {
+        if (isMounted) setLoadingStatus(false);
+      }
+    };
+    loadGlobalStatus();
+
+    const handleStatusUpdate = (e: any) => {
+      if (e.detail?.disabled !== undefined) {
+        setIsGloballyDisabled(e.detail.disabled);
+      } else {
+        loadGlobalStatus();
+      }
+    };
+    window.addEventListener(MUSIC_GLOBAL_STATUS_EVENT, handleStatusUpdate);
+
+    const channel = supabase.channel('global-alerts');
+    channel
+      .on('broadcast', { event: 'music_player_global_status_updated' }, (payload: any) => {
+        if (payload?.payload?.disabled !== undefined && isMounted) {
+          setIsGloballyDisabled(payload.payload.disabled);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener(MUSIC_GLOBAL_STATUS_EVENT, handleStatusUpdate);
+      channel.unsubscribe();
+    };
+  }, []);
+
+  const handleToggleGlobalStatus = async (shouldDisable: boolean) => {
+    setTogglingStatus(true);
+    try {
+      const success = await AdminSuggestionsService.setMusicDisabledGlobally(shouldDisable);
+      if (success) {
+        setIsGloballyDisabled(shouldDisable);
+        toast({
+          title: shouldDisable ? "Music Player Disabled Globally" : "Music Player Enabled Globally",
+          description: shouldDisable
+            ? "The music player has been hidden and stopped for all visitors across the website in real-time."
+            : "The music player is now active and visible for all visitors across the website in real-time."
+        });
+      } else {
+        toast({
+          title: "Update Failed",
+          description: "Failed to update global music player status in database.",
+          variant: "destructive"
+        });
+      }
+    } catch (err: any) {
+      toast({
+        title: "Error",
+        description: err?.message || "Failed to update status",
+        variant: "destructive"
+      });
+    } finally {
+      setTogglingStatus(false);
+    }
+  };
 
   const extractedId = useMemo(() => extractYouTubeId(youtubeInput), [youtubeInput]);
 
@@ -169,7 +255,7 @@ export function AdminMusicManager() {
             <Music className="h-5 w-5 text-indigo-400" /> Global Music Playlist Manager
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
-            Add YouTube music links to publish songs globally for all users, or delete existing tracks.
+            Manage playlist tracks and control website-wide background music availability in real-time.
           </p>
         </div>
         <Button
@@ -181,6 +267,75 @@ export function AdminMusicManager() {
           <RotateCcw className="h-3.5 w-3.5" /> Reset Default Tracks
         </Button>
       </div>
+
+      {/* Global Music Master Control Switch */}
+      <Card className={`border transition-all duration-300 shadow-xl ${
+        isGloballyDisabled
+          ? 'bg-rose-950/20 border-rose-500/30 shadow-rose-950/20'
+          : 'bg-emerald-950/20 border-emerald-500/30 shadow-emerald-950/20'
+      }`}>
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start sm:items-center gap-3.5">
+              <div className={`p-3 rounded-2xl shrink-0 flex items-center justify-center transition-colors ${
+                isGloballyDisabled
+                  ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                  : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+              }`}>
+                {isGloballyDisabled ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">
+                    Global Music Player Master Control
+                  </h3>
+                  {loadingStatus ? (
+                    <Badge variant="outline" className="text-[10px] text-muted-foreground border-white/10 flex items-center gap-1">
+                      <Loader2 className="h-2.5 w-2.5 animate-spin" /> Syncing...
+                    </Badge>
+                  ) : isGloballyDisabled ? (
+                    <Badge className="bg-rose-500/20 text-rose-300 border-rose-500/30 text-xs font-semibold px-2 py-0.5">
+                      🔴 Globally Disabled (Hidden Everywhere)
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-xs font-semibold px-2 py-0.5">
+                      🟢 Live & Active for All Visitors
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground max-w-2xl leading-relaxed">
+                  {isGloballyDisabled
+                    ? "The background music player is completely deactivated across the website. The floating player widget is hidden and audio playback is blocked globally for all visitors in real-time."
+                    : "The background music player is currently enabled. Visitors can listen to curated tracks while studying. Turn off below to disable globally."}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
+              <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10 shadow-inner">
+                <Label htmlFor="global-music-toggle" className="text-xs font-medium cursor-pointer select-none">
+                  {isGloballyDisabled ? (
+                    <span className="text-rose-400 font-semibold flex items-center gap-1.5">
+                      <Power className="h-3.5 w-3.5" /> Music Disabled
+                    </span>
+                  ) : (
+                    <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
+                      <Volume2 className="h-3.5 w-3.5" /> Music Enabled
+                    </span>
+                  )}
+                </Label>
+                <Switch
+                  id="global-music-toggle"
+                  checked={!isGloballyDisabled}
+                  disabled={loadingStatus || togglingStatus}
+                  onCheckedChange={(checked) => handleToggleGlobalStatus(!checked)}
+                  className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-rose-500"
+                />
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Add Song Card */}
       <Card className="glass-strong border-white/10 shadow-lg">

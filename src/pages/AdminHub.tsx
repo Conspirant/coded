@@ -1542,6 +1542,8 @@ function AdminSystemSettingsSection() {
     const [devMessageType, setDevMessageType] = useState(() => localStorage.getItem("kcet_dev_message_type") || "info")
     
     const [paywallDisabled, setPaywallDisabled] = useState(false)
+    const [musicDisabled, setMusicDisabled] = useState(() => localStorage.getItem("kcet_music_globally_disabled") === "true")
+    const [savingMusicStatus, setSavingMusicStatus] = useState(false)
     const [donationButtonEnabled, setDonationButtonEnabled] = useState(false)
     const [siteShutdown, setSiteShutdown] = useState(false)
     const [shutdownConfig, setShutdownConfig] = useState<SiteShutdownConfig>({
@@ -1608,8 +1610,9 @@ function AdminSystemSettingsSection() {
     const fetchSettings = async () => {
         try {
             setLoading(true)
-            const [disabled, blocked, maintenance, shutdownCfg, name, devCfg] = await Promise.all([
+            const [disabled, musicDis, blocked, maintenance, shutdownCfg, name, devCfg] = await Promise.all([
                 AdminSuggestionsService.isPaywallDisabledGlobally(),
+                AdminSuggestionsService.isMusicDisabledGlobally(),
                 AdminSuggestionsService.getBlockedPages(),
                 AdminSuggestionsService.getMaintenancePages(),
                 AdminSuggestionsService.getSiteShutdownConfig(),
@@ -1617,6 +1620,7 @@ function AdminSystemSettingsSection() {
                 AdminSuggestionsService.getDevAnnouncementConfig()
             ])
             setPaywallDisabled(disabled)
+            setMusicDisabled(musicDis)
             setBlockedPages(blocked)
             setMaintenancePages(maintenance)
             setShutdownConfig(shutdownCfg)
@@ -1634,6 +1638,33 @@ function AdminSystemSettingsSection() {
             })
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleToggleMusicDisabled = async (disabled: boolean) => {
+        setMusicDisabled(disabled)
+        try {
+            setSavingMusicStatus(true)
+            const ok = await AdminSuggestionsService.setMusicDisabledGlobally(disabled)
+            if (ok) {
+                toast({
+                    title: disabled ? "Music Player Disabled Globally" : "Music Player Enabled Globally",
+                    description: disabled 
+                        ? "Background music player is now disabled and hidden for all visitors." 
+                        : "Background music player is now enabled and available for all visitors.",
+                })
+            } else {
+                throw new Error("Failed to update database")
+            }
+        } catch (err: any) {
+            setMusicDisabled(!disabled)
+            toast({
+                title: "Error updating music player status",
+                description: err.message,
+                variant: "destructive"
+            })
+        } finally {
+            setSavingMusicStatus(false)
         }
     }
 
@@ -1788,6 +1819,47 @@ function AdminSystemSettingsSection() {
                     Manage global platform-level flags, page access, and monitor user presence.
                 </p>
             </div>
+
+            {/* Global Background Music Master Control Card */}
+            <Card className={`border shadow-lg transition-all ${
+                musicDisabled 
+                    ? "bg-rose-950/20 border-rose-500/30" 
+                    : "bg-slate-950/40 border-white/10 backdrop-blur-md"
+            }`}>
+                <CardHeader className="pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="space-y-1">
+                            <CardTitle className="text-sm font-bold text-white flex items-center gap-2 flex-wrap">
+                                <Music className="h-4 w-4 text-indigo-400" />
+                                Global Background Music Player
+                                {musicDisabled ? (
+                                    <Badge className="bg-rose-500/20 text-rose-400 border-rose-500/30 text-[10px] font-bold px-2 py-0.5">
+                                        🔴 Globally Disabled (Hidden Everywhere)
+                                    </Badge>
+                                ) : (
+                                    <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px] font-bold px-2 py-0.5">
+                                        🟢 Live & Active for All Visitors
+                                    </Badge>
+                                )}
+                            </CardTitle>
+                            <CardDescription className="text-xs text-muted-foreground">
+                                Turn off background music for all visitors across the entire website in real-time. When disabled, the player widget is completely hidden.
+                            </CardDescription>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                            <span className={`text-xs font-semibold ${musicDisabled ? "text-rose-400" : "text-emerald-400"}`}>
+                                {musicDisabled ? "Disabled" : "Enabled"}
+                            </span>
+                            <Switch
+                                checked={!musicDisabled}
+                                disabled={loading || savingMusicStatus}
+                                onCheckedChange={(checked) => handleToggleMusicDisabled(!checked)}
+                                className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-rose-500"
+                            />
+                        </div>
+                    </div>
+                </CardHeader>
+            </Card>
 
             {/* Dashboard Greeting Name Override Card */}
             <Card className="border-white/10 bg-slate-950/40 backdrop-blur-md shadow-lg">

@@ -516,6 +516,68 @@ export class AdminSuggestionsService {
             return false;
         }
     }
+
+    // Global Background Music Player Switch (Supabase DB + Realtime Broadcast)
+    static async isMusicDisabledGlobally(): Promise<boolean> {
+        try {
+            const { data, error } = await supabase
+                .from('ugcet_results_cache')
+                .select('results_json')
+                .eq('appl_no', 'CONFIG:global_music_disabled')
+                .maybeSingle();
+
+            if (error) throw error;
+            if (data && data.results_json) {
+                const disabled = (data.results_json as any)?.disabled === true;
+                try { localStorage.setItem('kcet_music_globally_disabled', disabled ? 'true' : 'false'); } catch {}
+                return disabled;
+            }
+
+            const cached = localStorage.getItem('kcet_music_globally_disabled');
+            return cached === 'true';
+        } catch (e) {
+            console.error("Error checking global music status:", e);
+            const cached = localStorage.getItem('kcet_music_globally_disabled');
+            return cached === 'true';
+        }
+    }
+
+    static async setMusicDisabledGlobally(disabled: boolean): Promise<boolean> {
+        try {
+            try { localStorage.setItem('kcet_music_globally_disabled', disabled ? 'true' : 'false'); } catch {}
+
+            const { error } = await supabase
+                .from('ugcet_results_cache')
+                .upsert([{
+                    appl_no: 'CONFIG:global_music_disabled',
+                    dob: 'config',
+                    name: 'config',
+                    results_json: { disabled, updatedAt: new Date().toISOString() }
+                }], { onConflict: 'appl_no' });
+
+            if (error) throw error;
+
+            // Broadcast real-time event to all active visitors
+            try {
+                const channel = supabase.channel("global-alerts");
+                await channel.send({
+                    type: "broadcast",
+                    event: "music_player_global_status_updated",
+                    payload: { disabled, timestamp: Date.now() }
+                });
+            } catch (bErr) {
+                console.warn("Music status broadcast warning:", bErr);
+            }
+
+            // Local window event for immediate UI responsiveness in active window
+            window.dispatchEvent(new CustomEvent('kcet_music_global_status_updated', { detail: { disabled } }));
+
+            return true;
+        } catch (e) {
+            console.error("Error setting global music status:", e);
+            return false;
+        }
+    }
 }
 
 
