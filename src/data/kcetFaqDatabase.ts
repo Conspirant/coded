@@ -85,9 +85,13 @@ export const KCET_FAQ_DATABASE: KCETFAQItem[] = [
     category: 'snq_quota',
     question: 'How does SNQ (Supernumerary Quota) work, what is the annual fee, and who is eligible?',
     aliases: ['snq quota fees', 'supernumerary quota eligibility', 'snq income limit', 'who gets snq', 'snq fee structure', 'how to apply for snq'],
-    answer: `**SNQ (Supernumerary Quota) Breakdown**:
+    answer: `**SNQ (Supernumerary Quota) Breakdown for 2026-27**:
 - **What is it?**: 5% extra seats over and above the sanctioned intake in every branch of every engineering college in Karnataka.
-- **Tuition Fee Waiver**: Under SNQ, the government/college tuition fee (approx ₹1.07 Lakhs - ₹1.12 Lakhs/year) is **100% WAIVED**. You only pay a nominal university & exam fee of around **₹20,000 to ₹25,000 per year**!
+- **Tuition Fee Waiver**: Under SNQ, the government/college tuition fee is **100% WAIVED**. Candidates only pay the official regulatory university/other fee:
+  - **Government Engineering Colleges (General Branches)**: **₹22,910 / year**
+  - **Government Colleges (Mechanical/Civil/Textile/Auto)**: **₹17,910 / year**
+  - **Type-1 & Type-2 Unaided Private Colleges**: **₹32,320 / year**
+  - **VTU Constituent Colleges**: **₹22,910 / year**
 - **Eligibility**:
   - Annual family income must be **below ₹8.00 Lakhs per annum** (verified via valid Income Certificate RD Number).
   - Open to all categories (GM, OBC, SC, ST).
