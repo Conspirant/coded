@@ -23,14 +23,27 @@ for rnd, cnt in sorted(by_round_2026.items()):
 # 2. kcet_cutoffs_consolidated.dat
 with open(DATA / "kcet_cutoffs_consolidated.dat", "r", encoding="utf-8") as f:
     master = json.load(f)
-meta = master.get("metadata", {})
-total_entries = meta.get("total_entries", 0)
-print(f"\n2. Consolidated Master (.dat): {total_entries:,} total entries")
-print(f"   - Years covered: {meta.get('years_covered')}")
-print(f"   - Rounds covered: {meta.get('rounds_covered')}")
-print("   - Records by year/round:")
-for yr, cnt in sorted(meta.get("records_by_year_round", {}).items()):
-    print(f"     * {yr}: {cnt:,}")
+
+if isinstance(master, dict):
+    meta = master.get("metadata", {})
+    total_entries = meta.get("total_entries", 0)
+    print(f"\n2. Consolidated Master (.dat): {total_entries:,} total entries")
+    print(f"   - Years covered: {meta.get('years_covered')}")
+    print(f"   - Rounds covered: {meta.get('rounds_covered')}")
+    print("   - Records by year/round:")
+    for yr, cnt in sorted(meta.get("records_by_year_round", {}).items()):
+        print(f"     * {yr}: {cnt:,}")
+else:
+    total_entries = len(master)
+    print(f"\n2. Consolidated Master (.dat): {total_entries:,} total entries")
+    by_yr = Counter(str(r.get("year")) for r in master)
+    by_rnd = Counter(str(r.get("round")) for r in master)
+    by_yr_rnd = Counter((str(r.get("year")), str(r.get("round"))) for r in master)
+    print(f"   - Years covered: {sorted(by_yr.keys())}")
+    print(f"   - Rounds covered: {sorted(by_rnd.keys())}")
+    print("   - Records by year/round:")
+    for (yr, rnd), cnt in sorted(by_yr_rnd.items()):
+        print(f"     * {yr}_{rnd}: {cnt:,}")
 
 # 3. cutoffs-summary.json
 with open(DATA / "cutoffs-summary.json", "r", encoding="utf-8") as f:
@@ -66,9 +79,11 @@ print(f"   - Keys: {keys}")
 mock2_count = len(page_idx.get("index", {}).get("2026-MOCK2", {}))
 r1_count = len(page_idx.get("index", {}).get("2026-R1", {}))
 r2_count = len(page_idx.get("index", {}).get("2026-R2", {}))
+r3_count = len(page_idx.get("index", {}).get("2026-R3", {}))
 print(f"   - 2026-MOCK2 mapped colleges: {mock2_count}")
 print(f"   - 2026-R1 mapped colleges: {r1_count}")
 print(f"   - 2026-R2 mapped colleges: {r2_count}")
+print(f"   - 2026-R3 mapped colleges: {r3_count}")
 
 # 6. Canonical PDF files
 print(f"\n6. Canonical PDF Check:")
@@ -76,5 +91,6 @@ print(f"   - public/cutoffs/kcet-2026-mock-round1-cutoffs.pdf: {os.path.exists(P
 print(f"   - public/cutoffs/kcet-2026-mock-round2-cutoffs.pdf: {os.path.exists(PUBLIC / 'cutoffs' / 'kcet-2026-mock-round2-cutoffs.pdf')}")
 print(f"   - public/cutoffs/kcet-2026-round1-cutoffs.pdf: {os.path.exists(PUBLIC / 'cutoffs' / 'kcet-2026-round1-cutoffs.pdf')}")
 print(f"   - public/cutoffs/kcet-2026-round2-cutoffs.pdf: {os.path.exists(PUBLIC / 'cutoffs' / 'kcet-2026-round2-cutoffs.pdf')}")
-print(f"   - kcet-2026-round2-cutoffs.pdf (root): {os.path.exists(ROOT / 'kcet-2026-round2-cutoffs.pdf')}")
+print(f"   - public/cutoffs/kcet-2026-round3-cutoffs.pdf: {os.path.exists(PUBLIC / 'cutoffs' / 'kcet-2026-round3-cutoffs.pdf')}")
+print(f"   - kcet-2026-round3-cutoffs.pdf (root): {os.path.exists(ROOT / 'kcet-2026-round3-cutoffs.pdf')}")
 print("=" * 70)

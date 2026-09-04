@@ -40,7 +40,9 @@ export interface RoundDriftPrediction {
   r2_drift_ratio: number          // R2/R1 multiplier used
   r2_change_pct: number           // % change from R1
 
-  // R3 prediction (anchored directly on R2 actual with high precision)
+  // R3 prediction (anchored directly on R2 actual with high precision, or official actual)
+  r3_actual?: number | null
+  is_r3_actual: boolean
   r3_predicted: number
   r3_low: number
   r3_high: number
@@ -98,6 +100,8 @@ interface DriftIndex {
   r1Combos2026: Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>
   /** Available combos with 2026 R2 data */
   r2Combos2026: Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>
+  /** Available combos with 2026 R3 data */
+  r3Combos2026: Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>
 }
 
 const TARGET_YEAR = 2026
@@ -141,6 +145,7 @@ function buildDriftIndex(cutoffs: CutoffData[]): DriftIndex {
   const colleges2026 = new Set<string>()
   const r1Combos2026 = new Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>()
   const r2Combos2026 = new Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>()
+  const r3Combos2026 = new Map<string, { code: string; name: string; normCourse: string; rawCourse: string; category: string; rank: number }>()
 
   for (const c of cutoffs) {
     const code = (c.institute_code || '').trim().toUpperCase()
@@ -203,18 +208,20 @@ function buildDriftIndex(cutoffs: CutoffData[]): DriftIndex {
     if (!gRoundMap.has(round)) gRoundMap.set(round, [])
     gRoundMap.get(round)!.push(rank)
 
-    // ── Track 2026 R1 & R2 combos ──
+    // ── Track 2026 R1, R2 & R3 combos ──
     if (year === TARGET_YEAR) {
       colleges2026.add(code)
       if (round === 'R1') {
         r1Combos2026.set(ck, { code, name, normCourse, rawCourse, category, rank })
       } else if (round === 'R2') {
         r2Combos2026.set(ck, { code, name, normCourse, rawCourse, category, rank })
+      } else if (round === 'R3') {
+        r3Combos2026.set(ck, { code, name, normCourse, rawCourse, category, rank })
       }
     }
   }
 
-  return { byCombo, byBranchCategory, byBranch, global, collegeNames, colleges2026, r1Combos2026, r2Combos2026 }
+  return { byCombo, byBranchCategory, byBranch, global, collegeNames, colleges2026, r1Combos2026, r2Combos2026, r3Combos2026 }
 }
 
 async function ensureIndex(): Promise<DriftIndex> {
@@ -684,7 +691,7 @@ export async function getBranchesWithR1Data(collegeCode: string): Promise<Branch
   const codeUpper = collegeCode.trim().toUpperCase()
 
   const branches = new Map<string, string>()
-  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values()]
+  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values(), ...idx.r3Combos2026.values()]
   for (const combo of allCombos) {
     if (combo.code !== codeUpper) continue
     if (!isValidCourseName(combo.normCourse)) continue
@@ -709,7 +716,7 @@ export async function getCategoriesWithR1Data(
   const codeUpper = collegeCode.trim().toUpperCase()
 
   const categories = new Set<string>()
-  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values()]
+  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values(), ...idx.r3Combos2026.values()]
   for (const combo of allCombos) {
     if (combo.code !== codeUpper) continue
     if (combo.normCourse !== normCourse) continue
@@ -734,18 +741,21 @@ export async function predictR2R3(
   const codeUpper = collegeCode.trim().toUpperCase()
   const normCourse = normalizeCourseName(course) || course
 
-  // Get 2026 R1 and R2 actuals
+  // Get 2026 R1, R2, and R3 actuals
   const ck = comboKey(codeUpper, normCourse, category)
   const r1Combo = idx.r1Combos2026.get(ck)
   const r2Combo = idx.r2Combos2026.get(ck)
+  const r3Combo = idx.r3Combos2026.get(ck)
 
-  if (!r1Combo && !r2Combo) return null
+  if (!r1Combo && !r2Combo && !r3Combo) return null
 
-  const r1Actual = r1Combo?.rank || (r2Combo ? Math.round(r2Combo.rank / 1.05) : 0)
-  const r2Actual = r2Combo?.rank || null
+  const r1Actual = r1Combo?.rank || (r2Combo ? Math.round(r2Combo.rank / 1.05) : (r3Combo ? Math.round(r3Combo.rank / 1.1) : 0))
+  const r2Actual = r2Combo?.rank || (r3Combo ? Math.round(r3Combo.rank / 1.05) : null)
   const isR2Actual = r2Actual !== null
+  const r3Actual = r3Combo?.rank || null
+  const isR3Actual = r3Actual !== null
   const collegeName = idx.collegeNames.get(codeUpper) || codeUpper
-  const rawCourse = r2Combo?.rawCourse || r1Combo?.rawCourse || normCourse
+  const rawCourse = r3Combo?.rawCourse || r2Combo?.rawCourse || r1Combo?.rawCourse || normCourse
 
   // Get drift ratios with fallback hierarchy
   let drift = getDriftRatios(idx, codeUpper, normCourse, category)
@@ -753,7 +763,6 @@ export async function predictR2R3(
   const r2Drift = drift.r2_r1_ratio
   const r3r2Drift = drift.r3_r2_ratio
 
-  // When R2 is actual, anchor R3 directly on R2 for maximum precision!
   let r2Predicted: number
   let r3Predicted: number
   let effectiveR2Drift: number
@@ -763,12 +772,18 @@ export async function predictR2R3(
     r2Predicted = r2Actual
     effectiveR2Drift = r1Actual > 0 ? r2Actual / r1Actual : 1.0
     r2ChangePct = r1Actual > 0 ? Math.round(((r2Actual / r1Actual) - 1) * 100) : 0
-    // High-precision prediction: Direct R2 Actual × Empirical R3/R2 Drift × NEET Multiplier
-    r3Predicted = Math.max(r2Actual, Math.round(r2Actual * r3r2Drift * neetMultiplier))
   } else {
     r2Predicted = Math.max(1, Math.round(r1Actual * r2Drift * neetMultiplier))
     effectiveR2Drift = r1Actual > 0 ? r2Predicted / r1Actual : 1.0
     r2ChangePct = Math.round((effectiveR2Drift - 1) * 100)
+  }
+
+  if (isR3Actual && r3Actual) {
+    r3Predicted = r3Actual
+  } else if (isR2Actual && r2Actual) {
+    // High-precision prediction: Direct R2 Actual × Empirical R3/R2 Drift × NEET Multiplier
+    r3Predicted = Math.max(r2Actual, Math.round(r2Actual * r3r2Drift * neetMultiplier))
+  } else {
     r3Predicted = Math.max(r2Predicted, Math.round(r2Predicted * r3r2Drift * neetMultiplier))
   }
 
@@ -778,19 +793,19 @@ export async function predictR2R3(
   const r3ChangePct = r1Actual > 0 ? Math.round(((r3Predicted / r1Actual) - 1) * 100) : 0
   const r3ChangePctFromR2 = r2Predicted > 0 ? Math.round(((r3Predicted / r2Predicted) - 1) * 100) : 0
 
-  // Calibrate uncertainty band for R3
+  // Calibrate uncertainty band
   const baseUncertainty = getUncertaintyMultiplier(drift)
-  const r3Uncertainty = isR2Actual ? Math.max(0.06, baseUncertainty * 0.8) : baseUncertainty * 1.3
+  const r3Uncertainty = isR3Actual ? 0 : (isR2Actual ? Math.max(0.06, baseUncertainty * 0.8) : baseUncertainty * 1.3)
 
   const r2Low = isR2Actual ? r2Actual : Math.max(1, Math.round(r2Predicted * (1 - baseUncertainty)))
   const r2High = isR2Actual ? r2Actual : Math.round(r2Predicted * (1 + baseUncertainty))
 
-  const r3Low = Math.max(r2Predicted, Math.round(r3Predicted * (1 - r3Uncertainty)))
-  const r3High = Math.round(r3Predicted * (1 + r3Uncertainty))
+  const r3Low = isR3Actual && r3Actual ? r3Actual : Math.max(r2Predicted, Math.round(r3Predicted * (1 - r3Uncertainty)))
+  const r3High = isR3Actual && r3Actual ? r3Actual : Math.round(r3Predicted * (1 + r3Uncertainty))
 
-  // Confidence level (highest when anchored on verified R2 actual)
+  // Confidence level (highest when anchored on verified actuals)
   let confidenceLevel: 'high' | 'medium' | 'low'
-  if (isR2Actual && drift.dataPoints >= 2) {
+  if (isR3Actual || (isR2Actual && drift.dataPoints >= 2)) {
     confidenceLevel = 'high'
   } else if (drift.dataPoints >= 4 && drift.stability >= 0.7) {
     confidenceLevel = 'high'
@@ -799,6 +814,12 @@ export async function predictR2R3(
   } else {
     confidenceLevel = 'low'
   }
+
+  const driftSource = isR3Actual
+    ? 'Official 2026 Round 3 Provisional Allotment'
+    : isR2Actual
+    ? `Anchored on 2026 R2 Actual + ${drift.source}`
+    : drift.source
 
   return {
     college_code: codeUpper,
@@ -814,6 +835,8 @@ export async function predictR2R3(
     r2_high: r2High,
     r2_drift_ratio: Number(effectiveR2Drift.toFixed(3)),
     r2_change_pct: r2ChangePct,
+    r3_actual: r3Actual,
+    is_r3_actual: isR3Actual,
     r3_predicted: r3Predicted,
     r3_low: r3Low,
     r3_high: r3High,
@@ -822,9 +845,7 @@ export async function predictR2R3(
     r3_change_pct: r3ChangePct,
     r3_change_pct_from_r2: r3ChangePctFromR2,
     confidence_level: confidenceLevel,
-    drift_source: isR2Actual
-      ? `Anchored on 2026 R2 Actual + ${drift.source}`
-      : drift.source,
+    drift_source: driftSource,
     historical_evidence: drift.evidence,
     data_points: drift.dataPoints,
     is_r3_anchored_on_r2: isR2Actual,
@@ -843,7 +864,7 @@ export async function predictAllBranches(
   const codeUpper = collegeCode.trim().toUpperCase()
 
   const branches = new Set<string>()
-  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values()]
+  const allCombos = [...idx.r1Combos2026.values(), ...idx.r2Combos2026.values(), ...idx.r3Combos2026.values()]
   for (const combo of allCombos) {
     if (combo.code !== codeUpper) continue
     if (combo.category !== category) continue

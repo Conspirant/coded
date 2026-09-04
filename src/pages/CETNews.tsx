@@ -26,17 +26,17 @@ interface NewsItem {
 }
 
 const ACTIVE_NOTICE = {
-  pressNoteNo: "ED/KEA/UGCET-2026/R2-Allotment",
-  date: "25-08-2026",
-  title: "KCET 2026 Round 2 Final Seat Allotment Declared — Choice Entry & Fee Payment Active",
-  choiceDeadline: "Aug 27, 2026 (11:59 PM)",
-  feePaymentDeadline: "Aug 27, 2026 (4:00 PM)",
-  reportingDeadline: "Aug 28, 2026 (5:30 PM)",
+  pressNoteNo: "ED/KEA/UGCET-2026/R3-Provisional",
+  date: "04-09-2026",
+  title: "KCET 2026 Round 3 Provisional Seat Allotment & Cutoffs Declared",
+  choiceDeadline: "Sep 07, 2026 (11:59 PM)",
+  feePaymentDeadline: "Sep 08, 2026 (4:00 PM)",
+  reportingDeadline: "Sep 09, 2026 (5:30 PM)",
   portalUrl: "https://cetonline.karnataka.gov.in",
   keyPoints: [
-    "Candidates allotted seats in Round 2 can exercise Choice 1 (Accept & Freeze) or Choice 4 (Reject & Exit).",
-    "Choice 1 candidates must pay tuition fees online or via bank challan and download the official Admission Order.",
-    "Mandatory in-person reporting to allotted colleges with original documents by August 28, 2026 (5:30 PM)."
+    "KEA has officially published the UGCET 2026 Third Round provisional allotment cut-off ranks for engineering.",
+    "Candidates allotted seats in Round 3 can confirm allotments, clear tuition fee balance, and download the official Admission Order.",
+    "Mandatory in-person reporting to allotted colleges with original documents by September 9, 2026 (5:30 PM)."
   ]
 }
 

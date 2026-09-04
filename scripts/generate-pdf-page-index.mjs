@@ -36,6 +36,7 @@ const PDF_FILES = [
     { file: 'kcet-2026-mock-round2-cutoffs.pdf', year: '2026', round: 'MOCK2' },
     { file: 'kcet-2026-round1-cutoffs.pdf', year: '2026', round: 'R1' },
     { file: 'kcet-2026-round2-cutoffs.pdf', year: '2026', round: 'R2' },
+    { file: 'kcet-2026-round3-cutoffs.pdf', year: '2026', round: 'R3' },
 ];
 
 /**

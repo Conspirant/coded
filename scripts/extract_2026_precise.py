@@ -31,11 +31,13 @@ PDF_MOCK = ROOT / "2026 mock cutoff.pdf"
 PDF_MOCK_R2 = ROOT / "2026 mock r2.pdf"
 PDF_R1 = ROOT / "2026 round 1 provisional.pdf"
 PDF_R2 = ROOT / "2026 round 2 provisional.pdf"
+PDF_R3 = ROOT / "2026 round 3.pdf"
 
 OUTPUT_MOCK_RAW = ROOT / "cutoff_2026_extracted.json"
 OUTPUT_MOCK_R2_RAW = ROOT / "cutoff_2026_mock_r2_extracted.json"
 OUTPUT_R1_RAW = ROOT / "cutoff_2026_r1_extracted.json"
 OUTPUT_R2_RAW = ROOT / "cutoff_2026_r2_extracted.json"
+OUTPUT_R3_RAW = ROOT / "cutoff_2026_r3_extracted.json"
 OUTPUT_SERVING_2026 = DATA_DIR / "cutoffs-2026.json"
 
 # Canonical PDF locations
@@ -43,11 +45,13 @@ DEST_MOCK_PUBLIC = CUTOFFS_DIR / "kcet-2026-mock-round1-cutoffs.pdf"
 DEST_MOCK_R2_PUBLIC = CUTOFFS_DIR / "kcet-2026-mock-round2-cutoffs.pdf"
 DEST_R1_PUBLIC = CUTOFFS_DIR / "kcet-2026-round1-cutoffs.pdf"
 DEST_R2_PUBLIC = CUTOFFS_DIR / "kcet-2026-round2-cutoffs.pdf"
+DEST_R3_PUBLIC = CUTOFFS_DIR / "kcet-2026-round3-cutoffs.pdf"
 
 DEST_MOCK_ROOT = ROOT / "kcet-2026-mock-round1-cutoffs.pdf"
 DEST_MOCK_R2_ROOT = ROOT / "kcet-2026-mock-round2-cutoffs.pdf"
 DEST_R1_ROOT = ROOT / "kcet-2026-round1-cutoffs.pdf"
 DEST_R2_ROOT = ROOT / "kcet-2026-round2-cutoffs.pdf"
+DEST_R3_ROOT = ROOT / "kcet-2026-round3-cutoffs.pdf"
 
 ALL_CATEGORIES = {
     '1G', '1K', '1R',
@@ -128,6 +132,10 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
                 text_full = " ".join([w['text'] for w in row_words])
                 text_clean = clean_text(text_full)
 
+                # Skip repeated footer lines
+                if any(m in text_clean.lower() for m in ['sc sub category abbreviation', 'generated on:', 'page ']):
+                    continue
+
                 # 1. College Header
                 m = re.search(
                     r'College\s*:?\s*[\(\[]?([A-Z0-9]{3,6})[\)\]]?\s*(.*)',
@@ -185,6 +193,8 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
                 if re.match(r'^[\d\s\-\.]+$', course_check):
                     continue
                 if 'Course' in course_raw and 'GM' not in course_raw:
+                    continue
+                if any(marker in course_check.lower() for marker in ['sc sub', 'page ', 'generated on', 'abbreviation', 'seat type:']):
                     continue
 
                 # Parse ranks
@@ -343,8 +353,28 @@ def main():
         print(f"ERROR: Round 2 PDF ({PDF_R2.name}) not found!")
         sys.exit(1)
 
-    # 5. Save combined flat list to cutoffs-2026.json
-    combined = mock_data + mock_r2_data + r1_data + r2_data
+    # 5. Extract R3
+    r3_src = resolve_pdf_source(PDF_R3, DEST_R3_PUBLIC)
+    if not r3_src and DEST_R3_ROOT.exists():
+        r3_src = DEST_R3_ROOT
+    if r3_src:
+        print(f"\nExtracting Round 3 cutoffs from: {r3_src.name}")
+        r3_data = extract_pdf_coordinate_based(r3_src, "2026", "R3")
+        r3_data = deduplicate(r3_data)
+        save_json(r3_data, OUTPUT_R3_RAW)
+
+        # Ensure copy to canonical paths
+        if r3_src != DEST_R3_PUBLIC:
+            shutil.copy2(r3_src, DEST_R3_PUBLIC)
+        if r3_src != DEST_R3_ROOT:
+            shutil.copy2(r3_src, DEST_R3_ROOT)
+        print(f"Copied Round 3 PDF to canonical locations: {DEST_R3_PUBLIC.name} and root")
+    else:
+        print(f"ERROR: Round 3 PDF ({PDF_R3.name}) not found!")
+        sys.exit(1)
+
+    # 6. Save combined flat list to cutoffs-2026.json
+    combined = mock_data + mock_r2_data + r1_data + r2_data + r3_data
     combined_unique = deduplicate(combined)
     
     with open(OUTPUT_SERVING_2026, 'w', encoding='utf-8') as f:
@@ -354,6 +384,7 @@ def main():
     print(f"  - Mock 2: {len(mock_r2_data):,}")
     print(f"  - Round 1: {len(r1_data):,}")
     print(f"  - Round 2: {len(r2_data):,}")
+    print(f"  - Round 3: {len(r3_data):,}")
     print("=" * 70)
 
 if __name__ == "__main__":

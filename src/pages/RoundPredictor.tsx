@@ -735,12 +735,13 @@ const RoundPredictor = () => {
                     changeLabel="from R1"
                   />
                   <RoundCard
-                    round="Round 3 (Forecast)"
+                    round={prediction.is_r3_actual ? "Round 3 (Provisional)" : "Round 3 (Forecast)"}
                     rank={prediction.r3_predicted}
-                    low={prediction.r3_low}
-                    high={prediction.r3_high}
+                    low={prediction.is_r3_actual ? undefined : prediction.r3_low}
+                    high={prediction.is_r3_actual ? undefined : prediction.r3_high}
                     changePct={prediction.is_r2_actual ? prediction.r3_change_pct_from_r2 : prediction.r3_change_pct}
                     driftRatio={prediction.is_r2_actual ? prediction.r3_r2_drift_ratio : prediction.r3_drift_ratio}
+                    isActual={prediction.is_r3_actual}
                     changeLabel={prediction.is_r2_actual ? "from R2" : "from R1"}
                   />
                 </div>
@@ -1182,7 +1183,9 @@ const RoundPredictor = () => {
                             <td className="py-2.5 px-3 text-right tabular-nums text-violet-400 font-semibold">
                               {prediction.r2_predicted.toLocaleString('en-IN')} {prediction.is_r2_actual ? '(Actual)' : ''}
                             </td>
-                            <td className="py-2.5 px-3 text-right tabular-nums text-fuchsia-400 font-semibold">{prediction.r3_predicted.toLocaleString('en-IN')} (Forecast)</td>
+                            <td className="py-2.5 px-3 text-right tabular-nums text-fuchsia-400 font-semibold">
+                              {prediction.r3_predicted.toLocaleString('en-IN')} {prediction.is_r3_actual ? '(Actual)' : '(Forecast)'}
+                            </td>
                             <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs font-semibold">×{prediction.r2_drift_ratio.toFixed(3)}</td>
                             <td className="py-2.5 px-3 text-right tabular-nums text-emerald-400 text-xs font-semibold">×{prediction.r3_drift_ratio.toFixed(3)}</td>
                           </tr>
@@ -1237,7 +1240,7 @@ const RoundPredictor = () => {
                         <div className="mt-1 text-lg font-semibold tabular-nums text-primary">{prediction.r2_predicted.toLocaleString('en-IN')}</div>
                       </div>
                       <div className="px-3 py-2.5 text-center">
-                        <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">R3 forecast</div>
+                        <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{prediction.is_r3_actual ? "R3 actual" : "R3 forecast"}</div>
                         <div className="mt-1 text-lg font-semibold tabular-nums text-foreground">{prediction.r3_predicted.toLocaleString('en-IN')}</div>
                       </div>
                     </div>

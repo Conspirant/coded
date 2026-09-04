@@ -74,32 +74,31 @@ const COUNSELING_STAGES: RoundStage[] = [
     id: 'stage-4',
     stageNumber: 4,
     title: 'Round 2 Final Allotment & College Reporting',
-    status: 'active',
+    status: 'completed',
     startDate: '2026-08-23',
     endDate: '2026-08-28',
-    summary: 'Round 2 provisional cutoffs released, final allotment published, online fee payment, and mandatory college reporting.',
+    summary: 'Round 2 provisional cutoffs released, final allotment published, online fee payment, and mandatory college reporting completed.',
     highlights: [
       'Provisional Allotment & Cutoffs published on August 23, 2026.',
       'Final Round 2 Allotment declared on August 24, 2026.',
       'Choice Selection & Online Fee Payment Window: August 25 – August 27, 2026.',
-      'Last Date to Report to Allotted College: August 28, 2026 (before 5:30 PM).'
-    ],
-    actionRequired: 'Allotted candidates must select Choice 1 (Accept) or Choice 4 (Exit), complete fee payment, download Admission Order, and report to college by Aug 28.'
+      'College reporting concluded on August 28, 2026.'
+    ]
   },
   {
     id: 'stage-5',
     stageNumber: 5,
     title: 'Round 3 / Second Extended (Mop-Up) Round',
-    status: 'upcoming',
-    startDate: '2026-09-02',
-    endDate: 'TBA',
-    summary: 'Final counseling round for leftover vacant seats in engineering, architecture, and agricultural courses.',
+    status: 'active',
+    startDate: '2026-09-04',
+    endDate: '2026-09-09',
+    summary: 'Round 3 provisional cutoffs published. Final counseling round for leftover vacant seats in engineering, architecture, and farm science courses.',
     highlights: [
-      'Seat Vacancy Matrix will be published after Round 2 college reporting concludes.',
-      'Eligible unallotted candidates and mop-up registrants will be able to enter fresh choices.',
-      'Final physical reporting and spot admissions.'
+      'Provisional Round 3 Allotment Cutoffs published on September 4, 2026.',
+      'Choice Selection & Confirmation Window active for Round 3 allottees.',
+      'Final physical reporting, fee balance adjustment, and spot admissions.'
     ],
-    actionRequired: 'Awaiting official KEA notification & seat matrix release in early September 2026.'
+    actionRequired: 'Review provisional cutoffs and verify allotment in KEA portal. Download Admission Order and complete mandatory college reporting.'
   }
 ]
 
@@ -196,10 +195,10 @@ export default function RoundTracker() {
             <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[10px] uppercase font-mono tracking-wider">
               Active Stage Now
             </Badge>
-            <span className="text-xs text-emerald-400 font-medium">Stage 4: Round 2 Final Allotment & Reporting</span>
+            <span className="text-xs text-emerald-400 font-medium">Stage 5: Round 3 Provisional Allotment & Reporting</span>
           </div>
           <span className="text-xs font-mono text-muted-foreground">
-            Reporting Deadline: <strong className="text-white">Aug 28, 2026 (5:30 PM)</strong>
+            Reporting Deadline: <strong className="text-white">Sep 09, 2026 (5:30 PM)</strong>
           </span>
         </div>
 
@@ -207,10 +206,10 @@ export default function RoundTracker() {
           <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono text-muted-foreground">STEP 1</span>
-              <Badge variant="outline" className="text-[9px] border-white/10 text-slate-300">Aug 25–27</Badge>
+              <Badge variant="outline" className="text-[9px] border-white/10 text-slate-300">Sep 04–06</Badge>
             </div>
-            <p className="text-xs font-semibold text-white">Choice Selection (1 or 4)</p>
-            <p className="text-[11px] text-muted-foreground">Log in to KEA portal and confirm your decision.</p>
+            <p className="text-xs font-semibold text-white">Provisional Cutoff Verification</p>
+            <p className="text-[11px] text-muted-foreground">Check allotted seat and verify cutoff ranks.</p>
           </div>
 
           <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
@@ -218,17 +217,17 @@ export default function RoundTracker() {
               <span className="text-[11px] font-mono text-muted-foreground">STEP 2</span>
               <Badge variant="outline" className="text-[9px] border-white/10 text-emerald-400">Online / Challan</Badge>
             </div>
-            <p className="text-xs font-semibold text-white">Tuition Fee Payment</p>
-            <p className="text-[11px] text-muted-foreground">Pay fees & download the official Admission Order.</p>
+            <p className="text-xs font-semibold text-white">Fee Balance & Order Download</p>
+            <p className="text-[11px] text-muted-foreground">Clear tuition balance & download Admission Order.</p>
           </div>
 
           <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono text-muted-foreground">STEP 3</span>
-              <Badge className="text-[9px] bg-amber-500/20 text-amber-300 border-amber-500/30">By Aug 28</Badge>
+              <Badge className="text-[9px] bg-amber-500/20 text-amber-300 border-amber-500/30">By Sep 09</Badge>
             </div>
-            <p className="text-xs font-semibold text-white">Physical College Reporting</p>
-            <p className="text-[11px] text-muted-foreground">Submit original certificates at allotted college.</p>
+            <p className="text-xs font-semibold text-white">Final College Reporting</p>
+            <p className="text-[11px] text-muted-foreground">Submit original certificates at allotted institute.</p>
           </div>
         </div>
       </div>

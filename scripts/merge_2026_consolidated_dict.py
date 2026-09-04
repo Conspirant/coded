@@ -22,6 +22,7 @@ CUTOFF_MOCK = ROOT / "cutoff_2026_extracted.json"
 CUTOFF_MOCK_R2 = ROOT / "cutoff_2026_mock_r2_extracted.json"
 CUTOFF_R1 = ROOT / "cutoff_2026_r1_extracted.json"
 CUTOFF_R2 = ROOT / "cutoff_2026_r2_extracted.json"
+CUTOFF_R3 = ROOT / "cutoff_2026_r3_extracted.json"
 
 # Targets to update
 TARGET_JSON_PATHS = [
@@ -71,7 +72,7 @@ def main():
     print("=" * 70)
 
     # 1. Load extracted 2026 data
-    if not CUTOFF_MOCK.exists() or not CUTOFF_MOCK_R2.exists() or not CUTOFF_R1.exists() or not CUTOFF_R2.exists():
+    if not CUTOFF_MOCK.exists() or not CUTOFF_MOCK_R2.exists() or not CUTOFF_R1.exists() or not CUTOFF_R2.exists() or not CUTOFF_R3.exists():
         print("ERROR: Extracted 2026 JSON files not found! Run extract_2026_precise.py first.")
         sys.exit(1)
 
@@ -83,9 +84,11 @@ def main():
         r1_data = json.load(f)
     with open(CUTOFF_R2, 'r', encoding='utf-8') as f:
         r2_data = json.load(f)
+    with open(CUTOFF_R3, 'r', encoding='utf-8') as f:
+        r3_data = json.load(f)
 
-    new_2026_data = mock_data + mock_r2_data + r1_data + r2_data
-    print(f"Loaded {len(mock_data):,} Mock 1, {len(mock_r2_data):,} Mock 2, {len(r1_data):,} R1, and {len(r2_data):,} R2 entries.")
+    new_2026_data = mock_data + mock_r2_data + r1_data + r2_data + r3_data
+    print(f"Loaded {len(mock_data):,} Mock 1, {len(mock_r2_data):,} Mock 2, {len(r1_data):,} R1, {len(r2_data):,} R2, and {len(r3_data):,} R3 entries.")
     print(f"Total new 2026 entries: {len(new_2026_data):,}")
 
     for target in TARGET_JSON_PATHS:
@@ -167,8 +170,7 @@ def main():
     source_stat_file = DATA_DIR / "kcet_cutoffs_consolidated.dat" if (DATA_DIR / "kcet_cutoffs_consolidated.dat").exists() else DATA_DIR / "kcet_cutoffs_consolidated.json"
     with open(source_stat_file, 'r', encoding='utf-8') as f:
         master_data = json.load(f)
-    
-    master_cutoffs = master_data.get("cutoffs", [])
+    master_cutoffs = master_data.get("cutoffs", []) if isinstance(master_data, dict) else master_data
     by_year = Counter(str(r["year"]) for r in master_cutoffs)
     by_category = Counter(r["category"] for r in master_cutoffs)
     institutes = {r["institute_code"] for r in master_cutoffs}
