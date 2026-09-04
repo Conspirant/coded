@@ -106,6 +106,7 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
         current_name = None
         last_cat_coords = {}
         last_course_name = None
+        last_course_indices = []
 
         for page_idx, page in enumerate(pdf.pages):
             words = page.extract_words(keep_blank_chars=False) or []
@@ -151,6 +152,7 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
                         current_name = n
                         last_cat_coords = {}
                         last_course_name = None
+                        last_course_indices = []
                         continue
 
                 if not current_code:
@@ -219,6 +221,7 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
                         ranks_found.append((closest_cat, rank))
 
                 if ranks_found:
+                    start_idx = len(results)
                     for cat, rank in ranks_found:
                         results.append({
                             'institute': current_name,
@@ -229,20 +232,14 @@ def extract_pdf_coordinate_based(pdf_path, year, round_val):
                             'year': year,
                             'round': round_val
                         })
+                    last_course_indices = list(range(start_idx, len(results)))
                     last_course_name = course_check
                 else:
-                    if last_course_name and current_code:
+                    if last_course_indices and last_course_name and current_code:
                         new_course_name = last_course_name + " " + course_check
-                        updated_count = 0
-                        for idx in range(len(results) - 1, -1, -1):
-                            entry = results[idx]
-                            if entry['institute_code'] == current_code and entry['course'] == last_course_name:
-                                entry['course'] = new_course_name
-                                updated_count += 1
-                            elif entry['institute_code'] != current_code:
-                                break
-                        if updated_count > 0:
-                            last_course_name = new_course_name
+                        for idx in last_course_indices:
+                            results[idx]['course'] = new_course_name
+                        last_course_name = new_course_name
 
     return results
 
