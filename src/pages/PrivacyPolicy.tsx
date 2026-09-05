@@ -31,7 +31,7 @@ const PrivacyPolicy = () => {
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground text-sm leading-relaxed">
                     <p>
-                        At <strong>KCET Coded</strong> ("we", "our", "us"), accessible from <a href="https://kcetcoded.dev" className="text-primary hover:underline font-semibold">kcetcoded.dev</a>, we are committed to protecting the personal data and privacy of every KCET & COMEDK aspirant.
+                        At <strong>KCET Coded</strong> ("we", "our", "us"), accessible from <a href="https://kcetcoded.dev" className="text-primary hover:underline font-semibold">kcetcoded.dev</a>, we are committed to protecting the personal data and privacy of every KCET aspirant.
                     </p>
                     <p>
                         This document outlines what data we collect, how it is stored, how authentication works, and your rights regarding your personal information. By using our website and services, you consent to this Privacy Policy.

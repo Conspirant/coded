@@ -89,7 +89,6 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
         { title: "College Predictor", url: "/college-predictor", icon: Target },
         { title: "Rank Predictor", url: "/rank-predictor", icon: Calculator },
         { title: "Cutoff Explorer", url: "/cutoff-explorer", icon: Search },
-        { title: "NEET Medical Hub", url: "/neet", icon: HeartPulse, isNew: true },
         { title: "Cutoff Predictor", url: "/cutoff-predictor", icon: Brain, isNew: true },
         { title: "College Cutoffs", url: "/college-cutoffs", icon: Building2 },
         { title: "Cutoff Trends", url: "/cutoff-trends", icon: TrendingUp, isNew: true },
@@ -154,109 +153,7 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
   return sections
 }
 
-const getNeetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSection[] => {
-  const sections: NavSection[] = [
-    {
-      label: "Overview",
-      items: [
-        { title: "Home", url: "/", icon: Home },
-        { title: "NEET Medical Hub", url: "/neet", icon: HeartPulse, isNew: true },
-        { title: "Discussion Forum", url: "/forum", icon: MessageSquare },
-      ]
-    },
-    {
-      label: "NEET Admissions & KEA Tools",
-      items: [
-        { title: "College Predictor (AIR)", url: "/neet-predictor", icon: Target, isNew: true },
-        { title: "Option Entry Builder", url: "/neet-option-builder", icon: ListOrdered, isNew: true },
-        { title: "Cutoff Matrix Grid", url: "/neet-matrix", icon: Grid3X3, isNew: true },
-        { title: "Choice 1/2/3/4 Simulator", url: "/neet-choice-simulator", icon: HelpCircle, isNew: true },
-        { title: "Medical Cutoffs Explorer", url: "/neet-explorer", icon: Search },
-        { title: "Compare Medical Colleges", url: "/neet-compare", icon: GitCompare, isNew: true },
-        { title: "Mock vs Final Trends", url: "/neet-trends", icon: TrendingUp, isNew: true },
-        { title: "Fee & Cost Explorer (107)", url: "/neet-fees", icon: IndianRupee, isNew: true },
-        { title: "Quota & Rural Bond Guide", url: "/neet-quotas", icon: ShieldCheck, isNew: true },
-      ]
-    },
-    {
-      label: "Prep & Resources",
-      items: [
-        { title: "TesselBot AI Counselor", url: "/ai-counselor", icon: Bot },
-        { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
-        { title: "Study Materials", url: "/materials", icon: Book },
-        { title: "Counseling Documents", url: "/documents", icon: FileText },
-      ]
-    },
-    {
-      label: "Community & Support",
-      items: [
-        { title: "Supporters Wall", url: "/supporters", icon: Award },
-        { title: "Support Us (Donate)", url: "/donate", icon: Heart },
-        { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
-      ]
-    }
-  ]
 
-  if (!unlocked) {
-    sections[sections.length - 1].items.unshift({
-      title: "Unlock Pro Tier",
-      onClick: onUnlockClick,
-      icon: Crown,
-      isPremiumTrigger: true
-    })
-  }
-
-  return sections
-}
-
-const getComedkSections = (unlocked: boolean, onUnlockClick?: () => void): NavSection[] => {
-  const sections: NavSection[] = [
-    {
-      label: "Overview",
-      items: [
-        { title: "Home", url: "/", icon: Home },
-        { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-        { title: "Discussion Forum", url: "/forum", icon: MessageSquare, isNew: true },
-      ]
-    },
-    {
-      label: "COMEDK Tools",
-      items: [
-        { title: "COMEDK Predictor", url: "/rank-predictor", icon: Calculator, isNew: true },
-        { title: "COMEDK Explorer", url: "/cutoff-explorer", icon: ShieldCheck, isNew: true },
-        { title: "College Compare", url: "/college-compare", icon: GitCompare },
-        { title: "College Directory", url: "/colleges", icon: GraduationCap },
-      ]
-    },
-    {
-      label: "Prep & Practice",
-      items: [
-        { title: "Daily Challenge", url: "/daily-challenge", icon: Flame },
-        { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
-        { title: "Study Materials", url: "/materials", icon: Book },
-      ]
-    },
-    {
-      label: "Community & Support",
-      items: [
-        { title: "Supporters Wall", url: "/supporters", icon: Award },
-        { title: "Support Us (Donate)", url: "/donate", icon: Heart },
-        { title: "Discord Server", url: "https://discord.gg/QZcjtJKjYJ", icon: ExternalLink, external: true },
-      ]
-    }
-  ]
-
-  if (!unlocked) {
-    sections[sections.length - 1].items.unshift({
-      title: "Unlock Pro Tier",
-      onClick: onUnlockClick,
-      icon: Crown,
-      isPremiumTrigger: true
-    })
-  }
-
-  return sections
-}
 
 function SidebarNavItem({
   item,
@@ -365,10 +262,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
-  const sections =
-    examMode === "NEET"
-      ? getNeetSections(unlocked, onUnlockClick)
-      : getKcetSections(unlocked, onUnlockClick)
+  const sections = getKcetSections(unlocked, onUnlockClick)
 
   return (
     <Sidebar

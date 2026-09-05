@@ -287,7 +287,6 @@ const Dashboard = () => {
       title: "Cutoffs & Analytics",
       items: [
         { title: "Cutoff Explorer", desc: "Filter GM, 2A, SC/ST cutoff ranks", icon: BarChart3, href: "/cutoff-explorer", metric: "Official KEA" },
-        { title: "COMEDK Explorer", desc: "Browse GM, HKR, KKR cutoffs", icon: ShieldCheck, href: "/comedk-explorer", metric: "COMEDK UGET" },
         { title: "Cutoff Trends", desc: "Year-over-year rank line charts", icon: TrendingUp, href: "/cutoff-trends", metric: "2022-2025" },
         { title: "Hidden Gems", desc: "High ROI colleges with low cutoffs", icon: Star, href: "/hidden-gems", metric: "Top Value" },
       ]
@@ -325,8 +324,8 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-foreground font-sans animate-scale-in">
       <SEO
-        title={examMode === "COMEDK" ? "COMEDK Dashboard – KCET Coded" : "KCET 2026 Dashboard – KCET Coded"}
-        description="Structured, high-performance counseling dashboard for KCET & COMEDK."
+        title="KCET 2026 Dashboard – KCET Coded"
+        description="Structured, high-performance counseling dashboard for KCET."
         url="https://kcetcoded.dev/dashboard"
       />
 
@@ -404,7 +403,7 @@ const Dashboard = () => {
           {[
             {
               title: "Rank Predictor",
-              desc: "Estimate KCET & COMEDK rank based on your marks.",
+              desc: "Estimate your KCET rank based on your marks.",
               icon: Calculator,
               href: "/rank-predictor"
             },

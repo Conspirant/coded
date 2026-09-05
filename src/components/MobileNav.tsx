@@ -55,7 +55,6 @@ const dockItems: DockItem[] = [
 ]
 
 const moreItems: MoreItem[] = [
-    { icon: Stethoscope, label: "NEET Hub", href: "/neet" },
     { icon: MessageSquare, label: "Forum", href: "/forum" },
     { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
     { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
@@ -254,23 +253,7 @@ function DockIcon({ item }: { item: DockItem }) {
    FLOATING ACTION BUTTON — radial quick actions
    ═══════════════════════════════════════════════════ */
 
-const getFabActions = (examMode: ExamMode | "COMEDK") => {
-    if (examMode === "NEET") {
-        return [
-            { icon: Search, label: "Find College", href: "/neet-predictor", color: "from-rose-500 to-pink-500" },
-            { icon: BarChart3, label: "NEET Cutoffs", href: "/neet-explorer", color: "from-amber-500 to-rose-400" },
-            { icon: Grid3X3, label: "Cutoff Matrix", href: "/neet-matrix", color: "from-blue-500 to-indigo-500" },
-            { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
-        ]
-    }
-    if (examMode === "COMEDK") {
-        return [
-            { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
-            { icon: BarChart3, label: "COMEDK Explorer", href: "/cutoff-explorer", color: "from-amber-500 to-orange-500" },
-            { icon: Calculator, label: "Predict Rank", href: "/rank-predictor", color: "from-purple-500 to-pink-400" },
-            { icon: Bot, label: "TesselBot", href: "/ai-counselor", color: "from-emerald-500 to-teal-400" },
-        ]
-    }
+const getFabActions = () => {
     return [
         { icon: Flame, label: "Daily Quiz", href: "/daily-challenge", color: "from-orange-500 to-red-500" },
         { icon: Search, label: "Find College", href: "/college-predictor", color: "from-blue-500 to-cyan-400" },
@@ -281,9 +264,7 @@ const getFabActions = (examMode: ExamMode | "COMEDK") => {
 
 export function FloatingActionButton() {
     const [open, setOpen] = useState(false)
-    const location = useLocation()
-    const { examMode } = useExamMode()
-    const fabActions = getFabActions(examMode)
+    const fabActions = getFabActions()
 
     // Hide on homepage (it has its own CTA)
     if (location.pathname === "/") return null

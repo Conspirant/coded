@@ -29,9 +29,9 @@ const INITIAL_REVIEWS: SiteReview[] = [
     id: "rev-3",
     rating: 5,
     name: "Karthik M.",
-    rank: "COMEDK Rank 3,600",
-    comment: "COMEDK Explorer with original KEA/COMEDK PDF sources gave me complete confidence. No other site has this level of detail.",
-    usefulTools: ["COMEDK Explorer", "College Predictor"],
+    rank: "KCET Rank 3,600",
+    comment: "Cutoff Explorer with original KEA PDF sources gave me complete confidence. No other site has this level of detail.",
+    usefulTools: ["Cutoff Explorer", "College Predictor"],
     createdAt: "2026-08-04T09:45:00.000Z",
     approved: true
   }

@@ -635,14 +635,14 @@ const RoundPredictor = () => {
                 <div className="lg:col-span-3 space-y-2">
                   <div className="flex items-center gap-2">
                     <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      NEET / PCMB Seat Surrender Multiplier
+                      Medical / PCMB Seat Surrender Multiplier
                     </Label>
                     <Badge variant="secondary" className="bg-violet-500/10 text-violet-400 border border-violet-500/20 text-xs px-1.5 font-mono">
                       {neetMultiplier.toFixed(2)}x
                     </Badge>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Adjusts predictions upwards (more relaxed cutoffs) to account for students surrendering engineering seats for medical (NEET) seats.
+                    Adjusts predictions upwards (more relaxed cutoffs) to account for students surrendering KCET engineering seats for medical admissions.
                   </p>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <Slider

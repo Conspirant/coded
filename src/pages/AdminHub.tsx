@@ -1508,7 +1508,6 @@ const BLOCKABLE_PAGES = [
   { name: "Fee Calculator", path: "/fee-calculator" },
   { name: "Cutoff Explorer", path: "/cutoff-explorer" },
   { name: "Cutoff Predictor", path: "/cutoff-predictor" },
-  { name: "COMEDK Explorer", path: "/comedk-explorer" },
   { name: "Cutoff Trends", path: "/cutoff-trends" },
   { name: "Mock Simulator", path: "/mock-simulator" },
   { name: "Round Tracker", path: "/round-tracker" },

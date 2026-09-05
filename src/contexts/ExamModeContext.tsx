@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
-export type ExamMode = "KCET" | "NEET";
+export type ExamMode = "KCET";
 
 interface ExamModeContextValue {
   examMode: ExamMode;
@@ -8,40 +8,18 @@ interface ExamModeContextValue {
   toggleExamMode: () => void;
 }
 
-const EXAM_MODE_STORAGE_KEY = "kcet.exam-mode.v1";
-
 const ExamModeContext = createContext<ExamModeContextValue | undefined>(undefined);
 
 export function ExamModeProvider({ children }: { children: React.ReactNode }) {
-  const [examMode, setExamModeState] = useState<ExamMode>("KCET");
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(EXAM_MODE_STORAGE_KEY);
-      if (stored === "KCET" || stored === "NEET") {
-        setExamModeState(stored as ExamMode);
-      }
-    } catch {
-      // Ignore storage errors and continue with default mode.
-    }
-  }, []);
-
-  const setExamMode = (mode: ExamMode) => {
-    setExamModeState(mode);
-    try {
-      localStorage.setItem(EXAM_MODE_STORAGE_KEY, mode);
-    } catch {
-      // Ignore storage errors and continue in-memory.
-    }
-  };
+  const [examMode] = useState<ExamMode>("KCET");
 
   const value = useMemo<ExamModeContextValue>(
     () => ({
-      examMode,
-      setExamMode,
-      toggleExamMode: () => setExamMode(examMode === "KCET" ? "NEET" : "KCET"),
+      examMode: "KCET",
+      setExamMode: () => {},
+      toggleExamMode: () => {},
     }),
-    [examMode],
+    [],
   );
 
   return <ExamModeContext.Provider value={value}>{children}</ExamModeContext.Provider>;
@@ -54,4 +32,3 @@ export function useExamMode() {
   }
   return context;
 }
-

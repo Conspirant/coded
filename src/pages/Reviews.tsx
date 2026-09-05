@@ -224,7 +224,7 @@ const Reviews = () => {
               <Sparkles className="h-4 w-4 text-violet-400" /> What Aspirants Say About KCET Coded
             </h2>
             <p className="text-xs text-muted-foreground">
-              Feedback and reviews submitted by KCET & COMEDK candidates.
+              Feedback and reviews submitted by KCET candidates.
             </p>
           </div>
           <Button

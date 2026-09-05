@@ -25,14 +25,9 @@ import {
     Flame,
     Sword,
     Newspaper,
-    ShieldCheck,
     Brain,
     Gamepad2,
-    HeartPulse,
-    ListOrdered,
-    Grid3X3,
 } from "lucide-react"
-import { useExamMode } from "@/contexts/ExamModeContext"
 
 interface CommandItem {
     id: string
@@ -52,12 +47,11 @@ const COMMANDS: CommandItem[] = [
     { id: "dashboard", title: "Dashboard", description: "Overview & stats", icon: LayoutDashboard, href: "/dashboard", keywords: ["dashboard", "overview", "stats"], category: "main" },
     { id: "college-predictor", title: "College Predictor", description: "Predict colleges by rank", icon: Target, href: "/college-predictor", keywords: ["college", "predict", "search", "rank"], category: "main" },
     { id: "cutoff-explorer", title: "Cutoff Explorer", description: "Analyze cutoff trends", icon: BarChart3, href: "/cutoff-explorer", keywords: ["cutoff", "explore", "trends", "analyze"], category: "main" },
-    { id: "comedk-explorer", title: "COMEDK Explorer", description: "Browse COMEDK cutoffs with source PDFs", icon: ShieldCheck, href: "/comedk-explorer", keywords: ["comedk", "cutoff", "explorer", "gm", "kkr", "hkr"], category: "main" },
     { id: "rank-predictor", title: "Rank Predictor", description: "Predict rank from marks", icon: Calculator, href: "/rank-predictor", keywords: ["rank", "predict", "marks", "score"], category: "main" },
     { id: "college-cutoffs", title: "College Cutoffs", description: "View cutoff matrix for all colleges", icon: Building2, href: "/college-cutoffs", keywords: ["college", "cutoffs", "matrix", "browse"], category: "main" },
     { id: "college-directory", title: "College Directory", description: "Browse 232+ KCET colleges with ROI, placements & reviews", icon: Building2, href: "/colleges", keywords: ["college", "directory", "list", "info", "roi", "placement", "reviews", "cet"], category: "main" },
     { id: "cutoff-trends", title: "Cutoff Trends", description: "Year-over-year cutoff rank charts", icon: TrendingUp, href: "/cutoff-trends", keywords: ["trend", "chart", "graph", "year", "history", "cutoff", "compare"], category: "main" },
-    { id: "fee-calculator", title: "Fee Calculator", description: "Calculate KCET & COMEDK tuition, SSP scholarship & 4-year degree cost", icon: Calculator, href: "/fee-calculator", keywords: ["fee", "calculator", "tuition", "cost", "scholarship", "ssp", "epass", "hostel"], category: "tools" },
+    { id: "fee-calculator", title: "Fee Calculator", description: "Calculate KCET tuition, SSP scholarship & 4-year degree cost", icon: Calculator, href: "/fee-calculator", keywords: ["fee", "calculator", "tuition", "cost", "scholarship", "ssp", "epass", "hostel"], category: "tools" },
     { id: "mock-simulator", title: "Mock Simulator", description: "Simulate seat allotment", icon: Shuffle, href: "/mock-simulator", keywords: ["mock", "simulate", "allotment", "seat"], category: "tools" },
     { id: "round-tracker", title: "Round Tracker", description: "Counseling round dates", icon: Bell, href: "/round-tracker", keywords: ["round", "track", "counseling", "dates"], category: "tools" },
     { id: "documents", title: "Documents Guide", description: "Required documents checklist", icon: FileText, href: "/documents", keywords: ["documents", "checklist", "guide"], category: "tools" },
@@ -68,12 +62,8 @@ const COMMANDS: CommandItem[] = [
     { id: "materials", title: "Study Materials", description: "Preparation resources", icon: Book, href: "/materials", keywords: ["materials", "study", "resources", "prep"], category: "tools" },
     { id: "kcet", title: "r/kcet", description: "Open KCET community", icon: ArrowRight, href: "https://www.reddit.com/r/kcet/", keywords: ["kcet", "reddit", "community", "discussion"], category: "tools", external: true },
     { id: "college-compare", title: "College Compare", description: "Compare colleges side by side", icon: GitCompare, href: "/college-compare", keywords: ["compare", "college", "versus", "vs"], category: "tools" },
-    { id: "ai-counselor", title: "TesselBot", description: "KCET & COMEDK counseling intelligence", icon: Bot, href: "/ai-counselor", keywords: ["tesselbot", "tessel", "bot", "ai", "assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
+    { id: "ai-counselor", title: "TesselBot", description: "KCET counseling intelligence", icon: Bot, href: "/ai-counselor", keywords: ["tesselbot", "tessel", "bot", "ai", "assistant", "counselor", "guidance", "help", "ask", "chat"], category: "tools" },
     { id: "dino-game", title: "Chrome Dino Game", description: "Play classic T-Rex runner mini-game", icon: Gamepad2, href: "/dino", keywords: ["dino", "game", "t-rex", "runner", "arcade", "offline", "chromedino", "easter egg"], category: "tools" },
-    { id: "neet-hub", title: "NEET Medical Hub", description: "Karnataka UG-NEET Medical & Dental admissions dashboard", icon: HeartPulse, href: "/neet", keywords: ["neet", "medical", "mbbs", "bds", "kea", "hospital", "doctor"], category: "main" },
-    { id: "neet-predictor", title: "NEET College Predictor", description: "Predict MBBS & BDS colleges by NEET AIR", icon: Target, href: "/neet-predictor", keywords: ["neet", "predictor", "mbbs", "bds", "air", "medical"], category: "tools" },
-    { id: "neet-matrix", title: "NEET Cutoff Matrix", description: "Comprehensive category-wise medical cutoff matrix", icon: Grid3X3, href: "/neet-matrix", keywords: ["neet", "matrix", "grid", "cutoffs", "category"], category: "tools" },
-    { id: "neet-option-builder", title: "NEET Option Entry Builder", description: "Build 3-tier priority sequence for KEA medical choice entry", icon: ListOrdered, href: "/neet-option-builder", keywords: ["neet", "option", "entry", "builder", "priority", "dream", "target"], category: "tools" },
 ]
 
 export function CommandPalette() {
@@ -83,44 +73,8 @@ export function CommandPalette() {
     const navigate = useNavigate()
     const inputRef = useRef<HTMLInputElement>(null)
     const listRef = useRef<HTMLDivElement>(null)
-    const { examMode } = useExamMode()
 
-    const commands = useMemo(() => {
-        return COMMANDS
-            .filter((cmd) => cmd.id !== "comedk-explorer" && cmd.id !== "comedk")
-            .map((cmd) => {
-                if (cmd.id === "cutoff-explorer") {
-                    if (examMode === "NEET") {
-                        return {
-                            ...cmd,
-                            title: "NEET Medical Cutoffs",
-                            description: "Browse Karnataka UG-NEET cutoffs & hospital beds",
-                            keywords: ["neet", "medical", "cutoff", "mbbs", "bds", "gmp", "bmcri"],
-                        }
-                    }
-                    return {
-                        ...cmd,
-                        title: "Cutoff Explorer",
-                        description: "Analyze KCET cutoff trends",
-                        keywords: ["kcet", "cutoff", "explore", "trends", "analyze"],
-                    }
-                }
-
-                if (cmd.id === "rank-predictor") {
-                    if (examMode === "NEET") {
-                        return {
-                            ...cmd,
-                            title: "NEET Marks vs Rank Predictor",
-                            description: "Predict NEET AIR and Karnataka State Rank",
-                            keywords: ["neet", "rank", "score", "air", "mbbs", "predictor"],
-                        }
-                    }
-                    return cmd
-                }
-
-                return cmd
-            })
-    }, [examMode])
+    const commands = useMemo(() => COMMANDS, [])
 
     // Filter commands
     const filtered = query.trim() === ""

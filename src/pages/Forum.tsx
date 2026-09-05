@@ -152,8 +152,8 @@ const Forum: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#07090e] text-white pb-20">
       <SEO
-        title="Student Discussion Forum | KCET & COMEDK Community"
-        description="Ask questions about KCET cutoffs, COMEDK option entry, college comparisons, and document verification with peer students and mentors."
+        title="Student Discussion Forum | KCET Community"
+        description="Ask questions about KCET cutoffs, option entry, college comparisons, and document verification with peer students and mentors."
         url="https://kcetcoded.dev/forum"
       />
 
@@ -167,7 +167,7 @@ const Forum: React.FC = () => {
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
                   <Sparkles className="h-3.5 w-3.5" />
-                  KCET & COMEDK Peer Community
+                  KCET Peer Community
                 </div>
 
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-mono">

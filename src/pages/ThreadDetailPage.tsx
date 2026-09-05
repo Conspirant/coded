@@ -222,7 +222,7 @@ const ThreadDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#07090e] text-white pb-24">
       <SEO
-        title={`${post.title} | KCET & COMEDK Forum`}
+        title={`${post.title} | KCET Forum`}
         description={post.content.slice(0, 160)}
         url={`https://kcetcoded.dev/forum/${post.id}`}
       />

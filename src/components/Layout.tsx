@@ -68,15 +68,7 @@ export function Layout({ children }: LayoutProps) {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
-  // Strict route-based exam mode isolation: NEET routes are NEET, all other routes are KCET
-  useEffect(() => {
-    const isNeet = location.pathname.startsWith('/neet') || location.pathname === '/neetcoded'
-    if (isNeet && examMode !== "NEET") {
-      setExamMode("NEET")
-    } else if (!isNeet && examMode === "NEET") {
-      setExamMode("KCET")
-    }
-  }, [location.pathname, examMode, setExamMode])
+
 
   const handleSettingsUnlock = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -146,7 +138,7 @@ export function Layout({ children }: LayoutProps) {
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground hidden sm:block">
-                  {examMode === "NEET" ? "Karnataka UG-NEET Admissions" : "KCET Counseling Reference"}
+                  KCET Counseling Reference
                 </p>
               </div>
             </div>

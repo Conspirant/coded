@@ -42,22 +42,12 @@ const PAGE_INFO: Record<string, PageDetails> = {
       'Access detailed seat matrix data including total seats and remaining vacant seats per branch/college.'
     ]
   },
-  '/comedk-explorer': {
-    title: 'COMEDK Cutoff Explorer',
-    description: 'Search and analyze COMEDK UGET cutoff ranks from past counseling cycles. This dashboard aggregates final cutoff data for top engineering colleges in Karnataka participating in the COMEDK counseling process.',
-    benefits: [
-      'Access comprehensive historical COMEDK cutoff metrics covering Mock Rounds, Round 1, Round 2 (Phase 1 & Phase 2), and Round 3.',
-      'Target top colleges in Bengaluru and other cities by searching through COMEDK institute codes and course branches.',
-      'Compare opening and closing ranks for general merit and other reservation sub-categories (HKR, KMP, etc.).',
-      'Verify cutoffs against official COMEDK PDF pages to ensure absolute accuracy before filling options.'
-    ]
-  },
   '/college-predictor': {
     title: 'College Predictor & Predictor',
     description: 'A recommendation engine that matches your rank with historical cutoff databases to show which colleges and branches you can realistically get. It sorts options by probability so you can structure your entry form.',
     benefits: [
       'Personalized recommendations sorted into dynamic categories: "Safe" (90%+ chance), "Target" (medium chance), and "Dream" (borderline/stretch target).',
-      'Support for dual exam modes (KCET and COMEDK) adapting filters to your specific category and ranking index.',
+      'Adapts filters to your specific reservation category and ranking index.',
       'Bookmarking utility to save target colleges directly to your personal counseling profile.',
       'Export your tailored college match list directly into an Excel sheet or formatted PDF report.',
       'Detailed overview of tuition fees, college location, and average packages for matched recommendations.'
