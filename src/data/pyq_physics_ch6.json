@@ -1,0 +1,261 @@
+[
+  {
+    "id": "phys_ch6_q1",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "The moment of inertia of a circular ring of radius $r$ and mass $M$ about diameter is",
+    "options": [
+      "$\\frac{2}{5}Mr^2$",
+      "$\\frac{Mr^2}{4}$",
+      "$\\frac{Mr^2}{2}$",
+      "$\\frac{Mr^2}{12}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Moment of inertia of a circular ring of radius $r$ and mass $M$ about its diameter is $I = \\frac{Mr^2}{2}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q2",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "A door 1.6 m wide requires a force of 1 N to be applied at the free end to open or close it. The force that is required at a point 0.4 m distant from the hinges for opening or closing the door is",
+    "options": [
+      "1.2 N",
+      "3.6 N",
+      "2.4 N",
+      "4 N"
+    ],
+    "correct_answer": 3,
+    "explanation": "Torque required to open or close the door remains constant:\n$\\tau = F_1 \\times d_1 = 1.6 \\times 1 = 1.6\\text{ N m}$\n\nWhen force is applied at distance $d_2 = 0.4\\text{ m}$ from the hinges:\n$F_2 = \\frac{\\tau}{d_2} = \\frac{1.6}{0.4} = 4\\text{ N}$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q3",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "A force $\\vec{F} = 5\\hat{i} + 2\\hat{j} - 5\\hat{k}$ acts on a particle whose position vector is $\\vec{r} = \\hat{i} - 2\\hat{j} + \\hat{k}$. What is the torque about the origin ?",
+    "options": [
+      "$8\\hat{i} - 10\\hat{j} - 8\\hat{k}$",
+      "$8\\hat{i} + 10\\hat{j} + 12\\hat{k}$",
+      "$10\\hat{i} - 10\\hat{j} - \\hat{k}$",
+      "$8\\hat{i} + 10\\hat{j} - 12\\hat{k}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Here, $\\vec{r} = \\hat{i} - 2\\hat{j} + \\hat{k}$ and $\\vec{F} = 5\\hat{i} + 2\\hat{j} - 5\\hat{k}$.\n\nTorque, $\\vec{\\tau} = \\vec{r} \\times \\vec{F} = \\begin{vmatrix} \\hat{i} & \\hat{j} & \\hat{k} \\\\ 1 & -2 & 1 \\\\ 5 & 2 & -5 \\end{vmatrix}$\n$= \\hat{i}(10 - 2) - \\hat{j}(-5 - 5) + \\hat{k}(2 - (-10))$\n$= 8\\hat{i} + 10\\hat{j} + 12\\hat{k}$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q4",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "A rotating wheel changes angular speed from 1800 rpm to 3000 rpm in 20 s. What is the angular acceleration assuming to be uniform ?",
+    "options": [
+      "$2\\pi\\text{ rad s}^{-2}$",
+      "$60\\pi\\text{ rad s}^{-2}$",
+      "$40\\pi\\text{ rad s}^{-2}$",
+      "$90\\pi\\text{ rad s}^{-2}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Here,\nInitial angular speed of the wheel, $\\omega_0 = 1800 \\times \\frac{2\\pi}{60} = 60\\pi\\text{ rad s}^{-1}$\nFinal angular speed of the wheel, $\\omega = 3000 \\times \\frac{2\\pi}{60} = 100\\pi\\text{ rad s}^{-1}$\nTime $t = 20\\text{ s}$\n\nAngular acceleration $\\alpha = \\frac{\\omega - \\omega_0}{t} = \\frac{100\\pi - 60\\pi}{20} = \\frac{40\\pi}{20} = 2\\pi\\text{ rad s}^{-2}$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q5",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "A body having a moment of inertia about its axis of rotation equal to $3\\text{ kg m}^2$ is rotating with angular velocity of $3\\text{ rad s}^{-1}$. Kinetic energy of this rotating body is same as that of a body of mass $27\\text{ kg}$ moving with velocity $v$. The value of $v$ is",
+    "options": [
+      "$2\\text{ m s}^{-1}$",
+      "$1\\text{ m s}^{-1}$",
+      "$1.5\\text{ m s}^{-1}$",
+      "$0.5\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Rotational kinetic energy $K_R = \\frac{1}{2}I\\omega^2$\nTranslational kinetic energy $K_T = \\frac{1}{2}mv^2$\n\nGiven $K_R = K_T$:\n$\\frac{1}{2}I\\omega^2 = \\frac{1}{2}mv^2$\n$\\frac{1}{2} \\times 3 \\times 3^2 = \\frac{1}{2} \\times 27 \\times v^2$\n$27 = 27v^2 \\implies v^2 = 1 \\implies v = 1\\text{ m s}^{-1}$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q6",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2015,
+    "question": "Moment of inertia of a thin uniform rod rotating about the perpendicular axis passing through its centre is $I$. If the same rod is bent into a ring and its moment of inertia about its diameter is $I'$, then the ratio $\\frac{I}{I'}$ is",
+    "options": [
+      "$\\frac{8}{3}\\pi^2$",
+      "$\\frac{5}{3}\\pi^2$",
+      "$\\frac{3}{2}\\pi^2$",
+      "$\\frac{2}{3}\\pi^2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Let $M$ be the mass of the rod and $L$ be its length. Then, $I = \\frac{1}{12}ML^2$.\n\nWhen the same rod is bent into a ring of radius $R$, then $2\\pi R = L \\implies R = \\frac{L}{2\\pi}$.\nIts moment of inertia about its diameter is:\n$I' = \\frac{1}{2}MR^2 = \\frac{1}{2}M\\left(\\frac{L}{2\\pi}\\right)^2 = \\frac{1}{8\\pi^2}ML^2$\n\n$\\therefore \\frac{I}{I'} = \\frac{\\frac{1}{12}ML^2}{\\frac{1}{8\\pi^2}ML^2} = \\frac{8\\pi^2}{12} = \\frac{2}{3}\\pi^2$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q7",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2016,
+    "question": "Which of the points is likely position of the centre of mass of the system shown in the figure ?",
+    "options": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "correct_answer": 1,
+    "explanation": "The centre of mass of the system lies at point $D$ because the half portion containing sand has a much higher density and mass than the portion containing air. The centre of mass is always shifted towards the heavier region.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch6/q7.png"
+  },
+  {
+    "id": "phys_ch6_q8",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2017,
+    "question": "Two balls are thrown simultaneously in air. The acceleration of the centre of mass of the two balls when in air,",
+    "options": [
+      "is equal to g (Acceleration due to gravity)",
+      "depends on the masses of the two balls",
+      "depends on the direction of motion of the two balls.",
+      "depends on the speeds of the two balls."
+    ],
+    "correct_answer": 0,
+    "explanation": "When two balls are thrown simultaneously in air, they follow parabolic paths and the only external force acting on the two-body system is gravity:\n$F_{\\text{ext}} = m_1 g + m_2 g = (m_1 + m_2)g$\n\nAcceleration of the centre of mass is:\n$a_{\\text{cm}} = \\frac{F_{\\text{ext}}}{m_1 + m_2} = \\frac{(m_1 + m_2)g}{m_1 + m_2} = g$\n\nHence, the acceleration of the centre of mass is equal to $g$ downward, independent of their masses, speeds, or directions of projection.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q9",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2019,
+    "question": "Two particles which are initially at rest move towards each other under the action of their mutual attraction. If their speeds are $v$ and $2v$ at any instant, then the speed of center of mass of the system is",
+    "options": [
+      "$1.5v$",
+      "$2v$",
+      "$v$",
+      "zero"
+    ],
+    "correct_answer": 3,
+    "explanation": "Since the particles were initially at rest ($v_{\\text{cm}} = 0$) and the attraction between them is a purely internal mutual force, no external force acts on the system ($F_{\\text{ext}} = 0$).\n\nTherefore, the acceleration of the centre of mass is zero ($a_{\\text{cm}} = 0$), and its velocity remains constant at zero.\nHence, the speed of the centre of mass of the system is zero.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q10",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2019,
+    "question": "A particle is moving uniformly along a straight line as shown in the figure. During the motion of the particle from $A$ to $B$, the angular momentum of the particle about '$O$'",
+    "options": [
+      "remains constant",
+      "increases",
+      "first increases then decreases",
+      "decreases."
+    ],
+    "correct_answer": 0,
+    "explanation": "Angular momentum about origin $O$ is given by $L = |\\vec{r} \\times \\vec{p}| = m v r_{\\perp}$, where $r_{\\perp}$ is the perpendicular distance from the origin $O$ to the line of motion.\n\nSince the particle moves uniformly along a fixed straight line, both the momentum $p = mv$ and the perpendicular distance $r_{\\perp}$ (the length of the perpendicular from $O$ to the line $AB$) remain strictly constant throughout the motion.\nTherefore, the angular momentum of the particle about $O$ remains constant.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch6/q10.png"
+  },
+  {
+    "id": "phys_ch6_q11",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2022,
+    "question": "The angular speed of a motor wheel is increased from 1200 rpm to 3120 rpm in 16 seconds. The angular acceleration of the motor wheel is",
+    "options": [
+      "$6\\pi\\text{ rad/s}^2$",
+      "$2\\pi\\text{ rad/s}^2$",
+      "$8\\pi\\text{ rad/s}^2$",
+      "$4\\pi\\text{ rad/s}^2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Initial angular speed:\n$\\omega_0 = \\frac{2\\pi \\times 1200}{60} = 40\\pi\\text{ rad s}^{-1}$\n\nFinal angular speed:\n$\\omega = \\frac{2\\pi \\times 3120}{60} = 104\\pi\\text{ rad s}^{-1}$\n\nAngular acceleration:\n$\\alpha = \\frac{\\omega - \\omega_0}{t} = \\frac{104\\pi - 40\\pi}{16} = \\frac{64\\pi}{16} = 4\\pi\\text{ rad s}^{-2}$",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q12",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2022,
+    "question": "The centre of mass of an extended body on the surface of the earth and its centre of gravity",
+    "options": [
+      "can never be at the same point",
+      "are always at the same point for any size of the body",
+      "centre of mass coincides with the centre of gravity of a body if the size of the body is negligible as compared to the size (or radius) of the earth",
+      "are always at the same point only for spherical bodies."
+    ],
+    "correct_answer": 2,
+    "explanation": "An object is said to be small if its vertical height is very small compared to the radius of the Earth, so the gravitational field $\\vec{g}$ is effectively uniform throughout the body. In a uniform gravitational field, the centre of gravity coincides exactly with the centre of mass.\nIf the vertical height cannot be neglected as compared to the radius of the earth (extended objects), the variation of $g$ causes the centre of gravity and centre of mass to differ.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q13",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2023,
+    "question": "The moment of inertia of a rigid body about an axis",
+    "options": [
+      "does not depend on its mass",
+      "does not depend on its shape",
+      "depends on the position of axis of rotation",
+      "does not depend on its size"
+    ],
+    "correct_answer": 2,
+    "explanation": "Moment of inertia of a body depends on:\n1. Mass of the body\n2. Distribution of mass in the body (shape and size)\n3. Position and orientation of the axis of rotation of the body\n4. Distance of the mass elements of the body from the axis of rotation.\n\nTherefore, it depends on the position of the axis of rotation.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch6_q14",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2024,
+    "question": "A ceiling fan is rotating around a fixed axle as shown. The direction of angular velocity is along ______.",
+    "options": [
+      "$+\\hat{j}$",
+      "$-\\hat{j}$",
+      "$+\\hat{k}$",
+      "$-\\hat{k}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "As the fan is rotating clockwise when viewed along the $+Z$ axis, by the right-hand thumb rule, the direction of angular velocity vector $\\vec{\\omega}$ points along $-\\hat{k}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch6/q14.png"
+  },
+  {
+    "id": "phys_ch6_q15",
+    "subject": "Physics",
+    "chapter": "System of Particles and Rotational Motion",
+    "chapter_number": 6,
+    "year": 2024,
+    "question": "A body of mass 1 kg is suspended by a weightless string which passes over a frictionless pulley of mass 2 kg as shown in the figure. The mass is released from a height of 1.6 m from the ground. With what velocity does it strike the ground?",
+    "options": [
+      "$16\\text{ m s}^{-1}$",
+      "$8\\text{ m s}^{-1}$",
+      "$4\\sqrt{2}\\text{ m s}^{-1}$",
+      "$4\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Given that $m = 1\\text{ kg}$, pulley mass $M = 2\\text{ kg}$, and $h = 1.6\\text{ m}$.\nLet the velocity of the block on reaching the ground be $v$.\n\nBy conservation of energy:\n$mgh = \\frac{1}{2}mv^2 + \\frac{1}{2}I\\omega^2$\n\nFor the cylindrical pulley disc, $I = \\frac{1}{2}MR^2$, and since the string does not slip, $\\omega = \\frac{v}{R}$:\n$mgh = \\frac{1}{2}mv^2 + \\frac{1}{2}\\left(\\frac{1}{2}MR^2\\right)\\frac{v^2}{R^2} = \\frac{1}{2}mv^2 + \\frac{1}{4}Mv^2$\n\nSubstituting values:\n$1 \\times 10 \\times 1.6 = \\frac{1}{2}(1)v^2 + \\frac{1}{4}(2)v^2$\n$16 = \\frac{1}{2}v^2 + \\frac{1}{2}v^2 = v^2$\n$\\implies v^2 = 16 \\implies v = 4\\text{ m/s}$",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch6/q15.png"
+  }
+]

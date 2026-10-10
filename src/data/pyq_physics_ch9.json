@@ -1,0 +1,394 @@
+[
+  {
+    "id": "phys_ch9_q1",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2007,
+    "question": "A vessel filled with water takes 10 minutes to be emptied through an orifice at its bottom. How much time will it take to be emptied if the vessel is filled with water to half of its initial height?",
+    "options": [
+      "5 minutes",
+      "7 minutes",
+      "2.5 minutes",
+      "3 minutes"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let $A$ be the cross-sectional area of the vessel and $a$ be the area of the orifice. By Torricelli's law of efflux:\n$-A \\frac{dh}{dt} = a \\sqrt{2gh} \\implies dt = -\\frac{A}{a \\sqrt{2g}} h^{-1/2} dh$.\n\nIntegrating from initial height $H$ to $0$:\n$t = \\frac{2A}{a \\sqrt{2g}} \\sqrt{H} \\implies t \\propto \\sqrt{H}$.\n\nWhen the vessel is filled to half height ($H' = H/2$):\n$\\frac{t'}{t} = \\sqrt{\\frac{H'}{H}} = \\sqrt{\\frac{1}{2}} = \\frac{1}{\\sqrt{2}}$.\n$t' = \\frac{10}{\\sqrt{2}} = 5\\sqrt{2} \\approx 5 \\times 1.414 = 7.07\\text{ minutes} \\approx 7\\text{ minutes}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q2",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2008,
+    "question": "If there were no gravity, which of the following will not be present?",
+    "options": [
+      "Viscous force",
+      "Surface tension",
+      "Atmospheric pressure",
+      "Archimedes' upward thrust"
+    ],
+    "correct_answer": 3,
+    "explanation": "Archimedes' principle states that the upward buoyant force is equal to the weight of the displaced liquid:\n$F_B = V \\rho g$.\nIf gravity is absent ($g = 0$), the weight of the displaced liquid is zero, and therefore Archimedes' upward thrust ceases to exist.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q3",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2009,
+    "question": "Water rises in plant fibres due to",
+    "options": [
+      "Capillarity",
+      "Osmosis",
+      "Viscosity",
+      "Surface tension only"
+    ],
+    "correct_answer": 0,
+    "explanation": "Water rises through the narrow xylem vessels and porous plant fibres due to capillary action (capillarity), driven by adhesive forces between water molecules and plant cell walls along with the cohesive forces and surface tension of water.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q4",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2011,
+    "question": "The cylindrical tube of a spray pump has a radius of $0.5\\text{ cm}$, one end of which has 40 fine holes, each of area $40 \\times 10^{-8}\\text{ m}^2$. If the liquid inside the tube flows at $0.15\\text{ m min}^{-1}$, the speed of ejection of liquid through the holes is",
+    "options": [
+      "$2.5\\text{ m s}^{-1}$",
+      "$5\\text{ m s}^{-1}$",
+      "$0.5\\text{ m s}^{-1}$",
+      "$1\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "By the equation of continuity:\n$A_1 v_1 = n a_2 v_2$\nwhere:\n- $A_1 = \\pi r^2 = \\pi (0.5 \\times 10^{-2})^2 = 0.25\\pi \\times 10^{-4} \\approx 8 \\times 10^{-5}\\text{ m}^2$\n- $v_1 = \\frac{0.15\\text{ m}}{60\\text{ s}} = 2.5 \\times 10^{-3}\\text{ m s}^{-1}$\n- Total area of holes $= 40 \\times (40 \\times 10^{-8}) = 1.6 \\times 10^{-5}\\text{ m}^2$\n\n$v_2 = \\frac{A_1 v_1}{n a_2} = \\frac{(8 \\times 10^{-4} \\times 0.15)}{40 \\times 10^{-8} \\times 60} = 5\\text{ m s}^{-1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q5",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2012,
+    "question": "A body weighs $50\\text{ grams}$ in air and $40\\text{ grams}$ in water. How much will it weigh in a liquid of specific gravity $1.5$?",
+    "options": [
+      "$45\\text{ grams}$",
+      "$30\\text{ grams}$",
+      "$40\\text{ grams}$",
+      "$35\\text{ grams}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "- Weight in air $= W = 50\\text{ g} \\implies V \\rho = 50$\n- Loss of weight in water $= 50 - 40 = 10\\text{ g} = V \\rho_w = V (1) \\implies V = 10\\text{ cm}^3$\n- Density of body $\\rho = \\frac{50}{10} = 5\\text{ g cm}^{-3}$\n- Loss of weight in liquid of specific gravity $1.5$ is:\n  $\\text{Loss} = V \\rho_L = 10 \\times 1.5 = 15\\text{ g}$\n- Apparent weight in liquid $= W - V \\rho_L = 50 - 15 = 35\\text{ grams}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q6",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2013,
+    "question": "Two solid pieces, one of steel and the other of plastic, have the same weight in air. When completely submerged in water, which will weigh more?",
+    "options": [
+      "Plastic",
+      "Both will weigh the same",
+      "Cannot be predicted",
+      "Steel"
+    ],
+    "correct_answer": 3,
+    "explanation": "Weight in water is apparent weight: $W_{\\text{app}} = W_{\\text{air}} - F_B = W_{\\text{air}} - V \\rho_w g$.\nSince both pieces have the same weight in air ($m_{\\text{steel}} = m_{\\text{plastic}}$) and the density of steel is much greater than that of plastic ($\\rho_{\\text{steel}} > \\rho_{\\text{plastic}}$):\n$V = \\frac{m}{\\rho} \\implies V_{\\text{steel}} < V_{\\text{plastic}}$.\nTherefore, plastic experiences a greater upward buoyant force, resulting in a larger loss in weight.\nHence, the steel piece will weigh more in water.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q7",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2014,
+    "question": "A horizontal tube of non-uniform cross-section has fluid flowing through it. If the rate of flow of fluid is $Q$, then according to the equation of continuity",
+    "options": [
+      "$Q$ varies inversely with velocity",
+      "$Q$ varies directly with cross-sectional area",
+      "$Q$ is maximum at narrow regions",
+      "$Q$ is the same at every point in the tube"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the principle of continuity, for the steady, streamline flow of an incompressible fluid through a pipe of non-uniform cross-section, the volume flow rate $Q = A v = \\text{constant}$.\nHence, the rate of flow of fluid is identical at every point in the tube.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q8",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2015,
+    "question": "The angle of contact between pure water and clean glass is",
+    "options": [
+      "$90^\\circ$",
+      "$135^\\circ$",
+      "$0^\\circ$",
+      "$45^\\circ$"
+    ],
+    "correct_answer": 2,
+    "explanation": "For pure water and clean glass, the adhesive forces between water and glass molecules are much stronger than the cohesive forces between water molecules. The water completely wets the glass surface, resulting in an acute angle of contact that is practically equal to $0^\\circ$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q9",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2016,
+    "question": "A spherical ball of radius $r$ falls through a viscous liquid of viscosity $\\eta$ with terminal velocity $v$. The viscous drag force acting on the ball is proportional to",
+    "options": [
+      "$r^2$",
+      "$v^2$",
+      "$r^{-1}$",
+      "$r v$"
+    ],
+    "correct_answer": 3,
+    "explanation": "By Stokes' law, the viscous drag force acting on a spherical body of radius $r$ moving with velocity $v$ through a fluid of viscosity $\\eta$ is:\n$F = 6\\pi \\eta r v$.\nTherefore, the viscous force is directly proportional to both radius $r$ and velocity $v$, i.e., $F \\propto r v$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q10",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2017,
+    "question": "Eight equal drops of water are falling through air with a steady terminal velocity of $10\\text{ cm s}^{-1}$. If they combine to form a single larger drop, the terminal velocity of the combined drop is",
+    "options": [
+      "$40\\text{ cm s}^{-1}$",
+      "$20\\text{ cm s}^{-1}$",
+      "$80\\text{ cm s}^{-1}$",
+      "$10\\text{ cm s}^{-1}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "When 8 small drops of radius $r$ coalesce to form a single drop of radius $R$:\n$\\frac{4}{3}\\pi R^3 = 8 \\times \\left(\\frac{4}{3}\\pi r^3\\right) \\implies R = 8^{1/3} r = 2r$.\n\nTerminal velocity of a spherical drop is given by:\n$v = \\frac{2 r^2 (\\rho - \\sigma) g}{9 \\eta} \\propto r^2$.\n\nTherefore:\n$\\frac{v'}{v} = \\left(\\frac{R}{r}\\right)^2 = 2^2 = 4$\n$v' = 4 v = 4 \\times 10 = 40\\text{ cm s}^{-1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q11",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2018,
+    "question": "The excess pressure inside a soap bubble of radius $R$ and surface tension $T$ is",
+    "options": [
+      "$\\frac{T}{R}$",
+      "$\\frac{2T}{R}$",
+      "$\\frac{4T}{R}$",
+      "$\\frac{T}{2R}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "A soap bubble has two free surfaces in contact with air (an inner surface and an outer surface).\nExcess pressure inside each spherical liquid surface is $\\frac{2T}{R}$.\nFor two surfaces, the total excess pressure is:\n$\\Delta P = 2 \\times \\left(\\frac{2T}{R}\\right) = \\frac{4T}{R}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q12",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2018,
+    "question": "Spheres of iron and lead having the same mass are suspended in a liquid. Since lead is denser than iron, the buoyant force experienced by",
+    "options": [
+      "lead is greater than iron",
+      "both is equal",
+      "lead is zero",
+      "iron is greater than lead"
+    ],
+    "correct_answer": 3,
+    "explanation": "Buoyant force is given by $F_B = V \\rho_{\\text{liquid}} g$.\nSince both spheres have the same mass ($m$) and density $\\rho = m/V$:\n$V = \\frac{m}{\\rho}$.\nGiven that density of lead is greater than that of iron ($\\rho_{\\text{lead}} > \\rho_{\\text{iron}}$):\n$V_{\\text{iron}} > V_{\\text{lead}}$.\nBecause iron has a larger volume, it displaces more liquid and experiences a greater upward buoyant force than lead.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q13",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2019,
+    "question": "Two solids $P$ and $Q$ float in water. It is observed that $P$ floats with half of its volume immersed, and $Q$ floats with $\\frac{2}{3}$ of its volume immersed. The ratio of densities of $P$ and $Q$ is",
+    "options": [
+      "$2 : 3$",
+      "$3 : 4$",
+      "$4 : 3$",
+      "$1 : 3$"
+    ],
+    "correct_answer": 1,
+    "explanation": "By the law of floatation, the fraction of volume of a floating body immersed in a liquid is equal to the ratio of density of the body to that of the liquid:\n$\\frac{V_{\\text{in}}}{V} = \\frac{\\rho_{\\text{body}}}{\\rho_w}$\n- For solid $P$: $\\frac{\\rho_P}{\\rho_w} = \\frac{1}{2}$\n- For solid $Q$: $\\frac{\\rho_Q}{\\rho_w} = \\frac{2}{3}$\n\nTherefore, the ratio of densities is:\n$\\frac{\\rho_P}{\\rho_Q} = \\frac{1/2}{2/3} = \\frac{3}{4} = 3 : 4$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q14",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2019,
+    "question": "A flow of liquid is streamline if the Reynolds number $R_e$ is",
+    "options": [
+      "greater than 2000",
+      "less than 1000",
+      "between 1000 and 2000",
+      "greater than 3000"
+    ],
+    "correct_answer": 1,
+    "explanation": "Reynolds number $R_e$ determines the nature of fluid flow:\n- If $R_e < 1000$ (or $< 2000$), the flow is steady, laminar (streamline).\n- If $R_e > 2000$, the flow transitions into turbulence; above 3000 it is completely turbulent.\nHence, the flow is streamline when $R_e < 1000$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q15",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2020,
+    "question": "An ideal fluid flows through a pipe of circular cross-section with variable diameter as shown in the figure. If the ratio of diameters at sections $A$ and $B$ is $d_A : d_B = 2 : 1$, then the ratio of velocities of fluid at $A$ and $B$ is",
+    "options": [
+      "$1 : 4$",
+      "$4 : 1$",
+      "$1 : 2$",
+      "$2 : 1$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the equation of continuity for an incompressible fluid:\n$A_A v_A = A_B v_B \\implies \\frac{v_A}{v_B} = \\frac{A_B}{A_A}$\nSince the cross-section is circular, $A = \\frac{\\pi d^2}{4}$:\n$\\frac{v_A}{v_B} = \\left(\\frac{d_B}{d_A}\\right)^2 = \\left(\\frac{1}{2}\\right)^2 = \\frac{1}{4} = 1 : 4$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch9/q15.png"
+  },
+  {
+    "id": "phys_ch9_q16",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2020,
+    "question": "Hydraulic lift works on the basis of",
+    "options": [
+      "Bernoulli's theorem",
+      "Torricelli's law",
+      "Archimedes' principle",
+      "Pascal's law"
+    ],
+    "correct_answer": 3,
+    "explanation": "A hydraulic lift operates on Pascal's law, which states that pressure applied to an enclosed fluid is transmitted undiminished to every portion of the fluid and to the walls of the containing vessel, allowing a small force on a small piston to balance a large load on a larger piston ($F_2 = F_1 \\frac{A_2}{A_1}$).",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q17",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2021,
+    "question": "The hydrostatic pressure at the bottom of a liquid tank is independent of",
+    "options": [
+      "acceleration due to gravity",
+      "depth of the liquid",
+      "density of the liquid",
+      "area of cross-section of the base of the tank"
+    ],
+    "correct_answer": 3,
+    "explanation": "The gauge hydrostatic pressure at depth $h$ below the surface of a liquid of density $\\rho$ is:\n$P = \\rho g h$.\nThis pressure depends solely on depth $h$, liquid density $\\rho$, and acceleration due to gravity $g$. It is completely independent of the cross-sectional area or shape of the base of the tank (hydrostatic paradox).",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q18",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2021,
+    "question": "A cylindrical container containing water has a small hole near its bottom at depth $h$ below the water level. If the cross-sectional area of the container is very large compared to the area of the hole, the velocity of efflux is",
+    "options": [
+      "$\\sqrt{gh}$",
+      "$\\sqrt{2gh}$",
+      "$2\\sqrt{gh}$",
+      "$gh$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Applying Torricelli's theorem (or Bernoulli's equation at the surface and at the orifice):\n$P_0 + \\rho g h + \\frac{1}{2}\\rho v_1^2 = P_0 + \\frac{1}{2}\\rho v^2$.\nSince area $A \\gg a$, surface velocity $v_1 \\approx 0$, which gives:\n$\\frac{1}{2}\\rho v^2 = \\rho g h \\implies v = \\sqrt{2gh}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q19",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2022,
+    "question": "An aluminium sphere is dipped into water. The buoyant force experienced by the sphere in cold water is $F_1$ and in hot water is $F_2$. Which of the following is correct?",
+    "options": [
+      "$F_1 < F_2$",
+      "$F_1 > F_2$",
+      "$F_1 = F_2$",
+      "$F_1 = 0$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Buoyant force is given by $F_B = V \\rho_w g$.\nAs the temperature of water increases, water expands and its density decreases ($\\rho_{\\text{cold}} > \\rho_{\\text{hot}}$).\nThermal expansion of the solid aluminum sphere is negligible compared to the decrease in water density.\nTherefore, the buoyant force is greater in cold water than in hot water, so $F_1 > F_2$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q20",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2022,
+    "question": "An iceberg floats in water with part of it submerged. If the density of ice is $0.9\\text{ g cm}^{-3}$ and that of sea water is $1.0\\text{ g cm}^{-3}$, the fraction of total volume of the iceberg submerged in water is",
+    "options": [
+      "$\\frac{1}{10}$",
+      "$\\frac{1}{9}$",
+      "$\\frac{9}{10}$",
+      "$\\frac{4}{5}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "By the principle of floatation, weight of iceberg equals the weight of displaced water:\n$V \\rho_{\\text{ice}} g = V_{\\text{in}} \\rho_{\\text{water}} g$\n$\\frac{V_{\\text{in}}}{V} = \\frac{\\rho_{\\text{ice}}}{\\rho_{\\text{water}}} = \\frac{0.9}{1.0} = \\frac{9}{10}$.\nTherefore, $9/10$ of the total volume is submerged under water.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q21",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2023,
+    "question": "Two capillary tubes $P$ and $Q$ of radii $r_1$ and $r_2$ are dipped vertically in water. If the ratio of their diameters is $d_1 : d_2 = 2 : 3$, the ratio of the heights to which water rises in tubes $P$ and $Q$ is",
+    "options": [
+      "$2 : 3$",
+      "$3 : 2$",
+      "$4 : 9$",
+      "$9 : 4$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Capillary rise formula is:\n$h = \\frac{2T \\cos\\theta}{r \\rho g} \\implies h \\propto \\frac{1}{r} \\propto \\frac{1}{d}$.\n\nTherefore:\n$\\frac{h_P}{h_Q} = \\frac{d_Q}{d_P} = \\frac{3}{2} = 3 : 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q22",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2023,
+    "question": "A closed water tank has cross-sectional area $A$. A small hole of area $a$ is opened at height $h$ below the water surface. If the air pressure inside the tank above the water surface is $P$ and atmospheric pressure is $P_0$, the speed of efflux of water from the hole is",
+    "options": [
+      "$\\sqrt{2gh}$",
+      "$\\sqrt{2gh + \\frac{2(P - P_0)}{\\rho}}$",
+      "$\\sqrt{2gh + \\frac{P - P_0}{\\rho}}$",
+      "$\\sqrt{\\frac{2(P - P_0)}{\\rho}}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Applying Bernoulli's principle between the water surface (1) and the orifice (2):\n$P + \\rho g h + \\frac{1}{2}\\rho v_1^2 = P_0 + \\frac{1}{2}\\rho v^2$.\nAssuming $A \\gg a$, $v_1 \\approx 0$:\n$\\frac{1}{2}\\rho v^2 = (P - P_0) + \\rho g h$\n$v^2 = 2gh + \\frac{2(P - P_0)}{\\rho} \\implies v = \\sqrt{2gh + \\frac{2(P - P_0)}{\\rho}}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch9_q23",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Fluids",
+    "chapter_number": 9,
+    "year": 2024,
+    "question": "The rate of flow of a liquid through a pipe of radius $10\\text{ cm}$ is $0.314\\text{ m}^3\\text{ s}^{-1}$. The velocity of flow of the liquid is",
+    "options": [
+      "$0.1\\text{ m s}^{-1}$",
+      "$1\\text{ m s}^{-1}$",
+      "$10\\text{ m s}^{-1}$",
+      "$100\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Cross-sectional area of the pipe is:\n$A = \\pi r^2 = \\pi (0.1\\text{ m})^2 = 0.01\\pi = 0.01 \\times 3.1416 \\approx 0.0314\\text{ m}^2$.\n\nRate of flow $Q = A v$:\n$v = \\frac{Q}{A} = \\frac{0.314\\text{ m}^3\\text{ s}^{-1}}{0.0314\\text{ m}^2} = 10\\text{ m s}^{-1}$.",
+    "needs_image": false
+  }
+]

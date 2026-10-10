@@ -1,0 +1,173 @@
+[
+  {
+    "id": "phys_ch8_q1",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2011,
+    "question": "The following four wires of length $L$ and radius $r$ are made of the same material. Which of these will have the largest extension, when the same tension is applied?",
+    "options": [
+      "$L = 100\\text{ cm}, r = 0.2\\text{ mm}$",
+      "$L = 200\\text{ cm}, r = 0.4\\text{ mm}$",
+      "$L = 300\\text{ cm}, r = 0.6\\text{ mm}$",
+      "$L = 400\\text{ cm}, r = 0.8\\text{ mm}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Young's modulus is given by:\n$Y = \\frac{F/A}{\\Delta L/L} = \\frac{F L}{\\pi r^2 \\Delta L} \\implies \\Delta L = \\frac{F}{\\pi Y} \\left(\\frac{L}{r^2}\\right)$\nSince all wires are made of the same material and subjected to the same tension $F$, $\\Delta L \\propto \\frac{L}{r^2}$.\n\nComparing $\\frac{L}{r^2}$ for each option:\n- (a) $\\frac{100}{(0.2)^2} = \\frac{100}{0.04} = 2500$\n- (b) $\\frac{200}{(0.4)^2} = \\frac{200}{0.16} = 1250$\n- (c) $\\frac{300}{(0.6)^2} = \\frac{300}{0.36} = 833.3$\n- (d) $\\frac{400}{(0.8)^2} = \\frac{400}{0.64} = 625$\n\nHence, wire (a) will have the largest extension.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q2",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2015,
+    "question": "The ratio of hydraulic stress to the corresponding strain is known as",
+    "options": [
+      "Bulk modulus",
+      "Rigidity modulus",
+      "Compressibility",
+      "Young's modulus"
+    ],
+    "correct_answer": 0,
+    "explanation": "Bulk modulus ($B$) is defined as the ratio of hydraulic stress (or volume stress, $\\Delta P$) to the corresponding volume strain ($-\\frac{\\Delta V}{V}$):\n$B = -\\frac{\\Delta P}{\\Delta V / V}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q3",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2016,
+    "question": "A spring is stretched by applying a load to its free end. The strain produced in the spring is",
+    "options": [
+      "Volumetric",
+      "Shear",
+      "Longitudinal and Shear",
+      "Longitudinal"
+    ],
+    "correct_answer": 2,
+    "explanation": "When a helical spring is stretched by hanging a load at its free end:\n1. The length of the spring wire undergoes elongation, producing longitudinal strain.\n2. The wire itself is twisted, changing its shape without changing volume, which produces shear strain.\nTherefore, the strain produced in the spring is both longitudinal and shear strain.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q4",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2017,
+    "question": "Young's modulus is defined as the ratio of",
+    "options": [
+      "bulk stress and longitudinal strain",
+      "hydraulic stress and hydraulic strain",
+      "shearing stress and shearing strain",
+      "tensile stress and longitudinal strain"
+    ],
+    "correct_answer": 3,
+    "explanation": "Young's modulus ($Y$) is an elastic constant defined within the proportional limit as the ratio of tensile (or compressive) stress to the corresponding longitudinal strain:\n$Y = \\frac{\\text{Tensile Stress}}{\\text{Longitudinal Strain}} = \\frac{F/A}{\\Delta L/L}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q5",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2018,
+    "question": "Two wires $A$ and $B$ are stretched by the same load. If the area of cross-section of wire $A$ is double that of $B$, then the stress on $B$ is",
+    "options": [
+      "equal to that on $A$",
+      "twice that on $A$",
+      "half that on $A$",
+      "four times that on $A$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Stress is defined as force per unit area: $\\text{Stress} = \\frac{F}{A}$.\nGiven that both wires are stretched by the same load $F$ and $A_A = 2 A_B$:\n$\\text{Stress}_A = \\frac{F}{A_A} = \\frac{F}{2 A_B}$\n$\\text{Stress}_B = \\frac{F}{A_B} = 2 \\left(\\frac{F}{2 A_B}\\right) = 2 \\times \\text{Stress}_A$.\nTherefore, the stress on wire $B$ is twice that on wire $A$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q6",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2019,
+    "question": "A wire is stretched such that its volume remains constant. The Poisson's ratio of the material of the wire is",
+    "options": [
+      "0.25",
+      "0.50",
+      "-0.25",
+      "-0.50"
+    ],
+    "correct_answer": 1,
+    "explanation": "Volume of a cylindrical wire of radius $r$ and length $L$ is $V = \\pi r^2 L$.\nDifferentiating both sides for constant volume ($dV = 0$):\n$dV = \\pi (2r dr L + r^2 dL) = 0$\n$2 \\frac{dr}{r} + \\frac{dL}{L} = 0 \\implies -\\frac{dr / r}{dL / L} = \\frac{1}{2} = 0.50$.\nSince Poisson's ratio is defined as $\\sigma = -\\frac{\\text{Lateral Strain}}{\\text{Longitudinal Strain}} = -\\frac{\\Delta r / r}{\\Delta L / L}$,\nwe get $\\sigma = 0.50$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q7",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2020,
+    "question": "Young's modulus of a perfectly rigid body is",
+    "options": [
+      "infinity",
+      "between zero and unity",
+      "zero",
+      "unity"
+    ],
+    "correct_answer": 0,
+    "explanation": "Young's modulus is defined as:\n$Y = \\frac{\\text{Stress}}{\\text{Strain}}$\nA perfectly rigid body cannot be deformed under any finite deforming force, which means the strain produced is zero ($\\text{Strain} = 0$).\nTherefore, $Y = \\frac{\\text{Stress}}{0} = \\infty$ (infinity).",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q8",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2022,
+    "question": "A copper wire of length $3\\text{ m}$ has maximum permissible strain $0.2\\%$. To support a load of $10^4\\text{ N}$, the minimum required area of cross-section is (take Young's modulus $Y = 7 \\times 10^9\\text{ N m}^{-2}$)",
+    "options": [
+      "$7.1 \\times 10^{-4}\\text{ m}^2$",
+      "$7.1 \\times 10^{-8}\\text{ m}^2$",
+      "$7.1 \\times 10^{-2}\\text{ m}^2$",
+      "$7.1 \\times 10^{-6}\\text{ m}^2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Permissible longitudinal strain $= 0.2\\% = \\frac{0.2}{100} = 2 \\times 10^{-3}$.\nPermissible stress is:\n$\\text{Stress} = Y \\times \\text{Strain} = (7 \\times 10^9) \\times (2 \\times 10^{-3}) = 1.4 \\times 10^7\\text{ N m}^{-2}$.\n\nThe required area of cross-section to support a load $F = 10^4\\text{ N}$ is:\n$A = \\frac{F}{\\text{Stress}} = \\frac{10^4}{1.4 \\times 10^7} = 0.714 \\times 10^{-3} = 7.1 \\times 10^{-4}\\text{ m}^2$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q9",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2023,
+    "question": "A metal wire of Young's modulus $Y = 2 \\times 10^{11}\\text{ N m}^{-2}$ has Poisson's ratio $0.25$. Its lateral strain is $10^{-3}$. The elastic energy density of the wire is",
+    "options": [
+      "$16 \\times 10^5\\text{ J m}^{-3}$",
+      "$1 \\times 10^5\\text{ J m}^{-3}$",
+      "$4 \\times 10^5\\text{ J m}^{-3}$",
+      "$8 \\times 10^5\\text{ J m}^{-3}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Poisson's ratio is given by:\n$\\sigma = \\frac{\\text{Lateral Strain}}{\\text{Longitudinal Strain}}\n\\implies \\text{Longitudinal Strain} = \\frac{\\text{Lateral Strain}}{\\sigma} = \\frac{10^{-3}}{0.25} = 4 \\times 10^{-3}$.\n\nThe elastic energy density (energy per unit volume) is:\n$u = \\frac{1}{2} \\times Y \\times (\\text{Longitudinal Strain})^2$\n$u = \\frac{1}{2} \\times (2 \\times 10^{11}) \\times (4 \\times 10^{-3})^2$\n$u = 10^{11} \\times 16 \\times 10^{-6} = 16 \\times 10^5\\text{ J m}^{-3}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch8_q10",
+    "subject": "Physics",
+    "chapter": "Mechanical Properties of Solids",
+    "chapter_number": 8,
+    "year": 2024,
+    "question": "A thick metal wire of density $\\rho$ and length $L$ is hung from a rigid support. The increase in length of the wire due to its own weight is ($Y$ = Young's modulus of the material of the wire)",
+    "options": [
+      "$\\frac{\\rho g L^2}{Y}$",
+      "$\\frac{\\rho g L^2}{2Y}$",
+      "$\\frac{\\rho g L}{2Y}$",
+      "$\\frac{\\rho g L^2}{4Y}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Hanging wire diagram](/pyq_images/physics/ch8/exp_q10.png)\n\nConsider a wire of density $\\rho$, cross-sectional area $A$, and length $L$.\nThe total weight of the wire is $W = M g = (A L \\rho) g$.\nSince the mass is distributed uniformly throughout the length, the effective force acts at its center of gravity, which is at the midpoint at a distance $L/2$ from the support.\n\nThe elongation $\\Delta L$ is:\n$\\Delta L = \\frac{W (L/2)}{A Y} = \\frac{(A L \\rho g) L}{2 A Y} = \\frac{\\rho g L^2}{2Y}$.",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/physics/ch8/exp_q10.png"
+  }
+]

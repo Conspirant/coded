@@ -1,0 +1,1154 @@
+[
+  {
+    "id": "pyq-chem-ch17-001",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction, $R - X \\xrightarrow{\\text{alcoholic KCN}} A \\xrightarrow{\\text{dilute HCl}} B$, the product $B$ is",
+    "options": [
+      "alkyl chloride",
+      "aldehyde",
+      "carboxylic acid",
+      "ketone"
+    ],
+    "correct_answer": 2,
+    "year": 2006,
+    "explanation": "$R - X \\xrightarrow{\\text{alc. KCN}} R - C \\equiv N \\text{ (Alkyl cyanide)} \\xrightarrow{\\text{dil. HCl (complete hydrolysis)}} R - COOH \\text{ (Carboxylic acid)} + NH_4Cl$. Hence, product $B$ is a carboxylic acid.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-002",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which of the following compound would not evolve $CO_2$ when treated with $\\text{NaHCO}_3$ solution?",
+    "options": [
+      "Salicylic acid",
+      "Phenol",
+      "Benzoic acid",
+      "4-nitrobenzoic acid"
+    ],
+    "correct_answer": 1,
+    "year": 2006,
+    "explanation": "Phenol is a weaker acid than carbonic acid ($H_2CO_3$), so it does not decompose sodium bicarbonate ($\\text{NaHCO}_3$) to evolve $CO_2$. Carboxylic acids (salicylic, benzoic, and 4-nitrobenzoic acid) are stronger acids than $H_2CO_3$ and readily evolve $CO_2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-003",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "When a mixture of calcium benzoate and calcium acetate is dry distilled, the resulting compound is",
+    "options": [
+      "acetophenone",
+      "benzaldehyde",
+      "benzophenone",
+      "acetaldehyde"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "Dry distillation of an equimolar mixture of calcium benzoate, $(C_6H_5COO)_2Ca$, and calcium acetate, $(CH_3COO)_2Ca$, yields acetophenone:\n$$(C_6H_5COO)_2Ca + (CH_3COO)_2Ca \\xrightarrow{\\Delta} 2C_6H_5COCH_3 + 2CaCO_3$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-004",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which of the following does not give benzoic acid on hydrolysis?",
+    "options": [
+      "Phenyl cyanide",
+      "Benzoyl chloride",
+      "Benzyl chloride",
+      "Methyl benzoate"
+    ],
+    "correct_answer": 2,
+    "year": 2006,
+    "explanation": "Benzyl chloride ($C_6H_5CH_2Cl$) on hydrolysis with aqueous NaOH gives benzyl alcohol ($C_6H_5CH_2OH$), not benzoic acid. Phenyl cyanide, benzoyl chloride, and methyl benzoate all undergo hydrolysis to give benzoic acid ($C_6H_5COOH$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-005",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The reagent used in Clemmensen reduction is",
+    "options": [
+      "conc. $H_2SO_4$",
+      "$\\text{Zn-Hg} / \\text{conc. HCl}$",
+      "aq. KOH",
+      "alc. KOH"
+    ],
+    "correct_answer": 1,
+    "year": 2007,
+    "explanation": "Clemmensen reduction converts aldehydes and ketones into alkanes using zinc amalgam and concentrated hydrochloric acid ($\\text{Zn-Hg} / \\text{conc. HCl}$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-006",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The product formed when hydroxylamine condenses with a carbonyl compound is called",
+    "options": [
+      "hydrazide",
+      "oxime",
+      "hydrazine",
+      "hydrazone"
+    ],
+    "correct_answer": 1,
+    "year": 2007,
+    "explanation": "Condensation of a carbonyl compound ($>C=O$) with hydroxylamine ($NH_2OH$) eliminates water to form an oxime ($>C=N-OH$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-007",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The compound on dehydrogenation gives a ketone. The original compound is",
+    "options": [
+      "tertiary alcohol",
+      "carboxylic acid",
+      "primary alcohol",
+      "secondary alcohol"
+    ],
+    "correct_answer": 3,
+    "year": 2008,
+    "explanation": "Catalytic dehydrogenation over heated copper at $300^\\circ\\text{C}$ of a secondary alcohol ($R_2CHOH$) yields a ketone ($R_2C=O + H_2$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-008",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which of the following organic compounds answers to both iodoform test and Fehling's test?",
+    "options": [
+      "Ethanal",
+      "Propanone",
+      "Ethanol",
+      "Methanal"
+    ],
+    "correct_answer": 0,
+    "year": 2008,
+    "explanation": "Ethanal ($CH_3CHO$) contains a terminal aldehyde group (reduces Fehling's solution giving red $Cu_2O$) and has a $CH_3-C=O$ group, giving a positive yellow iodoform test.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-009",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Waxes are esters of",
+    "options": [
+      "glycerol and fatty acid",
+      "long chain alcohols and long chain fatty acids",
+      "glycerol",
+      "long chain alcohols"
+    ],
+    "correct_answer": 1,
+    "year": 2008,
+    "explanation": "Waxes are defined chemically as esters of long chain monohydric alcohols with higher long chain fatty acids.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-010",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction series: $CH_3COOH \\xrightarrow{\\text{LiAlH}_4} X \\xrightarrow{\\text{Cu}, 300^\\circ\\text{C}} Y \\xrightarrow{\\text{dilute NaOH}} Z$, the product $Z$ is",
+    "options": [
+      "aldol",
+      "ketol",
+      "acetol",
+      "butanol"
+    ],
+    "correct_answer": 0,
+    "year": 2009,
+    "explanation": "1. $CH_3COOH \\xrightarrow{\\text{LiAlH}_4} CH_3CH_2OH \\text{ (X)}$\n2. $CH_3CH_2OH \\xrightarrow{\\text{Cu}, 300^\\circ\\text{C}} CH_3CHO \\text{ (Y)}$\n3. $2CH_3CHO \\xrightarrow{\\text{dil. NaOH}} CH_3-CH(OH)-CH_2-CHO \\text{ (Aldol, Z)}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-011",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The compound which is not formed during the dry distillation of a mixture of calcium formate and calcium acetate is",
+    "options": [
+      "propanal",
+      "propanone",
+      "ethanal",
+      "methanal"
+    ],
+    "correct_answer": 0,
+    "year": 2009,
+    "explanation": "Dry distillation of $(HCOO)_2Ca$ gives $HCHO$ (methanal), $(CH_3COO)_2Ca$ gives $CH_3COCH_3$ (propanone), and their cross-reaction gives $CH_3CHO$ (ethanal). Propanal ($CH_3CH_2CHO$, 3 carbons with aldehyde) cannot be formed.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-012",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "An organic compound $X$ is oxidised by using acidified $K_2Cr_2O_7$. The product obtained reacts with phenyl hydrazine but does not answer silver mirror test. The possible structure of $X$ is",
+    "options": [
+      "$CH_3COCH_3$",
+      "$(CH_3)_2CHOH$",
+      "$CH_3CHO$",
+      "$CH_3CH_2OH$"
+    ],
+    "correct_answer": 1,
+    "year": 2009,
+    "explanation": "The oxidation product reacts with phenyl hydrazine (indicating a carbonyl group) but gives a negative Tollens' test (not an aldehyde $\\Rightarrow$ it is a ketone, acetone). Ketones are formed by oxidation of secondary alcohols, so $X$ is $(CH_3)_2CHOH$ (propan-2-ol).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-013",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The reaction involved in the oil of winter green test is: $\\text{Salicylic acid} \\xrightarrow{\\text{conc. } H_2SO_4, \\Delta} \\text{Product}$. The product is treated with $\\text{Na}_2CO_3$ solution. The missing reagent in the above reaction is",
+    "options": [
+      "NaOH",
+      "ethanol",
+      "methanol",
+      "phenol"
+    ],
+    "correct_answer": 2,
+    "year": 2009,
+    "explanation": "Salicylic acid reacts with methanol ($CH_3OH$) in the presence of concentrated $H_2SO_4$ to form methyl salicylate (oil of wintergreen), which has a characteristic pleasant wintergreen odor.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-014",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The compound which forms acetaldehyde when heated with dilute NaOH is",
+    "options": [
+      "1,1,1-trichloroethane",
+      "1-chloroethane",
+      "1,2-dichloroethane",
+      "1,1-dichloroethane"
+    ],
+    "correct_answer": 3,
+    "year": 2009,
+    "explanation": "Alkaline hydrolysis of gem-dihalide 1,1-dichloroethane gives an unstable gem-diol which spontaneously loses water to form acetaldehyde:\n$$CH_3-CH(Cl)_2 + 2\\text{NaOH} \\rightarrow [CH_3-CH(OH)_2] \\xrightarrow{-H_2O} CH_3CHO$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-015",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The compound obtained when acetaldehyde reacts with dilute aqueous sodium hydroxide exhibits",
+    "options": [
+      "geometrical isomerism",
+      "optical isomerism",
+      "neither optical nor geometrical isomerism",
+      "both optical and geometrical isomerism"
+    ],
+    "correct_answer": 1,
+    "year": 2010,
+    "explanation": "Aldol condensation of acetaldehyde yields 3-hydroxybutanal ($CH_3-C^*H(OH)-CH_2-CHO$). Carbon-3 is chiral (attached to $-H, -OH, -CH_3, -CH_2CHO$), so it exhibits optical isomerism.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-016",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The correct sequence of steps involved in the mechanism of Cannizzaro's reaction is",
+    "options": [
+      "nucleophilic attack, transfer of $H^-$ and transfer of $H^+$",
+      "transfer of $H^-$, transfer of $H^+$ and nucleophilic attack",
+      "transfer of $H^+$, nucleophilic attack and transfer of $H^-$",
+      "electrophilic attack by $OH^-$, transfer of $H^+$ and transfer of $H^-$"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "Mechanism of Cannizzaro reaction: (1) Reversible nucleophilic attack of $OH^-$ on the carbonyl carbon forming a tetrahedral alkoxide mono/dianion; (2) Rate-determining hydride ($H^-$) ion transfer to another aldehyde molecule; (3) Rapid proton ($H^+$) transfer between the acid and alkoxide ion.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-017",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Benzaldehyde and acetone can be best distinguished using",
+    "options": [
+      "Fehling's solution",
+      "sodium hydroxide solution",
+      "2,4-DNP",
+      "Tollens' reagent"
+    ],
+    "correct_answer": 3,
+    "year": 2010,
+    "explanation": "Benzaldehyde reduces Tollens' reagent to form a shining silver mirror, whereas acetone (a ketone) does not reduce Tollens' reagent. (Benzaldehyde does not reduce Fehling's solution, and both form 2,4-DNP derivatives).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-018",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Formic acid is a stronger acid than acetic acid. This can be explained using",
+    "options": [
+      "$+M$ effect",
+      "$-I$ effect",
+      "$+I$ effect",
+      "$-M$ effect"
+    ],
+    "correct_answer": 2,
+    "year": 2011,
+    "explanation": "In acetic acid ($CH_3COOH$), the methyl group exerts an electron-donating $+I$ effect, which intensifies the negative charge on the carboxylate anion, destabilizing it and reducing acidity compared to formic acid ($HCOOH$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-019",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The reagent with which both acetaldehyde and acetone react is",
+    "options": [
+      "Fehling's solution",
+      "$I_2 / \\text{NaOH}$",
+      "Tollens' reagent",
+      "carbonic acid"
+    ],
+    "correct_answer": 1,
+    "year": 2011,
+    "explanation": "Both acetaldehyde ($CH_3CHO$) and acetone ($CH_3COCH_3$) possess a methyl ketone / $CH_3C=O$ group, so both undergo haloform reaction with $I_2 / \\text{NaOH}$ to produce yellow precipitate of iodoform ($CHI_3$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-020",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which of the following gives an aldehyde on dry distillation?",
+    "options": [
+      "Calcium formate + calcium acetate",
+      "Calcium acetate + calcium benzoate",
+      "Calcium acetate",
+      "Calcium benzoate"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "Dry distillation of a mixture of calcium formate and calcium acetate gives acetaldehyde ($CH_3CHO$), which is an aldehyde. Dry distillation of calcium acetate gives acetone (ketone), and calcium benzoate gives benzophenone.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-021",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Oil of winter green is",
+    "options": [
+      "an ester",
+      "a carboxylic acid",
+      "an alcohol",
+      "a ketone"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "Oil of wintergreen is methyl salicylate, an aromatic ester produced by esterifying salicylic acid with methanol.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-022",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "An organic compound 'A' burns with a sooty flame. It is negative towards Tollens' reagent test and positive for Borsche's reagent test. The compound 'A' is",
+    "options": [
+      "benzaldehyde",
+      "acetophenone",
+      "acetone",
+      "salicylic acid"
+    ],
+    "correct_answer": 1,
+    "year": 2012,
+    "explanation": "Burning with a sooty flame indicates an aromatic ring. Negative Tollens' test excludes aldehydes (benzaldehyde). Positive Borsche's reagent (2,4-DNP) confirms a carbonyl group. Thus, 'A' is an aromatic ketone $\\rightarrow$ acetophenone.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-023",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "HCHO was treated with a reagent $X$. The product formed upon hydrolysis in the presence of an acid gave $C_2H_5OH$. The reagent $X$ is",
+    "options": [
+      "aqueous KOH",
+      "alcoholic KOH",
+      "alcoholic KCN",
+      "$CH_3MgI$"
+    ],
+    "correct_answer": 3,
+    "year": 2012,
+    "explanation": "Formaldehyde ($HCHO$) on nucleophilic addition with methyl magnesium iodide ($CH_3MgI$) followed by acid hydrolysis gives ethanol ($CH_3CH_2OH$):\n$$HCHO + CH_3MgI \\rightarrow CH_3CH_2OMgI \\xrightarrow{H_2O/H^+} CH_3CH_2OH + Mg(OH)I$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-024",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The relative acidic strengths of benzoic acid, $o$-toluic acid and $p$-toluic acid is of the decreasing order :",
+    "options": [
+      "$p\\text{-toluic acid} > o\\text{-toluic acid} > \\text{benzoic acid}$",
+      "$o\\text{-toluic acid} > p\\text{-toluic acid} > \\text{benzoic acid}$",
+      "$p\\text{-toluic acid} > \\text{benzoic acid} > o\\text{-toluic acid}$",
+      "$o\\text{-toluic acid} > \\text{benzoic acid} > p\\text{-toluic acid}$"
+    ],
+    "correct_answer": 3,
+    "year": 2012,
+    "explanation": "Due to the ortho-effect, $o$-toluic acid is significantly stronger than benzoic acid. In $p$-toluic acid, the electron-donating methyl group at the para-position ($+I$ and hyperconjugation) decreases acidity relative to benzoic acid. Thus: $o\\text{-toluic acid} > \\text{benzoic acid} > p\\text{-toluic acid}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-025",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "When formic acid is heated with concentrated $H_2SO_4$, the gas evolved is",
+    "options": [
+      "only $CO_2$",
+      "only CO",
+      "a mixture of CO and $CO_2$",
+      "a mixture of $SO_2$ and $CO_2$"
+    ],
+    "correct_answer": 1,
+    "year": 2013,
+    "explanation": "Concentrated sulfuric acid acts as a dehydrating agent on formic acid, dehydrating it to carbon monoxide:\n$$HCOOH \\xrightarrow{\\text{conc. } H_2SO_4, \\Delta} CO \\uparrow + H_2O$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-026",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The reagent used to distinguish between acetaldehyde and benzaldehyde is",
+    "options": [
+      "Tollens' reagent",
+      "Fehling's solution",
+      "2, 4-dinitrophenylhydrazine",
+      "semicarbazide"
+    ],
+    "correct_answer": 1,
+    "year": 2013,
+    "explanation": "Acetaldehyde (an aliphatic aldehyde) reduces Fehling's solution to give a red precipitate of $Cu_2O$, whereas benzaldehyde (an aromatic aldehyde) is too weakly reducing to reduce Fehling's solution.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-027",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Iodoform reaction is answered by all, except",
+    "options": [
+      "$CH_3-CH(OH)-CH_2-COOH$",
+      "$CH_3CHO$",
+      "$CH_3-CH_2-OH$",
+      "$CH_3-CH_2-CH_2OH$"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "The iodoform test requires either a $CH_3-C=O$ group or a $CH_3-CH(OH)-$ group. Propan-1-ol ($CH_3CH_2CH_2OH$) is a $1^\\circ$ alcohol without a $CH_3-CH(OH)-$ group, so it does not give the iodoform test.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-028",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction sequence: $C_6H_5COOH \\xrightarrow[2. \\Delta]{1. NH_3} P \\xrightarrow{\\text{NaOBr}} Q \\xrightarrow[2. \\text{heat to } 460\\text{ K}]{1. \\text{conc. } H_2SO_4} R$, $R$ is",
+    "options": [
+      "$o$-bromosulphanilic acid",
+      "sulphanilamide",
+      "sulphanilic acid",
+      "$p$-bromosulphanilamide"
+    ],
+    "correct_answer": 2,
+    "year": 2014,
+    "explanation": "1. $C_6H_5COOH \\xrightarrow{NH_3, \\Delta} C_6H_5CONH_2 \\text{ (Benzamide, P)}$\n2. $C_6H_5CONH_2 \\xrightarrow{\\text{NaOBr (Hoffmann degradation)}} C_6H_5NH_2 \\text{ (Aniline, Q)}$\n3. $C_6H_5NH_2 \\xrightarrow{\\text{conc. } H_2SO_4, 460\\text{ K}} p\\text{-H}_2\\text{N}-C_6H_4-SO_3H \\text{ (Sulphanilic acid, R)}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-029",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Match the reactant in column-I with the reaction in column-II:\n\n| Column-I | Column-II |\n|---|---|\n| (i) Acetic acid | (A) Stephen's reaction |\n| (ii) Sodium phenate | (B) Friedel-Crafts reaction |\n| (iii) Methyl cyanide | (C) HVZ reaction |\n| (iv) Toluene | (D) Kolbe's reaction |",
+    "options": [
+      "i-C, ii-A, iii-D, iv-B",
+      "i-D, ii-B, iii-C, iv-A",
+      "i-B, ii-C, iii-A, iv-D",
+      "i-C, ii-D, iii-A, iv-B"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "- (i) Acetic acid undergoes Hell-Volhard-Zelinsky (HVZ) halogenation $\\rightarrow$ (C)\n- (ii) Sodium phenate $+ CO_2 \\rightarrow$ Salicylic acid (Kolbe's reaction) $\\rightarrow$ (D)\n- (iii) Methyl cyanide $+ SnCl_2/HCl \\rightarrow$ Acetaldehyde (Stephen's reaction) $\\rightarrow$ (A)\n- (iv) Toluene $+ CH_3Cl/AlCl_3 \\rightarrow$ Xylenes (Friedel-Crafts reaction) $\\rightarrow$ (B)\nHence, (i)-C, (ii)-D, (iii)-A, (iv)-B.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-030",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The acid strength of active methylene group in:\n(i) $CH_3COCH_2COOC_2H_5$\n(ii) $CH_3COCH_2COCH_3$\n(iii) $C_2H_5OOCCH_2COOC_2H_5$\ndecreases as",
+    "options": [
+      "i > iii > ii",
+      "i > ii > iii",
+      "ii > i > iii",
+      "iii > i > ii"
+    ],
+    "correct_answer": 2,
+    "year": 2014,
+    "explanation": "Ketone carbonyl groups ($-COCH_3$) are more strongly electron-withdrawing than ester carbonyl groups ($-COOR$, where oxygen lone pair resonance diminishes $-I/-M$ withdrawal). Therefore: acetylacetone (two keto groups, ii) > ethyl acetoacetate (one keto, one ester, i) > diethyl malonate (two ester groups, iii). Order: $\\text{ii} > \\text{i} > \\text{iii}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-031",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "$X \\xrightarrow{\\text{Ozonolysis (Reductive)}} Y + Z$. $Y$ can be obtained by Etard's reaction. $Z$ undergoes disproportionation reaction with concentrated alkali. $X$ could be",
+    "options": [
+      "Phenylacetylene ($C_6H_5-C \\equiv CH$)",
+      "Styrene ($C_6H_5-CH=CH_2$)",
+      "1-Phenylprop-1-ene ($C_6H_5-CH=CH-CH_3$)",
+      "2-Methyl-1-phenylprop-1-ene ($C_6H_5-CH=C(CH_3)_2$)"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "$Y$ is obtained by Etard's reaction, so $Y$ is benzaldehyde ($C_6H_5CHO$). $Z$ undergoes Cannizzaro disproportionation with concentrated alkali, so $Z$ is formaldehyde ($HCHO$). Reductive ozonolysis of styrene ($C_6H_5CH=CH_2$) gives $C_6H_5CHO$ and $HCHO$. Thus, $X$ is styrene.",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q31.png"
+  },
+  {
+    "id": "pyq-chem-ch17-032",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "When $CH_2=CH-O-CH_2-CH_3$ reacts with one mole of HI, one of the products formed is",
+    "options": [
+      "ethane",
+      "ethanol",
+      "iodoethene",
+      "ethanal"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "Protonation occurs on the oxygen atom. Iodide attacks the ethyl group ($S_N2$) rather than the vinyl carbon due to $sp^2$ character and resonance: $CH_2=CH-O-C_2H_5 + HI \\rightarrow CH_2=CH-OH + C_2H_5I$. Vinyl alcohol ($CH_2=CH-OH$) rapidly tautomerizes to ethanal ($CH_3CHO$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-033",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Acetophenone cannot be prepared easily starting from",
+    "options": [
+      "$C_6H_5CH(OH)CH_3$",
+      "$C_6H_5CH_3$",
+      "$C_6H_5C \\equiv CH$",
+      "$C_6H_6$"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "Toluene ($C_6H_5CH_3$) upon oxidation with chromyl chloride gives benzaldehyde ($C_6H_5CHO$), which requires an additional Grignard step and oxidation to yield acetophenone, whereas $C_6H_5CH(OH)CH_3$ oxidizes directly to acetophenone in 1 step, $C_6H_5C \\equiv CH$ hydrates directly to acetophenone, and $C_6H_6$ undergoes Friedel-Crafts acylation with $CH_3COCl$ to give acetophenone in 1 step.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-034",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The formation of cyanohydrin from a ketone is an example of",
+    "options": [
+      "nucleophilic addition",
+      "electrophilic substitution",
+      "nucleophilic substitution",
+      "electrophilic addition"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Attack of the cyanide nucleophile ($CN^-$) on the electrophilic carbonyl carbon followed by protonation of the alkoxide oxygen is a classic nucleophilic addition reaction.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-035",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Iodoform can be prepared from all, except",
+    "options": [
+      "butan-2-one",
+      "acetophenone",
+      "propan-2-ol",
+      "propan-1-ol"
+    ],
+    "correct_answer": 3,
+    "year": 2015,
+    "explanation": "Propan-1-ol ($CH_3CH_2CH_2OH$) is a primary alcohol lacking the $CH_3-CH(OH)-$ group and cannot undergo haloform oxidation to produce iodoform ($CHI_3$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-036",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Acetic acid is treated with $Ca(OH)_2$ and the product so obtained is subjected to dry distillation. The final product is",
+    "options": [
+      "propanal",
+      "ethanol",
+      "ethanal",
+      "propanone"
+    ],
+    "correct_answer": 3,
+    "year": 2015,
+    "explanation": "$2CH_3COOH + Ca(OH)_2 \\rightarrow (CH_3COO)_2Ca + 2H_2O$. Dry distillation of calcium acetate yields propanone (acetone) and calcium carbonate: $(CH_3COO)_2Ca \\xrightarrow{\\Delta} CH_3COCH_3 + CaCO_3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-037",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The distinguishing test between methanoic acid and ethanoic acid is",
+    "options": [
+      "Tollens' test",
+      "sodium bicarbonate test",
+      "litmus test",
+      "esterification test"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Methanoic acid (formic acid, $HCOOH$) possesses an aldehyde-like oxidizable $-C(=O)H$ hydrogen atom, so it reduces Tollens' reagent to a silver mirror. Ethanoic acid ($CH_3COOH$) does not reduce Tollens' reagent.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-038",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Benzene carbaldehyde is reacted with concentrated NaOH solution to give the products $A$ and $B$. The product $A$ can be used as food preservative and the product $B$ is an aromatic hydroxy compound where OH group is linked to $sp^3$ hybridised carbon atom next to benzene ring. The products $A$ and $B$ are respectively,",
+    "options": [
+      "sodium benzoate and phenol",
+      "sodium benzoate and phenyl methanol",
+      "sodium benzoate and cresol",
+      "sodium benzoate and picric acid"
+    ],
+    "correct_answer": 1,
+    "year": 2016,
+    "explanation": "Benzaldehyde undergoing Cannizzaro reaction with concentrated NaOH gives sodium benzoate ($C_6H_5COONa$, food preservative, A) and benzyl alcohol / phenylmethanol ($C_6H_5CH_2OH$, $sp^3$ benzylic carbon, B).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-039",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Predict the product 'C' in the following series of reactions: $CH_3-COOH \\xrightarrow{\\text{PCl}_5} A \\xrightarrow{\\text{Anhyd. AlCl}_3}^{\\text{C}_6\\text{H}_6} B \\xrightarrow{\\text{CH}_3\\text{MgBr}} C$",
+    "options": [
+      "Acetophenone",
+      "$CH_3CH(OH)C_6H_5$",
+      "$CH_3CH(OH)C_2H_5$",
+      "$(CH_3)_2C(OH)C_6H_5$"
+    ],
+    "correct_answer": 3,
+    "year": 2016,
+    "explanation": "1. $CH_3COOH \\xrightarrow{\\text{PCl}_5} CH_3COCl \\text{ (Acetyl chloride, A)}$\n2. $CH_3COCl + C_6H_6 \\xrightarrow{\\text{AlCl}_3} C_6H_5COCH_3 \\text{ (Acetophenone, B)}$\n3. $C_6H_5COCH_3 \\xrightarrow{\\text{CH}_3\\text{MgBr, then } H_2O} (CH_3)_2C(OH)C_6H_5 \\text{ (2-phenylpropan-2-ol, C)}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-040",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Lower members of aliphatic carboxylic acid are soluble in water. This is due to",
+    "options": [
+      "formation of hydrogen bonds with water",
+      "London forces",
+      "water is non-electrolyte",
+      "van der Waals' interaction with water molecules"
+    ],
+    "correct_answer": 0,
+    "year": 2017,
+    "explanation": "Lower aliphatic carboxylic acids form strong intermolecular hydrogen bonds between their polar $-COOH$ groups and water molecules, making them highly soluble in water.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-041",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Reduction of ketones cannot be carried out with which of the following reagents?",
+    "options": [
+      "Hydrogen in presence of palladium in barium sulphate and quinoline",
+      "Sodium borohydride or lithium aluminium hydride",
+      "Zinc amalgam and concentrated HCl",
+      "Hydrazine and KOH in ethylene glycol"
+    ],
+    "correct_answer": 0,
+    "year": 2017,
+    "explanation": "$H_2 / \\text{Pd-BaSO}_4$ poisoned with quinoline (Lindlar / Rosenmund catalyst) is specifically used for converting acid chlorides to aldehydes or alkynes to cis-alkenes; it cannot reduce ketones.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-042",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the following sequence of reactions: $CH_3Br \\xrightarrow{\\text{KCN}} A \\xrightarrow{H_3O^+} B \\xrightarrow{\\text{LiAlH}_4} C$, the end product $C$ is",
+    "options": [
+      "methane",
+      "ethyl alcohol",
+      "acetone",
+      "acetaldehyde"
+    ],
+    "correct_answer": 1,
+    "year": 2017,
+    "explanation": "1. $CH_3Br \\xrightarrow{\\text{KCN}} CH_3CN \\text{ (A)}$\n2. $CH_3CN \\xrightarrow{H_3O^+} CH_3COOH \\text{ (B)}$\n3. $CH_3COOH \\xrightarrow{\\text{LiAlH}_4} CH_3CH_2OH \\text{ (Ethyl alcohol, C)}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-043",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Cannizzaro's reaction is an example of auto oxidation",
+    "options": [
+      "it is a typical reaction of aliphatic aldehyde",
+      "it is a reaction answered by only aldehydes containing $\\alpha$-hydrogen",
+      "it is a reaction answered only by aromatic aldehydes",
+      "it is a reaction answered by all aldehydes."
+    ],
+    "correct_answer": 0,
+    "year": 2017,
+    "explanation": "Cannizzaro reaction is a redox disproportionation answered by aldehydes having NO $\\alpha$-hydrogen atoms (both aliphatic like $HCHO$ and aromatic like $C_6H_5CHO$). None of the given options are strictly correct, so full marks/grace was awarded officially.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-044",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which of the following compounds undergo haloform reaction?",
+    "options": [
+      "$CH_3COCH_3$",
+      "HCHO",
+      "$CH_3CH_2Br$",
+      "$CH_3-O-CH_3$"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "Acetone ($CH_3COCH_3$) contains the methyl ketone group ($CH_3C=O$), and readily undergoes the haloform reaction to produce haloform ($CHX_3$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-045",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The appropriate reagent for the following transformation is:",
+    "options": [
+      "$\\text{Zn-Hg} / \\text{HCl}$",
+      "$H_2N-NH_2, \\text{KOH} / \\text{ethylene glycol}$",
+      "$\\text{Ni} / H_2$",
+      "$\\text{NaBH}_4$"
+    ],
+    "correct_answer": 1,
+    "year": 2018,
+    "explanation": "The reactant contains both a keto group and an acid-sensitive hydroxyl ($-OH$) group. Under Clemmensen conditions (conc. HCl), the $-OH$ group would be substituted by chloride. Wolff-Kishner reduction ($H_2N-NH_2, \\text{KOH} / \\text{glycol}$) operates under basic conditions, selectively reducing the carbonyl $>C=O$ to $-CH_2-$ while preserving the $-OH$ group.",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q45_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-046",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the following reaction:\n\nthe compound $Z$ is",
+    "options": [
+      "benzoic acid",
+      "benzaldehyde",
+      "acetophenone",
+      "benzene"
+    ],
+    "correct_answer": 1,
+    "year": 2018,
+    "explanation": "In the Etard reaction, toluene reacts with chromyl chloride ($CrO_2Cl_2$) in $CS_2$ to form a brown chromium complex $[C_6H_5CH(OCrCl_2OH)_2]$, which on aqueous hydrolysis ($H_3O^+$) yields benzaldehyde ($C_6H_5CHO$).",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q46_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-047",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Which is the most suitable reagent for the following conversion?\n$$CH_3-CH=CH-CH_2-CO-CH_3 \\rightarrow CH_3-CH=CH-CH_2-COOH$$",
+    "options": [
+      "Tollens' reagent",
+      "$I_2$ and NaOH solution",
+      "Benzoyl peroxide",
+      "Sn and NaOH solution"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "The starting material is a methyl ketone containing an isolated alkene double bond. Haloform reaction using $I_2 / \\text{NaOH}$ oxidizes the $-COCH_3$ group to $-COO^-$ without attacking or cleaving the carbon-carbon double bond. Subsequent acidification yields the carboxylic acid.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-048",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Identify the reagents $A, B$ and $C$ respectively in the following scheme:",
+    "options": [
+      "$H_2/\\text{Pd}, \\text{PCC}, \\text{NaBH}_4$",
+      "$\\text{NaBH}_4, \\text{alk. KMnO}_4, H_2/\\text{Pd}$",
+      "$\\text{NaBH}_4, \\text{PCC}, H_2/\\text{Pd}$",
+      "$H_2/\\text{Pd}, \\text{alk. KMnO}_4, \\text{NaBH}_4$"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "- Reagent $A$: selectively reduces the aldehyde ($-CHO$) to primary alcohol ($-CH_2OH$) without reducing the $C=C$ double bond $\\rightarrow \\text{NaBH}_4$.\n- Reagent $B$: selectively oxidizes the primary alcohol ($-CH_2OH$) to aldehyde ($-CHO$) without affecting the alkene $\\rightarrow \\text{PCC}$ or mild oxidant $\\text{alk. KMnO}_4$.\n- Reagent $C$: catalytic hydrogenation with $H_2/\\text{Pd}$ reduces both the $C=C$ double bond and carbonyl group to saturated dialcohol.",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q48_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-049",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Propanoic acid undergoes HVZ reaction to give chloropropanoic acid. The product obtained is",
+    "options": [
+      "stronger acid than propanoic acid",
+      "as stronger as propanoic acid",
+      "weaker acid than propanoic acid",
+      "stronger than dichloropropanoic acid"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Chlorine has an electron-withdrawing $-I$ inductive effect, which disperses the negative charge of the conjugate carboxylate base and stabilizes it. Thus, 2-chloropropanoic acid is a stronger acid than propanoic acid.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-050",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "$P \\xrightarrow{H_2/\\text{Pd-BaSO}_4} Q \\xrightarrow[\\text{(ii) dil. HCl}]{\\text{(i) conc. NaOH}} R + S$. $R$ and $S$ form benzyl benzoate when treated with each other. Hence, $P$ is",
+    "options": [
+      "$C_6H_5CHO$",
+      "$C_6H_5CH_2OH$",
+      "$C_6H_5COCl$",
+      "$C_6H_5COOH$"
+    ],
+    "correct_answer": 2,
+    "year": 2019,
+    "explanation": "1. Rosenmund reduction of benzoyl chloride ($C_6H_5COCl$, P) with $H_2/\\text{Pd-BaSO}_4$ gives benzaldehyde ($C_6H_5CHO$, Q).\n2. Benzaldehyde undergoes Cannizzaro reaction with concentrated NaOH to give sodium benzoate ($C_6H_5COONa$, R) and benzyl alcohol ($C_6H_5CH_2OH$, S).\n3. Benzoic acid and benzyl alcohol react to form the ester benzyl benzoate ($C_6H_5COOCH_2C_6H_5$). Thus, $P = C_6H_5COCl$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-051",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction:\n\nThe product '$P$' is",
+    "options": [
+      "$C_6H_5-CH=CH-CH_3$",
+      "$C_6H_5-CH=CH-CHO$ (Cinnamaldehyde)",
+      "2-(2-oxoethyl)benzaldehyde",
+      "4-(2-oxoethyl)benzaldehyde"
+    ],
+    "correct_answer": 1,
+    "year": 2020,
+    "explanation": "Crossed aldol condensation (Claisen-Schmidt reaction) between benzaldehyde (no $\\alpha$-H) and acetaldehyde ($\\alpha$-H) in the presence of dilute NaOH followed by dehydration ($\\Delta$) yields cinnamaldehyde ($C_6H_5-CH=CH-CHO$, Option b).",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q51_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-052",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The carbonyl compound that does not undergo aldol condensation is",
+    "options": [
+      "dichloroacetaldehyde",
+      "trichloroacetaldehyde",
+      "acetaldehyde",
+      "acetone"
+    ],
+    "correct_answer": 1,
+    "year": 2020,
+    "explanation": "Trichloroacetaldehyde (chloral, $CCl_3CHO$) has no $\\alpha$-hydrogen atoms attached to the $\\alpha$-carbon, so it cannot undergo aldol condensation.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-053",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "An organic compound '$X$' on treatment with PCC in dichloromethane gives the compound $Y$. Compound '$Y$' reacts with $I_2$ and alkali to form yellow precipitate of triiodomethane. The compound $X$ is",
+    "options": [
+      "$CH_3CHO$",
+      "$CH_3COCH_3$",
+      "$CH_3CH_2OH$",
+      "$CH_3COOH$"
+    ],
+    "correct_answer": 2,
+    "year": 2021,
+    "explanation": "Ethanol ($CH_3CH_2OH$, X) on oxidation with PCC gives acetaldehyde ($CH_3CHO$, Y). Acetaldehyde contains a $CH_3C=O$ group, which answers the iodoform test with $I_2/\\text{NaOH}$ to yield yellow $CHI_3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-054",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the following set of reactions, identify $D$:",
+    "options": [
+      "$C_6H_5-CH_2-C(OH)(CH_3)-COOH$",
+      "$C_6H_5-C(OH)(CH_3)-CN$",
+      "$C_6H_5-CH_2-C(OH)(CH_3)-CN$",
+      "$C_6H_5-C(OH)(CH_3)-COOH$"
+    ],
+    "correct_answer": 3,
+    "year": 2021,
+    "explanation": "1. $CH_3COOH \\xrightarrow{SOCl_2} CH_3COCl \\text{ (A)}$\n2. $CH_3COCl + C_6H_6 \\xrightarrow{\\text{AlCl}_3} C_6H_5COCH_3 \\text{ (Acetophenone, B)}$\n3. $C_6H_5COCH_3 \\xrightarrow{HCN} C_6H_5-C(OH)(CH_3)-CN \\text{ (Cyanohydrin, C)}$\n4. Hydrolysis ($H_2O$) of cyanohydrin converts $-CN$ to $-COOH$, yielding 2-hydroxy-2-phenylpropanoic acid ($C_6H_5-C(OH)(CH_3)-COOH$, D, Option d).",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q54_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-055",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the following scheme:\n\n$A, B$ and $C$ respectively are",
+    "options": [
+      "ethanol, ethane nitrile and ethyne",
+      "ethane nitrile, ethanol and ethyne",
+      "ethyne, ethanol and ethane nitrile",
+      "ethyne, ethane nitrile and ethanol"
+    ],
+    "correct_answer": 2,
+    "year": 2021,
+    "explanation": "- Hydration of ethyne ($CH \\equiv CH$, A) with $\\text{HgSO}_4/H_2SO_4$ gives vinyl alcohol which tautomerizes to acetaldehyde.\n- Oxidation of ethanol ($CH_3CH_2OH$, B) with PCC gives acetaldehyde.\n- Stephen reduction of ethanenitrile ($CH_3CN$, C) with $SnCl_2/HCl$ followed by $H_3O^+$ gives acetaldehyde.\nThus: $A = \\text{ethyne}, B = \\text{ethanol}, C = \\text{ethane nitrile}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q55_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-056",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The reagent which can do the conversion, $CH_3COOH \\rightarrow CH_3-CH_2-OH$ is",
+    "options": [
+      "$\\text{LiAlH}_4 / \\text{ether}$",
+      "$H_2, \\text{Pt}$",
+      "$\\text{NaBH}_4$",
+      "$\\text{Na and } C_2H_5OH$"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Lithium aluminium hydride ($\\text{LiAlH}_4$) in dry ether is a powerful reducing agent capable of reducing carboxylic acids directly to primary alcohols.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-057",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction scheme:\n\nThe product 'A' gives white precipitate when treated with bromine water. The product 'B' is treated with barium hydroxide to give the product 'C'. The compound 'C' is heated strongly to form product 'D'. The product 'D' is",
+    "options": [
+      "4-methylpent-3-en-2-one",
+      "but-2-enal",
+      "3-methylpent-3-en-2-one",
+      "2-methylbut-2-enal"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "1. Cumene hydroperoxide decomposes in acid to phenol (A, gives white 2,4,6-tribromophenol ppt with $Br_2$ water) and acetone (B, $CH_3COCH_3$).\n2. Acetone undergoes aldol condensation with $Ba(OH)_2$ to form diacetone alcohol (C, 4-hydroxy-4-methylpentan-2-one).\n3. Heating diacetone alcohol causes dehydration to mesityl oxide (D, 4-methylpent-3-en-2-one, $(CH_3)_2C=CH-COCH_3$).",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q58_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-058",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Ethanoic acid undergoes Hell-Volhard-Zelinsky reaction but methanoic acid does not because of",
+    "options": [
+      "absence of $\\alpha$-H atom in ethanoic acid",
+      "higher acidic strength of ethanoic acid than methanoic acid",
+      "presence of $\\alpha$-H atom in methanoic acid",
+      "presence of $\\alpha$-H atom in ethanoic acid."
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "The Hell-Volhard-Zelinsky (HVZ) reaction specifically halogenates the $\\alpha$-carbon of carboxylic acids possessing $\\alpha$-hydrogen atoms. Ethanoic acid ($CH_3COOH$) has 3 $\\alpha$-hydrogens, whereas methanoic acid ($HCOOH$) has no $\\alpha$-carbon and no $\\alpha$-hydrogens.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-059",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The general name of the compound formed by the reaction between aldehyde and alcohol is",
+    "options": [
+      "glycol",
+      "acetate",
+      "ester",
+      "acetal"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "An aldehyde reacts with 1 mole of monohydric alcohol in the presence of dry HCl gas to yield a hemiacetal, which further reacts with another mole of alcohol to form a gem-dialkoxy compound known as an acetal.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-060",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Reaction by which benzaldehyde cannot be prepared is",
+    "options": [
+      "$\\text{Toluene} \\xrightarrow[\\text{(ii) } H_3O^+]{\\text{(i) } CrO_2Cl_2 \\text{ in } CS_2}$",
+      "$\\text{Benzoyl chloride} + H_2 \\xrightarrow{\\text{Pd-BaSO}_4, \\Delta}$",
+      "$\\text{Benzene} + CO + HCl \\xrightarrow{\\text{anhydrous } AlCl_3}$",
+      "$\\text{Benzoic acid} \\xrightarrow{\\text{Zn-Hg and conc. HCl}}$"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "Clemmensen reduction ($\\text{Zn-Hg} / \\text{conc. HCl}$) reduces carbonyl groups ($>C=O$) to methylene ($-CH_2-$), but it does not reduce carboxylic acid groups ($-COOH$). Options a, b, and c are standard methods for preparing benzaldehyde (Etard, Rosenmund, and Gattermann-Koch reactions respectively).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-061",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "The test to differentiate between pentan-2-one and pentan-3-one is",
+    "options": [
+      "Fehling's test",
+      "iodoform test",
+      "Baeyer's test",
+      "Benedict's test"
+    ],
+    "correct_answer": 1,
+    "year": 2022,
+    "explanation": "Pentan-2-one ($CH_3-CO-CH_2CH_2CH_3$) is a methyl ketone and gives a positive yellow precipitate of $CHI_3$ in the iodoform test. Pentan-3-one ($CH_3CH_2-CO-CH_2CH_3$) lacks a methyl ketone group and gives a negative iodoform test.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-062",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "In the reaction: $C_6H_5CN \\xrightarrow[\\text{(ii) } H_3O^+]{\\text{(i) } SnCl_2 + HCl} X \\xrightarrow{\\text{conc. KOH}} Y + Z$, the formation of $X$, and formation of $Y$ and $Z$ are known by",
+    "options": [
+      "Rosenmund reduction, Cannizzaro reaction",
+      "Clemmensen reduction, Sandmeyer reaction",
+      "Wolff-Kishner reduction, Wurtz reaction",
+      "Stephen reaction, Cannizzaro reaction"
+    ],
+    "correct_answer": 3,
+    "year": 2023,
+    "explanation": "1. Reduction of benzonitrile with $SnCl_2/HCl$ followed by hydrolysis ($H_3O^+$) to benzaldehyde ($X$) is the Stephen reaction.\n2. Benzaldehyde ($X$) treated with concentrated KOH undergoes self-oxidation and reduction to potassium benzoate ($Y$) and benzyl alcohol ($Z$), which is the Cannizzaro reaction.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-chem-ch17-063",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Compounds $P$ and $R$ in the following reaction are:",
+    "options": [
+      "position isomers",
+      "functional isomers",
+      "metamers",
+      "identical"
+    ],
+    "correct_answer": 0,
+    "year": 2023,
+    "explanation": "1. $CH_3CHO + CH_3MgBr \\rightarrow CH_3-CH(OH)-CH_3 \\text{ (Propan-2-ol, P)}$\n2. Dehydration with conc. $H_2SO_4$ gives propene ($CH_3-CH=CH_2, Q$).\n3. Hydroboration-oxidation of propene ($B_2H_6 / H_2O_2, OH^-$) yields propan-1-ol ($CH_3-CH_2-CH_2-OH, R$).\nPropan-2-ol (P) and propan-1-ol (R) are position isomers.",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch17/q64_reaction.png"
+  },
+  {
+    "id": "pyq-chem-ch17-064",
+    "subject": "Chemistry",
+    "chapter": "Aldehydes, Ketones and Carboxylic Acids",
+    "chapter_number": 17,
+    "question": "Propanone and propanal are",
+    "options": [
+      "position isomers",
+      "functional isomers",
+      "chain isomers",
+      "geometrical isomers"
+    ],
+    "correct_answer": 1,
+    "year": 2024,
+    "explanation": "Propanone ($CH_3COCH_3$, a ketone) and propanal ($CH_3CH_2CHO$, an aldehyde) share the same molecular formula $C_3H_6O$ but have different functional groups, making them functional isomers.",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

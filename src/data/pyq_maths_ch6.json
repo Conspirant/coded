@@ -1,0 +1,223 @@
+[
+  {
+    "id": "math_ch6_q1",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2007,
+    "question": "The number of positive divisors of $252$ is",
+    "options": [
+      "9",
+      "5",
+      "18",
+      "10"
+    ],
+    "correct_answer": 2,
+    "explanation": "Prime factorisation of $252$ is:\n$252 = 2^2 \\times 3^2 \\times 7^1$.\n\nThe total number of positive divisors of a number $N = p_1^{a_1} p_2^{a_2} p_3^{a_3}$ is given by:\n$(a_1 + 1)(a_2 + 1)(a_3 + 1)$\n$= (2 + 1)(2 + 1)(1 + 1) = 3 \\times 3 \\times 2 = 18$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q2",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2010,
+    "question": "A simple graph contains 24 edges. Degree of each vertex is 3. The number of vertices is",
+    "options": [
+      "12",
+      "8",
+      "16",
+      "21"
+    ],
+    "correct_answer": 2,
+    "explanation": "By the Handshaking Lemma for graphs:\n$\\sum_{v \\in V} \\text{deg}(v) = 2E$\nGiven that each vertex has degree 3 and $E = 24$:\n$3V = 2 \\times 24 = 48 \\implies V = \\frac{48}{3} = 16$.\nTherefore, the number of vertices is 16 (Option c).",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q3",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2011,
+    "question": "The sum of all positive divisors of $242$ except 1 and itself is",
+    "options": [
+      "156",
+      "242",
+      "342",
+      "399"
+    ],
+    "correct_answer": 0,
+    "explanation": "Prime factorisation of $242$ is:\n$242 = 2^1 \\times 11^2$.\n\nThe sum of all positive divisors of $N = p_1^{a_1} p_2^{a_2}$ is:\n$\\sigma(N) = \\left(\\frac{p_1^{a_1+1} - 1}{p_1 - 1}\\right) \\left(\\frac{p_2^{a_2+1} - 1}{p_2 - 1}\\right)$\n$= \\left(\\frac{2^2 - 1}{2 - 1}\\right) \\left(\\frac{11^3 - 1}{11 - 1}\\right) = (3) \\left(\\frac{1330}{10}\\right) = 3 \\times 133 = 399$.\n\nSum of all divisors except 1 and 242 is:\n$399 - (1 + 242) = 399 - 243 = 156$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q4",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "How many 5-digit telephone numbers can be constructed using the digits 0 to 9, if each number starts with 67 and no digit appears more than once?",
+    "options": [
+      "335",
+      "336",
+      "338",
+      "337"
+    ],
+    "correct_answer": 1,
+    "explanation": "A 5-digit number has 5 positions: $\\_ \\_ \\_ \\_ \\_$.\nThe first two digits are fixed as $6$ and $7$.\nTotal digits available from $0$ to $9$ is $10$.\nSince digits 6 and 7 are already used and repetition is not allowed, the remaining 3 positions must be filled from the remaining $10 - 2 = 8$ digits without repetition:\nNumber of ways $= 8 \\times 7 \\times 6 = 336$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q5",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2017,
+    "question": "If ${}^n C_{12} = {}^n C_8$, then $n$ is equal to",
+    "options": [
+      "12",
+      "26",
+      "6",
+      "20"
+    ],
+    "correct_answer": 3,
+    "explanation": "If ${}^n C_x = {}^n C_y$, then either $x = y$ or $x + y = n$.\nSince $12 \\neq 8$, we must have:\n$n = 12 + 8 = 20$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q6",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2018,
+    "question": "Everybody in a room shakes hands with everybody else. The total number of handshakes is 45. The total number of persons in the room is",
+    "options": [
+      "9",
+      "10",
+      "5",
+      "15"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let the total number of persons in the room be $x$.\nEach handshake involves 2 persons, so the total number of handshakes is:\n$\\frac{x(x - 1)}{2} = 45$\n$x(x - 1) = 90$\n$x^2 - x - 90 = 0$\n$(x - 10)(x + 9) = 0$\nSince the number of persons must be positive, $x = 10$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q7",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2018,
+    "question": "The number of ways in which 5 girls and 3 boys can be seated in a row so that no two boys are together is",
+    "options": [
+      "14040",
+      "14440",
+      "14000",
+      "14400"
+    ],
+    "correct_answer": 3,
+    "explanation": "First, arrange the 5 girls in a row:\nNumber of ways $= 5! = 120$.\n\nSeating 5 girls creates 6 possible gaps (including ends):\n$\\times \\text{ G } \\times \\text{ G } \\times \\text{ G } \\times \\text{ G } \\times \\text{ G } \\times$\nTo ensure no two boys are together, the 3 boys must occupy 3 of these 6 gaps:\nNumber of ways to place 3 boys in 6 gaps $= {}^6 P_3 = 6 \\times 5 \\times 4 = 120$.\n\nTotal number of seating arrangements $= 5! \\times {}^6 P_3 = 120 \\times 120 = 14400$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q8",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2019,
+    "question": "The number of 4-digit numbers without repetition that can be formed using the digits 1, 2, 3, 4, 5, 6, 7 in which each number has two odd digits and two even digits is",
+    "options": [
+      "432",
+      "450",
+      "436",
+      "454"
+    ],
+    "correct_answer": 0,
+    "explanation": "Given digits: $\\{1, 2, 3, 4, 5, 6, 7\\}$.\n- Odd digits: $\\{1, 3, 5, 7\\}$ (4 digits)\n- Even digits: $\\{2, 4, 6\\}$ (3 digits)\n\nSelection:\n- 2 odd digits out of 4 can be chosen in ${}^4 C_2 = 6$ ways.\n- 2 even digits out of 3 can be chosen in ${}^3 C_2 = 3$ ways.\nTotal combinations of 4 digits $= 6 \\times 3 = 18$.\n\nArrangement:\nAny 4 distinct digits can be arranged to form a 4-digit number in $4! = 24$ ways.\n\nTotal number of 4-digit numbers $= 18 \\times 24 = 432$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q9",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2020,
+    "question": "If $A$ and $B$ are two sets such that $B \\subset A$ and $n(A \\times B) = 35$, then the number of ways of choosing a subset of size $n(B)$ from $A$ is",
+    "options": [
+      "28",
+      "35",
+      "42",
+      "21"
+    ],
+    "correct_answer": 3,
+    "explanation": "Given $n(A \\times B) = n(A) \\times n(B) = 35$.\nSince $35 = 7 \\times 5$ (and $B \\subset A$ implies $n(B) \\leq n(A)$), we have:\n$n(A) = 7$ and $n(B) = 5$.\n\nThe number of ways of selecting a subset of size $n(B) = 5$ from set $A$ (size 7) is:\n${}^{n(A)} C_{n(B)} = {}^7 C_5 = {}^7 C_2 = \\frac{7 \\times 6}{2} = 21$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q10",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2021,
+    "question": "A student has to answer 10 questions, choosing at least 4 from each of parts A and B. If there are 6 questions in part A and 7 in part B, then the number of ways the student can choose 10 questions is",
+    "options": [
+      "256",
+      "352",
+      "266",
+      "426"
+    ],
+    "correct_answer": 2,
+    "explanation": "The student must choose 10 questions from Part A (6 questions) and Part B (7 questions) with at least 4 from each part.\nThe possible combinations are:\n1. 4 from Part A and 6 from Part B: ${}^6 C_4 \\times {}^7 C_6 = 15 \\times 7 = 105$\n2. 5 from Part A and 5 from Part B: ${}^6 C_5 \\times {}^7 C_5 = 6 \\times 21 = 126$\n3. 6 from Part A and 4 from Part B: ${}^6 C_6 \\times {}^7 C_4 = 1 \\times 35 = 35$\n\nTotal number of ways $= 105 + 126 + 35 = 266$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q11",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2021,
+    "question": "If all permutations of the letters of the word MASK are arranged in dictionary order with or without meaning, which of the following is the 19th word?",
+    "options": [
+      "KAMS",
+      "AKMS",
+      "SAMK",
+      "AMSK"
+    ],
+    "correct_answer": 2,
+    "explanation": "The letters of the word $\\text{MASK}$ in alphabetical order are: $\\text{A, K, M, S}$.\n- Words starting with $\\text{A}$: $3! = 6$ words (ranks 1 to 6)\n- Words starting with $\\text{K}$: $3! = 6$ words (ranks 7 to 12)\n- Words starting with $\\text{M}$: $3! = 6$ words (ranks 13 to 18)\n\nThe 19th word must start with $\\text{S}$.\nIn alphabetical order, words starting with $\\text{S}$ are:\n- 19th word: $\\text{SAKM}$\n- 20th word: $\\text{SAMK}$\nNote: In the original examination, none of the options matched $\\text{SAKM}$ exactly, so credit was awarded for option (c) / bonus.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q12",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2022,
+    "question": "Ten chairs are numbered as 1 to 10. Three women and two men wish to occupy one chair each. First the women choose the chairs marked 1 to 6, then the men choose the chairs from the remaining. The number of possible ways is",
+    "options": [
+      "${}^6 C_3 \\times {}^4 P_2$",
+      "${}^6 C_3 \\times {}^4 C_2$",
+      "${}^6 P_3 \\times {}^4 C_2$",
+      "${}^6 P_3 \\times {}^4 P_2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Women occupying chairs:\nThere are 6 chairs marked 1 to 6. Three women choose and sit on 3 chairs out of 6:\nNumber of ways $= {}^6 C_3 \\times 3! = {}^6 P_3$.\n\n2. Men occupying remaining chairs:\nOut of the total 10 chairs, 3 have been occupied by women, leaving $10 - 3 = 7$ chairs (specifically, the 3 remaining from 1 to 6 plus chairs 7 to 10, total 4 or remaining choices). The problem states men choose from the remaining designated chairs ($4$ chairs remaining for them):\nNumber of ways $= {}^4 C_2 \\times 2! = {}^4 P_2$.\n\nTotal number of ways $= {}^6 P_3 \\times {}^4 P_2$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch6_q13",
+    "subject": "Mathematics",
+    "chapter": "Permutations and Combinations",
+    "chapter_number": 6,
+    "year": 2023,
+    "question": "The value of ${}^{49}C_4 + {}^{48}C_4 + {}^{47}C_4 + {}^{46}C_4 + {}^{45}C_4 + {}^{45}C_5$ is",
+    "options": [
+      "${}^{50}C_5$",
+      "${}^{50}C_3$",
+      "${}^{50}C_4$",
+      "${}^{50}C_2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Using Pascal's Identity: ${}^n C_r + {}^n C_{r-1} = {}^{n+1}C_r$.\n\nGrouping from right to left:\n- ${}^{45}C_5 + {}^{45}C_4 = {}^{46}C_5$\n- ${}^{46}C_5 + {}^{46}C_4 = {}^{47}C_5$\n- ${}^{47}C_5 + {}^{47}C_4 = {}^{48}C_5$\n- ${}^{48}C_5 + {}^{48}C_4 = {}^{49}C_5$\n- ${}^{49}C_5 + {}^{49}C_4 = {}^{50}C_5$.\n\nTherefore, the sum equals ${}^{50}C_5$ (Option a).",
+    "needs_image": false
+  }
+]

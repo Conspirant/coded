@@ -1,0 +1,92 @@
+[
+  {
+    "subject": "Mathematics",
+    "chapter": "Sets",
+    "chapter_number": 1,
+    "question": "The set $A = \\{x \\in \\mathbb{R} : |2x + 3| < 7\\}$ is equal to the set",
+    "options": [
+      "$\\{x \\in \\mathbb{R} : -5 < x < 2\\}$",
+      "$\\{x \\in \\mathbb{R} : -7 < x < 7\\}$",
+      "$\\{x \\in \\mathbb{R} : -3 < x < 2\\}$",
+      "$\\{x \\in \\mathbb{R} : -2 < x < 5\\}$"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "$|2x + 3| < 7 \\implies -7 < 2x + 3 < 7$.\\nSubtract 3 throughout:\\n$-10 < 2x < 4$.\\nDivide by 2:\\n$-5 < x < 2$.\\nHence, $A = \\{x \\in \\mathbb{R} : -5 < x < 2\\}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-math-ch1-001"
+  },
+  {
+    "subject": "Mathematics",
+    "chapter": "Sets",
+    "chapter_number": 1,
+    "question": "The set-builder form of the set $A = \\{-1, 1\\}$ is",
+    "options": [
+      "$\\{x : x^2 - 1 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x^2 + 1 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x^2 - 9 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x \\text{ is a prime number}\\}$"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "The roots of $x^2 - 1 = 0$ are $x = \\pm 1$.\\nTherefore, $A = \\{-1, 1\\} = \\{x : x^2 - 1 = 0, x \\in \\mathbb{R}\\}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-math-ch1-002"
+  },
+  {
+    "subject": "Mathematics",
+    "chapter": "Sets",
+    "chapter_number": 1,
+    "question": "Which of the following is an empty set?",
+    "options": [
+      "$\\{x : x^2 - 9 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x^2 - 1 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x^2 + 1 = 0, x \\in \\mathbb{R}\\}$",
+      "$\\{x : x^2 = x + 2, x \\in \\mathbb{R}\\}$"
+    ],
+    "correct_answer": 2,
+    "year": 2017,
+    "explanation": "For $x^2 + 1 = 0$, $x^2 = -1 \\implies x = \\pm i$, which has no real solutions ($x \\notin \\mathbb{R}$).\\nTherefore, $\\{x : x^2 + 1 = 0, x \\in \\mathbb{R}\\} = \\emptyset$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-math-ch1-003"
+  },
+  {
+    "subject": "Mathematics",
+    "chapter": "Sets",
+    "chapter_number": 1,
+    "question": "If $A$ and $B$ are two sets such that $n(A) = 17$, $n(B) = 23$, and $n(A \\cup B) = 38$, then $n(A \\cap B)$ is",
+    "options": [
+      "$2$",
+      "$4$",
+      "$6$",
+      "$8$"
+    ],
+    "correct_answer": 0,
+    "year": 2020,
+    "explanation": "Using the principle of inclusion-exclusion:\\n$n(A \\cup B) = n(A) + n(B) - n(A \\cap B)$\\n$38 = 17 + 23 - n(A \\cap B)$\\n$38 = 40 - n(A \\cap B) \\implies n(A \\cap B) = 40 - 38 = 2$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-math-ch1-004"
+  },
+  {
+    "subject": "Mathematics",
+    "chapter": "Sets",
+    "chapter_number": 1,
+    "question": "If a set $A$ has $n$ elements, then the total number of non-empty proper subsets of $A$ is",
+    "options": [
+      "$2^n$",
+      "$2^n - 1$",
+      "$2^n - 2$",
+      "$2^{n-1}$"
+    ],
+    "correct_answer": 2,
+    "year": 2023,
+    "explanation": "Total number of subsets of a set with $n$ elements $= 2^n$.\\nProper subsets exclude the set itself $= 2^n - 1$.\\nNon-empty proper subsets exclude both the empty set $\\emptyset$ and the set itself $= 2^n - 2$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-math-ch1-005"
+  }
+]

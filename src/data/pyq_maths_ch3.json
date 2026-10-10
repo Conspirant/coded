@@ -1,0 +1,687 @@
+[
+  {
+    "id": "kcet-maths-ch3-001",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2006,
+    "question": "If $\\sec\\theta = m$ and $\\tan\\theta = n$, then $\\frac{1}{m}\\left[(m + n) + \\frac{1}{m + n}\\right] =$",
+    "options": [
+      "2",
+      "$2m$",
+      "$2n$",
+      "$mn$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nGiven $\\sec\\theta = m$ and $\\tan\\theta = n$.\n$$\\frac{1}{m + n} = \\frac{1}{\\sec\\theta + \\tan\\theta} = \\frac{\\sec\\theta - \\tan\\theta}{\\sec^2\\theta - \\tan^2\\theta} = \\sec\\theta - \\tan\\theta$$\n$$(m + n) + \\frac{1}{m + n} = (\\sec\\theta + \\tan\\theta) + (\\sec\\theta - \\tan\\theta) = 2\\sec\\theta = 2m$$\n$$\\therefore \\frac{1}{m}\\left[(m + n) + \\frac{1}{m + n}\\right] = \\frac{1}{m}(2m) = 2$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-002",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2006,
+    "question": "The value of $\\frac{\\sin 85^\\circ - \\sin 35^\\circ}{\\cos 65^\\circ} =$",
+    "options": [
+      "2",
+      "-1",
+      "1",
+      "0"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nUsing the transformation formula $\\sin C - \\sin D = 2\\cos\\left(\\frac{C+D}{2}\\right)\\sin\\left(\\frac{C-D}{2}\\right)$:\n$$\\sin 85^\\circ - \\sin 35^\\circ = 2\\cos\\left(\\frac{85^\\circ + 35^\\circ}{2}\\right)\\sin\\left(\\frac{85^\\circ - 35^\\circ}{2}\\right) = 2\\cos 60^\\circ \\sin 25^\\circ$$\n$$= 2\\left(\\frac{1}{2}\\right)\\sin 25^\\circ = \\sin 25^\\circ$$\nSince $\\cos 65^\\circ = \\cos(90^\\circ - 25^\\circ) = \\sin 25^\\circ$:\n$$\\frac{\\sin 85^\\circ - \\sin 35^\\circ}{\\cos 65^\\circ} = \\frac{\\sin 25^\\circ}{\\sin 25^\\circ} = 1$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-003",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2006,
+    "question": "If the angles of a triangle are in the ratio $3 : 4 : 5$, then the sides are in the ratio",
+    "options": [
+      "$2 : \\sqrt{6} : \\sqrt{3} + 1$",
+      "$\\sqrt{2} : \\sqrt{6} : \\sqrt{3} + 1$",
+      "$2 : \\sqrt{3} : \\sqrt{3} + 1$",
+      "$3 : 4 : 5$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nLet the angles be $3\\theta, 4\\theta, 5\\theta$.\n$$3\\theta + 4\\theta + 5\\theta = 180^\\circ \\implies 12\\theta = 180^\\circ \\implies \\theta = 15^\\circ$$\nAngles are $A = 45^\\circ$, $B = 60^\\circ$, $C = 75^\\circ$.\nBy Sine Rule, $a : b : c = \\sin A : \\sin B : \\sin C$:\n$$\\sin 45^\\circ = \\frac{1}{\\sqrt{2}}, \\quad \\sin 60^\\circ = \\frac{\\sqrt{3}}{2}, \\quad \\sin 75^\\circ = \\frac{\\sqrt{3}+1}{2\\sqrt{2}}$$\nMultiplying each ratio by $2\\sqrt{2}$:\n$$a : b : c = 2 : \\sqrt{6} : (\\sqrt{3} + 1)$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-004",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2006,
+    "question": "If $\\cos^{-1} x = \\alpha, (0 < x < 1)$ and $\\sin^{-1}(2x\\sqrt{1-x^2}) + \\sec^{-1}\\left(\\frac{1}{2x^2 - 1}\\right) = \\frac{2\\pi}{3}$, then $\\tan^{-1}(2x)$ equals",
+    "options": [
+      "$\\pi/6$",
+      "$\\pi/4$",
+      "$\\pi/3$",
+      "$\\pi/2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nGiven $x = \\cos\\alpha$.\n$$\\sin^{-1}(2\\cos\\alpha\\sqrt{1-\\cos^2\\alpha}) + \\sec^{-1}\\left(\\frac{1}{2\\cos^2\\alpha - 1}\\right) = \\frac{2\\pi}{3}$$\n$$\\sin^{-1}(\\sin 2\\alpha) + \\sec^{-1}(\\sec 2\\alpha) = 2\\alpha + 2\\alpha = 4\\alpha = \\frac{2\\pi}{3} \\implies \\alpha = \\frac{\\pi}{6}$$\n$$x = \\cos\\left(\\frac{\\pi}{6}\\right) = \\frac{\\sqrt{3}}{2} \\implies 2x = \\sqrt{3}$$\n$$\\therefore \\tan^{-1}(2x) = \\tan^{-1}(\\sqrt{3}) = \\frac{\\pi}{3}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-005",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2006,
+    "question": "Which one of the following equations has no solution?",
+    "options": [
+      "$\\operatorname{cosec}\\theta - \\sec\\theta = \\operatorname{cosec}\\theta \\cdot \\sec\\theta$",
+      "$\\operatorname{cosec}\\theta \\cdot \\sec\\theta = 1$",
+      "$\\cos\\theta + \\sin\\theta = \\sqrt{2}$",
+      "$\\sqrt{3}\\sin\\theta - \\cos\\theta = 2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nFor $\\operatorname{cosec}\\theta - \\sec\\theta = \\operatorname{cosec}\\theta \\cdot \\sec\\theta$:\n$$\\frac{1}{\\sin\\theta} - \\frac{1}{\\cos\\theta} = \\frac{1}{\\sin\\theta\\cos\\theta} \\implies \\cos\\theta - \\sin\\theta = 1$$\nDividing by $\\sqrt{2}$: $\\cos(\\theta + 45^\\circ) = \\frac{1}{\\sqrt{2}} \\implies \\theta = 0^\\circ$ or $-90^\\circ$.\nHowever, at $\\theta = 0^\\circ$, $\\operatorname{cosec}\\theta$ is undefined, and at $\\theta = -90^\\circ$, $\\sec\\theta$ is undefined. Hence, no valid real solution exists.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-006",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2007,
+    "question": "$\\sin^2 17.5^\\circ + \\sin^2 72.5^\\circ$ is equal to",
+    "options": [
+      "$\\cos^2 90^\\circ$",
+      "$\\tan^2 45^\\circ$",
+      "$\\cos^2 30^\\circ$",
+      "$\\sin^2 45^\\circ$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n$$\\sin^2 72.5^\\circ = \\sin^2(90^\\circ - 17.5^\\circ) = \\cos^2 17.5^\\circ$$\n$$\\sin^2 17.5^\\circ + \\cos^2 17.5^\\circ = 1 = \\tan^2 45^\\circ$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-007",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2007,
+    "question": "$ABC$ is a triangle with $\\angle A = 30^\\circ$, $BC = 10\\text{ cm}$. The area of the circumcircle of the triangle is",
+    "options": [
+      "$100\\pi\\text{ sq. cm}$",
+      "$5\\text{ sq. cm}$",
+      "$25\\text{ sq. cm}$",
+      "$\\frac{100\\pi}{3}\\text{ sq. cm}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n![Circle Diagram](/pyq_images/maths/ch3/exp_q7.png)\n\nIn $\\triangle ABC$, $\\angle A = 30^\\circ$.\nThe angle subtended by chord $BC$ at the circumcentre $O$ is $\\angle BOC = 2\\angle A = 60^\\circ$.\nSince $OB = OC = R$ (circumradius), $\\triangle OBC$ is an equilateral triangle.\n$$\\therefore R = BC = 10\\text{ cm}$$\n$$\\text{Area of circumcircle} = \\pi R^2 = \\pi (10)^2 = 100\\pi\\text{ sq. cm}$$",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/maths/ch3/exp_q7.png"
+  },
+  {
+    "id": "kcet-maths-ch3-008",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2007,
+    "question": "The value of $\\sin\\left[2\\cos^{-1}\\left(\\frac{\\sqrt{5}}{3}\\right)\\right]$ is",
+    "options": [
+      "$\\frac{\\sqrt{5}}{3}$",
+      "$\\frac{2\\sqrt{5}}{3}$",
+      "$\\frac{4\\sqrt{5}}{9}$",
+      "$\\frac{2\\sqrt{5}}{9}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nLet $\\cos^{-1}\\left(\\frac{\\sqrt{5}}{3}\\right) = \\theta \\implies \\cos\\theta = \\frac{\\sqrt{5}}{3}$.\n$$\\sin\\theta = \\sqrt{1 - \\cos^2\\theta} = \\sqrt{1 - \\frac{5}{9}} = \\frac{2}{3}$$\n$$\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta = 2\\left(\\frac{2}{3}\\right)\\left(\\frac{\\sqrt{5}}{3}\\right) = \\frac{4\\sqrt{5}}{9}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-009",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2008,
+    "question": "$\\sin\\left[2\\sin^{-1}\\left(\\sqrt{\\frac{63}{65}}\\right)\\right] =$",
+    "options": [
+      "$\\frac{8\\sqrt{63}}{65}$",
+      "$\\frac{\\sqrt{63}}{65}$",
+      "$\\frac{2\\sqrt{126}}{65}$",
+      "$\\frac{4\\sqrt{65}}{65}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nUsing $\\sin(2\\sin^{-1} x) = 2x\\sqrt{1 - x^2}$ with $x = \\sqrt{\\frac{63}{65}}$:\n$$\\sqrt{1 - x^2} = \\sqrt{1 - \\frac{63}{65}} = \\sqrt{\\frac{2}{65}}$$\n$$\\sin(2\\theta) = 2\\sqrt{\\frac{63}{65}}\\sqrt{\\frac{2}{65}} = 2\\frac{\\sqrt{126}}{65} = \\frac{2\\sqrt{126}}{65}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-010",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2008,
+    "question": "If $\\sqrt{\\frac{1+\\cos A}{1-\\cos A}} = \\frac{x}{y}$, then the value of $\\tan A =$",
+    "options": [
+      "$\\frac{2xy}{x^2 - y^2}$",
+      "$\\frac{2xy}{y^2 - x^2}$",
+      "$\\frac{x^2 + y^2}{x^2 - y^2}$",
+      "$\\frac{2xy}{x^2 + y^2}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$$\\sqrt{\\frac{1+\\cos A}{1-\\cos A}} = \\sqrt{\\frac{2\\cos^2(A/2)}{2\\sin^2(A/2)}} = \\cot(A/2) = \\frac{x}{y} \\implies \\tan(A/2) = \\frac{y}{x}$$\nUsing the double-angle identity for $\\tan A$:\n$$\\tan A = \\frac{2\\tan(A/2)}{1 - \\tan^2(A/2)} = \\frac{2(y/x)}{1 - (y/x)^2} = \\frac{2xy}{x^2 - y^2}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-011",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2009,
+    "question": "The minimum value of $27^{\\cos 2x} 81^{\\sin 2x}$ is",
+    "options": [
+      "$\\frac{1}{243}$",
+      "$\\frac{1}{27}$",
+      "-5",
+      "1/5"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$$27^{\\cos 2x} 81^{\\sin 2x} = (3^3)^{\\cos 2x} (3^4)^{\\sin 2x} = 3^{3\\cos 2x + 4\\sin 2x}$$\nThe expression $3\\cos 2x + 4\\sin 2x$ has minimum value:\n$$-\\sqrt{3^2 + 4^2} = -5$$\n$$\\therefore \\text{Minimum value} = 3^{-5} = \\frac{1}{3^5} = \\frac{1}{243}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-012",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2009,
+    "question": "If '$x$' takes negative permissible value, then $\\sin^{-1} x$ is equal to",
+    "options": [
+      "$\\pi - \\cos^{-1}\\sqrt{1-x^2}$",
+      "$\\cos^{-1}\\sqrt{1-x^2}$",
+      "$-\\cos^{-1}\\sqrt{1-x^2}$",
+      "$\\cos^{-1}\\sqrt{x^2-1}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nLet $\\sin^{-1} x = \\alpha$. For negative $x \\in [-1, 0)$, $\\alpha \\in [-\\pi/2, 0)$ (fourth quadrant).\nThen $\\cos\\alpha = \\sqrt{1 - x^2} > 0$, so $\\cos(-\\alpha) = \\sqrt{1 - x^2}$.\nSince $-\\alpha \\in (0, \\pi/2]$, by definition of principal value of $\\cos^{-1}$:\n$$-\\alpha = \\cos^{-1}\\sqrt{1-x^2} \\implies \\alpha = -\\cos^{-1}\\sqrt{1-x^2}$$\n$$\\therefore \\sin^{-1} x = -\\cos^{-1}\\sqrt{1-x^2}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-013",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2009,
+    "question": "Which one of the following is possible?",
+    "options": [
+      "$\\tan\\theta = 45$",
+      "$\\cos\\theta = 7/3$",
+      "$\\sin\\theta = \\frac{a^2+b^2}{a^2-b^2}, (a \\ne b)$",
+      "$\\sec\\theta = 4/5$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n- The range of $\\tan\\theta$ is $(-\\infty, \\infty)$, so $\\tan\\theta = 45$ is entirely possible.\n- For real $\\theta$, $|\\cos\\theta| \\le 1$ (so $\\cos\\theta = 7/3 > 1$ is impossible),\n- $|\\sec\\theta| \\ge 1$ (so $\\sec\\theta = 4/5 < 1$ is impossible),\n- In (c), $a^2+b^2 > a^2-b^2$ for $b \\ne 0$, making $\\sin\\theta > 1$, which is impossible.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-014",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2010,
+    "question": "If $a > b > 0$, $\\sec^{-1}\\left(\\frac{a+b}{a-b}\\right) = 2\\sin^{-1} x$, then $x =$",
+    "options": [
+      "$\\sqrt{\\frac{b}{a+b}}$",
+      "$\\frac{b}{a+b}$",
+      "$\\sqrt{\\frac{a}{a+b}}$",
+      "$\\frac{a}{a+b}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$$\\cos(2\\sin^{-1} x) = \\frac{a-b}{a+b}$$\n$$1 - 2x^2 = \\frac{a-b}{a+b} \\implies 2x^2 = 1 - \\frac{a-b}{a+b} = \\frac{(a+b)-(a-b)}{a+b} = \\frac{2b}{a+b}$$\n$$x^2 = \\frac{b}{a+b} \\implies x = \\sqrt{\\frac{b}{a+b}}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-015",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2011,
+    "question": "If $\\tan^{-1} x = \\frac{\\pi}{4} - \\tan^{-1}\\left(\\frac{1}{3}\\right)$, then $x$ is",
+    "options": [
+      "1/3",
+      "1/2",
+      "1/4",
+      "1/6"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n$$x = \\tan\\left(\\frac{\\pi}{4} - \\tan^{-1}\\frac{1}{3}\\right) = \\frac{\\tan(\\pi/4) - 1/3}{1 + \\tan(\\pi/4)(1/3)} = \\frac{1 - 1/3}{1 + 1/3} = \\frac{2/3}{4/3} = \\frac{1}{2}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-016",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2011,
+    "question": "A value of $\\theta$ satisfying $\\sin 5\\theta - \\sin 3\\theta + \\sin\\theta = 0$ such that $0 < \\theta < \\frac{\\pi}{2}$ is",
+    "options": [
+      "$\\pi/12$",
+      "$\\pi/6$",
+      "$\\pi/4$",
+      "$\\pi/2$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n$$(\\sin 5\\theta + \\sin\\theta) - \\sin 3\\theta = 0$$\n$$2\\sin 3\\theta\\cos 2\\theta - \\sin 3\\theta = 0 \\implies \\sin 3\\theta(2\\cos 2\\theta - 1) = 0$$\nEither $\\sin 3\\theta = 0 \\implies 3\\theta = \\pi \\implies \\theta = \\pi/3$,\nor $2\\cos 2\\theta - 1 = 0 \\implies \\cos 2\\theta = 1/2 \\implies 2\\theta = \\pi/3 \\implies \\theta = \\pi/6$.\nBoth are in $(0, \\pi/2)$; among the choices, $\\pi/6$ is given in (b).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-017",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2012,
+    "question": "$2\\cos^{-1} x = \\sin^{-1}(2x\\sqrt{1-x^2})$ is valid for all values of $x$ satisfying",
+    "options": [
+      "$0 \\le x \\le \\frac{1}{\\sqrt{2}}$",
+      "$-1 \\le x \\le 1$",
+      "$0 \\le x \\le 1$",
+      "$\\frac{1}{\\sqrt{2}} \\le x \\le 1$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nLet $\\cos^{-1} x = \\theta \\implies x = \\cos\\theta$, with $\\theta \\in [0, \\pi]$.\nThen $2x\\sqrt{1-x^2} = 2\\cos\\theta\\sin\\theta = \\sin 2\\theta$.\nFor $\\sin^{-1}(\\sin 2\\theta) = 2\\theta$, we must have $2\\theta \\in [-\\pi/2, \\pi/2]$.\nCombined with $\\theta \\in [0, \\pi]$, this requires $2\\theta \\in [0, \\pi/2] \\implies \\theta \\in [0, \\pi/4]$.\n$$\\therefore x = \\cos\\theta \\in [\\cos(\\pi/4), \\cos 0] = \\left[\\frac{1}{\\sqrt{2}}, 1\\right]$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-018",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2012,
+    "question": "If $\\cos\\alpha + 2\\cos\\beta + 3\\cos\\gamma = 0$, $\\sin\\alpha + 2\\sin\\beta + 3\\sin\\gamma = 0$ and $\\alpha + \\beta + \\gamma = \\pi$, then $\\sin 3\\alpha + 8\\sin 3\\beta + 27\\sin 3\\gamma =$",
+    "options": [
+      "9",
+      "-18",
+      "0",
+      "3"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nLet $a = e^{i\\alpha}, b = 2e^{i\\beta}, c = 3e^{i\\gamma}$.\nThen $a + b + c = (\\cos\\alpha + 2\\cos\\beta + 3\\cos\\gamma) + i(\\sin\\alpha + 2\\sin\\beta + 3\\sin\\gamma) = 0$.\nSince $a + b + c = 0$, we have $a^3 + b^3 + c^3 = 3abc$:\n$$e^{i3\\alpha} + 8e^{i3\\beta} + 27e^{i3\\gamma} = 3(e^{i\\alpha})(2e^{i\\beta})(3e^{i\\gamma}) = 18e^{i(\\alpha+\\beta+\\gamma)}$$\nGiven $\\alpha + \\beta + \\gamma = \\pi$, $e^{i\\pi} = \\cos\\pi + i\\sin\\pi = -1 + 0i$.\nEquating imaginary parts:\n$$\\sin 3\\alpha + 8\\sin 3\\beta + 27\\sin 3\\gamma = 18\\sin\\pi = 0$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-019",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2012,
+    "question": "$\\frac{3x+1}{(x-1)(x+3)} = \\frac{A}{x-1} + \\frac{B}{x+3}$, then $\\sin^{-1}\\left(\\frac{A}{B}\\right) =$",
+    "options": [
+      "$\\pi/4$",
+      "$\\pi/2$",
+      "$\\pi/3$",
+      "$\\pi/6$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$$3x + 1 = A(x + 3) + B(x - 1)$$\n- For $x = 1$: $4 = 4A \\implies A = 1$\n- For $x = -3$: $-8 = -4B \\implies B = 2$\n$$\\therefore \\sin^{-1}\\left(\\frac{A}{B}\\right) = \\sin^{-1}\\left(\\frac{1}{2}\\right) = \\frac{\\pi}{6}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-020",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2012,
+    "question": "The number of real solutions of the equation $\\tan^{-1}\\sqrt{x(x+1)} + \\sin^{-1}\\sqrt{x^2+x+1} = \\frac{\\pi}{2}$ is",
+    "options": [
+      "infinitely many",
+      "one",
+      "four",
+      "two"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nFor $\\tan^{-1}\\sqrt{x(x+1)}$ to be defined, $x(x+1) \\ge 0$.\nFor $\\sin^{-1}\\sqrt{x^2+x+1}$ to be defined, $0 \\le x^2+x+1 \\le 1 \\implies x(x+1) \\le 0$.\nBoth conditions hold simultaneously only if $x(x+1) = 0 \\implies x = 0$ or $x = -1$.\nTesting both values:\n- For $x = 0$: $\\tan^{-1}(0) + \\sin^{-1}(1) = 0 + \\frac{\\pi}{2} = \\frac{\\pi}{2}$ (valid)\n- For $x = -1$: $\\tan^{-1}(0) + \\sin^{-1}(1) = 0 + \\frac{\\pi}{2} = \\frac{\\pi}{2}$ (valid)\nThus, there are exactly two real solutions.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-021",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2013,
+    "question": "If $\\frac{(x+1)^2}{x^3+x} = \\frac{A}{x} + \\frac{Bx+C}{x^2+1}$, then $\\sin^{-1} A + \\tan^{-1} B + \\sec^{-1} C =$",
+    "options": [
+      "$\\pi/2$",
+      "$\\pi/6$",
+      "0",
+      "$\\frac{5\\pi}{6}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$$(x+1)^2 = x^2 + 2x + 1 = A(x^2 + 1) + (Bx + C)x = (A + B)x^2 + Cx + A$$\nComparing coefficients:\n- Constant term: $A = 1$\n- Coefficient of $x$: $C = 2$\n- Coefficient of $x^2$: $A + B = 1 \\implies 1 + B = 1 \\implies B = 0$\n\nNow evaluate:\n$$\\sin^{-1}(1) + \\tan^{-1}(0) + \\sec^{-1}(2) = \\frac{\\pi}{2} + 0 + \\frac{\\pi}{3} = \\frac{5\\pi}{6}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-022",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2013,
+    "question": "In a triangle $ABC$, if $\\frac{\\cos A}{a} = \\frac{\\cos B}{b} = \\frac{\\cos C}{c}$ and $a = 2$, then its area is",
+    "options": [
+      "$2\\sqrt{3}$",
+      "$\\sqrt{3}$",
+      "$\\frac{\\sqrt{3}}{2}$",
+      "$\\frac{\\sqrt{3}}{4}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nBy the Sine Rule, $\\frac{a}{\\sin A} = \\frac{b}{\\sin B} = \\frac{c}{\\sin C} = 2R$.\nSubstituting into $\\frac{\\cos A}{a} = \\frac{\\cos B}{b} = \\frac{\\cos C}{c}$ gives:\n$$\\cot A = \\cot B = \\cot C \\implies A = B = C = 60^\\circ$$\nTherefore, $\\triangle ABC$ is an equilateral triangle of side $a = 2$.\n$$\\text{Area} = \\frac{\\sqrt{3}}{4} a^2 = \\frac{\\sqrt{3}}{4}(2^2) = \\sqrt{3}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-023",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2014,
+    "question": "Given $0 \\le x \\le \\frac{1}{2}$, then the value of $\\tan\\left[\\sin^{-1}\\left\\{\\frac{x}{\\sqrt{2}} + \\frac{\\sqrt{1-x^2}}{\\sqrt{2}}\\right\\} - \\sin^{-1} x\\right]$ is",
+    "options": [
+      "1",
+      "$\\sqrt{3}$",
+      "-1",
+      "$\\frac{1}{\\sqrt{3}}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nLet $x = \\sin\\theta$. For $0 \\le x \\le 1/2$, $\\theta \\in [0, \\pi/6]$.\n$$\\frac{x}{\\sqrt{2}} + \\frac{\\sqrt{1-x^2}}{\\sqrt{2}} = \\sin\\theta\\cos\\left(\\frac{\\pi}{4}\\right) + \\cos\\theta\\sin\\left(\\frac{\\pi}{4}\\right) = \\sin\\left(\\theta + \\frac{\\pi}{4}\\right)$$\nSince $\\theta + \\frac{\\pi}{4} \\in [\\pi/4, 5\\pi/12] \\subset [-\\pi/2, \\pi/2]$, $\\sin^{-1}\\left(\\sin\\left(\\theta + \\frac{\\pi}{4}\\right)\\right) = \\theta + \\frac{\\pi}{4}$.\n$$\\theta + \\frac{\\pi}{4} - \\sin^{-1} x = \\theta + \\frac{\\pi}{4} - \\theta = \\frac{\\pi}{4}$$\n$$\\therefore \\tan\\left(\\frac{\\pi}{4}\\right) = 1$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-024",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2014,
+    "question": "If $\\sin\\theta = \\sin\\alpha$, then",
+    "options": [
+      "$\\frac{\\theta+\\alpha}{2}$ is any multiple of $\\frac{\\pi}{2}$ and $\\frac{\\theta-\\alpha}{2}$ is any odd multiple of $\\pi$.",
+      "$\\frac{\\theta+\\alpha}{2}$ is any odd multiple of $\\frac{\\pi}{2}$ and $\\frac{\\theta-\\alpha}{2}$ is any multiple of $\\pi$.",
+      "$\\frac{\\theta+\\alpha}{2}$ is any multiple of $\\frac{\\pi}{2}$ and $\\frac{\\theta-\\alpha}{2}$ is any even multiple of $\\pi$.",
+      "$\\frac{\\theta+\\alpha}{2}$ is any even multiple of $\\frac{\\pi}{2}$ and $\\frac{\\theta-\\alpha}{2}$ is any odd multiple of $\\pi$."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, this question was awarded grace marks (*) because no option was completely mathematically rigorous (option b would be correct if 'and' is replaced by 'or').\n\n$$\\sin\\theta - \\sin\\alpha = 0 \\implies 2\\cos\\left(\\frac{\\theta+\\alpha}{2}\\right)\\sin\\left(\\frac{\\theta-\\alpha}{2}\\right) = 0$$\nThis implies either $\\cos\\left(\\frac{\\theta+\\alpha}{2}\\right) = 0 \\implies \\frac{\\theta+\\alpha}{2} = (2n+1)\\frac{\\pi}{2}$ (odd multiple of $\\pi/2$),\nOR $\\sin\\left(\\frac{\\theta-\\alpha}{2}\\right) = 0 \\implies \\frac{\\theta-\\alpha}{2} = k\\pi$ (any multiple of $\\pi$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-025",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2014,
+    "question": "If $\\tan x = \\frac{3}{4}, \\pi < x < \\frac{3\\pi}{2}$, then the value of $\\cos\\frac{x}{2}$ is",
+    "options": [
+      "$-\\frac{1}{\\sqrt{10}}$",
+      "$\\frac{3}{\\sqrt{10}}$",
+      "$\\frac{1}{\\sqrt{10}}$",
+      "$-\\frac{3}{\\sqrt{10}}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nSince $\\pi < x < \\frac{3\\pi}{2}$ (3rd quadrant), $\\cos x = -\\frac{4}{5}$.\nAlso, $\\frac{\\pi}{2} < \\frac{x}{2} < \\frac{3\\pi}{4}$ (2nd quadrant), where $\\cos\\frac{x}{2} < 0$.\n$$\\cos^2\\left(\\frac{x}{2}\\right) = \\frac{1 + \\cos x}{2} = \\frac{1 - 4/5}{2} = \\frac{1/5}{2} = \\frac{1}{10}$$\n$$\\therefore \\cos\\left(\\frac{x}{2}\\right) = -\\frac{1}{\\sqrt{10}}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-026",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2015,
+    "question": "Solve for $x$, $\\tan^{-1}\\left(\\frac{1-x}{1+x}\\right) = \\frac{1}{2}\\tan^{-1} x, x > 0$",
+    "options": [
+      "1",
+      "$\\frac{1}{\\sqrt{3}}$",
+      "$\\sqrt{3}$",
+      "-1"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nUsing $\\tan^{-1}\\left(\\frac{1-x}{1+x}\\right) = \\tan^{-1}(1) - \\tan^{-1} x = \\frac{\\pi}{4} - \\tan^{-1} x$:\n$$\\frac{\\pi}{4} - \\tan^{-1} x = \\frac{1}{2}\\tan^{-1} x \\implies \\frac{3}{2}\\tan^{-1} x = \\frac{\\pi}{4}$$\n$$\\tan^{-1} x = \\frac{\\pi}{6} \\implies x = \\tan\\left(\\frac{\\pi}{6}\\right) = \\frac{1}{\\sqrt{3}}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-027",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2015,
+    "question": "The value of $\\sin^{-1}\\left(\\frac{2\\sqrt{2}}{3}\\right) + \\sin^{-1}\\left(\\frac{1}{3}\\right)$ is equal to",
+    "options": [
+      "$\\pi/2$",
+      "$\\frac{2\\pi}{3}$",
+      "$\\pi/6$",
+      "$\\pi/4$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nLet $\\sin^{-1}\\left(\\frac{2\\sqrt{2}}{3}\\right) = \\theta \\implies \\sin\\theta = \\frac{2\\sqrt{2}}{3}$.\n$$\\cos\\theta = \\sqrt{1 - \\sin^2\\theta} = \\sqrt{1 - \\frac{8}{9}} = \\frac{1}{3} \\implies \\theta = \\cos^{-1}\\left(\\frac{1}{3}\\right)$$\n$$\\therefore \\sin^{-1}\\left(\\frac{2\\sqrt{2}}{3}\\right) + \\sin^{-1}\\left(\\frac{1}{3}\\right) = \\cos^{-1}\\left(\\frac{1}{3}\\right) + \\sin^{-1}\\left(\\frac{1}{3}\\right) = \\frac{\\pi}{2}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-028",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2016,
+    "question": "If $\\sin^{-1} x + \\sin^{-1} y = \\frac{\\pi}{2}$, then $x^2$ is equal to",
+    "options": [
+      "$1 - y^2$",
+      "$y^2$",
+      "0",
+      "$\\sqrt{1 - y}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$$\\sin^{-1} x = \\frac{\\pi}{2} - \\sin^{-1} y = \\cos^{-1} y$$\nTaking sine on both sides:\n$$x = \\sin(\\cos^{-1} y) = \\sqrt{1 - y^2}$$\nSquaring both sides gives $x^2 = 1 - y^2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-029",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2017,
+    "question": "The range of $\\sec^{-1} x$ is",
+    "options": [
+      "$[0, \\pi]$",
+      "$[0, \\pi] - \\{\\pi/2\\}$",
+      "$[-\\pi/2, \\pi/2]$",
+      "$(-\\pi/2, \\pi/2)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nBy standard definition of the principal value branch, the range of $\\sec^{-1} x$ is $[0, \\pi] - \\{\\pi/2\\}$, because $\\sec(\\pi/2)$ is undefined.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-030",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2020,
+    "question": "The domain of the function defined by $f(x) = \\cos^{-1}\\sqrt{x-1}$ is",
+    "options": [
+      "$[0, 2]$",
+      "$[-1, 1]$",
+      "$[0, 1]$",
+      "$[1, 2]$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nFor $\\cos^{-1} u$ to be defined, $-1 \\le u \\le 1$.\nHere $u = \\sqrt{x-1}$, so $0 \\le \\sqrt{x-1} \\le 1$.\nSquaring gives $0 \\le x - 1 \\le 1 \\implies 1 \\le x \\le 2$.\n$$\\text{Domain} = [1, 2]$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-031",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2021,
+    "question": "The function $f(x) = \\sqrt{3}\\sin 2x - \\cos 2x + 4$ is one-one in the interval",
+    "options": [
+      "$\\left[-\\frac{\\pi}{6}, \\frac{\\pi}{3}\\right]$",
+      "$\\left[\\frac{\\pi}{6}, -\\frac{\\pi}{3}\\right]$",
+      "$\\left[-\\frac{\\pi}{2}, \\frac{\\pi}{2}\\right]$",
+      "$\\left[-\\frac{\\pi}{6}, -\\frac{\\pi}{3}\\right]$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$$f(x) = 2\\left(\\frac{\\sqrt{3}}{2}\\sin 2x - \\frac{1}{2}\\cos 2x\\right) + 4 = 2\\sin\\left(2x - \\frac{\\pi}{6}\\right) + 4$$\nA sine function is one-one on any interval of length $\\pi$ where the argument lies in $[-\\pi/2, \\pi/2]$:\n$$-\\frac{\\pi}{2} \\le 2x - \\frac{\\pi}{6} \\le \\frac{\\pi}{2}$$\n$$-\\frac{\\pi}{3} \\le 2x \\le \\frac{2\\pi}{3} \\implies -\\frac{\\pi}{6} \\le x \\le \\frac{\\pi}{3}$$\nHence, $f$ is one-one on $\\left[-\\frac{\\pi}{6}, \\frac{\\pi}{3}\\right]$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-032",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2022,
+    "question": "Domain of $\\cos^{-1}[x]$ is, where $[\\ ]$ denotes a greatest integer function",
+    "options": [
+      "$(-1, 2]$",
+      "$[-1, 2]$",
+      "$(-1, 2)$",
+      "$[-1, 2)$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nFor $\\cos^{-1}[x]$ to be defined:\n$$-1 \\le [x] \\le 1$$\nSince $[x]$ is an integer, $[x] \\in \\{-1, 0, 1\\}$.\n- $[x] = -1 \\implies -1 \\le x < 0$\n- $[x] = 0 \\implies 0 \\le x < 1$\n- $[x] = 1 \\implies 1 \\le x < 2$\nTaking the union: $x \\in [-1, 2)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-033",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2022,
+    "question": "The trigonometric function $y = \\tan x$ in the II quadrant",
+    "options": [
+      "decreases from 0 to $\\infty$",
+      "increases from 0 to $\\infty$",
+      "decreases from $-\\infty$ to 0",
+      "increases from $-\\infty$ to 0"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nAs $x$ increases from $\\frac{\\pi}{2}$ to $\\pi$ (second quadrant):\n$$\\lim_{x \\to (\\pi/2)^+} \\tan x = -\\infty \\quad \\text{and} \\quad \\tan\\pi = 0$$\nSince the derivative $\\frac{d}{dx}(\\tan x) = \\sec^2 x > 0$, the function is strictly increasing from $-\\infty$ to 0.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-034",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2022,
+    "question": "The degree measure of $\\frac{\\pi}{32}$ is equal to",
+    "options": [
+      "$5^\\circ 30' 20''$",
+      "$5^\\circ 37' 30''$",
+      "$5^\\circ 37' 20''$",
+      "$4^\\circ 30' 30''$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n$$\\frac{\\pi}{32}\\text{ radians} = \\frac{180^\\circ}{32} = \\frac{45^\\circ}{8} = 5^\\circ + \\frac{5^\\circ}{8}$$\n$$\\frac{5^\\circ}{8} = \\frac{5 \\times 60'}{8} = \\frac{300'}{8} = 37' + \\frac{4'}{8} = 37' + \\frac{1'}{2}$$\n$$\\frac{1'}{2} = 30''$$\n$$\\therefore \\frac{\\pi}{32} = 5^\\circ 37' 30''$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-035",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2023,
+    "question": "The value of $\\cot^{-1}\\left[\\frac{\\sqrt{1-\\sin x} + \\sqrt{1+\\sin x}}{\\sqrt{1-\\sin x} - \\sqrt{1+\\sin x}}\\right]$, where $x \\in \\left(0, \\frac{\\pi}{4}\\right)$ is",
+    "options": [
+      "$\\pi - \\frac{x}{3}$",
+      "$\\frac{x}{2}$",
+      "$\\pi - \\frac{x}{2}$",
+      "$\\frac{x}{2} - \\pi$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nFor $x \\in \\left(0, \\frac{\\pi}{4}\\right)$, $\\frac{x}{2} \\in \\left(0, \\frac{\\pi}{8}\\right)$, where $\\cos\\frac{x}{2} > \\sin\\frac{x}{2} > 0$:\n$$\\sqrt{1+\\sin x} = \\cos\\frac{x}{2} + \\sin\\frac{x}{2}$$\n$$\\sqrt{1-\\sin x} = \\cos\\frac{x}{2} - \\sin\\frac{x}{2}$$\n$$\\text{Numerator} = (\\cos\\frac{x}{2} - \\sin\\frac{x}{2}) + (\\cos\\frac{x}{2} + \\sin\\frac{x}{2}) = 2\\cos\\frac{x}{2}$$\n$$\\text{Denominator} = (\\cos\\frac{x}{2} - \\sin\\frac{x}{2}) - (\\cos\\frac{x}{2} + \\sin\\frac{x}{2}) = -2\\sin\\frac{x}{2}$$\n$$\\frac{\\text{Numerator}}{\\text{Denominator}} = -\\cot\\frac{x}{2}$$\n$$\\therefore \\cot^{-1}\\left(-\\cot\\frac{x}{2}\\right) = \\pi - \\cot^{-1}\\left(\\cot\\frac{x}{2}\\right) = \\pi - \\frac{x}{2}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-036",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2024,
+    "question": "If in two circles, arcs of the same length subtend angles $30^\\circ$ and $78^\\circ$ at the centre, then the ratio of their radii is",
+    "options": [
+      "5/13",
+      "13/5",
+      "13/4",
+      "4/13"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nArc length formula: $s = r\\theta$ (where $\\theta$ is in radians):\n$$s = r_1 \\theta_1 = r_2 \\theta_2$$\n$$\\frac{r_1}{r_2} = \\frac{\\theta_2}{\\theta_1} = \\frac{78^\\circ}{30^\\circ} = \\frac{13}{5}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-037",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2024,
+    "question": "If $\\triangle ABC$ is right-angled at C, then the value of $\\tan A + \\tan B$ is",
+    "options": [
+      "$a + b$",
+      "$\\frac{a^2}{bc}$",
+      "$\\frac{c^2}{ab}$",
+      "$\\frac{b^2}{ac}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nIn right $\\triangle ABC$ at $C$, $c^2 = a^2 + b^2$, $\\tan A = \\frac{a}{b}$, and $\\tan B = \\frac{b}{a}$.\n$$\\tan A + \\tan B = \\frac{a}{b} + \\frac{b}{a} = \\frac{a^2 + b^2}{ab} = \\frac{c^2}{ab}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-maths-ch3-038",
+    "subject": "Mathematics",
+    "chapter": "Trigonometric Functions",
+    "chapter_number": 3,
+    "year": 2024,
+    "question": "If $\\cos^{-1} x + \\cos^{-1} y + \\cos^{-1} z = 3\\pi$, then $x(y+z) + y(z+x) + z(x+y)$ equals",
+    "options": [
+      "0",
+      "1",
+      "6",
+      "12"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nSince the maximum value of $\\cos^{-1} t$ for any $t \\in [-1, 1]$ is $\\pi$, the sum can only equal $3\\pi$ if each term attains its maximum:\n$$\\cos^{-1} x = \\cos^{-1} y = \\cos^{-1} z = \\pi \\implies x = y = z = \\cos\\pi = -1$$\nSubstituting $x = -1, y = -1, z = -1$:\n$$x(y+z) + y(z+x) + z(x+y) = (-1)(-2) + (-1)(-2) + (-1)(-2) = 2 + 2 + 2 = 6$$",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

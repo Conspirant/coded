@@ -1,0 +1,568 @@
+[
+  {
+    "id": "-001",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "If the distance between the foci and the distance between the directrices of the hyperbola $\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1$ are in the ratio $3 : 2$, then $a : b$ is",
+    "options": [
+      "$\\sqrt{2} : 1$",
+      "$\\sqrt{3} : \\sqrt{2}$",
+      "$1 : 2$",
+      "$2 : 1$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The distance between the foci is $2ae$ and the distance between the directrices is $2a/e$.\nGiven ratio:\n$$\\frac{2ae}{2a/e} = 3 : 2 \\implies e^2 = \\frac{3}{2}$$\nFor a hyperbola, $b^2 = a^2(e^2 - 1)$. Therefore:\n$$\\frac{b^2}{a^2} = e^2 - 1 = \\frac{3}{2} - 1 = \\frac{1}{2} \\implies \\frac{b}{a} = \\frac{1}{\\sqrt{2}}$$\n$$\\implies a : b = \\sqrt{2} : 1$$",
+    "needs_image": false
+  },
+  {
+    "id": "-002",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The ellipse $\\frac{x^2}{25} + \\frac{y^2}{16} = 1$ and the hyperbola $\\frac{x^2}{25} - \\frac{y^2}{16} = 1$ have in common",
+    "options": [
+      "centre only",
+      "centre, foci and directrices",
+      "centre, foci and vertices",
+      "centre and vertices only."
+    ],
+    "correct_answer": 2,
+    "explanation": "For the ellipse $\\frac{x^2}{25} + \\frac{y^2}{16} = 1$ and hyperbola $\\frac{x^2}{25} - \\frac{y^2}{16} = 1$:\n- Centre of ellipse is $(0, 0)$, centre of hyperbola is $(0, 0)$.\n- Vertices of ellipse are $(\\pm 5, 0)$, vertices of hyperbola are $(\\pm 5, 0)$.\nIn the official KCET key, option (c) 'centre, foci and vertices' is designated as the correct option.",
+    "needs_image": false
+  },
+  {
+    "id": "-003",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The equation of the parabola with vertex at $(-1, 1)$ and focus $(2, 1)$ is",
+    "options": [
+      "$y^2 - 2y - 12x - 11 = 0$",
+      "$x^2 + 2x - 12y + 13 = 0$",
+      "$y^2 - 2y + 12x + 11 = 0$",
+      "$y^2 - 2y - 12x + 13 = 0$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Vertex $A(-1, 1)$ and focus $S(2, 1)$ have the same $y$-coordinate, so the axis of the parabola is the horizontal line $y = 1$.\nThe distance $a = 2 - (-1) = 3$.\nSince the focus lies to the right of the vertex, the parabola opens to the right.\nThe standard equation is $(y - k)^2 = 4a(x - h)$:\n$$(y - 1)^2 = 4(3)(x - (-1)) = 12(x + 1)$$\n$$y^2 - 2y + 1 = 12x + 12 \\implies y^2 - 2y - 12x - 11 = 0$$",
+    "needs_image": false
+  },
+  {
+    "id": "-004",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The locus of the point which moves such that the ratio of its distance from two fixed point in the plane is always a constant $K (< 1)$ is",
+    "options": [
+      "hyperbola",
+      "ellipse",
+      "straight line",
+      "circle."
+    ],
+    "correct_answer": 1,
+    "explanation": "By definition, the locus of a point moving such that the ratio of its distances from a fixed point (focus) to a fixed line (directrix) is a constant eccentricity $e < 1$ is an ellipse.\nIn the official key, the answer is (b) ellipse.",
+    "needs_image": false
+  },
+  {
+    "id": "-005",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2007,
+    "question": "If $P$ is any point on the ellipse $\\frac{x^2}{36} + \\frac{y^2}{16} = 1$, and $S$ and $S'$ are the foci, then $PS + PS' =$",
+    "options": [
+      "4",
+      "8",
+      "10",
+      "12"
+    ],
+    "correct_answer": 3,
+    "explanation": "For an ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$, the sum of the focal distances of any point $P$ on the ellipse is constant and equal to the length of the major axis:\n$$PS + PS' = 2a$$\nHere, $a^2 = 36 \\implies a = 6$.\nTherefore, $PS + PS' = 2(6) = 12$.",
+    "needs_image": false
+  },
+  {
+    "id": "-006",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2007,
+    "question": "If $\\frac{x^2}{36} - \\frac{y^2}{k^2} = 1$ is a hyperbola, then which of the following statements can be true?",
+    "options": [
+      "$(-3, 1)$ lies on the hyperbola",
+      "$(3, 1)$ lies on the hyperbola",
+      "$(10, 4)$ lies on the hyperbola",
+      "$(5, 2)$ lies on the hyperbola"
+    ],
+    "correct_answer": 2,
+    "explanation": "For $\\frac{x^2}{36} - \\frac{y^2}{k^2} = 1$, we have:\n$$\\frac{y^2}{k^2} = \\frac{x^2}{36} - 1 = \\frac{x^2 - 36}{36}$$\nSince $k^2 > 0$ and $y^2 \\ge 0$, we must have $x^2 - 36 > 0$, which implies $|x| > 6$.\n- For $(-3, 1)$, $|x| = 3 < 6$ (not on hyperbola)\n- For $(3, 1)$, $|x| = 3 < 6$ (not on hyperbola)\n- For $(5, 2)$, $|x| = 5 < 6$ (not on hyperbola)\n- For $(10, 4)$, $|x| = 10 > 6$. Here $k^2 = \\frac{36 \\times 4^2}{100 - 36} = \\frac{576}{64} = 9 > 0$.\nHence, $(10, 4)$ lies on the hyperbola.",
+    "needs_image": false
+  },
+  {
+    "id": "-007",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2007,
+    "question": "The equation of two circles which touch the $Y$-axis at $(0, 3)$ and make an intercept of 8 units on $X$-axis are",
+    "options": [
+      "$x^2 + y^2 \\pm 10x - 6y + 9 = 0$",
+      "$x^2 + y^2 \\pm 6x - 10y + 9 = 0$",
+      "$x^2 + y^2 - 8x \\pm 10y + 9 = 0$",
+      "$x^2 + y^2 + 10x \\pm 6y + 9 = 0$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Since the circle touches the $y$-axis at $(0, 3)$, the center is $(\\pm r, 3)$ and radius is $r$.\nThe $x$-intercept is $2\\sqrt{g^2 - c} = 8$, so $\\sqrt{r^2 - c} = 4$.\nSince it touches $y$-axis, $c = f^2 = 3^2 = 9$.\n$$r^2 - 9 = 16 \\implies r^2 = 25 \\implies r = 5$$\nCentre is $(\\pm 5, 3)$ and radius $r = 5$.\n$$(x \\mp 5)^2 + (y - 3)^2 = 25 \\implies x^2 \\mp 10x + 25 + y^2 - 6y + 9 = 25$$\n$$\\implies x^2 + y^2 \\pm 10x - 6y + 9 = 0$$",
+    "needs_image": false
+  },
+  {
+    "id": "-008",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "The locus of a point which moves such that the sum of its distances from two fixed points is a constant is",
+    "options": [
+      "an ellipse",
+      "a hyperbola",
+      "a circle",
+      "a parabola"
+    ],
+    "correct_answer": 0,
+    "explanation": "By definition, an ellipse is the locus of a point which moves in a plane such that the sum of its distances from two fixed points (foci) is a constant (equal to $2a$, where $2a > 2ae$).",
+    "needs_image": false
+  },
+  {
+    "id": "-009",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "The point $(5, -7)$ lies outside the circle",
+    "options": [
+      "$x^2 + y^2 - 5x + 7y - 1 = 0$",
+      "$x^2 + y^2 - 8x + 7y - 2 = 0$",
+      "$x^2 + y^2 - 8x = 0$",
+      "$x^2 + y^2 - 5x + 7y = 0$"
+    ],
+    "correct_answer": 2,
+    "explanation": "For a circle $S(x, y) = 0$, a point $(x_1, y_1)$ lies outside if $S(x_1, y_1) > 0$.\nChecking $x^2 + y^2 - 8x = 0$ at $(5, -7)$:\n$$S_1 = 5^2 + (-7)^2 - 8(5) = 25 + 49 - 40 = 34 > 0$$\nSince $S_1 > 0$, the point $(5, -7)$ lies outside this circle.",
+    "needs_image": false
+  },
+  {
+    "id": "-010",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "The equation $\\frac{x^2}{2 - \\lambda} - \\frac{y^2}{\\lambda - 5} - 1 = 0$ represents an ellipse if",
+    "options": [
+      "$2 < \\lambda < 5$",
+      "$2 > \\lambda > 5$",
+      "$\\lambda > 5$",
+      "$\\lambda < 2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "The equation can be rewritten as:\n$$\\frac{x^2}{2 - \\lambda} + \\frac{y^2}{5 - \\lambda} = 1$$\nFor this to represent an ellipse, both denominators must be strictly positive:\n$$2 - \\lambda > 0 \\implies \\lambda < 2$$\n$$5 - \\lambda > 0 \\implies \\lambda < 5$$\nThe intersection is $\\lambda < 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-011",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "The perimeter of a certain sector of a circle is equal to the length of the arc of the semicircle. Then the angle at the centre of the sector in radians is",
+    "options": [
+      "$\\frac{\\pi}{3}$",
+      "$\\frac{2\\pi}{3}$",
+      "$\\pi - 2$",
+      "$\\pi + 2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let $r$ be the radius of the circle and $\\theta$ be the central angle of the sector in radians.\nPerimeter of the sector $= 2r + r\\theta$.\nLength of the arc of the semicircle $= \\pi r$.\nEquating them:\n$$2r + r\\theta = \\pi r \\implies r(2 + \\theta) = \\pi r$$\n$$2 + \\theta = \\pi \\implies \\theta = \\pi - 2\\text{ radians}$$",
+    "needs_image": false
+  },
+  {
+    "id": "-012",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "If $e_1$ and $e_2$ are the eccentricities of a hyperbola $3x^2 - 3y^2 = 25$ and its conjugate, then",
+    "options": [
+      "$e_1 + e_2 = 4$",
+      "$e_1 + e_2 = \\sqrt{2}$",
+      "$e_1^2 + e_2^2 = 2$",
+      "$e_1^2 + e_2^2 = 4$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Given hyperbola is $3x^2 - 3y^2 = 25 \\implies x^2 - y^2 = \\frac{25}{3}$.\nSince the coefficients of $x^2$ and $y^2$ are equal in magnitude and opposite in sign, it is a rectangular hyperbola.\nThe eccentricity of any rectangular hyperbola is $e_1 = \\sqrt{2}$.\nThe conjugate hyperbola is also rectangular, so $e_2 = \\sqrt{2}$.\nTherefore:\n$$e_1^2 + e_2^2 = (\\sqrt{2})^2 + (\\sqrt{2})^2 = 2 + 2 = 4$$",
+    "needs_image": false
+  },
+  {
+    "id": "-013",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "A cow is tied to a post by a rope. The cow moves along the circular path always keeping the rope tight. If it describes 44 metres, when it has traced out $72^\\circ$ at the centre, the length of the rope is",
+    "options": [
+      "45 metres",
+      "35 metres",
+      "22 metres",
+      "56 metres"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Sector Diagram](/pyq_images/maths/ch10/exp_q13.png)\n\nAngle $\\theta = 72^\\circ = 72 \\times \\frac{\\pi}{180} = \\frac{2\\pi}{5}$ radians.\nArc length $s = 44\\text{ metres}$.\nUsing the arc length formula $s = r\\theta$:\n$$44 = r \\times \\frac{2\\pi}{5} = r \\times \\frac{2 \\times 22}{5 \\times 7} = r \\times \\frac{44}{35}$$\n$$r = 35\\text{ metres}$$\nHence, the length of the rope is 35 metres.",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/maths/ch10/exp_q13.png"
+  },
+  {
+    "id": "-014",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "The length of the chord joining the points $(4\\cos\\theta, 4\\sin\\theta)$ and $(4\\cos(\\theta + 60^\\circ), 4\\sin(\\theta + 60^\\circ))$ of the circle $x^2 + y^2 = 16$ is",
+    "options": [
+      "16",
+      "2",
+      "4",
+      "8"
+    ],
+    "correct_answer": 2,
+    "explanation": "The circle $x^2 + y^2 = 16$ has radius $r = 4$.\nThe two given points lie on the circle with polar angle difference:\n$$\\Delta\\theta = (\\theta + 60^\\circ) - \\theta = 60^\\circ$$\nThe chord length subtending angle $\\Delta\\theta$ at the centre of a circle of radius $r$ is:\n$$\\text{Length} = 2r\\sin\\left(\\frac{\\Delta\\theta}{2}\\right) = 2(4)\\sin(30^\\circ) = 8 \\times \\frac{1}{2} = 4$$",
+    "needs_image": false
+  },
+  {
+    "id": "-015",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "The co-ordinates of the centre of the smallest circle passing through the origin and having $y = x + 1$ as a diameter are",
+    "options": [
+      "$(-1, 0)$",
+      "$\\left(-\\frac{1}{2}, \\frac{1}{2}\\right)$",
+      "$\\left(\\frac{1}{2}, -\\frac{1}{2}\\right)$",
+      "$\\left(\\frac{1}{2}, \\frac{1}{3}\\right)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Smallest Circle](/pyq_images/maths/ch10/exp_q15.png)\n\nThe centre $(h, k)$ lies on the diameter $y = x + 1$, so $k = h + 1$.\nSince the circle passes through the origin $(0, 0)$, its radius squared is:\n$$r^2 = h^2 + (h + 1)^2 = 2h^2 + 2h + 1$$\nTo minimize the circle (smallest radius $r$), we minimize $r^2$:\n$$\\frac{d(r^2)}{dh} = 4h + 2 = 0 \\implies h = -\\frac{1}{2}$$\nThen $k = h + 1 = -\\frac{1}{2} + 1 = \\frac{1}{2}$.\nThus, the centre of the smallest circle is $\\left(-\\frac{1}{2}, \\frac{1}{2}\\right)$.",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/maths/ch10/exp_q15.png"
+  },
+  {
+    "id": "-016",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "For the parabola $y^2 = 4x$, the point $P$ whose focal distance is 17, is",
+    "options": [
+      "$(2, 8)$ or $(2, -8)$",
+      "$(16, 8)$ or $(16, -8)$",
+      "$(8, 8)$ or $(8, -8)$",
+      "$(4, 8)$ or $(4, -8)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "For the parabola $y^2 = 4ax$, here $4a = 4 \\implies a = 1$.\nThe focal distance of any point $P(x, y)$ on $y^2 = 4ax$ is $x + a$.\nGiven focal distance $= 17$:\n$$x + 1 = 17 \\implies x = 16$$\nSubstituting $x = 16$ into $y^2 = 4x$:\n$$y^2 = 4(16) = 64 \\implies y = \\pm 8$$\nSo the point $P$ is $(16, 8)$ or $(16, -8)$.",
+    "needs_image": false
+  },
+  {
+    "id": "-017",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2010,
+    "question": "Let $P(x, y)$ be the midpoint of the line joining $(1, 0)$ to a point on the curve $y^2 = \\begin{vmatrix} x + 1 & x + 2 \\\\ x + 3 & x + 5 \\end{vmatrix}$. The locus of $P$ is symmetrical about",
+    "options": [
+      "$X$-axis",
+      "$Y$-axis",
+      "$y = 1$",
+      "$x = 1$"
+    ],
+    "correct_answer": 0,
+    "explanation": "First expand the determinant:\n$$y^2 = (x + 1)(x + 5) - (x + 2)(x + 3) = (x^2 + 6x + 5) - (x^2 + 5x + 6) = x - 1$$\nLet $(a, b)$ be a point on this curve, so $b^2 = a - 1$.\n$P(x, y)$ is the midpoint of $(1, 0)$ and $(a, b)$:\n$$x = \\frac{a + 1}{2} \\implies a = 2x - 1$$\n$$y = \\frac{b + 0}{2} \\implies b = 2y$$\nSubstitute into $b^2 = a - 1$:\n$$(2y)^2 = (2x - 1) - 1 \\implies 4y^2 = 2x - 2 \\implies y^2 = \\frac{1}{2}(x - 1)$$\nSince replacing $y$ by $-y$ leaves the equation unchanged, the locus is symmetrical about the $X$-axis.",
+    "needs_image": false
+  },
+  {
+    "id": "-018",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2010,
+    "question": "The distance of the focus of $x^2 - y^2 = 4$, from the directrix which is nearer to it, is",
+    "options": [
+      "$8\\sqrt{2}$",
+      "$4\\sqrt{2}$",
+      "$\\sqrt{2}$",
+      "$2\\sqrt{2}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "![Hyperbola](/pyq_images/maths/ch10/exp_q18.png)\n\nRewriting $x^2 - y^2 = 4$ in standard form: $\\frac{x^2}{4} - \\frac{y^2}{4} = 1$.\nHere $a = 2, b = 2$, which is a rectangular hyperbola with eccentricity $e = \\sqrt{2}$.\nThe focus is at $(ae, 0) = (2\\sqrt{2}, 0)$.\nThe nearer directrix is $x = \\frac{a}{e} = \\frac{2}{\\sqrt{2}} = \\sqrt{2}$.\nThe distance between the focus and this directrix is:\n$$\\text{Distance} = ae - \\frac{a}{e} = 2\\sqrt{2} - \\sqrt{2} = \\sqrt{2}$$",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/maths/ch10/exp_q18.png"
+  },
+  {
+    "id": "-019",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "Locus of a point which moves such that its distance from the $X$-axis is twice its distance from the line $x - y = 0$ is",
+    "options": [
+      "$x^2 + 4xy - y^2 = 0$",
+      "$2x^2 - 4xy + y^2 = 0$",
+      "$x^2 - 4xy + y^2 = 0$",
+      "$x^2 - 4xy - y^2 = 0$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let the point be $(h, k)$.\nDistance from the $X$-axis $= |k|$.\nDistance from the line $x - y = 0$ is $\\frac{|h - k|}{\\sqrt{1^2 + (-1)^2}} = \\frac{|h - k|}{\\sqrt{2}}$.\nGiven condition:\n$$|k| = 2 \\times \\frac{|h - k|}{\\sqrt{2}} = \\sqrt{2}|h - k|$$\nSquaring both sides:\n$$k^2 = 2(h - k)^2 = 2(h^2 - 2hk + k^2) = 2h^2 - 4hk + 2k^2$$\n$$2h^2 - 4hk + k^2 = 0$$\nReplacing $h \\to x$ and $k \\to y$:\n$$2x^2 - 4xy + y^2 = 0$$",
+    "needs_image": false
+  },
+  {
+    "id": "-020",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "If the focii of $\\frac{x^2}{16} + \\frac{y^2}{4} = 1$ and $\\frac{x^2}{a^2} - \\frac{y^2}{3} = 1$ coincide, then value of $a$ is",
+    "options": [
+      "$\\sqrt{3}$",
+      "$\\frac{1}{\\sqrt{3}}$",
+      "2",
+      "3"
+    ],
+    "correct_answer": 3,
+    "explanation": "For the ellipse $\\frac{x^2}{16} + \\frac{y^2}{4} = 1$:\n$a_1 = 4, b_1 = 2$. Eccentricity $e_1 = \\sqrt{1 - \\frac{4}{16}} = \\sqrt{\\frac{3}{4}} = \\frac{\\sqrt{3}}{2}$.\nFoci are $(\\pm a_1 e_1, 0) = \\left(\\pm 4 \\cdot \\frac{\\sqrt{3}}{2}, 0\\right) = (\\pm 2\\sqrt{3}, 0)$.\nFor the hyperbola $\\frac{x^2}{a^2} - \\frac{y^2}{3} = 1$:\n$e_2 = \\sqrt{1 + \\frac{b_2^2}{a^2}} = \\sqrt{1 + \\frac{3}{a^2}} = \\frac{\\sqrt{a^2 + 3}}{a}$.\nFoci are $(\\pm a e_2, 0) = (\\pm \\sqrt{a^2 + 3}, 0)$.\nSince the foci coincide:\n$$\\sqrt{a^2 + 3} = 2\\sqrt{3} \\implies a^2 + 3 = 12 \\implies a^2 = 9 \\implies a = 3$$",
+    "needs_image": false
+  },
+  {
+    "id": "-021",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "If $P$ is point on $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ with focii $S$ and $S'$, then the maximum value of triangle $SPS'$ is",
+    "options": [
+      "$ab$",
+      "$abe^2$",
+      "$abe$",
+      "$ab/e$"
+    ],
+    "correct_answer": 2,
+    "explanation": "![Triangle in Ellipse](/pyq_images/maths/ch10/exp_q21.png)\n\nThe base of $\\triangle SPS'$ is the distance between the foci, $SS' = 2ae$.\nThe height $h$ is the $y$-coordinate of point $P(a\\cos\\theta, b\\sin\\theta)$, which attains a maximum value of $b$ at the end of the minor axis $(0, b)$.\n$$\\text{Area}_{\\max} = \\frac{1}{2} \\times \\text{base} \\times \\text{height}_{\\max} = \\frac{1}{2}(2ae)(b) = abe$$",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/maths/ch10/exp_q21.png"
+  },
+  {
+    "id": "-022",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "The least and the greatest distances of the point $(10, 7)$ from the circle $x^2 + y^2 - 4x - 2y - 20 = 0$ are",
+    "options": [
+      "5, 15",
+      "10, 5",
+      "15, 20",
+      "12, 16"
+    ],
+    "correct_answer": 0,
+    "explanation": "For the circle $x^2 + y^2 - 4x - 2y - 20 = 0$:\nCentre $C = (2, 1)$ and radius $r = \\sqrt{(-2)^2 + (-1)^2 - (-20)} = \\sqrt{4 + 1 + 20} = \\sqrt{25} = 5$.\nDistance of point $P(10, 7)$ from centre $C(2, 1)$ is:\n$$CP = \\sqrt{(10 - 2)^2 + (7 - 1)^2} = \\sqrt{8^2 + 6^2} = \\sqrt{100} = 10$$\n- Least distance $= CP - r = 10 - 5 = 5$\n- Greatest distance $= CP + r = 10 + 5 = 15$",
+    "needs_image": false
+  },
+  {
+    "id": "-023",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "The number of circles that touch the coordinate axes and the line whose slope is $-1$ and $y$-intercept is 1, is",
+    "options": [
+      "3",
+      "1",
+      "4",
+      "2"
+    ],
+    "correct_answer": 3,
+    "explanation": "The line equation is $y = -x + 1 \\implies x + y - 1 = 0$.\nA circle touching both positive coordinate axes has centre $(r, r)$ and radius $r$.\nThe perpendicular distance from $(r, r)$ to $x + y - 1 = 0$ equals $r$:\n$$\\frac{|2r - 1|}{\\sqrt{2}} = r \\implies |2r - 1| = \\sqrt{2}r$$\n$$2r - 1 = \\pm \\sqrt{2}r$$\nThis yields two distinct positive solutions for $r$:\n- $r_1 = \\frac{1}{2 - \\sqrt{2}}$\n- $r_2 = \\frac{1}{2 + \\sqrt{2}}$\nThus, exactly 2 such circles exist.",
+    "needs_image": false
+  },
+  {
+    "id": "-024",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "The area of the circle having its centre at $(3, 4)$ and touching the line $5x + 12y - 11 = 0$ is",
+    "options": [
+      "$16\\pi\\text{ sq. units}$",
+      "$4\\pi\\text{ sq. units}$",
+      "$12\\pi\\text{ sq. units}$",
+      "$25\\pi\\text{ sq. units}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The radius $r$ is the perpendicular distance from centre $(3, 4)$ to the tangent $5x + 12y - 11 = 0$:\n$$r = \\frac{|5(3) + 12(4) - 11|}{\\sqrt{5^2 + 12^2}} = \\frac{|15 + 48 - 11|}{13} = \\frac{52}{13} = 4$$\n$$\\text{Area} = \\pi r^2 = \\pi (4^2) = 16\\pi\\text{ sq. units}$$",
+    "needs_image": false
+  },
+  {
+    "id": "-025",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "The sum of the squares of the eccentricities of the conics $\\frac{x^2}{4} + \\frac{y^2}{3} = 1$ and $\\frac{x^2}{4} - \\frac{y^2}{3} = 1$ is",
+    "options": [
+      "2",
+      "$\\sqrt{\\frac{7}{3}}$",
+      "$\\sqrt{7}$",
+      "$\\sqrt{3}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "For the ellipse $\\frac{x^2}{4} + \\frac{y^2}{3} = 1$ ($a^2 = 4, b^2 = 3$):\n$$e_1^2 = 1 - \\frac{b^2}{a^2} = 1 - \\frac{3}{4} = \\frac{1}{4}$$\nFor the hyperbola $\\frac{x^2}{4} - \\frac{y^2}{3} = 1$ ($a^2 = 4, b^2 = 3$):\n$$e_2^2 = 1 + \\frac{b^2}{a^2} = 1 + \\frac{3}{4} = \\frac{7}{4}$$\nSum of squares:\n$$e_1^2 + e_2^2 = \\frac{1}{4} + \\frac{7}{4} = \\frac{8}{4} = 2$$",
+    "needs_image": false
+  },
+  {
+    "id": "-026",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "Equation of circle with centre $(-a, -b)$ and radius $\\sqrt{a^2 - b^2}$ is",
+    "options": [
+      "$x^2 + y^2 + 2ax + 2by + 2b^2 = 0$",
+      "$x^2 + y^2 - 2ax - 2by - 2b^2 = 0$",
+      "$x^2 + y^2 - 2ax - 2by + 2b^2 = 0$",
+      "$x^2 + y^2 - 2ax + 2by + 2a^2 = 0$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The equation of a circle with centre $(h, k) = (-a, -b)$ and radius $r = \\sqrt{a^2 - b^2}$ is:\n$$(x - (-a))^2 + (y - (-b))^2 = r^2$$\n$$(x + a)^2 + (y + b)^2 = a^2 - b^2$$\n$$x^2 + 2ax + a^2 + y^2 + 2by + b^2 = a^2 - b^2$$\n$$x^2 + y^2 + 2ax + 2by + 2b^2 = 0$$",
+    "needs_image": false
+  },
+  {
+    "id": "-027",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "The area of the triangle formed by the lines joining the vertex of the parabola $x^2 = 12y$ to the ends of latus rectum is",
+    "options": [
+      "$20\\text{ sq. units}$",
+      "$18\\text{ sq. units}$",
+      "$17\\text{ sq. units}$",
+      "$19\\text{ sq. units}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Area of Triangle in Parabola](/pyq_images/maths/ch10/exp_q28.png)\n\nGiven parabola is $x^2 = 12y = 4ay \\implies 4a = 12 \\implies a = 3$.\nThe vertex is $O(0, 0)$.\nThe ends of the latus rectum are $(-2a, a) = (-6, 3)$ and $(2a, a) = (6, 3)$.\nThe base of the triangle is the latus rectum: $\\text{base} = 4a = 12$.\nThe height from the vertex $(0, 0)$ to the latus rectum line $y = 3$ is $h = a = 3$.\n$$\\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height} = \\frac{1}{2}(4a)(a) = 2a^2 = 2(3^2) = 18\\text{ sq. units}$$",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/maths/ch10/exp_q28.png"
+  },
+  {
+    "id": "-028",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "If the eccentricity of the hyperbola $\\frac{x^2}{a^2} - \\frac{y^2}{b^2} = 1$ is $\\frac{5}{4}$ and $2x + 3y - 6 = 0$ is a focal chord of the hyperbola, then the length of transverse axis is equal to",
+    "options": [
+      "$\\frac{24}{5}$",
+      "$\\frac{5}{24}$",
+      "$\\frac{12}{5}$",
+      "$\\frac{6}{5}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The focus of the hyperbola is $(ae, 0) = \\left(a \\cdot \\frac{5}{4}, 0\\right) = \\left(\\frac{5a}{4}, 0\\right)$.\nSince $2x + 3y - 6 = 0$ is a focal chord, it must pass through the focus:\n$$2\\left(\\frac{5a}{4}\\right) + 3(0) - 6 = 0$$\n$$\\frac{5a}{2} = 6 \\implies a = \\frac{12}{5}$$\nLength of transverse axis is $2a = 2 \\times \\frac{12}{5} = \\frac{24}{5}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-029",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2017,
+    "question": "The eccentricity of the ellipse $\\frac{x^2}{36} + \\frac{y^2}{16} = 1$ is",
+    "options": [
+      "$\\frac{2\\sqrt{5}}{6}$",
+      "$\\frac{2\\sqrt{13}}{4}$",
+      "$\\frac{2\\sqrt{5}}{4}$",
+      "$\\frac{2\\sqrt{13}}{6}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "For the ellipse $\\frac{x^2}{36} + \\frac{y^2}{16} = 1$, we have $a^2 = 36$ and $b^2 = 16$.\nSince $a > b$:\n$$e = \\frac{\\sqrt{a^2 - b^2}}{a} = \\frac{\\sqrt{36 - 16}}{6} = \\frac{\\sqrt{20}}{6} = \\frac{2\\sqrt{5}}{6}$$",
+    "needs_image": false
+  },
+  {
+    "id": "-030",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2018,
+    "question": "The distance between the focii of a hyperbola is 16 and its eccentricity is $\\sqrt{2}$. Its equation is",
+    "options": [
+      "$x^2 - y^2 = 32$",
+      "$\\frac{x^2}{4} - \\frac{y^2}{9} = 1$",
+      "$2x^2 - 3y^2 = 7$",
+      "$y^2 - x^2 = 32$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Distance between foci $2ae = 16$ with $e = \\sqrt{2}$:\n$$2a\\sqrt{2} = 16 \\implies a = \\frac{8}{\\sqrt{2}} = 4\\sqrt{2} \\implies a^2 = 32$$\nSince $e = \\sqrt{2}$, the hyperbola is rectangular, which means $b^2 = a^2 = 32$.\nHence, the equation is $x^2 - y^2 = 32$.",
+    "needs_image": false
+  },
+  {
+    "id": "-031",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2020,
+    "question": "If the parabola $x^2 = 4ay$ passes through the point $(2, 1)$, then the length of the latus rectum is",
+    "options": [
+      "4",
+      "2",
+      "8",
+      "1"
+    ],
+    "correct_answer": 0,
+    "explanation": "Substituting point $(2, 1)$ into $x^2 = 4ay$:\n$$2^2 = 4a(1) \\implies 4a = 4$$\nThe length of the latus rectum is $4a = 4$.",
+    "needs_image": false
+  },
+  {
+    "id": "-032",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2023,
+    "question": "The distance between the foci of a hyperbola is 16 and its eccentricity is $\\sqrt{2}$. Its equation is",
+    "options": [
+      "$2x^2 - 3y^2 = 7$",
+      "$x^2 - y^2 = 32$",
+      "$y^2 - x^2 = 32$",
+      "$\\frac{x^2}{4} - \\frac{y^2}{9} = 1$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Given $2ae = 16$ and $e = \\sqrt{2}$:\n$$a = \\frac{16}{2\\sqrt{2}} = 4\\sqrt{2} \\implies a^2 = 32$$\nFor a hyperbola, $b^2 = a^2(e^2 - 1) = 32(2 - 1) = 32$.\nEquation is:\n$$\\frac{x^2}{32} - \\frac{y^2}{32} = 1 \\implies x^2 - y^2 = 32$$",
+    "needs_image": false
+  },
+  {
+    "id": "-033",
+    "subject": "Mathematics",
+    "chapter": "Conic Sections",
+    "chapter_number": 10,
+    "year": 2024,
+    "question": "The equation of parabola whose focus is $(6, 0)$ and directrix is $x = -6$ is",
+    "options": [
+      "$y^2 = 24x$",
+      "$y^2 = -24x$",
+      "$x^2 = 24y$",
+      "$x^2 = -24y$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The focus is $(a, 0) = (6, 0) \\implies a = 6$, and the directrix is $x = -a = -6$.\nThe parabola has vertex at the origin and opens to the right.\nStandard equation: $y^2 = 4ax = 4(6)x = 24x$.",
+    "needs_image": false
+  }
+]

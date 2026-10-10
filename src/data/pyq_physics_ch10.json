@@ -1,0 +1,485 @@
+[
+  {
+    "id": "phys_ch10_q1",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The unit of Stefan's constant is",
+    "options": [
+      "$\\text{W m}^2\\text{ K}^{-1}$",
+      "$\\text{W m K}^{-4}$",
+      "$\\text{W m}^{-2}\\text{ K}^{-4}$",
+      "$\\text{N m}^{-1}\\text{ K}^{-4}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Stefan-Boltzmann law, the energy radiated per unit area per unit time by a black body is given by:\n$E = \\sigma T^4 \\implies \\sigma = \\frac{E}{T^4}$\n\nSince $E$ is the power radiated per unit area (intensity), its unit is $\\text{W m}^{-2}$.\nTherefore, the unit of Stefan's constant $\\sigma$ is:\n$[\\sigma] = \\frac{\\text{W m}^{-2}}{\\text{K}^4} = \\text{W m}^{-2}\\text{ K}^{-4}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q2",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The sprinkling of water reduces slightly the temperature of a closed room because",
+    "options": [
+      "temperature of water is less than that of the room",
+      "specific heat of water is high",
+      "water has large latent heat of vaporisation",
+      "water is a bad conductor of heat"
+    ],
+    "correct_answer": 2,
+    "explanation": "When water is sprinkled over a large area in a closed room, it undergoes evaporation. Due to water's exceptionally large latent heat of vaporisation ($\\approx 2.26 \\times 10^6\\text{ J kg}^{-1}$), it absorbs significant heat energy from the surrounding air and room floor during evaporation, resulting in noticeable cooling.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q3",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2007,
+    "question": "Two identical rods $AC$ and $CB$ made of two different metals having thermal conductivities in the ratio $2 : 3$ are kept in contact with each other at the end $C$ as shown in the figure. $A$ is at $100^\\circ\\text{C}$ and $B$ is at $25^\\circ\\text{C}$. Then the temperature of junction $C$ is",
+    "options": [
+      "$55^\\circ\\text{C}$",
+      "$60^\\circ\\text{C}$",
+      "$75^\\circ\\text{C}$",
+      "$50^\\circ\\text{C}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Let the thermal conductivities of $AC$ and $CB$ be $K_1 = 2K$ and $K_2 = 3K$ respectively. Since the rods are identical, they have the same length $L$ and cross-sectional area $A$.\n\nIn steady state, the rate of heat flow through $AC$ equals that through $CB$:\n$\\frac{dQ}{dt} = \\frac{K_1 A (100 - \\theta)}{L} = \\frac{K_2 A (\\theta - 25)}{L}$\n\nSubstitute $\\frac{K_1}{K_2} = \\frac{2}{3}$:\n$2(100 - \\theta) = 3(\\theta - 25)$\n$200 - 2\\theta = 3\\theta - 75$\n$5\\theta = 275 \\implies \\theta = 55^\\circ\\text{C}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/q3.png"
+  },
+  {
+    "id": "phys_ch10_q4",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2007,
+    "question": "The surface temperature of the sun which has maximum energy emission at $500\\text{ nm}$ is $6000\\text{ K}$. The temperature of a star which has maximum energy emission at $400\\text{ nm}$ will be",
+    "options": [
+      "$8500\\text{ K}$",
+      "$4500\\text{ K}$",
+      "$7500\\text{ K}$",
+      "$6500\\text{ K}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Wien's displacement law:\n$\\lambda_m T = \\text{constant} \\implies \\lambda_{m1} T_1 = \\lambda_{m2} T_2$\n\nGiven $\\lambda_{m1} = 500\\text{ nm}$, $T_1 = 6000\\text{ K}$, and $\\lambda_{m2} = 400\\text{ nm}$:\n$500 \\times 6000 = 400 \\times T_2$\n$T_2 = \\frac{500 \\times 6000}{400} = \\frac{30000}{4} = 7500\\text{ K}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q5",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "The coefficient of thermal conductivity of copper is 9 times that of steel. In the composite cylindrical bar shown in the figure, what will be the temperature at the junction of copper and steel?",
+    "options": [
+      "$25^\\circ\\text{C}$",
+      "$33^\\circ\\text{C}$",
+      "$75^\\circ\\text{C}$",
+      "$67^\\circ\\text{C}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Given $K_{\\text{Cu}} = 9 K_{\\text{steel}}$, length of copper $L_1 = 18\\text{ cm}$, length of steel $L_2 = 6\\text{ cm}$. Both have identical cross-sectional area $A$.\n\nIn steady state, the rate of heat flow through copper equals that through steel:\n$\\frac{K_{\\text{Cu}} A (100 - T)}{L_1} = \\frac{K_{\\text{steel}} A (T - 0)}{L_2}$\n\nSubstitute the values:\n$\\frac{(9 K_{\\text{steel}}) A (100 - T)}{18} = \\frac{K_{\\text{steel}} A (T - 0)}{6}$\n$\\frac{9(100 - T)}{18} = \\frac{T}{6} \\implies \\frac{100 - T}{2} = \\frac{T}{6}$\n$3(100 - T) = T \\implies 300 - 3T = T$\n$4T = 300 \\implies T = 75^\\circ\\text{C}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/q5.png"
+  },
+  {
+    "id": "phys_ch10_q6",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "If a black body emits $0.5\\text{ joules}$ of energy per second when it is at $27^\\circ\\text{C}$, then the amount of energy emitted by it when it is at $627^\\circ\\text{C}$ will be",
+    "options": [
+      "$13.5\\text{ J}$",
+      "$135\\text{ J}$",
+      "$40.5\\text{ J}$",
+      "$162\\text{ J}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Stefan's law, energy radiated per second is proportional to $T^4$:\n$E \\propto T^4$\n- $T_1 = 27 + 273 = 300\\text{ K}$\n- $T_2 = 627 + 273 = 900\\text{ K}$\n\n$\\frac{E_2}{E_1} = \\left(\\frac{T_2}{T_1}\\right)^4 = \\left(\\frac{900}{300}\\right)^4 = 3^4 = 81$\n$E_2 = 81 \\times E_1 = 81 \\times 0.5\\text{ J} = 40.5\\text{ J}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q7",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "$0.1\\text{ m}^3$ of water at $80^\\circ\\text{C}$ is mixed with $0.3\\text{ m}^3$ of water at $60^\\circ\\text{C}$. The final temperature of the mixture is",
+    "options": [
+      "$65^\\circ\\text{C}$",
+      "$70^\\circ\\text{C}$",
+      "$60^\\circ\\text{C}$",
+      "$75^\\circ\\text{C}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Density of water is uniform, so mass is directly proportional to volume ($m_1 = \\rho V_1, m_2 = \\rho V_2$).\nBy the principle of calorimetry (heat lost = heat gained):\n$m_1 c (80 - T) = m_2 c (T - 60)$\n$0.1 (80 - T) = 0.3 (T - 60)$\n$80 - T = 3(T - 60) = 3T - 180$\n$4T = 260 \\implies T = 65^\\circ\\text{C}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q8",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "The amount of heat energy radiated by a metal at temperature $T$ is $E$. When the temperature is increased to $3T$, energy radiated is",
+    "options": [
+      "$81E$",
+      "$9E$",
+      "$3E$",
+      "$27E$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to Stefan's law, rate of energy radiated is proportional to the fourth power of absolute temperature:\n$E \\propto T^4$\n\nWhen the temperature is increased to $T' = 3T$:\n$E' \\propto (3T)^4 = 81 T^4 = 81 E$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q9",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "The surface temperature of the stars is determined using",
+    "options": [
+      "Planck's law",
+      "Wien's displacement law",
+      "Rayleigh-Jeans law",
+      "Kirchhoff's law"
+    ],
+    "correct_answer": 1,
+    "explanation": "The surface temperature of stars is determined by analyzing their black body emission spectra using Wien's displacement law ($\\lambda_m T = b$, where $b \\approx 2.898 \\times 10^{-3}\\text{ m K}$). By finding the peak wavelength $\\lambda_m$ of emitted radiation, temperature $T = b / \\lambda_m$ is determined.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q10",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2010,
+    "question": "Two slabs are of thicknesses $d_1$ and $d_2$. Their thermal conductivities are $K_1$ and $K_2$ respectively. They are in series. The free ends of the combination of these two slabs are kept at temperatures $\\theta_1$ and $\\theta_2$ (assume $\\theta_1 > \\theta_2$). The temperature of their common junction is",
+    "options": [
+      "$\\frac{K_1\\theta_1 + K_2\\theta_2}{\\theta_1 + \\theta_2}$",
+      "$\\frac{K_1 d_2 + K_2 d_1}{K_1 + K_2}$",
+      "$\\frac{K_1\\theta_1 d_2 + K_2\\theta_2 d_1}{K_1 d_2 + K_2 d_1}$",
+      "$\\frac{K_1\\theta_1 + K_2\\theta_2}{K_1 + K_2}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "In steady state, the rate of heat flow through the first slab equals that through the second slab:\n$\\frac{dQ}{dt} = \\frac{K_1 A (\\theta_1 - \\theta)}{d_1} = \\frac{K_2 A (\\theta - \\theta_2)}{d_2}$\n\nCross-multiplying:\n$K_1 d_2 (\\theta_1 - \\theta) = K_2 d_1 (\\theta - \\theta_2)$\n$K_1 d_2 \\theta_1 - K_1 d_2 \\theta = K_2 d_1 \\theta - K_2 d_1 \\theta_2$\n$\\theta (K_1 d_2 + K_2 d_1) = K_1 \\theta_1 d_2 + K_2 \\theta_2 d_1$\n$\\theta = \\frac{K_1 \\theta_1 d_2 + K_2 \\theta_2 d_1}{K_1 d_2 + K_2 d_1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q11",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2010,
+    "question": "Hot water cools from $60^\\circ\\text{C}$ to $50^\\circ\\text{C}$ in the first 10 minutes and to $42^\\circ\\text{C}$ in the next 10 minutes. Then the temperature of the surroundings is",
+    "options": [
+      "$20^\\circ\\text{C}$",
+      "$30^\\circ\\text{C}$",
+      "$15^\\circ\\text{C}$",
+      "$10^\\circ\\text{C}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "By Newton's law of cooling: $\\frac{T_1 - T_2}{t} = K\\left(\\frac{T_1 + T_2}{2} - T_0\\right)$.\n\nFor the first 10 minutes ($60^\\circ\\text{C} \\to 50^\\circ\\text{C}$):\n$\\frac{60 - 50}{10} = K(55 - T_0) \\implies 1 = K(55 - T_0)$  ...(i)\n\nFor the next 10 minutes ($50^\\circ\\text{C} \\to 42^\\circ\\text{C}$):\n$\\frac{50 - 42}{10} = K(46 - T_0) \\implies 0.8 = K(46 - T_0)$  ...(ii)\n\nDividing (i) by (ii):\n$\\frac{1}{0.8} = \\frac{55 - T_0}{46 - T_0} \\implies \\frac{5}{4} = \\frac{55 - T_0}{46 - T_0}$\n$5(46 - T_0) = 4(55 - T_0)$\n$230 - 5T_0 = 220 - 4T_0 \\implies T_0 = 10^\\circ\\text{C}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q12",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "Three identical rods $A, B$ and $C$ are placed end to end. A temperature difference is maintained between the free ends of $A$ and $C$. The thermal conductivity of $B$ is thrice that of $C$ and half of that of $A$. The effective thermal conductivity of the system will be ($K$ is the thermal conductivity of rod $A$)",
+    "options": [
+      "$\\frac{K}{3}$",
+      "$3K$",
+      "$2K$",
+      "$\\frac{2}{3}K$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Let $K_A = K$. Given that thermal conductivity of $B$ is half of $A$:\n$K_B = \\frac{K}{2}$.\nGiven that $K_B = 3 K_C \\implies K_C = \\frac{K_B}{3} = \\frac{K}{6}$.\n\nSince the three identical rods of length $L$ and area $A$ are in series:\n$R_{\\text{eff}} = R_A + R_B + R_C$\n$\\frac{3L}{K_{\\text{eff}} A} = \\frac{L}{K_A A} + \\frac{L}{K_B A} + \\frac{L}{K_C A}$\n$\\frac{3}{K_{\\text{eff}}} = \\frac{1}{K} + \\frac{2}{K} + \\frac{6}{K} = \\frac{9}{K}$\n$K_{\\text{eff}} = \\frac{3K}{9} = \\frac{K}{3}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q13",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "The quantities of heat required to raise the temperatures of two copper spheres of radii $r_1$ and $r_2$ ($r_1 = 1.5 r_2$) through $1\\text{ K}$ are in the ratio of",
+    "options": [
+      "$27 / 8$",
+      "$9 / 4$",
+      "$3 / 2$",
+      "$1$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Heat required to raise temperature by $\\Delta T = 1\\text{ K}$ is given by:\n$Q = m c \\Delta T = \\left(\\frac{4}{3}\\pi r^3 \\rho\\right) c \\Delta T \\implies Q \\propto r^3$\n\nGiven $r_1 = 1.5 r_2 = \\frac{3}{2} r_2$:\n$\\frac{Q_1}{Q_2} = \\left(\\frac{r_1}{r_2}\\right)^3 = \\left(\\frac{3}{2}\\right)^3 = \\frac{27}{8}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q14",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "Which one of the following is $\\nu_m - T$ graph for a perfectly black body? ($\\nu_m$ is the frequency of radiation with maximum intensity, $T$ is the absolute temperature)",
+    "options": [
+      "$A$",
+      "$B$",
+      "$C$",
+      "$D$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Wien's displacement law:\n$\\lambda_m T = b \\implies \\frac{c}{\\nu_m} T = b \\implies \\nu_m = \\left(\\frac{c}{b}\\right) T$\nSince $\\frac{c}{b}$ is constant, $\\nu_m \\propto T$.\nTherefore, the graph between $\\nu_m$ and $T$ is a straight line passing through the origin, which is represented by straight line curve $C$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/q14.png"
+  },
+  {
+    "id": "phys_ch10_q15",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "$A, B$ and $C$ are three identical conductors kept in contact as shown. Their thermal conductivities are $K, 2K$ and $K/2$. The free end of $A$ is at $100^\\circ\\text{C}$ and the free end of $C$ is at $0^\\circ\\text{C}$. During steady state, the temperature of the junction of $A$ and $B$ is nearly",
+    "options": [
+      "$71^\\circ\\text{C}$",
+      "$29^\\circ\\text{C}$",
+      "$63^\\circ\\text{C}$",
+      "$37^\\circ\\text{C}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Let $T_1$ be the temperature at junction $A-B$ and $T_2$ at junction $B-C$.\nIn steady state, heat flow rate through each conductor is identical:\n$H = \\frac{K A (100 - T_1)}{L} = \\frac{2K A (T_1 - T_2)}{L} = \\frac{(K/2) A (T_2 - 0)}{L}$\n\nFrom this:\n$100 - T_1 = 2(T_1 - T_2) = \\frac{T_2}{2}$\nFrom $2(T_1 - T_2) = \\frac{T_2}{2} \\implies 2T_1 = 2.5 T_2 \\implies T_2 = 0.8 T_1$\n\nAlso:\n$100 - T_1 = \\frac{0.8 T_1}{2} = 0.4 T_1$\n$1.4 T_1 = 100 \\implies T_1 = \\frac{100}{1.4} \\approx 71.4^\\circ\\text{C} \\approx 71^\\circ\\text{C}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/q15.png"
+  },
+  {
+    "id": "phys_ch10_q16",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "A hot body is allowed to cool. The surrounding temperature is constant at $30^\\circ\\text{C}$. The body takes time $t_1$ to cool from $90^\\circ\\text{C}$ to $89^\\circ\\text{C}$ and time $t_2$ to cool from $60^\\circ\\text{C}$ to $59.5^\\circ\\text{C}$. Then,",
+    "options": [
+      "$t_2 = 2t_1$",
+      "$t_2 = t_1 / 2$",
+      "$t_2 = 4t_1$",
+      "$t_2 = t_1$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to Newton's law of cooling: $\\frac{\\Delta T}{t} = k(T_{\\text{avg}} - T_0)$.\n\nFor the first cooling interval ($90^\\circ\\text{C} \\to 89^\\circ\\text{C}$):\n$\\frac{90 - 89}{t_1} = k(89.5 - 30) \\implies \\frac{1}{t_1} = k(59.5)$  ...(i)\n\nFor the second cooling interval ($60^\\circ\\text{C} \\to 59.5^\\circ\\text{C}$):\n$\\frac{60 - 59.5}{t_2} = k(59.75 - 30) \\approx k(29.75) \\implies \\frac{0.5}{t_2} = k(29.75)$  ...(ii)\n\nDividing (i) by (ii):\n$\\frac{t_2}{0.5 t_1} = \\frac{59.5}{29.75} = 2 \\implies \\frac{t_2}{t_1} = 2 \\times 0.5 = 1 \\implies t_2 = t_1$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q17",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "A solid cylinder of radius $R$ made of a material of thermal conductivity $K_1$ is surrounded by a cylindrical shell of inner radius $R$ and outer radius $2R$ made of a material of thermal conductivity $K_2$. The two ends of the combined system are maintained at two different temperatures. Then there is no loss of heat across the cylindrical surface and the system is in steady state. The effective thermal conductivity of the system is",
+    "options": [
+      "$K_1 + K_2$",
+      "$\\frac{K_1 K_2}{K_1 + K_2}$",
+      "$\\frac{3K_1 + K_2}{4}$",
+      "$\\frac{K_1 + 3K_2}{4}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "![Cylindrical shell system](/pyq_images/physics/ch10/exp_q17.png)\n\n- Area of cross-section of inner cylinder: $A_1 = \\pi R^2$.\n- Area of outer shell: $A_2 = \\pi (2R)^2 - \\pi R^2 = 3\\pi R^2$.\n- Total cross-sectional area: $A = A_1 + A_2 = 4\\pi R^2$.\n\nSince both cylinders are connected in parallel between the same temperature difference:\n$H = H_1 + H_2$\n$\\frac{K_{\\text{eff}} (4\\pi R^2) \\Delta T}{L} = \\frac{K_1 (\\pi R^2) \\Delta T}{L} + \\frac{K_2 (3\\pi R^2) \\Delta T}{L}$\n$4 K_{\\text{eff}} = K_1 + 3 K_2 \\implies K_{\\text{eff}} = \\frac{K_1 + 3K_2}{4}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/exp_q17.png",
+    "explanation_image_url": "/pyq_images/physics/ch10/exp_q17.png"
+  },
+  {
+    "id": "phys_ch10_q18",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "Two stars $A$ and $B$ radiate maximum energy at $360\\text{ nm}$ and $480\\text{ nm}$ respectively. Then the ratio of surface temperatures of $A$ and $B$ is",
+    "options": [
+      "$3 : 4$",
+      "$81 : 256$",
+      "$4 : 3$",
+      "$256 : 81$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Wien's displacement law:\n$\\lambda_m T = \\text{constant} \\implies \\frac{T_A}{T_B} = \\frac{\\lambda_{mB}}{\\lambda_{mA}}$\n\nGiven $\\lambda_{mA} = 360\\text{ nm}$ and $\\lambda_{mB} = 480\\text{ nm}$:\n$\\frac{T_A}{T_B} = \\frac{480}{360} = \\frac{4}{3} = 4 : 3$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q19",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "The density of water is maximum at",
+    "options": [
+      "> $4^\\circ\\text{C}$",
+      "$4^\\circ\\text{C}$",
+      "$10^\\circ\\text{C}$",
+      "< $4^\\circ\\text{C}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Due to the anomalous expansion of water, when ice melts at $0^\\circ\\text{C}$ and temperature rises, the open cage-like hydrogen-bonded crystal structure collapses, decreasing volume and increasing density up to $4^\\circ\\text{C}$. Above $4^\\circ\\text{C}$, normal thermal agitation causes expansion. Therefore, water has its maximum density at exactly $4^\\circ\\text{C}$ ($1000\\text{ kg m}^{-3}$).",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q20",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "$1\\text{ g}$ of ice at $0^\\circ\\text{C}$ is mixed with $1\\text{ g}$ of steam at $100^\\circ\\text{C}$. The final temperature of the mixture is",
+    "options": [
+      "$100^\\circ\\text{C}$",
+      "$55^\\circ\\text{C}$",
+      "$0^\\circ\\text{C}$",
+      "$50^\\circ\\text{C}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "- Heat required to convert $1\\text{ g}$ ice at $0^\\circ\\text{C}$ to water at $100^\\circ\\text{C}$:\n  $Q_1 = m L_f + m c \\Delta T = (1 \\times 80) + (1 \\times 1 \\times 100) = 80 + 100 = 180\\text{ cal}$.\n- Heat released when $1\\text{ g}$ steam at $100^\\circ\\text{C}$ condenses to water at $100^\\circ\\text{C}$:\n  $Q_2 = m L_v = 1 \\times 540 = 540\\text{ cal}$.\n\nSince $Q_2 > Q_1$, only a fraction of the steam condenses ($m = 180 / 540 = 1/3\\text{ g}$), and steam and boiling water coexist in equilibrium at $100^\\circ\\text{C}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q21",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "When water is heated from $0^\\circ\\text{C}$ to $10^\\circ\\text{C}$, its volume",
+    "options": [
+      "increases",
+      "first decreases and then increases",
+      "decreases",
+      "does not change"
+    ],
+    "correct_answer": 1,
+    "explanation": "Due to anomalous expansion, as water is heated from $0^\\circ\\text{C}$ to $4^\\circ\\text{C}$, its density increases and its volume contracts (decreases to a minimum at $4^\\circ\\text{C}$). As heating continues from $4^\\circ\\text{C}$ to $10^\\circ\\text{C}$, normal thermal expansion dominates, and the volume increases. Hence, the volume first decreases and then increases.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q22",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2016,
+    "question": "A pan filled with hot food cools from $94^\\circ\\text{C}$ to $86^\\circ\\text{C}$ in 2 minutes when the room temperature is $20^\\circ\\text{C}$. How long will it take to cool from $74^\\circ\\text{C}$ to $66^\\circ\\text{C}$?",
+    "options": [
+      "$2\\text{ minutes}$",
+      "$2.8\\text{ minutes}$",
+      "$2.5\\text{ minutes}$",
+      "$1.8\\text{ minutes}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to Newton's law of cooling:\n$\\frac{T_1 - T_2}{t} = k\\left(\\frac{T_1 + T_2}{2} - T_0\\right)$\n\nCase 1 ($94^\\circ\\text{C} \\to 86^\\circ\\text{C}$ in $2\\text{ min}$):\n$\\frac{94 - 86}{2} = k(90 - 20) \\implies 4 = k(70) \\implies k = \\frac{4}{70}$\n\nCase 2 ($74^\\circ\\text{C} \\to 66^\\circ\\text{C}$ in time $t$):\n$\\frac{74 - 66}{t} = k(70 - 20) \\implies \\frac{8}{t} = k(50)$\n$\\frac{8}{t} = \\left(\\frac{4}{70}\\right) \\times 50 = \\frac{20}{7}$\n$t = \\frac{8 \\times 7}{20} = \\frac{56}{20} = 2.8\\text{ minutes}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q23",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2016,
+    "question": "Four rods with different radii $r$ and length $l$ are used to connect two heat reservoirs at different temperatures. Which one will conduct most heat?",
+    "options": [
+      "$r = 1\\text{ cm}, l = 1\\text{ m}$",
+      "$r = 1\\text{ cm}, l = 0.5\\text{ m}$",
+      "$r = 2\\text{ cm}, l = 2\\text{ m}$",
+      "$r = 2\\text{ cm}, l = 0.5\\text{ m}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "The rate of heat conduction is given by:\n$\\frac{dQ}{dt} = \\frac{K A \\Delta T}{l} = \\frac{K (\\pi r^2) \\Delta T}{l} \\propto \\frac{r^2}{l}$\n\nLet's evaluate $\\frac{r^2}{l}$ for each option:\n- (a) $\\frac{1^2}{1} = 1$\n- (b) $\\frac{1^2}{0.5} = 2$\n- (c) $\\frac{2^2}{2} = 2$\n- (d) $\\frac{2^2}{0.5} = 8$\n\nOption (d) has the largest ratio (8) and thus will conduct the most heat.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q24",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2018,
+    "question": "A cup of coffee cools from $65.5^\\circ\\text{C}$ to $62.5^\\circ\\text{C}$ in 1 minute in a room at $22.5^\\circ\\text{C}$. How long will the same cup of coffee take to cool from $46.5^\\circ\\text{C}$ to $40.5^\\circ\\text{C}$ in the same room?",
+    "options": [
+      "$4\\text{ minutes}$",
+      "$2\\text{ minutes}$",
+      "$1\\text{ minute}$",
+      "$3\\text{ minutes}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Applying Newton's law of cooling:\n$\\frac{T_1 - T_2}{t} = k\\left(\\frac{T_1 + T_2}{2} - T_0\\right)$\n\nCase 1:\n$\\frac{65.5 - 62.5}{1} = k\\left(\\frac{65.5 + 62.5}{2} - 22.5\\right)$\n$3 = k(64 - 22.5) = k(41.5) \\implies k = \\frac{3}{41.5}$\n\nCase 2:\n$\\frac{46.5 - 40.5}{t} = k\\left(\\frac{46.5 + 40.5}{2} - 22.5\\right)$\n$\\frac{6}{t} = k(43.5 - 22.5) = k(21)$\n$\\frac{6}{t} = \\left(\\frac{3}{41.5}\\right) \\times 21 = \\frac{63}{41.5}$\n$t = \\frac{6 \\times 41.5}{63} = \\frac{249}{63} \\approx 3.95\\text{ minutes} \\approx 4\\text{ minutes}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q25",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2020,
+    "question": "A sphere, a cube and a thin circular plate, all of the same material and same mass, are initially heated to the same high temperature. Which of the following is correct?",
+    "options": [
+      "plate will cool the fastest and sphere the slowest",
+      "cube will cool the fastest and plate the slowest",
+      "plate will cool the fastest and cube the slowest",
+      "sphere will cool the fastest and cube the slowest"
+    ],
+    "correct_answer": 0,
+    "explanation": "By Stefan-Boltzmann law, the rate of loss of heat is directly proportional to the surface area:\n$\\frac{dQ}{dt} = e \\sigma A (T^4 - T_0^4) \\implies -m c \\frac{dT}{dt} \\propto A \\implies -\\frac{dT}{dt} \\propto A$\n\nFor a given mass and volume of a material:\n- A thin circular plate has the largest surface area, so it cools the fastest.\n- A sphere has the minimum surface area for a given volume, so it cools the slowest.\nTherefore, the plate will cool the fastest and the sphere the slowest.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q26",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2021,
+    "question": "Which of the following curves represent the variation of coefficient of volume expansion of an ideal gas at constant pressure?",
+    "options": [
+      "(a)",
+      "(b)",
+      "(c)",
+      "(d)"
+    ],
+    "correct_answer": 1,
+    "explanation": "For an ideal gas: $P V = n R T$.\nAt constant pressure $P$:\n$P \\Delta V = n R \\Delta T \\implies \\frac{\\Delta V}{\\Delta T} = \\frac{n R}{P} = \\frac{V}{T}$\n\nThe coefficient of volume expansion $\\alpha_v$ is defined as:\n$\\alpha_v = \\frac{1}{V}\\frac{\\Delta V}{\\Delta T} = \\frac{1}{V}\\left(\\frac{V}{T}\\right) = \\frac{1}{T}$\n\nSince $\\alpha_v = \\frac{1}{T}$, the plot of $\\alpha_v$ versus $\\frac{1}{T}$ is a straight line passing through the origin, which corresponds to curve (b).",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch10/q26.png"
+  },
+  {
+    "id": "phys_ch10_q27",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2023,
+    "question": "$100\\text{ g}$ of ice at $0^\\circ\\text{C}$ is mixed with $100\\text{ g}$ of water at $100^\\circ\\text{C}$. The final temperature of the mixture is [Take $L_f = 3.36 \\times 10^5\\text{ J kg}^{-1}$ and $s_w = 4.2 \\times 10^3\\text{ J kg}^{-1}\\text{ K}^{-1}$]",
+    "options": [
+      "$40^\\circ\\text{C}$",
+      "$10^\\circ\\text{C}$",
+      "$50^\\circ\\text{C}$",
+      "$1^\\circ\\text{C}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let $T$ be the final equilibrium temperature of the mixture.\nHeat gained by ice = Heat lost by hot water:\n$m L_f + m s_w (T - 0) = m s_w (100 - T)$\n\nDivide by $m = 0.1\\text{ kg}$:\n$L_f + s_w T = s_w (100 - T)$\n$3.36 \\times 10^5 + 4.2 \\times 10^3 T = 4.2 \\times 10^3 (100 - T) = 4.2 \\times 10^5 - 4.2 \\times 10^3 T$\n$8.4 \\times 10^3 T = 4.2 \\times 10^5 - 3.36 \\times 10^5 = 0.84 \\times 10^5 = 84 \\times 10^3$\n$T = \\frac{84 \\times 10^3}{8.4 \\times 10^3} = 10^\\circ\\text{C}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch10_q28",
+    "subject": "Physics",
+    "chapter": "Thermal Properties of Matter",
+    "chapter_number": 10,
+    "year": 2024,
+    "question": "A solid cube of mass $m$ at a temperature $\\theta_0$ is heated at a constant rate. It becomes liquid at temperature $\\theta_1$ and vapour at temperature $\\theta_2$. Let $s_1$ and $s_2$ be specific heats in its solid and liquid states respectively. If $L_f$ and $L_v$ are latent heats of fusion and vaporisation respectively, then the minimum heat energy supplied to the cube until it vaporises is",
+    "options": [
+      "$m s_1(\\theta_1 - \\theta_0) + m s_2(\\theta_2 - \\theta_1)$",
+      "$m L_f + m s_2(\\theta_2 - \\theta_1) + m L_v$",
+      "$m s_1(\\theta_1 - \\theta_0) + m L_f + m s_2(\\theta_2 - \\theta_1) + m L_v$",
+      "$m s_1(\\theta_1 - \\theta_0) + m L_f + m s_2(\\theta_2 - \\theta_0) + m L_v$"
+    ],
+    "correct_answer": 2,
+    "explanation": "The stages of heating are:\n1. Heating solid cube from $\\theta_0$ to melting point $\\theta_1$: $Q_1 = m s_1 (\\theta_1 - \\theta_0)$.\n2. Melting solid into liquid at $\\theta_1$: $Q_2 = m L_f$.\n3. Heating liquid from $\\theta_1$ to boiling point $\\theta_2$: $Q_3 = m s_2 (\\theta_2 - \\theta_1)$.\n4. Vaporising liquid into vapour at $\\theta_2$: $Q_4 = m L_v$.\n\nTotal heat energy supplied:\n$Q = Q_1 + Q_2 + Q_3 + Q_4 = m s_1(\\theta_1 - \\theta_0) + m L_f + m s_2(\\theta_2 - \\theta_1) + m L_v$.",
+    "needs_image": false
+  }
+]

@@ -1,0 +1,1478 @@
+[
+  {
+    "id": "pyq-math-ch17-001",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "$\\int \\frac{(x^3 + 3x^2 + 3x + 1)}{(x + 1)^5} dx =$",
+    "options": [
+      "$-\\frac{1}{x+1} + C$",
+      "$\\frac{1}{x+1} + C$",
+      "$\\log(x+1) + C$",
+      "$\\tan^{-1}x + C$"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "Note that $x^3 + 3x^2 + 3x + 1 = (x+1)^3$. Therefore,\n$$\\int \\frac{(x+1)^3}{(x+1)^5} dx = \\int (x+1)^{-2} dx = -\\frac{1}{x+1} + C$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-002",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "If $I_1 = \\int_0^{\\pi/2} x\\sin x \\, dx$ and $I_2 = \\int_0^{\\pi/2} x\\cos x \\, dx$, then $I_1 + I_2 =$",
+    "options": [
+      "$\\frac{\\pi}{2}$",
+      "$\\frac{\\pi}{4}$",
+      "$\\pi$",
+      "$0$"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "$$I_1 + I_2 = \\int_0^{\\pi/2} x(\\sin x + \\cos x) dx$$\nUsing property $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$:\n$$I_1 + I_2 = \\int_0^{\\pi/2} \\left(\\frac{\\pi}{2} - x\\right)(\\cos x + \\sin x) dx$$\nAdding both forms gives $2(I_1 + I_2) = \\frac{\\pi}{2}\\int_0^{\\pi/2}(\\sin x + \\cos x)dx = \\frac{\\pi}{2}[-\\cos x + \\sin x]_0^{\\pi/2} = \\frac{\\pi}{2}(1 - (-1)) = \\pi \\Rightarrow I_1 + I_2 = \\frac{\\pi}{2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-003",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{1 + 3\\sin^2 x} =",
+    "options": [
+      "\\frac{1}{2}\\tan^{-1}(2\\tan x) + C",
+      "\\tan^{-1}(2\\tan x) + C",
+      "\\frac{1}{4}\\tan^{-1}(2\\tan x) + C",
+      "\\frac{1}{2}\\tan^{-1}(2\\tan x) + C"
+    ],
+    "correct_answer": 3,
+    "year": 2006,
+    "explanation": "Divide numerator and denominator by $\\cos^2 x$: $\\int \\frac{\\sec^2 x dx}{\\sec^2 x + 3\\tan^2 x} = \\int \\frac{\\sec^2 x dx}{1 + 4\\tan^2 x} = \\frac{1}{2}\\tan^{-1}(2\\tan x) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-004",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "The value of $\\int_{-1}^2 \\frac{|x|}{x} \\, dx$ is",
+    "options": [
+      "$0$",
+      "$1$",
+      "$2$",
+      "$3$"
+    ],
+    "correct_answer": 1,
+    "year": 2007,
+    "explanation": "$$\\int_{-1}^2 \\frac{|x|}{x} dx = \\int_{-1}^0 (-1) dx + \\int_0^2 (1) dx = -[x]_{-1}^0 + [x]_0^2 = -(0 - (-1)) + (2 - 0) = -1 + 2 = 1$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-005",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{x^2 - 1}{x^4 + 1} \\, dx =",
+    "options": [
+      "\\frac{1}{2\\sqrt{2}}\\log\\left|\\frac{x^2 - \\sqrt{2}x + 1}{x^2 + \\sqrt{2}x + 1}\\right| + C",
+      "\\frac{1}{\\sqrt{2}}\\tan^{-1}\\left(\\frac{x^2-1}{\\sqrt{2}x}\\right) + C",
+      "\\frac{1}{2\\sqrt{2}}\\log\\left|\\frac{x + 1/x - \\sqrt{2}}{x + 1/x + \\sqrt{2}}\\right| + C",
+      "\\frac{1}{2}\\tan^{-1}(x^2) + C"
+    ],
+    "correct_answer": 0,
+    "year": 2007,
+    "explanation": "Divide numerator and denominator by $x^2$: $\\int \\frac{(1 - 1/x^2)dx}{(x + 1/x)^2 - 2} = \\frac{1}{2\\sqrt{2}}\\log\\left|\\frac{x+1/x-\\sqrt{2}}{x+1/x+\\sqrt{2}}\\right| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-006",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sqrt{x(1-x)}} =",
+    "options": [
+      "\\sin^{-1}(2x-1) + C",
+      "2\\sin^{-1}\\sqrt{x} + C",
+      "\\sin^{-1}\\sqrt{x} + C",
+      "2\\sin^{-1}\\sqrt{x} + C"
+    ],
+    "correct_answer": 3,
+    "year": 2008,
+    "explanation": "Put $x = \\sin^2\\theta \\Rightarrow dx = 2\\sin\\theta\\cos\\theta d\\theta$. $\\int \\frac{2\\sin\\theta\\cos\\theta}{\\sin\\theta\\cos\\theta} d\\theta = 2\\theta + C = 2\\sin^{-1}\\sqrt{x} + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-007",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{2^x}{\\sqrt{1 - 4^x}} \\, dx =",
+    "options": [
+      "\\sin^{-1}(2^x) + C",
+      "\\frac{1}{\\log 2}\\sin^{-1}(2^x) + C",
+      "\\frac{1}{\\log 2}\\cos^{-1}(2^x) + C",
+      "\\log 2 \\cdot \\sin^{-1}(2^x) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2009,
+    "explanation": "Put $t = 2^x \\Rightarrow dt = 2^x\\log 2 \\, dx$. $\\frac{1}{\\log 2}\\int \\frac{dt}{\\sqrt{1-t^2}} = \\frac{1}{\\log 2}\\sin^{-1}(2^x) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-008",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/4} \\tan^2 x \\, dx =",
+    "options": [
+      "1 - \\frac{\\pi}{4}",
+      "\\frac{\\pi}{4} - 1",
+      "1 + \\frac{\\pi}{4}",
+      "\\frac{\\pi}{4}"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "\\int_0^{\\pi/4} (\\sec^2 x - 1) dx = [\\tan x - x]_0^{\\pi/4} = 1 - \\frac{\\pi}{4}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-009",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^a \\frac{f(x)}{f(x) + f(a-x)} \\, dx =",
+    "options": [
+      "a",
+      "2a",
+      "\\frac{a}{2}",
+      "0"
+    ],
+    "correct_answer": 2,
+    "year": 2010,
+    "explanation": "Using the property $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$, adding both gives $2I = \\int_0^a 1 \\, dx = a \\Rightarrow I = \\frac{a}{2}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-010",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{dx}{1 + \\tan^3 x} =",
+    "options": [
+      "\\pi/4",
+      "\\pi/2",
+      "\\pi",
+      "0"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "Standard property $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$ gives $I = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-011",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\cos 2x - \\cos 2\\alpha}{\\cos x - \\cos \\alpha} \\, dx =",
+    "options": [
+      "2(\\sin x + x\\cos\\alpha) + C",
+      "2(\\sin x + x\\cos\\alpha) + C",
+      "2(\\sin x - x\\cos\\alpha) + C",
+      "2(\\cos x + x\\sin\\alpha) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2011,
+    "explanation": "\\frac{2\\cos^2 x - 1 - (2\\cos^2\\alpha - 1)}{\\cos x - \\cos\\alpha} = 2(\\cos x + \\cos\\alpha). \\text{ Integrating gives } 2(\\sin x + x\\cos\\alpha) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-012",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x^2 + 4x + 13} =",
+    "options": [
+      "\\frac{1}{3}\\tan^{-1}\\left(\\frac{x+2}{3}\\right) + C",
+      "\\frac{1}{3}\\tan^{-1}\\left(\\frac{x-2}{3}\\right) + C",
+      "\\frac{1}{2}\\tan^{-1}\\left(\\frac{x+2}{3}\\right) + C",
+      "\\tan^{-1}\\left(\\frac{x+2}{3}\\right) + C"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "\\int \\frac{dx}{(x+2)^2 + 3^2} = \\frac{1}{3}\\tan^{-1}\\left(\\frac{x+2}{3}\\right) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-013",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\log(\\tan x) \\, dx =",
+    "options": [
+      "\\pi",
+      "0",
+      "\\frac{\\pi}{2}",
+      "-\\frac{\\pi}{2}"
+    ],
+    "correct_answer": 1,
+    "year": 2011,
+    "explanation": "Using $I = \\int_0^{\\pi/2} \\log(\\cot x) dx = -I \\Rightarrow 2I = 0 \\Rightarrow I = 0.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-014",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^2 |x^2 - 1| \\, dx =",
+    "options": [
+      "2",
+      "1",
+      "\\frac{4}{3}",
+      "\\frac{2}{3}"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "\\int_0^1 (1 - x^2)dx + \\int_1^2 (x^2 - 1)dx = [x - x^3/3]_0^1 + [x^3/3 - x]_1^2 = 2/3 + 4/3 = 2.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-015",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{x^2}{1+x^2} \\, dx =",
+    "options": [
+      "1 - \\pi/4",
+      "1 - \\pi/4",
+      "\\pi/4 - 1",
+      "1 + \\pi/4"
+    ],
+    "correct_answer": 1,
+    "year": 2011,
+    "explanation": "\\int_0^1 \\left(1 - \\frac{1}{1+x^2}\\right) dx = [x - \\tan^{-1} x]_0^1 = 1 - \\frac{\\pi}{4}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-016",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\sin^6 x}{\\cos^8 x} \\, dx =",
+    "options": [
+      "\\frac{\\tan^6 x}{6} + C",
+      "\\frac{\\tan^8 x}{8} + C",
+      "\\frac{\\tan^7 x}{7} + C",
+      "\\frac{\\sec^7 x}{7} + C"
+    ],
+    "correct_answer": 2,
+    "year": 2012,
+    "explanation": "\\int \\tan^6 x \\sec^2 x \\, dx = \\frac{\\tan^7 x}{7} + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-017",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int e^x \\left(\\frac{1 - x}{1 + x^2}\\right)^2 dx =",
+    "options": [
+      "\\frac{e^x}{1+x} + C",
+      "-\\frac{e^x}{1+x^2} + C",
+      "e^x(1+x^2) + C",
+      "\\frac{e^x}{1+x^2} + C"
+    ],
+    "correct_answer": 3,
+    "year": 2012,
+    "explanation": "\\int e^x \\left[\\frac{1}{1+x^2} - \\frac{2x}{(1+x^2)^2}\\right] dx = \\frac{e^x}{1+x^2} + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-018",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_1^e \\log x \\, dx =",
+    "options": [
+      "1",
+      "e",
+      "e - 1",
+      "0"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "[x\\log x - x]_1^e = (e - e) - (0 - 1) = 1.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-019",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-1}^1 \\log\\left(\\frac{2-x}{2+x}\\right) dx =",
+    "options": [
+      "2",
+      "1",
+      "0",
+      "-1"
+    ],
+    "correct_answer": 2,
+    "year": 2012,
+    "explanation": "The integrand $f(x) = \\log\\left(\\frac{2-x}{2+x}\\right)$ satisfies $f(-x) = -f(x)$ (odd function). Hence the integral is 0.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-020",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x^2 - 6x + 13} =",
+    "options": [
+      "\\tan^{-1}\\left(\\frac{x-3}{2}\\right) + C",
+      "\\frac{1}{4}\\tan^{-1}\\left(\\frac{x-3}{2}\\right) + C",
+      "\\frac{1}{2}\\tan^{-1}\\left(\\frac{x+3}{2}\\right) + C",
+      "\\frac{1}{2}\\tan^{-1}\\left(\\frac{x-3}{2}\\right) + C"
+    ],
+    "correct_answer": 3,
+    "year": 2012,
+    "explanation": "\\int \\frac{dx}{(x-3)^2 + 2^2} = \\frac{1}{2}\\tan^{-1}\\left(\\frac{x-3}{2}\\right) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-021",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\cos x + x\\sin x}{x(x+\\cos x)} \\, dx =",
+    "options": [
+      "\\log|x| + C",
+      "\\log|x+\\cos x| + C",
+      "\\log\\left|\\frac{x}{x+\\cos x}\\right| + C",
+      "\\log\\left|\\frac{x+\\cos x}{x}\\right| + C"
+    ],
+    "correct_answer": 3,
+    "year": 2013,
+    "explanation": "Numerator $\\cos x + x\\sin x = (x+\\cos x) + x(\\sin x - 1)$, splitting gives $\\int \\left(\\frac{1}{x} - \\frac{1-\\sin x}{x+\\cos x}\\right) dx = \\log\\left|\\frac{x}{x+\\cos x}\\right| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-022",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sqrt{1 - e^{2x}}} =",
+    "options": [
+      "\\log|e^x + \\sqrt{1-e^{2x}}| + C",
+      "-\\sin^{-1}(e^x) + C",
+      "-\\text{sech}^{-1}(e^x) + C",
+      "\\sin^{-1}(e^x) + C"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "Put $e^x = \\sin\\theta$ or use standard substitution to get $-\\text{sech}^{-1}(e^x) + C$ or $-\\log|1+\\sqrt{1-e^{2x}}|/e^x + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-023",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{8\\log(1+x)}{1+x^2} \\, dx =",
+    "options": [
+      "\\pi\\log 2",
+      "\\pi\\log 2",
+      "\\frac{\\pi}{8}\\log 2",
+      "2\\pi\\log 2"
+    ],
+    "correct_answer": 1,
+    "year": 2013,
+    "explanation": "Standard integral $\\int_0^1 \\frac{\\log(1+x)}{1+x^2} dx = \\frac{\\pi}{8}\\log 2$. Multiplying by 8 gives $\\pi\\log 2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-024",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{\\sin^{100} x}{\\sin^{100} x + \\cos^{100} x} \\, dx =",
+    "options": [
+      "\\pi",
+      "\\frac{\\pi}{4}",
+      "\\frac{\\pi}{2}",
+      "0"
+    ],
+    "correct_answer": 1,
+    "year": 2013,
+    "explanation": "By symmetry and $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$, the result is $\\frac{\\pi/2}{2} = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-025",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x(x^6 + 1)} =",
+    "options": [
+      "\\frac{1}{6}\\log\\left|\\frac{x^6+1}{x^6}\\right| + C",
+      "\\log\\left|\\frac{x^6}{x^6+1}\\right| + C",
+      "\\frac{1}{6}\\log\\left|\\frac{x^6}{x^6+1}\\right| + C",
+      "6\\log\\left|\\frac{x^6}{x^6+1}\\right| + C"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "\\int \\frac{x^5 dx}{x^6(x^6+1)} = \\frac{1}{6}\\log\\left|\\frac{x^6}{x^6+1}\\right| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-026",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{x^2}{1 + x^6} \\, dx =",
+    "options": [
+      "\\tan^{-1}(x^3) + C",
+      "\\frac{1}{3}\\tan^{-1}(x^3) + C",
+      "3\\tan^{-1}(x^3) + C",
+      "\\frac{1}{2}\\tan^{-1}(x^3) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "Let $t = x^3 \\Rightarrow dt = 3x^2 dx$. $\\frac{1}{3}\\int \\frac{dt}{1+t^2} = \\frac{1}{3}\\tan^{-1}(x^3) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-027",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int e^{2x}\\sin 3x \\, dx =",
+    "options": [
+      "\\frac{e^{2x}}{13}(2\\sin 3x + 3\\cos 3x) + C",
+      "\\frac{e^{2x}}{13}(3\\sin 3x - 2\\cos 3x) + C",
+      "\\frac{e^{2x}}{13}(2\\sin 3x - 3\\cos 3x) + C",
+      "\\frac{e^{2x}}{5}(2\\sin 3x - 3\\cos 3x) + C"
+    ],
+    "correct_answer": 2,
+    "year": 2014,
+    "explanation": "\\int e^{ax}\\sin bx \\, dx = \\frac{e^{ax}}{a^2+b^2}(a\\sin bx - b\\cos bx) + C = \\frac{e^{2x}}{13}(2\\sin 3x - 3\\cos 3x) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-028",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_2^3 \\frac{\\sqrt{x}}{\\sqrt{5-x} + \\sqrt{x}} \\, dx =",
+    "options": [
+      "1",
+      "5",
+      "\\frac{1}{2}",
+      "2"
+    ],
+    "correct_answer": 2,
+    "year": 2014,
+    "explanation": "Using $\\int_a^b f(x)dx = \\int_a^b f(a+b-x)dx$, $2I = \\int_2^3 1 \\, dx = 3 - 2 = 1 \\Rightarrow I = 1/2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-029",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-1}^1 x|x| \\, dx =",
+    "options": [
+      "0",
+      "1",
+      "-1",
+      "2"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "Since $f(x) = x|x|$ is an odd function ($f(-x) = -x|-x| = -x|x| = -f(x)$), $\\int_{-1}^1 x|x| dx = 0$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-030",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^3 \\frac{dx}{\\sqrt{9 - x^2}} =",
+    "options": [
+      "\\pi",
+      "\\pi/4",
+      "3\\pi/2",
+      "\\pi/2"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "$[\\sin^{-1}(x/3)]_0^3 = \\sin^{-1}(1) - \\sin^{-1}(0) = \\frac{\\pi}{2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-031",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sin^2 x \\cos^2 x} =",
+    "options": [
+      "\\tan x + \\cot x + C",
+      "\\tan x - \\cot x + C",
+      "\\tan x - \\cot x + C",
+      "-\\tan x - \\cot x + C"
+    ],
+    "correct_answer": 2,
+    "year": 2015,
+    "explanation": "\\int \\frac{\\sin^2 x + \\cos^2 x}{\\sin^2 x\\cos^2 x} dx = \\int (\\sec^2 x + \\text{cosec}^2 x) dx = \\tan x - \\cot x + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-032",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\sqrt{x^2 + 2x + 5} \\, dx =",
+    "options": [
+      "\\frac{x+1}{2}\\sqrt{x^2+2x+5} + 2\\log|x+1+\\sqrt{x^2+2x+5}| + C",
+      "\\frac{x+1}{2}\\sqrt{x^2+2x+5} + \\log|x+1+\\sqrt{x^2+2x+5}| + C",
+      "\\frac{x+1}{2}\\sqrt{x^2+2x+5} - 2\\log|x+1+\\sqrt{x^2+2x+5}| + C",
+      "(x+1)\\sqrt{x^2+2x+5} + C"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Complete the square: $\\sqrt{(x+1)^2 + 2^2}$ and use standard formula $\\frac{x}{2}\\sqrt{x^2+a^2} + \\frac{a^2}{2}\\log|x+\\sqrt{x^2+a^2}| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-033",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^2 \\sqrt{4 - x^2} \\, dx =",
+    "options": [
+      "4\\pi",
+      "2\\pi",
+      "\\pi/2",
+      "\\pi"
+    ],
+    "correct_answer": 3,
+    "year": 2015,
+    "explanation": "Represents area of a quarter circle of radius 2: $\\frac{1}{4}\\pi (2^2) = \\pi$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-034",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi} |\\cos x| \\, dx =",
+    "options": [
+      "2",
+      "0",
+      "1",
+      "4"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "\\int_0^{\\pi/2}\\cos x \\, dx + \\int_{\\pi/2}^\\pi (-\\cos x)dx = 1 + 1 = 2.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-035",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{e^x}{1 + e^{2x}} \\, dx =",
+    "options": [
+      "\\tan^{-1}(e) - \\pi/4",
+      "\\tan^{-1}(e)",
+      "\\pi/4",
+      "\\tan^{-1}(e) + \\pi/4"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "$[\\tan^{-1}(e^x)]_0^1 = \\tan^{-1}(e) - \\tan^{-1}(1) = \\tan^{-1}(e) - \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-036",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{x^3 - 1}{x^2} \\, dx =",
+    "options": [
+      "\\frac{x^2}{2} + \\frac{1}{x} + C",
+      "\\frac{x^2}{2} - \\frac{1}{x} + C",
+      "x^2 + \\frac{1}{x} + C",
+      "\\frac{x^2}{2} + \\frac{1}{x^2} + C"
+    ],
+    "correct_answer": 0,
+    "year": 2016,
+    "explanation": "\\int \\left(x - \\frac{1}{x^2}\\right) dx = \\frac{x^2}{2} + \\frac{1}{x} + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-037",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{e^x + 1} =",
+    "options": [
+      "\\log|e^x+1| + C",
+      "e^{-x} + C",
+      "x - \\log|e^x+1| + C",
+      "\\log|1+e^{-x}| + C"
+    ],
+    "correct_answer": 2,
+    "year": 2016,
+    "explanation": "\\int \\frac{e^{-x}dx}{1+e^{-x}} = -\\log|1+e^{-x}| + C = x - \\log|e^x+1| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-038",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{\\cos x}{1 + \\sin^2 x} \\, dx =",
+    "options": [
+      "\\pi/2",
+      "\\pi/4",
+      "\\pi",
+      "1"
+    ],
+    "correct_answer": 1,
+    "year": 2016,
+    "explanation": "Put $t = \\sin x \\Rightarrow dt = \\cos x dx$. $\\int_0^1 \\frac{dt}{1+t^2} = [\\tan^{-1} t]_0^1 = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-039",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^3 [x] \\, dx \\text{ where } [x] \\text{ is greatest integer function} =",
+    "options": [
+      "3",
+      "6",
+      "1.5",
+      "0"
+    ],
+    "correct_answer": 0,
+    "year": 2016,
+    "explanation": "\\int_0^1 0 \\, dx + \\int_1^2 1 \\, dx + \\int_2^3 2 \\, dx = 0 + 1 + 2 = 3.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-040",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\cos 2x}{(\\sin x + \\cos x)^2} \\, dx =",
+    "options": [
+      "\\frac{1}{\\sin x + \\cos x} + C",
+      "-\\frac{1}{\\sin x + \\cos x} + C",
+      "(\\sin x + \\cos x) + C",
+      "\\log|\\sin x + \\cos x| + C"
+    ],
+    "correct_answer": 3,
+    "year": 2016,
+    "explanation": "\\frac{\\cos^2 x - \\sin^2 x}{(\\sin x+\\cos x)^2} = \\frac{\\cos x - \\sin x}{\\sin x + \\cos x}. \\text{ Integrating gives } \\log|\\sin x + \\cos x| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-041",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{(x+1)(x+2)} =",
+    "options": [
+      "\\log|x+1| + \\log|x+2| + C",
+      "\\log\\left|\\frac{x+2}{x+1}\\right| + C",
+      "\\frac{1}{x+1} - \\frac{1}{x+2} + C",
+      "\\log\\left|\\frac{x+1}{x+2}\\right| + C"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "\\int \\left(\\frac{1}{x+1} - \\frac{1}{x+2}\\right) dx = \\log\\left|\\frac{x+1}{x+2}\\right| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-042",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int x\\sec^2 x \\, dx =",
+    "options": [
+      "x\\tan x + \\log|\\cos x| + C",
+      "x\\tan x + \\log|\\cos x| + C",
+      "x\\tan x - \\log|\\cos x| + C",
+      "x\\tan x + \\log|\\sin x| + C"
+    ],
+    "correct_answer": 1,
+    "year": 2017,
+    "explanation": "\\text{Integration by parts: } x\\tan x - \\int \\tan x \\, dx = x\\tan x + \\log|\\cos x| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-043",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/4} \\log(1 + \\tan x) \\, dx =",
+    "options": [
+      "\\pi\\log 2",
+      "\\frac{\\pi}{4}\\log 2",
+      "\\frac{\\pi}{2}\\log 2",
+      "\\frac{\\pi}{8}\\log 2"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "Standard property: $I = \\int_0^{\\pi/4} \\log(1+\\tan(\\pi/4-x))dx = \\int_0^{\\pi/4}\\log\\left(\\frac{2}{1+\\tan x}\\right)dx \\Rightarrow 2I = \\frac{\\pi}{4}\\log 2 \\Rightarrow I = \\frac{\\pi}{8}\\log 2.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-044",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-5}^5 |x + 2| \\, dx =",
+    "options": [
+      "25",
+      "50",
+      "20",
+      "29"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "\\int_{-5}^{-2} -(x+2)dx + \\int_{-2}^5 (x+2)dx = [-(x+2)^2/2]_{-5}^{-2} + [(x+2)^2/2]_{-2}^5 = 9/2 + 49/2 = 58/2 = 29.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-045",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sqrt{16 - 9x^2}} =",
+    "options": [
+      "\\frac{1}{3}\\sin^{-1}\\left(\\frac{3x}{4}\\right) + C",
+      "\\frac{1}{4}\\sin^{-1}\\left(\\frac{3x}{4}\\right) + C",
+      "\\frac{1}{3}\\sin^{-1}\\left(\\frac{3x}{4}\\right) + C",
+      "\\sin^{-1}\\left(\\frac{3x}{4}\\right) + C"
+    ],
+    "correct_answer": 2,
+    "year": 2017,
+    "explanation": "\\int \\frac{dx}{\\sqrt{4^2 - (3x)^2}} = \\frac{1}{3}\\sin^{-1}\\left(\\frac{3x}{4}\\right) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-046",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{x^9}{(4x^2 + 1)^6} \\, dx =",
+    "options": [
+      "\\frac{1}{5x(4+x^{-2})^5} + C",
+      "\\frac{1}{40(4+x^{-2})^5} + C",
+      "\\frac{1}{20(4+x^{-2})^5} + C",
+      "\\frac{1}{10(4+x^{-2})^5} + C"
+    ],
+    "correct_answer": 1,
+    "year": 2018,
+    "explanation": "Take out $x^{12}$ from denominator: $\\int \\frac{x^9 dx}{x^{12}(4+x^{-2})^6} = \\int \\frac{x^{-3}dx}{(4+x^{-2})^6}$. Put $t = 4+x^{-2} \\Rightarrow dt = -2x^{-3}dx$. $-\\frac{1}{2}\\int t^{-6} dt = \\frac{1}{10t^5} + C = \\frac{1}{10(4x^2+1)^5/x^{10}} = \\frac{1}{40(4+x^{-2})^5} + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-047",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x(x^n + 1)} =",
+    "options": [
+      "\\frac{1}{n}\\log\\left|\\frac{x^n}{x^n+1}\\right| + C",
+      "\\frac{1}{n}\\log\\left|\\frac{x^n+1}{x^n}\\right| + C",
+      "\\log\\left|\\frac{x^n}{x^n+1}\\right| + C",
+      "n\\log\\left|\\frac{x^n}{x^n+1}\\right| + C"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "\\int \\frac{x^{n-1}dx}{x^n(x^n+1)} = \\frac{1}{n}\\log\\left|\\frac{x^n}{x^n+1}\\right| + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-048",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{\\sin x - \\cos x}{1 + \\sin x\\cos x} \\, dx =",
+    "options": [
+      "0",
+      "\\pi/4",
+      "\\pi/2",
+      "1"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "Applying $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$ gives $I = -I \\Rightarrow I = 0$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-049",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_1^4 \\frac{\\sqrt{x}}{\\sqrt{5-x} + \\sqrt{x}} \\, dx =",
+    "options": [
+      "3",
+      "1.5",
+      "1.5",
+      "2"
+    ],
+    "correct_answer": 2,
+    "year": 2018,
+    "explanation": "Using $\\int_a^b f(x)dx = \\int_a^b f(a+b-x)dx$, $2I = \\int_1^4 1 \\, dx = 3 \\Rightarrow I = 3/2 = 1.5$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-050",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 x e^x \\, dx =",
+    "options": [
+      "1",
+      "e",
+      "e - 1",
+      "0"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "$[xe^x - e^x]_0^1 = (e - e) - (0 - 1) = 1$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-051",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\cos x}{\\sqrt{4 - \\sin^2 x}} \\, dx =",
+    "options": [
+      "\\cos^{-1}\\left(\\frac{\\sin x}{2}\\right) + C",
+      "\\sin^{-1}\\left(\\frac{\\sin x}{2}\\right) + C",
+      "\\frac{1}{2}\\sin^{-1}\\left(\\frac{\\sin x}{2}\\right) + C",
+      "\\sin^{-1}\\left(\\frac{\\cos x}{2}\\right) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "Put $t = \\sin x \\Rightarrow dt = \\cos x dx$. $\\int \\frac{dt}{\\sqrt{2^2 - t^2}} = \\sin^{-1}\\left(\\frac{t}{2}\\right) + C = \\sin^{-1}\\left(\\frac{\\sin x}{2}\\right) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-052",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{e^x(1+x)}{\\cos^2(xe^x)} \\, dx =",
+    "options": [
+      "\\cot(xe^x) + C",
+      "-\\cot(xe^x) + C",
+      "\\tan(xe^x) + C",
+      "\\sec(xe^x) + C"
+    ],
+    "correct_answer": 2,
+    "year": 2019,
+    "explanation": "Put $t = xe^x \\Rightarrow dt = (xe^x + e^x)dx = e^x(1+x)dx$. $\\int \\sec^2 t \\, dt = \\tan t + C = \\tan(xe^x) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-053",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\sin^2 x \\, dx =",
+    "options": [
+      "\\pi/4",
+      "\\pi/2",
+      "\\pi",
+      "1"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "$\\int_0^{\\pi/2} \\frac{1-\\cos 2x}{2} dx = \\left[\\frac{x}{2} - \\frac{\\sin 2x}{4}\\right]_0^{\\pi/2} = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-054",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-1}^1 x^{17}\\cos^4 x \\, dx =",
+    "options": [
+      "1",
+      "0",
+      "\\pi",
+      "2"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "Integrand is odd function ($(-x)^{17}\\cos^4(-x) = -x^{17}\\cos^4 x$). Hence the integral is 0.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-055",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\log(\\cot x) \\, dx =",
+    "options": [
+      "0",
+      "\\pi/2",
+      "\\pi",
+      "-\\pi/2"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Using $I = -I \\Rightarrow I = 0$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-056",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x^2 - 16} =",
+    "options": [
+      "\\frac{1}{4}\\log\\left|\\frac{x-4}{x+4}\\right| + C",
+      "\\frac{1}{8}\\log\\left|\\frac{x+4}{x-4}\\right| + C",
+      "\\frac{1}{8}\\log\\left|\\frac{x-4}{x+4}\\right| + C",
+      "\\frac{1}{2}\\log\\left|\\frac{x-4}{x+4}\\right| + C"
+    ],
+    "correct_answer": 2,
+    "year": 2020,
+    "explanation": "Standard integral formula $\\int \\frac{dx}{x^2 - a^2} = \\frac{1}{2a}\\log\\left|\\frac{x-a}{x+a}\\right| + C = \\frac{1}{8}\\log\\left|\\frac{x-4}{x+4}\\right| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-057",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int e^x(\\tan x + \\log\\sec x) \\, dx =",
+    "options": [
+      "e^x\\tan x + C",
+      "e^x\\sec x + C",
+      "e^x\\log\\sec x + C",
+      "-e^x\\log\\sec x + C"
+    ],
+    "correct_answer": 2,
+    "year": 2020,
+    "explanation": "$\\frac{d}{dx}(\\log\\sec x) = \\frac{\\sec x\\tan x}{\\sec x} = \\tan x$. By $\\int e^x[f(x)+f'(x)]dx = e^xf(x) + C = e^x\\log\\sec x + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-058",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{dx}{\\sqrt{1 - x^2}} =",
+    "options": [
+      "\\pi/2",
+      "\\pi/4",
+      "\\pi",
+      "1"
+    ],
+    "correct_answer": 0,
+    "year": 2020,
+    "explanation": "$[\\sin^{-1} x]_0^1 = \\sin^{-1}(1) - \\sin^{-1}(0) = \\frac{\\pi}{2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-059",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^2 |1 - x| \\, dx =",
+    "options": [
+      "1",
+      "2",
+      "0",
+      "1.5"
+    ],
+    "correct_answer": 0,
+    "year": 2020,
+    "explanation": "\\int_0^1 (1-x)dx + \\int_1^2 (x-1)dx = 1/2 + 1/2 = 1.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-060",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x^2 + 2x + 2} =",
+    "options": [
+      "\\tan^{-1}(x+1) + C",
+      "\\tan^{-1}(x-1) + C",
+      "\\frac{1}{2}\\tan^{-1}(x+1) + C",
+      "\\log|x^2+2x+2| + C"
+    ],
+    "correct_answer": 0,
+    "year": 2020,
+    "explanation": "\\int \\frac{dx}{(x+1)^2 + 1^2} = \\tan^{-1}(x+1) + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-061",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\sin^2 x - \\cos^2 x}{\\sin^2 x\\cos^2 x} \\, dx =",
+    "options": [
+      "\\tan x + \\cot x + C",
+      "\\tan x + \\cot x + C",
+      "-\\tan x + \\cot x + C",
+      "\\tan x - \\cot x + C"
+    ],
+    "correct_answer": 1,
+    "year": 2021,
+    "explanation": "\\int (\\sec^2 x - \\text{cosec}^2 x) dx = \\tan x - (-\\cot x) + C = \\tan x + \\cot x + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-062",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sqrt{7 - 6x - x^2}} =",
+    "options": [
+      "\\sin^{-1}\\left(\\frac{x+3}{4}\\right) + C",
+      "\\sin^{-1}\\left(\\frac{x-3}{4}\\right) + C",
+      "\\frac{1}{4}\\sin^{-1}\\left(\\frac{x+3}{4}\\right) + C",
+      "\\cos^{-1}\\left(\\frac{x+3}{4}\\right) + C"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "$7 - 6x - x^2 = 16 - (x+3)^2 = 4^2 - (x+3)^2$. $\\int \\frac{dx}{\\sqrt{4^2 - (x+3)^2}} = \\sin^{-1}\\left(\\frac{x+3}{4}\\right) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-063",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{\\cos^5 x}{\\sin^5 x + \\cos^5 x} \\, dx =",
+    "options": [
+      "\\pi/2",
+      "\\pi/4",
+      "\\pi",
+      "0"
+    ],
+    "correct_answer": 1,
+    "year": 2021,
+    "explanation": "By standard property $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$, $I = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-064",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-1}^1 (x^3 + x\\cos x + \\tan^5 x + 1) dx =",
+    "options": [
+      "2",
+      "0",
+      "1",
+      "4"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Since $x^3, x\\cos x, \\tan^5 x$ are all odd functions, their integrals from $-1$ to $1$ are 0. $\\int_{-1}^1 1 \\, dx = 2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-065",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sin^2(x - a)\\sin^2(x - b)} =",
+    "options": [
+      "\\text{cosec}(a-b)\\log|\\sin(x-a)/\\sin(x-b)| + C",
+      "\\tan(x-a) - \\cot(x-b) + C",
+      "\\frac{1}{\\sin(a-b)}\\log|\\sin(x-a)/\\sin(x-b)| + C",
+      "\\frac{1}{\\sin(a-b)}[\\cot(x-a) - \\cot(x-b)] + C"
+    ],
+    "correct_answer": 3,
+    "year": 2021,
+    "explanation": "Multiply and divide by $\\sin(a-b)$ and express numerator as $\\sin((x-b)-(x-a))$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-066",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{1}{x^2(x^4 + 1)^{3/4}} \\, dx =",
+    "options": [
+      "(1 + x^{-4})^{1/4} + C",
+      "-\\frac{1}{4}(1 + x^{-4})^{1/4} + C",
+      "\\frac{1}{4}(1 + x^{-4})^{1/4} + C",
+      "-(1 + x^{-4})^{1/4} + C"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "Take out $x^4$ from bracket: $\\int \\frac{dx}{x^5(1+x^{-4})^{3/4}}$. Let $t = 1+x^{-4} \\Rightarrow dt = -4x^{-5}dx$. Integral becomes $-\\frac{1}{4}\\int t^{-3/4} dt = -(1+x^{-4})^{1/4} + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-067",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int e^x \\left(\\frac{2 + \\sin 2x}{1 + \\cos 2x}\\right) dx =",
+    "options": [
+      "e^x\\sec x + C",
+      "e^x\\cot x + C",
+      "e^x\\sin x + C",
+      "e^x\\tan x + C"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "\\frac{2 + 2\\sin x\\cos x}{2\\cos^2 x} = \\sec^2 x + \\tan x = f'(x) + f(x)$. Hence $\\int e^x[\\tan x + \\sec^2 x]dx = e^x\\tan x + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-068",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi} x\\sin x \\, dx =",
+    "options": [
+      "\\pi",
+      "2\\pi",
+      "0",
+      "\\pi/2"
+    ],
+    "correct_answer": 0,
+    "year": 2022,
+    "explanation": "Integration by parts: $[-x\\cos x]_0^\\pi + \\int_0^\\pi \\cos x dx = \\pi + 0 = \\pi$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-069",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 x(1-x)^n \\, dx =",
+    "options": [
+      "\\frac{1}{n+1} - \\frac{1}{n+2}",
+      "\\frac{1}{n(n+1)}",
+      "\\frac{1}{(n+1)(n+2)}",
+      "\\frac{1}{n+2}"
+    ],
+    "correct_answer": 2,
+    "year": 2022,
+    "explanation": "\\int_0^1 (1-x)x^n dx = \\int_0^1 (x^n - x^{n+1}) dx = \\frac{1}{n+1} - \\frac{1}{n+2} = \\frac{1}{(n+1)(n+2)}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-070",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{dx}{1 + \\sqrt{\\tan x}} =",
+    "options": [
+      "\\pi",
+      "\\pi/2",
+      "\\pi/4",
+      "0"
+    ],
+    "correct_answer": 2,
+    "year": 2022,
+    "explanation": "Standard symmetry result $\\int_0^{\\pi/2} \\frac{\\sqrt{\\cos x}}{\\sqrt{\\sin x}+\\sqrt{\\cos x}} dx = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-071",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{\\sqrt{x} + x} =",
+    "options": [
+      "2\\log|1+\\sqrt{x}| + C",
+      "\\log|1+\\sqrt{x}| + C",
+      "\\frac{1}{2}\\log|1+\\sqrt{x}| + C",
+      "2\\sqrt{x} + C"
+    ],
+    "correct_answer": 0,
+    "year": 2023,
+    "explanation": "Put $x = t^2 \\Rightarrow dx = 2t\\,dt$. $\\int \\frac{2t\\,dt}{t + t^2} = 2\\int \\frac{dt}{1+t} = 2\\log|1+\\sqrt{x}| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-072",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\cos x - \\sin x}{\\cos x + \\sin x} \\, dx =",
+    "options": [
+      "\\log|\\cos x + \\sin x| + C",
+      "-\\log|\\cos x + \\sin x| + C",
+      "\\log|\\cos x - \\sin x| + C",
+      "\\tan x + C"
+    ],
+    "correct_answer": 0,
+    "year": 2023,
+    "explanation": "The numerator is exactly the derivative of the denominator: $\\frac{d}{dx}(\\sin x + \\cos x) = \\cos x - \\sin x$. Thus $\\log|\\sin x + \\cos x| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-073",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{x^4 + 1}{x^2 + 1} \\, dx =",
+    "options": [
+      "\\frac{\\pi}{4} - \\frac{1}{3}",
+      "\\frac{\\pi}{2} - \\frac{2}{3}",
+      "\\frac{\\pi}{2} - \\frac{2}{3}",
+      "\\frac{2}{3}"
+    ],
+    "correct_answer": 2,
+    "year": 2023,
+    "explanation": "\\frac{x^4+1}{x^2+1} = (x^2-1) + \\frac{2}{x^2+1}. \\int_0^1 (x^2-1 + \\frac{2}{x^2+1})dx = [x^3/3 - x + 2\\tan^{-1}x]_0^1 = 1/3 - 1 + 2(\\pi/4) = \\frac{\\pi}{2} - \\frac{2}{3}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-074",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_{-2}^2 |x| \\, dx =",
+    "options": [
+      "2",
+      "8",
+      "0",
+      "4"
+    ],
+    "correct_answer": 3,
+    "year": 2023,
+    "explanation": "Area of two symmetric triangles with base 2 and height 2: $2 \\times (\\frac{1}{2} \\times 2 \\times 2) = 4$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-075",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{e^{x}(1+x)}{(2+x)^2} \\, dx =",
+    "options": [
+      "\\frac{e^x}{2+x} + C",
+      "\\frac{e^x}{(2+x)^2} + C",
+      "-\\frac{e^x}{2+x} + C",
+      "e^x(2+x) + C"
+    ],
+    "correct_answer": 0,
+    "year": 2023,
+    "explanation": "\\int e^x \\left[\\frac{1}{2+x} - \\frac{1}{(2+x)^2}\\right] dx = \\frac{e^x}{2+x} + C.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-076",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{\\sin x}{1 + \\cos x} \\, dx =",
+    "options": [
+      "\\log|1+\\cos x| + C",
+      "-\\log|1+\\cos x| + C",
+      "\\log|1-\\cos x| + C",
+      "\\tan(x/2) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2024,
+    "explanation": "Put $t = 1+\\cos x \\Rightarrow dt = -\\sin x dx$. $-\\int \\frac{dt}{t} = -\\log|1+\\cos x| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-077",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x\\sqrt{x^4 - 1}} =",
+    "options": [
+      "\\sec^{-1}(x^2) + C",
+      "\\frac{1}{4}\\sec^{-1}(x^2) + C",
+      "\\frac{1}{2}\\sec^{-1}(x^2) + C",
+      "\\frac{1}{2}\\sin^{-1}(x^2) + C"
+    ],
+    "correct_answer": 2,
+    "year": 2024,
+    "explanation": "Put $t = x^2 \\Rightarrow dt = 2x\\,dx$. $\\frac{1}{2}\\int \\frac{dt}{t\\sqrt{t^2-1}} = \\frac{1}{2}\\sec^{-1}(x^2) + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-078",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^{\\pi/2} \\frac{\\sqrt{\\cos x}}{\\sqrt{\\sin x} + \\sqrt{\\cos x}} \\, dx =",
+    "options": [
+      "\\pi/4",
+      "\\pi/2",
+      "\\pi",
+      "0"
+    ],
+    "correct_answer": 0,
+    "year": 2024,
+    "explanation": "By symmetry $\\int_0^a f(x)dx = \\int_0^a f(a-x)dx$, $I = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-079",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^2 [x^2] \\, dx =",
+    "options": [
+      "5 - \\sqrt{2} - \\sqrt{3}",
+      "5 - \\sqrt{2}",
+      "5 - \\sqrt{2} - \\sqrt{3}",
+      "4"
+    ],
+    "correct_answer": 2,
+    "year": 2024,
+    "explanation": "\\int_0^1 0dx + \\int_1^{\\sqrt{2}} 1dx + \\int_{\\sqrt{2}}^{\\sqrt{3}} 2dx + \\int_{\\sqrt{3}}^2 3dx = (\\sqrt{2}-1) + 2(\\sqrt{3}-\\sqrt{2}) + 3(2-\\sqrt{3}) = 5 - \\sqrt{2} - \\sqrt{3}.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-080",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int \\frac{dx}{x^2 - a^2} =",
+    "options": [
+      "\\frac{1}{a}\\log\\left|\\frac{x-a}{x+a}\\right| + C",
+      "\\frac{1}{2a}\\log\\left|\\frac{x-a}{x+a}\\right| + C",
+      "\\frac{1}{2a}\\log\\left|\\frac{x+a}{x-a}\\right| + C",
+      "\\frac{1}{a}\\tan^{-1}\\left(\\frac{x}{a}\\right) + C"
+    ],
+    "correct_answer": 1,
+    "year": 2024,
+    "explanation": "Standard integral formula $\\frac{1}{2a}\\log\\left|\\frac{x-a}{x+a}\\right| + C$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-081",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int_0^1 \\frac{dx}{1 + x^2} =",
+    "options": [
+      "\\pi/2",
+      "\\pi",
+      "\\pi/4",
+      "1"
+    ],
+    "correct_answer": 2,
+    "year": 2024,
+    "explanation": "$[\\tan^{-1} x]_0^1 = \\frac{\\pi}{4}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch17-082",
+    "subject": "Mathematics",
+    "chapter": "Integrals",
+    "chapter_number": 17,
+    "question": "\\int e^x(\\sin x + \\cos x) \\, dx =",
+    "options": [
+      "e^x\\sin x + C",
+      "e^x\\cos x + C",
+      "-e^x\\cos x + C",
+      "e^x(\\sin x - \\cos x) + C"
+    ],
+    "correct_answer": 0,
+    "year": 2024,
+    "explanation": "$\\int e^x[f(x)+f'(x)]dx = e^x f(x) + C = e^x\\sin x + C$.",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

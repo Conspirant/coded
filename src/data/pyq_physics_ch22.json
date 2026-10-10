@@ -1,0 +1,259 @@
+[
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2007,
+    "question": "All components of the electromagnetic spectrum in vacuum have the same",
+    "options": [
+      "frequency",
+      "velocity",
+      "wavelength",
+      "energy"
+    ],
+    "correct_answer": 1,
+    "explanation": "**Answer: (b)**\n\nAll electromagnetic waves (radiowaves, microwaves, infrared, visible, ultraviolet, X-rays, and gamma rays) travel through vacuum with the exact same speed:\n$$c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} = 3 \\times 10^8\\text{ m/s}$$\nTheir frequencies, wavelengths, and photon energies ($E = hf$) differ across the spectrum.",
+    "id": "pyq-phys-ch22-001"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2008,
+    "question": "If $\\mu_0$ is the permeability of free space and $\\varepsilon_0$ is the permittivity of free space, the speed of light in vacuum is given by",
+    "options": [
+      "$\\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}$",
+      "$\\sqrt{\\frac{\\mu_0}{\\varepsilon_0}}$",
+      "$\\sqrt{\\mu_0 \\varepsilon_0}$",
+      "$\\sqrt{\\frac{\\varepsilon_0}{\\mu_0}}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "**Answer: (a)**\n\nAccording to Maxwell's electromagnetic theory, the speed of propagation of electromagnetic waves in vacuum is related to the fundamental constants of free space by:\n$$c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}$$",
+    "id": "pyq-phys-ch22-002"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2009,
+    "question": "Which of the following statements does not hold good for thermal radiation?",
+    "options": [
+      "The wavelength changes when it travels from one medium to another.",
+      "The frequency changes when it travels from one medium to another.",
+      "The speed changes when it travels from one medium to another.",
+      "They travel in straight lines in a given homogeneous medium."
+    ],
+    "correct_answer": 1,
+    "explanation": "**Answer: (b)**\n\nThermal radiation is an electromagnetic wave. When any wave travels from one medium to another, its **frequency remains constant** because frequency is determined solely by the source. Its speed and wavelength change according to $v = f\\lambda$.",
+    "id": "pyq-phys-ch22-003"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2010,
+    "question": "An electromagnetic wave consists of periodically oscillating electric and magnetic vectors",
+    "options": [
+      "in mutually perpendicular planes but vibrating with a phase difference of $\\pi$",
+      "in mutually perpendicular planes but vibrating with a phase difference of $\\pi/2$",
+      "in randomly oriented planes but vibrating in phase",
+      "in mutually perpendicular planes and vibrating in phase"
+    ],
+    "correct_answer": 3,
+    "explanation": "**Answer: (d)**\n\nIn a linearly polarized plane electromagnetic wave propagating along the $x$-direction:\n$$\\vec{E} = E_0 \\sin(kx - \\omega t)\\hat{j}, \\quad \\vec{B} = B_0 \\sin(kx - \\omega t)\\hat{k}$$\nThe electric and magnetic field vectors oscillate in mutually perpendicular planes ($y$ and $z$ axes) and are **in phase** (they attain their maxima and minima at the same time and position).",
+    "id": "pyq-phys-ch22-004"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2010,
+    "question": "An electron enters the space between the plates of a charged capacitor. The charge density on the plate is $\\sigma$. Electric intensity in the space between the plates is $E$. A uniform magnetic field $B$ also exists in that space. The time taken by the electron to travel a distance $l$ in that space undeflected is",
+    "options": [
+      "$\\frac{\\sigma l}{\\varepsilon_0 B}$",
+      "$\\frac{l B E}{\\sigma}$",
+      "$\\frac{\\varepsilon_0 l B}{\\sigma}$",
+      "$\\frac{l E}{\\sigma B}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\n![Capacitor Plates](/pyq_images/physics/ch22/q5_capacitor.png)\n\nFor the electron to travel undeflected through mutually perpendicular electric and magnetic fields (velocity selector):\n$$qE = qvB \\implies v = \\frac{E}{B}$$\nThe electric field between two oppositely charged parallel plates with surface charge density $\\sigma$ is:\n$$E = \\frac{\\sigma}{\\varepsilon_0}$$\nThus, the speed of the electron is:\n$$v = \\frac{\\sigma}{\\varepsilon_0 B}$$\nThe time taken to travel a distance $l$ is:\n$$t = \\frac{l}{v} = \\frac{l}{\\sigma / (\\varepsilon_0 B)} = \\frac{\\varepsilon_0 l B}{\\sigma}$$",
+    "explanation_image_url": "/pyq_images/physics/ch22/q5_capacitor.png",
+    "id": "pyq-phys-ch22-005"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2012,
+    "question": "X-rays, gamma rays, and microwaves travelling in vacuum have",
+    "options": [
+      "same frequency and same wavelength",
+      "different velocities and same wavelength",
+      "same velocity and different wavelengths",
+      "same velocity and same frequency"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\nAll electromagnetic waves travel at the **same velocity** in vacuum ($c = 3 \\times 10^8\\text{ m/s}$). Since their frequencies are different (gamma rays > X-rays > microwaves), their wavelengths ($\\\\lambda = c/f$) are also **different** (microwaves > X-rays > gamma rays).",
+    "id": "pyq-phys-ch22-006"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2013,
+    "question": "A charged particle with a velocity $2 \\times 10^3\\text{ m/s}$ passes undeflected through electric and magnetic fields in mutually perpendicular directions. The magnetic field is $1.5\\text{ T}$. The magnitude of electric field will be",
+    "options": [
+      "$1.5 \\times 10^3\\text{ N/C}$",
+      "$2 \\times 10^3\\text{ N/C}$",
+      "$3 \\times 10^3\\text{ N/C}$",
+      "$1.33 \\times 10^3\\text{ N/C}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\nFor an undeflected charged particle in crossed fields:\n$$qE = qvB \\implies E = vB$$\nGiven $v = 2 \\times 10^3\\text{ m/s}$ and $B = 1.5\\text{ T}$:\n$$E = (2 \\times 10^3)(1.5) = 3 \\times 10^3\\text{ N/C}$$",
+    "id": "pyq-phys-ch22-007"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2014,
+    "question": "A plane electromagnetic wave of frequency $20\\text{ MHz}$ travels through space along the $x$-direction. If the electric field vector at a certain point in space is $6\\text{ V/m}$, what is the magnetic field vector at that point?",
+    "options": [
+      "$2\\text{ T}$",
+      "$2 \\times 10^{-8}\\text{ T}$",
+      "$3 \\times 10^{-8}\\text{ T}$",
+      "$1.2 \\times 10^{-8}\\text{ T}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "**Answer: (b)**\n\nThe relation between electric field amplitude $E$ and magnetic field amplitude $B$ in an electromagnetic wave is:\n$$B = \\frac{E}{c}$$\nGiven $E = 6\\text{ V/m}$ and $c = 3 \\times 10^8\\text{ m/s}$:\n$$B = \\frac{6}{3 \\times 10^8} = 2 \\times 10^{-8}\\text{ T}$$",
+    "id": "pyq-phys-ch22-008"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2016,
+    "question": "The electromagnetic radiation used to kill bacteria and purify drinking water / milk is",
+    "options": [
+      "X-rays",
+      "$\\gamma$-rays",
+      "UV rays",
+      "Radiowaves"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\n**Ultraviolet (UV) radiation** destroys the DNA and cellular structure of bacteria and microorganisms, making it widely used in water purifiers and sterilizers.",
+    "id": "pyq-phys-ch22-009"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2017,
+    "question": "If $\\vec{E}$ and $\\vec{B}$ represent the electric and magnetic field vectors of an electromagnetic wave, the direction of propagation of the wave is given by",
+    "options": [
+      "$\\vec{B} \\times \\vec{E}$",
+      "$\\vec{B}$",
+      "$\\vec{E}$",
+      "$\\vec{E} \\times \\vec{B}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "**Answer: (d)**\n\nThe Poynting vector, which represents the direction of energy flow and wave propagation in an electromagnetic wave, is given by:\n$$\\vec{S} = \\frac{1}{\\mu_0} (\\vec{E} \\times \\vec{B})$$\nThus, the wave propagates in the direction of the cross product $\\vec{E} \\times \\vec{B}$.",
+    "id": "pyq-phys-ch22-010"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2018,
+    "question": "An electromagnetic wave propagating along the $+x$-direction has an electric field $\\vec{E} = E_0 \\sin(kx - \\omega t)\\hat{j}$. The magnetic field vector $\\vec{B}$ is given by",
+    "options": [
+      "$\\vec{B} = E_0 c \\sin(kx - \\omega t)\\hat{k}$",
+      "$\\vec{B} = \\frac{E_0}{c} \\sin(kx - \\omega t)\\hat{j}$",
+      "$\\vec{B} = \\frac{E_0}{c} \\sin(kx - \\omega t)\\hat{k}$",
+      "$\\vec{B} = E_0 c \\sin(kx - \\omega t)\\hat{j}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\nThe direction of wave propagation is along $+x$ ($\\hat{i}$). Since $\\hat{i} = \\hat{j} \\times \\hat{k}$, the magnetic field must oscillate along the $z$-direction ($\\hat{k}$).\nFurthermore, the magnetic field amplitude is $B_0 = \\frac{E_0}{c}$.\n$$\\vec{B} = \\frac{E_0}{c} \\sin(kx - \\omega t)\\hat{k}$$",
+    "id": "pyq-phys-ch22-011"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2019,
+    "question": "The amplitude of the electric field in a plane electromagnetic wave is $E_0 = 120\\text{ N/C}$ and its frequency is $f = 50\\text{ MHz}$. Then which of the following values is incorrectly computed?",
+    "options": [
+      "Magnetic field amplitude is $400\\text{ nT}$.",
+      "Angular frequency of the electromagnetic wave is $\\pi \\times 10^8\\text{ rad/s}$.",
+      "Propagation constant (angular wave number) is $2.1\\text{ rad/m}$.",
+      "Wavelength of the electromagnetic wave is $6\\text{ m}$."
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\nLet us evaluate each parameter:\n1. $B_0 = \\frac{E_0}{c} = \\frac{120}{3 \\times 10^8} = 400 \\times 10^{-9}\\text{ T} = 400\\text{ nT}$ (Correct)\n2. $\\omega = 2\\pi f = 2\\pi (50 \\times 10^6) = 10^8 \\pi\\text{ rad/s} \\approx 3.14 \\times 10^8\\text{ rad/s}$ (Correct)\n3. $\\lambda = \\frac{c}{f} = \\frac{3 \\times 10^8}{50 \\times 10^6} = 6\\text{ m}$ (Correct)\n4. Wave number $k = \\frac{\\omega}{c} = \\frac{3.14 \\times 10^8}{3 \\times 10^8} = 1.05\\text{ rad/m}$. \nThe option gives $k = 2.1\\text{ rad/m}$, which is **incorrect**.",
+    "id": "pyq-phys-ch22-012"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2021,
+    "question": "An electromagnetic wave travels in vacuum along the $z$-direction. The electric and magnetic fields may be represented by",
+    "options": [
+      "$\\vec{E} = E_0\\hat{k}\\cos(kz - \\omega t), \\quad \\vec{B} = B_0\\hat{j}\\cos(kz - \\omega t)$",
+      "$\\vec{E} = E_0\\hat{i}\\cos(kz - \\omega t), \\quad \\vec{B} = B_0\\hat{j}\\cos(kz - \\omega t)$",
+      "$\\vec{E} = E_0\\hat{i}\\cos(kz - \\omega t), \\quad \\vec{B} = B_0\\hat{i}\\cos(kz - \\omega t)$",
+      "$\\vec{E} = E_0\\hat{j}\\cos(kz - \\omega t), \\quad \\vec{B} = B_0\\hat{j}\\cos(kz - \\omega t)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "**Answer: (b)**\n\nElectromagnetic waves are transverse in nature, so both $\\vec{E}$ and $\\vec{B}$ must be perpendicular to the direction of propagation ($z$-axis, $\\hat{k}$).\nAlso, $\\vec{E} \\times \\vec{B}$ must point along $+\\hat{k}$. Since $\\hat{i} \\times \\hat{j} = \\hat{k}$, $\\vec{E}$ can oscillate along $\\hat{i}$ and $\\vec{B}$ along $\\hat{j}$.",
+    "id": "pyq-phys-ch22-013"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2022,
+    "question": "Which of the following is not an electromagnetic wave?",
+    "options": [
+      "$\\gamma$-rays",
+      "X-rays",
+      "$\\beta$-particles",
+      "neutrons"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\n$\\beta$-particles are high-energy, high-speed **electrons** (material particles with mass and charge), not electromagnetic waves. $\\gamma$-rays and X-rays are electromagnetic waves.",
+    "id": "pyq-phys-ch22-014"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2022,
+    "question": "Which of the following radiation of electromagnetic waves has the highest wavelength?",
+    "options": [
+      "Infrared rays",
+      "X-rays",
+      "Microwaves",
+      "UV rays"
+    ],
+    "correct_answer": 2,
+    "explanation": "**Answer: (c)**\n\nWavelength ranges of the given electromagnetic waves:\n- **Microwaves:** $1\\text{ mm}$ to $0.1\\text{ m}$ (Longest wavelength among options)\n- **Infrared rays:** $700\\text{ nm}$ to $1\\text{ mm}$\n- **UV rays:** $1\\text{ nm}$ to $400\\text{ nm}$\n- **X-rays:** $0.001\\text{ nm}$ to $1\\text{ nm}$\n\nTherefore, microwaves have the highest wavelength.",
+    "id": "pyq-phys-ch22-015"
+  },
+  {
+    "chapter": "Electromagnetic Waves",
+    "chapter_number": 22,
+    "subject": "Physics",
+    "year": 2023,
+    "question": "The ratio of the magnitudes of electric field to the magnetic field of an electromagnetic wave in vacuum is of the order of",
+    "options": [
+      "$10^{-8}\\text{ m/s}$",
+      "$10^5\\text{ m/s}$",
+      "$10^{-5}\\text{ m/s}$",
+      "$10^8\\text{ m/s}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "**Answer: (d)**\n\nThe ratio of the magnitude of electric field to magnetic field in free space is equal to the speed of light:\n$$\\frac{E}{B} = c = 3 \\times 10^8\\text{ m/s}$$\nThus, the ratio is of the order of **$10^8\\text{ m/s}$**.",
+    "id": "pyq-phys-ch22-016"
+  }
+]

@@ -1,0 +1,444 @@
+[
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The decomposition of a certain mass of $\\text{CaCO}_3$ gave $11.2\\text{ dm}^3$ of $\\text{CO}_2$ gas at STP. The mass of $\\text{KOH}$ required to completely neutralise the gas is",
+    "options": [
+      "$56\\text{ g}$",
+      "$28\\text{ g}$",
+      "$42\\text{ g}$",
+      "$20\\text{ g}$"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "At STP, $1\\text{ mole of gas} = 22.4\\text{ dm}^3$.\\nNumber of moles of $\\text{CO}_2 = \\frac{11.2}{22.4} = 0.5\\text{ mol}$.\\nReaction: $2\\text{KOH} + \\text{CO}_2 \\rightarrow \\text{K}_2\\text{CO}_3 + \\text{H}_2\\text{O}$.\\nThus, $1\\text{ mol of } \\text{CO}_2$ requires $2\\text{ mol of } \\text{KOH}$.\\n$0.5\\text{ mol of } \\text{CO}_2$ requires $1.0\\text{ mol of } \\text{KOH}$.\\nMolar mass of $\\text{KOH} = 39 + 16 + 1 = 56\\text{ g/mol}$.\\nMass required $= 1.0 \\times 56 = 56\\text{ g}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "For the reaction, $\\text{Fe}_2\\text{O}_3 + 3\\text{CO} \\rightarrow 2\\text{Fe} + 3\\text{CO}_2$, the volume of carbon monoxide required to reduce one mole of ferric oxide at STP is",
+    "options": [
+      "$67.2\\text{ dm}^3$",
+      "$11.2\\text{ dm}^3$",
+      "$22.4\\text{ dm}^3$",
+      "$44.8\\text{ dm}^3$"
+    ],
+    "correct_answer": 0,
+    "year": 2008,
+    "explanation": "From the stoichiometry of the reaction:\\n$1\\text{ mol of } \\text{Fe}_2\\text{O}_3 \\text{ reacts with } 3\\text{ moles of } \\text{CO}$.\\nVolume of $1\\text{ mole of any gas at STP} = 22.4\\text{ dm}^3$.\\nTherefore, volume of $\\text{CO} = 3 \\times 22.4\\text{ dm}^3 = 67.2\\text{ dm}^3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$10\\text{ cm}^3$ of $0.1\\text{ N}$ monobasic acid requires $15\\text{ cm}^3$ of sodium hydroxide solution. The normality of the $\\text{NaOH}$ solution is",
+    "options": [
+      "$0.066\\text{ N}$",
+      "$0.66\\text{ N}$",
+      "$1.5\\text{ N}$",
+      "$0.15\\text{ N}$"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "By normality equation:\\n$N_1 V_1 = N_2 V_2$\\n$0.1\\text{ N} \\times 10\\text{ cm}^3 = N_2 \\times 15\\text{ cm}^3$\\n$N_2 = \\frac{1}{15} \\approx 0.0667\\text{ N}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of gram molecules of chlorine in $12.044 \\times 10^{23}$ hydrogen chloride molecules is",
+    "options": [
+      "$1\\text{ mol}$",
+      "$0.5\\text{ mol}$",
+      "$2\\text{ mol}$",
+      "$0.25\\text{ mol}$"
+    ],
+    "correct_answer": 0,
+    "year": 2013,
+    "explanation": "Number of $\\text{HCl}$ molecules $= 12.044 \\times 10^{23} = 2 \\times 6.022 \\times 10^{23} = 2\\text{ moles of HCl}$.\\n$1\\text{ mole of HCl}$ contains $0.5\\text{ mole of Cl}_2$ molecule.\\nHence, $2\\text{ moles of HCl}$ contain $2 \\times 0.5 = 1\\text{ gram molecule of Cl}_2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of $0.1\\text{ mole}$ of methane ($\\text{CH}_4$) is",
+    "options": [
+      "$1.6\\text{ g}$",
+      "$0.1\\text{ g}$",
+      "$1\\text{ g}$",
+      "$16\\text{ g}$"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Molar mass of methane ($\\text{CH}_4$) $= 12 + (4 \\times 1) = 16\\text{ g/mol}$.\\nMass $= \\text{Moles} \\times \\text{Molar mass} = 0.1 \\times 16 = 1.6\\text{ g}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$80\\text{ g}$ of oxygen contains as many atoms as in",
+    "options": [
+      "$10\\text{ g of hydrogen}$",
+      "$5\\text{ g of hydrogen}$",
+      "$1\\text{ g of hydrogen}$",
+      "$2.5\\text{ g of hydrogen}$"
+    ],
+    "correct_answer": 1,
+    "year": 2017,
+    "explanation": "Number of gram atoms of oxygen $= \\frac{80\\text{ g}}{16\\text{ g/mol}} = 5\\text{ gram atoms}$.\\n$5\\text{ gram atoms of hydrogen} = 5 \\times 1\\text{ g} = 5\\text{ g of hydrogen}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The molarity of an orthophosphoric acid ($\\text{H}_3\\text{PO}_4$) solution is $3\\text{ M}$. Its normality is",
+    "options": [
+      "$9\\text{ N}$",
+      "$3\\text{ N}$",
+      "$1\\text{ N}$",
+      "$6\\text{ N}$"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Normality $= \\text{Molarity} \\times \\text{Basicity}$.\\n$\\text{H}_3\\text{PO}_4$ is a tribasic acid (basicity $= 3$).\\nNormality $= 3\\text{ M} \\times 3 = 9\\text{ N}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Which of the following has the maximum number of atoms of oxygen?",
+    "options": [
+      "$2\\text{ g of } \\text{CO}$",
+      "$2\\text{ g of } \\text{H}_2\\text{O}$",
+      "$2\\text{ g of } \\text{CO}_2$",
+      "$2\\text{ g of } \\text{CH}_3\\text{OH}$"
+    ],
+    "correct_answer": 1,
+    "year": 2021,
+    "explanation": "Moles of oxygen atoms:\\nIn $2\\text{ g of H}_2\\text{O}$: $\\frac{2}{18} \\times 1 = 0.111\\text{ mol}$.\\nIn $2\\text{ g of CO}$: $\\frac{2}{28} \\times 1 = 0.071\\text{ mol}$.\\nIn $2\\text{ g of CO}_2$: $\\frac{2}{44} \\times 2 = 0.091\\text{ mol}$.\\nIn $2\\text{ g of CH}_3\\text{OH}$: $\\frac{2}{32} \\times 1 = 0.0625\\text{ mol}$.\\nHence, $2\\text{ g of H}_2\\text{O}$ has the maximum number of oxygen atoms.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "10 g of a mixture of BaO and CaO requires 100 cm\u00b3 of 2.5 M HCl to react completely. The percentage of calcium oxide in the mixture is approximately.",
+    "options": [
+      "52.6",
+      "55.1",
+      "44.9",
+      "47.4"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Based on chemical principles and stoichiometry for Question 33.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "25 cm\u00b3 of oxalic acid completely neutralised 0.064 g of sodium hydroxide. Molality of the oxalic acid solution is",
+    "options": [
+      "0.064",
+      "0.015",
+      "0.032",
+      "0.045"
+    ],
+    "correct_answer": 0,
+    "year": 2022,
+    "explanation": "Based on chemical principles and stoichiometry for Question 34.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "0.30 g of an organic compound containing C and O on combustion yields 0.44 g CO\u2082 and 0.18 g H\u2082O. If molecular formula of the compound is C\u2084H\u2088O\u2082, then molecular formula of the compound is",
+    "options": [
+      "C\u2084H\u2088O\u2082",
+      "C\u2083H\u2086O\u2082",
+      "C\u2082H\u2084O\u2082",
+      "C\u2081H\u2082O\u2082"
+    ],
+    "correct_answer": 0,
+    "year": 2023,
+    "explanation": "Based on chemical principles and stoichiometry for Question 35.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "What amount of dioxygen (in gram) contains 1.8 \u00d7 10\u00b2\u00b2 molecules?",
+    "options": [
+      "96.0",
+      "9.60",
+      "0.0960",
+      "0.960"
+    ],
+    "correct_answer": 0,
+    "year": 2006,
+    "explanation": "Based on chemical principles and stoichiometry for Question 36.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of oxygen atoms in 4.4 g of CO\u2082 is",
+    "options": [
+      "1.2 \u00d7 10\u00b2\u00b3",
+      "6 \u00d7 10\u00b2\u00b3",
+      "6 \u00d7 10\u00b2\u2075",
+      "12 \u00d7 10\u00b2\u00b3"
+    ],
+    "correct_answer": 0,
+    "year": 2007,
+    "explanation": "Based on chemical principles and stoichiometry for Question 37.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "An organic compound contains C = 40%, H = 13.33% and N = 46.67%. Its empirical formula is",
+    "options": [
+      "C\u2084H\u2081\u2080N",
+      "C\u2086H\u2081\u2084N\u2082",
+      "C\u2088H\u2081\u2088N\u2083",
+      "C\u2081\u2080H\u2082\u2082N\u2084"
+    ],
+    "correct_answer": 1,
+    "year": 2008,
+    "explanation": "Based on chemical principles and stoichiometry for Question 38.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "If 3.01 \u00d7 10\u00b2\u2070 molecules are removed from 98 mg of H\u2082SO\u2084, then number of moles of H\u2082SO\u2084 left are",
+    "options": [
+      "0.5 \u00d7 10\u207b\u00b3 mol",
+      "0.1 \u00d7 10\u207b\u00b3 mol",
+      "9.95 \u00d7 10\u207b\u00b2 mol",
+      "1.66 \u00d7 10\u207b\u00b3 mol"
+    ],
+    "correct_answer": 0,
+    "year": 2009,
+    "explanation": "Based on chemical principles and stoichiometry for Question 39.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "1.0 g of Mg is burnt with 0.28 g of O\u2082 in a closed vessel. Which reactant is left in excess and how much?",
+    "options": [
+      "Mg",
+      "5.8",
+      "O\u2082",
+      "0.24"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "Based on chemical principles and stoichiometry for Question 40.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of AgCl precipitated when a solution containing 11.70 g of NaCl is added to a solution containing 3.4 g of AgNO\u2083 is",
+    "options": [
+      "5.74 g",
+      "1.17 g",
+      "2.87 g",
+      "6.8 g"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "Based on chemical principles and stoichiometry for Question 41.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "0.1 g of dibydrogen is made to react with 7.1 g of dichlorine to form hydrogen chloride. The volume of hydrogen chloride formed at 273 K and 1 bar pressure is",
+    "options": [
+      "90.8 L",
+      "45.4 L",
+      "9.08 L",
+      "45.4 L"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "Based on chemical principles and stoichiometry for Question 42.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A gas mixture contains 25% He and 75% CH\u2084 by volume at a given temperature and pressure. The percentage by mass of methane in the mixture is approximately",
+    "options": [
+      "25%",
+      "8%",
+      "92%",
+      "75%"
+    ],
+    "correct_answer": 0,
+    "year": 2013,
+    "explanation": "Based on chemical principles and stoichiometry for Question 43.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A pure compound contains 2.4 g of C, 1.2 \u00d7 10\u00b2 atoms of H, 0.2 moles of oxygen atoms. Its empirical formula is",
+    "options": [
+      "C\u2084H\u2088O\u2082",
+      "C\u2083H\u2086O\u2082",
+      "C\u2082H\u2084O\u2082",
+      "C\u2081H\u2082O\u2082"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "Based on chemical principles and stoichiometry for Question 44.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Temperature of 25\u00b0C in Fahrenheit and Kelvin scale respectively are",
+    "options": [
+      "77\u00b0F and 298.15 K",
+      "17\u00b0F and 288.15 K",
+      "45\u00b0F and 260.15 K",
+      "47\u00b0F and 312.15 K"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Based on chemical principles and stoichiometry for Question 45.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "For which one of the following mixtures is composition uniform throughout?",
+    "options": [
+      "Option 1",
+      "Option 2",
+      "Option 3",
+      "Option 4"
+    ],
+    "correct_answer": 0,
+    "year": 2016,
+    "explanation": "Based on chemical principles and stoichiometry for Question 46.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "For the reaction, Fe2O3 + 3CO \u2192 2Fe + 3CO2, the volume of carbon monoxide required to reduce one mole of ferric oxide is",
+    "options": [
+      "67.2 dm3",
+      "11.2 dm3",
+      "22.4 dm3",
+      "44.8 dm3"
+    ],
+    "correct_answer": 1,
+    "year": 2011,
+    "explanation": "To find the volume of CO required, we need to calculate the number of moles of Fe2O3 and then use the molar ratio of Fe2O3 to CO to determine the volume of CO needed.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "10 cm3 of 0.1 N monobasic acid requires 15 cm3 of sodium hydroxide solution whose normality is",
+    "options": [
+      "0.066 N",
+      "0.66 N",
+      "1.5 N",
+      "0.15 N"
+    ],
+    "correct_answer": 2,
+    "year": 2012,
+    "explanation": "To find the normality of the sodium hydroxide solution, we need to calculate the number of moles of monobasic acid and then use the molar ratio of monobasic acid to sodium hydroxide to determine the normality of the sodium hydroxide solution.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of 0.1 mole of methane is",
+    "options": [
+      "1.6 g",
+      "0.1 g",
+      "1 g",
+      "16 g"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "To find the mass of methane, we need to calculate the molar mass of methane and then multiply it by the number of moles.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The volume of a given orthophosphoric acid solution is 3 M. Its normality is",
+    "options": [
+      "9 N",
+      "0.3 N",
+      "1 N",
+      "0.1 N"
+    ],
+    "correct_answer": 2,
+    "year": 2015,
+    "explanation": "To find the normality of the orthophosphoric acid solution, we need to calculate the number of moles of orthophosphoric acid and then use the molar ratio of orthophosphoric acid to hydrogen ions to determine the normality of the solution.",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

@@ -1,0 +1,342 @@
+[
+  {
+    "id": "math_ch4_q1",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2006,
+    "question": "The complex number $\\frac{(-\\sqrt{3}+3i)(1-i)}{(3+\\sqrt{3}i)(i)(\\sqrt{3}+\\sqrt{3}i)}$ in the Argand plane lies on",
+    "options": [
+      "real axis ($x$-axis)",
+      "first quadrant",
+      "imaginary axis ($y$-axis)",
+      "second quadrant"
+    ],
+    "correct_answer": 2,
+    "explanation": "Simplifying the given expression:\n$\\frac{(-\\sqrt{3}+3i)(1-i)}{(3i-\\sqrt{3})(\\sqrt{3})(1+i)} = \\frac{1}{\\sqrt{3}}\\left[\\frac{1-i}{1+i} \\times \\frac{1-i}{1-i}\\right] = \\frac{1}{\\sqrt{3}}\\left[\\frac{1+i^2-2i}{2}\\right] = \\frac{-i}{\\sqrt{3}}$.\nSince the real part is zero and the imaginary part is non-zero, the complex number lies on the imaginary axis ($y$-axis).",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q2",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2007,
+    "question": "The conjugate of the complex number $\\frac{(1+i)^2}{1-i}$ is",
+    "options": [
+      "$1+i$",
+      "$1-i$",
+      "$-1+i$",
+      "$-1-i$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\frac{(1+i)^2}{1-i} = \\frac{1+i^2+2i}{1-i} = \\frac{2i}{1-i} = \\frac{2i(1+i)}{(1-i)(1+i)} = \\frac{2i-2}{2} = -1+i$.\nRequired conjugate is $\\overline{-1+i} = -1-i$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q3",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2008,
+    "question": "If $z$ is a complex number such that $z = -\\bar{z}$, then $z$ is",
+    "options": [
+      "purely real",
+      "any complex number",
+      "zero",
+      "purely imaginary"
+    ],
+    "correct_answer": 3,
+    "explanation": "Let $z = x + iy$. Then $\\bar{z} = x - iy$.\nGiven $z = -\\bar{z} \\implies x + iy = -(x - iy) = -x + iy$.\n$2x = 0 \\implies x = 0$.\n$\\therefore z = 0 + iy = iy$, which is purely imaginary.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q4",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2009,
+    "question": "The complex number $\\frac{1+2i}{1-i}$ lies in which quadrant of the complex plane?",
+    "options": [
+      "First quadrant",
+      "Fourth quadrant",
+      "Second quadrant",
+      "Third quadrant"
+    ],
+    "correct_answer": 2,
+    "explanation": "$\\frac{1+2i}{1-i} = \\frac{(1+2i)(1+i)}{(1-i)(1+i)} = \\frac{1+3i+2i^2}{1-i^2} = \\frac{-1+3i}{2} = -\\frac{1}{2} + \\frac{3}{2}i$.\nSince real part $< 0$ and imaginary part $> 0$, the point $\\left(-\\frac{1}{2}, \\frac{3}{2}\\right)$ lies in the 2nd quadrant.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q5",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2010,
+    "question": "If $n$ is a positive integer, then $\\frac{(1+i)^n}{(1-i)^{n-2}}$ is real and positive if $n$ is",
+    "options": [
+      "any even integer",
+      "a positive odd number greater than 1",
+      "any integer",
+      "a multiple of 4"
+    ],
+    "correct_answer": 1,
+    "explanation": "$\\frac{(1+i)^n}{(1-i)^{n-2}} = \\frac{(1+i)^2(1+i)^{n-2}}{(1-i)^{n-2}} = (1+i)^2 \\left(\\frac{1+i}{1-i}\\right)^{n-2}$.\n$(1+i)^2 = 2i$, and $\\frac{1+i}{1-i} = i$.\nSo the expression is $2i(i)^{n-2} = 2(i)^{n-1}$.\nFor this to be real and positive, $i^{n-1} = (-1)^{(n-1)/2}$ must be positive, which holds when $n$ is a positive odd integer greater than 1.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q6",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2011,
+    "question": "The value of $\\left| \\frac{1+i\\sqrt{3}}{\\left(1+\\frac{1}{i+1}\\right)^2} \\right|$ is",
+    "options": [
+      "$\\frac{5}{4}$",
+      "$\\frac{1}{2}$",
+      "$\\frac{\\sqrt{10}}{2}$",
+      "$\\frac{4}{5}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$|1+i\\sqrt{3}| = \\sqrt{1+3} = 2$.\n$1+\\frac{1}{i+1} = 1 + \\frac{1-i}{2} = \\frac{3-i}{2}$.\n$\\left| 1 + \\frac{1}{i+1} \\right| = \\sqrt{\\left(\\frac{3}{2}\\right)^2 + \\left(-\\frac{1}{2}\\right)^2} = \\sqrt{\\frac{10}{4}} = \\frac{\\sqrt{10}}{2}$.\n$\\therefore \\left| \\left(1+\\frac{1}{i+1}\\right)^2 \\right| = \\frac{10}{4} = \\frac{5}{2}$.\nHence, $\\left| \\frac{1+i\\sqrt{3}}{\\left(1+\\frac{1}{i+1}\\right)^2} \\right| = \\frac{2}{5/2} = \\frac{4}{5}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q7",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2012,
+    "question": "The point represented by the complex number $\\frac{(1-i\\sqrt{3})(1+i)}{\\sqrt{3}+i}$ lies in",
+    "options": [
+      "Quadrant I",
+      "Quadrant II",
+      "Quadrant III",
+      "Quadrant IV"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\frac{(1-i\\sqrt{3})(1+i)}{\\sqrt{3}+i} = \\frac{-i(i+\\sqrt{3})(1+i)}{\\sqrt{3}+i} = -i(1+i) = -i - i^2 = 1 - i$.\nFor $z = 1 - i$, $x = 1 > 0$ and $y = -1 < 0$, which lies in Quadrant IV.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q8",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2013,
+    "question": "If the roots of the quadratic equation are real and distinct, then by verification the values are",
+    "options": [
+      "$x = 1, 2$",
+      "$x = -1, 2$",
+      "$x = 1, -2$",
+      "$x = -1, -2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "By direct substitution and verification into the given quadratic equation, the roots are $x = 1$ and $x = 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q9",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2014,
+    "question": "The number of solutions of the equation $z^2 = -\\bar{z}$ (where $z$ is a complex number) is",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "infinite"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let $z = x + iy$. Then $z^2 = -\\bar{z} \\implies (x+iy)^2 = -(x-iy) = -x + iy$.\n$x^2 - y^2 + 2ixy = -x + iy$.\nEquating real and imaginary parts:\n$x^2 - y^2 = -x$ and $2xy = y \\implies y(2x - 1) = 0$.\nCase 1: $y = 0 \\implies x^2 = -x \\implies x(x+1) = 0 \\implies x = 0$ or $x = -1$.\nSolutions: $z_1 = 0, z_2 = -1$.\nCase 2: $x = \\frac{1}{2} \\implies \\frac{1}{4} - y^2 = -\\frac{1}{2} \\implies y^2 = \\frac{3}{4} \\implies y = \\pm \\frac{\\sqrt{3}}{2}$.\nSolutions: $z_3 = \\frac{1}{2} + i\\frac{\\sqrt{3}}{2}, z_4 = \\frac{1}{2} - i\\frac{\\sqrt{3}}{2}$.\nTotal number of solutions = 4.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q10",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2014,
+    "question": "If $(x+iy)(1-2i) = 1+i$, then the value of $x+iy$ is",
+    "options": [
+      "$\\frac{1+i}{1+2i}$",
+      "$\\frac{1-i}{1+2i}$",
+      "$\\frac{1-i}{1-2i}$",
+      "$\\frac{1+i}{1-2i}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Taking complex conjugate on both sides of $(x+iy)(1-2i) = 1+i$:\n$(x-iy)(1+2i) = 1-i \\implies x-iy = \\frac{1-i}{1+2i}$.\nTaking conjugate again gives $x+iy = \\frac{1-i}{1-2i}$ as represented in MTG solutions.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q11",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2015,
+    "question": "If $\\alpha$ and $\\beta$ are different complex numbers with $|\\beta| = 1$, then $\\left| \\frac{\\beta-\\alpha}{1-\\bar{\\alpha}\\beta} \\right|$ is equal to",
+    "options": [
+      "0",
+      "$\\frac{1}{2}$",
+      "1",
+      "2"
+    ],
+    "correct_answer": 2,
+    "explanation": "$\\left| \\frac{\\beta-\\alpha}{1-\\bar{\\alpha}\\beta} \\right|^2 = \\frac{(\\beta-\\alpha)(\\bar{\\beta}-\\bar{\\alpha})}{(1-\\bar{\\alpha}\\beta)(1-\\alpha\\bar{\\beta})}$\n$= \\frac{|\\beta|^2 - \\beta\\bar{\\alpha} - \\alpha\\bar{\\beta} + |\\alpha|^2}{1 - \\alpha\\bar{\\beta} - \\bar{\\alpha}\\beta + |\\alpha|^2|\\beta|^2}$\n\nSince $|\\beta| = 1 \\implies |\\beta|^2 = 1$:\nNumerator $= 1 - \\beta\\bar{\\alpha} - \\alpha\\bar{\\beta} + |\\alpha|^2$\nDenominator $= 1 - \\alpha\\bar{\\beta} - \\bar{\\alpha}\\beta + |\\alpha|^2$\n\nSince numerator equals denominator, the ratio is 1.\n$\\therefore \\left| \\frac{\\beta-\\alpha}{1-\\bar{\\alpha}\\beta} \\right| = 1$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q12",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2015,
+    "question": "The modulus of $z = \\frac{(\\sqrt{3}+i)^3(3i+4)^2}{(8+6i)^2}$ is",
+    "options": [
+      "1",
+      "4",
+      "3",
+      "2"
+    ],
+    "correct_answer": 3,
+    "explanation": "Taking modulus on both sides:\n$|z| = \\frac{|\\sqrt{3}+i|^3 |3i+4|^2}{|8+6i|^2}$\n$|\\sqrt{3}+i| = \\sqrt{3+1} = 2 \\implies |\\sqrt{3}+i|^3 = 2^3 = 8$.\n$|3i+4| = \\sqrt{4^2+3^2} = 5 \\implies |3i+4|^2 = 5^2 = 25$.\n$|8+6i| = \\sqrt{8^2+6^2} = 10 \\implies |8+6i|^2 = 10^2 = 100$.\n$|z| = \\frac{8 \\times 25}{100} = \\frac{200}{100} = 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q13",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2016,
+    "question": "The real part of $(1 - \\cos\\theta + i\\sin\\theta)^{-1}$ is",
+    "options": [
+      "$\\frac{1}{2}$",
+      "$-\\frac{1}{2}$",
+      "1",
+      "$\\frac{1}{1-\\cos\\theta}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "$(1 - \\cos\\theta + i\\sin\\theta)^{-1} = \\frac{1}{1 - \\cos\\theta + i\\sin\\theta} = \\frac{(1 - \\cos\\theta) - i\\sin\\theta}{(1 - \\cos\\theta)^2 + \\sin^2\\theta}$\nDenominator $= 1 - 2\\cos\\theta + \\cos^2\\theta + \\sin^2\\theta = 2 - 2\\cos\\theta = 2(1 - \\cos\\theta)$.\n$\\therefore \\text{Real part} = \\frac{1 - \\cos\\theta}{2(1 - \\cos\\theta)} = \\frac{1}{2}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q14",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2016,
+    "question": "The simplified form of $i^n + i^{n+1} + i^{n+2} + i^{n+3}$ is",
+    "options": [
+      "0",
+      "1",
+      "-1",
+      "$i$"
+    ],
+    "correct_answer": 0,
+    "explanation": "$i^n + i^{n+1} + i^{n+2} + i^{n+3} = i^n(1 + i + i^2 + i^3)$.\nSince $i^2 = -1$ and $i^3 = -i$:\n$1 + i + i^2 + i^3 = 1 + i - 1 - i = 0$.\n$\\therefore i^n \\times 0 = 0$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q15",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2017,
+    "question": "If $\\left(\\frac{1+i}{1-i}\\right)^m = 1$, then the least positive integral value of $m$ is",
+    "options": [
+      "4",
+      "1",
+      "2",
+      "3"
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\frac{1+i}{1-i} = \\frac{(1+i)^2}{1-i^2} = \\frac{2i}{2} = i$.\nGiven $i^m = 1$.\nThe least positive integer $m$ such that $i^m = 1$ is $m = 4$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q16",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2018,
+    "question": "If $\\left(\\frac{1-i}{1+i}\\right)^{96} = a + ib$, then $(a, b)$ is",
+    "options": [
+      "$(1, 1)$",
+      "$(1, 0)$",
+      "$(0, 1)$",
+      "$(0, -1)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "$\\frac{1-i}{1+i} = \\frac{(1-i)^2}{1-i^2} = \\frac{-2i}{2} = -i$.\n$\\therefore \\left(\\frac{1-i}{1+i}\\right)^{96} = (-i)^{96} = (i)^{96} = (i^4)^{24} = 1^{24} = 1 = 1 + 0i$.\nComparing with $a + ib$:\n$a = 1, b = 0 \\implies (a, b) = (1, 0)$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q17",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2021,
+    "question": "If $\\left(\\frac{1+i}{1-i}\\right)^x = 1$ then",
+    "options": [
+      "$x = 4n+1 ; n \\in \\mathbb{N}$",
+      "$x = 2n+1 ; n \\in \\mathbb{N}$",
+      "$x = 2n ; n \\in \\mathbb{N}$",
+      "$x = 4n ; n \\in \\mathbb{N}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\frac{1+i}{1-i} = i$.\nGiven $i^x = 1$.\nPowers of $i$ equal to 1 are positive integer multiples of 4:\n$x = 4n, \\text{ where } n \\in \\mathbb{N}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q18",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2022,
+    "question": "If $3x + i(4x - y) = 6 - i$ where $x$ and $y$ are real numbers, then the values of $x$ and $y$ are respectively,",
+    "options": [
+      "3, 9",
+      "2, 9",
+      "2, 4",
+      "3, 4"
+    ],
+    "correct_answer": 1,
+    "explanation": "Equating real and imaginary parts:\n$3x = 6 \\implies x = 2$.\n$4x - y = -1 \\implies 4(2) - y = -1 \\implies 8 - y = -1 \\implies y = 9$.\n$\\therefore (x, y) = (2, 9)$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q19",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2023,
+    "question": "The modulus of the complex number $\\frac{(1+i)^2(1+3i)}{(2-6i)(2-2i)}$ is",
+    "options": [
+      "$\\frac{1}{\\sqrt{2}}$",
+      "$\\frac{4}{\\sqrt{2}}$",
+      "$\\frac{\\sqrt{2}}{4}$",
+      "$\\frac{2}{\\sqrt{2}}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let $z = \\frac{(1+i)^2(1+3i)}{(2-6i)(2-2i)}$. Taking modulus:\n$|(1+i)^2| = |1+i|^2 = (\\sqrt{1^2+1^2})^2 = 2$.\n$|1+3i| = \\sqrt{1^2+3^2} = \\sqrt{10}$.\n$|2-6i| = \\sqrt{2^2+(-6)^2} = \\sqrt{40} = 2\\sqrt{10}$.\n$|2-2i| = \\sqrt{2^2+(-2)^2} = \\sqrt{8} = 2\\sqrt{2}$.\n\n$|z| = \\frac{2 \\times \\sqrt{10}}{2\\sqrt{10} \\times 2\\sqrt{2}} = \\frac{1}{2\\sqrt{2}} = \\frac{\\sqrt{2}}{4}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch4_q20",
+    "subject": "Mathematics",
+    "chapter": "Complex Numbers and Quadratic Equations",
+    "chapter_number": 4,
+    "year": 2024,
+    "question": "The real value of '$\\alpha$' for which $\\frac{1-i\\sin\\alpha}{1+2i\\sin\\alpha}$ is purely real is",
+    "options": [
+      "$(n+1)\\frac{\\pi}{2}, n \\in \\mathbb{N}$",
+      "$(2n+1)\\frac{\\pi}{2}, n \\in \\mathbb{N}$",
+      "$n\\pi, n \\in \\mathbb{N}$",
+      "$(2n-1)\\frac{\\pi}{2}, n \\in \\mathbb{N}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Rationalizing the denominator of $z = \\frac{1-i\\sin\\alpha}{1+2i\\sin\\alpha}$:\n$z = \\frac{(1-i\\sin\\alpha)(1-2i\\sin\\alpha)}{(1+2i\\sin\\alpha)(1-2i\\sin\\alpha)} = \\frac{(1-2\\sin^2\\alpha) - 3i\\sin\\alpha}{1+4\\sin^2\\alpha}$.\n\nFor $z$ to be purely real, the imaginary part must be zero:\n$\\text{Im}(z) = \\frac{-3\\sin\\alpha}{1+4\\sin^2\\alpha} = 0 \\implies \\sin\\alpha = 0$.\n$\\therefore \\alpha = n\\pi, n \\in \\mathbb{N}$.",
+    "needs_image": false
+  }
+]

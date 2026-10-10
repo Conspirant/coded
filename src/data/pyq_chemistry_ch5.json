@@ -1,0 +1,566 @@
+[
+  {
+    "id": "chem_ch5_q1",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2006,
+    "question": "0.06 mole of $\\text{KNO}_3$ solid is added to $100\\text{ cm}^3$ of water at 298 K. The enthalpy of $\\text{KNO}_{3(aq)}$ solution is $35.8\\text{ kJ mol}^{-1}$. After the solute is dissolved the temperature of the solution will be",
+    "options": [
+      "293 K",
+      "298 K",
+      "301 K",
+      "304 K"
+    ],
+    "correct_answer": 0,
+    "explanation": "Dissolution of $\\text{KNO}_3$ is endothermic.\n$\\Delta H_{\\text{sol}} = 35.8\\text{ kJ mol}^{-1}$\n\nHeat absorbed when 0.06 mole of $\\text{KNO}_3$ is dissolved:\n$q = 35.8 \\times 10^3 \\times 0.06 = 2148\\text{ J}$\n\nUsing $q = m \\times c \\times \\Delta T$, where $m = 100\\text{ g}$ (density of water $\\approx 1\\text{ g/cm}^3$) and $c = 4.184\\text{ J g}^{-1}\\text{ K}^{-1}$:\n$2148 = 100 \\times 4.184 \\times \\Delta T \\implies \\Delta T \\approx 5\\text{ K}$\n\nSince heat is absorbed from the solution, the temperature falls:\n$T_{\\text{final}} = 298 - 5 = 293\\text{ K}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q2",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2006,
+    "question": "For a reaction to be spontaneous at all temperatures",
+    "options": [
+      "$\\Delta G$ and $\\Delta H$ should be negative",
+      "$\\Delta G$ and $\\Delta H$ should be positive",
+      "$\\Delta G = \\Delta S = 0$",
+      "$\\Delta H < \\Delta G$"
+    ],
+    "correct_answer": 0,
+    "explanation": "From the Gibbs-Helmholtz equation:\n$\\Delta G = \\Delta H - T\\Delta S$\n\nFor a reaction to be spontaneous at all temperatures, $\\Delta G$ must always be negative regardless of $T$. This occurs when $\\Delta H$ is negative (exothermic) and $\\Delta S$ is positive (entropy increase). In that case, both terms $-\\Delta H$ and $-T\\Delta S$ contribute negatively to make $\\Delta G < 0$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q3",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2006,
+    "question": "For a reversible reaction: $X_{(g)} + 3Y_{(g)} \\rightleftharpoons 2Z_{(g)}$, $\\Delta H = -40\\text{ kJ}$, the standard entropies of $X, Y$ and $Z$ are 60, 40 and $50\\text{ J K}^{-1}\\text{ mol}^{-1}$ respectively. The temperature at which the above reaction attains equilibrium is about",
+    "options": [
+      "400 K",
+      "500 K",
+      "273 K",
+      "373 K"
+    ],
+    "correct_answer": 1,
+    "explanation": "For the reaction $X_{(g)} + 3Y_{(g)} \\rightleftharpoons 2Z_{(g)}$:\n$\\Delta S^\\circ = 2 S^\\circ(Z) - [S^\\circ(X) + 3S^\\circ(Y)]$\n$= 2(50) - [60 + 3(40)] = 100 - 180 = -80\\text{ J K}^{-1}\\text{ mol}^{-1}$\n\nGiven $\\Delta H^\\circ = -40\\text{ kJ} = -40,000\\text{ J}$.\nAt equilibrium, $\\Delta G^\\circ = 0 \\implies \\Delta H^\\circ = T\\Delta S^\\circ$:\n$T = \\frac{\\Delta H^\\circ}{\\Delta S^\\circ} = \\frac{-40000}{-80} = 500\\text{ K}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q4",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "Which of the following is an intensive property?",
+    "options": [
+      "Viscosity",
+      "Surface tension",
+      "Temperature",
+      "All of these"
+    ],
+    "correct_answer": 3,
+    "explanation": "An intensive property is one that does not depend on the quantity of matter present or the size of the system. Viscosity, surface tension, and temperature are all intensive properties. Therefore, all of these are intensive properties.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q5",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "Thermodynamic standard conditions of temperature and pressure are",
+    "options": [
+      "$0^\\circ\\text{C}$ and 101.3 kPa",
+      "298 K and 1 atm",
+      "273 K and 101.3 kPa",
+      "$0^\\circ\\text{C}$ and 1 atm."
+    ],
+    "correct_answer": 1,
+    "explanation": "Standard thermodynamic state (STP for thermodynamics) is conventionally defined at a temperature of $25^\\circ\\text{C}$ ($298.15\\text{ K} \\approx 298\\text{ K}$) and a standard pressure of 1 atm (or 1 bar).",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q6",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "Entropy of the universe is",
+    "options": [
+      "constant",
+      "zero",
+      "continuously decreasing",
+      "continuously increasing."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the second law of thermodynamics, all spontaneous or natural processes are irreversible, and the entropy of the universe is continuously increasing ($\\Delta S_{\\text{univ}} > 0$).",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q7",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "In which of the following process, a maximum increase in entropy is observed?",
+    "options": [
+      "Melting of ice",
+      "Sublimation of naphthalene",
+      "Condensation of water",
+      "Dissolution of salt in water"
+    ],
+    "correct_answer": 1,
+    "explanation": "Sublimation involves the direct conversion of solid into the gaseous state. Gases possess the maximum degree of randomness and disorder compared to liquids and solids. Hence, the largest/maximum increase in entropy is observed during the sublimation of naphthalene.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q8",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "Considering the reaction : $\\text{C}_{(s)} + \\text{O}_{2(g)} \\to \\text{CO}_{2(g)} + 393.5\\text{ kJ}$ the signs of $\\Delta H, \\Delta S$ and $\\Delta G$ respectively are",
+    "options": [
+      "+, -, -",
+      "-, +, +",
+      "-, -, -",
+      "-, +, -"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Heat is liberated (+393.5 kJ on product side), so the reaction is exothermic: $\\Delta H = -\\text{ve}$.\n2. Combustion of carbon is a spontaneous process: $\\Delta G = -\\text{ve}$.\n3. One mole of solid C and 1 mole of $\\text{O}_2$ gas produce gaseous $\\text{CO}_2$ with generation of thermal energy increasing molecular disorder: $\\Delta S = +\\text{ve}$.\nTherefore, the signs are $-, +, -$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q9",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2008,
+    "question": "If one mole of ammonia and one mole of hydrogen chloride are mixed in a closed container to form ammonium chloride gas, then",
+    "options": [
+      "$\\Delta H < \\Delta U$",
+      "there is no relationship",
+      "$\\Delta H > \\Delta U$",
+      "$\\Delta H = \\Delta U$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Reaction: $\\text{NH}_{3(g)} + \\text{HCl}_{(g)} \\to \\text{NH}_4\\text{Cl}_{(g)}$\nChange in gaseous moles:\n$\\Delta n_g = n_p(g) - n_r(g) = 1 - (1 + 1) = 1 - 2 = -1$\n\nUsing $\\Delta H = \\Delta U + \\Delta n_g RT$:\n$\\Delta H = \\Delta U + (-1)RT = \\Delta U - RT$\n$\\implies \\Delta U = \\Delta H + RT$\n$\\therefore \\Delta H < \\Delta U$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q10",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2008,
+    "question": "One mole of which of the following has the highest entropy?",
+    "options": [
+      "Mercury",
+      "Diamond",
+      "Liquid nitrogen",
+      "Hydrogen gas"
+    ],
+    "correct_answer": 3,
+    "explanation": "Entropy is a measure of randomness or disorder. In the gaseous state, particles are far apart and have translational, rotational, and vibrational freedom compared to liquids and solids. Among the options, hydrogen gas is a gas at room conditions, so 1 mole of $\\text{H}_2$ gas has the highest entropy.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q11",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2008,
+    "question": "Consider the Born-Haber cycle for the formation of an ionic compound given below and identify the compound ($Z$) formed.",
+    "options": [
+      "$MX$",
+      "$M^+X^-_{(g)}$",
+      "$M^+X^-$",
+      "$M^-X^+_{(s)}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "In the Born-Haber cycle:\n$M_{(s)} \\xrightarrow{\\Delta H_1} M_{(g)} \\xrightarrow{\\Delta H_2} M^+_{(g)}$\n$\\frac{1}{2}X_{2(g)} \\xrightarrow{\\Delta H_3} X_{(g)} \\xrightarrow{\\Delta H_4} X^-_{(g)}$\n$M^+_{(g)} + X^-_{(g)} \\xrightarrow{\\Delta H_5} MX_{(s)}$ (Lattice energy).\n\nThe final product $Z$ formed from the gaseous ions via lattice energy is the solid ionic compound $MX_{(s)}$. (Note: The official KCET key marked this question as ambiguous/None because of formatting in the options, but $MX_{(s)}$ is the intended compound).",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch5/q11.png"
+  },
+  {
+    "id": "chem_ch5_q12",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2009,
+    "question": "The enthalpy of formation of $\\text{NH}_3$ is $-46\\text{ kJ mol}^{-1}$. The enthalpy change for the reaction : $2\\text{NH}_{3(g)} \\to \\text{N}_{2(g)} + 3\\text{H}_{2(g)}$ is",
+    "options": [
+      "$+23\\text{ kJ}$",
+      "$+92\\text{ kJ}$",
+      "$+46\\text{ kJ}$",
+      "$+184\\text{ kJ}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "The formation reaction of $\\text{NH}_3$ is:\n$\\frac{1}{2}\\text{N}_{2(g)} + \\frac{3}{2}\\text{H}_{2(g)} \\to \\text{NH}_{3(g)} ; \\Delta H_f = -46\\text{ kJ mol}^{-1}$\n\nThe given decomposition reaction is:\n$2\\text{NH}_{3(g)} \\to \\text{N}_{2(g)} + 3\\text{H}_{2(g)}$\n\nThis is the reverse of formation of 2 moles of $\\text{NH}_3$:\n$\\Delta H = -2 \\times \\Delta H_f = -2 \\times (-46) = +92\\text{ kJ}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q13",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2010,
+    "question": "Enthalpy of vaporization of benzene is $+35.3\\text{ kJ mol}^{-1}$ at its boiling point, $80^\\circ\\text{C}$. The entropy change in the transition of the vapour to liquid at its boiling point (in $\\text{J K}^{-1}\\text{ mol}^{-1}$) is",
+    "options": [
+      "-441",
+      "-100",
+      "+441",
+      "+100"
+    ],
+    "correct_answer": 1,
+    "explanation": "Boiling point $T = 80 + 273 = 353\\text{ K}$.\nEnthalpy of vaporization $\\Delta H_{\\text{vap}} = +35.3\\text{ kJ mol}^{-1} = +35300\\text{ J mol}^{-1}$.\n\nFor the reverse transition (condensation: vapour $\\to$ liquid):\n$\\Delta H_{\\text{cond}} = -35300\\text{ J mol}^{-1}$\n$\\Delta S = \\frac{\\Delta H_{\\text{cond}}}{T} = -\\frac{35300}{353} = -100\\text{ J K}^{-1}\\text{ mol}^{-1}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q14",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2010,
+    "question": "For the reversible reaction: $A_{(s)} + B_{(g)} \\rightleftharpoons C_{(g)} + D_{(g)} ; \\Delta G^\\circ = -350\\text{ kJ}$. Which one of the following statements is true?",
+    "options": [
+      "The entropy change is negative.",
+      "Equilibrium constant is greater than one.",
+      "The reaction should be instantaneous.",
+      "The reaction is thermodynamically not feasible."
+    ],
+    "correct_answer": 1,
+    "explanation": "Since $\\Delta G^\\circ = -RT \\ln K$, when $\\Delta G^\\circ < 0$ (negative, $-350\\text{ kJ}$), $\\ln K > 0$, which means the equilibrium constant $K > 1$. The reaction is thermodynamically feasible and favors product formation at equilibrium.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q15",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2010,
+    "question": "Based on the first law of thermodynamics, which one of the following is correct ?",
+    "options": [
+      "For an isochoric process, $\\Delta U = -q$",
+      "For an adiabatic process, $\\Delta U = -w$",
+      "For an isothermal process, $q = +w$",
+      "For a cyclic process, $q = -w$"
+    ],
+    "correct_answer": 3,
+    "explanation": "From the first law of thermodynamics: $\\Delta U = q + w$.\nFor a cyclic process, the initial and final states are identical, so $\\Delta U = 0$.\n$0 = q + w \\implies q = -w$.\nHence, for a cyclic process, $q = -w$ is correct.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q16",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "A gas expands from a volume of $1\\text{ m}^3$ to a volume of $2\\text{ m}^3$ against an external pressure of $10^5\\text{ N m}^{-2}$. The work done by the gas will be",
+    "options": [
+      "$10^5\\text{ kJ}$",
+      "$10^2\\text{ kJ}$",
+      "$10^2\\text{ J}$",
+      "$10^3\\text{ J}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Work done by the gas against constant external pressure:\n$w = P_{\\text{ext}}\\Delta V = 10^5\\text{ N m}^{-2} \\times (2 - 1)\\text{ m}^3 = 10^5\\text{ J} = 10^2\\text{ kJ}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q17",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "The equilibrium constant of a reaction is 0.008 at 298 K. The standard free energy change of the reaction at the same temperature is",
+    "options": [
+      "$+11.96\\text{ kJ}$",
+      "$-11.96\\text{ kJ}$",
+      "$-5.43\\text{ kJ}$",
+      "$-8.46\\text{ kJ}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\Delta G^\\circ = -2.303 RT \\log K$\n$= -2.303 \\times 8.314 \\times 298 \\times \\log(0.008)$\n$= -5705.84 \\times (-2.0969) \\approx +11964.65\\text{ J} = +11.96\\text{ kJ}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q18",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "Which of the following statements is true?",
+    "options": [
+      "The total entropy of the universe remains constant.",
+      "The total entropy of the universe is continuously decreasing.",
+      "The total energy of the universe is continuously decreasing.",
+      "The total energy of the universe remains constant."
+    ],
+    "correct_answer": 3,
+    "explanation": "By the first law of thermodynamics (Law of Conservation of Energy), energy can neither be created nor destroyed. Therefore, the total energy of the universe remains constant.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q19",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "The process is spontaneous at the given temperature, if",
+    "options": [
+      "$\\Delta H$ is +ve and $\\Delta S$ is -ve",
+      "$\\Delta H$ is -ve and $\\Delta S$ is +ve",
+      "$\\Delta H$ is +ve and $\\Delta S$ is +ve",
+      "$\\Delta H$ is +ve and $\\Delta S$ is equal to zero."
+    ],
+    "correct_answer": 1,
+    "explanation": "From $\\Delta G = \\Delta H - T\\Delta S$, when $\\Delta H$ is negative ($-$) and $\\Delta S$ is positive ($+$), $-T\\Delta S$ is negative, so $\\Delta G$ is negative at all temperatures, ensuring spontaneous process.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q20",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "The value of entropy of solar system is",
+    "options": [
+      "increasing",
+      "decreasing",
+      "constant",
+      "zero."
+    ],
+    "correct_answer": 0,
+    "explanation": "All naturally occurring spontaneous processes in the solar system (like nuclear fusion in the sun, heat transfer to planets) are irreversible. Hence, the entropy of the solar system is continuously increasing.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q21",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2013,
+    "question": "For the thermochemical equation, $2\\text{H}_{2(g)} + \\text{O}_{2(g)} \\to 2\\text{H}_2\\text{O}_{(l)} ; \\Delta H = -571.6\\text{ kJ}$. Heat of decomposition of water is",
+    "options": [
+      "$-571.6\\text{ kJ}$",
+      "$+571.6\\text{ kJ}$",
+      "$-1143.2\\text{ kJ}$",
+      "$+285.8\\text{ kJ}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "The decomposition of 1 mole of water is:\n$\\text{H}_2\\text{O}_{(l)} \\to \\text{H}_{2(g)} + \\frac{1}{2}\\text{O}_{2(g)}$\n\nFor 2 moles of $\\text{H}_2\\text{O}$ formation, $\\Delta H = -571.6\\text{ kJ}$.\nSo for the decomposition of 1 mole of $\\text{H}_2\\text{O}$:\n$\\Delta H_{\\text{decomp}} = -\\frac{-571.6}{2} = +285.8\\text{ kJ}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q22",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2014,
+    "question": "The ratio of heats liberated at 298 K from the combustion of one kg of coke and by burning water gas obtained from kg of coke is (Assume coke to be 100% carbon) (Given : enthalpies of combustion of $\\text{CO}_2$, $\\text{CO}$ and $\\text{H}_2$ as $393.5\\text{ kJ}$, $285\\text{ kJ}$, $285\\text{ kJ}$ respectively all at 298 K).",
+    "options": [
+      "0.79 : 1",
+      "0.69 : 1",
+      "0.86 : 1",
+      "0.96 : 1"
+    ],
+    "correct_answer": 1,
+    "explanation": "$1\\text{ kg of coke} = \\frac{1000}{12} = 83.33\\text{ moles of C}$.\n1. Combustion of 1 kg coke:\n$\\text{C} + \\text{O}_2 \\to \\text{CO}_2 ; Q_1 = 83.33 \\times 393.5\\text{ kJ}$\n\n2. Water gas $(\\text{CO} + \\text{H}_2)$ from 1 kg coke:\n$\\text{CO} + \\text{H}_2 + \\text{O}_2 \\to \\text{CO}_2 + \\text{H}_2\\text{O} ; Q_2 = 83.33 \\times (285 + 285) = 83.33 \\times 570\\text{ kJ}$\n\nRatio of heat liberated = $\\frac{Q_1}{Q_2} = \\frac{83.33 \\times 393.5}{83.33 \\times 570} = \\frac{393.5}{570} \\approx 0.69 : 1$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q23",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2015,
+    "question": "Conversion of oxygen into ozone is non-spontaneous at",
+    "options": [
+      "all temperatures",
+      "high temperature",
+      "room temperature",
+      "low temperature"
+    ],
+    "correct_answer": 0,
+    "explanation": "$3\\text{O}_{2(g)} \\rightleftharpoons 2\\text{O}_{3(g)}$\nHere $\\Delta H = +\\text{ve}$ (endothermic) and $\\Delta n_g = 2 - 3 = -1$, so $\\Delta S = -\\text{ve}$.\n\nIn $\\Delta G = \\Delta H - T\\Delta S$, since $\\Delta H > 0$ and $-T\\Delta S > 0$ ($-\\Delta S$ is positive), $\\Delta G$ is positive at all temperatures.\nThus, conversion of oxygen into ozone is non-spontaneous at all temperatures.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q24",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2015,
+    "question": "In the reaction, $\\text{S} + \\frac{3}{2}\\text{O}_2 \\to \\text{SO}_3 + 2x\\text{ kJ}$ and $\\text{SO}_2 + \\frac{1}{2}\\text{O}_2 \\to \\text{SO}_3 + y\\text{ kJ}$ heat of formation of $\\text{SO}_2$ is",
+    "options": [
+      "$x - y$",
+      "$2x + y$",
+      "$x + y$",
+      "$2x - y$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Given thermochemical equations:\n(i) $\\text{S} + \\frac{3}{2}\\text{O}_2 \\to \\text{SO}_3 ; \\Delta H_1 = -2x\\text{ kJ}$\n(ii) $\\text{SO}_2 + \\frac{1}{2}\\text{O}_2 \\to \\text{SO}_3 ; \\Delta H_2 = -y\\text{ kJ}$\n\nSubtracting equation (ii) from (i):\n$\\text{S} + \\text{O}_2 \\to \\text{SO}_2 ; \\Delta H_f = \\Delta H_1 - \\Delta H_2 = -2x - (-y) = -(2x - y) = y - 2x\\text{ kJ}$\n\nSince $y - 2x$ is not present in the options, this question had an anomaly in the KCET examination.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q25",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2016,
+    "question": "If the bond energies of $\\text{H}-\\text{H}$, $\\text{Br}-\\text{Br}$ and $\\text{H}-\\text{Br}$ are 433, 192 and $364\\text{ kJ mol}^{-1}$ respectively, then $\\Delta H^\\circ$ for the reaction : $\\text{H}_{2(g)} + \\text{Br}_{2(g)} \\to 2\\text{HBr}_{(g)}$ is",
+    "options": [
+      "$-261\\text{ kJ}$",
+      "$+103\\text{ kJ}$",
+      "$+261\\text{ kJ}$",
+      "$-103\\text{ kJ}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\Delta H^\\circ = \\sum B.E.(\\text{reactants}) - \\sum B.E.(\\text{products})$\n$= [B.E.(\\text{H}-\\text{H}) + B.E.(\\text{Br}-\\text{Br})] - 2 \\times B.E.(\\text{H}-\\text{Br})$\n$= [433 + 192] - 2(364) = 625 - 728 = -103\\text{ kJ}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q26",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2016,
+    "question": "The correct statement regarding entropy is",
+    "options": [
+      "at absolute zero temperature, entropy of a perfectly crystalline solid is zero",
+      "at absolute zero temperature, the entropy of a liquid is zero",
+      "at absolute zero temperature, the entropy of all crystalline substances is zero",
+      "at $0^\\circ\\text{C}$, the entropy of a perfect crystalline solid is zero."
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the Third Law of Thermodynamics: At absolute zero temperature ($0\\text{ K}$), the entropy of a perfectly crystalline substance is zero.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q27",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2017,
+    "question": "A reaction has both $\\Delta H$ and $\\Delta S$ -ve. The rate of reaction (spontaneity)",
+    "options": [
+      "cannot be predicted for change in temperature",
+      "increases with increase in temperature",
+      "increases with decreases in temperature",
+      "remains unaffected by change in temperature."
+    ],
+    "correct_answer": 2,
+    "explanation": "$\\Delta G = \\Delta H - T\\Delta S$.\nWhen $\\Delta H < 0$ and $\\Delta S < 0$, the term $-T\\Delta S$ is positive ($+T|\\Delta S|$).\nTo make $\\Delta G$ negative (spontaneous), the magnitude of $|\\Delta H|$ must exceed $T|\\Delta S|$, which happens at low temperatures.\nHence, the feasibility/tendency of the reaction increases with decrease in temperature.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q28",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2019,
+    "question": "The reaction in which $\\Delta H > \\Delta U$ is",
+    "options": [
+      "$\\text{N}_{2(g)} + \\text{O}_{2(g)} \\to 2\\text{NO}_{(g)}$",
+      "$\\text{CaCO}_{3(s)} \\to \\text{CaO}_{(s)} + \\text{CO}_{2(g)}$",
+      "$\\text{N}_{2(g)} + 3\\text{H}_{2(g)} \\to 2\\text{NH}_{3(g)}$",
+      "$\\text{CH}_{4(g)} + 2\\text{O}_{2(g)} \\to \\text{CO}_{2(g)} + 2\\text{H}_2\\text{O}_{(l)}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Since $\\Delta H = \\Delta U + \\Delta n_g RT$, $\\Delta H > \\Delta U$ when $\\Delta n_g > 0$.\n\nFor $\\text{CaCO}_{3(s)} \\to \\text{CaO}_{(s)} + \\text{CO}_{2(g)}$:\n$\\Delta n_g = 1 - 0 = +1 > 0$.\n$\\therefore \\Delta H = \\Delta U + RT \\implies \\Delta H > \\Delta U$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q29",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2020,
+    "question": "When the same quantity of heat is absorbed by a system at two different temperatures $T_1$ and $T_2$, such that $T_1 > T_2$, change in entropies are $\\Delta S_1$ and $\\Delta S_2$ respectively. Then",
+    "options": [
+      "$\\Delta S_1 = \\Delta S_2$",
+      "$S_2 > S_1$",
+      "$\\Delta S_2 < \\Delta S_1$",
+      "$\\Delta S_1 < \\Delta S_2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Entropy change is defined as $\\Delta S = \\frac{q_{\\text{rev}}}{T}$.\nWhen heat $q$ is absorbed at temperature $T$, $\\Delta S \\propto \\frac{1}{T}$.\nSince $T_1 > T_2$, $\\frac{q}{T_1} < \\frac{q}{T_2} \\implies \\Delta S_1 < \\Delta S_2$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q30",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2021,
+    "question": "Bond enthalpies of $A_2, B_2$ and $AB$ are in the ratio $2 : 1 : 2$. If bond enthalpy of formation of $AB$ is $-100\\text{ kJ mol}^{-1}$. The bond enthalpy of $B_2$ is",
+    "options": [
+      "$100\\text{ kJ mol}^{-1}$",
+      "$500\\text{ kJ mol}^{-1}$",
+      "$200\\text{ kJ mol}^{-1}$",
+      "$150\\text{ kJ mol}^{-1}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let bond enthalpy of $B_2 = X$, then $A_2 = 2X$ and $AB = 2X$.\nReaction: $\\frac{1}{2}A_2 + \\frac{1}{2}B_2 \\to AB ; \\Delta_f H^\\circ = -100\\text{ kJ mol}^{-1}$\n\n$\\Delta_f H^\\circ = \\left[\\frac{1}{2}B.E.(A_2) + \\frac{1}{2}B.E.(B_2)\\right] - B.E.(AB)$\n$-100 = \\left[\\frac{1}{2}(2X) + \\frac{1}{2}X\\right] - 2X$\n$-100 = \\left[X + \\frac{X}{2}\\right] - 2X = -\\frac{X}{2}$\n$\\implies X = 200\\text{ kJ mol}^{-1}$.\nHence, the bond enthalpy of $B_2$ is $200\\text{ kJ mol}^{-1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q31",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2022,
+    "question": "The work done when 2 moles of an ideal gas expands reversibly and isothermally from a volume of 1 L to 10 L at 300 K is ($R = 0.0083\\text{ kJ K}^{-1}\\text{ mol}^{-1}$)",
+    "options": [
+      "0.115 kJ",
+      "58.5 kJ",
+      "11.5 kJ",
+      "5.8 kJ"
+    ],
+    "correct_answer": 2,
+    "explanation": "For an isothermal reversible expansion of an ideal gas:\n$w = -2.303 n R T \\log\\left(\\frac{V_2}{V_1}\\right)$\n$= -2.303 \\times 2 \\times 0.0083 \\times 300 \\times \\log(10/1)$\n$= -11.47 \\approx -11.5\\text{ kJ}$\n\nMagnitude of work done by the gas is $11.5\\text{ kJ}$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q32",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2023,
+    "question": "Lattice enthalpy for $\\text{NaCl}$ is $+788\\text{ kJ mol}^{-1}$ and $\\Delta H^\\circ_{\\text{hyd}} = -784\\text{ kJ mol}^{-1}$. Enthalpy of solution of $\\text{NaCl}$ is",
+    "options": [
+      "$+572\\text{ kJ mol}^{-1}$",
+      "$+4\\text{ kJ mol}^{-1}$",
+      "$-572\\text{ kJ mol}^{-1}$",
+      "$-4\\text{ kJ mol}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Enthalpy of solution = Lattice enthalpy + Hydration enthalpy\n$\\Delta H_{\\text{sol}} = \\Delta H_{\\text{lattice}} + \\Delta H_{\\text{hyd}}$\n$= (+788) + (-784) = +4\\text{ kJ mol}^{-1}$",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch5_q33",
+    "subject": "Chemistry",
+    "chapter": "Thermodynamics",
+    "chapter_number": 5,
+    "year": 2024,
+    "question": "From the diagram, $\\Delta_r H$ for the reaction $C \\to A$ is",
+    "options": [
+      "+35 J",
+      "-15 J",
+      "-35 J",
+      "+15 J"
+    ],
+    "correct_answer": 2,
+    "explanation": "![Hess Cycle](/pyq_images/chemistry/ch5/q33.png)\n\nAccording to Hess's law of constant heat summation:\nFor path $A \\to C$:\n$\\Delta H_{(A \\to C)} = \\Delta H_1 + \\Delta H_2 = (+10\\text{ J}) + (+25\\text{ J}) = +35\\text{ J}$\n\nFor the reverse reaction $C \\to A$:\n$\\Delta_r H_{(C \\to A)} = -\\Delta H_{(A \\to C)} = -35\\text{ J}$",
+    "needs_image": true,
+    "image_url": "/pyq_images/chemistry/ch5/q33.png",
+    "explanation_image_url": "/pyq_images/chemistry/ch5/q33.png"
+  }
+]

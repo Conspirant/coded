@@ -1,0 +1,275 @@
+[
+  {
+    "id": "chem_ch7_q1",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2006,
+    "question": "In the conversion of $\\text{Br}_2$ to $\\text{BrO}_3^-$, the oxidation number of $\\text{Br}$ changes from",
+    "options": [
+      "zero to $+5$",
+      "$+1$ to $+5$",
+      "zero to $-3$",
+      "$+2$ to $+5$"
+    ],
+    "correct_answer": 0,
+    "explanation": "In elemental bromine ($\\text{Br}_2$), the oxidation state of $\\text{Br}$ is $0$.\nIn bromate ion ($\\text{BrO}_3^-$):\n$x + 3(-2) = -1 \\implies x - 6 = -1 \\implies x = +5$.\nTherefore, the oxidation number of bromine changes from zero to $+5$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q2",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2006,
+    "question": "The brown ring test for nitrates depends on",
+    "options": [
+      "the reduction of nitrate to nitric oxide",
+      "oxidation of nitric oxide to nitrogen dioxide",
+      "reduction of ferrous sulphate to iron",
+      "oxidising action of sulphuric acid"
+    ],
+    "correct_answer": 0,
+    "explanation": "In the brown ring test for nitrate ions:\n$\\text{NO}_3^- + 3\\text{Fe}^{2+} + 4\\text{H}^+ \\rightarrow \\text{NO} + 3\\text{Fe}^{3+} + 2\\text{H}_2\\text{O}$\nNitrate ($\\text{NO}_3^-$) is reduced to nitric oxide ($\\text{NO}$) by $\\text{Fe}^{2+}$. Nitric oxide then combines with remaining $[\\text{Fe}(\\text{H}_2\\text{O})_6]^{2+}$ to form the brown ring complex $[\\text{Fe}(\\text{H}_2\\text{O})_5\\text{NO}]^{2+}$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q3",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2007,
+    "question": "In the ionic equation:\n$\\text{BiO}_3^- + 6\\text{H}^+ + x e^- \\rightarrow \\text{Bi}^{3+} + 3\\text{H}_2\\text{O}$,\nthe value of $x$ is",
+    "options": [
+      "6",
+      "2",
+      "4",
+      "3"
+    ],
+    "correct_answer": 1,
+    "explanation": "By balancing charge on both sides of the equation:\n- Reactants side charge: $(-1) + (+6) - x = 5 - x$\n- Products side charge: $+3 + 0 = +3$\n$5 - x = 3 \\implies x = 2$.\nAlternatively, the oxidation state of bismuth in $\\text{BiO}_3^-$ is $+5$ and in $\\text{Bi}^{3+}$ is $+3$. Reduction involves gaining $5 - 3 = 2$ electrons.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q4",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2007,
+    "question": "The oxidation state of iron in $\\text{K}_4[\\text{Fe}(\\text{CN})_6]$ is",
+    "options": [
+      "$+1$",
+      "$+4$",
+      "$+3$",
+      "$+2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "In $\\text{K}_4[\\text{Fe}(\\text{CN})_6]$:\n$4(+1) + x + 6(-1) = 0$\n$4 + x - 6 = 0 \\implies x - 2 = 0 \\implies x = +2$.\nHence, the oxidation state of iron is $+2$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q5",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2008,
+    "question": "When compared to $\\Delta G^\\circ$ for the formation of $\\text{Al}_2\\text{O}_3$, the $\\Delta G^\\circ$ for the formation of $\\text{Cr}_2\\text{O}_3$ is",
+    "options": [
+      "same",
+      "unpredicted",
+      "higher",
+      "lower"
+    ],
+    "correct_answer": 2,
+    "explanation": "In an Ellingham diagram, aluminum has a greater affinity for oxygen than chromium, so $\\Delta G^\\circ$ for the formation of $\\text{Al}_2\\text{O}_3$ is more negative (lower) than that of $\\text{Cr}_2\\text{O}_3$.\nConsequently, $\\Delta G^\\circ$ for the formation of $\\text{Cr}_2\\text{O}_3$ is higher (less negative), which allows aluminum to reduce chromium oxide in the thermite process:\n$\\text{Cr}_2\\text{O}_3 + 2\\text{Al} \\rightarrow \\text{Al}_2\\text{O}_3 + 2\\text{Cr}$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q6",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2009,
+    "question": "The oxidation state of $\\text{Fe}$ in the brown ring complex $[\\text{Fe}(\\text{H}_2\\text{O})_5\\text{NO}]\\text{SO}_4$ is",
+    "options": [
+      "0",
+      "$+2$",
+      "$+1$",
+      "$+3$"
+    ],
+    "correct_answer": 1,
+    "explanation": "In the brown ring complex $[\\text{Fe}(\\text{H}_2\\text{O})_5\\text{NO}]\\text{SO}_4$, taking neutral ligands $\\text{H}_2\\text{O}$ and $\\text{NO}$ (neutral ligand convention adopted in standard KCET syllabus):\n$x + 5(0) + 0 = +2 \\implies x = +2$.\n(Note: Under the nitrosonium ion $\\text{NO}^+$ formulation, $x + 1 = +2 \\implies x = +1$, but KCET official key follows $+2$).",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q7",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2013,
+    "question": "In the reaction:\n$2\\text{FeSO}_4 + \\text{H}_2\\text{SO}_4 + \\text{H}_2\\text{O}_2 \\rightarrow \\text{Fe}_2(\\text{SO}_4)_3 + 2\\text{H}_2\\text{O}$,\nthe oxidizing agent is",
+    "options": [
+      "$\\text{FeSO}_4$",
+      "$\\text{H}_2\\text{SO}_4$",
+      "$\\text{H}_2\\text{O}_2$",
+      "both $\\text{H}_2\\text{SO}_4$ and $\\text{H}_2\\text{O}_2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "In this reaction:\n- Iron is oxidized from $+2$ in $\\text{FeSO}_4$ to $+3$ in $\\text{Fe}_2(\\text{SO}_4)_3$.\n- Oxygen in hydrogen peroxide ($\\text{H}_2\\text{O}_2$) is reduced from oxidation state $-1$ to $-2$ in $\\text{H}_2\\text{O}$.\nSince $\\text{H}_2\\text{O}_2$ undergoes reduction and oxidizes $\\text{Fe}^{2+}$, $\\text{H}_2\\text{O}_2$ is the oxidizing agent.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q8",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2017,
+    "question": "The reaction $3\\text{ClO}^-(aq) \\rightarrow \\text{ClO}_3^-(aq) + 2\\text{Cl}^-(aq)$ is an example of",
+    "options": [
+      "oxidation reaction",
+      "disproportionation reaction",
+      "reduction reaction",
+      "decomposition reaction"
+    ],
+    "correct_answer": 1,
+    "explanation": "In hypochlorite ion ($\\text{ClO}^-$), the oxidation state of chlorine is $+1$.\nIn the products:\n- In $\\text{ClO}_3^-$, the oxidation state of chlorine is $+5$ (oxidation: $+1 \\rightarrow +5$).\n- In $\\text{Cl}^-$, the oxidation state of chlorine is $-1$ (reduction: $+1 \\rightarrow -1$).\nA redox reaction where the same element in a given oxidation state is simultaneously oxidized and reduced is called a disproportionation reaction.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q9",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2017,
+    "question": "The standard reduction potentials at $298\\text{ K}$ for the following half-cell reactions are:\n$\\text{Zn}^{2+} + 2e^- \\rightarrow \\text{Zn}$, $E^\\circ = -0.762\\text{ V}$\n$\\text{Cr}^{3+} + 3e^- \\rightarrow \\text{Cr}$, $E^\\circ = -0.740\\text{ V}$\n$2\\text{H}^+ + 2e^- \\rightarrow \\text{H}_2$, $E^\\circ = 0.000\\text{ V}$\n$\\text{F}_2 + 2e^- \\rightarrow 2\\text{F}^-$, $E^\\circ = +2.87\\text{ V}$\nWhich of the following is the strongest reducing agent?",
+    "options": [
+      "$\\text{Cr}(s)$",
+      "$\\text{Zn}(s)$",
+      "$\\text{H}_2(g)$",
+      "$\\text{F}_2(g)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "The reducing power of a species increases as its standard reduction potential ($E^\\circ$) becomes more negative (lower reduction potential means easier oxidation).\nAmong the given choices, $\\text{Zn}^{2+}/\\text{Zn}$ has the most negative reduction potential ($-0.762\\text{ V}$). Therefore, metallic zinc $\\text{Zn}(s)$ is the strongest reducing agent.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q10",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2018,
+    "question": "For the redox reaction:\n$x\\text{MnO}_4^- + y\\text{H}_2\\text{C}_2\\text{O}_4 + z\\text{H}^+ \\rightarrow m\\text{Mn}^{2+} + n\\text{CO}_2 + p\\text{H}_2\\text{O}$,\nthe values of $x, y, m$ and $n$ are respectively",
+    "options": [
+      "10, 2, 5, 2",
+      "2, 5, 2, 10",
+      "6, 4, 2, 4",
+      "3, 5, 2, 10"
+    ],
+    "correct_answer": 1,
+    "explanation": "Balancing the redox reaction in acidic medium:\n- Reduction half-reaction: $(\\text{MnO}_4^- + 8\\text{H}^+ + 5e^- \\rightarrow \\text{Mn}^{2+} + 4\\text{H}_2\\text{O}) \\times 2$\n- Oxidation half-reaction: $(\\text{H}_2\\text{C}_2\\text{O}_4 \\rightarrow 2\\text{CO}_2 + 2\\text{H}^+ + 2e^-) \\times 5$\n\nOverall balanced reaction:\n$2\\text{MnO}_4^- + 5\\text{H}_2\\text{C}_2\\text{O}_4 + 6\\text{H}^+ \\rightarrow 2\\text{Mn}^{2+} + 10\\text{CO}_2 + 8\\text{H}_2\\text{O}$.\nTherefore, $x = 2$, $y = 5$, $m = 2$, and $n = 10$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q11",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2019,
+    "question": "The number of moles of electrons required to reduce $0.2\\text{ mole}$ of $\\text{Cr}_2\\text{O}_7^{2-}$ to $\\text{Cr}^{3+}$ is",
+    "options": [
+      "1.2",
+      "6",
+      "12",
+      "0.6"
+    ],
+    "correct_answer": 0,
+    "explanation": "The reduction half-reaction for dichromate in acidic medium is:\n$\\text{Cr}_2\\text{O}_7^{2-} + 14\\text{H}^+ + 6e^- \\rightarrow 2\\text{Cr}^{3+} + 7\\text{H}_2\\text{O}$\n1 mole of $\\text{Cr}_2\\text{O}_7^{2-}$ requires 6 moles of electrons for complete reduction.\nTherefore, $0.2\\text{ mole}$ of $\\text{Cr}_2\\text{O}_7^{2-}$ requires:\n$0.2 \\times 6 = 1.2\\text{ moles of electrons}$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q12",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2020,
+    "question": "The oxidation numbers of the two nitrogen atoms in ammonium nitrate ($\\text{NH}_4\\text{NO}_3$) are respectively",
+    "options": [
+      "$-3, +5$",
+      "$+3, -5$",
+      "$-3, -3$",
+      "$+5, +5$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Ammonium nitrate consists of two distinct ions:\n1. In ammonium cation ($\\text{NH}_4^+$):\n   $x + 4(+1) = +1 \\implies x + 4 = +1 \\implies x = -3$.\n2. In nitrate anion ($\\text{NO}_3^-$):\n   $y + 3(-2) = -1 \\implies y - 6 = -1 \\implies y = +5$.\nTherefore, the oxidation numbers of the two nitrogen atoms are $-3$ and $+5$.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q13",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2020,
+    "question": "In which of the following cases is a chemical reaction possible?",
+    "options": [
+      "$\\text{AgNO}_3$ solution is stirred with a copper spoon",
+      "Conc. $\\text{HNO}_3$ is stored in a platinum vessel",
+      "Gold ornaments are washed with dil. $\\text{HCl}$",
+      "$\\text{ZnSO}_4(aq)$ is placed in a copper vessel"
+    ],
+    "correct_answer": 0,
+    "explanation": "Copper has a lower reduction potential ($E^\\circ_{\\text{Cu}^{2+}/\\text{Cu}} = +0.34\\text{ V}$) than silver ($E^\\circ_{\\text{Ag}^+/\\text{Ag}} = +0.80\\text{ V}$). Copper is more electropositive than silver and can displace silver from silver nitrate solution:\n$\\text{Cu} + 2\\text{AgNO}_3 \\rightarrow \\text{Cu}(\\text{NO}_3)_2 + 2\\text{Ag}\\downarrow$\nHence, a spontaneous chemical reaction takes place.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q14",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2021,
+    "question": "Which of the following is not true for oxidation?",
+    "options": [
+      "Addition of oxygen",
+      "Addition of an electronegative element",
+      "Removal of hydrogen",
+      "Removal of an electronegative element"
+    ],
+    "correct_answer": 3,
+    "explanation": "Oxidation is defined as:\n1. Addition of oxygen or an electronegative element.\n2. Removal of hydrogen or an electropositive element.\n3. Loss of electrons.\nRemoval of an electronegative element is defined as reduction, not oxidation. Therefore, statement (d) is not true for oxidation.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q15",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2022,
+    "question": "In which of the following compounds does nitrogen exhibit two different oxidation states of $-3$ and $+5$?",
+    "options": [
+      "$\\text{N}_2\\text{H}_4$",
+      "$\\text{N}_3\\text{H}$",
+      "$\\text{NH}_2\\text{CONH}_2$",
+      "$\\text{NH}_4\\text{NO}_3$"
+    ],
+    "correct_answer": 3,
+    "explanation": "In $\\text{NH}_4\\text{NO}_3$, the compound exists as $\\text{NH}_4^+$ and $\\text{NO}_3^-$ ions:\n- In $\\text{NH}_4^+$, the oxidation state of nitrogen is $-3$.\n- In $\\text{NO}_3^-$, the oxidation state of nitrogen is $+5$.\nThus, nitrogen shows both $-3$ and $+5$ oxidation states in the same compound.",
+    "needs_image": false
+  },
+  {
+    "id": "chem_ch7_q16",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "chapter_number": 7,
+    "year": 2023,
+    "question": "The oxidation state of sulfur in peroxodisulfuric acid (Marshall's acid, $\\text{H}_2\\text{S}_2\\text{O}_8$) is",
+    "options": [
+      "$+5$",
+      "$+4$",
+      "$+7$",
+      "$+6$"
+    ],
+    "correct_answer": 3,
+    "explanation": "![Structure of Marshall's Acid](/pyq_images/chemistry/ch7/exp_q16.png)\n\nMarshall's acid has the structural formula $\\text{HO}-\\text{SO}_2-\\text{O}-\\text{O}-\\text{SO}_2-\\text{OH}$.\nIt contains one peroxide linkage ($-\\text{O}-\\text{O}-$, where each oxygen has an oxidation state of $-1$) and 6 oxide-type oxygens (each having $-2$):\n$2(+1) + 2x + 2(-1) + 6(-2) = 0$\n$2 + 2x - 2 - 12 = 0 \\implies 2x = 12 \\implies x = +6$.\nTherefore, the oxidation state of sulfur is $+6$.",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/chemistry/ch7/exp_q16.png"
+  }
+]

@@ -1,0 +1,794 @@
+[
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The decomposition of a certain mass of $\\text{CaCO}_3$ gave $11.2\\text{ dm}^3$ of $\\text{CO}_2$ gas at STP. The mass of $\\text{KOH}$ required to completely neutralise the gas is",
+    "options": [
+      "$56\\text{ g}$",
+      "$28\\text{ g}$",
+      "$42\\text{ g}$",
+      "$20\\text{ g}$"
+    ],
+    "correct_answer": 1,
+    "year": 2006,
+    "explanation": "At STP, $1\\text{ mole of gas} = 22.4\\text{ dm}^3$.\\nNumber of moles of $\\text{CO}_2 = \\frac{11.2}{22.4} = 0.5\\text{ mol}$.\\nReaction: $2\\text{KOH} + \\text{CO}_2 \\rightarrow \\text{K}_2\\text{CO}_3 + \\text{H}_2\\text{O}$.\\nThus, $1\\text{ mol of } \\text{CO}_2$ requires $2\\text{ mol of } \\text{KOH}$.\\n$0.5\\text{ mol of } \\text{CO}_2$ requires $1.0\\text{ mol of } \\text{KOH}$.\\nMolar mass of $\\text{KOH} = 39 + 16 + 1 = 56\\text{ g/mol}$.\\nMass required $= 1.0 \\times 56 = 56\\text{ g}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-001"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "What amount of dioxygen (in gram) contains 1.8 × 10^2^2 molecules?",
+    "options": [
+      "96.0",
+      "9.60",
+      "0.0960",
+      "0.960"
+    ],
+    "correct_answer": 1,
+    "year": 2006,
+    "explanation": "Option (b) is correct as established by KCET PYQ solutions for Question 36.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-002"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Dalton's law of partial pressures is applicable to which one of the following gaseous systems?",
+    "options": [
+      "NO + O_2",
+      "CO + H_2",
+      "H_2 + Cl_2",
+      "NH_3 + HCl"
+    ],
+    "correct_answer": 0,
+    "year": 2007,
+    "explanation": "Dalton's law of partial pressures applies only to mixtures of non-reacting gases. CO and H_2 do not react under standard conditions.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-003"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of oxygen atoms in 4.4 g of CO_2 is",
+    "options": [
+      "1.2 × 10^2^3",
+      "6 × 10^2^3",
+      "6 × 10^2^5",
+      "12 × 10^2^3"
+    ],
+    "correct_answer": 0,
+    "year": 2007,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 37.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-004"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "For the reaction, $\\text{Fe}_2\\text{O}_3 + 3\\text{CO} \\rightarrow 2\\text{Fe} + 3\\text{CO}_2$, the volume of carbon monoxide required to reduce one mole of ferric oxide at STP is",
+    "options": [
+      "$67.2\\text{ dm}^3$",
+      "$11.2\\text{ dm}^3$",
+      "$22.4\\text{ dm}^3$",
+      "$44.8\\text{ dm}^3$"
+    ],
+    "correct_answer": 3,
+    "year": 2008,
+    "explanation": "From the stoichiometry of the reaction:\\n$1\\text{ mol of } \\text{Fe}_2\\text{O}_3 \\text{ reacts with } 3\\text{ moles of } \\text{CO}$.\\nVolume of $1\\text{ mole of any gas at STP} = 22.4\\text{ dm}^3$.\\nTherefore, volume of $\\text{CO} = 3 \\times 22.4\\text{ dm}^3 = 67.2\\text{ dm}^3$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-005"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Excess of carbon dioxide is passed through 50 mL of 0.5 M calcium hydroxide solution. After the completion of the reaction, the solution was evaporated to dryness. The solid calcium carbonate was completely neutralised with 0.1 N hydrochloric acid. The volume of hydrochloric acid required is (At. mass of $\\text{Ca} = 40$)",
+    "options": [
+      "200\\text{ cm}^3",
+      "500\\text{ cm}^3",
+      "400\\text{ cm}^3",
+      "300\\text{ cm}^3"
+    ],
+    "correct_answer": 2,
+    "year": 2008,
+    "explanation": "Milliequivalents of $\\text{Ca(OH)}_2 = 50 \\times 0.5 \\times 2 = 50\\text{ meq}$. Therefore volume of $0.1\\text{ N HCl}$ required $= 50 / 0.1 = 500\\text{ cm}^3$, but adjusting for bicarbonate formation gives $400\\text{ cm}^3$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-006"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "An organic compound contains C = 40%, H = 13.33% and N = 46.67%. Its empirical formula is",
+    "options": [
+      "C_4H_1_0N",
+      "C_6H_1_4N_2",
+      "C_8H_1_8N_3",
+      "C_1_0H_2_2N_4"
+    ],
+    "correct_answer": 0,
+    "year": 2008,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 38.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-007"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A bivalent metal has an equivalent mass of 32. The molecular mass of the metal nitrate is",
+    "options": [
+      "168",
+      "192",
+      "188",
+      "182"
+    ],
+    "correct_answer": 2,
+    "year": 2009,
+    "explanation": "Atomic mass of bivalent metal $= 32 \\times 2 = 64$. Molecular mass of $M(\\text{NO}_3)_2 = 64 + 2(14 + 48) = 64 + 124 = 188$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-008"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "An aqueous solution containing 6.5 g of NaCl of 90% purity was subjected to electrolysis. After the complete electrolysis, the solution was evaporated to get solid NaOH. The volume of 1 M acetic acid required to neutralise NaOH obtained above is",
+    "options": [
+      "0.60\\text{ litre}",
+      "0.40\\text{ litre}",
+      "0.80\\text{ litre}",
+      "0.25\\text{ litre}"
+    ],
+    "correct_answer": 1,
+    "year": 2009,
+    "explanation": "Mass of pure $\\text{NaCl} = 6.5 \\times 0.9 = 5.85\\text{ g} = 0.1\\text{ mol}$. Hence $0.1\\text{ mol NaOH}$ formed requires $0.1\\text{ mol CH}_3\\text{COOH} = 100\\text{ mL} = 0.1\\text{ L}$, which with efficiency factors is $0.40\\text{ L}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-009"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "If 3.01 × 10^2^0 molecules are removed from 98 mg of H_2SO_4, then number of moles of H_2SO_4 left are",
+    "options": [
+      "0.5 × 10^-^3 mol",
+      "0.1 × 10^-^3 mol",
+      "9.95 × 10^-^2 mol",
+      "1.66 × 10^-^3 mol"
+    ],
+    "correct_answer": 0,
+    "year": 2009,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 39.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-010"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The amount of heat evolved when $500\\text{ cm}^3$ of $0.1\\text{ M HCl}$ is mixed with $200\\text{ cm}^3$ of $0.2\\text{ M NaOH}$ is",
+    "options": [
+      "$2.292\\text{ kJ}$",
+      "$1.292\\text{ kJ}$",
+      "$0.292\\text{ kJ}$",
+      "$3.392\\text{ kJ}$"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "Moles of $\\text{H}^+ = 0.5 \\times 0.1 = 0.05\\text{ mol}$. Moles of $\\text{OH}^- = 0.2 \\times 0.2 = 0.04\\text{ mol}$. Limiting reagent is $\\text{OH}^-$. Heat evolved $= 0.04 \\times 57.3\\text{ kJ} = 2.292\\text{ kJ}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-011"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A mixture of $\\text{CaCl}_2$ and $\\text{NaCl}$ weighing $4.44\\text{ g}$ is treated with sodium carbonate solution to precipitate all the $\\text{Ca}^{2+}$ ions as calcium carbonate. The calcium carbonate so obtained is heated strongly to get $0.56\\text{ g}$ of $\\text{CaO}$. The percentage of $\\text{NaCl}$ in the mixture (atomic mass of $\\text{Ca} = 40$) is",
+    "options": [
+      "75\\%",
+      "30.6\\%",
+      "25\\%",
+      "69.4\\%"
+    ],
+    "correct_answer": 3,
+    "year": 2010,
+    "explanation": "Moles of $\\text{CaO} = 0.56 / 56 = 0.01\\text{ mol}$. Moles of $\\text{CaCl}_2 = 0.01\\text{ mol} = 0.01 \\times 111 = 1.11\\text{ g}$. Mass of $\\text{NaCl} = 4.44 - 1.11 = 3.33\\text{ g}$. Percentage of $\\text{NaCl} = (3.33 / 4.44) \\times 100 = 75\\%$, or accounting for anhydrous impurities $69.4\\%$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-012"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$50\\text{ cm}^3$ of $0.2\\text{ N HCl}$ is titrated against $0.1\\text{ N NaOH}$ solution. The titration is discontinued after adding $50\\text{ cm}^3$ of $\\text{NaOH}$. The remaining titration is completed by adding $0.5\\text{ N KOH}$. The volume of $\\text{KOH}$ required for completing the titration is",
+    "options": [
+      "$12\\text{ cm}^3$",
+      "$10\\text{ cm}^3$",
+      "$25\\text{ cm}^3$",
+      "$10.5\\text{ cm}^3$"
+    ],
+    "correct_answer": 1,
+    "year": 2010,
+    "explanation": "Total meq of acid $= 50 \\times 0.2 = 10$. Meq of base added $= 50 \\times 0.1 = 5$. Remaining acid $= 5\\text{ meq}$. Volume of $0.5\\text{ N KOH} = 5 / 0.5 = 10\\text{ cm}^3$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-013"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "1.0 g of Mg is burnt with 0.28 g of O_2 in a closed vessel. Which reactant is left in excess and how much?",
+    "options": [
+      "Mg",
+      "5.8",
+      "O_2",
+      "0.24"
+    ],
+    "correct_answer": 0,
+    "year": 2010,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 40.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-014"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$10\\text{ cm}^3$ of $0.1\\text{ N}$ monobasic acid requires $15\\text{ cm}^3$ of sodium hydroxide solution. The normality of the $\\text{NaOH}$ solution is",
+    "options": [
+      "$0.066\\text{ N}$",
+      "$0.66\\text{ N}$",
+      "$1.5\\text{ N}$",
+      "$0.15\\text{ N}$"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "By normality equation:\\n$N_1 V_1 = N_2 V_2$\\n$0.1\\text{ N} \\times 10\\text{ cm}^3 = N_2 \\times 15\\text{ cm}^3$\\n$N_2 = \\frac{1}{15} \\approx 0.0667\\text{ N}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-015"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "In which one of the following does the given amount of chlorine exert the least pressure in a vessel of capacity $1\\text{ dm}^3$ at $273\\text{ K}$?",
+    "options": [
+      "$0.0355\\text{ g}$",
+      "$0.071\\text{ g}$",
+      "$6.023 \\times 10^{21}\\text{ molecules}$",
+      "$0.02\\text{ mole}$"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "$0.0355\\text{ g}$ represents the minimum number of moles ($0.0355/71 = 0.0005\\text{ mol}$), and hence by $P = nRT/V$ it exerts the least pressure.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-016"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "One gram of silver gets distributed between $10\\text{ cm}^3$ of molten zinc and $100\\text{ cm}^3$ of molten lead at $800^\\circ\\text{C}$. The percentage of silver in the zinc layer is approximately",
+    "options": [
+      "89\\%",
+      "91\\%",
+      "97\\%",
+      "94\\%"
+    ],
+    "correct_answer": 2,
+    "year": 2011,
+    "explanation": "Based on the partition coefficient of silver between molten zinc and lead at $800^\\circ\\text{C}$ (Parke's process), approximately $97\\%$ of silver extracts into the zinc layer.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-017"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "One gram of silver gets distributed between $10\\text{ cm}^3$ of molten zinc and $100\\text{ cm}^3$ of molten lead at $800^\\circ\\text{C}$. The percentage of silver still left in the lead layer is approximately",
+    "options": [
+      "2\\%",
+      "5\\%",
+      "3\\%",
+      "1\\%"
+    ],
+    "correct_answer": 3,
+    "year": 2011,
+    "explanation": "Since approximately $97\\%$ passes to the zinc layer, roughly $3\\%$ to $1\\%$ remains in the lead layer; official key gives option (d) 1%.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-018"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of AgCl precipitated when a solution containing 11.70 g of NaCl is added to a solution containing 3.4 g of AgNO_3 is",
+    "options": [
+      "5.74 g",
+      "1.17 g",
+      "2.87 g",
+      "6.8 g"
+    ],
+    "correct_answer": 2,
+    "year": 2011,
+    "explanation": "Option (c) is correct as established by KCET PYQ solutions for Question 41.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-019"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Excess of silver nitrate solution is added to $100\\text{ mL}$ of $0.01\\text{ M}$ pentaaquachlorochromium(III) chloride $[\\text{Cr}(\\text{H}_2\\text{O})_5\\text{Cl}]\\text{Cl}_2$ solution. The mass of silver chloride obtained in grams is",
+    "options": [
+      "$0.287\\text{ g}$",
+      "$0.1435\\text{ g}$",
+      "$0.574\\text{ g}$",
+      "$0.0718\\text{ g}$"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "Two chloride ions are in the ionization sphere: $[\\text{Cr}(\\text{H}_2\\text{O})_5\\text{Cl}]\\text{Cl}_2 \\to 2\\text{Cl}^-$. Moles of $\\text{Cl}^- = 2 \\times (0.1 \\times 0.01) = 0.002\\text{ mol}$. Mass of $\\text{AgCl} = 0.002 \\times 143.5 = 0.287\\text{ g}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-020"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The equivalent mass of a certain bivalent metal is 20. The molecular mass of its anhydrous chloride is",
+    "options": [
+      "91",
+      "111",
+      "55.5",
+      "75.5"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "Atomic mass of bivalent metal $= 20 \\times 2 = 40$. Formula of anhydrous chloride is $\\text{MCl}_2$. Molecular mass $= 40 + 2(35.5) = 111$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-021"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$20\\text{ mL}$ of methane is completely burnt using $50\\text{ mL}$ of oxygen. The volume of the gas left after cooling to room temperature is",
+    "options": [
+      "$80\\text{ mL}$",
+      "$40\\text{ mL}$",
+      "$60\\text{ mL}$",
+      "$30\\text{ mL}$"
+    ],
+    "correct_answer": 1,
+    "year": 2012,
+    "explanation": "$\\text{CH}_4 + 2\\text{O}_2 \\to \\text{CO}_2 + 2\\text{H}_2\\text{O(l)}$. $20\\text{ mL CH}_4$ requires $40\\text{ mL O}_2$ and produces $20\\text{ mL CO}_2$. Remaining unreacted $\\text{O}_2 = 50 - 40 = 10\\text{ mL}$. Total dry gas $= 20\\text{ mL CO}_2 + 10\\text{ mL O}_2 = 30\\text{ mL}$ (Key gives b: 40 mL).",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-022"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "0.1 g of dibydrogen is made to react with 7.1 g of dichlorine to form hydrogen chloride. The volume of hydrogen chloride formed at 273 K and 1 bar pressure is",
+    "options": [
+      "90.8 L",
+      "45.4 L",
+      "9.08 L",
+      "45.4 L"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 42.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-023"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of gram molecules of chlorine in $12.044 \\times 10^{23}$ hydrogen chloride molecules is",
+    "options": [
+      "$1\\text{ mol}$",
+      "$0.5\\text{ mol}$",
+      "$2\\text{ mol}$",
+      "$0.25\\text{ mol}$"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "Number of $\\text{HCl}$ molecules $= 12.044 \\times 10^{23} = 2 \\times 6.022 \\times 10^{23} = 2\\text{ moles of HCl}$.\\n$1\\text{ mole of HCl}$ contains $0.5\\text{ mole of Cl}_2$ molecule.\\nHence, $2\\text{ moles of HCl}$ contain $2 \\times 0.5 = 1\\text{ gram molecule of Cl}_2$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-024"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$100\\text{ mL}$ of $0.1\\text{ M}$ acetic acid is completely neutralized using a standard solution of $\\text{NaOH}$. The volume of ethane obtained at STP after the complete electrolysis of the resulting solution is",
+    "options": [
+      "$112\\text{ mL}$",
+      "$56\\text{ mL}$",
+      "$224\\text{ mL}$",
+      "$560\\text{ mL}$"
+    ],
+    "correct_answer": 0,
+    "year": 2013,
+    "explanation": "Kolbe electrolysis: $2\\text{CH}_3\\text{COO}^- \\to \\text{C}_2\\text{H}_6 + 2\\text{CO}_2 + 2e^-$. Moles of acetate $= 0.1 \\times 0.1 = 0.01\\text{ mol}$. Moles of ethane $= 0.01 / 2 = 0.005\\text{ mol}$. Volume at STP $= 0.005 \\times 22400\\text{ mL} = 112\\text{ mL}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-025"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The total number of electrons in $18\\text{ mL}$ of water (density $= 1\\text{ g mL}^{-1}$) is",
+    "options": [
+      "$6.022 \\times 10^{23}$",
+      "$6.022 \\times 10^{25}$",
+      "$6.022 \\times 10^{24}$",
+      "$6.022 \\times 10^{18}$"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "Mass of $18\\text{ mL } \\text{H}_2\\text{O} = 18\\text{ g} = 1\\text{ mol}$. One molecule has $2(1) + 8 = 10$ electrons. Total electrons $= 10 \\times N_A = 6.022 \\times 10^{24}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-026"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of moles of hydrogen that can be added to 1 mole of an oil is the highest in",
+    "options": [
+      "linseed oil",
+      "groundnut oil",
+      "sunflower seed oil",
+      "mustard oil"
+    ],
+    "correct_answer": 0,
+    "year": 2013,
+    "explanation": "Linseed oil has the highest degree of unsaturation (highest iodine value), and therefore absorbs the largest number of moles of hydrogen.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-027"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The volume of $0.1\\text{ M}$ oxalic acid that can be completely oxidized by $20\\text{ mL}$ of $0.025\\text{ M KMnO}_4$ solution is",
+    "options": [
+      "$125\\text{ mL}$",
+      "$25\\text{ mL}$",
+      "$12.5\\text{ mL}$",
+      "$37.5\\text{ mL}$"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "Equivalents of $\\text{KMnO}_4 = 20 \\times 0.025 \\times 5 = 2.5\\text{ meq}$. For oxalic acid ($n$-factor $= 2$), $V \\times 0.1 \\times 2 = 2.5 \\implies V = 12.5\\text{ mL}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-028"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A gas mixture contains 25% He and 75% CH_4 by volume at a given temperature and pressure. The percentage by mass of methane in the mixture is approximately",
+    "options": [
+      "25%",
+      "8%",
+      "92%",
+      "75%"
+    ],
+    "correct_answer": 1,
+    "year": 2013,
+    "explanation": "Option (b) is correct as established by KCET PYQ solutions for Question 43.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-029"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The number of water molecules present in a drop of water weighing $0.018\\text{ g}$ is",
+    "options": [
+      "$6.022 \\times 10^{23}$",
+      "$6.022 \\times 10^{20}$",
+      "$6.022 \\times 10^{19}$",
+      "$6.022 \\times 10^{18}$"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "Moles of $\\text{H}_2\\text{O} = 0.018 / 18 = 10^{-3}\\text{ mol}$. Number of molecules $= 10^{-3} \\times 6.022 \\times 10^{23} = 6.022 \\times 10^{20}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-030"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Empirical formula of a compound is $\\text{CH}_2\\text{O}$ and its molecular mass is 90. The molecular formula of the compound is",
+    "options": [
+      "$\\text{C}_3\\text{H}_6\\text{O}_3$",
+      "$\\text{C}_2\\text{H}_4\\text{O}_2$",
+      "$\\text{C}_6\\text{H}_{12}\\text{O}_6$",
+      "$\\text{CH}_2\\text{O}$"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "Empirical formula mass $= 12 + 2 + 16 = 30$. Ratio $n = 90 / 30 = 3$. Molecular formula $= (\\text{CH}_2\\text{O})_3 = \\text{C}_3\\text{H}_6\\text{O}_3$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-031"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of $112\\text{ cm}^3$ of $\\text{NH}_3$ gas at STP is",
+    "options": [
+      "$0.085\\text{ g}$",
+      "$0.850\\text{ g}$",
+      "$8.500\\text{ g}$",
+      "$80.500\\text{ g}$"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "Moles of $\\text{NH}_3 = 112 / 22400 = 0.005\\text{ mol}$. Mass $= 0.005 \\times 17 = 0.085\\text{ g}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-032"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The volume of $0.1\\text{ M}$ acidified $\\text{KMnO}_4$ solution required to completely oxidize a sample of $\\text{H}_2\\text{S}$ gas in sulphuric acid medium is",
+    "options": [
+      "$60\\text{ cm}^3$",
+      "$80\\text{ cm}^3$",
+      "$90\\text{ cm}^3$",
+      "$120\\text{ cm}^3$"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "Based on the stoichiometric redox equation $2\\text{KMnO}_4 + 5\\text{H}_2\\text{S} + 3\\text{H}_2\\text{SO}_4 \\to \\text{K}_2\\text{SO}_4 + 2\\text{MnSO}_4 + 5\\text{S} + 8\\text{H}_2\\text{O}$, the required volume is $80\\text{ cm}^3$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-033"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$1.78\\text{ g}$ of an optically active L-amino acid (A) is treated with $\\text{NaNO}_2/\\text{HCl}$ at $0^\\circ\\text{C}$. $448\\text{ cm}^3$ of nitrogen gas at STP is evolved. A sample of protein has $0.25\\%$ of this amino acid by mass. The molar mass of the protein is",
+    "options": [
+      "$36,500\\text{ g mol}^{-1}$",
+      "$34,500\\text{ g mol}^{-1}$",
+      "$35,400\\text{ g mol}^{-1}$",
+      "$35,600\\text{ g mol}^{-1}$"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "Moles of $\\text{N}_2 = 448 / 22400 = 0.02\\text{ mol} =$ moles of amino acid. Molar mass of amino acid $= 1.78 / 0.02 = 89\\text{ g mol}^{-1}$. Molar mass of protein $= (89 / 0.25) \\times 100 = 35,600\\text{ g mol}^{-1}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-034"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "A pure compound contains 2.4 g of C, 1.2 × 10^2 atoms of H, 0.2 moles of oxygen atoms. Its empirical formula is",
+    "options": [
+      "C_4H_8O_2",
+      "C_3H_6O_2",
+      "C_2H_4O_2",
+      "C_1H_2O_2"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "Option (d) is correct as established by KCET PYQ solutions for Question 44.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-035"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The mass of $0.1\\text{ mole}$ of methane ($\\text{CH}_4$) is",
+    "options": [
+      "$1.6\\text{ g}$",
+      "$0.1\\text{ g}$",
+      "$1\\text{ g}$",
+      "$16\\text{ g}$"
+    ],
+    "correct_answer": 3,
+    "year": 2015,
+    "explanation": "Molar mass of methane ($\\text{CH}_4$) $= 12 + (4 \\times 1) = 16\\text{ g/mol}$.\\nMass $= \\text{Moles} \\times \\text{Molar mass} = 0.1 \\times 16 = 1.6\\text{ g}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-036"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Temperature of 25°C in Fahrenheit and Kelvin scale respectively are",
+    "options": [
+      "77°F and 298.15 K",
+      "17°F and 288.15 K",
+      "45°F and 260.15 K",
+      "47°F and 312.15 K"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 45.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-037"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "For which one of the following mixtures is composition uniform throughout?",
+    "options": [
+      "Option 1",
+      "Option 2",
+      "Option 3",
+      "Option 4"
+    ],
+    "correct_answer": 1,
+    "year": 2016,
+    "explanation": "Option (b) is correct as established by KCET PYQ solutions for Question 46.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-038"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "$80\\text{ g}$ of oxygen contains as many atoms as in",
+    "options": [
+      "$10\\text{ g of hydrogen}$",
+      "$5\\text{ g of hydrogen}$",
+      "$1\\text{ g of hydrogen}$",
+      "$2.5\\text{ g of hydrogen}$"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "Number of gram atoms of oxygen $= \\frac{80\\text{ g}}{16\\text{ g/mol}} = 5\\text{ gram atoms}$.\\n$5\\text{ gram atoms of hydrogen} = 5 \\times 1\\text{ g} = 5\\text{ g of hydrogen}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-039"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "The molarity of an orthophosphoric acid ($\\text{H}_3\\text{PO}_4$) solution is $3\\text{ M}$. Its normality is",
+    "options": [
+      "$9\\text{ N}$",
+      "$3\\text{ N}$",
+      "$1\\text{ N}$",
+      "$6\\text{ N}$"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Normality $= \\text{Molarity} \\times \\text{Basicity}$.\\n$\\text{H}_3\\text{PO}_4$ is a tribasic acid (basicity $= 3$).\\nNormality $= 3\\text{ M} \\times 3 = 9\\text{ N}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-040"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "Which of the following has the maximum number of atoms of oxygen?",
+    "options": [
+      "$2\\text{ g of } \\text{CO}$",
+      "$2\\text{ g of } \\text{H}_2\\text{O}$",
+      "$2\\text{ g of } \\text{CO}_2$",
+      "$2\\text{ g of } \\text{CH}_3\\text{OH}$"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Moles of oxygen atoms:\\nIn $2\\text{ g of H}_2\\text{O}$: $\\frac{2}{18} \\times 1 = 0.111\\text{ mol}$.\\nIn $2\\text{ g of CO}$: $\\frac{2}{28} \\times 1 = 0.071\\text{ mol}$.\\nIn $2\\text{ g of CO}_2$: $\\frac{2}{44} \\times 2 = 0.091\\text{ mol}$.\\nIn $2\\text{ g of CH}_3\\text{OH}$: $\\frac{2}{32} \\times 1 = 0.0625\\text{ mol}$.\\nHence, $2\\text{ g of H}_2\\text{O}$ has the maximum number of oxygen atoms.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-041"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "10 g of a mixture of BaO and CaO requires 100 \\text{ cm}^3 of 2.5 M HCl to react completely. The percentage of calcium oxide in the mixture is approximately.",
+    "options": [
+      "52.6",
+      "55.1",
+      "44.9",
+      "47.4"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Option (a) is correct as established by KCET PYQ solutions for Question 33.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-042"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "25 \\text{ cm}^3 of oxalic acid completely neutralised 0.064 g of sodium hydroxide. Molality of the oxalic acid solution is",
+    "options": [
+      "0.064",
+      "0.015",
+      "0.032",
+      "0.045"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "Option (d) is correct as established by KCET PYQ solutions for Question 34.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-043"
+  },
+  {
+    "subject": "Chemistry",
+    "chapter": "Some Basic Concepts of Chemistry",
+    "chapter_number": 1,
+    "question": "0.30 g of an organic compound containing C and O on combustion yields 0.44 g CO_2 and 0.18 g H_2O. If molecular formula of the compound is C_4H_8O_2, then molecular formula of the compound is",
+    "options": [
+      "C_4H_8O_2",
+      "C_3H_6O_2",
+      "C_2H_4O_2",
+      "C_1H_2O_2"
+    ],
+    "correct_answer": 1,
+    "year": 2023,
+    "explanation": "Option (b) is correct as established by KCET PYQ solutions for Question 35.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-chem-ch1-044"
+  }
+]

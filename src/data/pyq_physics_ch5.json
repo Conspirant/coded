@@ -1,0 +1,364 @@
+[
+  {
+    "id": "kcet-physics-ch5-1",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2007,
+    "question": "A shell of mass $20\\text{ kg}$ at rest explodes into two fragments whose masses are in the ratio $2 : 3$. The smaller fragment moves with a velocity of $6\\text{ m s}^{-1}$. The kinetic energy of the larger fragment is",
+    "options": [
+      "$96\\text{ J}$",
+      "$216\\text{ J}$",
+      "$144\\text{ J}$",
+      "$360\\text{ J}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nLinear momentum is conserved.\nMasses are in ratio $2 : 3$, total mass $= 20\\text{ kg}$.\nSmaller fragment $m_1 = \\frac{2}{5} \\times 20 = 8\\text{ kg}$.\nLarger fragment $m_2 = \\frac{3}{5} \\times 20 = 12\\text{ kg}$.\nBy conservation of momentum: $m_1 v_1 = m_2 v_2 \\implies 8 \\times 6 = 12 \\times v_2 \\implies v_2 = 4\\text{ m s}^{-1}$.\nKinetic energy of larger fragment: $K = \\frac{1}{2}m_2 v_2^2 = \\frac{1}{2}(12)(4)^2 = 96\\text{ J}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-2",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2009,
+    "question": "Two rectangular blocks $A$ and $B$ of masses $2\\text{ kg}$ and $3\\text{ kg}$ respectively are connected by a spring of spring constant $10.8\\text{ N m}^{-1}$ and are placed on a frictionless horizontal surface. The block $A$ was given an initial velocity of $0.15\\text{ m s}^{-1}$ in the direction shown in the figure. The maximum compression of the spring during the motion is",
+    "options": [
+      "$0.01\\text{ m}$",
+      "$0.02\\text{ m}$",
+      "$0.05\\text{ m}$",
+      "$0.03\\text{ m}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n![Blocks and Spring](/pyq_images/physics/ch5/exp_q2.png)\n\nAt maximum compression, both blocks move with a common velocity $v$.\nBy conservation of momentum:\n$m_A u = (m_A + m_B)v \\implies 2(0.15) = (2 + 3)v \\implies v = 0.06\\text{ m s}^{-1}$.\nBy conservation of energy:\n$\\frac{1}{2}m_A u^2 = \\frac{1}{2}(m_A + m_B)v^2 + \\frac{1}{2}k x^2$\n$\\frac{1}{2}(2)(0.15)^2 = \\frac{1}{2}(5)(0.06)^2 + \\frac{1}{2}(10.8)x^2$\n$0.0225 - 0.0090 = 5.4 x^2 \\implies 0.0135 = 5.4 x^2 \\implies x^2 = 0.0025 \\implies x = 0.05\\text{ m}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch5/q2.png",
+    "explanation_image_url": "/pyq_images/physics/ch5/exp_q2.png"
+  },
+  {
+    "id": "kcet-physics-ch5-3",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2009,
+    "question": "The work done by a force acting on a body is as shown in the graph. The total work done in covering an initial distance of $20\\text{ m}$ is",
+    "options": [
+      "$225\\text{ J}$",
+      "$200\\text{ J}$",
+      "$400\\text{ J}$",
+      "$175\\text{ J}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n![F-S Graph](/pyq_images/physics/ch5/exp_q3.png)\n\nTotal work done = area under the $F-S$ graph from $S = 0$ to $S = 20\\text{ m}$.\nArea = Area of trapezium $ABCD$ ($S = 0$ to $15\\text{ m}$) + Area of trapezium $CEFD$ ($S = 15$ to $20\\text{ m}$)\n$= \\frac{1}{2}(10 + 15) \\times 10 + \\frac{1}{2}(10 + 20) \\times 5$\n$= 125 + 75 = 200\\text{ J}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch5/q3.png",
+    "explanation_image_url": "/pyq_images/physics/ch5/exp_q3.png"
+  },
+  {
+    "id": "kcet-physics-ch5-4",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2010,
+    "question": "If the linear momentum of a body is increased by $50\\%$, then the kinetic energy of that body increases by",
+    "options": [
+      "$100\\%$",
+      "$125\\%$",
+      "$225\\%$",
+      "$25\\%$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nKinetic energy $K = \\frac{p^2}{2m}$.\nWhen momentum is increased by $50\\%$: $p' = p + 0.5p = 1.5p = \\frac{3}{2}p$.\n$K' = \\frac{(p')^2}{2m} = \\left(\\frac{3}{2}\\right)^2 K = \\frac{9}{4}K = 2.25 K$.\nPercentage increase $= \\frac{K' - K}{K} \\times 100 = (2.25 - 1) \\times 100 = 125\\%$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-5",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2011,
+    "question": "A body of mass $5\\text{ kg}$ is thrown vertically up with a kinetic energy of $490\\text{ J}$. The height at which the kinetic energy of the body becomes half of the original value is",
+    "options": [
+      "$5\\text{ m}$",
+      "$2.5\\text{ m}$",
+      "$10\\text{ m}$",
+      "$12.5\\text{ m}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nBy conservation of mechanical energy:\nLoss in kinetic energy = Gain in potential energy\n$\\frac{1}{2}K_0 = mgh \\implies \\frac{490}{2} = 5 \\times 9.8 \\times h \\implies 245 = 49 h \\implies h = 5\\text{ m}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-6",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2012,
+    "question": "Two bodies of masses $m_1$ and $m_2$ are acted upon by a constant force $F$ for a time $t$. They start from rest and acquire kinetic energies $E_1$ and $E_2$ respectively. Then $\\frac{E_1}{E_2}$ is",
+    "options": [
+      "$\\frac{m_1}{m_2}$",
+      "$\\frac{m_2}{m_1}$",
+      "$1$",
+      "$\\frac{\\sqrt{m_1 m_2}}{m_1 + m_2}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nImpulse $J = F t = \\Delta p$. Since both start from rest and experience the same force $F$ for time $t$, they acquire equal linear momentum $p_1 = p_2 = F t$.\nSince $E = \\frac{p^2}{2m}$, for equal momenta:\n$\\frac{E_1}{E_2} = \\frac{m_2}{m_1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-7",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2013,
+    "question": "A gun fires a small bullet with kinetic energy $K$. Then kinetic energy of the gun while recoiling is",
+    "options": [
+      "$K$",
+      "more than $K$",
+      "less than $K$",
+      "$\\sqrt{K}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nBy conservation of momentum, gun and bullet acquire equal and opposite linear momentum ($p_{\\text{gun}} = p_{\\text{bullet}}$).\nKinetic energy is $E = \\frac{p^2}{2M}$. Since mass of gun $M \\gg$ mass of bullet $m$, the kinetic energy of the gun is much less than $K$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-8",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2013,
+    "question": "From a fixed support, two small identical spheres are suspended by means of strings of length $1\\text{ m}$ each. They are pulled aside as shown and then released. $B$ is the mean position. Then the two spheres collide,",
+    "options": [
+      "at $B$ after $0.25\\text{ second}$",
+      "at $B$ after $0.5\\text{ second}$",
+      "on the right side of $B$ after some time",
+      "on the right side of $B$ when the strings are inclined at $15^\\circ$ with $B$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nTime period of simple pendulum of length $l = 1\\text{ m}$ is $T = 2\\pi\\sqrt{\\frac{l}{g}} = 2\\pi\\sqrt{\\frac{1}{\\pi^2}} \\approx 2\\text{ s}$.\nTime to reach mean position from release is $t = \\frac{T}{4} = \\frac{2}{4} = 0.5\\text{ s}$.\nBoth spheres take equal time to reach the mean position $B$ regardless of small amplitude differences, hence they collide at $B$ after $0.5\\text{ second}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch5/q8.png"
+  },
+  {
+    "id": "kcet-physics-ch5-9",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2013,
+    "question": "A truck accelerates from speed $v$ to $2v$. Work done in acceleration the truck during this is",
+    "options": [
+      "three times as the work done in accelerating it from rest to $v$",
+      "same as the work done in accelerating it from rest to $v$",
+      "four times as the work done in accelerating it from rest to $v$",
+      "less than the work done in accelerating it from rest to $v$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n$W_1 = \\frac{1}{2}m v^2 - 0 = \\frac{1}{2}m v^2$.\n$W_2 = \\frac{1}{2}m (2v)^2 - \\frac{1}{2}m v^2 = \\frac{1}{2}m(4v^2 - v^2) = 3 \\left(\\frac{1}{2}m v^2\\right) = 3W_1$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-10",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2015,
+    "question": "The kinetic energy of a body of mass $4\\text{ kg}$ and momentum $6\\text{ N s}$ will be",
+    "options": [
+      "$3.5\\text{ J}$",
+      "$5.5\\text{ J}$",
+      "$2.5\\text{ J}$",
+      "$4.5\\text{ J}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$K = \\frac{p^2}{2m} = \\frac{6^2}{2(4)} = \\frac{36}{8} = 4.5\\text{ J}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-11",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2016,
+    "question": "A $12\\text{ kg}$ bomb at rest explodes into two pieces of $4\\text{ kg}$ and $8\\text{ kg}$. If the momentum of $4\\text{ kg}$ piece is $20\\text{ N s}$, the kinetic energy of the $8\\text{ kg}$ piece is",
+    "options": [
+      "$25\\text{ J}$",
+      "$20\\text{ J}$",
+      "$50\\text{ J}$",
+      "$40\\text{ J}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nBy conservation of momentum, $|p_1| = |p_2| = 20\\text{ N s}$.\nKinetic energy of $8\\text{ kg}$ piece: $K_2 = \\frac{p_2^2}{2m_2} = \\frac{20^2}{2 \\times 8} = \\frac{400}{16} = 25\\text{ J}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-12",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2017,
+    "question": "A motor pump lifts $6\\text{ tonnes}$ of water from a well of depth $25\\text{ m}$ to the first floor of height $35\\text{ m}$ from the ground floor in $20\\text{ minutes}$. The power of the pump (in $\\text{kW}$) is [$g = 10\\text{ m s}^{-2}$]",
+    "options": [
+      "$6$",
+      "$1.5$",
+      "$12$",
+      "$3$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nMass $m = 6\\text{ tonnes} = 6000\\text{ kg}$.\nTotal vertical height $h = 25\\text{ m} + 35\\text{ m} = 60\\text{ m}$.\nTime $t = 20\\text{ min} = 20 \\times 60 = 1200\\text{ s}$.\nPower $P = \\frac{mgh}{t} = \\frac{6000 \\times 10 \\times 60}{1200} = 3000\\text{ W} = 3\\text{ kW}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-13",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2018,
+    "question": "Two particles of masses $m_1$ and $m_2$ have equal kinetic energies. The ratio of their momenta is",
+    "options": [
+      "$m_1 : m_2$",
+      "$m_2 : m_1$",
+      "$\\sqrt{m_1} : \\sqrt{m_2}$",
+      "$m_1^2 : m_2^2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n$K = \\frac{p^2}{2m} \\implies p = \\sqrt{2mK}$.\nSince $K_1 = K_2$: $\\frac{p_1}{p_2} = \\sqrt{\\frac{m_1}{m_2}} = \\sqrt{m_1} : \\sqrt{m_2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-14",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2019,
+    "question": "During inelastic collision between two objects, which of the following quantity always remains conserved?",
+    "options": [
+      "Total linear momentum",
+      "Total kinetic energy",
+      "Speed of each body",
+      "Total mechanical energy"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nIn all collisions (elastic or inelastic), the total linear momentum of an isolated system is strictly conserved by Newton's third law. In inelastic collisions, kinetic energy is partially converted into internal energy/heat/sound, so kinetic and mechanical energies are not conserved.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-15",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2020,
+    "question": "A body is initially at rest. It undergoes one-dimensional motion with constant acceleration. The power delivered to it at time $t$ is proportional to",
+    "options": [
+      "$t^{3/2}$",
+      "$t^2$",
+      "$t^{1/2}$",
+      "$t$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nPower $P = F v = (m a)(a t) = m a^2 t$.\nSince mass $m$ and acceleration $a$ are constant, $P \\propto t$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-16",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2021,
+    "question": "A $1\\text{ kg}$ ball moving at $12\\text{ m s}^{-1}$ collides with a $2\\text{ kg}$ ball moving in opposite direction at $24\\text{ m s}^{-1}$. If the coefficient of restitution is $2/3$, then their velocities after the collision are",
+    "options": [
+      "$-4\\text{ m s}^{-1}, -28\\text{ m s}^{-1}$",
+      "$-28\\text{ m s}^{-1}, -4\\text{ m s}^{-1}$",
+      "$4\\text{ m s}^{-1}, 28\\text{ m s}^{-1}$",
+      "$28\\text{ m s}^{-1}, 4\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n$m_1 = 1\\text{ kg}, u_1 = 12\\text{ m s}^{-1}$; $m_2 = 2\\text{ kg}, u_2 = -24\\text{ m s}^{-1}$.\nConservation of momentum: $m_1 u_1 + m_2 u_2 = m_1 v_1 + m_2 v_2$\n$1(12) + 2(-24) = v_1 + 2v_2 \\implies v_1 + 2v_2 = -36$ ... (i)\nRestitution: $e = \\frac{v_2 - v_1}{u_1 - u_2} \\implies \\frac{2}{3} = \\frac{v_2 - v_1}{12 - (-24)} = \\frac{v_2 - v_1}{36} \\implies v_2 - v_1 = 24$ ... (ii)\nAdding (i) and (ii): $3v_2 = -12 \\implies v_2 = -4\\text{ m s}^{-1}$.\nFrom (ii): $v_1 = v_2 - 24 = -4 - 24 = -28\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-17",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2021,
+    "question": "A ball hits the floor and rebounds after an inelastic collision. In this case",
+    "options": [
+      "the momentum of the ball is conserved",
+      "the mechanical energy of the ball is conserved",
+      "the total momentum of the ball and the earth is conserved",
+      "the total mechanical energy of the ball and the earth is conserved"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nDuring collision with the floor, external force acts on the ball from the earth, changing the ball's momentum. However, taking (ball + earth) as an isolated system, internal forces cancel out, so the total linear momentum of the ball and earth system is conserved.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-18",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2022,
+    "question": "A smooth chain of length $2\\text{ m}$ is kept on a table such that its length of $60\\text{ cm}$ hangs freely from the edge of the table. The total mass of the chain is $4\\text{ kg}$. The work done in pulling the entire chain on the table is (taking $g = 10\\text{ m/s}^2$)",
+    "options": [
+      "$3.6\\text{ J}$",
+      "$12.9\\text{ J}$",
+      "$2.0\\text{ J}$",
+      "$6.3\\text{ J}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nMass per unit length $\\lambda = \\frac{M}{L} = \\frac{4}{2} = 2\\text{ kg m}^{-1}$.\nHanging length $l = 60\\text{ cm} = 0.6\\text{ m}$.\nMass of hanging part $m = \\lambda l = 2 \\times 0.6 = 1.2\\text{ kg}$.\nCenter of gravity of the hanging part is at depth $h_{\\text{cm}} = \\frac{l}{2} = \\frac{0.6}{2} = 0.3\\text{ m}$.\nWork done = gain in potential energy $= m g h_{\\text{cm}} = (1.2)(10)(0.3) = 3.6\\text{ J}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-19",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2023,
+    "question": "A ball of mass $0.2\\text{ kg}$ is thrown vertically down from a height of $10\\text{ m}$. It collides with the floor and loses $50\\%$ of its energy and then rises back to the same height. The value of its initial velocity is",
+    "options": [
+      "zero",
+      "$14\\text{ m s}^{-1}$",
+      "$196\\text{ m s}^{-1}$",
+      "$20\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nInitial total energy at height $h$: $E_i = \\frac{1}{2}m u^2 + mgh$.\nEnergy after rebound: $E_f = 50\\% E_i = \\frac{1}{2}\\left(\\frac{1}{2}m u^2 + mgh\\right)$.\nSince the ball rebounds to the same height $h$, potential energy at apex $= mgh$:\n$mgh = \\frac{1}{2}\\left(\\frac{1}{2}m u^2 + mgh\\right) \\implies 2mgh = \\frac{1}{2}m u^2 + mgh \\implies mgh = \\frac{1}{2}m u^2 \\implies u^2 = 2gh$.\n$u = \\sqrt{2gh} = \\sqrt{2 \\times 9.8 \\times 10} = \\sqrt{196} = 14\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch5-20",
+    "subject": "Physics",
+    "chapter": "Work, Energy and Power",
+    "chapter_number": 5,
+    "year": 2024,
+    "question": "A particle of mass $500\\text{ g}$ is at rest. It is free to move along a straight line. The power delivered to the particle varies with time according to the following graph. The momentum of the particle at $t = 5\\text{ s}$ is",
+    "options": [
+      "$2\\sqrt{5}\\text{ N s}$",
+      "$5\\sqrt{2}\\text{ N s}$",
+      "$5\\text{ N s}$",
+      "$5.5\\text{ N s}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nWork done $W$ = Area under Power-Time ($P-t$) graph from $t = 0$ to $5\\text{ s}$:\n$W = \\frac{1}{2}(2 + 8) \\times 5 = \\frac{1}{2}(10) \\times 5 = 25\\text{ J}$.\nBy work-energy theorem: $W = \\Delta K = \\frac{p^2}{2m} - 0$\n$25 = \\frac{p^2}{2(0.5)} = \\frac{p^2}{1} \\implies p^2 = 25 \\implies p = 5\\text{ N s}$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch5/q20.png"
+  }
+]

@@ -1,0 +1,444 @@
+[
+  {
+    "id": "-001",
+    "subject": "Mathematics",
+    "year": 2006,
+    "question": "Which one of the following is not true?",
+    "options": [
+      "Every polynomial function is continuous everywhere",
+      "Every continuous function is differentiable everywhere",
+      "Every differentiable function is continuous everywhere",
+      "Constant function is continuous everywhere"
+    ],
+    "explanation": "Continuity is a necessary but not sufficient condition for differentiability. A function can be continuous at a point without being differentiable there. For example, $f(x) = |x|$ is continuous at $x = 0$, but it is not differentiable at $x = 0$ because the left-hand derivative ($-1$) does not equal the right-hand derivative ($+1$). Thus, statement (b) is not true.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-002",
+    "subject": "Mathematics",
+    "year": 2006,
+    "question": "If $f(x) = \\begin{cases} \\frac{1 - \\cos kx}{x \\sin x}, & x \\ne 0 \\\\ \\frac{1}{2}, & x = 0 \\end{cases}$ is continuous at $x = 0$, then the value of $k$ is:",
+    "options": [
+      "$\\pm 2$",
+      "$\\pm \\frac{1}{2}$",
+      "$\\pm 1$",
+      "$0$"
+    ],
+    "explanation": "For $f(x)$ to be continuous at $x = 0$, $\\lim_{x \\to 0} f(x) = f(0) = \\frac{1}{2}$.\n$$\\lim_{x \\to 0} \\frac{1 - \\cos kx}{x \\sin x} = \\lim_{x \\to 0} \\frac{2\\sin^2(kx/2)}{x^2 \\cdot \\frac{\\sin x}{x}} = 2 \\left(\\frac{k}{2}\\right)^2 \\frac{\\lim_{x \\to 0} \\left(\\frac{\\sin(kx/2)}{kx/2}\\right)^2}{\\lim_{x \\to 0} \\frac{\\sin x}{x}} = \\frac{k^2}{2}$$\nEquating to $f(0)$:\n$$\\frac{k^2}{2} = \\frac{1}{2} \\implies k^2 = 1 \\implies k = \\pm 1$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-003",
+    "subject": "Mathematics",
+    "year": 2006,
+    "question": "If $y = (1 + x)(1 + x^2)(1 + x^4)$, then $\\frac{dy}{dx}$ at $x = 0$ is:",
+    "options": [
+      "$1$",
+      "$0$",
+      "$2$",
+      "$7$"
+    ],
+    "explanation": "Taking natural logarithm on both sides:\n$$\\log y = \\log(1 + x) + \\log(1 + x^2) + \\log(1 + x^4)$$\nDifferentiating both sides with respect to $x$:\n$$\\frac{1}{y}\\frac{dy}{dx} = \\frac{1}{1 + x} + \\frac{2x}{1 + x^2} + \\frac{4x^3}{1 + x^4}$$\nAt $x = 0$, $y = (1)(1)(1) = 1$:\n$$\\frac{dy}{dx}\\Big|_{x=0} = 1 \\cdot \\left(\\frac{1}{1} + 0 + 0\\right) = 1$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-004",
+    "subject": "Mathematics",
+    "year": 2006,
+    "question": "If $x = a(\\theta + \\sin\\theta)$ and $y = a(1 - \\cos\\theta)$, then $\\frac{dy}{dx}$ is:",
+    "options": [
+      "$\\cot\\left(\\frac{\\theta}{2}\\right)$",
+      "$\\tan\\theta$",
+      "$\\tan\\left(\\frac{\\theta}{2}\\right)$",
+      "$\\cot\\theta$"
+    ],
+    "explanation": "Differentiating parametrically with respect to $\\theta$:\n$$\\frac{dx}{d\\theta} = a(1 + \\cos\\theta) = 2a\\cos^2\\left(\\frac{\\theta}{2}\\right)$$\n$$\\frac{dy}{d\\theta} = a(\\sin\\theta) = 2a\\sin\\left(\\frac{\\theta}{2}\\right)\\cos\\left(\\frac{\\theta}{2}\\right)$$\n$$\\frac{dy}{dx} = \\frac{dy/d\\theta}{dx/d\\theta} = \\frac{2a\\sin(\\theta/2)\\cos(\\theta/2)}{2a\\cos^2(\\theta/2)} = \\tan\\left(\\frac{\\theta}{2}\\right)$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-005",
+    "subject": "Mathematics",
+    "year": 2007,
+    "question": "If $\\sin(x + y) + \\cos(x + y) = \\log(x + y)$, then $\\frac{dy}{dx}$ is equal to:",
+    "options": [
+      "$1$",
+      "$-1$",
+      "$\\frac{x - y}{x + y}$",
+      "$\\frac{1}{x + y}$"
+    ],
+    "explanation": "Let $u = x + y$. Then the given equation is $\\sin u + \\cos u = \\log u$.\nDifferentiating with respect to $x$:\n$$(\\cos u - \\sin u - \\frac{1}{u}) \\frac{du}{dx} = 0$$\nSince $\\cos u - \\sin u - \\frac{1}{u} \\ne 0$ in general, we must have:\n$$\\frac{du}{dx} = 0 \\implies \\frac{d}{dx}(x + y) = 0 \\implies 1 + \\frac{dy}{dx} = 0 \\implies \\frac{dy}{dx} = -1$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-006",
+    "subject": "Mathematics",
+    "year": 2007,
+    "question": "If $f(x) = \\begin{cases} \\frac{\\sin 3x}{x}, & x \\ne 0 \\\\ k, & x = 0 \\end{cases}$ is continuous at $x = 0$, then $k$ is equal to:",
+    "options": [
+      "$1$",
+      "$\\frac{1}{3}$",
+      "$0$",
+      "$3$"
+    ],
+    "explanation": "For continuity at $x = 0$:\n$$k = f(0) = \\lim_{x \\to 0} \\frac{\\sin 3x}{x} = 3 \\lim_{x \\to 0} \\frac{\\sin 3x}{3x} = 3(1) = 3$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 3,
+    "needs_image": false
+  },
+  {
+    "id": "-007",
+    "subject": "Mathematics",
+    "year": 2007,
+    "question": "If $f(x) = \\begin{cases} 2x - 1, & x < 2 \\\\ \\frac{3x}{2}, & x \\ge 2 \\end{cases}$, then $f'(2)$:",
+    "options": [
+      "Equals $2$",
+      "Does not exist",
+      "Equals $3/2$",
+      "Equals $3$"
+    ],
+    "explanation": "At $x = 2$:\n- Left derivative: $\\text{LHD} = 2$.\n- Right derivative: $\\text{RHD} = 3/2$.\nSince $\\text{LHD} \\ne \\text{RHD}$, $f'(2)$ does not exist.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-008",
+    "subject": "Mathematics",
+    "year": 2008,
+    "question": "If $y = \\tan^{-1}\\left(\\frac{\\cos x - \\sin x}{\\cos x + \\sin x}\\right)$, then $\\frac{dy}{dx}$ is:",
+    "options": [
+      "$-1$",
+      "$1$",
+      "$\\frac{1}{2}$",
+      "$0$"
+    ],
+    "explanation": "Dividing numerator and denominator by $\\cos x$:\n$$y = \\tan^{-1}\\left(\\frac{1 - \\tan x}{1 + \\tan x}\\right) = \\tan^{-1}\\left(\\tan\\left(\\frac{\\pi}{4} - x\\right)\\right) = \\frac{\\pi}{4} - x$$\nDifferentiating with respect to $x$:\n$$\\frac{dy}{dx} = \\frac{d}{dx}\\left(\\frac{\\pi}{4} - x\\right) = -1$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-009",
+    "subject": "Mathematics",
+    "year": 2008,
+    "question": "The derivative of $\\sec^{-1}\\left(\\frac{1}{2x^2 - 1}\\right)$ with respect to $\\sqrt{1 - x^2}$ at $x = \\frac{1}{2}$ is:",
+    "options": [
+      "$2$",
+      "$-2$",
+      "$4$",
+      "$-4$"
+    ],
+    "explanation": "Let $u = \\sec^{-1}\\left(\\frac{1}{2x^2 - 1}\\right) = \\cos^{-1}(2x^2 - 1)$.\nPut $x = \\cos\\theta \\implies u = \\cos^{-1}(\\cos 2\\theta) = 2\\theta = 2\\cos^{-1} x$.\nLet $v = \\sqrt{1 - x^2} = \\sin\\theta$.\n$$\\frac{du}{dx} = -\\frac{2}{\\sqrt{1 - x^2}}$$\n$$\\frac{dv}{dx} = \\frac{-2x}{2\\sqrt{1 - x^2}} = -\\frac{x}{\\sqrt{1 - x^2}}$$\n$$\\frac{du}{dv} = \\frac{du/dx}{dv/dx} = \\frac{-2/\\sqrt{1 - x^2}}{-x/\\sqrt{1 - x^2}} = \\frac{2}{x}$$\nAt $x = \\frac{1}{2}$:\n$$\\frac{du}{dv} = \\frac{2}{1/2} = 4$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-010",
+    "subject": "Mathematics",
+    "year": 2009,
+    "question": "If $f(x) = |x|$, which of the following is correct?",
+    "options": [
+      "$f'(0)$ does not exist",
+      "$f(x)$ is discontinuous at $x = 0$",
+      "$f(x)$ is continuous at $x = 0$",
+      "$f(x)$ is differentiable at all points except $x = 0$"
+    ],
+    "explanation": "$f(x) = |x|$ is continuous everywhere in $\\mathbb{R}$ (including $x = 0$) and differentiable for all $x \\ne 0$, with $f'(0)$ not existing due to $\\text{LHD} = -1 \\ne +1 = \\text{RHD}$.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-011",
+    "subject": "Mathematics",
+    "year": 2011,
+    "question": "If $x = a\\cos^3\\theta$ and $y = a\\sin^3\\theta$, then $\\sqrt{1 + \\left(\\frac{dy}{dx}\\right)^2}$ is equal to:",
+    "options": [
+      "$\\tan^2\\theta$",
+      "$\\sec\\theta$",
+      "$\\tan\\theta$",
+      "$|\\sec\\theta|$"
+    ],
+    "explanation": "$$\\frac{dx}{d\\theta} = -3a\\cos^2\\theta\\sin\\theta$$\n$$\\frac{dy}{d\\theta} = 3a\\sin^2\\theta\\cos\\theta$$\n$$\\frac{dy}{dx} = \\frac{3a\\sin^2\\theta\\cos\\theta}{-3a\\cos^2\\theta\\sin\\theta} = -\\tan\\theta$$\n$$\\sqrt{1 + \\left(\\frac{dy}{dx}\\right)^2} = \\sqrt{1 + (-\\tan\\theta)^2} = \\sqrt{1 + \\tan^2\\theta} = \\sqrt{\\sec^2\\theta} = |\\sec\\theta|$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 3,
+    "needs_image": false
+  },
+  {
+    "id": "-012",
+    "subject": "Mathematics",
+    "year": 2012,
+    "question": "The derivative of $\\cos^{-1}\\left(\\frac{1 - x^2}{1 + x^2}\\right)$ with respect to $\\tan^{-1} x$ is:",
+    "options": [
+      "$2$",
+      "$\\frac{1}{2}$",
+      "$1$",
+      "$-2$"
+    ],
+    "explanation": "Let $u = \\cos^{-1}\\left(\\frac{1 - x^2}{1 + x^2}\\right) = 2\\tan^{-1} x$ (for $x \\ge 0$).\nLet $v = \\tan^{-1} x$.\nThen $u = 2v$.\nDifferentiating $u$ with respect to $v$:\n$$\\frac{du}{dv} = 2$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-013",
+    "subject": "Mathematics",
+    "year": 2014,
+    "question": "If $f(x) = \\begin{cases} \\frac{\\sin(\\pi x/2)}{x}, & x \\ne 0 \\\\ c, & x = 0 \\end{cases}$ is continuous at $x = 0$, then $c$ is:",
+    "options": [
+      "$1$",
+      "$\\pi$",
+      "$\\frac{\\pi}{2}$",
+      "$0$"
+    ],
+    "explanation": "For continuity at $x = 0$:\n$$c = f(0) = \\lim_{x \\to 0} \\frac{\\sin(\\pi x/2)}{x} = \\frac{\\pi}{2} \\lim_{x \\to 0} \\frac{\\sin(\\pi x/2)}{\\pi x/2} = \\frac{\\pi}{2}(1) = \\frac{\\pi}{2}$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-014",
+    "subject": "Mathematics",
+    "year": 2014,
+    "question": "The number of points of discontinuity of the function $f(x) = [x]$ in the interval $(-2, 2)$ is (where $[x]$ denotes greatest integer function):",
+    "options": [
+      "$4$",
+      "$3$",
+      "$2$",
+      "$1$"
+    ],
+    "explanation": "The greatest integer function $f(x) = [x]$ is discontinuous at every integer point because left-hand limit $\\lim_{x \\to n^-} [x] = n - 1$ does not equal right-hand limit $\\lim_{x \\to n^+} [x] = n$.\nThe integer points inside the open interval $(-2, 2)$ are $\\{-1, 0, 1\\}$.\nThus, there are exactly 3 points of discontinuity.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-015",
+    "subject": "Mathematics",
+    "year": 2014,
+    "question": "If $f(x) = |x - 2| + |x - 5|$, then for $x \\in (2, 5)$, $f'(x)$ is equal to:",
+    "options": [
+      "$2$",
+      "$0$",
+      "$-2$",
+      "$1$"
+    ],
+    "explanation": "For $x \\in (2, 5)$, $x - 2 > 0 \\implies |x - 2| = x - 2$, and $x - 5 < 0 \\implies |x - 5| = -(x - 5) = 5 - x$.\n$$f(x) = (x - 2) + (5 - x) = 3$$\nSince $f(x)$ is a constant function ($3$) on $(2, 5)$:\n$$f'(x) = 0$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-016",
+    "subject": "Mathematics",
+    "year": 2018,
+    "question": "If $f(x) = \\begin{cases} \\frac{\\sqrt{1 + px} - \\sqrt{1 - px}}{x}, & -1 \\le x < 0 \\\\ \\frac{2x + 1}{x - 2}, & 0 \\le x \\le 1 \\end{cases}$ is continuous in $[-1, 1]$, then $p$ is:",
+    "options": [
+      "$-1$",
+      "$-1/2$",
+      "$1/2$",
+      "None of the options is correct"
+    ],
+    "explanation": "At $x = 0$, $f(0) = \\frac{1}{-2} = -\\frac{1}{2}$.\n$\\lim_{x \\to 0^-} f(x) = p$.\nEquating: $p = -\\frac{1}{2}$.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-017",
+    "subject": "Mathematics",
+    "year": 2019,
+    "question": "The value of $c$ in Rolle's theorem for the function $f(x) = x^3 - 3x$ in $[0, \\sqrt{3}]$ is:",
+    "options": [
+      "$\\frac{1}{\\sqrt{3}}$",
+      "$1$",
+      "$\\sqrt{3}$",
+      "$0$"
+    ],
+    "explanation": "1. $f(x)$ is continuous on $[0, \\sqrt{3}]$ and differentiable on $(0, \\sqrt{3})$.\n2. $f(0) = 0$ and $f(\\sqrt{3}) = 3\\sqrt{3} - 3\\sqrt{3} = 0$.\nBy Rolle's theorem, there exists $c \\in (0, \\sqrt{3})$ such that $f'(c) = 0$:\n$$f'(x) = 3x^2 - 3 \\implies 3c^2 - 3 = 0 \\implies c^2 = 1 \\implies c = 1 \\in (0, \\sqrt{3})$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-018",
+    "subject": "Mathematics",
+    "year": 2020,
+    "question": "If $g(x) = [f(x)]^2 + [f'(x)]^2$ and $g'(x) = 0$ for all $x$, and $f(0) = 5, f'(0) = 12$, then $g(10)$ is:",
+    "options": [
+      "$17$",
+      "$60$",
+      "$144$",
+      "$169$"
+    ],
+    "explanation": "Since $g'(x) = 0$ for all $x$, $g(x)$ is a constant function.\n$$g(x) = g(0) = [f(0)]^2 + [f'(0)]^2 = 5^2 + 12^2 = 25 + 144 = 169$$\nSince $g(x)$ is constant everywhere, $g(10) = 169$.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 3,
+    "needs_image": false
+  },
+  {
+    "id": "-019",
+    "subject": "Mathematics",
+    "year": 2020,
+    "question": "If $f(x) = |x - 1|$, then the value of $f'(1)$:",
+    "options": [
+      "Is $1$",
+      "Is $-1$",
+      "Does not exist",
+      "Is $0$"
+    ],
+    "explanation": "At $x = 1$:\n- $\\text{LHD} = \\lim_{h \\to 0^-} \\frac{|1+h-1| - 0}{h} = \\lim_{h \\to 0^-} \\frac{-h}{h} = -1$.\n- $\\text{RHD} = \\lim_{h \\to 0^+} \\frac{|1+h-1| - 0}{h} = \\lim_{h \\to 0^+} \\frac{h}{h} = +1$.\nSince $\\text{LHD} \\ne \\text{RHD}$, $f'(1)$ does not exist.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-020",
+    "subject": "Mathematics",
+    "year": 2021,
+    "question": "If $f(x) = |x - 3|$, then at $x = 3$, $f(x)$ is:",
+    "options": [
+      "Continuous but not differentiable",
+      "Differentiable and continuous",
+      "Discontinuous",
+      "Neither continuous nor differentiable"
+    ],
+    "explanation": "For $f(x) = |x - 3|$:\n- $\\lim_{x \\to 3} f(x) = f(3) = 0$, so $f(x)$ is continuous at $x = 3$.\n- $\\text{LHD} = \\lim_{h \\to 0^-} \\frac{-(x-3) - 0}{h} = -1$.\n- $\\text{RHD} = \\lim_{h \\to 0^+} \\frac{(x-3) - 0}{h} = +1$.\nSince $\\text{LHD} \\ne \\text{RHD}$, $f(x)$ is not differentiable at $x = 3$.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-021",
+    "subject": "Mathematics",
+    "year": 2021,
+    "question": "If $x = 2\\cos t - \\cos 2t$ and $y = 2\\sin t - \\sin 2t$, then $\\frac{dy}{dx}$ at $t = \\frac{\\pi}{2}$ is:",
+    "options": [
+      "$1$",
+      "$\\sqrt{3}$",
+      "$-1$",
+      "$0$"
+    ],
+    "explanation": "$$\\frac{dx}{dt} = -2\\sin t + 2\\sin 2t$$\n$$\\frac{dy}{dt} = 2\\cos t - 2\\cos 2t$$\nAt $t = \\frac{\\pi}{2}$:\n$$\\frac{dx}{dt} = -2\\sin(\\pi/2) + 2\\sin(\\pi) = -2(1) + 0 = -2$$\n$$\\frac{dy}{dt} = 2\\cos(\\pi/2) - 2\\cos(\\pi) = 0 - 2(-1) = 2$$\n$$\\frac{dy}{dx}\\Big|_{t=\\pi/2} = \\frac{2}{-2} = -1$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-022",
+    "subject": "Mathematics",
+    "year": 2023,
+    "question": "If $f(x) = \\begin{cases} \\frac{\\sin(a + 1)x + \\sin x}{x}, & x < 0 \\\\ c, & x = 0 \\\\ \\frac{\\sqrt{x + bx^2} - \\sqrt{x}}{b x^{3/2}}, & x > 0 \\end{cases}$ is continuous at $x = 0$, then:",
+    "options": [
+      "$a = \\frac{3}{2}, c = \\frac{1}{2}, b \\in \\mathbb{R}$",
+      "$a = -\\frac{3}{2}, c = \\frac{1}{2}, b \\in \\mathbb{R} \\setminus \\{0\\}$",
+      "$a = -\\frac{3}{2}, c = -\\frac{1}{2}, b = 0$",
+      "$a = \\frac{1}{2}, c = -\\frac{3}{2}, b \\ne 0$"
+    ],
+    "explanation": "1. $\\text{LHL} = \\lim_{x \\to 0^-} \\left(\\frac{\\sin(a+1)x}{x} + \\frac{\\sin x}{x}\\right) = (a + 1) + 1 = a + 2$.\n2. $f(0) = c \\implies a + 2 = c$.\n3. $\\text{RHL} = \\lim_{x \\to 0^+} \\frac{\\sqrt{x}(\\sqrt{1 + bx} - 1)}{b x^{3/2}} = \\lim_{x \\to 0^+} \\frac{(1 + bx) - 1}{b x(\\sqrt{1 + bx} + 1)} = \\frac{1}{1 + 1} = \\frac{1}{2}$.\nEquating limits: $c = \\frac{1}{2}$, and $a + 2 = \\frac{1}{2} \\implies a = -\\frac{3}{2}$ with $b \\in \\mathbb{R} \\setminus \\{0\\}$.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-023",
+    "subject": "Mathematics",
+    "year": 2023,
+    "question": "If $f(x) = [x]$ where $[x]$ is greatest integer function, then $f'(1.5)$ is:",
+    "options": [
+      "$0$",
+      "$1$",
+      "Does not exist",
+      "$1.5$"
+    ],
+    "explanation": "In any open interval between two consecutive integers, e.g., $(1, 2)$, the greatest integer function is constant: $[x] = 1$ for all $x \\in (1, 2)$.\nSince the derivative of any constant function on an open neighborhood is zero:\n$$f'(1.5) = 0$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  },
+  {
+    "id": "-024",
+    "subject": "Mathematics",
+    "year": 2024,
+    "question": "The differential coefficient of $\\log_{10} x$ with respect to $\\log_x 10$ is:",
+    "options": [
+      "$1$",
+      "$-(\\log_{10} x)^2$",
+      "$(\\log_{10} x)^2$",
+      "$-(\\log_x 10)^2$"
+    ],
+    "explanation": "Let $u = \\log_{10} x$.\nThen $v = \\log_x 10 = \\frac{1}{\\log_{10} x} = \\frac{1}{u} = u^{-1}$.\nDifferentiating $u$ with respect to $v$:\n$$\\frac{du}{dv} = \\frac{1}{dv/du} = \\frac{1}{-u^{-2}} = -u^2 = -(\\log_{10} x)^2$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 1,
+    "needs_image": false
+  },
+  {
+    "id": "-025",
+    "subject": "Mathematics",
+    "year": 2024,
+    "question": "The function $f(x) = |\\cos x|$ is:",
+    "options": [
+      "Discontinuous everywhere",
+      "Everywhere continuous and everywhere differentiable",
+      "Continuous everywhere but not differentiable at $x = (2n + 1)\\frac{\\pi}{2}$",
+      "Differentiable everywhere except at $x = n\\pi$"
+    ],
+    "explanation": "$f(x) = |\\cos x|$ is continuous everywhere as the composition of continuous functions $|x|$ and $\\cos x$. However, at points where $\\cos x = 0$, namely $x = (2n + 1)\\frac{\\pi}{2}$ ($n \\in \\mathbb{Z}$), the curve exhibits sharp corners and is not differentiable.",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 2,
+    "needs_image": false
+  },
+  {
+    "id": "-026",
+    "subject": "Mathematics",
+    "year": 2024,
+    "question": "Let a function satisfy the functional equation $f(x + y) = f(x) f(y)$ for all $x, y \\in \\mathbb{R}$, where $f(0) \\ne 0$. If $f'(0) = 2$ and $f(5) = 3$, then $f'(5)$ is:",
+    "options": [
+      "$6$",
+      "$0$",
+      "$5$",
+      "$-6$"
+    ],
+    "explanation": "From the definition of derivative:\n$$f'(x) = \\lim_{h \\to 0} \\frac{f(x + h) - f(x)}{h} = \\lim_{h \\to 0} \\frac{f(x)f(h) - f(x)}{h} = f(x) \\lim_{h \\to 0} \\frac{f(h) - 1}{h}$$\nSince $f(0) = f(0+0) = f(0)^2 \\implies f(0) = 1$ (as $f(0) \\ne 0$).\nSo $\\lim_{h \\to 0} \\frac{f(h) - 1}{h} = f'(0) = 2$.\nTherefore:\n$$f'(x) = 2 f(x)$$\nAt $x = 5$:\n$$f'(5) = 2 f(5) = 2(3) = 6$$",
+    "chapter": "Continuity and Differentiability",
+    "chapter_number": 15,
+    "correct_answer": 0,
+    "needs_image": false
+  }
+]

@@ -1,0 +1,416 @@
+[
+  {
+    "id": "kcet-phy-ch11-q1",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2006,
+    "question": "A Carnot engine takes heat from a reservoir at 627°C and rejects heat to a sink at 27°C. Its efficiency will be",
+    "options": [
+      "3/5",
+      "1/3",
+      "2/3",
+      "200/209"
+    ],
+    "explanation": "Efficiency of a Carnot engine is given by:\n$$\\eta = 1 - \\frac{T_2}{T_1}$$\nGiven:\n- Source temperature $T_1 = 627^\\circ\\text{C} = 627 + 273 = 900\\text{ K}$\n- Sink temperature $T_2 = 27^\\circ\\text{C} = 27 + 273 = 300\\text{ K}$\n\n$$\\eta = 1 - \\frac{300}{900} = 1 - \\frac{1}{3} = \\frac{2}{3}$$",
+    "chapter_number": 11,
+    "correct_answer": 2,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q2",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2007,
+    "question": "310 J of heat is required to raise the temperature of 2 moles of an ideal gas at constant pressure from 25°C to 35°C. The amount of heat required to raise the temperature of the gas through the same range at constant volume is",
+    "options": [
+      "384 J",
+      "144 J",
+      "276 J",
+      "452 J"
+    ],
+    "explanation": "At constant pressure, heat supplied is:\n$$Q_p = n C_p \\Delta T$$\n$$310 = 2 \\times C_p \\times (35 - 25) = 20 C_p \\implies C_p = \\frac{310}{20} = 15.5\\text{ J mol}^{-1}\\text{ K}^{-1}$$\n\nUsing Mayer's relation:\n$$C_p - C_v = R \\approx 8.3\\text{ J mol}^{-1}\\text{ K}^{-1}$$\n$$C_v = 15.5 - 8.3 = 7.2\\text{ J mol}^{-1}\\text{ K}^{-1}$$\n\nAt constant volume, heat required through the same temperature range:\n$$Q_v = n C_v \\Delta T = 2 \\times 7.2 \\times 10 = 144\\text{ J}$$",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q3",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2007,
+    "question": "A Carnot's engine operates with source at 127°C and sink at 27°C. If the source supplies 40 kJ of heat energy, the work done by the engine is",
+    "options": [
+      "30 kJ",
+      "10 kJ",
+      "4 kJ",
+      "1 kJ"
+    ],
+    "explanation": "Efficiency of a Carnot engine:\n$$\\eta = 1 - \\frac{T_2}{T_1} = 1 - \\frac{273 + 27}{273 + 127} = 1 - \\frac{300}{400} = \\frac{1}{4}$$\n\nAlso, work done is related to heat supplied by:\n$$\\eta = \\frac{W}{Q_1} \\implies W = \\eta Q_1 = \\frac{1}{4} \\times 40\\text{ kJ} = 10\\text{ kJ}$$",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q4",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2008,
+    "question": "An ideal gas is taken via path ABCA as shown in figure.\n\nThe net workdone in the whole cycle is",
+    "options": [
+      "6 P₁V₁",
+      "zero",
+      "3 P₁V₁",
+      "-3 P₁V₁"
+    ],
+    "explanation": "The net work done in a cyclic process represented on a $P-V$ diagram equals the area enclosed by the cycle.\n$$\\text{Area of }\\Delta ABC = \\frac{1}{2} \\times \\text{base} \\times \\text{height} = \\frac{1}{2} \\times (3V_1 - V_1) \\times (4P_1 - P_1) = \\frac{1}{2} \\times 2V_1 \\times 3P_1 = 3P_1 V_1$$\n\nSince the cycle $A \\to B \\to C \\to A$ is traversed in an anticlockwise direction, work done by the system is negative:\n$$W = -3P_1 V_1$$",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q4.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q5",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2008,
+    "question": "In which of the processes, does the internal energy of the system remain constant?",
+    "options": [
+      "Isobaric",
+      "Isothermal",
+      "Adiabatic",
+      "Isochoric"
+    ],
+    "explanation": "The internal energy of an ideal gas depends solely on its absolute temperature ($U = n C_v T$). In an isothermal process, the temperature remains constant ($\\Delta T = 0$), hence the internal energy of the system remains constant ($\\Delta U = 0$).",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q6",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2009,
+    "question": "Which of the following is not a thermodynamic co-ordinate?",
+    "options": [
+      "Gas constant (R)",
+      "Pressure (P)",
+      "Volume (V)",
+      "Temperature (T)"
+    ],
+    "explanation": "Pressure ($P$), volume ($V$), and temperature ($T$) are thermodynamic coordinates (state variables) used to specify the thermodynamic state of a system. The universal gas constant ($R = 8.314\\text{ J mol}^{-1}\\text{ K}^{-1}$) is a universal physical constant, not a thermodynamic coordinate.",
+    "chapter_number": 11,
+    "correct_answer": 0,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q7",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2009,
+    "question": "A graph of pressure versus volume for an ideal gas for different processes is as shown.\n\nIn the graph curve OC represents",
+    "options": [
+      "isochoric process",
+      "isothermal process",
+      "isobaric process",
+      "adiabatic process"
+    ],
+    "explanation": "In the given $P-V$ diagram:\n- Curve $OA$ represents an isobaric process (constant pressure, horizontal line).\n- Curve $OD$ represents an isochoric process (constant volume, vertical line).\n- Curves $OB$ and $OC$ represent expansions. The magnitude of the slope of an adiabatic process on a $P-V$ diagram is $\\gamma$ times steeper than that of an isothermal process ($|\\frac{dP}{dV}|_{\\text{adia}} = \\gamma |\\frac{dP}{dV}|_{\\text{iso}}$).\n- Since curve $OC$ is steeper than $OB$, curve $OC$ represents an adiabatic process.",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q7.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q8",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2010,
+    "question": "The efficiency of Carnot's heat engine is 0.5 when the temperature of the source is T₁ and that of sink is T₂. The efficiency of another Carnot's heat engine is also 0.5. The temperature of source and sink of the second engine are respectively",
+    "options": [
+      "2T₁, 2T₂",
+      "2T₁, T₂/2",
+      "T₁ + 5, T₂ - 5",
+      "T₁ + 10, T₂ - 10"
+    ],
+    "explanation": "The efficiency of a Carnot engine is:\n$$\\eta = 1 - \\frac{T_2}{T_1} = 0.5 \\implies \\frac{T_2}{T_1} = 0.5$$\n\nFor the second engine to have the same efficiency $\\eta = 0.5$, the ratio $\\frac{T_2'}{T_1'}$ must equal $\\frac{T_2}{T_1} = 0.5$.\nMultiplying both source and sink temperatures by the same factor (such as 2) preserves this ratio:\n$$\\eta' = 1 - \\frac{2T_2}{2T_1} = 1 - \\frac{T_2}{T_1} = 0.5$$\nHence, the temperatures are $2T_1, 2T_2$.",
+    "chapter_number": 11,
+    "correct_answer": 0,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q9",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2012,
+    "question": "One mole of an ideal gas is taken from A to B, from B to C and then back to A. The variation of its volume with temperature for that change is as shown.\n\nIts pressure at A is P₀, volume is V₀. Then, the internal energy",
+    "options": [
+      "at A is more than at B",
+      "at C is less than at B",
+      "at B is more than at A",
+      "at A and B are equal"
+    ],
+    "explanation": "The internal energy of an ideal gas depends solely on its temperature:\n$$U = n C_v T$$\nFrom the $V-T$ graph, segment $AB$ is a vertical line along which temperature $T$ is constant ($T_A = T_B$). Therefore, the internal energy at state $A$ and state $B$ are equal ($U_A = U_B$).",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q9.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q10",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2013,
+    "question": "For which combination of working temperatures of source and sink, the efficiency of Carnot's heat engine is maximum?",
+    "options": [
+      "600 K, 400 K",
+      "400 K, 200 K",
+      "500 K, 300 K",
+      "300 K, 100 K"
+    ],
+    "explanation": "Carnot engine efficiency is:\n$$\\eta = 1 - \\frac{T_2}{T_1} = \\frac{T_1 - T_2}{T_1}$$\nIn all four options, the difference $\\Delta T = T_1 - T_2 = 200\\text{ K}$.\n$$\\eta = \\frac{200}{T_1}$$\nThis is maximum when the source temperature $T_1$ is minimum.\nAmong the given options, $T_1 = 300\\text{ K}$ is minimum, giving:\n$$\\eta = \\frac{200}{300} = \\frac{2}{3} \\approx 66.7\\%$$",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q11",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2014,
+    "question": "What is the source temperature of the Carnot engine required to get 70% efficiency? Given sink temperature = 27°C",
+    "options": [
+      "270°C",
+      "1000°C",
+      "727°C",
+      "90°C"
+    ],
+    "explanation": "Efficiency $\\eta = 70\\% = 0.7$.\nSink temperature $T_2 = 27^\\circ\\text{C} = 27 + 273 = 300\\text{ K}$.\n$$\\eta = 1 - \\frac{T_2}{T_1} \\implies 0.7 = 1 - \\frac{300}{T_1}$$\n$$\\frac{300}{T_1} = 0.3 \\implies T_1 = \\frac{300}{0.3} = 1000\\text{ K}$$\nIn Celsius:\n$$T_1 = 1000 - 273 = 727^\\circ\\text{C}$$",
+    "chapter_number": 11,
+    "correct_answer": 2,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q12",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2014,
+    "question": "A cycle tyre bursts suddenly. What is the type of this process?",
+    "options": [
+      "Isochoric",
+      "Isothermal",
+      "Isobaric",
+      "Adiabatic"
+    ],
+    "explanation": "Sudden bursting of a cycle tyre happens extremely rapidly, so heat cannot enter or leave the system during this brief duration ($\\Delta Q = 0$). Therefore, it is an adiabatic expansion process.",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q13",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2015,
+    "question": "The efficiency of a Carnot engine which operates between the two temperatures T₁ = 500 K and T₂ = 300 K is",
+    "options": [
+      "25%",
+      "40%",
+      "50%",
+      "75%"
+    ],
+    "explanation": "Efficiency of a Carnot engine:\n$$\\eta = 1 - \\frac{T_2}{T_1} = 1 - \\frac{300\\text{ K}}{500\\text{ K}} = \\frac{200}{500} = 0.40 = 40\\%$$",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q14",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2016,
+    "question": "A Carnot engine working between 300 K and 400 K has 800 J of useful work. The amount of heat energy supplied to the engine from the source is",
+    "options": [
+      "2400 J",
+      "3200 J",
+      "1200 J",
+      "3600 J"
+    ],
+    "explanation": "Efficiency of a Carnot engine:\n$$\\eta = 1 - \\frac{T_2}{T_1} = 1 - \\frac{300}{400} = \\frac{1}{4}$$\n\nAlso, $\\eta = \\frac{W}{Q_1}$ where $W = 800\\text{ J}$:\n$$Q_1 = \\frac{W}{\\eta} = \\frac{800}{1/4} = 3200\\text{ J}$$",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q15",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2017,
+    "question": "The S.I. unit of specific heat capacity is",
+    "options": [
+      "J kg⁻¹ K⁻¹",
+      "J mol⁻¹ K⁻¹",
+      "J kg⁻¹",
+      "J K⁻¹"
+    ],
+    "explanation": "Specific heat capacity $c$ is defined as:\n$$c = \\frac{\\Delta Q}{m \\Delta T}$$\nUnits:\n- Heat $\\Delta Q$ in Joules ($\\text{J}$)\n- Mass $m$ in kilograms ($\\text{kg}$)\n- Temperature change $\\Delta T$ in Kelvin ($\\text{K}$)\nHence the SI unit is $\\text{J kg}^{-1}\\text{ K}^{-1}$.",
+    "chapter_number": 11,
+    "correct_answer": 0,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q16",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2017,
+    "question": "For which combination of working temperatures, the efficiency of Carnot's engine is the least?",
+    "options": [
+      "40 K, 20 K",
+      "60 K, 40 K",
+      "100 K, 80 K",
+      "80 K, 60 K"
+    ],
+    "explanation": "Efficiency is:\n$$\\eta = 1 - \\frac{T_2}{T_1} = \\frac{T_1 - T_2}{T_1}$$\nHere in all options, $T_1 - T_2 = 20\\text{ K}$.\n$$\\eta = \\frac{20}{T_1}$$\nThe efficiency is least when the source temperature $T_1$ is greatest.\nAmong the options, $T_1 = 100\\text{ K}$ is greatest, giving:\n$$\\eta = \\frac{20}{100} = 20\\%$$",
+    "chapter_number": 11,
+    "correct_answer": 2,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q17",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2018,
+    "question": "A Carnot engine takes 300 calories of heat from a source at 500 K and rejects 150 calories of heat to the sink. The temperature of the sink is",
+    "options": [
+      "125 K",
+      "250 K",
+      "750 K",
+      "1000 K"
+    ],
+    "explanation": "For a Carnot engine:\n$$\\frac{Q_2}{Q_1} = \\frac{T_2}{T_1}$$\nGiven $Q_1 = 300\\text{ cal}$, $Q_2 = 150\\text{ cal}$, and $T_1 = 500\\text{ K}$:\n$$T_2 = T_1 \\times \\frac{Q_2}{Q_1} = 500\\text{ K} \\times \\frac{150}{300} = 250\\text{ K}$$",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q18",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2019,
+    "question": "A thermodynamic system undergoes a cyclic process ABC as shown in the diagram. The work done by the system per cycle is",
+    "options": [
+      "-750 J",
+      "750 J",
+      "1250 J",
+      "-1250 J"
+    ],
+    "explanation": "Work done per cycle equals the area enclosed by the cycle on the $P-V$ diagram.\n$$\\text{Area of }\\Delta ABC = \\frac{1}{2} \\times \\text{base} \\times \\text{height} = \\frac{1}{2} \\times (10 - 5)\\text{ m}^3 \\times (400 - 100)\\text{ N m}^{-2} = \\frac{1}{2} \\times 5 \\times 300 = 750\\text{ J}$$\n\nSince the cycle $A \\to B \\to C \\to A$ is traced in the anticlockwise direction, work done is negative:\n$$W = -750\\text{ J}$$",
+    "chapter_number": 11,
+    "correct_answer": 0,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q18.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q19",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2020,
+    "question": "In an adiabatic expansion of an ideal gas the product of pressure and volume",
+    "options": [
+      "remains constant",
+      "at first increases and then decreases",
+      "decreases",
+      "increases"
+    ],
+    "explanation": "For an adiabatic process:\n$$T V^{\\gamma - 1} = \\text{constant}$$\nDuring expansion, volume $V$ increases, so temperature $T$ must decrease. Since for an ideal gas $P V = n R T$, as temperature $T$ decreases, the product $P V$ also decreases.",
+    "chapter_number": 11,
+    "correct_answer": 2,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q20",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2021,
+    "question": "A number of Carnot engines are operated at identical cold reservoir temperatures (T_L). However, their hot reservoir temperatures are kept different. A graph of the efficiency of the engines versus hot reservoir temperature (T_H) is plotted. The correct graphical representation is",
+    "options": [
+      "(a)",
+      "(b)",
+      "(c)",
+      "(d)"
+    ],
+    "explanation": "The efficiency of a Carnot engine is:\n$$\\eta = 1 - \\frac{T_L}{T_H}$$\nAt $T_H = T_L$, $\\eta = 0$.\nAs $T_H$ increases above $T_L$:\n$$\\frac{d\\eta}{dT_H} = \\frac{T_L}{T_H^2} > 0$$\n$$\\frac{d^2\\eta}{dT_H^2} = -\\frac{2T_L}{T_H^3} < 0$$\nThus, $\\eta$ starts from 0 at $T_H = T_L$ and increases with decreasing slope (concave downward), asymptotically approaching 1 as $T_H \\to \\infty$. This precisely corresponds to graph (b).",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q20.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q21",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2022,
+    "question": "\"Heat cannot be itself flow from a body at lower temperature to a body at higher temperature\". This statement corresponds to",
+    "options": [
+      "Conservation of mass",
+      "Second law of thermodynamics",
+      "First law of thermodynamics",
+      "Conservation of momentum"
+    ],
+    "explanation": "This statement is the Clausius statement of the Second Law of Thermodynamics: \"It is impossible for a self-acting machine, unaided by any external agency, to convey heat from one body to another at a higher temperature\".",
+    "chapter_number": 11,
+    "correct_answer": 1,
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-phy-ch11-q22",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2023,
+    "question": "The P-V diagram of a Carnot's engine is shown in the graph below. The engine uses 1 mole of an ideal gas as working substance. From the graph, the area enclosed by the P-V diagram is\n\n[The heat supplied to the gas is 8000 J]",
+    "options": [
+      "1200 J",
+      "2000 J",
+      "3000 J",
+      "1000 J"
+    ],
+    "explanation": "From the ideal gas equation $P V = n R T = R T$ for 1 mole:\n- At state $A$: $P_A = 1600\\text{ kPa}$, $V_A = 2.5\\text{ cm}^3 \\implies P_A V_A = 1600 \\times 10^3 \\times 2.5 \\times 10^{-6} = 4\\text{ J} = R T_1$\n- At state $C$: $P_C = 400\\text{ kPa}$, $V_C = 6.25\\text{ cm}^3 \\implies P_C V_C = 400 \\times 10^3 \\times 6.25 \\times 10^{-6} = 2.5\\text{ J} = R T_2$\n\nEfficiency of Carnot engine:\n$$\\eta = 1 - \\frac{T_2}{T_1} = 1 - \\frac{2.5}{4} = 1 - \\frac{5}{8} = \\frac{3}{8}$$\n\nThe area enclosed by the $P-V$ curve represents the net work done $W$:\n$$W = \\eta Q_1 = \\frac{3}{8} \\times 8000\\text{ J} = 3000\\text{ J}$$",
+    "chapter_number": 11,
+    "correct_answer": 2,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q22.png"
+  },
+  {
+    "id": "kcet-phy-ch11-q23",
+    "subject": "Physics",
+    "chapter": "Thermodynamics",
+    "year": 2024,
+    "question": "One mole of an ideal monoatomic gas is taken round the cyclic process MNOM. The work done by the gas is",
+    "options": [
+      "4.5 P₀V₀",
+      "4 P₀V₀",
+      "9 P₀V₀",
+      "2 P₀V₀"
+    ],
+    "explanation": "The work done by the gas in cyclic process $MNOM$ equals the area of right triangle $\\Delta MNO$:\n$$W = \\frac{1}{2} \\times \\text{base} \\times \\text{height}$$\n$$\\text{Base} = 3V_0 - V_0 = 2V_0$$\n$$\\text{Height} = 3P_0 - P_0 = 2P_0$$\n$$W = \\frac{1}{2} \\times 2V_0 \\times 2P_0 = 2 P_0 V_0$$\nSince the cycle is traversed clockwise ($M \\to N \\to O \\to M$), the work done is positive, $+2 P_0 V_0$.",
+    "chapter_number": 11,
+    "correct_answer": 3,
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch11/q23.png"
+  }
+]

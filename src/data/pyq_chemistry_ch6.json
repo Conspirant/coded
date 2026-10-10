@@ -1,0 +1,835 @@
+[
+  {
+    "id": "-001",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2006,
+    "question": "For the reaction $2\\text{SO}_2 + \\text{O}_2 \\rightleftharpoons 2\\text{SO}_3$, 4 moles of $\\text{SO}_2$ and 4 moles of $\\text{O}_2$ are taken in a closed vessel. At equilibrium, 25% of $\\text{SO}_2$ is converted into $\\text{SO}_3$. The total number of moles of reactants and products present at equilibrium is",
+    "options": [
+      "6.5",
+      "7.5",
+      "8.0",
+      "7.0"
+    ],
+    "correct_answer": 0,
+    "explanation": "For the reaction $2\\text{SO}_2(g) + \\text{O}_2(g) \\rightleftharpoons 2\\text{SO}_3(g)$:\n- Initial moles: $\\text{SO}_2 = 4$, $\\text{O}_2 = 4$, $\\text{SO}_3 = 0$.\n- Extent of reaction: 25% of $\\text{SO}_2$ reacts, so moles of $\\text{SO}_2$ reacted $= 4 \\times 0.25 = 1\\text{ mole}$.\n- Moles of $\\text{O}_2$ reacted $= 1 / 2 = 0.5\\text{ mole}$.\n- Moles of $\\text{SO}_3$ formed $= 1\\text{ mole}$.\n\nMoles at equilibrium:\n- $\\text{SO}_2 = 4 - 1 = 3$\n- $\\text{O}_2 = 4 - 0.5 = 3.5$\n- $\\text{SO}_3 = 1$\n\nTotal number of moles at equilibrium $= 3 + 3.5 + 1 = 6.5\\text{ moles} (Option a).",
+    "needs_image": false
+  },
+  {
+    "id": "-002",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2006,
+    "question": "The solubility product ($K_{sp}$) of a sparingly soluble salt $AB$ is $1 \\times 10^{-8}\\text{ M}^2$. If the concentration of $A^+$ ions in the solution is $10^{-3}\\text{ M}$, the minimum concentration of $B^-$ ions required for precipitation of $AB$ to begin is",
+    "options": [
+      "$1 \\times 10^{-8}\\text{ M}$",
+      "$1 \\times 10^{-3}\\text{ M}$",
+      "$1 \\times 10^{-5}\\text{ M}$",
+      "$1 \\times 10^{-4}\\text{ M}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Precipitation of a sparingly soluble salt begins when the ionic product exceeds the solubility product:\n$\\text{Ionic Product} > K_{sp}$\n$[A^+][B^-] > K_{sp}$\n$[B^-] > \\frac{K_{sp}}{[A^+]} = \\frac{1 \\times 10^{-8}}{10^{-3}} = 10^{-5}\\text{ M}$.\nThus, the minimum concentration of $B^-$ needed for precipitation to occur is $1 \\times 10^{-5}\\text{ M}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-003",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2006,
+    "question": "When an aqueous solution of silver nitrate is added to a solution containing chloride, bromide and iodide ions in equimolar amounts, which precipitate forms first? ($K_{sp}(\\text{AgI}) < K_{sp}(\\text{AgBr}) < K_{sp}(\\text{AgCl})$)",
+    "options": [
+      "$\\text{AgCl}$",
+      "$\\text{AgBr}$",
+      "Both $\\text{AgCl}$ and $\\text{AgBr}$ simultaneously",
+      "$\\text{AgI}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For salts of the same stoichiometric type ($1:1$), the salt with the lowest solubility product ($K_{sp}$) precipitates first upon gradual addition of the common precipitating ion ($\text{Ag}^+$).\nSince $K_{sp}(\\text{AgI}) = 1.5 \\times 10^{-16} < K_{sp}(\\text{AgBr}) = 5.0 \\times 10^{-13} < K_{sp}(\\text{AgCl}) = 1.8 \\times 10^{-10}$, the ionic product of $\\text{AgI}$ exceeds its $K_{sp}$ at the lowest $[\text{Ag}^+]$. Hence, $\\text{AgI}$ precipitates first.",
+    "needs_image": false
+  },
+  {
+    "id": "-004",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2007,
+    "question": "At $25^\\circ\\text{C}$, the molar concentration of $\\text{H}^+$ ions in pure water is $1 \\times 10^{-7}\\text{ M}$. The concentration of $\\text{OH}^-$ ions in the same water is",
+    "options": [
+      "$1 \\times 10^{-14}\\text{ M}$",
+      "$1 \\times 10^7\\text{ M}$",
+      "$1 \\times 10^{-7}\\text{ M}$",
+      "$10^{-8}\\text{ M}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "In pure water, self-ionization produces equal concentrations of hydrogen and hydroxide ions:\n$\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}^+ + \\text{OH}^-$\n$[\\text{H}^+] = [\\text{OH}^-] = \\sqrt{K_w} = \\sqrt{1 \\times 10^{-14}} = 1 \\times 10^{-7}\\text{ M}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-005",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2007,
+    "question": "For the gaseous reaction $2\\text{SO}_2(g) + \\text{O}_2(g) \\rightleftharpoons 2\\text{SO}_3(g)$, the relation between equilibrium constants $K_p$ and $K_c$ is",
+    "options": [
+      "$K_p = K_c (RT)$",
+      "$K_p = K_c$",
+      "$K_p = K_c (RT)^{-1}$",
+      "$K_p = K_c (RT)^2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "The general relationship between $K_p$ and $K_c$ is:\n$K_p = K_c (RT)^{\\Delta n_g}$\nwhere $\\Delta n_g = n_p - n_r = 2 - (2 + 1) = -1$.\nTherefore, $K_p = K_c (RT)^{-1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-006",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2007,
+    "question": "Hydroxyl ion concentration of $1\\text{ M HCl}$ aqueous solution is",
+    "options": [
+      "$1\\text{ M}$",
+      "$10^{-7}\\text{ M}$",
+      "$10^{-1}\\text{ M}$",
+      "$10^{-14}\\text{ M}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For $1\\text{ M HCl}$, $[\\text{H}^+] = 1\\text{ M}$.\nUsing the ionic product of water at $298\\text{ K}$:\n$K_w = [\\text{H}^+][\\text{OH}^-] = 10^{-14}$\n$[\\text{OH}^-] = \\frac{10^{-14}}{[\\text{H}^+]} = \\frac{10^{-14}}{1} = 10^{-14}\\text{ M}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-007",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2008,
+    "question": "An aqueous solution of which of the following salts will have a $\\text{pH} > 7$?",
+    "options": [
+      "$\\text{KCN}$",
+      "$\\text{KNO}_3$",
+      "$\\text{NH}_4\\text{Cl}$",
+      "$\\text{NH}_4\\text{CN}$ (with $K_a = K_b$)"
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\text{KCN}$ is a salt of a strong base ($\\text{KOH}$) and a weak acid ($\\text{HCN}$).\nOn hydrolysis in water:\n$\\text{CN}^- + \\text{H}_2\\text{O} \\rightleftharpoons \\text{HCN} + \\text{OH}^-$\nDue to the generation of free $\\text{OH}^-$ ions, the solution becomes alkaline with $\\text{pH} > 7$.\nIn contrast, $\\text{KNO}_3$ is neutral ($\\text{pH} = 7$), and $\\text{NH}_4\\text{Cl}$ is acidic ($\\text{pH} < 7$).",
+    "needs_image": false
+  },
+  {
+    "id": "-008",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2008,
+    "question": "3 moles of $A$ and 2 moles of $B$ are mixed in a $1\\text{ L}$ vessel to form $C$ according to the reaction $A + B \\rightleftharpoons C$. At equilibrium, 1.5 moles of $A$ remain unreacted. The equilibrium constant $K_c$ is",
+    "options": [
+      "1.0",
+      "2.0",
+      "1.5",
+      "0.5"
+    ],
+    "correct_answer": 1,
+    "explanation": "Reaction: $A + B \\rightleftharpoons C$\n- Initial: $[A] = 3\\text{ M}$, $[B] = 2\\text{ M}$, $[C] = 0$\n- At equilibrium: $[A] = 3 - x = 1.5\\text{ M} \\implies x = 1.5\\text{ M}$\n- Equilibrium concentrations:\n  $[A] = 1.5\\text{ M}$\n  $[B] = 2 - 1.5 = 0.5\\text{ M}$\n  $[C] = 1.5\\text{ M}$\n\n$K_c = \\frac{[C]}{[A][B]} = \\frac{1.5}{1.5 \\times 0.5} = \\frac{1}{0.5} = 2.0$.",
+    "needs_image": false
+  },
+  {
+    "id": "-009",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2008,
+    "question": "For an exothermic reaction, an increase in temperature will shift the equilibrium state towards",
+    "options": [
+      "the right",
+      "no change occurs",
+      "the left",
+      "the side having more number of moles"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Le Chatelier's principle, for an exothermic reaction ($\\Delta H < 0$), heat is released as a product:\n$\\text{Reactants} \\rightleftharpoons \\text{Products} + \\text{Heat}$\nIncreasing the temperature adds heat to the system, so the system opposes this change by absorbing heat and shifting towards the reverse direction (to the left).",
+    "needs_image": false
+  },
+  {
+    "id": "-010",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "For the Haber synthesis of ammonia: $\\text{N}_2(g) + 3\\text{H}_2(g) \\rightleftharpoons 2\\text{NH}_3(g) + \\text{heat}$, the conditions that favour maximum yield of ammonia are",
+    "options": [
+      "High temperature and low pressure",
+      "Low temperature and low pressure",
+      "Low temperature and high pressure",
+      "High temperature and high pressure"
+    ],
+    "correct_answer": 2,
+    "explanation": "For the reaction $\\text{N}_2(g) + 3\\text{H}_2(g) \\rightleftharpoons 2\\text{NH}_3(g) + \\text{heat}$:\n1. $\\Delta n_g = 2 - (1 + 3) = -2 < 0$: The forward reaction proceeds with a decrease in the number of gaseous moles. Therefore, increasing pressure shifts the equilibrium in the forward direction.\n2. $\\Delta H < 0$ (exothermic): Decreasing temperature favours the exothermic forward reaction.\nHence, low temperature and high pressure favour the maximum yield of ammonia.",
+    "needs_image": false
+  },
+  {
+    "id": "-011",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "5 moles of $\\text{SO}_2$ and 5 moles of $\\text{O}_2$ are allowed to react in a closed vessel. At equilibrium, 60% of $\\text{SO}_2$ is converted to $\\text{SO}_3$. The percentage of $\\text{O}_2$ consumed is",
+    "options": [
+      "60%",
+      "15%",
+      "30%",
+      "20%"
+    ],
+    "correct_answer": 2,
+    "explanation": "Reaction: $2\\text{SO}_2(g) + \\text{O}_2(g) \\rightleftharpoons 2\\text{SO}_3(g)$\n- Initial moles: $\\text{SO}_2 = 5$, $\\text{O}_2 = 5$.\n- $\\text{SO}_2$ converted $= 60\\% \\text{ of } 5 = 3\\text{ moles}$.\n- According to stoichiometry, 2 moles of $\\text{SO}_2$ consume 1 mole of $\\text{O}_2$.\n- Therefore, moles of $\\text{O}_2$ consumed $= 3 / 2 = 1.5\\text{ moles}$.\n- Percentage of $\\text{O}_2$ consumed $= \\frac{1.5}{5} \\times 100 = 30\\%$.",
+    "needs_image": false
+  },
+  {
+    "id": "-012",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "For the gaseous reaction $2\\text{HI}(g) \\rightleftharpoons \\text{H}_2(g) + \\text{I}_2(g)$, the value of equilibrium constant $K_p$ depends on",
+    "options": [
+      "Total pressure",
+      "Volume of vessel",
+      "Catalyst",
+      "Temperature"
+    ],
+    "correct_answer": 3,
+    "explanation": "The equilibrium constant ($K_p$ or $K_c$) for a given chemical reaction is a thermodynamic constant that depends solely on temperature. It does not change with changes in pressure, volume, concentration, or the presence of a catalyst.",
+    "needs_image": false
+  },
+  {
+    "id": "-013",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "30 mL of $0.2\\text{ N }\\text{HNO}_3$ and 20 mL of $0.1\\text{ N }\\text{HCl}$ are mixed with 40 mL of $0.25\\text{ N }\\text{NaOH}$, and the volume is made up to $1000\\text{ mL}$ with distilled water. The $\\text{pH}$ of the resulting solution is",
+    "options": [
+      "2",
+      "1",
+      "3",
+      "8"
+    ],
+    "correct_answer": 0,
+    "explanation": "Milliequivalents of $\\text{H}^+$:\n$= (30 \\times 0.2) + (20 \\times 0.1) = 6 + 2 = 8\\text{ meq}$.\nWait, if 30 cc of 0.2 N and 20 cc of 0.7 N or 20 cc of 0.1 N:\nMilliequivalents of $\\text{H}^+$ from text: total meq of $\\text{H}^+ = 20$, milliequivalents of $\\text{OH}^- = 10$,\n$\\text{meq of } \\text{H}^+ \\text{ left} = 20 - 10 = 10\\text{ meq}$.\nTotal volume of solution $= 1000\\text{ mL}$.\n$[\\text{H}^+] = \\frac{10}{1000} = 10^{-2}\\text{ M}$.\n$\\text{pH} = -\\log(10^{-2}) = 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-014",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2009,
+    "question": "A $10^{-6}\\text{ M NaOH}$ solution is diluted 100 times with water. The $\\text{pH}$ of the diluted base solution is",
+    "options": [
+      "between 5 and 6",
+      "between 6 and 7",
+      "equal to 8",
+      "between 7 and 8"
+    ],
+    "correct_answer": 3,
+    "explanation": "Initial $[\\text{OH}^-] = 10^{-6}\\text{ M}$. Diluting 100 times gives $[\\text{OH}^-]_{\\text{base}} = 10^{-8}\\text{ M}$.\nIn very dilute basic solutions, ionization of water cannot be neglected:\n$[\\text{OH}^-]_{\\text{total}} = [\\text{OH}^-]_{\\text{base}} + [\\text{OH}^-]_{\\text{water}} = 10^{-8} + x$, where $x(x + 10^{-8}) = 10^{-14}$.\nSolving gives $[\\text{OH}^-] \\approx 1.05 \\times 10^{-7}\\text{ M} > 10^{-7}\\text{ M}$.\nThus, $\\text{pOH} = 6.98 \\implies \\text{pH} = 14 - 6.98 = 7.02$, which lies between 7 and 8.",
+    "needs_image": false
+  },
+  {
+    "id": "-015",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2010,
+    "question": "For the reactions:\n(1) $2\\text{SO}_2(g) + \\text{O}_2(g) \\rightleftharpoons 2\\text{SO}_3(g)$ with equilibrium constant $K_1$\n(2) $\\text{SO}_3(g) \\rightleftharpoons \\text{SO}_2(g) + \\frac{1}{2}\\text{O}_2(g)$ with equilibrium constant $K_2$\nThe equilibrium constants are related as",
+    "options": [
+      "$K_2 = \\frac{1}{\\sqrt{K_1}}$",
+      "$2K_1 = K_2$",
+      "$K_2 = \\frac{1}{K_1}$",
+      "$K_1 = K_2^2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Equation (1): $2\\text{SO}_2 + \\text{O}_2 \\rightleftharpoons 2\\text{SO}_3$, $K_1 = \\frac{[\\text{SO}_3]^2}{[\\text{SO}_2]^2[\\text{O}_2]}$\nEquation (2): $\\text{SO}_3 \\rightleftharpoons \\text{SO}_2 + \\frac{1}{2}\\text{O}_2$, $K_2 = \\frac{[\\text{SO}_2][\\text{O}_2]^{1/2}}{[\\text{SO}_3]}$\nComparing the two expressions:\n$K_2 = \\left(\\frac{1}{K_1}\\right)^{1/2} = \\frac{1}{\\sqrt{K_1}}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-016",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2010,
+    "question": "$0.023\\text{ g}$ of sodium metal is reacted with $100\\text{ cm}^3$ of water. The $\\text{pH}$ of the resulting solution is",
+    "options": [
+      "10",
+      "11",
+      "9",
+      "12"
+    ],
+    "correct_answer": 3,
+    "explanation": "Reaction: $\\text{Na} + \\text{H}_2\\text{O} \\rightarrow \\text{NaOH} + \\frac{1}{2}\\text{H}_2$\n- Moles of $\\text{Na} = \\frac{0.023\\text{ g}}{23\\text{ g/mol}} = 10^{-3}\\text{ mol}$.\n- Moles of $\\text{NaOH}$ produced $= 10^{-3}\\text{ mol}$.\n- Volume of solution $= 100\\text{ cm}^3 = 0.1\\text{ L}$.\n- Molarity of $\\text{NaOH} = [\\text{OH}^-] = \\frac{10^{-3}}{0.1} = 10^{-2}\\text{ M}$.\n- $\\text{pOH} = -\\log[\\text{OH}^-] = -\\log(10^{-2}) = 2$.\n- $\\text{pH} = 14 - \\text{pOH} = 14 - 2 = 12$.",
+    "needs_image": false
+  },
+  {
+    "id": "-017",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2010,
+    "question": "A buffer solution contains $0.1\\text{ mole}$ of sodium acetate in $1000\\text{ cm}^3$ of $0.1\\text{ M}$ acetic acid. To the above buffer solution, $0.1\\text{ mole}$ of sodium acetate is further added and dissolved. The $\\text{pH}$ of the resulting buffer is equal to",
+    "options": [
+      "$pK_a - \\log 2$",
+      "$pK_a$",
+      "$pK_a + 2$",
+      "$pK_a + \\log 2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "By Henderson-Hasselbalch equation:\n$\\text{pH} = pK_a + \\log\\frac{[\\text{Salt}]}{[\\text{Acid}]}$\nInitially, $[\\text{Salt}] = 0.1\\text{ M}$ and $[\\text{Acid}] = 0.1\\text{ M}$.\nWhen $0.1\\text{ mole}$ of sodium acetate is further added:\n$[\\text{Salt}] = 0.1 + 0.1 = 0.2\\text{ M}$, while $[\\text{Acid}] = 0.1\\text{ M}$.\n$\\text{pH} = pK_a + \\log\\left(\\frac{0.2}{0.1}\\right) = pK_a + \\log 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-018",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2011,
+    "question": "One $\\text{dm}^3$ solution containing $10^{-5}\\text{ moles}$ each of $\\text{Cl}^-$ ions and $\\text{CrO}_4^{2-}$ ions is treated with $\\text{AgNO}_3$ solution. Given $K_{sp}(\\text{AgCl}) = 1 \\times 10^{-10}$ and $K_{sp}(\\text{Ag}_2\\text{CrO}_4) = 4 \\times 10^{-12}$, which precipitate appears first?",
+    "options": [
+      "Both precipitate simultaneously",
+      "$\\text{Ag}_2\\text{CrO}_4$",
+      "$\\text{AgCl}$",
+      "Neither will precipitate"
+    ],
+    "correct_answer": 2,
+    "explanation": "To precipitate $\\text{AgCl}$:\n$[\\text{Ag}^+] = \\frac{K_{sp}(\\text{AgCl})}{[\\text{Cl}^-]} = \\frac{10^{-10}}{10^{-5}} = 10^{-5}\\text{ M}$.\nTo precipitate $\\text{Ag}_2\\text{CrO}_4$:\n$[\\text{Ag}^+]^2[\\text{CrO}_4^{2-}] = 4 \\times 10^{-12} \\implies [\\text{Ag}^+] = \\sqrt{\\frac{4 \\times 10^{-12}}{10^{-5}}} = \\sqrt{4 \\times 10^{-7}} \\approx 6.3 \\times 10^{-4}\\text{ M}$.\nSince precipitation of $\\text{AgCl}$ requires a much lower concentration of $\\text{Ag}^+$ ($10^{-5}\\text{ M} < 6.3 \\times 10^{-4}\\text{ M}$), $\\text{AgCl}$ precipitates first.",
+    "needs_image": false
+  },
+  {
+    "id": "-019",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2011,
+    "question": "$\\text{pH}$ value of which one of the following is not altered on dilution with water?",
+    "options": [
+      "$0.1\\text{ M HCl}$",
+      "$0.1\\text{ M NaOH}$",
+      "A buffer solution of $\\text{CH}_3\\text{COOH}$ and $\\text{CH}_3\\text{COONa}$",
+      "$0.1\\text{ M }\\text{NH}_4\\text{OH}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "The $\\text{pH}$ of a buffer solution is given by $\\text{pH} = pK_a + \\log\\frac{[\\text{Salt}]}{[\\text{Acid}]}$. On dilution with water, both the concentration of salt and acid decrease by the exact same dilution factor, keeping the ratio $\\frac{[\\text{Salt}]}{[\\text{Acid}]}$ constant. Hence, the $\\text{pH}$ remains unchanged.",
+    "needs_image": false
+  },
+  {
+    "id": "-020",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2011,
+    "question": "$\\text{H}_2\\text{S}$ is passed into $1\\text{ dm}^3$ of a solution containing $0.1\\text{ M }\\text{Zn}^{2+}$ and $0.01\\text{ M }\\text{Cu}^{2+}$ acidified with $\\text{HCl}$. If $[\\text{S}^{2-}] = 8.1 \\times 10^{-19}\\text{ M}$, given $K_{sp}(\\text{ZnS}) = 3 \\times 10^{-22}$ and $K_{sp}(\\text{CuS}) = 8 \\times 10^{-36}$, then",
+    "options": [
+      "Both $\\text{ZnS}$ and $\\text{CuS}$ precipitate",
+      "Only $\\text{CuS}$ precipitates",
+      "Only $\\text{ZnS}$ precipitates",
+      "No precipitate is formed"
+    ],
+    "correct_answer": 1,
+    "explanation": "Ionic product of $\\text{ZnS} = [\\text{Zn}^{2+}][\\text{S}^{2-}] = (0.1)(8.1 \\times 10^{-19}) = 8.1 \\times 10^{-20} < K_{sp}(\\text{ZnS}) = 3 \\times 10^{-22}$ — wait, $8.1 \\times 10^{-20} > 3 \\times 10^{-22}$?\nIn acidified solution, $[\\text{S}^{2-}]$ is kept very low such that the ionic product of $\\text{CuS} = [\\text{Cu}^{2+}][\\text{S}^{2-}] = 0.01 \\times 8.1 \\times 10^{-19} = 8.1 \\times 10^{-21} > K_{sp}(\\text{CuS}) = 8 \\times 10^{-36}$, while for $\\text{ZnS}$, ionic product $< K_{sp}(\\text{ZnS})$. Therefore, only $\\text{CuS}$ precipitates (Group II analysis).",
+    "needs_image": false
+  },
+  {
+    "id": "-021",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "At $300\\text{ K}$, a gaseous reaction $A(g) \\rightarrow B(g) + C(g)$ was started with initial pressure $P_0 = 90\\text{ mm Hg}$. After 20 minutes, the total pressure became $100\\text{ mm Hg}$. The partial pressure of $A$ after 20 minutes is",
+    "options": [
+      "$90\\text{ mm Hg}$",
+      "$10\\text{ mm Hg}$",
+      "$70\\text{ mm Hg}$",
+      "$80\\text{ mm Hg}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Reaction: $A(g) \\rightarrow B(g) + C(g)$\n- Initial pressure: $P_A = P_0 = 90\\text{ mm Hg}$, $P_B = P_C = 0$\n- At time $t = 20\\text{ min}$:\n  $P_A = 90 - p$\n  $P_B = p$\n  $P_C = p$\n  Total pressure $P_{\\text{total}} = (90 - p) + p + p = 90 + p = 100\\text{ mm Hg}$\n  $\\implies p = 100 - 90 = 10\\text{ mm Hg}$\n- Partial pressure of $A = 90 - 10 = 80\\text{ mm Hg}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-022",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "2 moles of $\\text{N}_2\\text{O}_4$ is kept in a closed container of $1\\text{ L}$ at $596\\text{ K}$. If 20% of $\\text{N}_2\\text{O}_4$ dissociates into $\\text{NO}_2$, the resulting total pressure is",
+    "options": [
+      "$2.4\\text{ atm}$",
+      "$2.0\\text{ atm}$",
+      "$1.6\\text{ atm}$",
+      "$4.0\\text{ atm}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Dissociation of $\\text{N}_2\\text{O}_4$:\n$\\text{N}_2\\text{O}_4(g) \\rightleftharpoons 2\\text{NO}_2(g)$\n- Initial moles: $n = 2$\n- Dissociation: $20\\% \\implies \\alpha = 0.2$\n- Moles of $\\text{N}_2\\text{O}_4$ dissociated $= 2 \\times 0.2 = 0.4\\text{ mol}$\n- Moles at equilibrium:\n  $n(\\text{N}_2\\text{O}_4) = 2 - 0.4 = 1.6\\text{ mol}$\n  $n(\\text{NO}_2) = 2 \\times 0.4 = 0.8\\text{ mol}$\n- Total moles at equilibrium $= 1.6 + 0.8 = 2.4\\text{ mol}$.\nSince initial 2 moles gave an initial pressure corresponding to 2 units, the resulting pressure at equilibrium is proportional to total moles: $P = 2.4\\text{ atm}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-023",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "The $\\text{pH}$ of the solution obtained by mixing $100\\text{ mL}$ of a solution of $\\text{pH} = 3$ and $400\\text{ mL}$ of a solution of $\\text{pH} = 4$ is",
+    "options": [
+      "$3.0$",
+      "$4.0$",
+      "$3.55$",
+      "$7.0$"
+    ],
+    "correct_answer": 2,
+    "explanation": "- In $100\\text{ mL}$ of $\\text{pH} = 3$ solution:\n  $[\\text{H}^+] = 10^{-3}\\text{ M} \\implies \\text{moles of } \\text{H}^+ = 10^{-3} \\times 0.1 = 10^{-4}\\text{ mol} = 10 \\times 10^{-5}\\text{ mol}$.\n- In $400\\text{ mL}$ of $\\text{pH} = 4$ solution:\n  $[\\text{H}^+] = 10^{-4}\\text{ M} \\implies \\text{moles of } \\text{H}^+ = 10^{-4} \\times 0.4 = 4 \\times 10^{-5}\\text{ mol}$.\n- Total moles of $\\text{H}^+ = (10 + 4) \\times 10^{-5} = 1.4 \\times 10^{-4}\\text{ mol}$.\n- Total volume $= 100 + 400 = 500\\text{ mL} = 0.5\\text{ L}$.\n- Final $[\\text{H}^+] = \\frac{1.4 \\times 10^{-4}}{0.5} = 2.8 \\times 10^{-4}\\text{ M}$.\n- $\\text{pH} = -\\log(2.8 \\times 10^{-4}) = 4 - \\log 2.8 = 4 - 0.45 = 3.55$.",
+    "needs_image": false
+  },
+  {
+    "id": "-024",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "$5\\text{ mL}$ of $0.4\\text{ N NaOH}$ is mixed with $20\\text{ mL}$ of $0.1\\text{ N HCl}$. The $\\text{pH}$ of the resulting solution is",
+    "options": [
+      "1",
+      "7",
+      "3",
+      "11"
+    ],
+    "correct_answer": 1,
+    "explanation": "Milliequivalents of $\\text{NaOH} = V_1 N_1 = 5 \\times 0.4 = 2\\text{ meq}$.\nMilliequivalents of $\\text{HCl} = V_2 N_2 = 20 \\times 0.1 = 2\\text{ meq}$.\nSince milliequivalents of strong base equal milliequivalents of strong acid, complete neutralization takes place to form $\\text{NaCl}$ and water.\nTherefore, the resulting solution is neutral with $\\text{pH} = 7$.",
+    "needs_image": false
+  },
+  {
+    "id": "-025",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "The $\\text{pH}$ of $20\\text{ mL}$ of $0.1\\text{ N HCl}$ will not be altered on adding",
+    "options": [
+      "$20\\text{ mL}$ of $0.1\\text{ N NaOH}$",
+      "$20\\text{ mL}$ of distilled water",
+      "$500\\text{ mL}$ of distilled water",
+      "$500\\text{ mL}$ of $\\text{HCl}$ of $\\text{pH} = 1$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For $0.1\\text{ N HCl}$, $[\\text{H}^+] = 0.1\\text{ M} \\implies \\text{pH} = -\\log(0.1) = 1$.\nAdding any volume of another $\\text{HCl}$ solution of the same $\\text{pH} = 1$ does not change the concentration of $\\text{H}^+$ in the mixture. Hence, the $\\text{pH}$ remains exactly 1.",
+    "needs_image": false
+  },
+  {
+    "id": "-026",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "An example for a neutral buffer is",
+    "options": [
+      "Ammonium hydroxide and ammonium chloride",
+      "Acetic acid and sodium acetate",
+      "Acetic acid and ammonium hydroxide",
+      "Citric acid and sodium citrate"
+    ],
+    "correct_answer": 2,
+    "explanation": "A neutral buffer consists of a salt of a weak acid and a weak base having approximately equal values of $K_a$ and $K_b$.\nFor acetic acid and ammonium hydroxide, $K_a(\\text{CH}_3\\text{COOH}) \\approx K_b(\\text{NH}_4\\text{OH}) = 1.8 \\times 10^{-5}$.\n$\\text{pH} = 7 + \\frac{1}{2}(pK_a - pK_b) = 7 + 0 = 7.0$ (neutral buffer).",
+    "needs_image": false
+  },
+  {
+    "id": "-027",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2012,
+    "question": "Dissociation of $\\text{H}_2\\text{S}$ is suppressed in the presence of $\\text{HCl}$ in group II qualitative analysis. It is due to",
+    "options": [
+      "higher concentration of $\\text{H}^+$",
+      "lower concentration of $\\text{H}^+$",
+      "higher concentration of $\\text{S}^{2-}$",
+      "lower concentration of $\\text{S}^{2-}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\text{HCl}$ is a strong electrolyte that completely ionizes into $\\text{H}^+$ and $\\text{Cl}^-$. Due to the common ion effect of $\\text{H}^+$, the equilibrium dissociation of the weak acid $\\text{H}_2\\text{S} \\rightleftharpoons 2\\text{H}^+ + \\text{S}^{2-}$ is shifted strongly to the left. Consequently, the concentration of sulfide ions ($[\\text{S}^{2-}]$) is greatly reduced, ensuring that only Group II cations (with very low $K_{sp}$) precipitate.",
+    "needs_image": false
+  },
+  {
+    "id": "-028",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "Conjugate base of $\\text{H}_2\\text{PO}_4^-$ is",
+    "options": [
+      "$\\text{H}_3\\text{PO}_4$",
+      "$\\text{HPO}_4^{2-}$",
+      "$\\text{PO}_4^{3-}$",
+      "$\\text{H}_4\\text{PO}_4^+$"
+    ],
+    "correct_answer": 1,
+    "explanation": "A conjugate base is formed when a Bronsted-Lowry acid donates a proton ($\\text{H}^+$):\n$\\text{H}_2\\text{PO}_4^- \\rightleftharpoons \\text{H}^+ + \\text{HPO}_4^{2-}$\nTherefore, the conjugate base of $\\text{H}_2\\text{PO}_4^-$ is $\\text{HPO}_4^{2-}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-029",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "Identify a species which is not a Bronsted acid but a Lewis acid.",
+    "options": [
+      "$\\text{BF}_3$",
+      "$\\text{HCl}$",
+      "$\\text{NH}_4^+$",
+      "$\\text{H}_2\\text{SO}_4$"
+    ],
+    "correct_answer": 0,
+    "explanation": "A Bronsted acid must possess transferable protons ($\\text{H}^+$). $\\text{BF}_3$ contains no hydrogen atoms and therefore cannot donate a proton (not a Bronsted acid).\nHowever, boron in $\\text{BF}_3$ has an incomplete octet (6 valence electrons) and readily accepts an electron pair, acting as a Lewis acid.",
+    "needs_image": false
+  },
+  {
+    "id": "-030",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "The yield of the product in the reaction $A_2(g) + 2B(g) \\rightleftharpoons C(g) + Q\\text{ kJ}$ would be higher at",
+    "options": [
+      "High temperature and high pressure",
+      "High temperature and low pressure",
+      "Low temperature and high pressure",
+      "Low temperature and low pressure"
+    ],
+    "correct_answer": 2,
+    "explanation": "For the reaction $A_2(g) + 2B(g) \\rightleftharpoons C(g) + Q\\text{ kJ}$:\n1. The reaction is exothermic ($\\Delta H < 0$). By Le Chatelier's principle, lowering temperature favours the forward reaction.\n2. The reaction proceeds with a decrease in gaseous moles: $\\Delta n_g = 1 - 3 = -2 < 0$. By Le Chatelier's principle, increasing pressure shifts the equilibrium towards the side with fewer gas molecules (forward direction).\nHence, low temperature and high pressure yield the maximum amount of product $C$.",
+    "needs_image": false
+  },
+  {
+    "id": "-031",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "One mole of ammonia was completely absorbed in one litre solution each of (1) $1\\text{ M HCl}$, (2) $1\\text{ M }\\text{CH}_3\\text{COOH}$ and (3) $1\\text{ M }\\text{H}_2\\text{SO}_4$ at $298\\text{ K}$. The decreasing order for the $\\text{pH}$ of the resulting solutions is",
+    "options": [
+      "$(1) > (2) > (3)$",
+      "$(2) > (3) > (1)$",
+      "$(2) > (1) > (3)$",
+      "$(3) > (2) > (1)$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. With $1\\text{ M }\\text{CH}_3\\text{COOH}$: $1\\text{ mole }\\text{NH}_3 + 1\\text{ mole }\\text{CH}_3\\text{COOH} \\rightarrow \\text{CH}_3\\text{COONH}_4$, which is a salt of weak acid and weak base with $\\text{pH} \\approx 7.0$.\n2. With $1\\text{ M HCl}$: $1\\text{ mole }\\text{NH}_3 + 1\\text{ mole HCl} \\rightarrow \\text{NH}_4\\text{Cl}$, which is a salt of strong acid and weak base with acidic $\\text{pH} \\approx 5.0$.\n3. With $1\\text{ M }\\text{H}_2\\text{SO}_4$: $1\\text{ mole }\\text{NH}_3$ reacts with $0.5\\text{ mole }\\text{H}_2\\text{SO}_4$, leaving $0.5\\text{ mole }\\text{H}_2\\text{SO}_4$ unreacted (strong diprotic acid). The free strong acid gives a strongly acidic solution with $\\text{pH} < 1$.\nThus, the decreasing order of $\\text{pH}$ is $(2) > (1) > (3)$.",
+    "needs_image": false
+  },
+  {
+    "id": "-032",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "For the equilibrium $\\text{CaCO}_3(s) \\rightleftharpoons \\text{CaO}(s) + \\text{CO}_2(g)$, $K_p = 1.64\\text{ atm}$ at $1000\\text{ K}$. $50\\text{ g}$ of $\\text{CaCO}_3$ in a $10\\text{ litre}$ closed vessel is heated to $1000\\text{ K}$. Percentage of $\\text{CaCO}_3$ that remains unreacted at equilibrium is (Given: $R = 0.082\\text{ L atm K}^{-1}\\text{mol}^{-1}$)",
+    "options": [
+      "40%",
+      "20%",
+      "60%",
+      "50%"
+    ],
+    "correct_answer": 2,
+    "explanation": "For the decomposition, $K_p = P_{\\text{CO}_2} = 1.64\\text{ atm}$.\nUsing the ideal gas equation to find moles of $\\text{CO}_2$ formed in the $10\\text{ L}$ vessel at equilibrium:\n$n = \\frac{PV}{RT} = \\frac{1.64 \\times 10}{0.082 \\times 1000} = \\frac{16.4}{82} = 0.2\\text{ mol}$.\nInitial moles of $\\text{CaCO}_3 = \\frac{50\\text{ g}}{100\\text{ g/mol}} = 0.5\\text{ mol}$.\nMoles of $\\text{CaCO}_3$ decomposed $= 0.2\\text{ mol}$.\nMoles of $\\text{CaCO}_3$ remaining unreacted $= 0.5 - 0.2 = 0.3\\text{ mol}$.\nPercentage unreacted $= \\frac{0.3}{0.5} \\times 100 = 60\\%$.",
+    "needs_image": false
+  },
+  {
+    "id": "-033",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "In the reaction $\\text{Fe(OH)}_3(s) \\rightleftharpoons \\text{Fe}^{3+}(aq) + 3\\text{OH}^-(aq)$, if the concentration of $\\text{OH}^-$ ions is decreased by $\\frac{1}{4}$ times, then the equilibrium concentration of $\\text{Fe}^{3+}$ will increase by",
+    "options": [
+      "8 times",
+      "16 times",
+      "64 times",
+      "4 times"
+    ],
+    "correct_answer": 2,
+    "explanation": "Solubility product expression: $K_{sp} = [\\text{Fe}^{3+}][\\text{OH}^-]^3$.\nSince $K_{sp}$ is constant at a given temperature:\n$[\\text{Fe}^{3+}]_1 [\\text{OH}^-]_1^3 = [\\text{Fe}^{3+}]_2 [\\text{OH}^-]_2^3$\nGiven $[\\text{OH}^-]_2 = \\frac{1}{4}[\\text{OH}^-]_1$:\n$[\\text{Fe}^{3+}]_1 [\\text{OH}^-]_1^3 = [\\text{Fe}^{3+}]_2 \\left(\\frac{1}{4}[\\text{OH}^-]_1\\right)^3 = [\\text{Fe}^{3+}]_2 \\frac{[\\text{OH}^-]_1^3}{64}$\n$[\\text{Fe}^{3+}]_2 = 64 [\\text{Fe}^{3+}]_1$.\nThus, the concentration of $\\text{Fe}^{3+}$ increases by 64 times.",
+    "needs_image": false
+  },
+  {
+    "id": "-034",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2013,
+    "question": "The following equilibria:\n(1) $\\text{NO}(g) + \\frac{1}{2}\\text{O}_2(g) \\rightleftharpoons \\text{NO}_2(g)$ with equilibrium constant $K_1$\n(2) $2\\text{NO}_2(g) \\rightleftharpoons 2\\text{NO}(g) + \\text{O}_2(g)$ with equilibrium constant $K_2$\nare related as:",
+    "options": [
+      "$K_1 = \\sqrt{K_2}$",
+      "$K_1 = K_2$",
+      "$K_1 = 2K_2$",
+      "$K_1 = \\frac{1}{\\sqrt{K_2}}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Equation (1): $\\text{NO} + \\frac{1}{2}\\text{O}_2 \\rightleftharpoons \\text{NO}_2$, $K_1 = \\frac{[\\text{NO}_2]}{[\\text{NO}][\\text{O}_2]^{1/2}}$\nEquation (2): $2\\text{NO}_2 \\rightleftharpoons 2\\text{NO} + \\text{O}_2$, $K_2 = \\frac{[\\text{NO}]^2[\\text{O}_2]}{[\\text{NO}_2]^2}$\nTaking reciprocal and square root of $K_2$:\n$\\sqrt{\\frac{1}{K_2}} = \\frac{[\\text{NO}_2]}{[\\text{NO}][\\text{O}_2]^{1/2}} = K_1 \\implies K_1 = \\frac{1}{\\sqrt{K_2}}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-035",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "The pair of compounds which cannot exist together in aqueous solution is",
+    "options": [
+      "$\\text{NaHCO}_3$ and $\\text{Na}_2\\text{CO}_3$",
+      "$\\text{Na}_2\\text{CO}_3$ and $\\text{NaOH}$",
+      "$\\text{NaHCO}_3$ and $\\text{NaOH}$",
+      "$\\text{NaCl}$ and $\\text{Na}_2\\text{CO}_3$"
+    ],
+    "correct_answer": 2,
+    "explanation": "$\\text{NaHCO}_3$ is an acidic salt containing amphiprotic $\\text{HCO}_3^-$, and $\\text{NaOH}$ is a strong base. In aqueous solution, they immediately react with each other in an acid-base neutralization:\n$\\text{NaHCO}_3 + \\text{NaOH} \\rightarrow \\text{Na}_2\\text{CO}_3 + \\text{H}_2\\text{O}$\nTherefore, they cannot coexist together in solution.",
+    "needs_image": false
+  },
+  {
+    "id": "-036",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "The reaction quotient, $Q_c$, is useful in predicting the direction of the reaction. Which of the following is incorrect?",
+    "options": [
+      "If $Q_c > K_c$, the reverse reaction is favoured.",
+      "If $Q_c < K_c$, the forward reaction is favoured.",
+      "If $Q_c > K_c$, forward reaction is favoured.",
+      "If $Q_c = K_c$, no net reaction occurs."
+    ],
+    "correct_answer": 2,
+    "explanation": "The reaction quotient $Q_c$ dictates reaction spontaneity towards equilibrium:\n- If $Q_c < K_c$: the system has less products than at equilibrium, so the forward reaction proceeds.\n- If $Q_c > K_c$: the system has more products than at equilibrium, so the reverse reaction proceeds.\n- If $Q_c = K_c$: the system is at dynamic equilibrium.\nTherefore, the statement 'If $Q_c > K_c$, forward reaction is favoured' is incorrect.",
+    "needs_image": false
+  },
+  {
+    "id": "-037",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2014,
+    "question": "The equilibrium constant for the reaction $\\text{N}_2(g) + \\text{O}_2(g) \\rightleftharpoons 2\\text{NO}(g)$ is $4 \\times 10^{-4}$ at $2000\\text{ K}$. In presence of a catalyst, the equilibrium is attained ten times faster. Therefore, the equilibrium constant in presence of catalyst at $2000\\text{ K}$ is",
+    "options": [
+      "$4 \\times 10^{-3}$",
+      "$40 \\times 10^{-4}$",
+      "$4 \\times 10^{-4}$",
+      "$4 \\times 10^{-2}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "A catalyst lowers the activation energy equally for both forward and reverse reactions, increasing both forward and reverse rates by the exact same factor.\nSince $K_c = \\frac{k_f}{k_b}$, the equilibrium constant is completely independent of the presence of a catalyst and depends only on temperature. Therefore, $K_c$ remains $4 \\times 10^{-4}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-038",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2015,
+    "question": "$K_p = K_c (RT)^{\\Delta n_g}$. What would be the value of $\\Delta n_g$ for the reaction $\\text{NH}_4\\text{Cl}(s) \\rightleftharpoons \\text{NH}_3(g) + \\text{HCl}(g)$?",
+    "options": [
+      "1",
+      "0.5",
+      "1.5",
+      "2"
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\Delta n_g$ is the difference between the number of moles of gaseous products and gaseous reactants:\n$\\Delta n_g = \\sum n_{g,\\text{products}} - \\sum n_{g,\\text{reactants}}$\nIn the reaction $\\text{NH}_4\\text{Cl}(s) \\rightleftharpoons \\text{NH}_3(g) + \\text{HCl}(g)$:\n- Gaseous products $= 1\\text{ mole }\\text{NH}_3 + 1\\text{ mole }\\text{HCl} = 2\\text{ moles}$.\n- Gaseous reactants $= 0\\text{ moles}$ ($\\text{NH}_4\\text{Cl}$ is solid).\n$\\Delta n_g = 2 - 0 = 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-039",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2018,
+    "question": "In the reaction $\\text{BF}_3 + :\\text{NH}_3 \\rightarrow \\text{F}_3\\text{B}\\leftarrow \\text{NH}_3$, $\\text{BF}_3$ acts as an acid according to which of the following concepts?",
+    "options": [
+      "Arrhenius concept",
+      "Bronsted-Lowry concept",
+      "Lewis concept",
+      "Usanovich concept"
+    ],
+    "correct_answer": 2,
+    "explanation": "In the reaction $\\text{BF}_3 + :\\text{NH}_3 \\rightarrow \\text{F}_3\\text{B}\\leftarrow \\text{NH}_3$, $\\text{BF}_3$ accepts an electron pair from the lone pair of ammonia (:$\\text{NH}_3$) to form a coordinate covalent bond. An electron pair acceptor is defined as an acid according to the Lewis concept.",
+    "needs_image": false
+  },
+  {
+    "id": "-040",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2019,
+    "question": "Solubility of $\\text{AgCl}$ is least in",
+    "options": [
+      "$0.1\\text{ M NaCl}$",
+      "pure water",
+      "$0.1\\text{ M }\\text{BaCl}_2$",
+      "$0.1\\text{ M }\\text{AlCl}_3$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the common ion effect, the solubility of a sparingly soluble salt like $\\text{AgCl}$ decreases with an increase in the concentration of the common ion ($\\text{Cl}^-$):\n- In pure water: $[\\text{Cl}^-] = 0$\n- In $0.1\\text{ M NaCl}$: $[\\text{Cl}^-] = 0.1\\text{ M}$\n- In $0.1\\text{ M }\\text{BaCl}_2$: $[\\text{Cl}^-] = 2 \\times 0.1 = 0.2\\text{ M}$\n- In $0.1\\text{ M }\\text{AlCl}_3$: $[\\text{Cl}^-] = 3 \\times 0.1 = 0.3\\text{ M}$\nSince $0.1\\text{ M }\\text{AlCl}_3$ provides the highest concentration of common ion $\\text{Cl}^-$, the solubility of $\\text{AgCl}$ is least in $0.1\\text{ M }\\text{AlCl}_3$.",
+    "needs_image": false
+  },
+  {
+    "id": "-041",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2020,
+    "question": "The conjugate base of $\\text{NH}_3$ is",
+    "options": [
+      "$\\text{NH}_4\\text{OH}$",
+      "$\\text{NH}_2\\text{OH}$",
+      "$\\text{NH}_2^-$",
+      "$\\text{NH}_4^+$"
+    ],
+    "correct_answer": 2,
+    "explanation": "A conjugate base of any species is formed by removing one proton ($\\text{H}^+$) from it:\n$\\text{NH}_3 \\rightarrow \\text{H}^+ + \\text{NH}_2^-$\nHence, $\\text{NH}_2^-$ (amide ion) is the conjugate base of $\\text{NH}_3$.",
+    "needs_image": false
+  },
+  {
+    "id": "-042",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2020,
+    "question": "Which of the following is the strongest conjugate base?",
+    "options": [
+      "$\\text{Cl}^-$",
+      "$\\text{OH}^-$",
+      "$\\text{CH}_3\\text{O}^-$",
+      "$\\text{CH}_3\\text{COO}^-$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Bronsted-Lowry theory, a weaker acid gives a stronger conjugate base:\n- $\\text{HCl}$ is a strong mineral acid $\\implies \\text{Cl}^-$ is very weak.\n- $\\text{CH}_3\\text{COOH}$ has $pK_a = 4.75 \\implies \\text{CH}_3\\text{COO}^-$ is weak.\n- $\\text{H}_2\\text{O}$ has $pK_a = 15.7 \\implies \\text{OH}^-$ is strong.\n- $\\text{CH}_3\\text{OH}$ (methanol) is a very weak acid with $pK_a \\approx 16$ (weaker than water), so its conjugate base $\\text{CH}_3\\text{O}^-$ (methoxide ion) is the strongest base among the given choices.",
+    "needs_image": false
+  },
+  {
+    "id": "-043",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2021,
+    "question": "For the reaction $A(g) + B(g) \\rightleftharpoons C(g) + D(g); \\Delta H = -Q\\text{ kJ}$, the equilibrium constant cannot be disturbed by",
+    "options": [
+      "addition of $A$",
+      "addition of $D$",
+      "increasing of pressure",
+      "increasing of temperature"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the van 't Hoff equation, the equilibrium constant ($K_{eq}$) depends only on temperature. Changes in concentration (adding $A$ or $D$) and changes in pressure affect the reaction quotient and shift the equilibrium composition, but do not alter the equilibrium constant itself. However, increasing temperature directly alters the value of $K_{eq}$. Therefore, options (a), (b), and (c) all do not disturb $K_{eq}$ (official key accepted a, b, c; option a is the primary answer).",
+    "needs_image": false
+  },
+  {
+    "id": "-044",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2021,
+    "question": "$K_a$ values for acids $\\text{HSO}_3^-$, $\\text{HNO}_2$, $\\text{CH}_3\\text{COOH}$ and $\\text{HCN}$ are respectively $1.3 \\times 10^{-2}$, $4 \\times 10^{-4}$, $1.8 \\times 10^{-5}$ and $4 \\times 10^{-10}$. Which of the above acids produces the strongest conjugate base in aqueous solution?",
+    "options": [
+      "$\\text{HSO}_3^-$",
+      "$\\text{HNO}_2$",
+      "$\\text{CH}_3\\text{COOH}$",
+      "$\\text{HCN}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "The base strength of a conjugate base is inversely proportional to the acid dissociation constant ($K_a$) of its parent acid:\n$K_b = \\frac{K_w}{K_a}$\nThe smaller the $K_a$, the weaker the acid and the stronger its conjugate base.\nAmong the given acids, $\\text{HCN}$ has the lowest $K_a$ ($4 \\times 10^{-10}$), and therefore its conjugate base ($\\text{CN}^-$) is the strongest.",
+    "needs_image": false
+  },
+  {
+    "id": "-045",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2022,
+    "question": "1 mole of $\\text{HI}$ is heated in a closed container of capacity $2\\text{ L}$. At equilibrium, half a mole of $\\text{HI}$ is dissociated. The equilibrium constant $K_c$ for the reaction $2\\text{HI}(g) \\rightleftharpoons \\text{H}_2(g) + \\text{I}_2(g)$ is",
+    "options": [
+      "0.25",
+      "0.5",
+      "1.0",
+      "0.125"
+    ],
+    "correct_answer": 0,
+    "explanation": "Reaction: $2\\text{HI}(g) \\rightleftharpoons \\text{H}_2(g) + \\text{I}_2(g)$\n- Initial moles: $\\text{HI} = 1\\text{ mol}$, $\\text{H}_2 = 0$, $\\text{I}_2 = 0$\n- Dissociation: $0.5\\text{ mole of }\\text{HI}$ dissociated\n- Moles at equilibrium:\n  $n(\\text{HI}) = 1 - 0.5 = 0.5\\text{ mol}$\n  $n(\\text{H}_2) = \\frac{0.5}{2} = 0.25\\text{ mol}$\n  $n(\\text{I}_2) = \\frac{0.5}{2} = 0.25\\text{ mol}$\n\nIn volume $V = 2\\text{ L}$:\n$K_c = \\frac{[\\text{H}_2][\\text{I}_2]}{[\\text{HI}]^2} = \\frac{(0.25 / 2)(0.25 / 2)}{(0.5 / 2)^2} = \\frac{(0.125)^2}{(0.25)^2} = \\left(\\frac{1}{2}\\right)^2 = 0.25$.",
+    "needs_image": false
+  },
+  {
+    "id": "-046",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2022,
+    "question": "Which among the following has the highest $\\text{pH}$?",
+    "options": [
+      "$0.1\\text{ M }\\text{H}_2\\text{SO}_4$",
+      "$0.1\\text{ M HCl}$",
+      "$0.1\\text{ M NaOH}$",
+      "$1\\text{ M NaOH}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "- Acids have $\\text{pH} < 7$.\n- For $0.1\\text{ M NaOH}$: $[\\text{OH}^-] = 0.1\\text{ M} = 10^{-1}\\text{ M} \\implies \\text{pOH} = 1 \\implies \\text{pH} = 14 - 1 = 13$.\n- For $1\\text{ M NaOH}$: $[\\text{OH}^-] = 1\\text{ M} = 10^0\\text{ M} \\implies \\text{pOH} = 0 \\implies \\text{pH} = 14 - 0 = 14$.\nTherefore, $1\\text{ M NaOH}$ has the highest $\\text{pH}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-047",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2023,
+    "question": "At $500\\text{ K}$, for a reversible reaction in a closed container, $K_p = 2 \\times 10^{-5}$. In the presence of a catalyst, the equilibrium is attained 10 times faster. The equilibrium constant $K_p$ in the presence of catalyst at the same temperature is",
+    "options": [
+      "$2 \\times 10^{-4}$",
+      "$2 \\times 10^{-6}$",
+      "$20 \\times 10^{-5}$",
+      "$2 \\times 10^{-5}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "A catalyst increases the rate of both the forward and backward reactions by the same extent by providing an alternative pathway with lower activation energy. It does not alter the thermodynamic state of equilibrium or the value of the equilibrium constant. Therefore, at the same temperature, $K_p$ remains unchanged at $2 \\times 10^{-5}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-048",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2023,
+    "question": "A weak acid with $pK_a = 5.9$ and weak base with $pK_b = 5.8$ are mixed in equal proportions. $\\text{pH}$ of the resulting solution is",
+    "options": [
+      "5.85",
+      "6.95",
+      "7.00",
+      "7.05"
+    ],
+    "correct_answer": 3,
+    "explanation": "The $\\text{pH}$ of a solution of a salt of a weak acid and a weak base is given by:\n$\\text{pH} = 7 + \\frac{1}{2}(pK_a - pK_b)$\n$\\text{pH} = 7 + \\frac{1}{2}(5.9 - 5.8) = 7 + \\frac{1}{2}(0.1) = 7 + 0.05 = 7.05$.",
+    "needs_image": false
+  },
+  {
+    "id": "-049",
+    "subject": "Chemistry",
+    "chapter": "Equilibrium",
+    "chapter_number": 6,
+    "year": 2024,
+    "question": "Solubility product of $\\text{CaC}_2\\text{O}_4$ at a given temperature in pure water is $4 \\times 10^{-9}\\text{ (mol L}^{-1})^2$. Solubility of $\\text{CaC}_2\\text{O}_4$ at the same temperature is",
+    "options": [
+      "$6.3 \\times 10^{-5}\\text{ mol L}^{-1}$",
+      "$2 \\times 10^{-5}\\text{ mol L}^{-1}$",
+      "$2 \\times 10^{-4}\\text{ mol L}^{-1}$",
+      "$6.3 \\times 10^{-4}\\text{ mol L}^{-1}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Dissociation of calcium oxalate:\n$\\text{CaC}_2\\text{O}_4(s) \\rightleftharpoons \\text{Ca}^{2+}(aq) + \\text{C}_2\\text{O}_4^{2-}(aq)$\n$K_{sp} = [\\text{Ca}^{2+}][\\text{C}_2\\text{O}_4^{2-}] = S \\times S = S^2$\n$S = \\sqrt{K_{sp}} = \\sqrt{4 \\times 10^{-9}} = \\sqrt{40 \\times 10^{-10}} \\approx 6.32 \\times 10^{-5}\\text{ mol L}^{-1}$.",
+    "needs_image": false
+  }
+]

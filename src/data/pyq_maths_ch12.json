@@ -1,0 +1,578 @@
+[
+  {
+    "id": "math_ch12_q1",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 1,
+    "year": 2014,
+    "question": "$A$ and $B$ are two events such that $P(A) \\neq 0$, $P(B|A)$ if\n(i) $A$ is a subset of $B$\n(ii) $A \\cap B = \\phi$ are respectively",
+    "options": [
+      "1, 1",
+      "0, 1",
+      "0, 0",
+      "1, 0"
+    ],
+    "correct_answer": 3,
+    "explanation": "(i) When $A \\subset B$, $A \\cap B = A$. Therefore:\n$$P(B|A) = \\frac{P(A \\cap B)}{P(A)} = \\frac{P(A)}{P(A)} = 1$$\n\n(ii) When $A \\cap B = \\phi$, $P(A \\cap B) = 0$. Therefore:\n$$P(B|A) = \\frac{P(A \\cap B)}{P(A)} = \\frac{0}{P(A)} = 0$$\n\nHence, the respective values are **1, 0**.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q2",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 2,
+    "year": 2014,
+    "question": "Two dice are thrown simultaneously. The probability of obtaining a total score of 5 is",
+    "options": [
+      "$\\frac{1}{9}$",
+      "$\\frac{1}{18}$",
+      "$\\frac{1}{36}$",
+      "$\\frac{1}{12}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Total number of outcomes when throwing two dice $= 6 \\times 6 = 36$.\nFavourable outcomes for a sum of 5:\n$$E = \\{(1, 4), (2, 3), (3, 2), (4, 1)\\} \\implies n(E) = 4$$\n$$P(E) = \\frac{4}{36} = \\frac{1}{9}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q3",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 3,
+    "year": 2014,
+    "question": "If the events $A$ and $B$ are independent if $P(A') = \\frac{2}{3}$ and $P(B') = \\frac{2}{7}$, then $P(A \\cap B)$ is equal to",
+    "options": [
+      "$\\frac{4}{21}$",
+      "$\\frac{5}{21}$",
+      "$\\frac{1}{21}$",
+      "$\\frac{3}{21}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "$$P(A) = 1 - P(A') = 1 - \\frac{2}{3} = \\frac{1}{3}$$\n$$P(B) = 1 - P(B') = 1 - \\frac{2}{7} = \\frac{5}{7}$$\nSince $A$ and $B$ are independent:\n$$P(A \\cap B) = P(A) \\cdot P(B) = \\frac{1}{3} \\times \\frac{5}{7} = \\frac{5}{21}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q4",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 4,
+    "year": 2015,
+    "question": "A box contains 6 red marbles numbered from 1 through 6 and 4 white marbles numbered 12 through 15. Find the probability that a marble drawn 'at random' is white and odd numbered.",
+    "options": [
+      "1/5",
+      "1/6",
+      "5",
+      "6"
+    ],
+    "correct_answer": 0,
+    "explanation": "Total marbles $= 6 + 4 = 10$.\nWhite marbles are numbered 12, 13, 14, 15.\nWhite and odd numbered marbles are: $\\{13, 15\\}$ (2 marbles).\n$$P(\\text{white and odd}) = \\frac{2}{10} = \\frac{1}{5}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q5",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 5,
+    "year": 2015,
+    "question": "If two dice are thrown simultaneously, then the probability that the sum of the numbers which come up on the dice to be more than 5 is",
+    "options": [
+      "$\\frac{1}{6}$",
+      "$\\frac{13}{18}$",
+      "$\\frac{5}{36}$",
+      "$\\frac{5}{18}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Total outcomes $= 36$.\nOutcomes with sum $\\le 5$:\n- Sum = 2: (1,1) [1]\n- Sum = 3: (1,2), (2,1) [2]\n- Sum = 4: (1,3), (2,2), (3,1) [3]\n- Sum = 5: (1,4), (2,3), (3,2), (4,1) [4]\nTotal outcomes with sum $\\le 5 = 1 + 2 + 3 + 4 = 10$.\n\nNumber of outcomes with sum $> 5 = 36 - 10 = 26$.\n$$P(\\text{sum} > 5) = \\frac{26}{36} = \\frac{13}{18}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q6",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 6,
+    "year": 2016,
+    "question": "If $P(A \\cap B) = \\frac{7}{10}$ and $P(B) = \\frac{17}{20}$, where $P$ stands for probability then $P(A/B)$ is equal to",
+    "options": [
+      "$\\frac{7}{8}$",
+      "$\\frac{17}{20}$",
+      "$\\frac{14}{17}$",
+      "$\\frac{1}{8}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "$$P(A/B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{7/10}{17/20} = \\frac{7}{10} \\times \\frac{20}{17} = \\frac{14}{17}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q7",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 7,
+    "year": 2016,
+    "question": "Two cards are drawn at random from a pack of 52 cards. The probability of these two being \"Aces\" is",
+    "options": [
+      "$\\frac{1}{26}$",
+      "$\\frac{1}{221}$",
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{13}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "There are 4 Aces in a standard deck of 52 cards.\n$$P(\\text{2 Aces}) = \\frac{^4C_2}{^{52}C_2} = \\frac{\\frac{4 \\times 3}{2}}{\\frac{52 \\times 51}{2}} = \\frac{12}{2652} = \\frac{1}{221}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q8",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 8,
+    "year": 2016,
+    "question": "Two dice are thrown simultaneously, the probability of obtaining a total score of 5 is",
+    "options": [
+      "$\\frac{1}{18}$",
+      "$\\frac{1}{12}$",
+      "$\\frac{1}{9}$",
+      "$\\frac{1}{6}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Favourable cases for total score of 5: $\\{(1,4), (4,1), (2,3), (3,2)\\}$ ($4$ outcomes).\n$$P = \\frac{4}{36} = \\frac{1}{9}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q9",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 9,
+    "year": 2017,
+    "question": "Two events $A$ and $B$ will be independent if",
+    "options": [
+      "$P(A' \\cap B') = (1 - P(A)) (1 - P(B))$",
+      "$A$ and $B$ are mutually exclusive",
+      "$P(A) + P(B) = 1$",
+      "$P(A) = P(B)$"
+    ],
+    "correct_answer": 0,
+    "explanation": "If $A$ and $B$ are independent events, then their complements $A'$ and $B'$ are also independent.\n$$P(A' \\cap B') = P(A') \\cdot P(B') = (1 - P(A))(1 - P(B))$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q10",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 10,
+    "year": 2017,
+    "question": "A bag contains 17 tickets numbered from 1 to 17. A ticket is drawn at random, then another ticket is drawn without replacing the first one. The probability that both the tickets may show even numbers is",
+    "options": [
+      "$\\frac{7}{34}$",
+      "$\\frac{8}{17}$",
+      "$\\frac{7}{16}$",
+      "$\\frac{7}{17}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Even numbers between 1 and 17 are: $\\{2, 4, 6, 8, 10, 12, 14, 16\\}$ (8 even numbers).\nTotal tickets $= 17$.\n$$P(\\text{both even}) = \\frac{8}{17} \\times \\frac{7}{16} = \\frac{1}{17} \\times \\frac{7}{2} = \\frac{7}{34}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q11",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 11,
+    "year": 2017,
+    "question": "A flashlight has 10 batteries out of which 4 are dead. If 3 batteries are selected without replacement and tested, then the probability that all 3 are dead is",
+    "options": [
+      "1/30",
+      "2/8",
+      "1/15",
+      "1/10"
+    ],
+    "correct_answer": 0,
+    "explanation": "Total batteries $= 10$, dead batteries $= 4$.\n$$P(\\text{all 3 dead}) = \\frac{^4C_3}{^{10}C_3} = \\frac{4}{\\frac{10 \\times 9 \\times 8}{3 \\times 2 \\times 1}} = \\frac{4}{120} = \\frac{1}{30}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q12",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 12,
+    "year": 2017,
+    "question": "The probability of happening of an event $A$ is 0.5 and that of $B$ is 0.3. If $A$ and $B$ are mutually exclusive events, then the probability of neither $A$ nor $B$ is",
+    "options": [
+      "0.4",
+      "0.5",
+      "0.2",
+      "0.9"
+    ],
+    "correct_answer": 2,
+    "explanation": "Since $A$ and $B$ are mutually exclusive, $P(A \\cap B) = 0$.\n$$P(A \\cup B) = P(A) + P(B) = 0.5 + 0.3 = 0.8$$\n$$P(\\text{neither } A \\text{ nor } B) = P(A' \\cap B') = 1 - P(A \\cup B) = 1 - 0.8 = 0.2$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q13",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 13,
+    "year": 2018,
+    "question": "In a simultaneous throw of a pair of dice, the probability of getting a total more than 7 is",
+    "options": [
+      "$\\frac{7}{12}$",
+      "$\\frac{5}{36}$",
+      "$\\frac{5}{12}$",
+      "$\\frac{7}{36}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Favourable outcomes for sum $> 7$:\n- Sum = 8: (2,6), (3,5), (4,4), (5,3), (6,2) [5]\n- Sum = 9: (3,6), (4,5), (5,4), (6,3) [4]\n- Sum = 10: (4,6), (5,5), (6,4) [3]\n- Sum = 11: (5,6), (6,5) [2]\n- Sum = 12: (6,6) [1]\nTotal favourable $= 5 + 4 + 3 + 2 + 1 = 15$.\n$$P = \\frac{15}{36} = \\frac{5}{12}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q14",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 14,
+    "year": 2018,
+    "question": "If $A$ and $B$ are mutually exclusive events, given that $P(A) = \\frac{3}{5}$, $P(B) = \\frac{1}{5}$, then $P(A \\text{ or } B)$ is",
+    "options": [
+      "0.8",
+      "0.6",
+      "0.4",
+      "0.2"
+    ],
+    "correct_answer": 0,
+    "explanation": "For mutually exclusive events $P(A \\cap B) = 0$.\n$$P(A \\text{ or } B) = P(A \\cup B) = P(A) + P(B) = \\frac{3}{5} + \\frac{1}{5} = \\frac{4}{5} = 0.8$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q15",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 15,
+    "year": 2019,
+    "question": "Two letters are chosen from the letters of the word 'EQUATIONS'. The probability that one is vowel and the other is consonant is",
+    "options": [
+      "$\\frac{8}{9}$",
+      "$\\frac{3}{9}$",
+      "$\\frac{4}{9}$",
+      "$\\frac{5}{9}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Word 'EQUATIONS' has 9 letters.\nVowels: $\\{E, U, A, I, O\\}$ (5 vowels).\nConsonants: $\\{Q, T, N, S\\}$ (4 consonants).\n$$P(\\text{1 vowel and 1 consonant}) = \\frac{^5C_1 \\times ^4C_1}{^9C_2} = \\frac{5 \\times 4}{\\frac{9 \\times 8}{2}} = \\frac{20}{36} = \\frac{5}{9}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q16",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 16,
+    "year": 2019,
+    "question": "If $A$ and $B$ are two events of a sample space $S$ such that $P(A) = 0.2$, $P(B) = 0.6$ and $P(A|B) = 0.5$, then $P(A'|B) = $",
+    "options": [
+      "3/10",
+      "1/2",
+      "2/3",
+      "1/3"
+    ],
+    "correct_answer": 1,
+    "explanation": "$$P(A'|B) = 1 - P(A|B) = 1 - 0.5 = 0.5 = \\frac{1}{2}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q17",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 17,
+    "year": 2019,
+    "question": "A man speaks truth 2 out of 3 times. He picks one of the natural numbers in the set $S = \\{1, 2, 3, 4, 5, 6, 7\\}$ and reports that it is even. The probability that it is actually even is",
+    "options": [
+      "$\\frac{2}{5}$",
+      "$\\frac{1}{10}$",
+      "$\\frac{1}{5}$",
+      "$\\frac{3}{5}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Set $S = \\{1, 2, 3, 4, 5, 6, 7\\}$.\nEven numbers $E_1 = \\{2, 4, 6\\} \\implies P(E_1) = \\frac{3}{7}$.\nOdd numbers $E_2 = \\{1, 3, 5, 7\\} \\implies P(E_2) = \\frac{4}{7}$.\n\nLet $A$ be the event that the man reports even number.\n$P(A|E_1) = P(\\text{truth}) = \\frac{2}{3}$.\n$P(A|E_2) = P(\\text{lie}) = 1 - \\frac{2}{3} = \\frac{1}{3}$.\n\nBy Bayes' Theorem:\n$$P(E_1|A) = \\frac{P(E_1)P(A|E_1)}{P(E_1)P(A|E_1) + P(E_2)P(A|E_2)} = \\frac{\\frac{3}{7} \\times \\frac{2}{3}}{\\frac{3}{7} \\times \\frac{2}{3} + \\frac{4}{7} \\times \\frac{1}{3}} = \\frac{6}{6 + 4} = \\frac{6}{10} = \\frac{3}{5}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q18",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 18,
+    "year": 2020,
+    "question": "If $A$ and $B$ are two events such that $P(A) = \\frac{1}{3}$, $P(B) = \\frac{1}{2}$ and $P(A \\cap B) = \\frac{1}{6}$, then $P\\left(\\frac{A'}{B}\\right)$ is",
+    "options": [
+      "$\\frac{1}{3}$",
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{12}$",
+      "$\\frac{2}{3}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$$P(A|B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{1/6}{1/2} = \\frac{2}{6} = \\frac{1}{3}$$\n$$P\\left(\\frac{A'}{B}\\right) = 1 - P(A|B) = 1 - \\frac{1}{3} = \\frac{2}{3}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q19",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 19,
+    "year": 2020,
+    "question": "The probability of solving a problem by three persons $A, B$ and $C$ independently is $\\frac{1}{2}, \\frac{1}{4}$ and $\\frac{1}{3}$ respectively. Then the probability of the problem is solved by any two of them is",
+    "options": [
+      "$\\frac{1}{4}$",
+      "$\\frac{1}{24}$",
+      "$\\frac{1}{8}$",
+      "$\\frac{1}{12}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Let $P(A) = 1/2 \\implies P(A') = 1/2$.\n$P(B) = 1/4 \\implies P(B') = 3/4$.\n$P(C) = 1/3 \\implies P(C') = 2/3$.\n\nProbability of exactly two solving:\n$$P = P(A \\cap B \\cap C') + P(A \\cap B' \\cap C) + P(A' \\cap B \\cap C)$$\n$$= \\left(\\frac{1}{2} \\times \\frac{1}{4} \\times \\frac{2}{3}\\right) + \\left(\\frac{1}{2} \\times \\frac{3}{4} \\times \\frac{1}{3}\\right) + \\left(\\frac{1}{2} \\times \\frac{1}{4} \\times \\frac{1}{3}\\right)$$\n$$= \\frac{2}{24} + \\frac{3}{24} + \\frac{1}{24} = \\frac{6}{24} = \\frac{1}{4}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q20",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 20,
+    "year": 2020,
+    "question": "Events $E_1$ and $E_2$ form a partition of the sample space $S$. $A$ is any event such that $P(E_1) = P(E_2) = \\frac{1}{2}$, $P(E_2|A) = \\frac{1}{2}$ and $P(A|E_2) = \\frac{2}{3}$, then $P(E_1|A)$ is",
+    "options": [
+      "$\\frac{2}{3}$",
+      "1",
+      "$\\frac{1}{4}$",
+      "$\\frac{1}{2}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Since $E_1, E_2$ partition the sample space $S$, the posterior probabilities given event $A$ must sum to 1:\n$$P(E_1|A) + P(E_2|A) = 1$$\n$$P(E_1|A) = 1 - P(E_2|A) = 1 - \\frac{1}{2} = \\frac{1}{2}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q21",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 21,
+    "year": 2020,
+    "question": "If $A, B, C$ are three mutually exclusive and exhaustive events of an experiment such that $P(A) = 2P(B) = 3P(C)$, then $P(B)$ is equal to",
+    "options": [
+      "$\\frac{2}{11}$",
+      "$\\frac{3}{11}$",
+      "$\\frac{4}{11}$",
+      "$\\frac{1}{11}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Since $A, B, C$ are mutually exclusive and exhaustive:\n$$P(A) + P(B) + P(C) = 1$$\nGiven $P(A) = 2P(B)$ and $P(C) = \\frac{2}{3}P(B)$:\n$$2P(B) + P(B) + \\frac{2}{3}P(B) = 1$$\n$$\\left(3 + \\frac{2}{3}\\right)P(B) = 1 \\implies \\frac{11}{3}P(B) = 1 \\implies P(B) = \\frac{3}{11}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q22",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 22,
+    "year": 2021,
+    "question": "Given that $A$ and $B$ are two events such that $P(B) = \\frac{3}{5}$, $P\\left(\\frac{A}{B}\\right) = \\frac{1}{2}$ and $P(A \\cup B) = \\frac{4}{5}$, then $P(A) = $",
+    "options": [
+      "$\\frac{3}{10}$",
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{5}$",
+      "$\\frac{3}{5}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "$$P(A \\cap B) = P(B) \\cdot P(A|B) = \\frac{3}{5} \\times \\frac{1}{2} = \\frac{3}{10}$$\nFrom addition rule:\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n$$\\frac{4}{5} = P(A) + \\frac{3}{5} - \\frac{3}{10}$$\n$$P(A) = \\frac{4}{5} - \\frac{3}{10} = \\frac{8 - 3}{10} = \\frac{5}{10} = \\frac{1}{2}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q23",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 23,
+    "year": 2021,
+    "question": "If $A, B$ and $C$ are three independent events such that $P(A) = P(B) = P(C) = p$, then $P(\\text{at least two of } A, B, C \\text{ occur}) = $",
+    "options": [
+      "$p^3 - 3p$",
+      "$3p - 2p^2$",
+      "$3p^2 - 2p^3$",
+      "$3p^2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "At least two occur means either exactly 2 occur or all 3 occur:\n$$P = \\binom{3}{2} p^2 (1 - p) + \\binom{3}{3} p^3 = 3p^2(1 - p) + p^3 = 3p^2 - 3p^3 + p^3 = 3p^2 - 2p^3$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q24",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 24,
+    "year": 2021,
+    "question": "Two dice are thrown. If it is known that the sum of numbers on the dice was less than 6, the probability of getting a sum as 3 is",
+    "options": [
+      "$\\frac{1}{18}$",
+      "$\\frac{5}{18}$",
+      "$\\frac{1}{5}$",
+      "$\\frac{2}{5}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let $A$ be the event that sum is less than 6:\n$$A = \\{(1,1), (1,2), (1,3), (1,4), (2,1), (2,2), (2,3), (3,1), (3,2), (4,1)\\} \\implies n(A) = 10$$\nLet $B$ be the event that sum is 3:\n$$B = \\{(1,2), (2,1)\\} \\implies n(A \\cap B) = 2$$\n$$P(B|A) = \\frac{n(A \\cap B)}{n(A)} = \\frac{2}{10} = \\frac{1}{5}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q25",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 25,
+    "year": 2021,
+    "question": "A car manufacturing factory has two plants $X$ and $Y$. Plant $X$ manufactures $70\\%$ of cars and plant $Y$ manufactures $30\\%$ of cars. $80\\%$ of cars at plant $X$ and $90\\%$ of cars at plant $Y$ are rated as standard quality. A car is chosen at random and is found to be standard quality. The probability that it has come from plant $X$ is",
+    "options": [
+      "$\\frac{56}{73}$",
+      "$\\frac{56}{84}$",
+      "$\\frac{56}{83}$",
+      "$\\frac{56}{79}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Let $E_1 = \\text{Plant } X, E_2 = \\text{Plant } Y, A = \\text{Standard quality}$.\n$$P(E_1) = 0.70 = \\frac{7}{10}, \\quad P(E_2) = 0.30 = \\frac{3}{10}$$\n$$P(A|E_1) = 0.80 = \\frac{8}{10}, \\quad P(A|E_2) = 0.90 = \\frac{9}{10}$$\n\nBy Bayes' theorem:\n$$P(E_1|A) = \\frac{P(E_1)P(A|E_1)}{P(E_1)P(A|E_1) + P(E_2)P(A|E_2)} = \\frac{\\frac{7}{10} \\times \\frac{8}{10}}{\\frac{7}{10} \\times \\frac{8}{10} + \\frac{3}{10} \\times \\frac{9}{10}} = \\frac{56}{56 + 27} = \\frac{56}{83}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q26",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 26,
+    "year": 2021,
+    "question": "If $P(A) = 0.59$, $P(B) = 0.30$ and $P(A \\cap B) = 0.21$, then $P(A' \\cap B') = $",
+    "options": [
+      "0.11",
+      "0.38",
+      "0.32",
+      "0.35"
+    ],
+    "correct_answer": 2,
+    "explanation": "$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = 0.59 + 0.30 - 0.21 = 0.68$$\n$$P(A' \\cap B') = 1 - P(A \\cup B) = 1 - 0.68 = 0.32$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q27",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 27,
+    "year": 2022,
+    "question": "If $A$ and $B$ are two events such that $P(A) = \\frac{1}{2}, P(B) = \\frac{1}{3}$ and $P(A|B) = \\frac{1}{4}$, then $P(A' \\cap B')$ is",
+    "options": [
+      "$\\frac{1}{4}$",
+      "$\\frac{1}{12}$",
+      "$\\frac{3}{16}$",
+      "$\\frac{3}{4}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "$$P(A \\cap B) = P(B) \\cdot P(A|B) = \\frac{1}{3} \\times \\frac{1}{4} = \\frac{1}{12}$$\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B) = \\frac{1}{2} + \\frac{1}{3} - \\frac{1}{12} = \\frac{6 + 4 - 1}{12} = \\frac{9}{12} = \\frac{3}{4}$$\n$$P(A' \\cap B') = 1 - P(A \\cup B) = 1 - \\frac{3}{4} = \\frac{1}{4}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q28",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 28,
+    "year": 2022,
+    "question": "A pandemic has been spreading all over the world. The probabilities are 0.7 that there will be a lockdown, 0.8 that the pandemic is controlled in one month if there is a lockdown and 0.3 that it is controlled in one month if there is no lockdown. The probability that the pandemic will be controlled in one month is",
+    "options": [
+      "0.65",
+      "1.46",
+      "1.65",
+      "0.46"
+    ],
+    "correct_answer": 0,
+    "explanation": "Let $E_1 = \\text{Lockdown}, E_2 = \\text{No lockdown}, A = \\text{Pandemic controlled}$.\n$$P(E_1) = 0.7, \\quad P(E_2) = 1 - 0.7 = 0.3$$\n$$P(A|E_1) = 0.8, \\quad P(A|E_2) = 0.3$$\nBy total probability theorem:\n$$P(A) = P(E_1)P(A|E_1) + P(E_2)P(A|E_2) = (0.7)(0.8) + (0.3)(0.3) = 0.56 + 0.09 = 0.65$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q29",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 29,
+    "year": 2022,
+    "question": "If $A$ and $B$ are two independent events such that $P(\\bar{A}) = 0.75$, $P(A \\cup B) = 0.65$, and $P(B) = x$, then find the value of $x$.",
+    "options": [
+      "$\\frac{5}{14}$",
+      "$\\frac{9}{14}$",
+      "$\\frac{8}{15}$",
+      "$\\frac{7}{15}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "$$P(A) = 1 - P(\\bar{A}) = 1 - 0.75 = 0.25$$\nSince $A$ and $B$ are independent, $P(A \\cap B) = P(A) \\cdot P(B) = 0.25x$.\n$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n$$0.65 = 0.25 + x - 0.25x$$\n$$0.40 = 0.75x \\implies x = \\frac{0.40}{0.75} = \\frac{40}{75} = \\frac{8}{15}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q30",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 30,
+    "year": 2023,
+    "question": "If $A$ and $B$ are events such that $P(A) = \\frac{1}{4}$, $P\\left(\\frac{A}{B}\\right) = \\frac{1}{2}$ and $P\\left(\\frac{B}{A}\\right) = \\frac{2}{3}$, then $P(B)$ is",
+    "options": [
+      "$\\frac{2}{3}$",
+      "$\\frac{1}{6}$",
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{3}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "$$P(A \\cap B) = P(A) \\cdot P(B|A) = \\frac{1}{4} \\times \\frac{2}{3} = \\frac{1}{6}$$\n$$P(B) = \\frac{P(A \\cap B)}{P(A|B)} = \\frac{1/6}{1/2} = \\frac{2}{6} = \\frac{1}{3}$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q31",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 31,
+    "year": 2023,
+    "question": "A bag contains $2n + 1$ coins. It is known that $n$ of these coins have head on both sides whereas the other $n + 1$ coins are fair. A coin is selected at random and tossed. If the probability that toss results in heads is $\\frac{31}{42}$, then the value of $n$ is",
+    "options": [
+      "8",
+      "5",
+      "10",
+      "6"
+    ],
+    "correct_answer": 2,
+    "explanation": "Total coins $= 2n + 1$.\nLet $E_1 = \\text{Two-headed coin} \\implies P(E_1) = \\frac{n}{2n+1}$.\nLet $E_2 = \\text{Fair coin} \\implies P(E_2) = \\frac{n+1}{2n+1}$.\n$$P(H|E_1) = 1, \\quad P(H|E_2) = \\frac{1}{2}$$\n\nTotal probability of getting a Head:\n$$P(H) = P(E_1)P(H|E_1) + P(E_2)P(H|E_2)$$\n$$\\frac{31}{42} = \\frac{n}{2n+1}(1) + \\frac{n+1}{2n+1}\\left(\\frac{1}{2}\\right) = \\frac{2n + n + 1}{2(2n+1)} = \\frac{3n+1}{4n+2}$$\n$$31(4n + 2) = 42(3n + 1)$$\n$$124n + 62 = 126n + 42$$\n$$2n = 20 \\implies n = 10$$",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch12_q32",
+    "subject": "Mathematics",
+    "chapter": "Probability",
+    "chapter_number": 12,
+    "questionNumber": 32,
+    "year": 2023,
+    "question": "Let $A = \\{x, y, z, u\\}$ and $B = \\{a, b\\}$. A function $f: A \\rightarrow B$ is selected randomly. The probability that the function is an onto function is",
+    "options": [
+      "$\\frac{5}{8}$",
+      "$\\frac{7}{8}$",
+      "$\\frac{1}{35}$",
+      "$\\frac{1}{8}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "$|A| = 4, |B| = 2$.\nTotal number of functions from $A$ to $B = 2^4 = 16$.\nFunctions that are NOT onto are constant functions (mapping all elements to $a$ or all to $b$), which is 2.\nNumber of onto functions $= 16 - 2 = 14$.\n$$P(\\text{onto function}) = \\frac{14}{16} = \\frac{7}{8}$$",
+    "needs_image": false
+  }
+]

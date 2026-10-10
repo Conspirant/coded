@@ -1,0 +1,308 @@
+[
+  {
+    "id": "-001",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2006,
+    "question": "The remainder obtained when $(1!)^2 + (2!)^2 + (3!)^2 + \\dots + (100!)^2$ is divided by $10^2$ is",
+    "options": [
+      "27",
+      "28",
+      "17",
+      "14"
+    ],
+    "correct_answer": 2,
+    "explanation": "For any integer $n \\geq 5$, $n!$ contains both $2$ and $5$ as factors, so $n!$ is a multiple of $10$, which implies $(n!)^2$ is a multiple of $10^2 = 100$.\nTherefore, for all $n \\geq 5$, $(n!)^2 \\equiv 0 \\pmod{100}$.\n\nWe only need to consider the sum of terms for $n = 1, 2, 3, 4$:\n$(1!)^2 = 1^2 = 1$\n$(2!)^2 = 2^2 = 4$\n$(3!)^2 = 6^2 = 36$\n$(4!)^2 = 24^2 = 576$\n\nTotal sum $= 1 + 4 + 36 + 576 = 617$.\n$617 = (6 \\times 100) + 17$.\nHence, the remainder when divided by $100$ is $17$.",
+    "needs_image": false
+  },
+  {
+    "id": "-002",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2008,
+    "question": "If the coefficients of $x^7$ and $x^8$ in the expansion of $\\left(2 + \\frac{x}{3}\\right)^n$ are equal, then the value of $n$ is",
+    "options": [
+      "55",
+      "56",
+      "45",
+      "15"
+    ],
+    "correct_answer": 0,
+    "explanation": "The general term in the expansion of $\\left(2 + \\frac{x}{3}\\right)^n$ is:\n$T_{r+1} = {}^n C_r 2^{n-r} \\left(\\frac{x}{3}\\right)^r = {}^n C_r 2^{n-r} 3^{-r} x^r$.\n\nCoefficient of $x^7$ is ${}^n C_7 2^{n-7} 3^{-7}$.\nCoefficient of $x^8$ is ${}^n C_8 2^{n-8} 3^{-8}$.\n\nGiven they are equal:\n${}^n C_7 2^{n-7} 3^{-7} = {}^n C_8 2^{n-8} 3^{-8}$\n$\\frac{{}^n C_8}{{}^n C_7} = \\frac{2^{n-7} 3^{-7}}{2^{n-8} 3^{-8}} = 2 \\times 3 = 6$\n$\\frac{n - 7}{8} = 6 \\implies n - 7 = 48 \\implies n = 55$.",
+    "needs_image": false
+  },
+  {
+    "id": "-003",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2009,
+    "question": "The term independent of $x$ in the expansion of $\\left(x - \\frac{1}{x}\\right)^{10}$ is",
+    "options": [
+      "252",
+      "-252",
+      "210",
+      "-252"
+    ],
+    "correct_answer": 3,
+    "explanation": "The general term in the expansion of $\\left(x - \\frac{1}{x}\\right)^{10}$ is:\n$T_{r+1} = {}^{10}C_r x^{10-r} \\left(-\\frac{1}{x}\\right)^r = (-1)^r {}^{10}C_r x^{10-2r}$.\n\nFor the term independent of $x$:\n$10 - 2r = 0 \\implies 2r = 10 \\implies r = 5$.\n$T_6 = (-1)^5 {}^{10}C_5 = -\\frac{10 \\times 9 \\times 8 \\times 7 \\times 6}{5 \\times 4 \\times 3 \\times 2 \\times 1} = -252$.",
+    "needs_image": false
+  },
+  {
+    "id": "-004",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2010,
+    "question": "The digit in the units place of any positive integer power of 5 is",
+    "options": [
+      "0",
+      "5",
+      "1",
+      "25"
+    ],
+    "correct_answer": 1,
+    "explanation": "For any positive integer $n$, $5^n$ always ends in the digit $5$:\n$5^1 = 5, 5^2 = 25, 5^3 = 125, \\dots$\nTherefore, the digit in the units place is always $5$.",
+    "needs_image": false
+  },
+  {
+    "id": "-005",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2011,
+    "question": "The remainder when $3^{100} \\times 2^{50}$ is divided by 5 is",
+    "options": [
+      "1",
+      "4",
+      "3",
+      "2"
+    ],
+    "correct_answer": 1,
+    "explanation": "Working modulo 5:\n$3^4 = 81 \\equiv 1 \\pmod 5 \\implies 3^{100} = (3^4)^{25} \\equiv 1^{25} \\equiv 1 \\pmod 5$.\n$2^4 = 16 \\equiv 1 \\pmod 5 \\implies 2^{50} = (2^4)^{12} \\times 2^2 \\equiv (1)^{12} \\times 4 \\equiv 4 \\pmod 5$.\n\nTherefore:\n$3^{100} \\times 2^{50} \\equiv 1 \\times 4 \\equiv 4 \\pmod 5$.\nHence, the remainder is $4$.",
+    "needs_image": false
+  },
+  {
+    "id": "-006",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2011,
+    "question": "The digit in the units place of the number $6^{126} + 3^{78}$ is",
+    "options": [
+      "7",
+      "5",
+      "9",
+      "3"
+    ],
+    "correct_answer": 1,
+    "explanation": "- For powers of $6$: $6^n$ always ends in $6$ for any positive integer $n$.\n- For powers of $3$: powers cycle with period 4 in the units place ($3, 9, 7, 1$).\n  $78 = (19 \\times 4) + 2 \\equiv 2 \\pmod 4$.\n  So $3^{78}$ has the same units digit as $3^2 = 9$.\n\nSum of units digits $= 6 + 9 = 15$, which has units digit $5$.",
+    "needs_image": false
+  },
+  {
+    "id": "-007",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2011,
+    "question": "The middle term in the expansion of $\\left(x - \\frac{1}{2x}\\right)^{10}$ is",
+    "options": [
+      "$\\frac{63}{8}$",
+      "$-\\frac{63}{8}$",
+      "$-\\frac{63}{8} x$",
+      "$\\frac{63}{8} x$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Since $n = 10$ is even, there is only one middle term, which is the $\\left(\\frac{10}{2} + 1\\right) = 6^{\\text{th}}$ term ($r = 5$):\n$T_6 = {}^{10}C_5 x^{10-5} \\left(-\\frac{1}{2x}\\right)^5 = (-1)^5 {}^{10}C_5 x^5 \\frac{1}{32 x^5} = -\\frac{252}{32} = -\\frac{63}{8}$.",
+    "needs_image": false
+  },
+  {
+    "id": "-008",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2012,
+    "question": "$(49^2 - 4)(49)(49^2 - 1)$ is always divisible by",
+    "options": [
+      "$8!$",
+      "$7!$",
+      "$6!$",
+      "$9!$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Factorising the given expression:\n$(49^2 - 4)(49)(49^2 - 1) = (49 - 2)(49 + 2)(49)(49 - 1)(49 + 1)$\n$= 47 \\times 51 \\times 49 \\times 48 \\times 50 = 47 \\times 48 \\times 49 \\times 50 \\times 51$.\nThis is the product of 5 consecutive integers. Moreover, $48 \\times 49 \\times 50 \\times 51$ contains the prime factors of $7! = 5040$:\n$47 \\times 48 \\times 49 \\times 50 \\times 51 = 7! \\times (47 \\times 7 \\times 2 \\times 17)$.\nTherefore, the number is always divisible by $7!$.",
+    "needs_image": false
+  },
+  {
+    "id": "-009",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2012,
+    "question": "If $(1 + x + x^2 + x^3)^n = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \\dots + a_{3n} x^{3n}$, then $a_0 - a_1 + a_2 - a_3 + \\dots - a_{3n}$ is equal to",
+    "options": [
+      "1",
+      "$4^n$",
+      "$-1$",
+      "0"
+    ],
+    "correct_answer": 3,
+    "explanation": "Substitute $x = -1$ into both sides of the identity:\n$[1 + (-1) + (-1)^2 + (-1)^3]^n = a_0 + a_1(-1) + a_2(-1)^2 + a_3(-1)^3 + \\dots + a_{3n}(-1)^{3n}$\n$[1 - 1 + 1 - 1]^n = a_0 - a_1 + a_2 - a_3 + \\dots - a_{3n}$\n$0^n = a_0 - a_1 + a_2 - a_3 + \\dots - a_{3n} = 0$.",
+    "needs_image": false
+  },
+  {
+    "id": "-010",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2013,
+    "question": "The digit in the units place of $7^{171} + (177)!$ is",
+    "options": [
+      "3",
+      "2",
+      "1",
+      "0"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. For $(177)!$: Since $177 \\geq 5$, $(177)!$ contains both $2$ and $5$ as factors, so its units digit is $0$.\n2. For $7^{171}$: The units digit of powers of $7$ repeats with a cycle of 4: $\\{7, 9, 3, 1\\}$.\n   $171 = (4 \\times 42) + 3 \\equiv 3 \\pmod 4$.\n   Thus, $7^{171}$ has the same units digit as $7^3 = 343$, which is $3$.\n\nTotal units digit $= 3 + 0 = 3$.",
+    "needs_image": false
+  },
+  {
+    "id": "-011",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2013,
+    "question": "The value of ${}^{10}C_1 + {}^{10}C_2 + {}^{10}C_3 + \\dots + {}^{10}C_9$ is",
+    "options": [
+      "$2^{10}$",
+      "$2^{10} - 1$",
+      "$2^{10} + 1$",
+      "$2^{10} - 2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "By the binomial coefficient identity:\n$\\sum_{r=0}^{10} {}^{10}C_r = {}^{10}C_0 + {}^{10}C_1 + {}^{10}C_2 + \\dots + {}^{10}C_9 + {}^{10}C_{10} = 2^{10}$.\n\nSince ${}^{10}C_0 = 1$ and ${}^{10}C_{10} = 1$:\n${}^{10}C_1 + {}^{10}C_2 + \\dots + {}^{10}C_9 = 2^{10} - {}^{10}C_0 - {}^{10}C_{10} = 2^{10} - 1 - 1 = 2^{10} - 2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-012",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2014,
+    "question": "The last digit of the number $7^{886}$ is",
+    "options": [
+      "7",
+      "9",
+      "3",
+      "1"
+    ],
+    "correct_answer": 1,
+    "explanation": "The units digits of powers of $7$ repeat cyclically in blocks of 4:\n$7^1 \\rightarrow 7, 7^2 \\rightarrow 9, 7^3 \\rightarrow 3, 7^4 \\rightarrow 1$.\nDividing the exponent $886$ by $4$:\n$886 = (4 \\times 221) + 2 \\equiv 2 \\pmod 4$.\nTherefore, the last digit of $7^{886}$ is the same as that of $7^2 = 49$, which is $9$.",
+    "needs_image": false
+  },
+  {
+    "id": "-013",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2015,
+    "question": "The remainder when $10^{10} (10^{10} + 1)(10^{10} + 2)$ is divided by 6 is",
+    "options": [
+      "1",
+      "2",
+      "0",
+      "4"
+    ],
+    "correct_answer": 2,
+    "explanation": "The expression $n(n + 1)(n + 2)$ is the product of three consecutive integers.\nAmong any three consecutive integers, at least one is divisible by 2 and exactly one is divisible by 3.\nTherefore, the product of three consecutive integers is always divisible by $2 \\times 3 = 6$.\nHence, the remainder when divided by 6 is $0$.",
+    "needs_image": false
+  },
+  {
+    "id": "-014",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2017,
+    "question": "The smallest positive divisor greater than 1 of the number $101^{100} - 1$ is",
+    "options": [
+      "101",
+      "10",
+      "2",
+      "100"
+    ],
+    "correct_answer": 2,
+    "explanation": "Since $101$ is an odd integer, $101^{100}$ is also an odd integer.\nThe difference of two odd integers, $101^{100} - 1$, is an even integer.\nEvery even integer is divisible by $2$.\nSince $2$ is the smallest prime number and smallest integer greater than 1, the smallest positive divisor greater than 1 is $2$.",
+    "needs_image": false
+  },
+  {
+    "id": "-015",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2018,
+    "question": "The remainder obtained when $1! + 2! + 3! + \\dots + 100!$ is divided by 15 is",
+    "options": [
+      "14",
+      "0",
+      "3",
+      "5"
+    ],
+    "correct_answer": 2,
+    "explanation": "For any $n \\geq 5$, $n! = 1 \\times 2 \\times 3 \\times 4 \\times 5 \\times \\dots \\times n$ contains $3 \\times 5 = 15$ as a factor, so $n! \\equiv 0 \\pmod{15}$.\nTherefore, we only need to compute the remainder for $n = 1, 2, 3, 4$:\n$1! + 2! + 3! + 4! = 1 + 2 + 6 + 24 = 33$.\n$33 = (2 \\times 15) + 3 \\equiv 3 \\pmod{15}$.\nHence, the remainder is $3$.",
+    "needs_image": false
+  },
+  {
+    "id": "-016",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2019,
+    "question": "The total number of terms in the expansion of $(x + a)^{100} + (x - a)^{100}$ after simplification is",
+    "options": [
+      "50",
+      "51",
+      "101",
+      "202"
+    ],
+    "correct_answer": 1,
+    "explanation": "For $(x + a)^n + (x - a)^n$:\nWhen $n$ is even, the odd-index terms (having negative signs in $(x - a)^n$) cancel out, leaving only the terms with even indices ($r = 0, 2, 4, \\dots, n$).\nThe total number of terms is:\n$\\frac{n}{2} + 1 = \\frac{100}{2} + 1 = 50 + 1 = 51$.",
+    "needs_image": false
+  },
+  {
+    "id": "-017",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2020,
+    "question": "The number of terms in the expansion of $(1 + 2x + x^2)^{20}$ is",
+    "options": [
+      "21",
+      "40",
+      "41",
+      "20"
+    ],
+    "correct_answer": 2,
+    "explanation": "Notice that $1 + 2x + x^2 = (1 + x)^2$.\nTherefore:\n$(1 + 2x + x^2)^{20} = [(1 + x)^2]^{20} = (1 + x)^{40}$.\nThe number of terms in the expansion of $(1 + x)^n$ is $n + 1$.\nHere, $n = 40$, so the number of terms is $40 + 1 = 41$.",
+    "needs_image": false
+  },
+  {
+    "id": "-018",
+    "subject": "Mathematics",
+    "chapter": "Binomial Theorem",
+    "chapter_number": 7,
+    "year": 2024,
+    "question": "The value of $\\frac{C_1}{C_0} + 2\\frac{C_2}{C_1} + 3\\frac{C_3}{C_2} + \\dots + n\\frac{C_n}{C_{n-1}}$ is equal to",
+    "options": [
+      "$\\frac{n(n+1)}{2}$",
+      "$\\frac{n(n-1)}{2}$",
+      "$n + 1$",
+      "$3n(n + 1)$"
+    ],
+    "correct_answer": 0,
+    "explanation": "The $r^{\\text{th}}$ term of the given series is:\n$T_r = r \\frac{{}^n C_r}{{}^n C_{r-1}}$\nUsing the identity $\\frac{{}^n C_r}{{}^n C_{r-1}} = \\frac{n - r + 1}{r}$:\n$T_r = r \\left(\\frac{n - r + 1}{r}\\right) = n - r + 1$.\n\nSumming for $r = 1, 2, \\dots, n$:\n$S = \\sum_{r=1}^n (n - r + 1) = n + (n - 1) + (n - 2) + \\dots + 1 = \\frac{n(n+1)}{2}$.",
+    "needs_image": false
+  }
+]

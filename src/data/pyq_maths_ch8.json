@@ -1,0 +1,138 @@
+[
+  {
+    "id": "math_ch8_q1",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2009,
+    "question": "If $n = 2020!$, then the value of $\\frac{1}{\\log_2 n} + \\frac{1}{\\log_3 n} + \\frac{1}{\\log_4 n} + \\dots + \\frac{1}{\\log_{2020} n}$ is equal to",
+    "options": [
+      "$2020!$",
+      "$0$",
+      "$2020$",
+      "$1$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Using the change of base rule of logarithms, $\\frac{1}{\\log_b a} = \\log_a b$:\n\n$\\frac{1}{\\log_2 n} + \\frac{1}{\\log_3 n} + \\dots + \\frac{1}{\\log_{2020} n} = \\log_n 2 + \\log_n 3 + \\log_n 4 + \\dots + \\log_n 2020$\n\nApplying the product rule of logarithms $\\sum \\log_n x_i = \\log_n\\left(\\prod x_i\\right)$:\n$= \\log_n (2 \\times 3 \\times 4 \\times \\dots \\times 2020) = \\log_n (2020!)$\n\nSince $n = 2020!$:\n$= \\log_n (n) = 1$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q2",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2014,
+    "question": "If the sum of an infinite G.P. is $4$ and the second term is $\\frac{3}{4}$, then the first term $a$ and common ratio $r$ can be",
+    "options": [
+      "$a = 2, r = \\frac{1}{2}$",
+      "$a = 4, r = \\frac{1}{4}$",
+      "$a = \\frac{3}{2}, r = \\frac{1}{2}$",
+      "$a = 3, r = \\frac{1}{4}$ or $a = 1, r = \\frac{3}{4}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Let the first term of the G.P. be $a$ and the common ratio be $r$ ($|r| < 1$).\n1. Second term: $a_2 = ar = \\frac{3}{4} \\implies r = \\frac{3}{4a}$.\n2. Sum to infinity: $S_\\infty = \\frac{a}{1 - r} = 4 \\implies a = 4(1 - r)$.\n\nSubstituting $r = \\frac{3}{4a}$:\n$a = 4\\left(1 - \\frac{3}{4a}\\right) = 4 - \\frac{3}{a}$\n$a^2 = 4a - 3 \\implies a^2 - 4a + 3 = 0$\n$(a - 3)(a - 1) = 0 \\implies a = 3 \\text{ or } a = 1$.\n\n- If $a = 3$, $r = \\frac{3}{4(3)} = \\frac{1}{4}$.\n- If $a = 1$, $r = \\frac{3}{4(1)} = \\frac{3}{4}$.\nBoth pairs satisfy $|r| < 1$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q3",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2015,
+    "question": "If the $2^{\\text{nd}}$ and $5^{\\text{th}}$ terms of a G.P. are $24$ and $3$ respectively, then the sum of the first six terms is",
+    "options": [
+      "$\\frac{189}{4}$",
+      "$\\frac{179}{2}$",
+      "$\\frac{189}{2}$",
+      "$\\frac{189}{8}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "In a G.P. with first term $a$ and common ratio $r$:\n- $a_2 = ar = 24$  ...(i)\n- $a_5 = ar^4 = 3$  ...(ii)\n\nDividing (ii) by (i):\n$\\frac{ar^4}{ar} = \\frac{3}{24} \\implies r^3 = \\frac{1}{8} \\implies r = \\frac{1}{2}$.\n\nFrom (i):\n$a\\left(\\frac{1}{2}\\right) = 24 \\implies a = 48$.\n\nThe sum of the first 6 terms is:\n$S_6 = \\frac{a(1 - r^6)}{1 - r} = \\frac{48\\left(1 - (1/2)^6\\right)}{1 - 1/2} = \\frac{48\\left(1 - \\frac{1}{64}\\right)}{\\frac{1}{2}} = 48 \\times 2 \\times \\frac{63}{64} = 96 \\times \\frac{63}{64} = \\frac{3 \\times 63}{2} = \\frac{189}{2}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q4",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2018,
+    "question": "If $a, b, c$ are three consecutive terms of an A.P. and $x, y, z$ are three consecutive terms of a G.P., then the value of $x^{b-c} \\cdot y^{c-a} \\cdot z^{a-b}$ is",
+    "options": [
+      "$0$",
+      "$xyz$",
+      "$-1$",
+      "$1$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Since $a, b, c$ are in A.P.:\n$b - a = c - b = d \\implies a + c = 2b$.\n\nSince $x, y, z$ are in G.P. with common ratio $R$:\n$x = x, \\quad y = xR, \\quad z = xR^2$.\n\nNow, substitute into the given expression:\n$x^{b-c} \\cdot y^{c-a} \\cdot z^{a-b} = x^{b-c} \\cdot (xR)^{c-a} \\cdot (xR^2)^{a-b}$\n$= x^{(b-c) + (c-a) + (a-b)} \\cdot R^{(c-a) + 2(a-b)}$\n$= x^0 \\cdot R^{c - a + 2a - 2b} = 1 \\cdot R^{a + c - 2b}$.\n\nSince $a + c = 2b \\implies a + c - 2b = 0$:\n$= R^0 = 1$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q5",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2019,
+    "question": "The third term of a G.P. is $9$. The product of its first five terms is",
+    "options": [
+      "$3^5$",
+      "$3^{10}$",
+      "$3^9$",
+      "$3^{12}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let the first five terms of the G.P. be $\\frac{a}{r^2}, \\frac{a}{r}, a, ar, ar^2$, where $a$ is the third term ($a_3 = a = 9$).\n\nThe product of the first five terms is:\n$P = \\left(\\frac{a}{r^2}\\right) \\left(\\frac{a}{r}\\right) (a) (ar) (ar^2) = a^5$.\n\nGiven $a = 9 = 3^2$:\n$P = a^5 = (3^2)^5 = 3^{10}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q6",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2022,
+    "question": "If $a_1, a_2, a_3, \\dots$ is a geometric progression and $\\frac{a_5}{a_1} = 25$, then $\\frac{a_9}{a_1}$ equals",
+    "options": [
+      "$3(5^4)$",
+      "$5^3$",
+      "$5^4$",
+      "$2(5^3)$"
+    ],
+    "correct_answer": 2,
+    "explanation": "In a G.P., the $n^{\\text{th}}$ term is $a_n = a_1 r^{n-1}$.\nGiven:\n$\\frac{a_5}{a_1} = \\frac{a_1 r^4}{a_1} = r^4 = 25 = 5^2$.\n\nNow, the required ratio is:\n$\\frac{a_9}{a_1} = \\frac{a_1 r^8}{a_1} = r^8 = (r^4)^2 = (25)^2 = (5^2)^2 = 5^4$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q7",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2024,
+    "question": "If $S_n$ stands for the sum to $n$-terms of a G.P. with $a$ as the first term and $r$ as the common ratio, then $\\frac{S_n}{S_{2n}}$ is",
+    "options": [
+      "$r^n + 1$",
+      "$\\frac{1}{r^n + 1}$",
+      "$r^n - 1$",
+      "$\\frac{1}{r^n - 1}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "The sum to $n$ terms of a G.P. is:\n$S_n = \\frac{a(r^n - 1)}{r - 1}$\n\nThe sum to $2n$ terms is:\n$S_{2n} = \\frac{a(r^{2n} - 1)}{r - 1} = \\frac{a((r^n)^2 - 1)}{r - 1} = \\frac{a(r^n - 1)(r^n + 1)}{r - 1}$\n\nTherefore, the ratio is:\n$\\frac{S_n}{S_{2n}} = \\frac{\\frac{a(r^n - 1)}{r - 1}}{\\frac{a(r^n - 1)(r^n + 1)}{r - 1}} = \\frac{1}{r^n + 1}$.",
+    "needs_image": false
+  },
+  {
+    "id": "math_ch8_q8",
+    "subject": "Mathematics",
+    "chapter": "Sequences and Series",
+    "chapter_number": 8,
+    "year": 2024,
+    "question": "If the A.M. and G.M. of the roots of a quadratic equation are $5$ and $4$ respectively, then the quadratic equation is",
+    "options": [
+      "$x^2 - 10x - 16 = 0$",
+      "$x^2 + 10x + 16 = 0$",
+      "$x^2 + 10x - 16 = 0$",
+      "$x^2 - 10x + 16 = 0$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Let $\\alpha$ and $\\beta$ be the roots of the quadratic equation.\n- Arithmetic Mean: $\\text{A.M.} = \\frac{\\alpha + \\beta}{2} = 5 \\implies \\alpha + \\beta = 10$.\n- Geometric Mean: $\\text{G.M.} = \\sqrt{\\alpha \\beta} = 4 \\implies \\alpha \\beta = 4^2 = 16$.\n\nThe standard quadratic equation with roots $\\alpha$ and $\\beta$ is:\n$x^2 - (\\alpha + \\beta)x + \\alpha \\beta = 0$\n$x^2 - 10x + 16 = 0$.",
+    "needs_image": false
+  }
+]

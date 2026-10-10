@@ -1,0 +1,383 @@
+[
+  {
+    "id": "kcet-physics-ch3-001",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2007,
+    "question": "The maximum height attained by a projectile when thrown at an angle $\\theta$ with the horizontal is found to be half the horizontal range. Then $\\theta =$",
+    "options": [
+      "$\\tan^{-1}(2)$",
+      "$\\frac{\\pi}{6}$",
+      "$\\frac{\\pi}{4}$",
+      "$\\tan^{-1}\\left(\\frac{1}{2}\\right)$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nMaximum height, $H_0 = \\frac{u^2 \\sin^2\\theta}{2g}$\nRange, $R = \\frac{u^2 \\sin 2\\theta}{g}$\n\n$\\therefore H_0 = \\frac{R}{2} \\implies \\frac{u^2 \\sin^2\\theta}{2g} = \\frac{u^2 \\times 2\\sin\\theta\\cos\\theta}{2 \\times g}$\n$\\sin\\theta = 2\\cos\\theta \\implies \\tan\\theta = 2 \\implies \\theta = \\tan^{-1}(2)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-002",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2008,
+    "question": "A body is projected vertically upwards. The times corresponding to height $h$ while ascending and descending are $t_1$ and $t_2$ respectively and velocity of projection is $u$. If $t$ is the total time of flight, which of the following is correct?",
+    "options": [
+      "$u = g(t_1 + t_2)$",
+      "$u = \\frac{g}{2}(t_1 + t_2)$",
+      "$u = \\frac{g}{4}(t_1 + t_2)$",
+      "$u = 2g(t_1 + t_2)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n![Solution Diagram](/pyq_images/physics/ch3/exp_q2.png)\n\nWhen the body is projected, it takes time $t_1$ to cross $h$, then another $t_1'$ to go to $h_{\\max}$ where $v = 0$. Then, the initial velocity becomes $u' = 0$ and it takes time $t$ to reach the ground.\n\n$0 = u - gt \\implies t = u/g$\n$t_1 + t_1' = t = u/g \\implies t_1 = (u/g) - t_1'$\n$t_2 = t + t_1' = (u/g) + t_1'$\n\n$\\therefore t_1 + t_2 = \\frac{2u}{g} \\implies u = \\frac{g}{2}(t_1 + t_2)$.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/physics/ch3/exp_q2.png"
+  },
+  {
+    "id": "kcet-physics-ch3-003",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2009,
+    "question": "Which of the following is not a vector quantity?",
+    "options": [
+      "Momentum",
+      "Weight",
+      "Potential energy",
+      "Nuclear spin"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nAmong the given physical quantities, potential energy is a scalar quantity because it possesses magnitude only and no directional dependence, whereas momentum, weight, and nuclear spin are vector quantities.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-004",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2010,
+    "question": "A stone is thrown vertically at a speed of $30\\text{ m s}^{-1}$ making an angle of $45^\\circ$ with the horizontal. What is the maximum height reached by the stone? Take $g = 10\\text{ m s}^{-2}$.",
+    "options": [
+      "$30\\text{ m}$",
+      "$15\\text{ m}$",
+      "$10\\text{ m}$",
+      "$22.5\\text{ m}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nMaximum height reached by a projectile is:\n$H_{\\max} = \\frac{u^2 \\sin^2\\theta}{2g}$\n\nHere, $u = 30\\text{ m s}^{-1}$, $\\theta = 45^\\circ$, and $g = 10\\text{ m s}^{-2}$:\n$H_{\\max} = \\frac{(30)^2 \\sin^2 45^\\circ}{2 \\times 10} = \\frac{900 \\times \\left(\\frac{1}{\\sqrt{2}}\\right)^2}{20} = \\frac{45}{2} = 22.5\\text{ m}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-005",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2011,
+    "question": "The height $y$ and the distance $x$ along the horizontal plane of a projectile on a certain planet (with no surrounding atmosphere) are given by $y = (8t - 5t^2)\\text{ m}$ and $x = 6t\\text{ m}$, where $t$ is in seconds. The velocity with which the projectile is projected is",
+    "options": [
+      "$8\\text{ m s}^{-1}$",
+      "$6\\text{ m s}^{-1}$",
+      "$10\\text{ m s}^{-1}$",
+      "not obtainable from the data"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nHere, $x = 6t$ and $y = 8t - 5t^2$.\n$\\therefore v_x = \\frac{dx}{dt} = 6\\text{ m s}^{-1}$\n$v_y = \\frac{dy}{dt} = 8 - 10t\\text{ m s}^{-1}$\n\nAt projection ($t = 0$):\n$u_x = 6\\text{ m s}^{-1}$ and $u_y = 8\\text{ m s}^{-1}$\n\nVelocity of projection:\n$u = \\sqrt{u_x^2 + u_y^2} = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = 10\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-006",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2013,
+    "question": "A projectile is projected at $10\\text{ m s}^{-1}$ by making an angle of $60^\\circ$ to the horizontal. After some time its velocity makes an angle of $30^\\circ$ to the horizontal. Its speed at this point is",
+    "options": [
+      "$\\frac{10}{\\sqrt{3}}\\text{ m s}^{-1}$",
+      "$10\\sqrt{3}\\text{ m s}^{-1}$",
+      "$\\frac{\\sqrt{3}}{10}\\text{ m s}^{-1}$",
+      "$\\frac{5}{\\sqrt{3}}\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n![Trajectory Diagram](/pyq_images/physics/ch3/exp_q4.png)\n\nLet $v$ be the velocity of the projectile at point $P$ when it makes an angle $30^\\circ$ with the horizontal.\n\nSince the horizontal component of velocity remains constant throughout projectile motion:\n$v \\cos 30^\\circ = u \\cos 60^\\circ$\n$v \\times \\frac{\\sqrt{3}}{2} = 10 \\times \\frac{1}{2} = 5$\n$v = \\frac{5}{\\sqrt{3}/2} = \\frac{10}{\\sqrt{3}}\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/physics/ch3/exp_q4.png"
+  },
+  {
+    "id": "kcet-physics-ch3-007",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2014,
+    "question": "A particle is projected with a velocity $v$ so that its horizontal range is twice the greatest height attained. The horizontal range is",
+    "options": [
+      "$\\frac{v^2}{g}$",
+      "$\\frac{2v^2}{3g}$",
+      "$\\frac{4v^2}{5g}$",
+      "$\\frac{v^2}{2g}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nGiven $R = 2H$:\n$\\frac{v^2 \\sin 2\\theta}{g} = 2 \\times \\frac{v^2 \\sin^2\\theta}{2g} \\implies 2\\sin\\theta\\cos\\theta = \\sin^2\\theta \\implies \\tan\\theta = 2$\n\n$\\sin\\theta = \\frac{2}{\\sqrt{5}}$ and $\\cos\\theta = \\frac{1}{\\sqrt{5}}$\n$R = \\frac{v^2 \\times 2\\sin\\theta\\cos\\theta}{g} = \\frac{2v^2}{g} \\left(\\frac{2}{\\sqrt{5}}\\right)\\left(\\frac{1}{\\sqrt{5}}\\right) = \\frac{4v^2}{5g}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-008",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2015,
+    "question": "The ratio of angular speed of a second-hand to the hour-hand of a watch is",
+    "options": [
+      "$60 : 1$",
+      "$1 : 60$",
+      "$720 : 1$",
+      "$1 : 720$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nThe second-hand completes one full revolution ($2\\pi\\text{ rad}$) in $1\\text{ minute} = 60\\text{ s}$:\n$\\omega_s = \\frac{2\\pi}{60}\\text{ rad s}^{-1}$\n\nThe hour-hand completes one revolution in $12\\text{ hours} = 12 \\times 3600\\text{ s}$:\n$\\omega_h = \\frac{2\\pi}{12 \\times 3600}\\text{ rad s}^{-1}$\n\nRatio:\n$\\frac{\\omega_s}{\\omega_h} = \\frac{12 \\times 3600}{60} = 720 : 1$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-009",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2016,
+    "question": "Three projectiles A, B and C are projected at an angle of $30^\\circ, 45^\\circ$ and $60^\\circ$ respectively. If $R_A, R_B$ and $R_C$ are their ranges, then which of the following is correct?",
+    "options": [
+      "$R_A = R_B = R_C$",
+      "$R_A = R_C > R_B$",
+      "$R_A < R_B < R_C$",
+      "$R_A = R_C < R_B$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nRange $R = \\frac{u^2 \\sin 2\\theta}{g}$. Since initial speed $u$ and $g$ are identical:\n$R \\propto \\sin 2\\theta$\n\n$R_A : R_B : R_C = \\sin 60^\\circ : \\sin 90^\\circ : \\sin 120^\\circ = \\frac{\\sqrt{3}}{2} : 1 : \\frac{\\sqrt{3}}{2} = \\sqrt{3} : 2 : \\sqrt{3}$\n\nTherefore, $R_A = R_C < R_B$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-010",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2016,
+    "question": "The component of a vector $\\vec{r}$ along the x-axis will have a maximum value if",
+    "options": [
+      "$\\vec{r}$ is along positive x-axis",
+      "$\\vec{r}$ is along positive y-axis",
+      "$\\vec{r}$ makes an angle of $45^\\circ$ with the x-axis",
+      "$\\vec{r}$ is along negative x-axis"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nA vector has a maximum value along its own direction only. Hence, the component along the x-axis ($r_x = r\\cos\\theta$) is maximum when $\\theta = 0^\\circ$, i.e., $\\vec{r}$ is aligned along the positive x-axis.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-011",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2017,
+    "question": "If $\\vec{A} = 2\\hat{i} + 3\\hat{j} + 8\\hat{k}$ is perpendicular to the vector $\\vec{B} = -4\\hat{i} + 4\\hat{j} + \\alpha\\hat{k}$, then the value of $\\alpha$ is",
+    "options": [
+      "$1/2$",
+      "$-1$",
+      "$1$",
+      "$-1/2$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nSince $\\vec{A} \\perp \\vec{B}$, their scalar product is zero:\n$\\vec{A} \\cdot \\vec{B} = (2)(-4) + (3)(4) + (8)(\\alpha) = 0$\n$-8 + 12 + 8\\alpha = 0 \\implies 4 + 8\\alpha = 0 \\implies \\alpha = -\\frac{1}{2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-012",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2017,
+    "question": "The angle between velocity and acceleration of a particle describing uniform circular motion is",
+    "options": [
+      "$180^\\circ$",
+      "$0^\\circ$",
+      "$90^\\circ$",
+      "$45^\\circ$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nIn uniform circular motion, instantaneous velocity is tangential while centripetal acceleration is directed radially inward towards the center. Hence, the angle between them is always $90^\\circ$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-013",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2019,
+    "question": "The trajectory of a projectile projected from the origin is given by the equation $y = x - \\frac{2}{5}x^2$. The initial velocity of projection is (Take $g = 10\\text{ m s}^{-2}$)",
+    "options": [
+      "$2.5\\text{ m s}^{-1}$",
+      "$10\\text{ m s}^{-1}$",
+      "$2\\text{ m s}^{-1}$",
+      "$5\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nStandard projectile equation: $y = x\\tan\\theta - \\frac{g x^2}{2u^2\\cos^2\\theta}$\nComparing with $y = x - \\frac{2}{5}x^2$:\n$\\tan\\theta = 1 \\implies \\theta = 45^\\circ$\n$\\frac{g}{2u^2\\cos^2 45^\\circ} = \\frac{2}{5} \\implies \\frac{10}{2u^2(1/2)} = \\frac{2}{5} \\implies \\frac{10}{u^2} = \\frac{2}{5} \\implies u^2 = 25 \\implies u = 5\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-014",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2020,
+    "question": "A wheel starting from rest gains an angular velocity of $10\\text{ rad/s}$ in $5\\text{ s}$. The angular displacement of the wheel in that time interval is",
+    "options": [
+      "$100\\text{ rad}$",
+      "$10\\text{ rad}$",
+      "$25\\text{ rad}$",
+      "$50\\text{ rad}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nGiven $\\omega_0 = 0$, $\\omega = 10\\text{ rad/s}$, $t = 5\\text{ s}$.\nAngular acceleration: $\\alpha = \\frac{\\omega - \\omega_0}{t} = \\frac{10}{5} = 2\\text{ rad s}^{-2}$\nAngular displacement: $\\theta = \\omega_0 t + \\frac{1}{2}\\alpha t^2 = 0 + \\frac{1}{2}(2)(5)^2 = 25\\text{ rad}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-015",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2021,
+    "question": "The maximum range of a gun on a horizontal plane is $16\\text{ km}$. If $g = 10\\text{ m s}^{-2}$, then muzzle velocity of a shell is",
+    "options": [
+      "$160\\text{ m s}^{-1}$",
+      "$200\\sqrt{2}\\text{ m s}^{-1}$",
+      "$400\\text{ m s}^{-1}$",
+      "$800\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nFor maximum horizontal range, projection angle $\\theta = 45^\\circ$:\n$R_{\\max} = \\frac{u^2}{g} = 16\\text{ km} = 16000\\text{ m}$\n$u^2 = 16000 \\times 10 = 160000 \\implies u = 400\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-016",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2021,
+    "question": "The trajectory of a projectile is",
+    "options": [
+      "semi-circle",
+      "circle",
+      "ellipse",
+      "parabola"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nThe path attained by a projectile in the absence of air resistance under constant downward gravitational acceleration is parabolic in nature.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-017",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2021,
+    "question": "The acceleration acting on a projectile is",
+    "options": [
+      "always directed downwards perpendicularly",
+      "zero at the highest point",
+      "directed along the velocity vector",
+      "variable in magnitude"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n![Acceleration Diagram](/pyq_images/physics/ch3/exp_q17.png)\n\nThe acceleration acting on a projectile is the acceleration due to gravity ($g$) which acts perpendicularly downwards at all points. At the apex, velocity is purely horizontal and acceleration is purely vertical (angle is $90^\\circ$).",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/physics/ch3/exp_q17.png"
+  },
+  {
+    "id": "kcet-physics-ch3-018",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2022,
+    "question": "A particle starts from the origin at $t = 0$ with a velocity $10\\hat{j}\\text{ m/s}$ and moves in the $x-y$ plane with a constant acceleration of $(8\\hat{i} + 2\\hat{j})\\text{ m/s}^2$. At an instant when the $x$-coordinate of the particle is $16\\text{ m}$, the $y$-coordinate of the particle is",
+    "options": [
+      "$36\\text{ m}$",
+      "$12\\text{ m}$",
+      "$18\\text{ m}$",
+      "$24\\text{ m}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nGiven $\\vec{u} = 10\\hat{j}\\text{ m/s}$ ($u_x = 0, u_y = 10$) and $\\vec{a} = 8\\hat{i} + 2\\hat{j}$ ($a_x = 8, a_y = 2$).\n\nMotion along x:\n$S_x = u_x t + \\frac{1}{2}a_x t^2 \\implies 16 = 0 + \\frac{1}{2}(8)t^2 \\implies t = 2\\text{ s}$\n\nMotion along y:\n$S_y = u_y t + \\frac{1}{2}a_y t^2 = 10(2) + \\frac{1}{2}(2)(2)^2 = 20 + 4 = 24\\text{ m}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-019",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2022,
+    "question": "Two objects are projected at an angle $\\theta$ and $(90^\\circ - \\theta)$ to the horizontal with the same speed. The ratio of their maximum vertical heights is",
+    "options": [
+      "$1 : 1$",
+      "$\\tan\\theta : 1$",
+      "$\\tan^2\\theta : 1$",
+      "$1 : \\tan\\theta$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n$H_1 = \\frac{u^2 \\sin^2\\theta}{2g}$\n$H_2 = \\frac{u^2 \\sin^2(90^\\circ - \\theta)}{2g} = \\frac{u^2 \\cos^2\\theta}{2g}$\n\nDividing $H_1$ by $H_2$:\n$\\frac{H_1}{H_2} = \\frac{\\sin^2\\theta}{\\cos^2\\theta} = \\frac{\\tan^2\\theta}{1}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-020",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2023,
+    "question": "A particle is in uniform circular motion. Related to one complete revolution of the particle, which among the following statements is incorrect?",
+    "options": [
+      "Displacement is zero",
+      "Average velocity is zero",
+      "Average speed is zero",
+      "Average acceleration is zero"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nIn one complete revolution of uniform circular motion:\n- Displacement is zero, so average velocity is zero and average acceleration is zero.\n- Distance covered is equal to perimeter ($2\\pi r \\neq 0$), thus average speed is non-zero.\nTherefore, 'Average speed is zero' is the incorrect statement.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-physics-ch3-021",
+    "subject": "Physics",
+    "chapter": "Motion in a Plane",
+    "chapter_number": 3,
+    "year": 2024,
+    "question": "Among the given pairs of vectors, the resultant of two vectors can never be $3\\text{ units}$. The vectors are",
+    "options": [
+      "$1\\text{ unit and } 2\\text{ units}$",
+      "$2\\text{ units and } 5\\text{ units}$",
+      "$3\\text{ units and } 6\\text{ units}$",
+      "$4\\text{ units and } 8\\text{ units}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nThe magnitude of resultant of two vectors always lies between $(P - Q)$ and $(P + Q)$:\n(a) $1$ and $2$: Range $[1, 3]$ (can give $3$)\n(b) $2$ and $5$: Range $[3, 7]$ (can give $3$)\n(c) $3$ and $6$: Range $[3, 9]$ (can give $3$)\n(d) $4$ and $8$: Range $[4, 12]$ (can never give $3$).",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

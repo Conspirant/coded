@@ -1,0 +1,1047 @@
+[
+  {
+    "id": "-001",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 2,
+    "year": 2006,
+    "question": "A transition metal ion exists in its highest oxidation state. It is expected to behave as",
+    "options": [
+      "a chelating agent",
+      "a central metal in a coordination compound",
+      "an oxidising agent",
+      "a reducing agent."
+    ],
+    "correct_answer": 2,
+    "explanation": "When a transition metal ion exists in its highest oxidation state, it cannot lose any more electrons to increase its oxidation state further; it can only gain electrons (undergo reduction). Therefore, it acts as a strong oxidising agent (e.g., $\\text{Mn(VII)}$ in $\\text{KMnO}_4$, $\\text{Cr(VI)}$ in $\\text{K}_2\\text{Cr}_2\\text{O}_7$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-002",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 3,
+    "year": 2006,
+    "question": "The formula mass of Mohr's salt is 392. The iron present in it is oxidised by KMnO4 in acid medium. The equivalent mass of Mohr's salt is",
+    "options": [
+      "392",
+      "31.6",
+      "278",
+      "156"
+    ],
+    "correct_answer": 0,
+    "explanation": "Mohr's salt is ferrous ammonium sulphate, $\\text{(NH}_4)_2\\text{SO}_4\\cdot\\text{FeSO}_4\\cdot6\\text{H}_2\\text{O}$.\nIn acidic medium, $\\text{Fe}^{2+}$ is oxidised to $\\text{Fe}^{3+}$:\n$$\\text{Fe}^{2+} \\rightarrow \\text{Fe}^{3+} + e^-$$\nThe change in oxidation number of iron per mole of Mohr's salt is $(+3) - (+2) = 1$.\n$$\\text{Equivalent mass} = \\frac{\\text{Molar mass}}{n\\text{-factor}} = \\frac{392}{1} = 392$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-003",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 1,
+    "year": 2007,
+    "question": "The highest magnetic moment is shown by the transition metal ion with the configuration",
+    "options": [
+      "3d^2",
+      "3d^5",
+      "3d^7",
+      "3d^9"
+    ],
+    "correct_answer": 1,
+    "explanation": "Spin-only magnetic moment is given by $\\mu = \\sqrt{n(n+2)}\\text{ B.M.}$, where $n$ is the number of unpaired electrons.\n- $3d^2$: $n = 2$, $\\mu = \\sqrt{2(4)} = \\sqrt{8} \\approx 2.83\\text{ B.M.}$\n- $3d^5$: $n = 5$, $\\mu = \\sqrt{5(7)} = \\sqrt{35} \\approx 5.92\\text{ B.M.}$\n- $3d^7$: $n = 3$, $\\mu = \\sqrt{3(5)} = \\sqrt{15} \\approx 3.87\\text{ B.M.}$\n- $3d^9$: $n = 1$, $\\mu = \\sqrt{1(3)} = \\sqrt{3} \\approx 1.73\\text{ B.M.}$\n\nSince $3d^5$ has the maximum number of unpaired electrons ($n = 5$), it exhibits the highest magnetic moment.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-004",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 4,
+    "year": 2007,
+    "question": "Formation of coloured solution is possible when metal ion in the compound contain",
+    "options": [
+      "lone pair of electrons",
+      "unpaired electrons",
+      "paired electrons",
+      "none of these."
+    ],
+    "correct_answer": 1,
+    "explanation": "The colour of transition metal ions is attributed to $d$-$d$ transitions of unpaired electrons. Upon absorption of radiation in the visible region, an unpaired electron is excited from a lower energy $d$-orbital to a higher energy $d$-orbital. Hence, unpaired $d$-electrons are required for coloured solution formation.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-005",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 5,
+    "year": 2007,
+    "question": "Which of the following forms a colourless solution in aqueous medium?",
+    "options": [
+      "Cr^3+",
+      "V^3+",
+      "Sc^3+",
+      "Ti^3+"
+    ],
+    "correct_answer": 2,
+    "explanation": "Electronic configurations of the given ions:\n- $\\text{Cr}^{3+}: [\\text{Ar}] 3d^3 4s^0$ (3 unpaired electrons $\\rightarrow$ coloured, green/violet)\n- $\\text{V}^{3+}: [\\text{Ar}] 3d^2 4s^0$ (2 unpaired electrons $\\rightarrow$ coloured, green)\n- $\\text{Sc}^{3+}: [\\text{Ar}] 3d^0 4s^0$ (0 unpaired electrons $\\rightarrow$ colourless due to absence of $d$-$d$ transition)\n- $\\text{Ti}^{3+}: [\\text{Ar}] 3d^1 4s^0$ (1 unpaired electron $\\rightarrow$ coloured, purple)",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-006",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 6,
+    "year": 2008,
+    "question": "Mercury is a liquid metal because",
+    "options": [
+      "it has a completely filled d-orbital that prevents d-d overlapping of orbitals",
+      "it has a completely filled d-orbital that causes d-d overlapping",
+      "it has a completely filled s-orbital",
+      "it has a small atomic size."
+    ],
+    "correct_answer": 0,
+    "explanation": "Mercury ($\\text{Hg}$, $Z=80$) has the electronic configuration $[\\text{Xe}] 4f^{14} 5d^{10} 6s^2$. Because its $d$-orbitals are completely filled, there are no unpaired electrons available for metallic bonding or $d$-$d$ orbital overlap. The resulting metallic bonding is extremely weak, giving mercury a very low melting point ($-38.8^\\circ\\text{C}$) so it exists as a liquid at room temperature.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-007",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 7,
+    "year": 2008,
+    "question": "When sulphur dioxide is passed in an acidified K2Cr2O7 solution, the oxidation state of sulphur is changed from",
+    "options": [
+      "+4 to +6",
+      "+6 to +4",
+      "+4 to 0",
+      "+4 to +2"
+    ],
+    "correct_answer": 0,
+    "explanation": "Acidified potassium dichromate is a strong oxidising agent. When $\\text{SO}_2$ is passed into acidified $\\text{K}_2\\text{Cr}_2\\text{O}_7$ solution:\n$$\\text{K}_2\\text{Cr}_2\\text{O}_7 + \\text{H}_2\\text{SO}_4 + 3\\text{SO}_2 \\rightarrow \\text{K}_2\\text{SO}_4 + \\text{Cr}_2(\\text{SO}_4)_3 + \\text{H}_2\\text{O}$$\nIn $\\text{SO}_2$, the oxidation state of sulphur is $+4$.\nIn $\\text{SO}_4^{2-}$ (as in $\\text{Cr}_2(\\text{SO}_4)_3$ and $\\text{K}_2\\text{SO}_4$), the oxidation state of sulphur is $+6$.\nThus, sulphur changes from $+4$ to $+6$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-008",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 8,
+    "year": 2008,
+    "question": "Which of the following has the maximum number of unpaired d electrons?",
+    "options": [
+      "Ni^3+",
+      "Cu^+",
+      "Zn^2+",
+      "Fe^2+"
+    ],
+    "correct_answer": 3,
+    "explanation": "Let's check the number of unpaired $d$-electrons:\n- $\\text{Ni}^{3+}$ ($Z=28$): $[\\text{Ar}]3d^7 \\rightarrow 3$ unpaired $d$-electrons\n- $\\text{Cu}^{+}$ ($Z=29$): $[\\text{Ar}]3d^{10} \\rightarrow 0$ unpaired $d$-electrons\n- $\\text{Zn}^{2+}$ ($Z=30$): $[\\text{Ar}]3d^{10} \\rightarrow 0$ unpaired $d$-electrons\n- $\\text{Fe}^{2+}$ ($Z=26$): $[\\text{Ar}]3d^6 \\rightarrow 4$ unpaired $d$-electrons\n\nTherefore, $\\text{Fe}^{2+}$ has the maximum number of unpaired $d$-electrons (4).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-009",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 9,
+    "year": 2009,
+    "question": "The incorrect statement in respect of chromyl chloride test is",
+    "options": [
+      "formation of lead chromate",
+      "formation of chromyl chloride",
+      "liberation of chlorine",
+      "formation of red vapours."
+    ],
+    "correct_answer": 2,
+    "explanation": "In the chromyl chloride test for chloride ion:\n1. $\\text{NaCl} + \\text{K}_2\\text{Cr}_2\\text{O}_7 + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{CrO}_2\\text{Cl}_2\\uparrow \\text{ (red-orange vapours)}$\n2. The vapours are passed into $\\text{NaOH}$ solution: $\\text{CrO}_2\\text{Cl}_2 + 4\\text{NaOH} \\rightarrow \\text{Na}_2\\text{CrO}_4\\text{ (yellow solution)} + 2\\text{NaCl} + 2\\text{H}_2\\text{O}$\n3. Adding acetic acid and lead acetate forms yellow lead chromate precipitate:\n$$\\text{Na}_2\\text{CrO}_4 + \\text{Pb(CH}_3\\text{COO)}_2 \\rightarrow \\text{PbCrO}_4\\downarrow + 2\\text{CH}_3\\text{COONa}$$\nChlorine gas ($\\text{Cl}_2$) is NOT liberated in this test.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-010",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 10,
+    "year": 2009,
+    "question": "The magnetic moment of a transition metal ion is √15 B.M. Therefore the number of unpaired electrons present in it is",
+    "options": [
+      "4",
+      "1",
+      "2",
+      "3"
+    ],
+    "correct_answer": 3,
+    "explanation": "Using the spin-only formula:\n$$\\mu = \\sqrt{n(n+2)} = \\sqrt{15}\\text{ B.M.}$$\n$$n(n+2) = 15 \\implies n^2 + 2n - 15 = 0 \\implies (n+5)(n-3) = 0$$\nSince $n > 0$, $n = 3$. Hence, 3 unpaired electrons are present.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-011",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 11,
+    "year": 2010,
+    "question": "The spin only magnetic moment of Mn^4+ ion is nearly",
+    "options": [
+      "3 B.M.",
+      "6 B.M.",
+      "4 B.M.",
+      "5 B.M."
+    ],
+    "correct_answer": 2,
+    "explanation": "Manganese ($Z=25$) has ground state configuration $[\\text{Ar}]3d^5 4s^2$.\n$\\text{Mn}^{4+}$ has configuration $[\\text{Ar}]3d^3$.\nNumber of unpaired electrons $n = 3$.\n$$\\mu = \\sqrt{n(n+2)} = \\sqrt{3(3+2)} = \\sqrt{15} \\approx 3.87\\text{ B.M.} \\approx 4\\text{ B.M.}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-012",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 12,
+    "year": 2010,
+    "question": "A white crystalline salt A reacts with dilute HCl to liberate a suffocating gas B and also forms a yellow precipitate. The gas B turns potassium dichromate acidified with dilute H2SO4 to a green coloured solution C. A, B and C are respectively",
+    "options": [
+      "Na2SO3, SO2, Cr2(SO4)3",
+      "Na2S2O3, SO2, Cr2(SO4)3",
+      "Na2S, SO2, Cr2(SO4)3",
+      "Na2SO4, SO2, Cr2(SO4)3"
+    ],
+    "correct_answer": 1,
+    "explanation": "Sodium thiosulphate ($\\text{Na}_2\\text{S}_2\\text{O}_3$, salt $A$) reacts with dilute $\\text{HCl}$ to liberate sulphur dioxide gas ($\\text{SO}_2$, suffocating gas $B$) and forms a yellow colloidal precipitate of sulphur:\n$$\\text{Na}_2\\text{S}_2\\text{O}_3 + 2\\text{HCl} \\rightarrow 2\\text{NaCl} + \\text{SO}_2\\uparrow + \\text{S}\\downarrow\\text{ (yellow)} + \\text{H}_2\\text{O}$$\nThe liberated $\\text{SO}_2$ reduces acidified potassium dichromate to green chromic sulphate ($\\text{Cr}_2(\\text{SO}_4)_3$, $C$):\n$$\\text{K}_2\\text{Cr}_2\\text{O}_7 + \\text{H}_2\\text{SO}_4 + 3\\text{SO}_2 \\rightarrow \\text{K}_2\\text{SO}_4 + \\text{Cr}_2(\\text{SO}_4)_3\\text{ (green)} + \\text{H}_2\\text{O}$$\nHence, $A = \\text{Na}_2\\text{S}_2\\text{O}_3$, $B = \\text{SO}_2$, $C = \\text{Cr}_2(\\text{SO}_4)_3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-013",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 13,
+    "year": 2011,
+    "question": "The yellow precipitate formed during the chromyl chloride test is chemically",
+    "options": [
+      "chromic acid",
+      "lead chromate",
+      "lead acetate",
+      "sodium chromate."
+    ],
+    "correct_answer": 1,
+    "explanation": "In the confirmatory step of the chromyl chloride test, the reddish vapours of $\\text{CrO}_2\\text{Cl}_2$ absorbed in $\\text{NaOH}$ form $\\text{Na}_2\\text{CrO}_4$. When treated with acetic acid and lead acetate, a yellow precipitate of lead chromate ($\\text{PbCrO}_4$) is formed:\n$$\\text{Na}_2\\text{CrO}_4 + \\text{Pb(CH}_3\\text{COO)}_2 \\rightarrow \\text{PbCrO}_4\\downarrow\\text{ (yellow ppt)} + 2\\text{CH}_3\\text{COONa}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-014",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 14,
+    "year": 2011,
+    "question": "The spin only magnetic moment of Fe^2+ ion (in B.M.) is approximately",
+    "options": [
+      "4",
+      "7",
+      "5",
+      "6"
+    ],
+    "correct_answer": 2,
+    "explanation": "$\\text{Fe}^{2+}$ ($Z=26$): electronic configuration is $[\\text{Ar}]3d^6 4s^0$.\nNumber of unpaired electrons in $3d^6$ is $n = 4$.\n$$\\mu = \\sqrt{n(n+2)} = \\sqrt{4(4+2)} = \\sqrt{24} \\approx 4.898\\text{ B.M.} \\approx 5\\text{ B.M.}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-015",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 15,
+    "year": 2012,
+    "question": "Which one of the following has a magnetic moment of 1.75 B.M?",
+    "options": [
+      "Ti^3+",
+      "V^3+",
+      "Cr^3+",
+      "Fe^3+"
+    ],
+    "correct_answer": 0,
+    "explanation": "Magnetic moment of $1.73-1.75\\text{ B.M.}$ corresponds to $n = 1$ unpaired electron (since $\\sqrt{1(3)} = \\sqrt{3} \\approx 1.732\\text{ B.M.}$).\n- $\\text{Ti}^{3+}: 3d^1 \\implies n = 1 \\implies \\mu = 1.73\\text{ B.M.}$\n- $\\text{V}^{3+}: 3d^2 \\implies n = 2 \\implies \\mu = 2.83\\text{ B.M.}$\n- $\\text{Cr}^{3+}: 3d^3 \\implies n = 3 \\implies \\mu = 3.87\\text{ B.M.}$\n- $\\text{Fe}^{3+}: 3d^5 \\implies n = 5 \\implies \\mu = 5.92\\text{ B.M.}$\n\nThus, $\\text{Ti}^{3+}$ has a magnetic moment of $\\approx 1.75\\text{ B.M.}$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-016",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 16,
+    "year": 2012,
+    "question": "The \"spin only\" magnetic moment of Ni^2+ in aqueous solution would be [At No. of Ni = 28]",
+    "options": [
+      "√6 B.M",
+      "√15 B.M",
+      "√2 B.M",
+      "√8 B.M"
+    ],
+    "correct_answer": 3,
+    "explanation": "Nickel ($Z=28$): $\\text{Ni} = [\\text{Ar}]3d^8 4s^2$.\n$\\text{Ni}^{2+} = [\\text{Ar}]3d^8$.\nIn $3d^8$, there are 2 unpaired electrons ($n=2$).\n$$\\mu = \\sqrt{n(n+2)} = \\sqrt{2(2+2)} = \\sqrt{8}\\text{ B.M.}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-017",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 17,
+    "year": 2012,
+    "question": "Silver iodide is used for producing artificial rain because AgI",
+    "options": [
+      "is easy to spray at high altitude",
+      "is easy to synthesize",
+      "has crystal structure similar to ice",
+      "is insoluble in water."
+    ],
+    "correct_answer": 2,
+    "explanation": "Silver iodide ($\\text{AgI}$) has a hexagonal crystal structure very similar to that of ice crystals. When finely dispersed into supercooled clouds (cloud seeding), $\\text{AgI}$ particles serve as excellent heterogeneous nucleation centers for the freezing of water droplets to form rain/snow.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-018",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 18,
+    "year": 2013,
+    "question": "Which one of the following shows highest magnetic moment?",
+    "options": [
+      "Fe^2+",
+      "Co^2+",
+      "Cr^3+",
+      "Ni^2+"
+    ],
+    "correct_answer": 0,
+    "explanation": "Number of unpaired electrons ($n$):\n- $_{26}\\text{Fe}^{2+}: [\\text{Ar}]3d^6 \\rightarrow n = 4$\n- $_{27}\\text{Co}^{2+}: [\\text{Ar}]3d^7 \\rightarrow n = 3$\n- $_{24}\\text{Cr}^{3+}: [\\text{Ar}]3d^3 \\rightarrow n = 3$\n- $_{28}\\text{Ni}^{2+}: [\\text{Ar}]3d^8 \\rightarrow n = 2$\n\nSince $\\text{Fe}^{2+}$ has the highest number of unpaired electrons ($n=4$), it exhibits the highest magnetic moment ($\\mu = \\sqrt{24} \\approx 4.9\\text{ B.M.})$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-019",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 19,
+    "year": 2013,
+    "question": "In a transition series, with the increase in atomic number, the paramagnetism",
+    "options": [
+      "increases gradually",
+      "decreases gradually",
+      "first increases to a maximum and then decreases",
+      "first decreases to a minimum and then increases."
+    ],
+    "correct_answer": 2,
+    "explanation": "Paramagnetism depends directly on the number of unpaired electrons in the $d$-subshell. Moving across a transition series from group 3 to group 6/7 (e.g., $\\text{Sc}$ to $\\text{Cr}/\\text{Mn}$), the number of unpaired electrons increases from 1 to 5 (or 6), so paramagnetism increases to a maximum. Beyond the middle of the series, electrons pair up, decreasing the number of unpaired electrons to 0 at group 12 ($\\text{Zn}$). Thus, paramagnetism first increases to a maximum and then decreases.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-020",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 20,
+    "year": 2014,
+    "question": "The IUPAC name of the complex ion formed when gold dissolves in aqua regia is",
+    "options": [
+      "tetrachloridoaurate (III)",
+      "tetrachloridoaurate (I)",
+      "tetrachloridoaurate (II)",
+      "dichloridoaurate (III)."
+    ],
+    "correct_answer": 0,
+    "explanation": "Aqua regia ($3\\text{HCl} : 1\\text{HNO}_3$) dissolves noble metals like gold according to the reaction:\n$$\\text{Au} + 4\\text{H}^+ + \\text{NO}_3^- + 4\\text{Cl}^- \\rightarrow [\\text{AuCl}_4]^- + \\text{NO} + 2\\text{H}_2\\text{O}$$\nIn the complex anion $[\\text{AuCl}_4]^-$, oxidation state of $\\text{Au}$ is $x + 4(-1) = -1 \\implies x = +3$.\nThe IUPAC name of $[\\text{AuCl}_4]^-$ is tetrachloridoaurate(III).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-021",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 21,
+    "year": 2014,
+    "question": "Which one of these is not known?",
+    "options": [
+      "CuCl2",
+      "CuI2",
+      "CuF2",
+      "CuBr2"
+    ],
+    "correct_answer": 1,
+    "explanation": "Cupric iodide ($\\text{CuI}_2$) is not known because $\\text{Cu}^{2+}$ easily oxidises $\\text{I}^-$ to iodine ($\\text{I}_2$) and is itself reduced to $\\text{Cu}^+$:\n$$2\\text{Cu}^{2+} + 4\\text{I}^- \\rightarrow \\text{Cu}_2\\text{I}_2\\downarrow + \\text{I}_2$$\nHence, $\\text{CuI}_2$ does not exist under ordinary conditions.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-022",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 22,
+    "year": 2014,
+    "question": "The correct statement is",
+    "options": [
+      "the earlier members of lanthanoid series resemble calcium in their chemical properties",
+      "the extent of actinoid contraction is almost the same as lanthanoid contraction",
+      "in general, lanthanoids and actinoids do not show variable oxidation states",
+      "Ce^4+ in aqueous solution is not known."
+    ],
+    "correct_answer": 0,
+    "explanation": "The earlier members of the lanthanoid series are quite reactive and chemically resemble calcium (they react with water liberating $\\text{H}_2$, form basic oxides and hydroxides). \n- Statement (b) is wrong because actinoid contraction is greater than lanthanoid contraction due to poorer shielding by $5f$ electrons.\n- Statement (c) is wrong because both show variable oxidation states.\n- Statement (d) is wrong because $\\text{Ce}^{4+}$ is well known and stable in aqueous solutions as a strong oxidising agent.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-023",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 23,
+    "year": 2015,
+    "question": "In the reaction sequence: MSO4 --(NH4OH)--> X(ppt) --(Excess NH4OH)--> Y(clear solution) --(H2S)--> Z(ppt). Here M and Z are",
+    "options": [
+      "Zn, ZnS",
+      "Al, Al2S3",
+      "Cu, ZnS",
+      "Fe, FeS"
+    ],
+    "correct_answer": 0,
+    "explanation": "With $\\text{ZnSO}_4$:\n1. $\\text{ZnSO}_4 + 2\\text{NH}_4\\text{OH} \\rightarrow \\text{Zn(OH)}_2\\downarrow\\text{ (white ppt } X) + (\\text{NH}_4)_2\\text{SO}_4$\n2. In excess $\\text{NH}_4\\text{OH}$, $\\text{Zn(OH)}_2$ dissolves to form the soluble complex tetraamminezinc(II) hydroxide $[\\text{Zn(NH}_3)_4](\\text{OH})_2$ (clear solution $Y$).\n3. Passing $\\text{H}_2\\text{S}$ into this solution precipitates white zinc sulphide ($\\text{ZnS}$, ppt $Z$):\n$$[\\text{Zn(NH}_3)_4]^{2+} + \\text{H}_2\\text{S} \\rightarrow \\text{ZnS}\\downarrow + 2\\text{NH}_4^+ + 2\\text{NH}_3$$\nThus, $M = \\text{Zn}$ and $Z = \\text{ZnS}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-024",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 24,
+    "year": 2015,
+    "question": "The electronic configuration of Gd^2+ is (at. no. of Gd is 64)",
+    "options": [
+      "[Xe] 4f^7",
+      "[Xe] 4f^7 5d^1",
+      "[Xe] 4f^8",
+      "[Xe] 4f^7 5d^1 6s^2"
+    ],
+    "correct_answer": 1,
+    "explanation": "Gadolinium ($Z=64$) has the ground state electronic configuration:\n$$\\text{Gd}: [\\text{Xe}] 4f^7 5d^1 6s^2$$\nUpon forming $\\text{Gd}^{2+}$, the two $6s$ electrons are removed first:\n$$\\text{Gd}^{2+}: [\\text{Xe}] 4f^7 5d^1$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-025",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 25,
+    "year": 2015,
+    "question": "On heating potassium permanganate, one of the following compound is not obtained",
+    "options": [
+      "MnO",
+      "K2MnO4",
+      "O2",
+      "MnO2"
+    ],
+    "correct_answer": 0,
+    "explanation": "Thermal decomposition of potassium permanganate occurs at $513\\text{ K}$:\n$$2\\text{KMnO}_4 \\xrightarrow{\\Delta} \\text{K}_2\\text{MnO}_4 + \\text{MnO}_2 + \\text{O}_2$$\nThe products obtained are potassium manganate ($\\text{K}_2\\text{MnO}_4$), manganese dioxide ($\\text{MnO}_2$), and oxygen gas ($\\text{O}_2$). Manganese(II) oxide ($\\text{MnO}$) is NOT obtained.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-026",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 26,
+    "year": 2016,
+    "question": "The bivalent metal ion having maximum paramagnetic behaviour among the first transition series elements is",
+    "options": [
+      "Mn^2+",
+      "Cu^2+",
+      "Sc^2+",
+      "Cu+"
+    ],
+    "correct_answer": 0,
+    "explanation": "- $\\text{Mn}^{2+}$ ($3d^5$): 5 unpaired electrons (maximum among $3d$ divalent ions)\n- $\\text{Cu}^{2+}$ ($3d^9$): 1 unpaired electron\n- $\\text{Sc}^{2+}$ ($3d^1$): 1 unpaired electron\n- $\\text{Cu}^{+}$ ($3d^{10}$): 0 unpaired electrons\n\nThus, $\\text{Mn}^{2+}$ shows the maximum paramagnetic behaviour.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-027",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 27,
+    "year": 2016,
+    "question": "When a brown compound of Mn (A) is treated with HCl, it gives a gas (B). The gas (B) taken in excess reacts with NH3 to give an explosive compound (C). The compounds A, B and C are",
+    "options": [
+      "A = MnO2, B = Cl2, C = NCl3",
+      "A = MnO, B = Cl2, C = NH3Cl",
+      "A = Mn3O4, B = Cl2, C = NCl3",
+      "A = MnO3, B = Cl2, C = NCl2"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Manganese dioxide ($\\text{MnO}_2$, brown solid $A$) reacts with concentrated $\\text{HCl}$ to liberate chlorine gas ($B$):\n$$\\text{MnO}_2 + 4\\text{HCl} \\rightarrow \\text{MnCl}_2 + \\text{Cl}_2\\uparrow (B) + 2\\text{H}_2\\text{O}$$\n2. When excess chlorine gas reacts with ammonia ($\\text{NH}_3$), it forms nitrogen trichloride ($\\text{NCl}_3$, explosive yellow liquid $C$):\n$$\\text{NH}_3 + 3\\text{Cl}_2\\text{ (excess)} \\rightarrow \\text{NCl}_3 (C) + 3\\text{HCl}$$\nTherefore, $A = \\text{MnO}_2$, $B = \\text{Cl}_2$, $C = \\text{NCl}_3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-028",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 28,
+    "year": 2016,
+    "question": "Mn^2+ compounds are more stable than Fe^2+ compounds towards oxidation to their +3 state, because",
+    "options": [
+      "Mn^2+ is more stable with high 3rd ionisation energy",
+      "Mn^2+ is bigger in size",
+      "Mn^2+ has completely filled d-orbitals",
+      "Mn^2+ does not exist."
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\text{Mn}^{2+}$ has a stable half-filled $d^5$ configuration ($[\\text{Ar}]3d^5$), which imparts extra exchange energy and stability. Therefore, removing a third electron requires very high third ionisation energy ($I_3$). \nIn contrast, $\\text{Fe}^{2+}$ has a $3d^6$ configuration; losing one electron gives the stable half-filled $3d^5$ configuration of $\\text{Fe}^{3+}$. Thus, $\\text{Fe}^{2+}$ is easily oxidised to $\\text{Fe}^{3+}$, whereas $\\text{Mn}^{2+}$ resists oxidation to $\\text{Mn}^{3+}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-029",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 29,
+    "year": 2017,
+    "question": "Which of the following statements is wrong regarding lanthanoids?",
+    "options": [
+      "Ln(III) compounds are predominantly ionic in character.",
+      "Ln(III) hydroxides are mainly basic in nature.",
+      "The ionic size of Ln(III) ions decreases with increasing atomic number.",
+      "Ln(III) compounds are generally colourless."
+    ],
+    "correct_answer": 3,
+    "explanation": "Many trivalent lanthanoid ions ($\\text{Ln}^{3+}$) are coloured in both solid state and aqueous solutions due to $f$-$f$ electronic transitions (e.g., $\\text{Pr}^{3+}$ is green, $\\text{Nd}^{3+}$ is pink/violet, $\\text{Sm}^{3+}$ is yellow). Only ions with $4f^0$ ($\\text{La}^{3+}$), $4f^7$ ($\\text{Gd}^{3+}$), or $4f^{14}$ ($\\text{Lu}^{3+}$) are colourless. Thus, the statement that $\\text{Ln(III)}$ compounds are generally colourless is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-030",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 30,
+    "year": 2018,
+    "question": "Which of the following is an amphoteric oxide?",
+    "options": [
+      "V2O5, Cr2O3",
+      "Mn2O7, Cr2O3",
+      "CrO, V2O5",
+      "V2O5, V2O4"
+    ],
+    "correct_answer": 0,
+    "explanation": "Among transition metal oxides:\n- $\\text{V}_2\\text{O}_5$ and $\\text{Cr}_2\\text{O}_3$ are amphoteric (they dissolve in both acids and alkalis).\n- $\\text{Mn}_2\\text{O}_7$ is acidic.\n- $\\text{CrO}$ is basic.\n- $\\text{V}_2\\text{O}_4$ is amphoteric but mostly dissolves in acids to give $\\text{VO}^{2+}$.\nThus, both $\\text{V}_2\\text{O}_5$ and $\\text{Cr}_2\\text{O}_3$ are well-known amphoteric oxides.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-031",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 31,
+    "year": 2018,
+    "question": "Which of the following oxidation states is common for all lanthanides?",
+    "options": [
+      "+2",
+      "+3",
+      "+4",
+      "+5"
+    ],
+    "correct_answer": 1,
+    "explanation": "The principal and most stable oxidation state exhibited by all lanthanoids is $+3$. Although $+2$ and $+4$ oxidation states are occasionally shown by some elements (due to extra stability of $f^0, f^7, f^{14}$ configurations), $+3$ is universally common to all.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-032",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 32,
+    "year": 2018,
+    "question": "The electronic configuration of transition element X, is +3, oxidation state is [Ar]3d^5. What is its atomic number?",
+    "options": [
+      "25",
+      "26",
+      "27",
+      "24"
+    ],
+    "correct_answer": 1,
+    "explanation": "$\\text{X}^{3+}$ has the configuration $[\\text{Ar}]3d^5$.\nTo find the neutral element $\\text{X}$, we add back 3 electrons (two to $4s$ and one to $3d$):\n$$\\text{X}: [\\text{Ar}]3d^6 4s^2$$\nTotal number of electrons (atomic number $Z$) $= 18 + 6 + 2 = 26$ (Iron, $\\text{Fe}$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-033",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 33,
+    "year": 2018,
+    "question": "KMnO4 acts as an oxidising agent in alkaline medium. When alkaline KMnO4 is treated with KI, iodide ion is oxidised to",
+    "options": [
+      "I2",
+      "IO^-",
+      "IO3^-",
+      "IO4^-"
+    ],
+    "correct_answer": 2,
+    "explanation": "In faintly alkaline or neutral solution, $\\text{KMnO}_4$ oxidises iodide ($\\text{I}^-$) to iodate ($\\text{IO}_3^-$):\n$$2\\text{MnO}_4^- + \\text{H}_2\\text{O} + \\text{I}^- \\rightarrow 2\\text{MnO}_2 + 2\\text{OH}^- + \\text{IO}_3^-$$\n(In contrast, in acidic medium, iodide is oxidised to iodine, $\\text{I}_2$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-034",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 34,
+    "year": 2019,
+    "question": "The elements in which electrons are progressively filled in 4f orbital are called",
+    "options": [
+      "actinoids",
+      "transition elements",
+      "lanthanoids",
+      "halogens."
+    ],
+    "correct_answer": 2,
+    "explanation": "The elements in which the differentiating electrons enter the $4f$ subshell ($Z = 58$ to $71$, Cerium to Lutetium) are called lanthanoids (or lanthanides / $4f$ inner-transition elements). Actinoids correspond to filling of the $5f$ subshell.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-035",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 35,
+    "year": 2019,
+    "question": "Incorrect statement with reference to Ce (Z = 58).",
+    "options": [
+      "Ce^4+ is a reducing agent.",
+      "Ce in +3 oxidation state is more stable than in +4.",
+      "Atomic size of Ce is more than that of Lu.",
+      "Ce shows common oxidation states of +3 and +4."
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\text{Ce}^{4+}$ has the noble gas configuration $[\\text{Xe}]$, but $+3$ is the most stable oxidation state for all lanthanoids. Therefore, $\\text{Ce}^{4+}$ readily accepts an electron to revert to $\\text{Ce}^{3+}$, making $\\text{Ce}^{4+}$ a powerful oxidising agent (not a reducing agent). Thus, statement (a) is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-036",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 36,
+    "year": 2019,
+    "question": "A mixture of NaCl and K2Cr2O7 is heated with conc. H2SO4, deep red vapours are formed. Which of the following statements is false?",
+    "options": [
+      "The vapours give a yellow solution with NaOH.",
+      "The vapours contain CrO2Cl2 only.",
+      "The vapours contains CrO2Cl2 and Cl2.",
+      "The vapours when passed into lead acetate in acetic acid gives a yellow precipitate."
+    ],
+    "correct_answer": 2,
+    "explanation": "When solid $\\text{NaCl}$ and $\\text{K}_2\\text{Cr}_2\\text{O}_7$ are heated with conc. $\\text{H}_2\\text{SO}_4$, only chromyl chloride ($\\text{CrO}_2\\text{Cl}_2$) deep red vapours are produced:\n$$\\text{K}_2\\text{Cr}_2\\text{O}_7 + 4\\text{NaCl} + 6\\text{H}_2\\text{SO}_4 \\rightarrow 2\\text{CrO}_2\\text{Cl}_2\\uparrow + 2\\text{KHSO}_4 + 4\\text{NaHSO}_4 + 3\\text{H}_2\\text{O}$$\nNo free chlorine gas ($\\text{Cl}_2$) is formed. Thus, statement (c) is false.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-037",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 37,
+    "year": 2019,
+    "question": "Which of the following statements is wrong?",
+    "options": [
+      "In highest oxidation states, the transition metals show acidic character.",
+      "Mn^3+ and Co^3+ are oxidising agents in aqueous solution.",
+      "Metals in highest oxidation states are more stable in oxides than in fluorides.",
+      "All elements of 3d series exhibit variable oxidation states."
+    ],
+    "correct_answer": 3,
+    "explanation": "Scandium ($\\text{Sc}$, $Z=21$) exhibits only a single oxidation state, $+3$, and Zinc ($\\text{Zn}$, $Z=30$) exhibits only $+2$. Therefore, not all elements of the $3d$ series exhibit variable oxidation states. Statement (d) is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-038",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 38,
+    "year": 2020,
+    "question": "Aqueous solution of a salt (A) forms a dense white precipitate with BaCl2 solution. The precipitate dissolves in dilute HCl to produce a gas (B) which decolourises acidified KMnO4 solution. A and B respectively are",
+    "options": [
+      "BaSO4, H2S",
+      "BaSO3, H2S",
+      "BaSO4, SO2",
+      "BaSO3, SO2"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Sodium sulphite solution ($\\text{Na}_2\\text{SO}_3$, source of sulphite) reacts with $\\text{BaCl}_2$ to give a white precipitate of $\\text{BaSO}_3$:\n$$\\text{SO}_3^{2-} + \\text{Ba}^{2+} \\rightarrow \\text{BaSO}_3\\downarrow\\text{ (white ppt)}$$\n2. $\\text{BaSO}_3$ dissolves in dilute $\\text{HCl}$ to produce sulphur dioxide gas ($\\text{SO}_2$, gas $B$):\n$$\\text{BaSO}_3 + 2\\text{HCl} \\rightarrow \\text{BaCl}_2 + \\text{SO}_2\\uparrow + \\text{H}_2\\text{O}$$\n3. $\\text{SO}_2$ is a reducing agent that decolourises pink acidified $\\text{KMnO}_4$ solution:\n$$5\\text{SO}_2 + 2\\text{MnO}_4^- + 2\\text{H}_2\\text{O} \\rightarrow 5\\text{SO}_4^{2-} + 2\\text{Mn}^{2+}\\text{ (colourless)} + 4\\text{H}^+$$\nThus, the precipitate is $\\text{BaSO}_3$ and the gas is $\\text{SO}_2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-039",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 39,
+    "year": 2020,
+    "question": "Identify the set of paramagnetic ions among the following :",
+    "options": [
+      "Ni^2+, Cu^2+, Zn^2+",
+      "Ti^3+, Cu^2+, Mn^3+",
+      "Sc^3+, Ti^3+, V^3+",
+      "V^2+, Co^2+, Ti^4+"
+    ],
+    "correct_answer": 1,
+    "explanation": "Let's check each ion:\n- $\\text{Ti}^{3+}: 3d^1 \\rightarrow 1$ unpaired electron (paramagnetic)\n- $\\text{Cu}^{2+}: 3d^9 \\rightarrow 1$ unpaired electron (paramagnetic)\n- $\\text{Mn}^{3+}: 3d^4 \\rightarrow 4$ unpaired electrons (paramagnetic)\n\nIn the other options:\n- $\\text{Zn}^{2+}$ is $3d^{10}$ (diamagnetic, $n=0$)\n- $\\text{Sc}^{3+}$ is $3d^0$ (diamagnetic, $n=0$)\n- $\\text{Ti}^{4+}$ is $3d^0$ (diamagnetic, $n=0$)\n\nTherefore, set (b) contains only paramagnetic ions.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-040",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 40,
+    "year": 2020,
+    "question": "How many moles of acidified K2Cr2O7 are required to liberate 6 moles of I2 from an aqueous solution of I-?",
+    "options": [
+      "1",
+      "0.25",
+      "0.5",
+      "2"
+    ],
+    "correct_answer": 3,
+    "explanation": "The balanced redox reaction between acidified $\\text{K}_2\\text{Cr}_2\\text{O}_7$ and $\\text{I}^-$ is:\n$$\\text{Cr}_2\\text{O}_7^{2-} + 14\\text{H}^+ + 6\\text{I}^- \\rightarrow 2\\text{Cr}^{3+} + 3\\text{I}_2 + 7\\text{H}_2\\text{O}$$\nFrom stoichiometry:\n$1\\text{ mol of } \\text{K}_2\\text{Cr}_2\\text{O}_7$ produces $3\\text{ moles of } \\text{I}_2$.\nTo liberate $6\\text{ moles of } \\text{I}_2$:\n$$\\text{Moles of } \\text{K}_2\\text{Cr}_2\\text{O}_7 = \\frac{6}{3} = 2\\text{ moles}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-041",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 41,
+    "year": 2020,
+    "question": "Cu2Cl2 and CuCl2 in aqueous medium",
+    "options": [
+      "stability of Cu2Cl2 is equal to stability of CuCl2",
+      "both are unstable",
+      "Cu2Cl2 is more stable than CuCl2",
+      "CuCl2 is more stable than Cu2Cl2."
+    ],
+    "correct_answer": 3,
+    "explanation": "In aqueous solution, $\\text{Cu}^{2+}$ ($\\,\\text{CuCl}_2$) is much more stable than $\\text{Cu}^{+}$ ($\\text{Cu}_2\\text{Cl}_2$). This is because the much higher (more negative) hydration enthalpy of $\\text{Cu}^{2+}_{(\\text{aq})}$ compensates for the second ionisation enthalpy of copper, causing $\\text{Cu}^+$ to disproportionate:\n$$2\\text{Cu}^+_{(\\text{aq})} \\rightarrow \\text{Cu}^{2+}_{(\\text{aq})} + \\text{Cu}_{(\\text{s})}$$\nHence, $\\text{CuCl}_2$ is more stable than $\\text{Cu}_2\\text{Cl}_2$ in aqueous medium.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-042",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 42,
+    "year": 2020,
+    "question": "Which of the following does not represent property stated against it?",
+    "options": [
+      "Co^2+ < Fe^2+ < Mn^2+ - Ionic size",
+      "Ti < V < Mn - Number of oxidation states",
+      "Cr^2+ < Mn^2+ < Fe^2+ - Paramagnetic behaviour",
+      "Sc > Cr > Fe - Density"
+    ],
+    "correct_answer": 2,
+    "explanation": "- For (c): Number of unpaired electrons are $\\text{Cr}^{2+} (3d^4, n=4)$, $\\text{Mn}^{2+} (3d^5, n=5)$, $\\text{Fe}^{2+} (3d^6, n=4)$. Thus, paramagnetism order is $\\text{Fe}^{2+} = \\text{Cr}^{2+} < \\text{Mn}^{2+}$, which contradicts (c).\n- For (d): Across the $3d$ series, density increases from $\\text{Sc}$ to $\\text{Cu}$ ($\\,\\text{Sc} < \\text{Cr} < \\text{Fe}$), so $\\text{Sc} > \\text{Cr} > \\text{Fe}$ is also false.\n(Both options (c) and (d) do not represent the correct property trend).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-043",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 43,
+    "year": 2020,
+    "question": "Which one of the following is correct for the elements from Sc to Cu?",
+    "options": [
+      "The lowest oxidation state shown by them is +2.",
+      "4s orbital is completely filled in ground state.",
+      "3d orbital is not completely filled in ground state.",
+      "The ions in +2 oxidation states are paramagnetic."
+    ],
+    "correct_answer": 3,
+    "explanation": "- (a) is incorrect because Copper shows $+1$ oxidation state ($\\text{Cu}_2\\text{O}, \\text{CuCl}$).\n- (b) is incorrect because $\\text{Cr}$ ($4s^1$) and $\\text{Cu}$ ($4s^1$) do not have a completely filled $4s$ orbital.\n- (c) is incorrect because $\\text{Cu}$ has a completely filled $3d^{10}$ subshell in its ground state.\n- (d) is correct because all $M^{2+}$ ions from $\\text{Sc}^{2+}$ ($3d^1$) through $\\text{Cu}^{2+}$ ($3d^9$) have partially filled $d$-orbitals with unpaired electrons, so they are all paramagnetic.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-044",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 44,
+    "year": 2021,
+    "question": "Which of the following pairs has both the ions coloured in aqueous solution? [Atomic number of Sc = 21, Ti = 22, Ni = 28, Cu = 29, Mn = 25]",
+    "options": [
+      "Sc^3+, Mn^2+",
+      "Ni^2+, Ti^4+",
+      "Ti^3+, Cu+",
+      "Mn^2+, Ti^3+"
+    ],
+    "correct_answer": 3,
+    "explanation": "A transition metal ion is coloured if it possesses partially filled $d$-orbitals ($d^1$ to $d^9$) to undergo $d$-$d$ transition:\n- $\\text{Sc}^{3+}: 3d^0$ (colourless)\n- $\\text{Ti}^{4+}: 3d^0$ (colourless)\n- $\\text{Cu}^{+}: 3d^{10}$ (colourless)\n- $\\text{Mn}^{2+}: 3d^5$ (pale pink) and $\\text{Ti}^{3+}: 3d^1$ (purple/violet)\n\nBoth $\\text{Mn}^{2+}$ and $\\text{Ti}^{3+}$ contain unpaired $d$-electrons and form coloured solutions.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-045",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 45,
+    "year": 2022,
+    "question": "A transition metal exists in its highest oxidation state. It is expected to behave as",
+    "options": [
+      "an oxidising agent",
+      "a reducing agent",
+      "a chelating agent",
+      "a central metal in a co-ordination compound."
+    ],
+    "correct_answer": 0,
+    "explanation": "When a transition metal exists in its maximum/highest possible oxidation state, it has no more valence electrons to lose; it can only accept electrons and undergo reduction. Therefore, it functions as an oxidising agent.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-046",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 46,
+    "year": 2022,
+    "question": "What will be the value of x in Fe^x+, if the magnetic moment, μ = √24 B.M. ?",
+    "options": [
+      "0",
+      "+1",
+      "+2",
+      "+3"
+    ],
+    "correct_answer": 2,
+    "explanation": "Given $\\mu = \\sqrt{24}\\text{ B.M.}$\n$$\\sqrt{n(n+2)} = \\sqrt{24} \\implies n(n+2) = 24 \\implies n = 4$$\nNumber of unpaired electrons $n = 4$.\nNeutral Iron ($Z=26$) has configuration $[\\text{Ar}]3d^6 4s^2$.\n- $\\text{Fe}^{2+}: [\\text{Ar}]3d^6 4s^0 \\rightarrow 4$ unpaired electrons ($n=4$).\n- $\\text{Fe}^{3+}: [\\text{Ar}]3d^5 4s^0 \\rightarrow 5$ unpaired electrons ($n=5$).\n\nThus, $x = +2$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-047",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 47,
+    "year": 2022,
+    "question": "The only lanthanoid which is radioactive",
+    "options": [
+      "promethium",
+      "praseodymium",
+      "lanthanum",
+      "cerium."
+    ],
+    "correct_answer": 0,
+    "explanation": "Promethium ($\\text{Pm}$, $Z=61$) is the only strictly synthetic and radioactive member among all the 14 lanthanoid elements.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-048",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 48,
+    "year": 2022,
+    "question": "All Cu(II) halides are known, except iodide, the reason for it is that",
+    "options": [
+      "Cu^2+ has much more negative hydration enthalpy",
+      "Cu^2+ ion has smaller size",
+      "iodide is bulky ion",
+      "Cu^2+ oxidises iodide to iodine."
+    ],
+    "correct_answer": 3,
+    "explanation": "$\\text{Cu}^{2+}$ oxidises iodide ion ($\\text{I}^-$) to iodine ($\\text{I}_2$) spontaneously:\n$$2\\text{Cu}^{2+} + 4\\text{I}^- \\rightarrow \\text{Cu}_2\\text{I}_2\\downarrow + \\text{I}_2$$\nHence, cupric iodide ($\\text{CuI}_2$) cannot be formed.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-049",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 49,
+    "year": 2023,
+    "question": "In which one of the following pairs, both the elements does not have (n-1)d^10 ns^2 configuration in its elementary state?",
+    "options": [
+      "Zn, Cd",
+      "Cd, Hg",
+      "Hg, Cn",
+      "Cu, Zn"
+    ],
+    "correct_answer": 3,
+    "explanation": "- $\\text{Zn}: [\\text{Ar}]3d^{10} 4s^2$\n- $\\text{Cd}: [\\text{Kr}]4d^{10} 5s^2$\n- $\\text{Hg}: [\\text{Xe}]4f^{14} 5d^{10} 6s^2$\n- $\\text{Cn}: [\\text{Rn}]5f^{14} 6d^{10} 7s^2$\n- $\\text{Cu}: [\\text{Ar}]3d^{10} 4s^1$ (it has $(n-1)d^{10} ns^1$, not $ns^2$)\n\nIn pair (d), Copper ($\\text{Cu}$) has $3d^{10} 4s^1$, so the pair does not both have $(n-1)d^{10} ns^2$ configuration.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-050",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 50,
+    "year": 2023,
+    "question": "Which of the following is correct with respect to melting point of a transition element?",
+    "options": [
+      "V > Cr",
+      "Cr > Mn",
+      "Mn > Fe",
+      "Ti > V"
+    ],
+    "correct_answer": 1,
+    "explanation": "Manganese has an abnormally low melting point ($1519\\text{ K}$) compared to its neighbours chromium ($2180\\text{ K}$) and iron ($1811\\text{ K}$). This anomaly is due to its stable half-filled $3d^5$ configuration, which holds electrons tightly and results in weaker interatomic metallic bonding. Hence, melting point of $\\text{Cr} > \\text{Mn}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-051",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 51,
+    "year": 2023,
+    "question": "aMnO4^- + bS2O3^2- + H2O -> xMnO2 + ySO4^2- + zOH^-. a and y respectively are",
+    "options": [
+      "8; 3",
+      "8; 6",
+      "3; 6",
+      "8; 8"
+    ],
+    "correct_answer": 1,
+    "explanation": "Balancing the redox reaction in basic/neutral medium:\n1. Reduction half-reaction: $[\\text{MnO}_4^- + 2\\text{H}_2\\text{O} + 3e^- \\rightarrow \\text{MnO}_2 + 4\\text{OH}^-] \\times 8$\n2. Oxidation half-reaction: $[\\text{S}_2\\text{O}_3^{2-} + 10\\text{OH}^- \\rightarrow 2\\text{SO}_4^{2-} + 5\\text{H}_2\\text{O} + 8e^-] \\times 3$\n\nCombining both gives:\n$$8\\text{MnO}_4^- + 3\\text{S}_2\\text{O}_3^{2-} + \\text{H}_2\\text{O} \\rightarrow 8\\text{MnO}_2 + 6\\text{SO}_4^{2-} + 2\\text{OH}^-$$\nComparing with $a\\text{MnO}_4^- + b\\text{S}_2\\text{O}_3^{2-} + \\text{H}_2\\text{O} \\rightarrow x\\text{MnO}_2 + y\\text{SO}_4^{2-} + z\\text{OH}^-$:\n$a = 8, b = 3, x = 8, y = 6, z = 2$.\nTherefore, $a = 8$ and $y = 6$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-052",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 52,
+    "year": 2024,
+    "question": "Match the following.\nI. Zn^2+\nII. Cu^2+\nIII. Ni^2+\ni. d^8 configuration\nii. colourless\niii. μ = 1.73 B.M.\nCodes:\n    I    II    III",
+    "options": [
+      "i    ii    iii",
+      "ii   iii   i",
+      "ii   i     iii",
+      "i    iii   ii"
+    ],
+    "correct_answer": 1,
+    "explanation": "- $\\text{I. Zn}^{2+}: [\\text{Ar}]3d^{10}$ has completely filled $d$-orbitals with 0 unpaired electrons $\\rightarrow$ colourless (ii)\n- $\\text{II. Cu}^{2+}: [\\text{Ar}]3d^9$ has 1 unpaired electron $\\rightarrow \\mu = \\sqrt{1(3)} = 1.73\\text{ B.M.}$ (iii)\n- $\\text{III. Ni}^{2+}: [\\text{Ar}]3d^8$ has $d^8$ configuration (i)\n\nHence, $\\text{I} \\rightarrow \\text{ii},\\; \\text{II} \\rightarrow \\text{iii},\\; \\text{III} \\rightarrow \\text{i}$ (Option b).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-053",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 53,
+    "year": 2024,
+    "question": "Which of the following statements related to lanthanoids is incorrect?",
+    "options": [
+      "Lanthanoids are silvery white soft metals.",
+      "Samarium shows +2 oxidation state.",
+      "Ce^+4 solutions are widely used as oxidising agents in titrimetric analysis.",
+      "Colour of lanthanoid ion in solution is due to d-d transition."
+    ],
+    "correct_answer": 3,
+    "explanation": "The colour of lanthanoid ions in aqueous solutions or solid salts arises from absorption of visible light due to $f$-$f$ electronic transitions within the $4f$ subshell, NOT $d$-$d$ transitions. Therefore, statement (d) is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-054",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 54,
+    "year": 2024,
+    "question": "The transition element (≈5%) present with lanthanoid metal in Misch metal is",
+    "options": [
+      "Mg",
+      "Fe",
+      "Zn",
+      "Co"
+    ],
+    "correct_answer": 1,
+    "explanation": "Mischmetall is a well-known pyrophoric alloy containing approximately $95\\%$ lanthanoid metals (primarily Cerium $\\sim 50\\%$, Lanthanum $\\sim 25\\%$, Neodymium), $\\approx 5\\%$ Iron ($\\text{Fe}$), and traces of $\\text{S, C, Ca, Al}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "-055",
+    "subject": "Chemistry",
+    "chapter": "The d- and f-Block Elements",
+    "chapter_number": 13,
+    "questionNumber": 55,
+    "year": 2024,
+    "question": "In the reaction between moist SO2 and acidified permanganate solution",
+    "options": [
+      "SO2 is oxidised to SO4^2-, MnO4^- is reduced to Mn^2+",
+      "SO2 is reduced to S, MnO4^- is oxidised to MnO4",
+      "SO2 is oxidised to SO3^2-, MnO4^- is reduced to MnO2",
+      "SO2 is reduced to H2S, MnO4^- is oxidised to MnO4"
+    ],
+    "correct_answer": 0,
+    "explanation": "In acidic solution, permanganate ion ($\\text{MnO}_4^-$) is a powerful oxidising agent. It oxidises $\\text{SO}_2$ (where $\\text{S}$ is in $+4$ oxidation state) to sulphate ion $\\text{SO}_4^{2-}$ (oxidation state $+6$), while $\\text{MnO}_4^-$ (where $\\text{Mn}$ is in $+7$ state) is reduced to $\\text{Mn}^{2+}$ (oxidation state $+2$):\n$$5\\text{SO}_2 + 2\\text{MnO}_4^- + 2\\text{H}_2\\text{O} \\rightarrow 5\\text{SO}_4^{2-} + 2\\text{Mn}^{2+} + 4\\text{H}^+$$",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

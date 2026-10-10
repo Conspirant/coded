@@ -1,0 +1,524 @@
+[
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The physical quantity having the dimensions $[M^{-1}L^{-2}T^3A^2]$ is",
+    "options": [
+      "resistance",
+      "resistivity",
+      "electrical conductivity",
+      "electromotive force"
+    ],
+    "correct_answer": 2,
+    "year": 2006,
+    "explanation": "Resistivity $\\rho = \\frac{m}{n e^2 \\tau} = [M L^3 T^{-3} A^{-2}]$\\n\\nConductivity $\\sigma = \\frac{1}{\\rho} = [M^{-1} L^{-2} T^3 A^2]$\\n\\nHence, $[M^{-1}L^{-2}T^3A^2]$ represents electrical conductivity.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-001"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "Look at the graphs (a) to (d) carefully and indicate which of these possibly represents one dimensional motion of a particle?",
+    "options": [
+      "Graph (a)",
+      "Graph (b)",
+      "Graph (c)",
+      "Graph (d)"
+    ],
+    "correct_answer": 1,
+    "year": 2006,
+    "explanation": "In graph (a), at a single time $t$, there are two velocities which is physically impossible. In graph (c), speed is shown as negative, but speed is a scalar quantity and can never be negative. In graph (d), position $x$ has multiple values for a given time $t$. Therefore, graph (b) correctly depicts one-dimensional motion.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q1.png",
+    "id": "pyq-phys-ch1-ch2-002"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A cyclist starts from the centre $O$ of a circular park of radius one kilometre, reaches the edge $P$ of the park, then cycles along the circumference and returns to the centre along $QO$ as shown in the figure. If the round trip takes ten minutes, the net displacement and average speed of the cyclist (in metre and kilometre per hour) is",
+    "options": [
+      "$0, 1$",
+      "$\\frac{\\pi + 4}{2}$",
+      "$21.4, \\frac{\\pi + 4}{2}$",
+      "$0, 21.4$"
+    ],
+    "correct_answer": 3,
+    "year": 2006,
+    "explanation": "Since the cyclist returns to the initial point $O$, the net displacement is $0\\text{ m}$.\\nTotal distance $= OP + \\text{arc } PQ + QO = 1 + \\frac{2\\pi(1)}{4} + 1 = 2 + \\frac{\\pi}{2} = 3.57\\text{ km}$.\\nTotal time $= 10\\text{ min} = \\frac{1}{6}\\text{ h}$.\\nAverage speed $= \\frac{3.57}{1/6} \\approx 21.4\\text{ km/h}$.\\nHence, net displacement is $0\\text{ m}$ and average speed is $21.4\\text{ km/h}$.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q2.png",
+    "id": "pyq-phys-ch1-ch2-003"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The dimensional formula for impulse is",
+    "options": [
+      "$[M L T^{-1}]$",
+      "$[M L^{-1} T]$",
+      "$[M^{-1} L T^{-1}]$",
+      "$[M^0 L T^{-1}]$"
+    ],
+    "correct_answer": 0,
+    "year": 2007,
+    "explanation": "Impulse = Force $\\times$ Time = $[M L T^{-2}] \\times [T] = [M L T^{-1}]$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-004"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "Dimensional formula for the universal gravitational constant $G$ is",
+    "options": [
+      "$[M^{-1} L^3 T^{-2}]$",
+      "$[M^{-1} L^3 T^{-1}]$",
+      "$[M^{-2} L^3 T^{-2}]$",
+      "$[M^2 L^{-1} T^{-2}]$"
+    ],
+    "correct_answer": 0,
+    "year": 2008,
+    "explanation": "$F = \\frac{G M^2}{R^2} \\implies [G] = \\frac{F \\cdot R^2}{M^2} = \\frac{[M L T^{-2}][L^2]}{[M^2]} = [M^{-1} L^3 T^{-2}]$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-005"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The number of significant figures in the numbers $4.8000 \\times 10^4$ and $48000.50$ are respectively",
+    "options": [
+      "5 and 6",
+      "5 and 7",
+      "2 and 7",
+      "2 and 6"
+    ],
+    "correct_answer": 1,
+    "year": 2009,
+    "explanation": "All non-zero digits are significant. The trailing zeroes in a number with a decimal point are significant. Power of 10 is irrelevant for significant figures. Hence, $4.8000 \\times 10^4$ has 5 significant figures. For $48000.50$, trailing zero after decimal is significant, giving 7 significant figures.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-006"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A body of mass $m$ moving along a straight line covers half the distance with a speed of $2\\text{ m s}^{-1}$. The remaining half of the distance is covered in two equal time intervals with a speed of $3\\text{ m s}^{-1}$ and $5\\text{ m s}^{-1}$ respectively. The average speed of the particle for the entire journey is",
+    "options": [
+      "$\\frac{3}{8}\\text{ m s}^{-1}$",
+      "$\\frac{8}{3}\\text{ m s}^{-1}$",
+      "$\\frac{4}{3}\\text{ m s}^{-1}$",
+      "$\\frac{16}{3}\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "year": 2009,
+    "explanation": "Let $2s$ be the total distance. Time taken for first half: $t_1 = s / 2$.\\nFor the second half, let $t_2$ be the time for each of the two equal intervals: $s = 3t_2 + 5t_2 = 8t_2 \\implies t_2 = s/8$.\\nTotal time $T = t_1 + 2t_2 = \\frac{s}{2} + 2\\left(\\frac{s}{8}\\right) = \\frac{3s}{4}$.\\nAverage speed $= \\frac{2s}{3s/4} = \\frac{8}{3}\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-007"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The dimensions of 'resistance' are same as those of _____ where $h$ is Planck's constant, $e$ is the charge.",
+    "options": [
+      "$h^2 / e^2$",
+      "$h^2 / e$",
+      "$h / e^2$",
+      "$h / e$"
+    ],
+    "correct_answer": 2,
+    "year": 2010,
+    "explanation": "Resistance $R = \\frac{V}{I} = \\frac{[M L^2 T^{-3} A^{-1}]}{[A]} = [M L^2 T^{-3} A^{-2}]$.\\nAlso, $\\left[\\frac{h}{e^2}\\right] = \\frac{[M L^2 T^{-1}]}{[A T]^2} = [M L^2 T^{-3} A^{-2}]$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-008"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "If $C$ be the capacitance and $V$ be the electric potential, then the dimensional formula of $C V^2$ is",
+    "options": [
+      "$[M^1 L^2 T^{-2} A^0]$",
+      "$[M^1 L^1 T^{-2} A^{-1}]$",
+      "$[M^0 L^1 T^{-2} A^0]$",
+      "$[M^1 L^3 T^{-1} A^{-1}]$"
+    ],
+    "correct_answer": 0,
+    "year": 2011,
+    "explanation": "Energy stored in a capacitor is $U = \\frac{1}{2} C V^2 \\implies [C V^2] = [\\text{Energy}] = [M^1 L^2 T^{-2} A^0]$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-009"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "The displacement-time graphs of two moving particles make angles of $30^\\circ$ and $45^\\circ$ with the X-axis. The ratio of their velocities is",
+    "options": [
+      "$\\sqrt{3} : 2$",
+      "$1 : 1$",
+      "$1 : 2$",
+      "$1 : \\sqrt{3}$"
+    ],
+    "correct_answer": 3,
+    "year": 2011,
+    "explanation": "The slope of a displacement-time graph gives the velocity: $v = \\tan\\theta$.\\n$v_1 = \\tan 30^\\circ = \\frac{1}{\\sqrt{3}}$, $v_2 = \\tan 45^\\circ = 1$.\\nRatio $\\frac{v_1}{v_2} = \\frac{1/\\sqrt{3}}{1} = 1 : \\sqrt{3}$.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q4.png",
+    "id": "pyq-phys-ch1-ch2-010"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The dimensional formula of physical quantity is $M^a L^b T^c$. Then that physical quantity is",
+    "options": [
+      "surface tension if $a=1, b=1, c=-2$",
+      "force if $a=1, b=1, c=2$",
+      "angular frequency if $a=0, b=0, c=-1$",
+      "spring constant if $a=1, b=-1, c=-2$"
+    ],
+    "correct_answer": 2,
+    "year": 2012,
+    "explanation": "Angular frequency $\\omega = 2\\pi f = [T^{-1}] = [M^0 L^0 T^{-1}]$. Hence $a=0, b=0, c=-1$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-011"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "Which one of the following is NOT correct?",
+    "options": [
+      "Dimensional formula of thermal conductivity $(K)$ is $[M^1 L^1 T^{-3} K^{-1}]$",
+      "Dimensional formula of potential $(V)$ is $[M^1 L^2 T^{-3} A^{-1}]$",
+      "Dimensional formula of permeability of free space $(\\mu_0)$ is $[M^1 L^1 T^{-2} A^{-2}]$",
+      "Dimensional formula of $RC$ is $[M^0 L^0 T^{-1}]$"
+    ],
+    "correct_answer": 3,
+    "year": 2013,
+    "explanation": "$RC$ is the capacitive time constant of an $RC$ circuit, so $[RC] = [T] = [M^0 L^0 T^1]$. Thus $[M^0 L^0 T^{-1}]$ is incorrect.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-012"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A car moves from A to B with a speed of $30\\text{ kmph}$ and from B to A with a speed of $20\\text{ kmph}$. What is the average speed of the car?",
+    "options": [
+      "$50\\text{ kmph}$",
+      "$25\\text{ kmph}$",
+      "$10\\text{ kmph}$",
+      "$24\\text{ kmph}$"
+    ],
+    "correct_answer": 3,
+    "year": 2014,
+    "explanation": "When equal distances are travelled at speeds $v_1$ and $v_2$, average speed is the harmonic mean:\\n$v_{\\text{avg}} = \\frac{2 v_1 v_2}{v_1 + v_2} = \\frac{2 \\times 30 \\times 20}{30 + 20} = \\frac{1200}{50} = 24\\text{ kmph}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-013"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A body starts from rest and moves with constant acceleration for $t\\text{ s}$. It travels a distance $x_1$ in the first half of time and $x_2$ in the next half of time, then",
+    "options": [
+      "$x_2 = 3x_1$",
+      "$x_2 = x_1$",
+      "$x_2 = 4x_1$",
+      "$x_2 = 2x_1$"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "Distance in first half $(t/2)$: $x_1 = \\frac{1}{2} a (t/2)^2 = \\frac{1}{8} a t^2$.\\nTotal distance in time $t$: $x_1 + x_2 = \\frac{1}{2} a t^2 = 4 x_1$.\\nTherefore, $x_2 = 4x_1 - x_1 = 3x_1$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-014"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The ratio of the dimensions of Planck's constant and that of moment of inertia has the dimensions of",
+    "options": [
+      "frequency",
+      "velocity",
+      "time",
+      "angular momentum"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Planck's constant $[h] = [M L^2 T^{-1}]$. Moment of inertia $[I] = [M L^2]$.\\nRatio $\\frac{[h]}{[I]} = \\frac{[M L^2 T^{-1}]}{[M L^2]} = [T^{-1}]$, which is the dimension of frequency.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-015"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "The velocity-time graph for two bodies A and B are shown. Then the acceleration of A and B are in the ratio",
+    "options": [
+      "$\\tan 25^\\circ \\text{ to } \\tan 50^\\circ$",
+      "$\\cos 25^\\circ \\text{ to } \\cos 50^\\circ$",
+      "$\\tan 25^\\circ \\text{ to } \\tan 40^\\circ$",
+      "$\\sin 25^\\circ \\text{ to } \\sin 50^\\circ$"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Slope of a velocity-time graph gives acceleration: $a = \\tan\\theta$.\\nBody A makes angle $25^\\circ$ with time axis $\\implies a_A = \\tan 25^\\circ$.\\nBody B makes angle $(90^\\circ - 40^\\circ) = 50^\\circ$ with time axis $\\implies a_B = \\tan 50^\\circ$.\\nRatio is $\\tan 25^\\circ : \\tan 50^\\circ$.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q7.png",
+    "id": "pyq-phys-ch1-ch2-016"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A body falls freely for $10\\text{ seconds}$. Its average velocity during this journey (take $g = 10\\text{ m s}^{-2}$) is",
+    "options": [
+      "$50\\text{ m s}^{-1}$",
+      "$10\\text{ m s}^{-1}$",
+      "$100\\text{ m s}^{-1}$",
+      "$5\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 0,
+    "year": 2016,
+    "explanation": "Distance covered: $s = u t + \\frac{1}{2} g t^2 = 0 + \\frac{1}{2}(10)(10^2) = 500\\text{ m}$.\\nAverage velocity $= \\frac{\\text{Displacement}}{\\text{Time}} = \\frac{500}{10} = 50\\text{ m s}^{-1}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-017"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A car moving with a velocity of $20\\text{ m s}^{-1}$ is stopped in a distance of $40\\text{ m}$. If the same car is travelling at double the velocity, the distance travelled by it for the same retardation is",
+    "options": [
+      "$640\\text{ m}$",
+      "$320\\text{ m}$",
+      "$1260\\text{ m}$",
+      "$160\\text{ m}$"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "From $v^2 = u^2 - 2as \\implies s = \\frac{u^2}{2a}$. Stopping distance is directly proportional to $u^2$.\\nWhen velocity is doubled, stopping distance increases by $2^2 = 4$ times:\\n$s' = 4 \\times 40 = 160\\text{ m}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-018"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The dimensions of the ratio of magnetic flux $(\\phi)$ and permeability $(\\mu)$ are",
+    "options": [
+      "$[M^0 L^1 T^0 A^1]$",
+      "$[M^0 L^{-1} T^0 A^1]$",
+      "$[M^0 L^1 T^1 A^0]$",
+      "$[M^1 L^2 T^0 A^1]$"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "Magnetic flux $[\\phi] = [M L^2 T^{-2} A^{-1}]$. Permeability $[\\mu] = [M L T^{-2} A^{-2}]$.\\nRatio $\\frac{[\\phi]}{[\\mu]} = \\frac{[M L^2 T^{-2} A^{-1}]}{[M L T^{-2} A^{-2}]} = [M^0 L^1 T^0 A^1]$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-019"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A particle shows distance-time curve as shown in the figure. The maximum instantaneous velocity of the particle is around the point",
+    "options": [
+      "P",
+      "S",
+      "R",
+      "Q"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "Instantaneous velocity is the slope $\\frac{ds}{dt}$ of the distance-time graph. Point P has the steepest tangent slope on the curve, so velocity is maximum around point P.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q10.png",
+    "id": "pyq-phys-ch1-ch2-020"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "If $P, Q$ and $R$ are physical quantities having different dimensions, which of the following combinations can never be a meaningful quantity?",
+    "options": [
+      "$\\frac{P Q}{R}$",
+      "$\\frac{P - Q}{R}$",
+      "$\\frac{P R - Q^2}{R}$",
+      "$P Q - R$"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "By the principle of dimensional homogeneity, two physical quantities having different dimensions can never be added or subtracted. Thus $P - Q$ is meaningless.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-021"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "The given graph shows the variation of velocity ($v$) with position ($x$) for a particle moving along a straight line. Which of the following graphs shows the variation of acceleration ($a$) with position ($x$)?",
+    "options": [
+      "Graph (a)",
+      "Graph (b)",
+      "Graph (c)",
+      "Graph (d)"
+    ],
+    "correct_answer": 1,
+    "year": 2019,
+    "explanation": "From the given graph, $v = -k x + v_0$ (straight line with negative slope $-k$).\\nAcceleration $a = v \\frac{dv}{dx} = (-k x + v_0)(-k) = k^2 x - k v_0$.\\nAt $x = 0$, $a = -k v_0$ (negative intercept), and the slope is $k^2 > 0$ (positive slope). Graph (b) correctly represents this linear variation.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q11.png",
+    "id": "pyq-phys-ch1-ch2-022"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "At a metro station, a girl walks up a stationary escalator in $20\\text{ s}$. If she remains stationary on the escalator, then the escalator takes her up in $30\\text{ s}$. The time taken by her to walk up on the moving escalator will be",
+    "options": [
+      "$12\\text{ seconds}$",
+      "$10\\text{ seconds}$",
+      "$25\\text{ seconds}$",
+      "$60\\text{ seconds}$"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Speed of girl $v_g = L / 20$. Speed of escalator $v_e = L / 30$.\\nNet speed when walking up moving escalator: $v = v_g + v_e = \\frac{L}{20} + \\frac{L}{30} = \\frac{5L}{60} = \\frac{L}{12}$.\\nTime taken $t = \\frac{L}{v} = 12\\text{ s}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-023"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Units and Measurements",
+    "chapter_number": 1,
+    "question": "The physical quantity which is measured in the unit of $\\text{Wb A}^{-1}$ is",
+    "options": [
+      "Self inductance",
+      "Mutual inductance",
+      "Magnetic flux",
+      "Both (a) and (b)"
+    ],
+    "correct_answer": 3,
+    "year": 2021,
+    "explanation": "Magnetic flux $\\phi = L I$ and $\\phi = M I$. Thus both self inductance $L$ and mutual inductance $M$ equal $\\phi / I$ and have the SI unit $\\text{Weber / Ampere} (\\text{Wb A}^{-1})$ or Henry.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-024"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "For a body moving along a straight line, the given velocity-time graph is obtained. According to the graph, the displacement during uniform acceleration is",
+    "options": [
+      "greater than that during uniform motion",
+      "less than that during uniform motion",
+      "equal to that during uniform motion",
+      "zero"
+    ],
+    "correct_answer": 1,
+    "year": 2021,
+    "explanation": "Displacement is given by the area under the $v-t$ graph.\\nThe area under the sloping portion (uniform acceleration) is a trapezoid or triangle, which is less than the rectangular area under the horizontal portion (uniform motion). Hence, displacement during uniform acceleration is less than that during uniform motion.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q13.png",
+    "id": "pyq-phys-ch1-ch2-025"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A particle starts from rest. Its acceleration $a$ versus time $t$ is shown in the figure. The maximum speed of the particle will be",
+    "options": [
+      "$80\\text{ m s}^{-1}$",
+      "$40\\text{ m s}^{-1}$",
+      "$18\\text{ m s}^{-1}$",
+      "$2\\text{ m s}^{-1}$"
+    ],
+    "correct_answer": 1,
+    "year": 2021,
+    "explanation": "Change in velocity $\\Delta v = v_{\\text{max}} - v_0 = \\text{Area under } a-t \\text{ graph}$.\\n$v_{\\text{max}} - 0 = \\frac{1}{2} \\times \\text{base} \\times \\text{height} = \\frac{1}{2} \\times 10 \\times 8 = 40\\text{ m s}^{-1}$.\\nHence, maximum speed is $40\\text{ m s}^{-1}$.",
+    "needs_image": true,
+    "image_url": "/pyq-images/physics/ch2_q14.png",
+    "id": "pyq-phys-ch1-ch2-026"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "Displacement $x$ (in metre) of a particle of mass $1\\text{ kg}$ moving along a straight line under the action of a force is related to time $t$ (in s) by $t = \\sqrt{x} + 3$. The displacement of the particle when its velocity is zero will be",
+    "options": [
+      "$6\\text{ m}$",
+      "$4\\text{ m}$",
+      "$2\\text{ m}$",
+      "$0\\text{ m}$"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "Given $t = \\sqrt{x} + 3 \\implies \\sqrt{x} = t - 3 \\implies x = (t - 3)^2$.\\nVelocity $v = \\frac{dx}{dt} = 2(t - 3)$.\\nVelocity is zero when $2(t - 3) = 0 \\implies t = 3\\text{ s}$.\\nAt $t = 3\\text{ s}$, displacement $x = (3 - 3)^2 = 0\\text{ m}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-027"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "A body is moving along a straight line with velocity $v_1$. Its acceleration is constant $a$. After time $t$, its velocity becomes $v_2$. The average velocity of the body over the given interval is",
+    "options": [
+      "$\\bar{v} = v_1 + \\frac{a t}{2}$",
+      "$\\bar{v} = v_2 - a t$",
+      "$\\bar{v} = \\frac{v_1 + v_2}{2 a t}$",
+      "$\\bar{v} = \\frac{v_2^2 - v_1^2}{2 a t}$"
+    ],
+    "correct_answer": 3,
+    "year": 2023,
+    "explanation": "Using kinematic equation: $v_2^2 - v_1^2 = 2 a s \\implies s = \\frac{v_2^2 - v_1^2}{2 a}$.\\nAverage velocity $\\bar{v} = \\frac{\\text{Total displacement}}{\\text{Total time}} = \\frac{s}{t} = \\frac{v_2^2 - v_1^2}{2 a t}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-028"
+  },
+  {
+    "subject": "Physics",
+    "chapter": "Motion in a Straight Line",
+    "chapter_number": 2,
+    "question": "An athlete runs along a circular track of diameter $80\\text{ m}$. The distance travelled and magnitude of displacement when he covers $3/4^{\\text{th}}$ of the circle is (in m)",
+    "options": [
+      "$60\\pi, 40\\sqrt{2}$",
+      "$40\\pi, 40\\sqrt{2}$",
+      "$60\\pi, 80\\sqrt{2}$",
+      "$80\\pi, 120\\sqrt{2}$"
+    ],
+    "correct_answer": 0,
+    "year": 2024,
+    "explanation": "Diameter $d = 80\\text{ m} \\implies \\text{Radius } r = 40\\text{ m}$.\\nDistance covered in $3/4^{\\text{th}}$ round $= \\frac{3}{4}(2\\pi r) = \\frac{3}{4}(\\pi \\times 80) = 60\\pi\\text{ m}$.\\nDisplacement is the straight line chord between start and end position: $\\text{Displacement} = \\sqrt{r^2 + r^2} = \\sqrt{2} r = 40\\sqrt{2}\\text{ m}$.\\nHence, distance $= 60\\pi\\text{ m}$ and displacement $= 40\\sqrt{2}\\text{ m}$.",
+    "needs_image": false,
+    "image_url": "",
+    "id": "pyq-phys-ch1-ch2-029"
+  }
+]

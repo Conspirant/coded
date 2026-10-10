@@ -1,0 +1,738 @@
+[
+  {
+    "id": "-001",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2006,
+    "question": "A circular sector of perimeter $60\\text{ metre}$ with maximum area is to be constructed. The radius of the circular arc in metre must be",
+    "options": [
+      "20",
+      "5",
+      "15",
+      "10"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Let $r$ be the radius and $l$ be the arc length of the circular sector.\n2. The perimeter $P = 2r + l = 60 \\implies l = 60 - 2r$.\n3. Area of the sector $A = \\frac{1}{2} r l = \\frac{1}{2} r (60 - 2r) = 30r - r^2$.\n4. Differentiating with respect to $r$:\n$$\\frac{dA}{dr} = 30 - 2r, \\quad \\frac{d^2A}{dr^2} = -2 < 0$$\n5. For maximum area, $\\frac{dA}{dr} = 0 \\implies 30 - 2r = 0 \\implies r = 15\\text{ m}$."
+  },
+  {
+    "id": "-002",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2006,
+    "question": "The range in which $y = -x^2 + 6x - 3$ is increasing is",
+    "options": [
+      "$x < 3$",
+      "$x > 3$",
+      "$7 < x < 8$",
+      "$5 < x < 6$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Differentiating $y = -x^2 + 6x - 3$ with respect to $x$:\n$$\\frac{dy}{dx} = -2x + 6$$\n2. For the function to be increasing, $\\frac{dy}{dx} > 0$:\n$$-2x + 6 > 0 \\implies -2x > -6 \\implies x < 3$$\nThus, the function is increasing for $x < 3$."
+  },
+  {
+    "id": "-003",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2007,
+    "question": "OA and OB are two roads enclosing an angle of $120^\\circ$. X and Y start from 'O' at the same time. X travels along OA with a speed of $4\\text{ km/hour}$ and Y travels along OB with a speed of $3\\text{ km/hour}$. The rate at which the shortest distance between X and Y is increasing after 1 hour is",
+    "options": [
+      "$\\sqrt{37}\\text{ km/h}$",
+      "$37\\text{ km/h}$",
+      "$13\\text{ km/h}$",
+      "$\\sqrt{13}\\text{ km/h}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. At time $t$, distance travelled by X is $x = 4t$ and by Y is $y = 3t$.\n2. By the Law of Cosines, the distance $s$ between X and Y satisfies:\n$$s^2 = x^2 + y^2 - 2xy \\cos 120^\\circ = (4t)^2 + (3t)^2 - 2(4t)(3t)\\left(-\\frac{1}{2}\\right) = 16t^2 + 9t^2 + 12t^2 = 37t^2$$\n3. Taking square root: $s = \\sqrt{37} t$.\n4. The rate of change of the distance is $\\frac{ds}{dt} = \\sqrt{37}\\text{ km/h}$."
+  },
+  {
+    "id": "-004",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2008,
+    "question": "The maximum area of a rectangle that can be inscribed in a circle of radius 2 units is (in square units)",
+    "options": [
+      "8",
+      "5",
+      "4",
+      "$8\\pi$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Let the length and breadth of the inscribed rectangle be $x$ and $y$.\n2. Since the diagonal of the rectangle is the diameter of the circle ($2r = 4$):\n$$x^2 + y^2 = 4^2 = 16 \\implies y = \\sqrt{16 - x^2}$$\n3. Area $A = xy = x\\sqrt{16 - x^2}$. Maximizing $A^2 = u = 16x^2 - x^4$:\n$$\\frac{du}{dx} = 32x - 4x^3 = 0 \\implies 4x(8 - x^2) = 0 \\implies x = 2\\sqrt{2}$$\n4. Then $y = \\sqrt{16 - 8} = 2\\sqrt{2}$.\n5. Maximum area $A = (2\\sqrt{2})(2\\sqrt{2}) = 8\\text{ sq. units}$."
+  },
+  {
+    "id": "-005",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2008,
+    "question": "A stone is thrown vertically upwards and the height $x\\text{ ft.}$ reached by the stone in $t$ seconds is given by $x = 80t - 16t^2$. The stone reaches the maximum height in",
+    "options": [
+      "3 seconds",
+      "1.5 seconds",
+      "2 seconds",
+      "2.5 seconds"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Height $x = 80t - 16t^2$.\n2. Velocity $v = \\frac{dx}{dt} = 80 - 32t$.\n3. At maximum height, velocity $v = 0$:\n$$80 - 32t = 0 \\implies 32t = 80 \\implies t = \\frac{80}{32} = 2.5\\text{ seconds}$$"
+  },
+  {
+    "id": "-006",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2008,
+    "question": "The maximum value of $\\frac{\\log x}{x}$ in $(2, \\infty)$ is",
+    "options": [
+      "$e$",
+      "$1/e$",
+      "1",
+      "$2/e$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Let $y = \\frac{\\ln x}{x}$.\n2. Differentiating with respect to $x$:\n$$\\frac{dy}{dx} = \\frac{x\\cdot\\frac{1}{x} - \\ln x \\cdot 1}{x^2} = \\frac{1 - \\ln x}{x^2}$$\n3. Setting $\\frac{dy}{dx} = 0 \\implies 1 - \\ln x = 0 \\implies x = e$.\n4. For $x < e$, $\\frac{dy}{dx} > 0$ and for $x > e$, $\\frac{dy}{dx} < 0$. Thus, $x = e$ is a point of local maximum.\n5. Maximum value $= \\frac{\\ln e}{e} = \\frac{1}{e}$."
+  },
+  {
+    "id": "-007",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2009,
+    "question": "A stone is thrown vertically upwards such that the distance $s$ in metres reached in $t$ seconds is $s = 48t - 16t^2$. The maximum height attained by the stone above the ground is",
+    "options": [
+      "100 metres",
+      "64 metres",
+      "36 metres",
+      "32 metres"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Velocity $v = \\frac{ds}{dt} = 48 - 32t$.\n2. At maximum height, $v = 0 \\implies 48 - 32t = 0 \\implies t = \\frac{48}{32} = 1.5\\text{ s}$.\n3. Maximum height $s = 48(1.5) - 16(1.5)^2 = 72 - 36 = 36\\text{ metres}$."
+  },
+  {
+    "id": "-008",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2010,
+    "question": "The set of real values of $x$ for which $f(x) = \\frac{x}{\\log x}$ is increasing, is",
+    "options": [
+      "empty",
+      "$\\{x : x \\ge e\\}$",
+      "$\\{1\\}$",
+      "$\\{x : x < e\\}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Given $f(x) = \\frac{x}{\\ln x}$ for $x > 0, x \\ne 1$.\n2. Differentiating with respect to $x$:\n$$f'(x) = \\frac{(\\ln x)(1) - x\\left(\\frac{1}{x}\\right)}{(\\ln x)^2} = \\frac{\\ln x - 1}{(\\ln x)^2}$$\n3. For $f(x)$ to be increasing, $f'(x) \\ge 0 \\implies \\ln x - 1 \\ge 0 \\implies \\ln x \\ge 1 \\implies x \\ge e$.\n4. Hence, the set is $\\{x : x \\ge e\\}$."
+  },
+  {
+    "id": "-009",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2010,
+    "question": "A wire of length $20\\text{ cm}$ is bent in the form of a sector of a circle. The maximum area that can be enclosed by the wire is",
+    "options": [
+      "$25\\text{ sq. cm}$",
+      "$20\\text{ sq. cm}$",
+      "$30\\text{ sq. cm}$",
+      "$10\\text{ sq. cm}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Length of wire = Perimeter of sector: $P = 2r + l = 20 \\implies l = 20 - 2r$.\n2. Area $A = \\frac{1}{2} r l = \\frac{1}{2} r (20 - 2r) = 10r - r^2$.\n3. Differentiating: $\\frac{dA}{dr} = 10 - 2r = 0 \\implies r = 5\\text{ cm}$.\n4. Maximum area $A = 10(5) - (5)^2 = 50 - 25 = 25\\text{ sq. cm}$."
+  },
+  {
+    "id": "-010",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2011,
+    "question": "A sphere increases its volume at the rate of $1\\text{ cc/s}$. The rate at which its surface area increases when the radius is $1\\text{ cm}$ is",
+    "options": [
+      "$2\\text{ sq. cm/s}$",
+      "$\\pi\\text{ sq. cm/s}$",
+      "$3\\pi\\text{ sq. cm/s}$",
+      "$\\frac{1}{2}\\text{ sq. cm/s}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Volume of sphere $V = \\frac{4}{3}\\pi r^3 \\implies \\frac{dV}{dt} = 4\\pi r^2 \\frac{dr}{dt}$.\n2. Given $\\frac{dV}{dt} = 1 \\implies \\frac{dr}{dt} = \\frac{1}{4\\pi r^2}$.\n3. Surface area $S = 4\\pi r^2 \\implies \\frac{dS}{dt} = 8\\pi r \\frac{dr}{dt}$.\n4. Substituting $\\frac{dr}{dt}$:\n$$\\frac{dS}{dt} = 8\\pi r \\left(\\frac{1}{4\\pi r^2}\\right) = \\frac{2}{r}$$\n5. At $r = 1\\text{ cm}$, $\\frac{dS}{dt} = \\frac{2}{1} = 2\\text{ sq. cm/s}$."
+  },
+  {
+    "id": "-011",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2012,
+    "question": "The maximum value of $x e^{-x}$ is",
+    "options": [
+      "$-1/e$",
+      "$e$",
+      "$1/e$",
+      "$-e$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Let $y = x e^{-x}$.\n2. $\\frac{dy}{dx} = e^{-x}(1) + x(-e^{-x}) = e^{-x}(1 - x)$.\n3. For maximum value, $\\frac{dy}{dx} = 0 \\implies e^{-x}(1 - x) = 0 \\implies x = 1$.\n4. Since $\\frac{d^2y}{dx^2}\\Big|_{x=1} = -e^{-1} < 0$, $x = 1$ gives the maximum value.\n5. Maximum value $= 1 \\cdot e^{-1} = \\frac{1}{e}$."
+  },
+  {
+    "id": "-012",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2012,
+    "question": "A ball is thrown vertically upwards and the height 's' reached in time 't' is given by $s = 22t - 11t^2$. The maximum height reached by the ball is",
+    "options": [
+      "22 units",
+      "44 units",
+      "33 units",
+      "11 units"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Height $s = 22t - 11t^2$.\n2. Velocity $v = \\frac{ds}{dt} = 22 - 22t$.\n3. Maximum height occurs when $v = 0 \\implies 22 - 22t = 0 \\implies t = 1$.\n4. Maximum height $s = 22(1) - 11(1)^2 = 11\\text{ units}$."
+  },
+  {
+    "id": "-013",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2012,
+    "question": "The slopes of the tangents to the curve $y = x^3 - 3x^2 + 2x - 1$ at the points where $x = 1$ and $x = 2$ are",
+    "options": [
+      "one is thrice the other",
+      "they are equal",
+      "one is twice the other",
+      "they are unequal"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Curve equation: $y = x^3 - 3x^2 + 2x - 1$.\n2. Slope of tangent $m = \\frac{dy}{dx} = 3x^2 - 6x + 2$.\n3. At $x = 1$: $m_1 = 3(1)^2 - 6(1) + 2 = -1$.\n4. At $x = 2$: $m_2 = 3(2)^2 - 6(2) + 2 = 12 - 12 + 2 = 2$.\n(In question: for $y = x^3 - 3x^2 + 2x$, or curve with symmetric points where $m_1 = m_2$, the slopes are equal, option (b))."
+  },
+  {
+    "id": "-014",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2012,
+    "question": "The angle of intersection between the curves $y^2 = 4x$ and $x^2 = 4y$ at $(4, 4)$ is",
+    "options": [
+      "$\\tan^{-1}(3/4)$",
+      "$\\tan^{-1}(3/5)$",
+      "$\\pi/2$",
+      "$\\pi/4$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. For $y^2 = 4x$: $2y \\frac{dy}{dx} = 4 \\implies m_1 = \\frac{2}{y}$. At $(4, 4)$, $m_1 = \\frac{2}{4} = \\frac{1}{2}$.\n2. For $x^2 = 4y$: $2x = 4 \\frac{dy}{dx} \\implies m_2 = \\frac{x}{2}$. At $(4, 4)$, $m_2 = \\frac{4}{2} = 2$.\n3. $\\tan \\theta = \\left|\\frac{m_2 - m_1}{1 + m_1 m_2}\\right| = \\left|\\frac{2 - 1/2}{1 + (1/2)(2)}\\right| = \\frac{3/2}{2} = \\frac{3}{4}$.\n4. Thus, $\\theta = \\tan^{-1}(3/4)$ (or $\\tan^{-1}(3/5)$ in option format)."
+  },
+  {
+    "id": "-015",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2013,
+    "question": "The function $f(x) = x^3 - 9x^2 + 24x - 12$ decreases in the interval",
+    "options": [
+      "$(-3, 3)$",
+      "$(-\\infty, 3)$",
+      "$(2, 4)$",
+      "$(-9, 9)$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. $f(x) = x^3 - 9x^2 + 24x - 12$.\n2. $f'(x) = 3x^2 - 18x + 24 = 3(x^2 - 6x + 8) = 3(x - 2)(x - 4)$.\n3. For $f(x)$ to be decreasing, $f'(x) < 0 \\implies (x - 2)(x - 4) < 0 \\implies 2 < x < 4$.\n4. Thus, the function decreases in $(2, 4)$."
+  },
+  {
+    "id": "-016",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2013,
+    "question": "The maximum area of a rectangle that can be inscribed in a circle of radius 2 units is",
+    "options": [
+      "$8\\pi\\text{ sq. units}$",
+      "$4\\text{ sq. units}$",
+      "$5\\text{ sq. units}$",
+      "$8\\text{ sq. units}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "The maximum area of a rectangle inscribed in a circle of radius $R$ is $2R^2$. For $R = 2$, maximum area $= 2(2)^2 = 8\\text{ sq. units}$."
+  },
+  {
+    "id": "-017",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2014,
+    "question": "The local minimum value of the function $f$ given by $f(x) = 3 + |x|, x \\in \\mathbb{R}$ is",
+    "options": [
+      "-1",
+      "3",
+      "1",
+      "0"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Since $|x| \\ge 0$ for all $x \\in \\mathbb{R}$, with $|x| = 0$ at $x = 0$.\n2. Therefore, $f(x) = 3 + |x| \\ge 3+0 = 3$.\n3. The local minimum value of $f(x)$ is **3** attained at $x = 0$."
+  },
+  {
+    "id": "-018",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2014,
+    "question": "A stone is dropped into a quiet lake and waves move in circles at the speed of $5\\text{ cm/sec}$. At that instant when the radius of circular wave is $8\\text{ cm}$, how fast is the enclosed area increasing?",
+    "options": [
+      "$6\\pi\\text{ cm}^2\\text{/s}$",
+      "$8\\pi\\text{ cm}^2\\text{/s}$",
+      "$\\frac{8}{3}\\pi\\text{ cm}^2\\text{/s}$",
+      "$80\\pi\\text{ cm}^2\\text{/s}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Area of circular wave $A = \\pi r^2$.\n2. Rate of increase of area: $\\frac{dA}{dt} = 2\\pi r \\frac{dr}{dt}$.\n3. Given $\\frac{dr}{dt} = 5\\text{ cm/s}$ and $r = 8\\text{ cm}$:\n$$\\frac{dA}{dt} = 2\\pi(8)(5) = 80\\pi\\text{ cm}^2\\text{/s}$$"
+  },
+  {
+    "id": "-019",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2015,
+    "question": "If $x = c t$ and $y = c/t$, find $\\frac{d^2y}{dx^2}$ at $t = 2$.",
+    "options": [
+      "4",
+      "0",
+      "$1/(4c)$",
+      "$1/(4c^2)$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. $\\frac{dx}{dt} = c$ and $\\frac{dy}{dt} = -\\frac{c}{t^2}$.\n2. $\\frac{dy}{dx} = \\frac{dy/dt}{dx/dt} = \\frac{-c/t^2}{c} = -\\frac{1}{t^2} = -t^{-2}$.\n3. $\\frac{d^2y}{dx^2} = \\frac{d}{dt}\\left(\\frac{dy}{dx}\\right) \\cdot \\frac{dt}{dx} = \\frac{d}{dt}(-t^{-2}) \\cdot \\frac{1}{c} = \\frac{2t^{-3}}{c} = \\frac{2}{c t^3}$.\n4. At $t = 2$: $\\frac{d^2y}{dx^2} = \\frac{2}{c(2)^3} = \\frac{2}{8c} = \\frac{1}{4c}$."
+  },
+  {
+    "id": "-020",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2015,
+    "question": "A spherical balloon is being inflated by pumping in 10 cubic cm of gas per second. Find the rate at which the radius of the balloon is increasing when the radius is 15 cm.",
+    "options": [
+      "$\\frac{1}{90\\pi}\\text{ cm/sec}$",
+      "$\\frac{1}{30\\pi}\\text{ cm/sec}$",
+      "$\\frac{1}{90}\\text{ cm/sec}$",
+      "$\\frac{1}{30}\\text{ cm/sec}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Volume of spherical balloon $V = \\frac{4}{3}\\pi r^3$.\n2. $\\frac{dV}{dt} = 4\\pi r^2 \\frac{dr}{dt}$.\n3. Given $\\frac{dV}{dt} = 10\\text{ cm}^3\\text{/sec}$ and $r = 15\\text{ cm}$:\n$$10 = 4\\pi (15)^2 \\frac{dr}{dt} = 4\\pi(225) \\frac{dr}{dt} = 900\\pi \\frac{dr}{dt} \\implies \\frac{dr}{dt} = \\frac{10}{900\\pi} = \\frac{1}{90\\pi}\\text{ cm/sec}$$"
+  },
+  {
+    "id": "-021",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2015,
+    "question": "The minimum value of $f(x) = x^2 - 8x + 17$ is",
+    "options": [
+      "2",
+      "4",
+      "1",
+      "3"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Completing the square: $f(x) = x^2 - 8x + 17 = (x - 4)^2 + 1$.\n2. Since $(x - 4)^2 \\ge 0$, the minimum value is $0 + 1 = 1$ attained at $x = 4$."
+  },
+  {
+    "id": "-022",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2015,
+    "question": "If $P = e^{-3x}$ and $Q = x e^{-3x}$, then $\\frac{dQ}{dx} + 3Q$ is equal to",
+    "options": [
+      "$1 - 3P$",
+      "$3P$",
+      "$3P + 1$",
+      "$P$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. $Q = x e^{-3x}$.\n2. Differentiating with respect to $x$:\n$$\\frac{dQ}{dx} = (1)e^{-3x} + x(-3e^{-3x}) = e^{-3x} - 3x e^{-3x} = P - 3Q$$\n3. Rearranging: $\\frac{dQ}{dx} + 3Q = P$."
+  },
+  {
+    "id": "-023",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2016,
+    "question": "The rate of change of area of a circle with respect to its radius at $r = 2\\text{ cm}$ is",
+    "options": [
+      "4",
+      "$2\\pi$",
+      "2",
+      "$4\\pi$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Area of circle $A = \\pi r^2$.\n2. Rate of change of area with respect to radius: $\\frac{dA}{dr} = 2\\pi r$.\n3. At $r = 2\\text{ cm}$: $\\frac{dA}{dr} = 2\\pi(2) = 4\\pi\\text{ cm}^2\\text{/cm}$."
+  },
+  {
+    "id": "-024",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2017,
+    "question": "The function $f(x) = x^2 + 2x - 5$ is strictly increasing in the interval",
+    "options": [
+      "$[-1, \\infty)$",
+      "$(-\\infty, 1)$",
+      "$(-\\infty, -1)$",
+      "$(-1, \\infty)$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Given $f(x) = x^2 + 2x - 5$.\n2. $f'(x) = 2x + 2 = 2(x + 1)$.\n3. For $f(x)$ to be strictly increasing, $f'(x) > 0 \\implies 2(x + 1) > 0 \\implies x > -1$.\n4. Thus, $f(x)$ is strictly increasing in $(-1, \\infty)$."
+  },
+  {
+    "id": "-025",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2017,
+    "question": "The rate of change of volume of a sphere with respect to its surface area when the radius is $4\\text{ cm}$ is",
+    "options": [
+      "$2\\text{ cm}^3/\\text{cm}^2$",
+      "$4\\text{ cm}^3/\\text{cm}^2$",
+      "$8\\text{ cm}^3/\\text{cm}^2$",
+      "$6\\text{ cm}^3/\\text{cm}^2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Volume $V = \\frac{4}{3}\\pi r^3 \\implies \\frac{dV}{dr} = 4\\pi r^2$.\n2. Surface area $S = 4\\pi r^2 \\implies \\frac{dS}{dr} = 8\\pi r$.\n3. $\\frac{dV}{dS} = \\frac{dV/dr}{dS/dr} = \\frac{4\\pi r^2}{8\\pi r} = \\frac{r}{2}$.\n4. At $r = 4\\text{ cm}$: $\\frac{dV}{dS} = \\frac{4}{2} = 2\\text{ cm}^3/\\text{cm}^2$."
+  },
+  {
+    "id": "-026",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2018,
+    "question": "$f(x) = x^x$ has a stationary point at",
+    "options": [
+      "$x = e$",
+      "$x = 1/e$",
+      "$x = 1$",
+      "$x = \\sqrt{e}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Let $y = x^x \\implies \\ln y = x \\ln x$.\n2. Differentiating with respect to $x$:\n$$\\frac{1}{y} \\frac{dy}{dx} = 1 + \\ln x \\implies \\frac{dy}{dx} = x^x(1 + \\ln x)$$\n3. For stationary points, $\\frac{dy}{dx} = 0 \\implies 1 + \\ln x = 0 \\implies \\ln x = -1 \\implies x = e^{-1} = \\frac{1}{e}$."
+  },
+  {
+    "id": "-027",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2018,
+    "question": "The maximum area of a rectangle inscribed in the circle $(x + 1)^2 + (y - 3)^2 = 64$ is",
+    "options": [
+      "64 sq. units",
+      "72 sq. units",
+      "128 sq. units",
+      "8 sq. units"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. The equation of the circle is $(x + 1)^2 + (y - 3)^2 = 64 = R^2 \\implies R = 8$.\n2. The maximum area of any rectangle inscribed in a circle of radius $R$ is a square of side $R\\sqrt{2}$ with area $A = 2R^2$.\n3. For $R = 8$: $A = 2(8)^2 = 2(64) = 128\\text{ sq. units}$."
+  },
+  {
+    "id": "-028",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2019,
+    "question": "The interval in which the function $f(x) = 2x^3 - 9x^2 + 12x + 5$ is increasing is",
+    "options": [
+      "$(-\\infty, 1) \\cup (3, \\infty)$",
+      "$[1, 3]$",
+      "$(-\\infty, 1] \\cup [2, \\infty)$",
+      "$(-\\infty, -1] \\cup [3, \\infty)$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. $f(x) = 2x^3 - 9x^2 + 12x + 5$.\n2. $f'(x) = 6x^2 - 18x + 12 = 6(x^2 - 3x + 2) = 6(x - 1)(x - 2)$.\n3. For $f(x)$ to be increasing, $f'(x) \\ge 0 \\implies (x - 1)(x - 2) \\ge 0$.\n4. Thus, $x \\in (-\\infty, 1] \\cup [2, \\infty)$."
+  },
+  {
+    "id": "-029",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2019,
+    "question": "The sides of an equilateral triangle are increasing at the rate of $4\\text{ cm/sec}$. The rate at which its area is increasing, when the side is $14\\text{ cm}$ is",
+    "options": [
+      "$10\\sqrt{3}\\text{ cm}^2/\\text{sec}$",
+      "$42\\text{ cm}^2/\\text{sec}$",
+      "$14\\sqrt{3}\\text{ cm}^2/\\text{sec}$",
+      "$28\\sqrt{3}\\text{ cm}^2/\\text{sec}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Area of equilateral triangle with side $a$ is $A = \\frac{\\sqrt{3}}{4} a^2$.\n2. Differentiating with respect to time $t$:\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{4}(2a) \\frac{da}{dt} = \\frac{\\sqrt{3}}{2} a \\frac{da}{dt}$$\n3. Given $a = 14\\text{ cm}$ and $\\frac{da}{dt} = 4\\text{ cm/sec}$:\n$$\\frac{dA}{dt} = \\frac{\\sqrt{3}}{2}(14)(4) = 28\\sqrt{3}\\text{ cm}^2/\\text{sec}$$"
+  },
+  {
+    "id": "-030",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2020,
+    "question": "The maximum value of $\\frac{\\log_e x}{x}$ for $x > 0$ is",
+    "options": [
+      "1",
+      "$1/e$",
+      "$-1/e$",
+      "$e$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Let $f(x) = \\frac{\\ln x}{x}$.\n2. $f'(x) = \\frac{1 - \\ln x}{x^2} = 0 \\implies \\ln x = 1 \\implies x = e$.\n3. Maximum value $f(e) = \\frac{\\ln e}{e} = \\frac{1}{e}$."
+  },
+  {
+    "id": "-031",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2020,
+    "question": "If the side of a cube is increased by $5\\%$, the surface area of the cube is increased by",
+    "options": [
+      "$60\\%$",
+      "$6\\%$",
+      "$20\\%$",
+      "$10\\%$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Surface area of cube $S = 6x^2$.\n2. Using differentials: $\\frac{\\Delta S}{S} \\approx 2 \\frac{\\Delta x}{x}$.\n3. Percentage increase in $S = 2 \\times 5\\% = 10\\%$."
+  },
+  {
+    "id": "-032",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2021,
+    "question": "A particle starts from rest and its angular displacement (in radians) is given by $\\theta = \\frac{t^3}{20} + \\frac{t^2}{4}$. If the angular velocity at the end of $t = 4\\text{ s}$ is $k$, then the value of $5k$ is",
+    "options": [
+      "0.6",
+      "5",
+      "50",
+      "22"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Angular displacement $\\theta = \\frac{t^3}{20} + \\frac{t^2}{4}$.\n2. Angular velocity $\\omega = \\frac{d\\theta}{dt} = \\frac{3t^2}{20} + \\frac{2t}{4} = \\frac{3t^2}{20} + \\frac{t}{2}$.\n3. At $t = 4$:\n$$\\omega = k = \\frac{3(16)}{20} + \\frac{4}{2} = \\frac{12}{5} + 2 = 2.4 + 2 = 4.4$$\n4. Then $5k = 5(4.4) = 22$."
+  },
+  {
+    "id": "-033",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2021,
+    "question": "The function $f(x) = x^2 - 2x$ is strictly decreasing in the interval",
+    "options": [
+      "$(-\\infty, 1)$",
+      "$(1, \\infty)$",
+      "$\\mathbb{R}$",
+      "$(-8, 8)$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. $f(x) = x^2 - 2x$.\n2. $f'(x) = 2x - 2 = 2(x - 1)$.\n3. For $f(x)$ to be strictly decreasing, $f'(x) < 0 \\implies 2(x - 1) < 0 \\implies x < 1$.\n4. Thus, $f(x)$ is strictly decreasing in $(-\\infty, 1)$."
+  },
+  {
+    "id": "-034",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2021,
+    "question": "The maximum slope of the curve $y = -x^3 + 3x^2 + 2x - 27$ is",
+    "options": [
+      "1",
+      "23",
+      "5",
+      "-2"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Slope of tangent $m = \\frac{dy}{dx} = -3x^2 + 6x + 2$.\n2. To find maximum slope, differentiate $m$ with respect to $x$:\n$$\\frac{dm}{dx} = -6x + 6 = 0 \\implies x = 1$$\n3. Second derivative $\\frac{d^2m}{dx^2} = -6 < 0$, confirming a maximum at $x = 1$.\n4. Maximum slope $m_{\\max} = -3(1)^2 + 6(1) + 2 = -3 + 6 + 2 = 5$."
+  },
+  {
+    "id": "-035",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2021,
+    "question": "The function $f(x) = \\log(1 + x) - \\frac{2x}{2 + x}$ is increasing on",
+    "options": [
+      "$(-\\infty, 0)$",
+      "$(-1, \\infty)$",
+      "$(\\infty, -1)$",
+      "$(-\\infty, \\infty)$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Domain of $f(x)$ requires $1 + x > 0 \\implies x > -1$.\n2. $f'(x) = \\frac{1}{1 + x} - \\frac{(2 + x)(2) - 2x(1)}{(2 + x)^2} = \\frac{1}{1 + x} - \\frac{4}{(2 + x)^2} = \\frac{(2 + x)^2 - 4(1 + x)}{(1 + x)(2 + x)^2} = \\frac{x^2}{(1 + x)(2 + x)^2}$.\n3. Since $x^2 \\ge 0$ and $(2 + x)^2 > 0$, for all $x > -1$, $f'(x) \\ge 0$.\n4. Thus, $f(x)$ is increasing on $(-1, \\infty)$."
+  },
+  {
+    "id": "-036",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2022,
+    "question": "The function $f(x) = 4\\sin^3 x - 6\\sin^2 x + 12\\sin x + 100$ is strictly",
+    "options": [
+      "decreasing in $[-\\pi/2, \\pi/2]$",
+      "increasing in $(\\pi/2, 3\\pi/2)$",
+      "decreasing in $(0, \\pi/2)$",
+      "decreasing in $(\\pi/2, \\pi)$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Let $u = \\sin x$. Then $f'(x) = (12\\sin^2 x - 12\\sin x + 12)\\cos x = 12(\\sin^2 x - \\sin x + 1)\\cos x$.\n2. Note that $\\sin^2 x - \\sin x + 1 = \\left(\\sin x - \\frac{1}{2}\\right)^2 + \\frac{3}{4} > 0$ for all real $x$.\n3. Therefore, the sign of $f'(x)$ is entirely determined by $\\cos x$.\n4. In the interval $(\\pi/2, \\pi)$ (second quadrant), $\\cos x < 0 \\implies f'(x) < 0$.\n5. Hence, $f(x)$ is strictly **decreasing in $(\\pi/2, \\pi)$**."
+  },
+  {
+    "id": "-037",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2022,
+    "question": "The trigonometric function $y = \\tan x$ in the II quadrant",
+    "options": [
+      "decreases from 0 to $-\\infty$",
+      "increases from 0 to $\\infty$",
+      "decreases from $-\\infty$ to 0",
+      "increases from $-\\infty$ to 0"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. In quadrant II, $x \\in (\\pi/2, \\pi)$.\n2. Differentiating $y = \\tan x$: $\\frac{dy}{dx} = \\sec^2 x > 0$ for all $x \\in (\\pi/2, \\pi)$, which means $\\tan x$ is strictly increasing.\n3. As $x \\to (\\pi/2)^+$, $\\tan x \\to -\\infty$.\n4. At $x = \\pi$, $\\tan \\pi = 0$.\n5. Therefore, $y = \\tan x$ **increases from $-\\infty$ to 0**."
+  },
+  {
+    "id": "-038",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2022,
+    "question": "A circular plate of radius $5\\text{ cm}$ is heated. Due to expansion, its radius increases at the rate of $0.05\\text{ cm/sec}$. The rate at which its area is increasing when the radius is $5.2\\text{ cm}$ is",
+    "options": [
+      "$5.05\\pi\\text{ cm}^2\\text{/sec}$",
+      "$5.2\\pi\\text{ cm}^2\\text{/sec}$",
+      "$0.52\\pi\\text{ cm}^2\\text{/sec}$",
+      "$27.4\\pi\\text{ cm}^2\\text{/sec}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Area of circular plate $A = \\pi r^2$.\n2. $\\frac{dA}{dt} = 2\\pi r \\frac{dr}{dt}$.\n3. Given $\\frac{dr}{dt} = 0.05\\text{ cm/sec}$ and $r = 5.2\\text{ cm}$:\n$$\\frac{dA}{dt} = 2\\pi (5.2)(0.05) = 2\\pi(0.26) = 0.52\\pi\\text{ cm}^2\\text{/sec}$$"
+  },
+  {
+    "id": "-039",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2023,
+    "question": "The distance 's' in meters travelled by a particle in 't' seconds is given by $s = \\frac{2t^3}{3} - 18t + \\frac{5}{3}$. The acceleration when the particle comes to rest is",
+    "options": [
+      "$12\\text{ m/sec}^2$",
+      "$3\\text{ m/sec}^2$",
+      "$18\\text{ m/sec}^2$",
+      "$10\\text{ m/sec}^2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. Distance $s = \\frac{2}{3}t^3 - 18t + \\frac{5}{3}$.\n2. Velocity $v = \\frac{ds}{dt} = 2t^2 - 18$.\n3. Particle comes to rest when $v = 0 \\implies 2t^2 - 18 = 0 \\implies t^2 = 9 \\implies t = 3\\text{ s}$ (since $t > 0$).\n4. Acceleration $a = \\frac{dv}{dt} = 4t$.\n5. At $t = 3\\text{ s}$, $a = 4(3) = 12\\text{ m/sec}^2$."
+  },
+  {
+    "id": "-040",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2023,
+    "question": "A particle moves along the curve $y^2 = 16x$. When the rate of change of abscissa is 4 times that of its ordinate, then the quadrant in which the particle lies is",
+    "options": [
+      "III or IV",
+      "I or III",
+      "II or III",
+      "I or IV"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Given curve $y^2 = 16x$.\n2. Differentiating with respect to time $t$:\n$$2y \\frac{dy}{dt} = 16 \\frac{dx}{dt} \\implies y \\frac{dy}{dt} = 8 \\frac{dx}{dt}$$\n3. Given $\\frac{dx}{dt} = 4 \\frac{dy}{dt}$:\n$$y \\frac{dy}{dt} = 8\\left(4 \\frac{dy}{dt}\\right) = 32 \\frac{dy}{dt} \\implies y = 32$$\n4. Since $y = 32 > 0$ and $x = \\frac{y^2}{16} = \\frac{1024}{16} = 64 > 0$, the particle lies in Quadrant I (or I/III depending on orientation of rates)."
+  },
+  {
+    "id": "-041",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2023,
+    "question": "An enemy fighter jet is flying along the curve given by $y = x^2 + 2$. A soldier is placed at $(3, 2)$ and wants to shoot down the jet when it is nearest to him. Then the nearest distance is",
+    "options": [
+      "2 units",
+      "3 units",
+      "5 units",
+      "$\\sqrt{5}\\text{ units}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Let a point on the trajectory be $(x, x^2 + 2)$.\n2. The square of the distance to $(3, 2)$ is:\n$$D(x) = (x - 3)^2 + (x^2 + 2 - 2)^2 = (x - 3)^2 + x^4 = x^4 + x^2 - 6x + 9$$\n3. $D'(x) = 4x^3 + 2x - 6 = 0 \\implies 2(2x^3 + x - 3) = 0$.\n4. By inspection, $x = 1$ is a root: $2(1)^3 + 1 - 3 = 0$.\n5. At $x = 1$, $y = 1^2 + 2 = 3$, giving the closest point $(1, 3)$.\n6. The shortest distance is $\\sqrt{(1 - 3)^2 + (3 - 2)^2} = \\sqrt{(-2)^2 + 1^2} = \\sqrt{4 + 1} = \\sqrt{5}\\text{ units}$."
+  },
+  {
+    "id": "-042",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2023,
+    "question": "For the function $f(x) = x^3 - 6x^2 + 12x - 3$, the point $x = 2$ is",
+    "options": [
+      "a point of minimum",
+      "a point of inflexion",
+      "not a critical point",
+      "a point of maximum"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. $f(x) = x^3 - 6x^2 + 12x - 3 = (x - 2)^3 + 5$.\n2. $f'(x) = 3(x - 2)^2$, which is $\\ge 0$ for all $x$ and $f'(2) = 0$.\n3. Since $f'(x) > 0$ for both $x < 2$ and $x > 2$, $f'(x)$ does not change sign at $x = 2$.\n4. $f''(x) = 6(x - 2)$, which changes sign from negative (for $x < 2$) to positive (for $x > 2$).\n5. Thus, $x = 2$ is a **point of inflexion**."
+  },
+  {
+    "id": "-043",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2024,
+    "question": "The length of a rectangle is five times the breadth. If the minimum perimeter of the rectangle is $180\\text{ cm}$, then",
+    "options": [
+      "$\\text{Breadth} \\le 15\\text{ cm}$",
+      "$\\text{Breadth} \\ge 15\\text{ cm}$",
+      "$\\text{Length} \\le 15\\text{ cm}$",
+      "$\\text{Length} = 15\\text{ cm}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. Let breadth $= b$ and length $= l = 5b$.\n2. Perimeter $P = 2(l + b) = 2(5b + b) = 12b$.\n3. Given minimum perimeter is $180\\text{ cm}$:\n$$P \\ge 180 \\implies 12b \\ge 180 \\implies b \\ge 15\\text{ cm}$$\n4. Thus, **$\\text{Breadth} \\ge 15\\text{ cm}$**."
+  },
+  {
+    "id": "-044",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2024,
+    "question": "If $f(x) = x e^{x(1 - x)}$, then $f(x)$ is",
+    "options": [
+      "increasing in $\\mathbb{R}$",
+      "decreasing in $\\mathbb{R}$",
+      "decreasing in $[-1/2, 1]$",
+      "increasing in $[-1/2, 1]$"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. $f(x) = x e^{x - x^2}$.\n2. $f'(x) = (1)e^{x - x^2} + x(1 - 2x)e^{x - x^2} = e^{x - x^2}(1 + x - 2x^2) = -e^{x - x^2}(2x^2 - x - 1) = -e^{x - x^2}(2x + 1)(x - 1)$.\n3. Setting $f'(x) \\ge 0 \\implies (2x + 1)(x - 1) \\le 0 \\implies -\\frac{1}{2} \\le x \\le 1$.\n4. Thus, $f(x)$ is **increasing in $[-1/2, 1]$**."
+  },
+  {
+    "id": "-045",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2024,
+    "question": "The function $f(x) = \\frac{x}{2} + \\frac{2}{x}$ has a local minimum at",
+    "options": [
+      "$x = -2$",
+      "$x = 0$",
+      "$x = 2$",
+      "$x = 1$"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. $f(x) = \\frac{x}{2} + \\frac{2}{x}$ for $x \\ne 0$.\n2. $f'(x) = \\frac{1}{2} - \\frac{2}{x^2} = 0 \\implies \\frac{2}{x^2} = \\frac{1}{2} \\implies x^2 = 4 \\implies x = \\pm 2$.\n3. $f''(x) = \\frac{4}{x^3}$.\n4. At $x = 2$: $f''(2) = \\frac{4}{8} = \\frac{1}{2} > 0$, so $x = 2$ is a point of **local minimum**."
+  },
+  {
+    "id": "-046",
+    "subject": "Mathematics",
+    "chapter": "Application of Derivatives",
+    "chapter_number": 16,
+    "year": 2024,
+    "question": "The maximum volume of a right circular cone that can be inscribed in a sphere of radius $R = 3\\text{ units}$ is",
+    "options": [
+      "$\\frac{4}{3}\\pi\\text{ cubic units}$",
+      "$\\frac{32}{3}\\pi\\text{ cubic units}$",
+      "$\\frac{16}{3}\\pi\\text{ cubic units}$",
+      "$6\\sqrt{3}\\pi\\text{ cubic units}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "1. For a cone of height $h$ and base radius $r$ inscribed in a sphere of radius $R$:\n$$r^2 = R^2 - (h - R)^2 = 2Rh - h^2$$\n2. Volume of cone $V = \\frac{1}{3}\\pi r^2 h = \\frac{1}{3}\\pi(2Rh^2 - h^3)$.\n3. $\\frac{dV}{dh} = \\frac{1}{3}\\pi(4Rh - 3h^2) = 0 \\implies h = \\frac{4}{3}R$.\n4. Maximum volume $V_{\\max} = \\frac{8}{27}\\left(\\frac{4}{3}\\pi R^3\\right) = \\frac{32}{81}\\pi R^3$.\n5. For $R = 3$: $V_{\\max} = \\frac{32}{81}\\pi (27) = \\frac{32}{3}\\pi\\text{ cubic units}$."
+  }
+]

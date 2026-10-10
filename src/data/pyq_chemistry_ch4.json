@@ -1,0 +1,841 @@
+[
+  {
+    "id": "kcet-chemistry-ch4-001",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2006,
+    "question": "Which of the following represents the Lewis structure of $\\text{N}_2$ molecule?",
+    "options": [
+      ":\\!N \\equiv N\\!:",
+      ":\\ddot{N} \\equiv \\ddot{N}:",
+      ":\\ddot{N} - \\ddot{N}:",
+      ":\\ddot{N} = \\ddot{N}:"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nLewis structure of $\\text{N}_2$ molecule is:\n$$:\\!N \\equiv N\\!:$$\nEach nitrogen atom shares 3 pairs of electrons to form a triple bond and retains one lone pair, thereby completing its octet (8 valence electrons).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-002",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2006,
+    "question": "Hydrogen bond is strongest in",
+    "options": [
+      "$\\text{S}-\\text{H} \\cdots \\text{O}$",
+      "$\\text{O}-\\text{H} \\cdots \\text{S}$",
+      "$\\text{F}-\\text{H} \\cdots \\text{F}$",
+      "$\\text{O}-\\text{H} \\cdots \\text{N}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nFluorine, having the highest electronegativity (4.0 on Pauling scale) and smallest atomic radius, forms the strongest hydrogen bond ($\\text{F}-\\text{H} \\cdots \\text{F}$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-003",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2006,
+    "question": "Which of the following has the highest bond order?",
+    "options": [
+      "$\\text{N}_2$",
+      "$\\text{O}_2$",
+      "$\\text{He}_2$",
+      "$\\text{H}_2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nMolecular orbital configuration:\n- $\\text{N}_2 \\implies \\sigma 1s^2 \\ \\sigma^*1s^2 \\ \\sigma 2s^2 \\ \\sigma^*2s^2 \\ \\pi 2p_x^2 \\ \\pi 2p_y^2 \\ \\sigma 2p_z^2$\n  $$\\text{Bond order} = \\frac{1}{2}(10 - 4) = 3$$\n- $\\text{O}_2 \\implies \\sigma 1s^2 \\ \\sigma^*1s^2 \\ \\sigma 2s^2 \\ \\sigma^*2s^2 \\ \\sigma 2p_z^2 \\ \\pi 2p_x^2 \\ \\pi 2p_y^2 \\ \\pi^*2p_x^1 \\ \\pi^*2p_y^1$\n  $$\\text{Bond order} = \\frac{1}{2}(10 - 6) = 2$$\n- $\\text{He}_2 \\implies \\sigma 1s^2 \\ \\sigma^*1s^2$; $\\text{Bond order} = \\frac{1}{2}(2 - 2) = 0$\n- $\\text{H}_2 \\implies \\sigma 1s^2$; $\\text{Bond order} = \\frac{1}{2}(2 - 0) = 1$\n\nHence $\\text{N}_2$ has the highest bond order (3).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-004",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2006,
+    "question": "Which of the following is diamagnetic?",
+    "options": [
+      "$\\text{H}_2^+$",
+      "$\\text{O}_2$",
+      "$\\text{Li}_2$",
+      "$\\text{He}_2^+$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nMolecular orbital configurations:\n- $\\text{H}_2^+ \\implies \\sigma 1s^1$ (contains one unpaired electron $\\implies$ paramagnetic)\n- $\\text{O}_2 \\implies \\dots \\pi^*2p_x^1 \\ \\pi^*2p_y^1$ (contains two unpaired electrons $\\implies$ paramagnetic)\n- $\\text{Li}_2 \\implies \\sigma 1s^2 \\ \\sigma^*1s^2 \\ \\sigma 2s^2$ (no unpaired electrons $\\implies$ diamagnetic)\n- $\\text{He}_2^+ \\implies \\sigma 1s^2 \\ \\sigma^*1s^1$ (contains one unpaired electron $\\implies$ paramagnetic)",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-005",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2007,
+    "question": "The number of antibonding electron pairs in $\\text{O}_2^{2-}$ molecular ion on the basis of molecular orbital theory is (Atomic number of O is 8.)",
+    "options": [
+      "5",
+      "4",
+      "3",
+      "2"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nTotal electrons in $\\text{O}_2^{2-} = 8 + 8 + 2 = 18$.\nElectronic configuration:\n$$(\\sigma 1s)^2 \\ (\\sigma^*1s)^2 \\ (\\sigma 2s)^2 \\ (\\sigma^*2s)^2 \\ (\\sigma 2p_z)^2 \\ (\\pi 2p_x)^2 \\ (\\pi 2p_y)^2 \\ (\\pi^*2p_x)^2 \\ (\\pi^*2p_y)^2$$\n\nAntibonding electrons are in $\\sigma^*1s$ (2), $\\sigma^*2s$ (2), $\\pi^*2p_x$ (2), and $\\pi^*2p_y$ (2) $\\implies$ total 8 antibonding electrons.\n$$\\text{Number of antibonding electron pairs} = \\frac{8}{2} = 4\\text{ pairs}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-006",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2007,
+    "question": "During the formation of a chemical bond",
+    "options": [
+      "electron-electron repulsion becomes more than the nucleus-electron attraction",
+      "energy of the system does not change",
+      "energy increases",
+      "energy decreases."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nDuring the formation of a chemical bond, attractive forces between nuclei and electrons exceed repulsive forces, resulting in a release of potential energy (energy decreases), leading to increased stability.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-007",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2007,
+    "question": "For a stable molecule the value of bond order must be",
+    "options": [
+      "zero",
+      "positive",
+      "negative",
+      "there is no relationship between stability and bond order."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nFor a stable molecule, the bond order must be positive:\n$$\\text{Bond order} = \\frac{N_b - N_a}{2} > 0$$\nwhere $N_b$ is the number of bonding electrons and $N_a$ is the number of antibonding electrons.\nElectrons in bonding molecular orbitals lead to lowering of energy and greater stability, whereas antibonding orbitals destabilize the molecule. Thus $N_b > N_a$ is required for stability.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-008",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2008,
+    "question": "The number of nodal planes present in $\\sigma^*s$ antibonding orbitals is",
+    "options": [
+      "0",
+      "3",
+      "1",
+      "2"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n![Nodal Plane Diagram](/pyq_images/chemistry/ch4/exp_q8.png)\n\nThe antibonding molecular orbital $\\sigma^*s$ is formed by the subtraction (out-of-phase destructive interference) of two $1s$ atomic orbitals. There is a nodal plane situated midway between the two nuclei where electron density is zero.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q8.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-009",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2008,
+    "question": "The overlapping of orbitals in benzene is of the type",
+    "options": [
+      "$sp^2 - sp^2$",
+      "$sp^3 - sp^3$",
+      "$sp - sp$",
+      "$p - p$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n![Benzene Orbital Overlap](/pyq_images/chemistry/ch4/exp_q9.png)\n\nAccording to molecular orbital theory of benzene, each carbon atom is $sp^2$ hybridized with a bond angle of $120^\\circ$. There are six unhybridized $2p_z$ atomic orbitals (one on each carbon atom) perpendicular to the ring plane which overlap laterally ($p-p$ overlap) to form delocalized $\\pi$-molecular orbitals.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q9.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-010",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2008,
+    "question": "The calculated bond order of superoxide ion ($\\text{O}_2^-$)",
+    "options": [
+      "1.5",
+      "1",
+      "2.5",
+      "2"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nSuperoxide ion $\\text{O}_2^-$ has 17 electrons:\n$$\\sigma 1s^2 \\ \\sigma^*1s^2 \\ \\sigma 2s^2 \\ \\sigma^*2s^2 \\ \\sigma 2p_z^2 \\ \\pi 2p_x^2 \\ \\pi 2p_y^2 \\ \\pi^*2p_x^2 \\ \\pi^*2p_y^1$$\n$$\\text{Bond order} = \\frac{1}{2}[N_b - N_a] = \\frac{1}{2}[10 - 7] = 1.5$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-011",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2009,
+    "question": "Among the following, the compound that contains ionic, covalent and coordinate linkage is",
+    "options": [
+      "$\\text{NH}_4\\text{Cl}$",
+      "$\\text{NaCl}$",
+      "$\\text{CaO}$",
+      "$\\text{NH}_3$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n![Ammonium Chloride Bonding](/pyq_images/chemistry/ch4/exp_q11.png)\n\nIn $\\text{NH}_4\\text{Cl}$, there are:\n- $3\\ \\text{N}-\\text{H}$ covalent bonds\n- $1\\ \\text{N}\\to\\text{H}^+$ coordinate covalent bond (forming $\\text{NH}_4^+$)\n- $1\\ \\text{NH}_4^+ - \\text{Cl}^-$ ionic bond.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q11.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-012",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2009,
+    "question": "A covalent molecule $AB_3$ has pyramidal structure. The number of lone pair and bond pair electrons in the molecule are respectively",
+    "options": [
+      "0 and 4",
+      "3 and 1",
+      "1 and 3",
+      "2 and 2"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n![Pyramidal Geometry](/pyq_images/chemistry/ch4/exp_q12.png)\n\nIn general, a compound with formula $AB_3$ without lone pairs is $sp^2$ hybridized with trigonal planar geometry. A pyramidal structure arises when the central atom has $sp^3$ hybridization with 3 bond pairs and 1 lone pair of electrons (e.g. like $\\text{NH}_3$).",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q12.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-013",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2009,
+    "question": "The correct statement with regard to $\\text{H}_2^+$ and $\\text{H}_2^-$ is",
+    "options": [
+      "both $\\text{H}_2^+$ and $\\text{H}_2^-$ do not exist",
+      "$\\text{H}_2^-$ is more stable than $\\text{H}_2^+$",
+      "$\\text{H}_2^+$ is more stable than $\\text{H}_2^-$",
+      "both $\\text{H}_2^+$ and $\\text{H}_2^-$ are equally stable."
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n- $\\text{H}_2^+ : (\\sigma 1s^1) \\implies \\text{B.O.} = \\frac{1}{2}(1 - 0) = 0.5$\n- $\\text{H}_2^- : (\\sigma 1s^2)(\\sigma^*1s^1) \\implies \\text{B.O.} = \\frac{1}{2}(2 - 1) = 0.5$\n\nEven though both have the same bond order of 0.5, $\\text{H}_2^+$ is more stable than $\\text{H}_2^-$ because $\\text{H}_2^-$ has an electron in the higher-energy antibonding ($\\sigma^*1s$) orbital, which exerts a destabilizing effect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-014",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2009,
+    "question": "Arrange the following in the increasing order of their bond order: $\\text{O}_2$, $\\text{O}_2^+$, $\\text{O}_2^-$ and $\\text{O}_2^{2-}$",
+    "options": [
+      "$\\text{O}_2^{2-}, \\text{O}_2^-, \\text{O}_2^+, \\text{O}_2$",
+      "$\\text{O}_2^{2-}, \\text{O}_2, \\text{O}_2^-, \\text{O}_2^+$",
+      "$\\text{O}_2, \\text{O}_2^+, \\text{O}_2^-, \\text{O}_2^{2-}$",
+      "$\\text{O}_2^{2-}, \\text{O}_2^-, \\text{O}_2, \\text{O}_2^+$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nMolecular orbital configurations and bond orders:\n- $\\text{O}_2 (16 e^-) \\implies \\text{B.O.} = \\frac{1}{2}(10 - 6) = 2.0$\n- $\\text{O}_2^+ (15 e^-) \\implies \\text{B.O.} = \\frac{1}{2}(10 - 5) = 2.5$\n- $\\text{O}_2^- (17 e^-) \\implies \\text{B.O.} = \\frac{1}{2}(10 - 7) = 1.5$\n- $\\text{O}_2^{2-} (18 e^-) \\implies \\text{B.O.} = \\frac{1}{2}(10 - 8) = 1.0$\n\nIncreasing order of bond order: $\\text{O}_2^{2-} < \\text{O}_2^- < \\text{O}_2 < \\text{O}_2^+$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-015",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2010,
+    "question": "Which one of the following conversions involve change in both hybridization and shape?",
+    "options": [
+      "$\\text{CH}_4 \\to \\text{C}_2\\text{H}_6$",
+      "$\\text{NH}_3 \\to \\text{NH}_4^+$",
+      "$\\text{BF}_3 \\to \\text{BF}_4^-$",
+      "$\\text{H}_2\\text{O} \\to \\text{H}_3\\text{O}^+"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n- $\\text{CH}_4 (sp^3, \\text{tetrahedral}) \\to \\text{C}_2\\text{H}_6 (sp^3, \\text{tetrahedral around each C})$\n- $\\text{NH}_3 (sp^3, \\text{pyramidal}) \\to \\text{NH}_4^+ (sp^3, \\text{tetrahedral})$ $\\implies$ shape changes, but hybridization remains $sp^3$\n- $\\text{BF}_3 (sp^2, \\text{trigonal planar}) \\to \\text{BF}_4^- (sp^3, \\text{tetrahedral})$ $\\implies$ BOTH hybridization and shape change ($sp^2 \\to sp^3$, planar to tetrahedral)\n- $\\text{H}_2\\text{O} (sp^3, \\text{angular/bent}) \\to \\text{H}_3\\text{O}^+ (sp^3, \\text{pyramidal})$ $\\implies$ hybridization remains $sp^3$.\n\nHence, only option (C) involves change in both hybridization and shape.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-016",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2010,
+    "question": "Peroxide ion\n(i) has five completely filled antibonding molecular orbitals\n(ii) is diamagnetic\n(iii) has bond order one\n(iv) is isoelectronic with neon.\nWhich one of these is correct?",
+    "options": [
+      "(iv) and (iii)",
+      "(i), (ii) and (iv)",
+      "(i), (ii) and (iii)",
+      "(i) and (iv)"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, this question had no single completely matching option (None), as both (ii) and (iii) are correct statements.\n\nPeroxide ion is $\\text{O}_2^{2-}$ (18 electrons):\n$$\\text{E.C.} = \\sigma 1s^2 \\ \\sigma^*1s^2 \\ \\sigma 2s^2 \\ \\sigma^*2s^2 \\ \\sigma 2p_z^2 \\ \\pi 2p_x^2 \\ \\pi 2p_y^2 \\ \\pi^*2p_x^2 \\ \\pi^*2p_y^2$$\n- Bond order $= \\frac{10 - 8}{2} = 1$ (statement iii is correct)\n- Number of unpaired electrons $= 0 \\implies$ diamagnetic (statement ii is correct)\n- It has 4 completely filled antibonding molecular orbitals (not 5)\n- It has 18 electrons, which is isoelectronic with Argon, not Neon (statement iv is false).\nTherefore, statements (ii) and (iii) are correct.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-017",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2010,
+    "question": "Which one of these is not true for benzene?",
+    "options": [
+      "It forms only one type of monosubstituted product.",
+      "There are three carbon-carbon single bonds and three carbon-carbon double bonds.",
+      "The heat of hydrogenation of benzene is less than the theoretical value.",
+      "The bond angle between the carbon-carbon bonds is $120^\\circ$."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nDue to resonance and delocalization of $\\pi$-electrons, all six $\\text{C}-\\text{C}$ bonds in benzene are intermediate between single and double bonds with equal bond lengths of $1.39\\text{ \\AA}$. There are no localized, alternating single and double bonds.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-018",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2011,
+    "question": "When $\\text{O}_2$ is converted into $\\text{O}_2^+$",
+    "options": [
+      "both paramagnetic character and bond order increase",
+      "bond order decreases",
+      "paramagnetic character increases",
+      "paramagnetic character decreases and the bond order increases."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n- In $\\text{O}_2$, number of unpaired electrons is 2 and bond order is $\\frac{8 - 4}{2} = 2$.\n- In $\\text{O}_2^+$, an electron is removed from an antibonding orbital ($\\pi^*2p$); number of unpaired electrons becomes 1 (paramagnetic character decreases) and bond order increases to $\\frac{8 - 3}{2} = 2.5$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-019",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2011,
+    "question": "Increasing order of carbon-carbon bond length for the following is:\n$\\text{C}_2\\text{H}_4\\text{ (A)}, \\ \\text{C}_2\\text{H}_2\\text{ (B)}, \\ \\text{C}_6\\text{H}_6\\text{ (C)}, \\ \\text{C}_2\\text{H}_6\\text{ (D)}$",
+    "options": [
+      "$\\text{B} < \\text{C} < \\text{A} < \\text{D}$",
+      "$\\text{C} < \\text{B} < \\text{A} < \\text{D}$",
+      "$\\text{B} < \\text{A} < \\text{C} < \\text{D}$",
+      "$\\text{D} < \\text{C} < \\text{A} < \\text{B}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nBond lengths:\n- $\\text{C}_2\\text{H}_2\\text{ (B)}$ has a triple bond: $1.20\\text{ \\AA}$\n- $\\text{C}_2\\text{H}_4\\text{ (A)}$ has a double bond: $1.34\\text{ \\AA}$\n- $\\text{C}_6\\text{H}_6\\text{ (C)}$ has intermediate resonance bonds: $1.39\\text{ \\AA}$\n- $\\text{C}_2\\text{H}_6\\text{ (D)}$ has a single bond: $1.54\\text{ \\AA}$\n\nIncreasing order of bond length: $\\text{B} < \\text{A} < \\text{C} < \\text{D}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-020",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2012,
+    "question": "Which one of the following contains ionic, covalent and co-ordinate bonds?",
+    "options": [
+      "$\\text{NaOH}$",
+      "$\\text{NaCl}$",
+      "$\\text{NaCN}$",
+      "$\\text{NaNC}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$\\text{NaOH}$, $\\text{NaCl}$ and $\\text{NaCN}$ have ionic and covalent bonds, while sodium isocyanide ($\\text{NaNC}$) contains ionic bond (between $\\text{Na}^+$ and $\\text{NC}^-$), covalent bond, and a coordinate bond ($\\,^-\\text{C} \\equiv \\text{N}^+\\,$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-021",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2012,
+    "question": "Which one of the following has no unpaired electrons?",
+    "options": [
+      "$\\text{O}_2$",
+      "$\\text{O}_2^-$",
+      "$\\text{O}_2^+$",
+      "$\\text{O}_2^{2-}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nTotal electrons and configurations:\n- $\\text{O}_2 (16 e^-): \\dots \\pi^*(2p_x)^1 \\ \\pi^*(2p_y)^1$ (2 unpaired electrons)\n- $\\text{O}_2^+ (15 e^-): \\dots \\pi^*(2p_x)^1$ (1 unpaired electron)\n- $\\text{O}_2^- (17 e^-): \\dots \\pi^*(2p_x)^2 \\ \\pi^*(2p_y)^1$ (1 unpaired electron)\n- $\\text{O}_2^{2-} (18 e^-): \\dots \\pi^*(2p_x)^2 \\ \\pi^*(2p_y)^2$ (all electrons are paired, 0 unpaired electrons).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-022",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2012,
+    "question": "Which of the following is not a characteristic of a covalent compound?",
+    "options": [
+      "Low melting point",
+      "No definite geometry",
+      "Insoluble in polar solvent",
+      "Small difference in electronegativity between the combining atoms."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nCovalent bonds are directional in nature, meaning shared electron pairs occupy specific hybrid orbitals, giving covalent molecules definite geometry and directional shapes. Thus, 'No definite geometry' is false.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-023",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2013,
+    "question": "Intramolecular hydrogen bonding is formed in",
+    "options": [
+      "$\\text{H}_2\\text{O}$",
+      "salicylaldehyde",
+      "$\\text{NH}_3$",
+      "benzophenone."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n![Salicylaldehyde Intramolecular H-Bond](/pyq_images/chemistry/ch4/exp_q23.png)\n\nIntramolecular hydrogen bonding occurs within the same molecule. In salicylaldehyde (2-hydroxybenzaldehyde), the phenolic $-OH$ hydrogen forms an intramolecular hydrogen bond with the carbonyl oxygen of the $-CHO$ group.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q23.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-024",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2013,
+    "question": "$d^2sp^3$ hybridisation of the atomic orbitals gives",
+    "options": [
+      "square planar structure",
+      "triangular structure",
+      "tetrahedral structure",
+      "octahedral structure."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$d^2sp^3$ (or $sp^3d^2$) hybridization involves six hybrid orbitals directed towards the corners of a regular octahedron, producing an octahedral structure.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-025",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2013,
+    "question": "The number of antibonding electrons present in $\\text{O}_2^-$ molecular ion is",
+    "options": [
+      "8",
+      "6",
+      "5",
+      "4"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, this question had no matching option in the original paper (marked as None), because the true number of antibonding electrons is 7.\n\n$\\text{O}_2^-$ has 17 electrons:\n$$KK \\ \\sigma 2s^2 \\ \\sigma^*2s^2 \\ \\sigma 2p_z^2 \\ \\pi 2p_x^2 \\ \\pi 2p_y^2 \\ \\pi^*2p_x^2 \\ \\pi^*2p_y^1$$\nNumber of bonding electrons $= 10$; number of antibonding electrons $= 2(\\sigma^*1s) + 2(\\sigma^*2s) + 3(\\pi^*2p) = 7$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-026",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2013,
+    "question": "Hybridised states of carbon in graphite and diamond are respectively",
+    "options": [
+      "$sp^3, sp^3$",
+      "$sp^3, sp^2$",
+      "$sp^2, sp^2$",
+      "$sp^2, sp^3$"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nIn graphite, each carbon atom is bonded to three other carbons in planar hexagonal rings and is $sp^2$ hybridized. In diamond, each carbon atom is tetrahedrally bonded to four other carbons and is $sp^3$ hybridized.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-027",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2014,
+    "question": "The pair of compounds having identical shapes for their molecules is",
+    "options": [
+      "$\\text{CH}_4, \\text{SF}_4$",
+      "$\\text{BCl}_3, \\text{ClF}_3$",
+      "$\\text{XeF}_2, \\text{ZnCl}_2$",
+      "$\\text{SO}_2, \\text{CO}_2$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n- $\\text{XeF}_2$ has 2 bond pairs and 3 lone pairs in equatorial positions of trigonal bipyramidal geometry $\\implies$ linear shape ($180^\\circ$).\n- $\\text{ZnCl}_2$ is $sp$ hybridized with 2 bond pairs and no lone pairs $\\implies$ linear shape.\nBoth possess identical linear shapes.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-028",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2015,
+    "question": "Using MOT, compare $\\text{O}_2^+$ and $\\text{O}_2^-$ species and choose the incorrect option.",
+    "options": [
+      "$\\text{O}_2^-$ is less stable.",
+      "Both $\\text{O}_2^+$ and $\\text{O}_2^-$ are paramagnetic.",
+      "$\\text{O}_2^+$ have higher bond order than $\\text{O}_2^-$.",
+      "$\\text{O}_2^+$ is diamagnetic while $\\text{O}_2^-$ is paramagnetic."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n- $\\text{O}_2^+ (15 e^-) : \\dots \\pi^*(2p_x)^1 \\implies 1\\text{ unpaired electron}$ (paramagnetic), $\\text{Bond order} = 2.5$.\n- $\\text{O}_2^- (17 e^-) : \\dots \\pi^*(2p_x)^2 \\ \\pi^*(2p_y)^1 \\implies 1\\text{ unpaired electron}$ (paramagnetic), $\\text{Bond order} = 1.5$.\nBoth species are paramagnetic. Therefore, the statement '$\\text{O}_2^+$ is diamagnetic while $\\text{O}_2^-$ is paramagnetic' is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-029",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2016,
+    "question": "HCl gas is covalent and NaCl is an ionic compound. This is because",
+    "options": [
+      "sodium is highly electropositive",
+      "hydrogen is a non-metal",
+      "HCl is a gas",
+      "electronegativity difference between H and Cl is less than 2.1."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nAccording to Hannay-Smith rule, if the electronegativity difference $(\\Delta EN)$ between two combining atoms is less than $1.7 - 2.1$, the bond is predominantly covalent. Between H (2.1) and Cl (3.0), $\\Delta EN = 0.9 < 2.1$, hence HCl is predominantly covalent.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-030",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2016,
+    "question": "Main axis of diatomic molecule is $z$. The orbitals $p_x$ and $p_y$ overlap to form",
+    "options": [
+      "$\\pi$-molecular orbital",
+      "$\\sigma$-molecular orbital",
+      "$\\delta$-molecular orbital",
+      "no bond is formed."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nThe $p_x$ and $p_y$ orbitals are mutually perpendicular ($90^\\circ$) to each other and have different symmetries. Therefore, the net overlap between $p_x$ and $p_y$ along the $z$-axis is zero, and no bond is formed.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-031",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2016,
+    "question": "The hybridisation of C in diamond, graphite and ethyne is in the order",
+    "options": [
+      "$sp^3, sp, sp^2$",
+      "$sp^3, sp^2, sp$",
+      "$sp, sp^2, sp^3$",
+      "$sp^2, sp^3, sp$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\n- In diamond: each carbon is tetrahedrally bonded $\\implies sp^3$\n- In graphite: each carbon is bonded in planar hexagonal rings $\\implies sp^2$\n- In ethyne ($\\text{HC}\\equiv\\text{CH}$): each triply bonded carbon $\\implies sp$\n\nHence the order is $sp^3, sp^2, sp$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-032",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2017,
+    "question": "Which of the following structures of a molecule is expected to have three bond pairs and one lone pair of electrons?",
+    "options": [
+      "Trigonal Planar",
+      "Tetrahedral",
+      "Octahedral",
+      "Pyramidal"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n![NH3 Pyramidal Structure](/pyq_images/chemistry/ch4/exp_q33.png)\n\nA molecule with steric number $4$ ($3$ bond pairs $+ 1$ lone pair) like $\\text{NH}_3$ has $sp^3$ hybridization with tetrahedral electron pair geometry and a trigonal pyramidal molecular geometry.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q33.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-033",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2017,
+    "question": "Which of the following is the correct electron dot structure of $\\text{N}_2\\text{O}$ molecule?",
+    "options": [
+      ":\\!\\ddot{\\text{N}}=\\text{N}=\\ddot{\\text{O}}:",
+      ":\\ddot{\\text{N}}-\\text{N}\\equiv\\ddot{\\text{O}}:",
+      ":\\text{N}=\\text{N}=\\ddot{\\text{O}}:",
+      ":\\!\\text{N}\\equiv\\overset{+}{\\text{N}}-\\ddot{\\ddot{\\text{O}}}:^-"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n![N2O Resonance Structure](/pyq_images/chemistry/ch4/exp_q34.png)\n\nIn $\\text{N}_2\\text{O}$, the major contributing resonance structures are:\n$$^-\\ddot{\\ddot{\\text{N}}}=\\overset{+}{\\text{N}}=\\ddot{\\text{O}} \\longleftrightarrow :\\!\\text{N}\\equiv\\overset{+}{\\text{N}}-\\ddot{\\ddot{\\text{O}}}:^-$$\nStructure (D) correctly shows $:N\\equiv \\overset{+}{N}-\\ddot{\\ddot{O}}:^-$ with full octets around all atoms.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q34.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-034",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2018,
+    "question": "The intramolecular hydrogen bond is present in",
+    "options": [
+      "phenol",
+      "$o$-nitrophenol",
+      "$p$-nitrophenol",
+      "$p$-cresol."
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nIn $o$-nitrophenol, the $-OH$ group and the $-NO_2$ group are adjacent (ortho positions), allowing a stable 6-membered chelate ring to form via an intramolecular hydrogen bond.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-035",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2018,
+    "question": "The state of hybrid orbitals of carbon in $\\text{CO}_2$, $\\text{CH}_4$ and $\\text{CO}_3^{2-}$ respectively is",
+    "options": [
+      "$sp^3, sp^2\\text{ and }sp$",
+      "$sp^3, sp\\text{ and }sp^2$",
+      "$sp, sp^3\\text{ and }sp^2$",
+      "$sp^2, sp^3\\text{ and }sp$."
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n![Hybridization Shapes](/pyq_images/chemistry/ch4/exp_q36.png)\n\n- In $\\text{CO}_2$: $\\text{O}=\\text{C}=\\text{O}$ has $2\\ \\sigma$ bonds $\\implies sp$ hybridization.\n- In $\\text{CH}_4$: $4\\ \\sigma$ bonds $\\implies sp^3$ hybridization.\n- In $\\text{CO}_3^{2-}$: $3\\ \\sigma$ bonds (trigonal planar) $\\implies sp^2$ hybridization.\n\nHence, the hybridizations are $sp, sp^3\\text{ and }sp^2$.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q36.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-036",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2019,
+    "question": "Which of the following possess net dipole moment?",
+    "options": [
+      "$\\text{SO}_2$",
+      "$\\text{BF}_3$",
+      "$\\text{BeCl}_2$",
+      "$\\text{CO}_2$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n- $\\text{SO}_2$ has angular (bent, V-shaped) geometry due to a lone pair on sulphur, so bond dipole moments do not cancel ($\\mu \\ne 0$).\n- $\\text{BF}_3$ is symmetrical trigonal planar ($\\mu = 0$).\n- $\\text{BeCl}_2$ is symmetrical linear ($\\mu = 0$).\n- $\\text{CO}_2$ is symmetrical linear ($\\mu = 0$).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-037",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2019,
+    "question": "Which of the following pairs contains 2 lone pairs of electrons on the central atom?",
+    "options": [
+      "$\\text{I}_3^+, \\text{H}_2\\text{O}$",
+      "$\\text{H}_2\\text{O}, \\text{NF}_3$",
+      "$\\text{XeF}_4, \\text{NH}_3$",
+      "$\\text{SO}_4^{2-}, \\text{H}_2\\text{S}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n![Bent Geometry Lone Pairs](/pyq_images/chemistry/ch4/exp_q38.png)\n\n- In $\\text{I}_3^+$: central I has 7 valence electrons $- 1 = 6$ electrons; it forms 2 single bonds with the outer iodines and has 2 lone pairs ($sp^3$, bent/V-shape).\n- In $\\text{H}_2\\text{O}$: central O has 6 valence electrons, forms 2 single bonds with H and has 2 lone pairs ($sp^3$, bent/V-shape).",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q38.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-038",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2020,
+    "question": "The formal charge on central oxygen atom in ozone is",
+    "options": [
+      "0",
+      "+2",
+      "+1",
+      "-1"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n![Ozone Formal Charge](/pyq_images/chemistry/ch4/exp_q39.png)\n\n$$\\text{Formal Charge} = V - L - \\frac{1}{2}B$$\nwhere $V$ is valence electrons, $L$ is non-bonding lone pair electrons, and $B$ is bonding electrons.\nFor central oxygen atom (atom 2):\n- $V = 6$\n- $L = 2$ (one lone pair)\n- $B = 6$ (one double bond + one single bond = 3 shared pairs = 6 electrons)\n$$\\text{Formal charge} = 6 - 2 - \\frac{6}{2} = +1$$",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q39.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-039",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2020,
+    "question": "The percentage of $s$-character in the hybrid orbitals of nitrogen in $\\text{NO}_2^+$, $\\text{NO}_3^-$ and $\\text{NH}_4^+$ respectively are",
+    "options": [
+      "33.3%, 25%, 50%",
+      "50%, 33.3%, 25%",
+      "25%, 50%, 33.3%",
+      "33.3%, 50%, 25%"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nHybridization formula: $H = \\frac{1}{2}(V + M - C + A)$:\n- In $\\text{NO}_2^+ : H = \\frac{1}{2}(5 - 1) = 2 \\implies sp$ hybridization $\\implies 50\\% \\ s$-character.\n- In $\\text{NO}_3^- : H = \\frac{1}{2}(5 + 1) = 3 \\implies sp^2$ hybridization $\\implies 33.3\\% \\ s$-character.\n- In $\\text{NH}_4^+ : H = \\frac{1}{2}(5 + 4 - 1) = 4 \\implies sp^3$ hybridization $\\implies 25\\% \\ s$-character.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-040",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2020,
+    "question": "Bond angle in $\\text{PH}_4^+$ is more than that of $\\text{PH}_3$. This is because",
+    "options": [
+      "$\\text{PH}_4^+$ has square planar structure",
+      "$\\text{PH}_3$ has planar trigonal structure",
+      "hybridisation of P changes when $\\text{PH}_3$ is converted to $\\text{PH}_4^+$",
+      "lone pair - bond pair repulsion exists in $\\text{PH}_3$."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n![PH4+ and PH3 Structure](/pyq_images/chemistry/ch4/exp_q41.png)\n\nBoth $\\text{PH}_4^+$ and $\\text{PH}_3$ have $sp^3$ hybridized central phosphorus. In $\\text{PH}_4^+$, all four orbitals are bonding pairs with ideal tetrahedral angle ($109^\\circ 28'$). In $\\text{PH}_3$, there is one lone pair on phosphorus, and strong lone pair-bond pair repulsion compresses the $\\text{H}-\\text{P}-\\text{H}$ bond angle to around $93.6^\\circ$.",
+    "needs_image": false,
+    "image_url": "",
+    "explanation_image_url": "/pyq_images/chemistry/ch4/exp_q41.png"
+  },
+  {
+    "id": "kcet-chemistry-ch4-041",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2021,
+    "question": "Which of the following is an incorrect statement?",
+    "options": [
+      "Hydrogen bonding is stronger than dispersion force.",
+      "Sigma bonds are stronger than $\\pi$-bonds.",
+      "Ionic bonding is non-directional.",
+      "$\\sigma$-electrons are referred to as mobile electrons."
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$\\sigma$-electrons are localized strongly along the internuclear axis between the two bonded atoms and do not move freely. Mobile electrons are typically delocalized $\\pi$-electrons or free conduction electrons.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-042",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2021,
+    "question": "The correct order of boiling point in the following compounds is",
+    "options": [
+      "$\\text{HF} > \\text{H}_2\\text{O} > \\text{NH}_3$",
+      "$\\text{H}_2\\text{O} > \\text{HF} > \\text{NH}_3$",
+      "$\\text{NH}_3 > \\text{H}_2\\text{O} > \\text{HF}$",
+      "$\\text{NH}_3 > \\text{HF} > \\text{H}_2\\text{O}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nBoiling points:\n- $\\text{H}_2\\text{O} = 100^\\circ\\text{C}$ (each water molecule forms 4 extensive hydrogen bonds)\n- $\\text{HF} = 19.5^\\circ\\text{C}$ (strong H-bonds, but each forms only 2 bonds per molecule)\n- $\\text{NH}_3 = -33.34^\\circ\\text{C}$ (lower electronegativity of N leads to weaker H-bonding)\n\nCorrect order: $\\text{H}_2\\text{O} > \\text{HF} > \\text{NH}_3$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-043",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2022,
+    "question": "In oxygen and carbon molecule the bonding is",
+    "options": [
+      "$\\text{O}_2: 1\\sigma, 1\\pi; \\ \\text{C}_2: 0\\sigma, 2\\pi$",
+      "$\\text{O}_2: 0\\sigma, 2\\pi; \\ \\text{C}_2: 2\\sigma, 0\\pi$",
+      "$\\text{O}_2: 1\\sigma, 1\\pi; \\ \\text{C}_2: 1\\sigma, 1\\pi$",
+      "$\\text{O}_2: 2\\sigma, 0\\pi; \\ \\text{C}_2: 0\\sigma, 2\\pi$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\n- In $\\text{O}_2$ (bond order 2), the double bond consists of $1\\sigma$ bond and $1\\pi$ bond.\n- In $\\text{C}_2$ (12 electrons), the valence electrons reside entirely in the degenerate $\\pi 2p_x$ and $\\pi 2p_y$ bonding orbitals ($(\\pi 2p_x)^2(\\pi 2p_y)^2$), meaning both bonds are $\\pi$ bonds with $0\\sigma$ bonds.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-044",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2023,
+    "question": "Which of the following statements is incorrect?",
+    "options": [
+      "$\\text{Bond length of }\\text{O}_2 > \\text{Bond length of }\\text{O}_2^{2+}$",
+      "$\\text{Bond order of }\\text{O}_2^+ < \\text{Bond order of }\\text{O}_2^{2-}$",
+      "$\\text{Bond length of }\\text{O}_2 < \\text{Bond length of }\\text{O}_2^{2-}$",
+      "$\\text{Bond order of }\\text{O}_2 > \\text{Bond order of }\\text{O}_2^{2-}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nBond orders:\n- $\\text{O}_2 = 2.0$\n- $\\text{O}_2^+ = 2.5$\n- $\\text{O}_2^{2+} = 3.0$\n- $\\text{O}_2^{2-} = 1.0$\n\nSince $\\text{Bond order of }\\text{O}_2^+ (2.5) > \\text{Bond order of }\\text{O}_2^{2-} (1.0)$, statement (B) ('Bond order of $\\text{O}_2^+ < \\text{Bond order of }\\text{O}_2^{2-}$') is incorrect.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-045",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2023,
+    "question": "Dimerisation of solute molecules in low dielectric constant solvent is due to",
+    "options": [
+      "hydrogen bond",
+      "covalent bond",
+      "co-ordinate bond",
+      "ionic bond."
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nCarboxylic acids (e.g. acetic acid, benzoic acid) dimerize in non-polar or low dielectric constant solvents (like benzene) due to intermolecular hydrogen bonding between $-C=O$ and $-OH$ groups.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "kcet-chemistry-ch4-046",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding and Molecular Structure",
+    "chapter_number": 4,
+    "year": 2024,
+    "question": "A pair of isoelectronic species having bond order of one is",
+    "options": [
+      "$\\text{N}_2, \\text{CO}$",
+      "$\\text{N}_2, \\text{NO}^+$",
+      "$\\text{O}_2^{2-}, \\text{F}_2$",
+      "$\\text{CO}, \\text{NO}^+$"
+    ],
+    "correct_answer": 2,
+    "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\n- $\\text{O}_2^{2-}$ has $8 + 8 + 2 = 18$ electrons.\n- $\\text{F}_2$ has $9 + 9 = 18$ electrons.\nBoth are isoelectronic with 18 electrons, and both have a bond order of:\n$$\\text{Bond order} = \\frac{10 - 8}{2} = 1$$",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

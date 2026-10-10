@@ -1,0 +1,316 @@
+[
+  {
+    "id": "phys_ch7_q1",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2006,
+    "question": "A satellite in a circular orbit of radius $R$ has a period of 4 hours. Another satellite with orbital radius $3R$ around the same planet will have a period (in hours)",
+    "options": [
+      "16",
+      "4",
+      "$4\\sqrt{27}$",
+      "$4\\sqrt{8}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "From Kepler's third law, $T^2 \\propto R^3 \\implies \\frac{T_1}{T_2} = \\left(\\frac{R_1}{R_2}\\right)^{3/2}$.\n$\\frac{T_1}{T_2} = \\left(\\frac{R}{3R}\\right)^{3/2} = \\left(\\frac{1}{3}\\right)^{3/2} = \\frac{1}{3\\sqrt{3}} = \\frac{1}{\\sqrt{27}}$.\n$\\therefore T_2 = T_1 \\times \\sqrt{27} = 4\\sqrt{27}\\text{ hours}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q2",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2007,
+    "question": "The acceleration due to gravity becomes $(g/2)$ where $g =$ acceleration due to gravity on the surface of the earth at a height equal to",
+    "options": [
+      "$4R$",
+      "$R/4$",
+      "$2R$",
+      "$R/2$"
+    ],
+    "correct_answer": 1,
+    "explanation": "For height $h \\ll R$, the variation of $g$ with height is given by:\n$g' = g\\left(1 - \\frac{2h}{R}\\right)$\nGiven $g' = \\frac{g}{2}$:\n$\\frac{g/2}{g} = 1 - \\frac{2h}{R} \\implies \\frac{1}{2} = 1 - \\frac{2h}{R} \\implies \\frac{2h}{R} = \\frac{1}{2} \\implies h = \\frac{R}{4}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q3",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2009,
+    "question": "A planet revolves round the Sun in an elliptical orbit. The linear speed of the planet will be maximum at",
+    "options": [
+      "$D$",
+      "$B$",
+      "$A$",
+      "$C$"
+    ],
+    "correct_answer": 2,
+    "explanation": "![Elliptical Orbit](/pyq_images/physics/ch7/exp_q3.png)\n\nAccording to Kepler's second law (law of conservation of angular momentum):\n$L = mvr = \\text{constant} \\implies v \\propto \\frac{1}{r}$.\nThe linear speed of the planet is maximum when its distance from the Sun is minimum (perihelion), which is at point $A$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch7/q3.png",
+    "explanation_image_url": "/pyq_images/physics/ch7/exp_q3.png"
+  },
+  {
+    "id": "phys_ch7_q4",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2010,
+    "question": "An astronaut on a strange planet finds that acceleration due to gravity is twice as that on the surface of earth. Which of the following could explain this?",
+    "options": [
+      "Both the mass and radius of the planet are half as that of earth.",
+      "Radius of the planet is half as that of earth, but the mass is the same as that of earth.",
+      "Both the mass and radius of the planet are twice as that of earth.",
+      "Mass of the planet is half as that of earth, but radius is same as that of earth."
+    ],
+    "correct_answer": 0,
+    "explanation": "Acceleration due to gravity on the surface of the Earth is $g_e = \\frac{GM_e}{R_e^2}$.\nOn the planet, $g_p = \\frac{GM_p}{R_p^2}$.\nIf both mass and radius of the planet are half that of the Earth ($M_p = M_e/2$ and $R_p = R_e/2$):\n$g_p = \\frac{G(M_e/2)}{(R_e/2)^2} = \\frac{G(M_e/2)}{R_e^2/4} = 2\\frac{GM_e}{R_e^2} = 2g_e$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q5",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2011,
+    "question": "Two satellites of mass $m$ and $9m$ are orbiting a planet in orbits of radius $R$. Their periods of revolution will be in the ratio of",
+    "options": [
+      "9 : 1",
+      "3 : 1",
+      "1 : 1",
+      "1 : 3"
+    ],
+    "correct_answer": 2,
+    "explanation": "The orbital speed of a satellite is $v = \\sqrt{\\frac{GM}{R}}$ and its period of revolution is $T = \\frac{2\\pi R}{v} = 2\\pi\\sqrt{\\frac{R^3}{GM}}$.\nThe period of revolution of a satellite depends only on the mass of the central planet $M$ and the orbital radius $R$, and is completely independent of the mass of the orbiting satellite.\nTherefore, the ratio of their periods of revolution is $1 : 1$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q6",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2012,
+    "question": "A planet moving around sun sweeps area $A_1$ in 2 days, $A_2$ in 3 days and $A_3$ in 6 days. Then the relation between $A_1, A_2$ and $A_3$ is",
+    "options": [
+      "$3A_1 = 2A_2 = A_3$",
+      "$2A_1 = 3A_2 = 6A_3$",
+      "$3A_1 = 2A_2 = 6A_3$",
+      "$6A_1 = 3A_2 = 2A_3$"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to Kepler's second law of planetary motion, the areal velocity of a planet revolving around the sun is constant:\n$\\frac{dA}{dt} = \\text{constant} \\implies \\frac{A_1}{t_1} = \\frac{A_2}{t_2} = \\frac{A_3}{t_3}$.\nGiven $t_1 = 2\\text{ days}$, $t_2 = 3\\text{ days}$, $t_3 = 6\\text{ days}$:\n$\\frac{A_1}{2} = \\frac{A_2}{3} = \\frac{A_3}{6}$.\nMultiplying the entire equation by 6:\n$3A_1 = 2A_2 = A_3$.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch7/q6.png"
+  },
+  {
+    "id": "phys_ch7_q7",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2014,
+    "question": "What is a period of revolution of earth satellite? Ignore the height of satellite above the surface of earth. Given : (1) The value of gravitational acceleration $g = 10\\text{ m s}^{-2}$. (2) Radius of earth $R_E = 6400\\text{ km}$. Take $\\pi = 3.14$.",
+    "options": [
+      "83.73 minutes",
+      "85 minutes",
+      "90 minutes",
+      "156 minutes"
+    ],
+    "correct_answer": 0,
+    "explanation": "The period of revolution of a satellite orbiting close to the surface of the Earth is:\n$T = 2\\pi\\sqrt{\\frac{R_E}{g}}$\nSubstituting the given values:\n$T = 2 \\times 3.14 \\times \\sqrt{\\frac{6400 \\times 10^3}{10}} = 6.28 \\times \\sqrt{640000} = 6.28 \\times 800 = 5024\\text{ s}$\nConverting into minutes:\n$T = \\frac{5024}{60} \\approx 83.73\\text{ minutes}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q8",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2015,
+    "question": "If the mass of a body is $M$ on the surface of the earth, the mass of the same body on the surface of the moon is",
+    "options": [
+      "$M$",
+      "zero",
+      "$M/6$",
+      "$6M$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Mass is the fundamental quantity of matter contained in a body and does not depend on the local acceleration due to gravity or location. While weight changes ($W_{\\text{moon}} = W_{\\text{earth}}/6$), the mass $M$ remains strictly invariant everywhere in the universe.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q9",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2016,
+    "question": "Variation of acceleration due to gravity ($g$) with distance $x$ from the centre of the earth is best represented by ($R \\to$ Radius of the earth)",
+    "options": [
+      "(a)",
+      "(b)",
+      "(c)",
+      "(d)"
+    ],
+    "correct_answer": 3,
+    "explanation": "![Graph of g vs x](/pyq_images/physics/ch7/exp_q9.png)\n\nInside the Earth ($x < R$), $g = \\frac{GM}{R^3}x \\propto x$ (linear increase from zero at centre to maximum at surface).\nOutside the Earth ($x \\ge R$), $g = \\frac{GM}{x^2} \\propto \\frac{1}{x^2}$ (inverse-square hyperbolic decay).\nTherefore, graph (d) correctly represents the variation.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch7/q9.png",
+    "explanation_image_url": "/pyq_images/physics/ch7/exp_q9.png"
+  },
+  {
+    "id": "phys_ch7_q10",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2017,
+    "question": "The value of acceleration due to gravity at a depth of 1600 km is equal to [Radius of earth = 6400 km]",
+    "options": [
+      "$9.8\\text{ m s}^{-2}$",
+      "$4.9\\text{ m s}^{-2}$",
+      "$7.35\\text{ m s}^{-2}$",
+      "$19.6\\text{ m s}^{-2}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "The acceleration due to gravity at depth $d$ below the Earth's surface is given by:\n$g_d = g\\left(1 - \\frac{d}{R_e}\\right)$\nGiven $d = 1600\\text{ km}$, $R_e = 6400\\text{ km}$, and $g = 9.8\\text{ m s}^{-2}$:\n$g_d = 9.8\\left(1 - \\frac{1600}{6400}\\right) = 9.8\\left(1 - \\frac{1}{4}\\right) = 9.8 \\times 0.75 = 7.35\\text{ m s}^{-2}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q11",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2018,
+    "question": "A space station is at a height equal to the radius of the Earth. If $v_E$ is the escape velocity on the surface of the Earth, the same on the space station is _____ times $v_E$.",
+    "options": [
+      "$\\frac{1}{2}$",
+      "$\\frac{1}{4}$",
+      "$\\frac{1}{\\sqrt{2}}$",
+      "$\\frac{1}{\\sqrt{3}}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Escape velocity from the surface of the Earth is $v_E = \\sqrt{\\frac{2GM}{R}}$.\nAt height $h = R$ (distance from centre of Earth $r = R + h = 2R$):\n$v_s = \\sqrt{\\frac{2GM}{R + h}} = \\sqrt{\\frac{2GM}{2R}} = \\frac{1}{\\sqrt{2}}\\sqrt{\\frac{2GM}{R}} = \\frac{v_E}{\\sqrt{2}}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q12",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2018,
+    "question": "Which of the following graphs correctly represents the variation of $g$ on the Earth ?",
+    "options": [
+      "(a)",
+      "(b)",
+      "(c)",
+      "(d)"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Variation of g on Earth](/pyq_images/physics/ch7/exp_q12.png)\n\nFor distance $r < R$: $g = \\frac{GM}{R^3}r \\implies g \\propto r$ (straight line through origin).\nFor distance $r \\ge R$: $g = \\frac{GM}{r^2} \\implies g \\propto \\frac{1}{r^2}$ (non-linear curved decay towards zero).\nThus, graph (b) correctly represents the variation of $g$ on the Earth.",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch7/q12.png",
+    "explanation_image_url": "/pyq_images/physics/ch7/exp_q12.png"
+  },
+  {
+    "id": "phys_ch7_q13",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2018,
+    "question": "A mass $m$ on the surface of the Earth is shifted to a target equal to the radius of the Earth. If $R$ is the radius and $M$ is the mass of the Earth, then work done in this process is",
+    "options": [
+      "$\\frac{mgR}{2}$",
+      "$mgR$",
+      "$2mgR$",
+      "$\\frac{mgR}{4}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Initial gravitational potential energy on the surface of the Earth:\n$U_i = -\\frac{GMm}{R}$\n\nFinal potential energy at height $h = R$ ($r = 2R$):\n$U_f = -\\frac{GMm}{R+h} = -\\frac{GMm}{2R}$\n\nWork done $W = U_f - U_i$:\n$W = -\\frac{GMm}{2R} - \\left(-\\frac{GMm}{R}\\right) = \\frac{GMm}{R}\\left(1 - \\frac{1}{2}\\right) = \\frac{GMm}{2R}$\n\nSince $g = \\frac{GM}{R^2} \\implies GM = gR^2$:\n$W = \\frac{m(gR^2)}{2R} = \\frac{mgR}{2}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q14",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2019,
+    "question": "A satellite is orbiting close to the earth and has a kinetic energy $K$. The minimum extra kinetic energy required by it to just overcome the gravitation pull of the earth is",
+    "options": [
+      "$\\sqrt{3}K$",
+      "$K$",
+      "$2\\sqrt{2}K$",
+      "$2K$"
+    ],
+    "correct_answer": 1,
+    "explanation": "For a satellite in a circular orbit close to the Earth:\nKinetic energy $= K$\nPotential energy $= -2K$\nTotal mechanical energy $E = K + (-2K) = -K$\n\nTo escape from the Earth's gravitational field, its total mechanical energy must be at least zero ($E_{\\text{final}} \\ge 0$):\nExtra kinetic energy required $\\Delta K = 0 - E = 0 - (-K) = K$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q15",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2020,
+    "question": "The value of acceleration due to gravity at a height of 10 km from the surface of earth is $x$. At what depth inside the earth is the value of the acceleration due to gravity has the same value $x$?",
+    "options": [
+      "10 km",
+      "15 km",
+      "5 km",
+      "20 km"
+    ],
+    "correct_answer": 3,
+    "explanation": "For small height $h \\ll R$:\n$g(h) = g\\left(1 - \\frac{2h}{R}\\right)$\n\nAt depth $d$:\n$g(d) = g\\left(1 - \\frac{d}{R}\\right)$\n\nGiven $g(h) = g(d)$:\n$g\\left(1 - \\frac{2h}{R}\\right) = g\\left(1 - \\frac{d}{R}\\right) \\implies \\frac{2h}{R} = \\frac{d}{R} \\implies d = 2h$\nSince $h = 10\\text{ km}$:\n$d = 2 \\times 10 = 20\\text{ km}$.",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q16",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2021,
+    "question": "Two bodies of masses 8 kg are placed at the vertices $A$ and $B$ of an equilateral triangle $ABC$. A third body of mass 2 kg is placed at the centroid $G$ of the triangle. If $AG = BG = CG = 1\\text{ m}$, where should a fourth body of mass 4 kg be placed so that the resultant force on the 2 kg body is zero?",
+    "options": [
+      "At $C$",
+      "At a point $P$ on the line $CG$ such that $PG = \\frac{1}{\\sqrt{2}}\\text{ m}$",
+      "At a point $P$ on the line $CG$ such that $PG = 0.5\\text{ m}$",
+      "At a point $P$ on the line $CG$ such that $PG = 2\\text{ m}$"
+    ],
+    "correct_answer": 1,
+    "explanation": "![Force diagram](/pyq_images/physics/ch7/exp_q16.png)\n\nGiven $m_A = m_B = 8\\text{ kg}$, $m_G = 2\\text{ kg}$, $m_4 = 4\\text{ kg}$, and $AG = BG = CG = 1\\text{ m}$.\nThe forces on the $2\\text{ kg}$ mass at $G$ due to $A$ and $B$ are:\n$F_1 = \\frac{G \\times 8 \\times 2}{1^2} = 16G$ (directed along $GA$)\n$F_2 = \\frac{G \\times 8 \\times 2}{1^2} = 16G$ (directed along $GB$)\n\nThe angle between $GA$ and $GB$ is $120^\\circ$. The resultant force $F$ of $F_1$ and $F_2$ acts along $GD$ (bisector towards base $AB$, away from $C$):\n$F = \\sqrt{F_1^2 + F_2^2 + 2F_1 F_2 \\cos 120^\\circ} = \\sqrt{(16G)^2 + (16G)^2 - (16G)^2} = 16G$.\n\nFor the net force on $G$ to be zero, the fourth mass of $4\\text{ kg}$ placed at distance $d = PG$ on line $CG$ must exert an attractive force $F'' = 16G$ towards $C$:\n$\\frac{G \\times 4 \\times 2}{d^2} = 16G \\implies \\frac{8}{d^2} = 16 \\implies d^2 = \\frac{1}{2} \\implies d = \\frac{1}{\\sqrt{2}}\\text{ m}$.",
+    "needs_image": false,
+    "explanation_image_url": "/pyq_images/physics/ch7/exp_q16.png"
+  },
+  {
+    "id": "phys_ch7_q17",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2023,
+    "question": "When a planet revolves around the Sun, in general, for the planet",
+    "options": [
+      "linear momentum and linear velocity are constant.",
+      "linear momentum and aerial velocity are constant.",
+      "kinetic and potential energy of the planet are constant.",
+      "angular momentum about the Sun and aerial velocity of the planet are constant."
+    ],
+    "correct_answer": 3,
+    "explanation": "Since the gravitational force exerted by the Sun on the planet is a central force, its torque about the Sun is zero ($\\vec{\\tau} = \\vec{r} \\times \\vec{F} = 0$).\nTherefore, the angular momentum $\\vec{L}$ about the Sun is conserved and strictly constant.\nFurthermore, the areal velocity $\\frac{d\\vec{A}}{dt} = \\frac{\\vec{L}}{2m}$ is also constant (Kepler's second law).",
+    "needs_image": false
+  },
+  {
+    "id": "phys_ch7_q18",
+    "subject": "Physics",
+    "chapter": "Gravitation",
+    "chapter_number": 7,
+    "year": 2024,
+    "question": "What is the value of acceleration due to gravity at a height equal to half the radius of the Earth, from its surface?",
+    "options": [
+      "$4.4\\text{ m s}^{-2}$",
+      "$6.5\\text{ m s}^{-2}$",
+      "zero",
+      "$9.8\\text{ m s}^{-2}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Here $h = \\frac{R}{2}$.\n$g' = g\\left(\\frac{R}{R+h}\\right)^2 = g\\left(\\frac{R}{R + R/2}\\right)^2 = g\\left(\\frac{R}{3R/2}\\right)^2 = g\\left(\\frac{2}{3}\\right)^2 = \\frac{4}{9}g$\nSubstituting $g = 9.8\\text{ m s}^{-2}$:\n$g' = \\frac{4}{9} \\times 9.8 \\approx 4.36 \\approx 4.4\\text{ m s}^{-2}$.",
+    "needs_image": false
+  }
+]
