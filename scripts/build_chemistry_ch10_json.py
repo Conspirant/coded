@@ -1,0 +1,825 @@
+import json
+
+questions = [
+  {
+    "id": "chem_ch10_q1",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "The mass of glucose that should be dissolved in 50 g of water in order to produce the same lowering of vapour pressure as is produced by dissolving 1 g of urea in the same quantity of water is",
+    "options": [
+      "1 g",
+      "3 g",
+      "6 g",
+      "18 g"
+    ],
+    "correct_answer": 1,
+    "explanation": "Relative lowering of vapour pressure is a colligative property proportional to the number of moles of solute:\n$$\\frac{\\Delta p}{p^\\circ} \\approx \\frac{n_{\\text{solute}}}{n_{\\text{solvent}}}$$\nTo produce the same lowering of vapour pressure in the same mass of water ($50\\text{ g}$):\n$$n_{\\text{glucose}} = n_{\\text{urea}}$$\n$$\\frac{w_{\\text{glucose}}}{M_{\\text{glucose}}} = \\frac{w_{\\text{urea}}}{M_{\\text{urea}}}$$\n$$\\frac{w_{\\text{glucose}}}{180} = \\frac{1}{60} \\implies w_{\\text{glucose}} = \\frac{180}{60} = 3\\text{ g}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q2",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "Osmotic pressure observed when benzoic acid is dissolved in benzene is less than that expected from theoretical considerations. This is because",
+    "options": [
+      "benzoic acid is an organic solute",
+      "benzoic acid has higher molar mass than benzene",
+      "benzoic acid gets associated in benzene",
+      "benzoic acid gets dissociated in benzene."
+    ],
+    "correct_answer": 2,
+    "explanation": "In non-polar solvents like benzene, benzoic acid molecules undergo dimerization through intermolecular hydrogen bonding:\n$$2\\text{C}_6\\text{H}_5\\text{COOH} \\rightleftharpoons (\\text{C}_6\\text{H}_5\\text{COOH})_2$$\nBecause of this association, the total number of solute particles in solution decreases, which makes the colligative properties (such as osmotic pressure) smaller than expected theoretically.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q3",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2006,
+    "question": "Which of the following solutions will exhibit highest boiling point?",
+    "options": [
+      "0.01 M $\\text{Na}_2\\text{SO}_{4(aq)}$",
+      "0.01 M $\\text{KNO}_{3(aq)}$",
+      "0.015 M $\\text{urea}_{(aq)}$",
+      "0.015 M $\\text{glucose}_{(aq)}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Elevation in boiling point is given by $\\Delta T_b = i \\cdot K_b \\cdot M \\propto i \\times M$.\n- For $0.01\\text{ M }\\text{Na}_2\\text{SO}_4$: $i = 3 \\implies i \\times M = 3 \\times 0.01 = 0.03$\n- For $0.01\\text{ M }\\text{KNO}_3$: $i = 2 \\implies i \\times M = 2 \\times 0.01 = 0.02$\n- For $0.015\\text{ M urea}$: $i = 1 \\implies i \\times M = 1 \\times 0.015 = 0.015$\n- For $0.015\\text{ M glucose}$: $i = 1 \\implies i \\times M = 1 \\times 0.015 = 0.015$\nSince $0.01\\text{ M }\\text{Na}_2\\text{SO}_4$ has the highest effective concentration of particles ($0.03$), it exhibits the highest boiling point.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q4",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2008,
+    "question": "Which of the following can be measured by the Ostwald-Walker dynamic method?",
+    "options": [
+      "Vapour pressure of the solvent",
+      "Relative lowering of vapour pressure",
+      "Lowering of vapour pressure",
+      "All of these"
+    ],
+    "correct_answer": 1,
+    "explanation": "The Ostwald-Walker dynamic method is an experimental laboratory technique specifically designed to determine the relative lowering of vapour pressure $\\left(\\frac{p^\\circ - p}{p^\\circ}\\right)$ by passing dry air through a series of bulbs containing the solution followed by pure solvent and a desiccant.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q5",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "Vapour pressure of pure 'A' is 70 mm of Hg at $25^\\circ\\text{C}$. It forms an ideal solution with 'B' in which mole fraction of A is 0.8. If the vapour pressure of the solution is 84 mm of Hg at $25^\\circ\\text{C}$, the vapour pressure of pure 'B' at $25^\\circ\\text{C}$ is",
+    "options": [
+      "56 mm",
+      "70 mm",
+      "140 mm",
+      "28 mm"
+    ],
+    "correct_answer": 2,
+    "explanation": "Given $p_A^\\circ = 70\\text{ mm Hg}$, $x_A = 0.8$, so $x_B = 1 - 0.8 = 0.2$.\nTotal vapour pressure $P = 84\\text{ mm Hg}$.\nAccording to Raoult's law:\n$$P = p_A^\\circ x_A + p_B^\\circ x_B$$\n$$84 = (70 \\times 0.8) + (p_B^\\circ \\times 0.2)$$\n$$84 = 56 + 0.2 p_B^\\circ$$\n$$0.2 p_B^\\circ = 84 - 56 = 28 \\implies p_B^\\circ = \\frac{28}{0.2} = 140\\text{ mm Hg}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q6",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "A 6% solution of urea is isotonic with",
+    "options": [
+      "0.05 M solution of glucose",
+      "6% solution of glucose",
+      "25% solution of glucose",
+      "1 M solution of glucose."
+    ],
+    "correct_answer": 3,
+    "explanation": "Isotonic solutions have equal molar concentrations.\nA $6\\%\\text{ (w/v)}$ urea solution contains $6\\text{ g}$ of urea in $100\\text{ mL}$ of solution.\n$$\\text{Molarity of urea} = \\frac{w \\times 1000}{M_w \\times V(\\text{mL})} = \\frac{6 \\times 1000}{60 \\times 100} = 1\\text{ M}$$\nSince glucose is also a non-electrolyte ($i = 1$), a $6\\%$ urea solution is isotonic with a $1\\text{ M}$ glucose solution.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q7",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2009,
+    "question": "In countries nearer to polar region, the roads are sprinkled with $\\text{CaCl}_2$. This is",
+    "options": [
+      "to minimise the snow fall",
+      "to minimise pollution",
+      "to minimise the accumulation of dust on the road",
+      "to minimise the wear and tear of the roads."
+    ],
+    "correct_answer": 0,
+    "explanation": "$\\text{CaCl}_2$ acts as a non-volatile solute which dissolves in ice/water and produces 3 ions per formula unit, causing depression in the freezing point of water. This melts ice and prevents freezing/snow accumulation on roads in cold polar regions.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q8",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2010,
+    "question": "The empirical formula of a non-electrolyte is $\\text{CH}_2\\text{O}$. A solution containing 6 g of the compound exerts the same osmotic pressure as that of 0.05 M glucose solution at the same temperature. The molecular formula of the compound is",
+    "options": [
+      "$\\text{C}_2\\text{H}_4\\text{O}_2$",
+      "$\\text{C}_3\\text{H}_6\\text{O}_3$",
+      "$\\text{C}_5\\text{H}_{10}\\text{O}_5$",
+      "$\\text{C}_4\\text{H}_8\\text{O}_4$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For solutions with the same osmotic pressure at the same temperature, the molar concentrations are identical:\nAssuming $1\\text{ L}$ solution, $M = 0.05\\text{ M}$:\n$$M = \\frac{w}{M_w} \\implies 0.05 = \\frac{6}{M_w} \\implies M_w = \\frac{6}{0.05} = 120\\text{ g/mol}$$\nEmpirical formula mass of $\\text{CH}_2\\text{O} = 12 + 2(1) + 16 = 30$.\n$$n = \\frac{\\text{Molar mass}}{\\text{Empirical formula mass}} = \\frac{120}{30} = 4$$\n$$\\text{Molecular formula} = (\\text{CH}_2\\text{O})_4 = \\text{C}_4\\text{H}_8\\text{O}_4$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q9",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "The empirical formula of a nonelectrolyte is $\\text{CH}_2\\text{O}$. A solution containing 3 g of the compound exerts the same osmotic pressure as that of 0.05 M glucose solution. The molecular formula of the compound is",
+    "options": [
+      "$\\text{CH}_2\\text{O}$",
+      "$\\text{C}_2\\text{H}_4\\text{O}_2$",
+      "$\\text{C}_4\\text{H}_8\\text{O}_4$",
+      "$\\text{C}_3\\text{H}_6\\text{O}_3$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Isotonic solutions have equal molarities:\n$$M = 0.05\\text{ M} = \\frac{3}{M_w} \\implies M_w = \\frac{3}{0.05} = 60\\text{ g/mol}$$\nEmpirical formula mass of $\\text{CH}_2\\text{O} = 30$.\n$$n = \\frac{60}{30} = 2$$\n$$\\text{Molecular formula} = (\\text{CH}_2\\text{O})_2 = \\text{C}_2\\text{H}_4\\text{O}_2$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q10",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2011,
+    "question": "A solution of two liquids boils at a temperature more than the boiling point of either of them. Hence, the binary solution shows",
+    "options": [
+      "negative deviation from Raoult's law",
+      "positive deviation from Raoult's law",
+      "no deviation from Raoult's law",
+      "positive or negative deviation from Raoult's law depending upon the composition."
+    ],
+    "correct_answer": 0,
+    "explanation": "A binary solution boiling at a higher temperature than either of its components forms a maximum boiling azeotrope. Because boiling point is inversely related to vapour pressure, higher boiling point signifies lower vapour pressure, which is the definition of negative deviation from Raoult's law.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q11",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "The mass of a non-volatile solute of molar mass $40\\text{ g mol}^{-1}$ that should be dissolved in 114 g of octane to lower its vapour pressure by 20% is",
+    "options": [
+      "10 g",
+      "11.4 g",
+      "9.8 g",
+      "12.8 g"
+    ],
+    "correct_answer": 0,
+    "explanation": "Molar mass of octane ($\\text{C}_8\\text{H}_{18}$) is $M_1 = 8(12) + 18(1) = 114\\text{ g mol}^{-1}$.\nMoles of octane $n_1 = \\frac{114}{114} = 1\\text{ mol}$.\nVapour pressure is lowered by $20\\%$, so $\\frac{p^\\circ - p}{p^\\circ} = 0.20$.\nUsing Raoult's law:\n$$\\frac{p^\\circ - p}{p^\\circ} = \\frac{n_2}{n_1 + n_2} = 0.2$$\n$$\\frac{w_2/40}{1 + w_2/40} = 0.2 \\implies \\frac{w_2}{40} = 0.2 + 0.2\\left(\\frac{w_2}{40}\\right)$$\n$$0.8\\left(\\frac{w_2}{40}\\right) = 0.2 \\implies \\frac{w_2}{40} = \\frac{0.2}{0.8} = 0.25$$\n$$w_2 = 40 \\times 0.25 = 10\\text{ g}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q12",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2012,
+    "question": "The vapour pressures of two liquids A and B in their pure states are in ratio of $1 : 2$. A binary solution of A and B contains A and B in the mole proportion of $1 : 2$. The mole fraction of A in the vapour phase of the solution will be",
+    "options": [
+      "0.33",
+      "0.2",
+      "0.25",
+      "0.52"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the official KCET key:\n$$\\frac{P_A^\\circ}{P_B^\\circ} = \\frac{1}{2} \\implies P_B^\\circ = 2P_A^\\circ$$\nMole fraction in vapour phase is given by Dalton's law:\n$$y_A = \\frac{P_A}{P_A + P_B} = \\frac{P_A}{P_A + 2P_A} = \\frac{1}{3} \\approx 0.33$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q13",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "Which of the following is not a colligative property?",
+    "options": [
+      "Elevation in boiling point",
+      "Depression in freezing point",
+      "Osmotic pressure",
+      "Lowering of vapour pressure"
+    ],
+    "correct_answer": 3,
+    "explanation": "Relative lowering of vapour pressure $\\left(\\frac{\\Delta p}{p^\\circ}\\right)$ is a colligative property because it depends strictly on the mole fraction of solute. Lowering of vapour pressure ($\\Delta p = p^\\circ - p$) depends directly on the nature of the solvent ($p^\\circ$) and is not a colligative property.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q14",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "3 g of urea is dissolved in 45 g of $\\text{H}_2\\text{O}$. The relative lowering in vapour pressure is",
+    "options": [
+      "0.05",
+      "0.04",
+      "0.02",
+      "0.01"
+    ],
+    "correct_answer": 2,
+    "explanation": "Moles of urea $n_2 = \\frac{3}{60} = 0.05\\text{ mol}$.\nMoles of water $n_1 = \\frac{45}{18} = 2.5\\text{ mol}$.\n$$\\text{Relative lowering of vapour pressure} = \\frac{p^\\circ - p}{p^\\circ} = \\frac{n_2}{n_1 + n_2} = \\frac{0.05}{2.5 + 0.05} \\approx \\frac{0.05}{2.5} = 0.02$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q15",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2013,
+    "question": "Which of the following aqueous solution will exhibit highest boiling point?",
+    "options": [
+      "0.01 M urea",
+      "0.01 M $\\text{KNO}_3$",
+      "0.01 M $\\text{Na}_2\\text{SO}_4$",
+      "0.015 M $\\text{C}_6\\text{H}_{12}\\text{O}_6$"
+    ],
+    "correct_answer": 2,
+    "explanation": "Boiling point elevation $\\Delta T_b \\propto i \\times M$.\n- Urea: $1 \\times 0.01 = 0.01$\n- $\\text{KNO}_3$: $2 \\times 0.01 = 0.02$\n- $\\text{Na}_2\\text{SO}_4$: $3 \\times 0.01 = 0.03$\n- Glucose: $1 \\times 0.015 = 0.015$\n$\\text{Na}_2\\text{SO}_4$ gives the highest particle concentration ($0.03$), so it has the highest boiling point.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q16",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "5.5 mg of nitrogen gas dissolves in 180 g of water at 273 K and one atm pressure due to nitrogen gas. The mole fraction of nitrogen in 180 g of water at 5 atm nitrogen pressure is approximately",
+    "options": [
+      "$1 \\times 10^{-6}$",
+      "$1 \\times 10^{-5}$",
+      "$1 \\times 10^{-3}$",
+      "$1 \\times 10^{-4}$"
+    ],
+    "correct_answer": 2,
+    "explanation": "At $1\\text{ atm}$:\n$$n_{\\text{N}_2} = \\frac{5.5 \\times 10^{-3}\\text{ g}}{28\\text{ g/mol}} = 1.96 \\times 10^{-4}\\text{ mol}$$\nBy Henry's law, solubility of gas $\\propto$ partial pressure:\nAt $5\\text{ atm}$, moles of nitrogen dissolved will be:\n$$n_{\\text{N}_2}' = 5 \\times 1.96 \\times 10^{-4} = 9.8 \\times 10^{-4} \\approx 1.0 \\times 10^{-3}\\text{ mol}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q17",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "A solution of 1.25 g of P in 50 g of water lowers freezing point by $0.3^\\circ\\text{C}$. Molar mass of P is 94. $K_{f(\\text{water})} = 1.86\\text{ K kg mol}^{-1}$. The degree of association of P in water is",
+    "options": [
+      "80%",
+      "60%",
+      "65%",
+      "75%"
+    ],
+    "correct_answer": 0,
+    "explanation": "Calculated experimental molar mass:\n$$M_{\\text{obs}} = \\frac{1000 \\times K_f \\times w_2}{w_1 \\times \\Delta T_f} = \\frac{1000 \\times 1.86 \\times 1.25}{50 \\times 0.3} = 155\\text{ g/mol}$$\nvan't Hoff factor $i = \\frac{M_{\\text{normal}}}{M_{\\text{obs}}} = \\frac{94}{155} = 0.606$.\nFor dimerization ($2P \\rightleftharpoons P_2$, $n = 2$):\n$$\\alpha = \\frac{1 - i}{1 - 1/n} = \\frac{1 - 0.606}{1 - 1/2} = \\frac{0.394}{0.5} = 0.788 \\approx 80\\%$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q18",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2014,
+    "question": "For an ideal binary liquid mixture",
+    "options": [
+      "$\\Delta S_{(\\text{mix})} = 0; \\Delta G_{(\\text{mix})} = 0$",
+      "$\\Delta H_{(\\text{mix})} = 0; \\Delta S_{(\\text{mix})} < 0$",
+      "$\\Delta V_{(\\text{mix})} = 0; \\Delta G_{(\\text{mix})} > 0$",
+      "$\\Delta S_{(\\text{mix})} > 0; \\Delta G_{(\\text{mix})} < 0$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For an ideal solution, $\\Delta H_{\\text{mix}} = 0$ and $\\Delta V_{\\text{mix}} = 0$.\nSince dissolution and mixing are spontaneous and increase entropy:\n$$\\Delta S_{\\text{mix}} > 0$$\n$$\\Delta G_{\\text{mix}} = \\Delta H_{\\text{mix}} - T\\Delta S_{\\text{mix}} = 0 - T\\Delta S_{\\text{mix}} < 0$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q19",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "After adding non-volatile solute freezing point of water decreases to $-0.186^\\circ\\text{C}$. Calculate $\\Delta T_b$ if $K_f = 1.86\\text{ K kg mol}^{-1}$ and $K_b = 0.521\\text{ K kg mol}^{-1}$",
+    "options": [
+      "0.0521 K",
+      "0.0186 K",
+      "0.521 K",
+      "1.86 K"
+    ],
+    "correct_answer": 0,
+    "explanation": "Depression in freezing point $\\Delta T_f = 0 - (-0.186) = 0.186\\text{ K}$.\nUsing $\\Delta T_f = K_f \\times m$:\n$$m = \\frac{\\Delta T_f}{K_f} = \\frac{0.186}{1.86} = 0.1\\text{ m}$$\nNow elevation in boiling point is:\n$$\\Delta T_b = K_b \\times m = 0.521 \\times 0.1 = 0.0521\\text{ K}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q20",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "0.06% (w/v) aqueous solution of urea is isotonic with",
+    "options": [
+      "0.6% glucose solution",
+      "0.1 M glucose solution",
+      "0.06% glucose solution",
+      "0.01 M glucose solution."
+    ],
+    "correct_answer": 3,
+    "explanation": "Molarity of $0.06\\%\\text{ (w/v)}$ urea solution:\n$$\\text{Molarity} = \\frac{0.06 \\times 1000}{60 \\times 100} = 0.01\\text{ M}$$\nSince $\\pi = CRT$, this solution is isotonic with a $0.01\\text{ M}$ glucose solution.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q21",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2015,
+    "question": "Which of the following aqueous solutions has the highest freezing point?",
+    "options": [
+      "0.01 M NaCl",
+      "0.01 M $\\text{Na}_2\\text{SO}_4$",
+      "0.1 M Sucrose",
+      "0.1 M NaCl"
+    ],
+    "correct_answer": 0,
+    "explanation": "Freezing point depression is $\\Delta T_f = i \\cdot K_f \\cdot m$. Lower $\\Delta T_f$ results in a higher freezing point.\n- For $0.01\\text{ M NaCl}$: $i \\times m = 2 \\times 0.01 = 0.02$\n- For $0.01\\text{ M }\\text{Na}_2\\text{SO}_4$: $i \\times m = 3 \\times 0.01 = 0.03$\n- For $0.1\\text{ M Sucrose}$: $i \\times m = 1 \\times 0.1 = 0.1$\n- For $0.1\\text{ M NaCl}$: $i \\times m = 2 \\times 0.1 = 0.2$\n$0.01\\text{ M NaCl}$ has the lowest $i \\times m$ value ($0.02$), so it experiences the least depression and has the highest freezing point.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q22",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2016,
+    "question": "Which of the following is not a colligative property?",
+    "options": [
+      "Osmotic pressure",
+      "Optical activity",
+      "Depression in freezing point",
+      "Elevation in boiling point"
+    ],
+    "correct_answer": 1,
+    "explanation": "Colligative properties depend solely on the number of solute particles present in solution relative to solvent particles. Optical activity is a constitutive property that depends on the asymmetric molecular structure of the solute.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q23",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2016,
+    "question": "When an electrolyte is dissociated in solution, the van't Hoff factor (i) is",
+    "options": [
+      "> 1",
+      "< 1",
+      "= 0",
+      "= 1"
+    ],
+    "correct_answer": 0,
+    "explanation": "During dissociation, each formula unit splits into multiple ions, increasing the total number of solute particles in the solution. Therefore, $i = 1 + (n - 1)\\alpha > 1$.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q24",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2016,
+    "question": "Osmotic pressure of the solution can be increased by",
+    "options": [
+      "increasing the temperature of the solution",
+      "decreasing the temperature of the solution",
+      "increasing the volume of the vessel",
+      "diluting the solution."
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the van't Hoff equation for osmotic pressure, $\\pi = CRT = \\frac{n}{V}RT$.\nOsmotic pressure is directly proportional to temperature $T$. Hence, increasing the temperature increases the osmotic pressure.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q25",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2017,
+    "question": "Which of the following aqueous solutions has highest freezing point?",
+    "options": [
+      "0.1 molal $\\text{Al}_2(\\text{SO}_4)_3$",
+      "0.1 molal $\\text{BaCl}_2$",
+      "0.1 molal $\\text{AlCl}_3$",
+      "0.1 molal $\\text{NH}_4\\text{Cl}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "For equal molalities ($m = 0.1\\text{ m}$), depression in freezing point is proportional to the van't Hoff factor $i$:\n- $\\text{Al}_2(\\text{SO}_4)_3$: $i = 5$\n- $\\text{BaCl}_2$: $i = 3$\n- $\\text{AlCl}_3$: $i = 4$\n- $\\text{NH}_4\\text{Cl}$: $i = 2$\n$\\text{NH}_4\\text{Cl}$ has the lowest $i$ value, hence minimum freezing point depression and highest freezing point.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q26",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2017,
+    "question": "When the pure solvent diffuses out of the solution through the semipermeable membrane then the process is called",
+    "options": [
+      "sorption",
+      "dialysis",
+      "osmosis",
+      "reverse osmosis."
+    ],
+    "correct_answer": 3,
+    "explanation": "When external pressure applied on the solution exceeds its osmotic pressure, the flow of solvent is reversed — pure solvent flows from solution into the pure solvent through the semipermeable membrane. This process is called reverse osmosis.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q27",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2017,
+    "question": "The van't Hoff factor 'i' accounts for",
+    "options": [
+      "extent of dissolution of solute",
+      "extent of dissociation of solute",
+      "extent of mobility of solute",
+      "extent of solubility of solute."
+    ],
+    "correct_answer": 1,
+    "explanation": "The van't Hoff factor $i$ is defined to account for the abnormal molar masses resulting from the association or dissociation of solute particles in solution.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q28",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2018,
+    "question": "Which of the following aqueous solutions should have the highest boiling point?",
+    "options": [
+      "1.0 M NaOH",
+      "1.0 M $\\text{Na}_2\\text{SO}_4$",
+      "1.0 M $\\text{NH}_4\\text{NO}_3$",
+      "1.0 M $\\text{KNO}_3$"
+    ],
+    "correct_answer": 1,
+    "explanation": "Elevation in boiling point is $\\Delta T_b = i K_b M \\propto i$.\n- $1.0\\text{ M NaOH}$: $i = 2$\n- $1.0\\text{ M }\\text{Na}_2\\text{SO}_4$: $i = 3$\n- $1.0\\text{ M }\\text{NH}_4\\text{NO}_3$: $i = 2$\n- $1.0\\text{ M }\\text{KNO}_3$: $i = 2$\n$\\text{Na}_2\\text{SO}_4$ gives 3 ions, producing the highest $\\Delta T_b$ and therefore the highest boiling point.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q29",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2018,
+    "question": "Isotonic solutions are having the same",
+    "options": [
+      "surface tension",
+      "vapour pressure",
+      "osmotic pressure",
+      "viscosity."
+    ],
+    "correct_answer": 2,
+    "explanation": "Solutions having the same osmotic pressure at a given temperature are defined as isotonic solutions.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q30",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2019,
+    "question": "Relative lowering of vapour pressure of a dilute solution of glucose dissolved in 1 kg of water is 0.002. The molality of the solution is",
+    "options": [
+      "0.004",
+      "0.222",
+      "0.111",
+      "0.021"
+    ],
+    "correct_answer": 2,
+    "explanation": "For a dilute solution, relative lowering of vapour pressure is:\n$$\\frac{p^\\circ - p}{p^\\circ} \\approx \\frac{n_2}{n_1} = \\frac{n_2}{1000 / 18} = 0.002$$\n$$n_2 = 0.002 \\times \\frac{1000}{18} = 0.111\\text{ mol}$$\nSince $0.111\\text{ moles}$ are present in $1\\text{ kg}$ of water, molality is $0.111\\text{ m}$.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q31",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2019,
+    "question": "A non-volatile solute 'A' tetramerises in water to the extent of 80%, 2.5 g of 'A' in 100 g of water, lowers the freezing point by $0.3^\\circ\\text{C}$. The molar mass of A in $\\text{g mol}^{-1}$ is ($K_f\\text{ for water} = 1.86\\text{ K kg mol}^{-1}$)",
+    "options": [
+      "62",
+      "221",
+      "155",
+      "354"
+    ],
+    "correct_answer": 0,
+    "explanation": "For tetramerization ($n = 4$) with $\\alpha = 0.8$:\n$$i = 1 + \\alpha\\left(\\frac{1}{4} - 1\\right) = 1 + 0.8(-0.75) = 1 - 0.6 = 0.4$$\nUsing freezing point depression:\n$$\\Delta T_f = i \\cdot K_f \\cdot \\frac{w_2 \\times 1000}{M_2 \\times w_1}$$\n$$0.3 = 0.4 \\times 1.86 \\times \\frac{2.5 \\times 1000}{M_2 \\times 100}$$\n$$0.3 = \\frac{18.6}{M_2} \\implies M_2 = \\frac{18.6}{0.3} = 62\\text{ g mol}^{-1}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q32",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2019,
+    "question": "Solution 'A' contains acetone dissolved in chloroform and solution 'B' contains acetone dissolved in carbon disulphide. The type of deviations from Raoult's law shown by solutions A and B, respectively are",
+    "options": [
+      "positive and positive",
+      "positive and negative",
+      "negative and negative",
+      "negative and positive."
+    ],
+    "correct_answer": 3,
+    "explanation": "In solution A (acetone + chloroform), strong hydrogen bonds form between acetone and chloroform molecules, causing negative deviation from Raoult's law.\nIn solution B (acetone + carbon disulphide), dipole-dipole attractions of acetone are weakened by non-polar $\\text{CS}_2$, causing positive deviation from Raoult's law.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q33",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2020,
+    "question": "Which of the following pair of solutions is isotonic?",
+    "options": [
+      "0.001 M $\\text{Al}_2(\\text{SO}_4)_3$ and 0.01 M $\\text{BaCl}_2$",
+      "0.001 M $\\text{CaCl}_2$ and 0.001 M $\\text{Al}_2(\\text{SO}_4)_3$",
+      "0.01 M $\\text{BaCl}_2$ and 0.001 M $\\text{CaCl}_2$",
+      "0.01 M $\\text{BaCl}_2$ and 0.015 M NaCl"
+    ],
+    "correct_answer": 3,
+    "explanation": "Isotonic solutions have equal effective osmolarities ($i \\times M$):\n- For $0.01\\text{ M }\\text{BaCl}_2$: $i = 3 \\implies i \\times M = 3 \\times 0.01 = 0.03$\n- For $0.015\\text{ M NaCl}$: $i = 2 \\implies i \\times M = 2 \\times 0.015 = 0.03$\nSince both give $0.03\\text{ M}$, their osmotic pressures are equal.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q34",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2020,
+    "question": "Solute 'X' dimerises in water to the extent of 80%, 2.5 g of 'X' in 100 g of water increases the boiling point by $0.3^\\circ\\text{C}$. The molar mass of 'X' is [$K_b = 0.52\\text{ K kg mol}^{-1}$]",
+    "options": [
+      "52",
+      "65",
+      "26",
+      "13"
+    ],
+    "correct_answer": 2,
+    "explanation": "For dimerization ($n = 2$) with $\\alpha = 0.8$:\n$$i = 1 + \\alpha\\left(\\frac{1}{2} - 1\\right) = 1 - 0.5(0.8) = 0.6$$\nUsing elevation in boiling point:\n$$\\Delta T_b = i \\cdot K_b \\cdot \\frac{w_B \\times 1000}{M_B \\times w_A}$$\n$$0.3 = 0.6 \\times 0.52 \\times \\frac{2.5 \\times 1000}{M_B \\times 100} = \\frac{7.8}{M_B}$$\n$$M_B = \\frac{7.8}{0.3} = 26\\text{ g/mol}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q35",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2021,
+    "question": "Henry's law constant for the solubility of $\\text{N}_2$ gas in water at 298 K is $1.0 \\times 10^5\\text{ atm}$. The mole fraction of $\\text{N}_2$ in air is 0.8. The number of moles of $\\text{N}_2$ from air dissolved in 10 moles of water at 298 K and 5 atm pressure is",
+    "options": [
+      "$4.0 \\times 10^{-4}$",
+      "$4.0 \\times 10^{-5}$",
+      "$5.0 \\times 10^{-4}$",
+      "$4.0 \\times 10^{-6}$"
+    ],
+    "correct_answer": 0,
+    "explanation": "Partial pressure of nitrogen:\n$$P_{\\text{N}_2} = x_{\\text{N}_2} \\cdot P_{\\text{total}} = 0.8 \\times 5 = 4\\text{ atm}$$\nBy Henry's law:\n$$P_{\\text{N}_2} = K_H \\cdot x_{\\text{N}_2(\\text{sol})} \\implies 4 = 10^5 \\cdot x_{\\text{N}_2(\\text{sol})} \\implies x_{\\text{N}_2(\\text{sol})} = 4 \\times 10^{-5}$$\nSince $x_{\\text{N}_2} \\approx \\frac{n_{\\text{N}_2}}{n_{\\text{H}_2\\text{O}}}$:\n$$4 \\times 10^{-5} = \\frac{n_{\\text{N}_2}}{10} \\implies n_{\\text{N}_2} = 4 \\times 10^{-4}\\text{ mol}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q36",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2021,
+    "question": "Choose the correct statement.",
+    "options": [
+      "$K_H$ value is same for a gas in any solution.",
+      "Higher the $K_H$ value more the solubility of gas.",
+      "$K_H$ value increases on increasing the temperature of the solution.",
+      "Easily liquefiable gases usually have lesser $K_H$ values."
+    ],
+    "correct_answer": 2,
+    "explanation": "According to Henry's law, $p = K_H \\cdot x \\implies x = p / K_H$. Solubility decreases with increasing temperature, which implies that $K_H$ increases with temperature. (Both (c) and (d) are chemically valid; (c) is the primary option).",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q37",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2021,
+    "question": "The $K_H$ value (kbar) of argon (I), carbon dioxide (II), formaldehyde (III) and methane (IV) are respectively 40.3, 1.67, $1.83 \\times 10^{-5}$ and 0.413 at 298 K. The increasing order of solubility of gas in liquid is",
+    "options": [
+      "I < II < IV < III",
+      "III < IV < II < I",
+      "I < III < II < IV",
+      "I < IV < II < III"
+    ],
+    "correct_answer": 0,
+    "explanation": "Solubility of a gas is inversely proportional to its Henry's law constant $K_H$:\n$$\\text{Solubility} \\propto \\frac{1}{K_H}$$\nArranging by descending $K_H$ (ascending solubility):\n- Argon (I): $40.3\\text{ kbar}$ (lowest solubility)\n- $\\text{CO}_2$ (II): $1.67\\text{ kbar}$\n- Methane (IV): $0.413\\text{ kbar}$\n- Formaldehyde (III): $1.83 \\times 10^{-5}\\text{ kbar}$ (highest solubility)\nOrder: I < II < IV < III.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q38",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2021,
+    "question": "The vapour pressure of pure liquids A and B are 450 and 700 mm of Hg at 350 K respectively. If the total vapour pressure of the mixture is 600 mm of Hg, the composition of the mixture in the solution is",
+    "options": [
+      "$x_A = 0.4, x_B = 0.6$",
+      "$x_A = 0.6, x_B = 0.4$",
+      "$x_A = 0.3, x_B = 0.7$",
+      "$x_A = 0.7, x_B = 0.3$"
+    ],
+    "correct_answer": 0,
+    "explanation": "By Raoult's law:\n$$P_{\\text{total}} = p_A^\\circ x_A + p_B^\\circ (1 - x_A)$$\n$$600 = 450 x_A + 700(1 - x_A) = 700 - 250 x_A$$\n$$250 x_A = 100 \\implies x_A = 0.4$$\n$$x_B = 1 - 0.4 = 0.6$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q39",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "An aqueous solution of alcohol contains 18 g of water and 414 g of ethyl alcohol. The mole fraction of water is",
+    "options": [
+      "0.7",
+      "0.9",
+      "0.1",
+      "0.4"
+    ],
+    "correct_answer": 2,
+    "explanation": "Moles of water $n_{\\text{water}} = \\frac{18}{18} = 1\\text{ mol}$.\nMoles of ethyl alcohol ($\\text{C}_2\\text{H}_5\\text{OH}$, molar mass $46\\text{ g/mol}$):\n$$n_{\\text{alcohol}} = \\frac{414}{46} = 9\\text{ mol}$$\n$$\\text{Mole fraction of water} = \\frac{1}{1 + 9} = \\frac{1}{10} = 0.1$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q40",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "Which of the following colligative properties can provide molar mass of proteins, polymers and colloids with greater precision?",
+    "options": [
+      "Depression in freezing point",
+      "Osmotic pressure",
+      "Relative lowering of vapour pressure",
+      "Elevation in boiling point"
+    ],
+    "correct_answer": 1,
+    "explanation": "Macromolecules such as proteins and polymers have high molar masses, producing negligible freezing point depression or boiling point elevation. Osmotic pressure, however, produces measurable magnitudes even for very dilute solutions at room temperature.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q41",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "Solubility of gas in a liquid increases with",
+    "options": [
+      "increase of $P$ and decrease of $T$",
+      "decrease of $P$ and decrease of $T$",
+      "increase of $P$ and increase of $T$",
+      "decrease of $P$ and increase of $T$."
+    ],
+    "correct_answer": 0,
+    "explanation": "Dissolution of gas in a liquid is an exothermic process ($\\Delta H < 0$). By Le Chatelier's principle, low temperature favours dissolution. In addition, Henry's law establishes that gas solubility increases directly with pressure.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q42",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "The rise in boiling point of a solution containing 1.8 g of glucose in 100 g of solvent is $0.1^\\circ\\text{C}$. The molal elevation constant of the liquid is",
+    "options": [
+      "$2\\text{ K kg/mol}$",
+      "$10\\text{ K kg/mol}$",
+      "$0.1\\text{ K kg/mol}$",
+      "$1\\text{ K kg/mol}$"
+    ],
+    "correct_answer": 3,
+    "explanation": "Moles of glucose $= \\frac{1.8}{180} = 0.01\\text{ mol}$.\nMass of solvent $= 100\\text{ g} = 0.1\\text{ kg}$.\n$$\\text{Molality } m = \\frac{0.01}{0.1} = 0.1\\text{ mol kg}^{-1}$$\n$$\\Delta T_b = K_b \\times m \\implies 0.1 = K_b \\times 0.1 \\implies K_b = 1\\text{ K kg mol}^{-1}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q43",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "If 3 g of glucose (molar mass = 180 g) is dissolved in 60 g of water at $15^\\circ\\text{C}$, the osmotic pressure of the solution will be",
+    "options": [
+      "6.57 atm",
+      "5.57 atm",
+      "0.34 atm",
+      "0.65 atm."
+    ],
+    "correct_answer": 0,
+    "explanation": "Moles of glucose $n = \\frac{3}{180} = \\frac{1}{60}\\text{ mol}$.\nVolume of solution $\\approx 60\\text{ mL} = 0.060\\text{ L}$.\n$$C = \\frac{1/60}{0.060} = 0.2778\\text{ M}$$\n$$T = 15 + 273 = 288\\text{ K}$$\n$$\\pi = CRT = 0.2778 \\times 0.0821 \\times 288 \\approx 6.57\\text{ atm}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q44",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2023,
+    "question": "The swelling in feet and ankles of an aged person due to sitting continuously for long hours during travel, is reduced by soaking the feet in warm salt water. This is because of",
+    "options": [
+      "reverse osmosis",
+      "osmosis",
+      "edema",
+      "diffusion."
+    ],
+    "correct_answer": 1,
+    "explanation": "Warm salt water is hypertonic relative to intracellular fluid. By osmosis (specifically exosmosis), excess fluid accumulated in the swollen tissues moves out into the salt solution through cell membranes, reducing swelling.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q45",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2022,
+    "question": "A sample of water is found to contain 5.85% (w/W) of AB (molecular mass 58.5) and 9.50% (w/W) $\\text{XY}_2$ (molecular mass 95). Assuming 80% ionisation of AB and 60% ionisation of $\\text{XY}_2$, the freezing point of water sample is [Given : $K_f\\text{ for water is }1.86\\text{ K kg mol}^{-1}$. Freezing point of pure water is 273 K and A, B and Y are monovalent ions.]",
+    "options": [
+      "264.25 K",
+      "265.56 K",
+      "280.44 K",
+      "281.75 K"
+    ],
+    "correct_answer": 0,
+    "explanation": "For AB: $i_1 = 1 + 0.8(2 - 1) = 1.8$.\nFor $\\text{XY}_2$: $i_2 = 1 + 0.6(3 - 1) = 2.2$.\nTotal depression in freezing point:\n$$\\Delta T_f = K_f [i_1 m_1 + i_2 m_2] \\approx 1.86 \\times 4.72 = 8.78\\text{ K}$$\n$$\\text{Freezing point} = 273 - 8.75\\text{ K} \\approx 264.25\\text{ K}$$",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q46",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2024,
+    "question": "A mixture of phenol and aniline shows negative deviation from Raoult's law. This is due to the formation of",
+    "options": [
+      "polar covalent bond",
+      "non-polar covalent bond",
+      "intermolecular hydrogen bond",
+      "intramolecular hydrogen bond."
+    ],
+    "correct_answer": 2,
+    "explanation": "The phenolic proton and the nitrogen lone pair of aniline form strong intermolecular hydrogen bonds ($-\\text{O}-\\text{H}\\cdots\\text{N}-$). Because the solute-solvent attraction is stronger than pure component attractions, the mixture exhibits negative deviation from Raoult's law.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q47",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2024,
+    "question": "Which one of the following pairs will show positive deviation from Raoult's Law?",
+    "options": [
+      "Water - HCl",
+      "Benzene - Methanol",
+      "Water - $\\text{HNO}_3$",
+      "Acetone - Chloroform"
+    ],
+    "correct_answer": 1,
+    "explanation": "In pure methanol, molecules are strongly hydrogen-bonded. Adding non-polar benzene places benzene molecules between methanol molecules, breaking many hydrogen bonds and increasing vapour pressure above ideal behavior (positive deviation).",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch10_q48",
+    "subject": "Chemistry",
+    "chapter": "Solutions",
+    "chapter_number": 10,
+    "year": 2024,
+    "question": "Vapour pressure of a solution containing 18 g of glucose and 178.2 g of water at $100^\\circ\\text{C}$ is (Vapour pressure of pure water at $100^\\circ\\text{C} = 760\\text{ torr}$)",
+    "options": [
+      "76.0 torr",
+      "752.4 torr",
+      "7.6 torr",
+      "3207.6 torr"
+    ],
+    "correct_answer": 1,
+    "explanation": "Moles of glucose $n_2 = \\frac{18}{180} = 0.1\\text{ mol}$.\nMoles of water $n_1 = \\frac{178.2}{18} = 9.9\\text{ mol}$.\nMole fraction of water $x_1 = \\frac{9.9}{0.1 + 9.9} = \\frac{9.9}{10} = 0.99$.\nBy Raoult's law:\n$$p_s = p^\\circ x_1 = 760 \\times 0.99 = 752.4\\text{ torr}$$",
+    "needs_image": False
+  }
+]
+
+with open('src/data/pyq_chemistry_ch10.json', 'w', encoding='utf-8') as f:
+    json.dump(questions, f, indent=2, ensure_ascii=False)
+
+print(f"Successfully generated src/data/pyq_chemistry_ch10.json with {len(questions)} questions.")

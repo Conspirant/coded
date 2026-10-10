@@ -122,3 +122,4 @@ test-data-loading.html
 cutoff_2026_r2_extracted.json
 scripts/test_predictor_progression.py
 scratch/
+*.pdf

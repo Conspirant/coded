@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Search, MapPin, GraduationCap, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3, Download, Bookmark, Scale, X, Sparkles, Filter, SlidersHorizontal } from "lucide-react"
+import { Search, MapPin, GraduationCap, Star, Users, Check, ChevronsUpDown, FileSpreadsheet, Trash2, FileText, AlertCircle, Info, ChevronDown, ChevronUp, BarChart3, Download, Bookmark, Scale, X, Sparkles, Filter, SlidersHorizontal, Share2, Copy, CheckCircle2 } from "lucide-react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -318,6 +318,11 @@ const CollegePredictor = () => {
   const [compareList, setCompareList] = useState<CollegeMatch[]>([])
   const [showCompareModal, setShowCompareModal] = useState(false)
 
+  // Reddit Export State
+  const [showRedditExport, setShowRedditExport] = useState(false)
+  const [redditMarkdown, setRedditMarkdown] = useState("")
+  const [redditCopied, setRedditCopied] = useState(false)
+
   const toggleCompare = (match: CollegeMatch) => {
     setCompareList(prev => {
       const exists = prev.find(p => p.institute_code === match.institute_code && p.course === match.course)
@@ -462,6 +467,88 @@ const CollegePredictor = () => {
     link.click()
     document.body.removeChild(link)
     toast({ title: "Exported!", description: "CSV file downloaded successfully" })
+  }
+
+  // Export results as Reddit markdown for r/kcet
+  const exportToReddit = () => {
+    const listToExport = showBookmarkedOnly
+      ? matches.filter(m => bookmarks.has(`${m.institute_code}-${m.course}-${m.category}`))
+      : matches
+
+    if (listToExport.length === 0) {
+      toast({ title: "No results to export", description: "Run a search first to generate results.", variant: "destructive" })
+      return
+    }
+
+    // Deduplicate by institute+course, keep only the latest year entry
+    const seen = new Map<string, CollegeMatch>()
+    const sorted = [...listToExport].sort((a, b) => parseInt(b.year) - parseInt(a.year))
+    for (const m of sorted) {
+      const key = `${m.institute_code}-${m.course}`
+      if (!seen.has(key)) seen.set(key, m)
+    }
+    const uniqueMatches = [...seen.values()].sort((a, b) => a.cutoff_rank - b.cutoff_rank)
+
+    // Build course preferences summary
+    const courses = [...new Set(uniqueMatches.map(m => m.course))]
+    const coursesSummary = courses.length <= 4
+      ? courses.join(', ')
+      : `${courses.slice(0, 3).join(', ')} +${courses.length - 3} more`
+
+    // Limit to top 15 for readability
+    const top = uniqueMatches.slice(0, 15)
+
+    // Build the markdown
+    let md = `**KCET Rank:** ${userRank.toLocaleString()} | **Category:** ${userCategory || 'All'}`
+    if (selectedYear) md += ` | **Data Year:** ${selectedYear}`
+    if (selectedRound && selectedRound !== 'ALL') md += ` | **Round:** ${getRoundDisplayName(selectedRound)}`
+    md += `\n`
+    md += `**Preferences:** ${coursesSummary}\n\n`
+
+    // Table header
+    md += `| # | College | Branch | Cutoff Rank | Chance |\n`
+    md += `|:-:|:--|:--|--:|:--|\n`
+
+    // Table rows
+    top.forEach((m, i) => {
+      const icon = m.admissionProbability === 'High' ? '🟢'
+        : m.admissionProbability === 'Moderate' ? '🟡'
+        : m.admissionProbability === 'Borderline' ? '🟠'
+        : m.admissionProbability === 'Exact' ? '🎯' : '⚪'
+      const collegeName = m.institute.length > 35 ? m.institute.substring(0, 33) + '…' : m.institute
+      md += `| ${i + 1} | ${collegeName} | ${m.course} | ${m.cutoff_rank.toLocaleString()} | ${icon} ${m.admissionProbability} |\n`
+    })
+
+    if (uniqueMatches.length > 15) {
+      md += `\n*...and ${uniqueMatches.length - 15} more options*\n`
+    }
+
+    md += `\n---\n`
+    md += `*Generated via [KCET Compass](https://kcetcoded.dev/predictor) — free college predictor with ${metadata?.total_entries?.toLocaleString() || ''} cutoff entries*`
+
+    setRedditMarkdown(md)
+    setRedditCopied(false)
+    setShowRedditExport(true)
+  }
+
+  const copyRedditToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(redditMarkdown)
+      setRedditCopied(true)
+      toast({ title: "Copied!", description: "Paste this into your Reddit post on r/kcet" })
+      setTimeout(() => setRedditCopied(false), 3000)
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea')
+      textarea.value = redditMarkdown
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+      setRedditCopied(true)
+      toast({ title: "Copied!", description: "Paste this into your Reddit post on r/kcet" })
+      setTimeout(() => setRedditCopied(false), 3000)
+    }
   }
 
   // Read rank, category, courses from URL params (from Homepage or Predictor)
@@ -2148,6 +2235,10 @@ const CollegePredictor = () => {
                     <FileSpreadsheet className="h-4 w-4 text-emerald-400" />
                     Export CSV
                   </Button>
+                  <Button variant="outline" size="sm" onClick={exportToReddit} className="flex items-center gap-2 h-9 border-orange-500/30 hover:border-orange-500/60 hover:bg-orange-500/5">
+                    <Share2 className="h-4 w-4 text-orange-400" />
+                    Export for r/kcet
+                  </Button>
                 </div>
               </div>
 
@@ -2449,6 +2540,70 @@ const CollegePredictor = () => {
           </Card>
         )}
         {/* Comparison Floating Bar */}
+        {/* Reddit Export Modal */}
+        {showRedditExport && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="w-full max-w-2xl bg-card border rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]">
+              <div className="p-4 border-b flex items-center justify-between bg-muted/30">
+                <div className="flex items-center gap-2">
+                  <Share2 className="h-5 w-5 text-orange-400" />
+                  <h3 className="font-semibold text-lg">Export for r/kcet</h3>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => setShowRedditExport(false)}>
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="p-4 space-y-3 overflow-auto">
+                <p className="text-sm text-muted-foreground">
+                  Copy the formatted text below and paste it directly into your Reddit post on{' '}
+                  <a href="https://www.reddit.com/r/kcet/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:underline font-medium">r/kcet</a>.
+                  It renders as a clean table with your rank, category, and top college matches.
+                </p>
+
+                <div className="relative">
+                  <textarea
+                    readOnly
+                    value={redditMarkdown}
+                    className="w-full h-64 p-3 text-xs font-mono bg-muted/50 border rounded-lg resize-none focus:outline-none focus:ring-1 focus:ring-orange-500/50"
+                    onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-muted-foreground">
+                    {showBookmarkedOnly ? 'Bookmarked colleges only' : `Top matches from ${matches.length} results`}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowRedditExport(false)}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={copyRedditToClipboard}
+                      className={`gap-2 min-w-[120px] transition-all ${
+                        redditCopied
+                          ? 'bg-green-600 hover:bg-green-700 text-white'
+                          : 'bg-orange-500 hover:bg-orange-600 text-white'
+                      }`}
+                    >
+                      {redditCopied ? (
+                        <><CheckCircle2 className="h-4 w-4" /> Copied!</>
+                      ) : (
+                        <><Copy className="h-4 w-4" /> Copy to Clipboard</>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {compareList.length > 0 && (
           <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-md px-4 z-50">
             <div className="bg-primary text-primary-foreground p-4 rounded-xl shadow-2xl flex items-center justify-between border border-primary/20 backdrop-blur-sm">

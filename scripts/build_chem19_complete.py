@@ -1,0 +1,625 @@
+import json, sys, os
+
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+
+with open('scratch/chem19/answer_key_strict.json', 'r', encoding='utf-8') as f:
+    key_dict = json.load(f)
+
+# Convert letter to 0-based index
+def letter_to_idx(letter):
+    l = letter.lower().strip()
+    if l.startswith('(a)') or l == 'a': return 0
+    if l.startswith('(b)') or l == 'b': return 1
+    if l.startswith('(c)') or l == 'c': return 2
+    if l.startswith('(d)') or l == 'd': return 3
+    return 0
+
+# Comprehensive, rigorous questions dictionary for Chemistry Chapter 19: Biomolecules
+questions = [
+    {
+        "q_num": 1, "year": 2006,
+        "question": "Glucose contains in its structure",
+        "options": [
+            "one primary and four secondary $-\\text{OH}$ groups",
+            "five secondary $-\\text{OH}$ groups",
+            "five primary $-\\text{OH}$ groups",
+            "two primary and three secondary $-\\text{OH}$ groups"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nIn the open-chain structure of D-glucose (an aldohexose, $\\text{CHO}-(\\text{CHOH})_4-\\text{CH}_2\\text{OH}$):\n- C1 is an aldehyde group ($-\\text{CHO}$)\n- C2, C3, C4, and C5 are four secondary alcoholic groups ($-\\text{CHOH}-$)\n- C6 is one primary alcoholic group ($-\\text{CH}_2\\text{OH}$)\nThus, glucose contains one primary and four secondary $-\\text{OH}$ groups."
+    },
+    {
+        "q_num": 2, "year": 2006,
+        "question": "The functional group of fats is",
+        "options": [
+            "ketone",
+            "alcohol",
+            "ester",
+            "ether"
+        ],
+        "correct_letter": "c",
+        "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nFats and vegetable oils are triesters of glycerol (propane-1,2,3-triol) with long-chain aliphatic carboxylic acids (fatty acids), known as triglycerides. Thus, their characteristic functional group is the ester linkage ($-COO-$)."
+    },
+    {
+        "q_num": 3, "year": 2006,
+        "question": "At $\\text{pH} = 4$, glycine exists predominantly as",
+        "options": [
+            "$\\text{H}_3\\text{N}^+-\\text{CH}_2-\\text{COO}^-$",
+            "$\\text{H}_3\\text{N}^+-\\text{CH}_2-\\text{COOH}$",
+            "$\\text{H}_2\\text{N}-\\text{CH}_2-\\text{COOH}$",
+            "$\\text{H}_2\\text{N}-\\text{CH}_2-\\text{COO}^-$"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nThe isoelectric point ($\\text{pI}$) of glycine is approximately $5.97$. At $\\text{pH} = 4$ (acidic medium with $\\text{pH} < \\text{pI}$), the carboxylate ion ($-\\text{COO}^-$) of the zwitterion accepts a proton ($H^+$) to form a neutral $-\\text{COOH}$ group, while the amino group remains protonated as $-\\text{NH}_3^+$. Therefore, glycine exists predominantly as a cation: $\\text{H}_3\\text{N}^+-\\text{CH}_2-\\text{COOH}$."
+    },
+    {
+        "q_num": 4, "year": 2006,
+        "question": "Insulin regulates the metabolism of",
+        "options": [
+            "minerals",
+            "amino acids",
+            "proteins",
+            "glucose"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nInsulin is a peptide hormone secreted by the $\\beta$-cells of the islets of Langerhans in the pancreas. It plays a critical role in maintaining glucose homeostasis by facilitating cellular glucose uptake and stimulating glycogenesis in liver and muscles."
+    },
+    {
+        "q_num": 5, "year": 2006,
+        "question": "Acrolein test is positive for",
+        "options": [
+            "oils and fats",
+            "polysaccharides",
+            "proteins",
+            "reducing sugars"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nAcrolein test is a characteristic diagnostic test for glycerol and fats/oils (triglycerides). When heated strongly in the presence of a dehydrating agent like potassium bisulphate ($\\text{KHSO}_4$), glycerol undergoes dehydration to yield acrolein (propenal, $\\text{CH}_2=\\text{CH}-\\text{CHO}$), which has a pungent, irritating odor."
+    },
+    {
+        "q_num": 6, "year": 2007,
+        "question": "The amino acid which is not optically active is",
+        "options": [
+            "lactic acid",
+            "serine",
+            "alanine",
+            "glycine"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nGlycine ($\\text{H}_2\\text{N}-\\text{CH}_2-\\text{COOH}$) has two identical hydrogen atoms attached to the $\\alpha$-carbon. Because the $\\alpha$-carbon is achiral (not bonded to four different groups), glycine possesses a plane of symmetry and is the only naturally occurring $\\alpha$-amino acid that is optically inactive."
+    },
+    {
+        "q_num": 7, "year": 2008,
+        "question": "The number of disulphide linkages present in insulin is",
+        "options": [
+            "$1$",
+            "$3$",
+            "$2$",
+            "$4$"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nInsulin consists of two polypeptide chains: Chain A (21 amino acids) and Chain B (30 amino acids). They are held together by two inter-chain disulphide bonds ($-\\text{S}-\\text{S}-$), and Chain A contains one intra-chain disulphide bond. Thus, there are a total of 3 disulphide linkages in an insulin molecule."
+    },
+    {
+        "q_num": 8, "year": 2009,
+        "question": "A diabetic person carries a packet of glucose with him always, because",
+        "options": [
+            "glucose gives strength to the body",
+            "glucose reduces blood pressure",
+            "glucose is absorbed into the bloodstream almost instantaneously to treat hypoglycemia",
+            "glucose is digested very slowly"
+        ],
+        "correct_letter": "c",
+        "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nGlucose is a monosaccharide that requires no digestion and is rapidly absorbed directly across the mucous membranes and intestinal wall into the bloodstream, providing an immediate elevation of blood sugar during emergency episodes of hypoglycemia (low blood glucose)."
+    },
+    {
+        "q_num": 9, "year": 2009,
+        "question": "From the complete hydrolysis of a polypeptide of molecular mass $5360\\text{ g mol}^{-1}$, the number of amino acid molecules that can be obtained is (given average molecular mass of an amino acid residue in the chain is approx $110\\text{ g mol}^{-1}$)",
+        "options": [
+            "$64$",
+            "$74$",
+            "$36$",
+            "$48$"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nInsulin (which has a molecular mass around $5360-5700\\text{ g mol}^{-1}$) is composed of around 51 amino acid residues, yielding roughly 48-51 amino acids upon hydrolysis: $N \\approx \\frac{5360}{110} \\approx 48-50$."
+    },
+    {
+        "q_num": 10, "year": 2010,
+        "question": "The letter 'D' in D-glucose signifies",
+        "options": [
+            "configuration at all chiral carbons",
+            "configuration at a particular chiral carbon (penultimate carbon C5)",
+            "that it is dextrorotatory",
+            "that it is a monosaccharide"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nThe prefix 'D' refers to the relative spatial configuration of the $-\\text{OH}$ group on the penultimate (highest numbered chiral) carbon (C5 in glucose) with respect to D-(+)-glyceraldehyde. It is independent of the sign of optical rotation (dextrorotation)."
+    },
+    {
+        "q_num": 11, "year": 2010,
+        "question": "In alkaline medium, alanine exists predominantly as",
+        "options": [
+            "cation",
+            "anion",
+            "zwitterion",
+            "covalent molecule"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nIn alkaline medium (high $\\text{pH} > \\text{pI}$), the $-\\text{NH}_3^+$ group of alanine's zwitterion loses a proton to form $-\\text{NH}_2$, leaving the carboxylate group as $-\\text{COO}^-$. Hence alanine bears an overall negative charge and exists predominantly as an anion ($\\text{CH}_3-\\text{CH}(\\text{NH}_2)-\\text{COO}^-$)."
+    },
+    {
+        "q_num": 12, "year": 2011,
+        "question": "$\\alpha$-Maltose consists of",
+        "options": [
+            "one $\\alpha$-D-glucopyranose unit and one $\\beta$-D-glucopyranose unit with 1-2 glycosidic linkage",
+            "two $\\alpha$-D-glucopyranose units with 1-2 glycosidic linkage",
+            "two $\\beta$-D-glucopyranose units with 1-4 glycosidic linkage",
+            "two $\\alpha$-D-glucopyranose units with $\\alpha$-(1$\\to$4) glycosidic linkage"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nMaltose is a disaccharide composed of two $\\alpha$-D-glucopyranose units joined by an $\\alpha$-glycosidic linkage between C1 of one glucose unit and C4 of the second glucose unit ($\\alpha$-1,4-glycosidic bond)."
+    },
+    {
+        "q_num": 13, "year": 2011,
+        "question": "Which one of the following does not correctly match with each other?",
+        "options": [
+            "Silk - polyamide",
+            "Oxytocin - enzyme",
+            "Lipase - enzyme",
+            "Butter - fat"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nOxytocin is a nonapeptide hormone (secreted by the posterior pituitary gland), not an enzyme. Silk is a natural polyamide protein (fibroin), lipase is a lipid-digesting enzyme, and butter is a fat."
+    },
+    {
+        "q_num": 14, "year": 2011,
+        "question": "In an alkaline medium, glycine predominantly exists as / in a / an",
+        "options": [
+            "cation",
+            "anion",
+            "zwitterion",
+            "covalent form"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nIn basic/alkaline medium, the proton from $-\\text{NH}_3^+$ is removed by base ($\text{OH}^-$) to form $-\\text{NH}_2$, leaving glycine with a net negative charge as an anion: $\\text{H}_2\\text{N}-\\text{CH}_2-\\text{COO}^-$."
+    },
+    {
+        "q_num": 15, "year": 2012,
+        "question": "Sucrose is not a reducing sugar since",
+        "options": [
+            "it is chemically stable",
+            "the reducing groups of glucose and fructose are involved in glycosidic bond formation (no free $-\\text{CHO}$ or keto group)",
+            "it is built up of a fructose unit",
+            "it is optically active"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nIn sucrose, C1 of $\\alpha$-D-glucose is linked to C2 of $\\beta$-D-fructose. Since both anomeric carbons (the potential reducing carbonyl centers) participate in the $\\alpha, \\beta$-(1$\\leftrightarrow$2)-glycosidic linkage, there is no free hemiacetal/hemiketal group, rendering sucrose a non-reducing sugar."
+    },
+    {
+        "q_num": 16, "year": 2012,
+        "question": "Dialysis can be used to separate",
+        "options": [
+            "glucose and fructose",
+            "protein and starch",
+            "glucose and protein",
+            "glucose and $\\text{NaCl}$"
+        ],
+        "correct_letter": "c",
+        "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nDialysis is a purification process based on differential diffusion across a semi-permeable membrane. Crystalloids (small molecules/ions like glucose) pass freely through the pores, while colloidal particles/macromolecules (like large protein molecules) cannot penetrate the membrane."
+    },
+    {
+        "q_num": 17, "year": 2013,
+        "question": "Glucose when reduced with $\\text{HI}$ and red phosphorus on prolonged heating gives",
+        "options": [
+            "n-hexane",
+            "n-heptane",
+            "n-pentane",
+            "n-octane"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nProlonged heating of D-glucose with hydroiodic acid ($\\text{HI}$) and red phosphorus at $373\\text{ K}$ causes complete reduction of all oxygen-bearing functional groups, yielding n-hexane ($\\text{CH}_3(\\text{CH}_2)_4\\text{CH}_3$), proving that all 6 carbon atoms are joined in a straight, unbranched chain."
+    },
+    {
+        "q_num": 18, "year": 2014,
+        "question": "The statement that is not correct is",
+        "options": [
+            "aldose or ketose sugars in alkaline medium do not isomerise",
+            "carbohydrates are optically active",
+            "pentaacetate of glucose does not react with hydroxylamine",
+            "lactose has glycosidic linkage between $\\text{C}_1$ of galactose and $\\text{C}_4$ of glucose unit"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nIn dilute alkaline solution, monosaccharides undergo reversible enolization and Lobry de Bruyn-van Ekenstein transformation, isomerizing between aldoses and ketoses (e.g. glucose $\\rightleftharpoons$ fructose $\\rightleftharpoons$ mannose). Therefore, stating that they do not isomerize is false."
+    },
+    {
+        "q_num": 19, "year": 2015,
+        "question": "Which one of the following is an essential amino acid?",
+        "options": [
+            "Cysteine",
+            "Serine",
+            "Tyrosine",
+            "Isoleucine"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nEssential amino acids cannot be synthesized by the human body and must be supplied in the diet. Isoleucine (along with Valine, Leucine, Phenylalanine, Methionine, Tryptophan, Threonine, Lysine, Histidine) is an essential amino acid."
+    },
+    {
+        "q_num": 20, "year": 2015,
+        "question": "Cheilosis (fissuring at corners of mouth) and digestive disorders are due to the deficiency of",
+        "options": [
+            "ascorbic acid (Vitamin C)",
+            "pyridoxine (Vitamin B6)",
+            "thiamine (Vitamin B1)",
+            "riboflavin (Vitamin B2)"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nDeficiency of Vitamin $\\text{B}_2$ (riboflavin) causes cheilosis (cracking and inflammation at the corners of the mouth), glossitis, and digestive disorders."
+    },
+    {
+        "q_num": 21, "year": 2015,
+        "question": "Adenosine is an example of a",
+        "options": [
+            "purine base",
+            "nucleoside",
+            "nucleotide",
+            "pyrimidine base"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nA nucleoside is formed by attachment of a nitrogenous base to the C1 position of a pentose sugar (ribose or 2-deoxyribose). Adenosine is a nucleoside consisting of adenine linked to $\\beta$-D-ribofuranose. (When phosphorylated, it becomes a nucleotide: adenylic acid/AMP)."
+    },
+    {
+        "q_num": 22, "year": 2015,
+        "question": "Glycogen is",
+        "options": [
+            "a structural polysaccharide",
+            "structurally similar to amylopectin but more extensively branched",
+            "a polymer of $\\beta$-D-glucose units",
+            "structurally very simple linear chain"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nGlycogen, known as animal starch, is a branched polymer of $\\alpha$-D-glucose units containing $\\alpha$-(1$\\to$4) linear linkages and $\\alpha$-(1$\\to$6) branch points. Its structure is very similar to amylopectin, but it is much more highly branched."
+    },
+    {
+        "q_num": 23, "year": 2016,
+        "question": "Which of the following gives a positive Fehling's solution test?",
+        "options": [
+            "Glucose",
+            "Sucrose",
+            "Fats",
+            "Protein"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nGlucose contains a free aldehyde group (in open-chain equilibrium with cyclic hemiacetal forms) and acts as a reducing sugar, reducing Fehling's solution ($\text{Cu}^{2+}$) to a red precipitate of cuprous oxide ($\\text{Cu}_2\\text{O}$)."
+    },
+    {
+        "q_num": 24, "year": 2016,
+        "question": "Which of the following pairs of bases is present with hydrogen bonding in DNA?",
+        "options": [
+            "Adenine - Thymine, Guanine - Cytosine",
+            "Adenine - Guanine, Thymine - Guanine",
+            "Guanine - Thymine, Adenine - Cytosine",
+            "Adenine - Adenine, Thymine - Thymine"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nIn the DNA double helix (Watson-Crick base pairing), adenine pairs specifically with thymine via two hydrogen bonds ($A=T$), and guanine pairs with cytosine via three hydrogen bonds ($G\\equiv C$)."
+    },
+    {
+        "q_num": 25, "year": 2017,
+        "question": "Keratin present in hair, wool, and silk is an example of",
+        "options": [
+            "fibrous protein",
+            "globular protein",
+            "derived protein",
+            "conjugated protein"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nFibrous proteins consist of parallel polypeptide chains held together by hydrogen bonds and disulphide linkages to form elongated fibre-like structures that are water-insoluble, such as keratin (in hair, nails, wool) and myosin (in muscles)."
+    },
+    {
+        "q_num": 26, "year": 2017,
+        "question": "Which of the following vitamins is water soluble?",
+        "options": [
+            "Vitamin A",
+            "Vitamin D",
+            "Vitamin E",
+            "Vitamin C"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nVitamins B-complex and Vitamin C (ascorbic acid) are water-soluble, while Vitamins A, D, E, and K are fat-soluble."
+    },
+    {
+        "q_num": 27, "year": 2017,
+        "question": "Which of the following statements is not correct?",
+        "options": [
+            "Insulin maintains blood glucose level",
+            "Ovalbumin is a globular protein",
+            "Blood proteins thrombin and fibrinogen are involved in blood clotting",
+            "Deficiency of vitamin D causes xerophthalmia"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nXerophthalmia (hardening of the cornea of the eye) and night blindness are caused by the deficiency of Vitamin A, whereas deficiency of Vitamin D causes rickets in children and osteomalacia in adults."
+    },
+    {
+        "q_num": 28, "year": 2017,
+        "question": "The hormone that helps in the conversion of glucose into glycogen is",
+        "options": [
+            "insulin",
+            "adrenaline",
+            "testosterone",
+            "thyroxine"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nInsulin promotes glycogenesis (the synthesis of glycogen from glucose) in the liver and muscle cells, lowering elevated blood glucose levels."
+    },
+    {
+        "q_num": 29, "year": 2018,
+        "question": "Which of the following nitrogenous bases is not present in DNA?",
+        "options": [
+            "Adenine",
+            "Uracil",
+            "Cytosine",
+            "Guanine"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nDNA contains four bases: Adenine (A), Guanine (G), Cytosine (C), and Thymine (T). Uracil (U) is present exclusively in RNA in place of thymine."
+    },
+    {
+        "q_num": 30, "year": 2018,
+        "question": "The two cyclic hemiacetal forms of D-glucopyranose ($\alpha$ and $\beta$) differing only in the configuration at C1 are called",
+        "options": [
+            "diastereomers",
+            "enantiomers",
+            "anomers",
+            "epimers"
+        ],
+        "correct_letter": "c",
+        "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nCyclic diastereomers of sugars that differ only in the spatial configuration at the hemiacetal or hemiketal carbon (the anomeric carbon, C1 in aldoses and C2 in ketoses) are called anomers (e.g., $\\alpha$-D-glucopyranose and $\\beta$-D-glucopyranose)."
+    },
+    {
+        "q_num": 31, "year": 2018,
+        "question": "The glycosidic linkage involved in linking the glucose units in amylose part of starch is",
+        "options": [
+            "$\\text{C}_1-\\text{C}_4\\ \\beta$-linkage",
+            "$\\text{C}_1-\\text{C}_4\\ \\alpha$-linkage",
+            "$\\text{C}_1-\\text{C}_6\\ \\beta$-linkage",
+            "$\\text{C}_1-\\text{C}_6\\ \\alpha$-linkage"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nAmylose is a linear, water-soluble component of starch consisting of 200–1000 $\\alpha$-D-(+)-glucose units linked exclusively by $\\alpha$-(1$\\to$4) glycosidic bonds."
+    },
+    {
+        "q_num": 32, "year": 2018,
+        "question": "In nucleic acids, the adjacent nucleotides are joined together by",
+        "options": [
+            "phosphodiester linkage",
+            "phosphoester linkage",
+            "phosphodisulphide linkage",
+            "peptide linkage"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nNucleotides in DNA and RNA are covalently linked via 3',5'-phosphodiester bonds, where a phosphate group connects the 3'-hydroxyl of one pentose sugar to the 5'-hydroxyl of the adjacent pentose sugar."
+    },
+    {
+        "q_num": 33, "year": 2019,
+        "question": "Which of the following is water insoluble?",
+        "options": [
+            "Vitamin C",
+            "Fibrous protein",
+            "Amylose",
+            "Glycine"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nFibrous proteins (like keratin, collagen, myosin) form strong intermolecular hydrogen bonds and hydrophobic assemblies, making them insoluble in water. Vitamin C, amylose, and glycine are water-soluble."
+    },
+    {
+        "q_num": 34, "year": 2019,
+        "question": "Deficiency of which vitamin causes scurvy?",
+        "options": [
+            "Vitamin A",
+            "Vitamin B2",
+            "Vitamin D",
+            "Vitamin C"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nDeficiency of Vitamin C (ascorbic acid) causes scurvy, characterized by bleeding gums, poor wound healing, and capillary fragility."
+    },
+    {
+        "q_num": 35, "year": 2020,
+        "question": "The hormone responsible for the 'fight or flight' response during stressful situations is",
+        "options": [
+            "insulin",
+            "adrenaline (epinephrine)",
+            "glucocorticoids",
+            "thyroxine"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nAdrenaline (epinephrine), secreted by the adrenal medulla, acts as an emergency hormone to increase heart rate, blood pressure, and release of glucose into the blood during stress or danger ('fight or flight' response)."
+    },
+    {
+        "q_num": 36, "year": 2020,
+        "question": "Which of the following is a non-reducing disaccharide?",
+        "options": [
+            "Sucrose",
+            "Lactose",
+            "Maltose",
+            "Cellobiose"
+        ],
+        "correct_letter": "a",
+        "explanation": "According to the official KCET Answer Key, the correct option is (A).\n\nSucrose is a non-reducing disaccharide because the glycosidic bond involves the anomeric carbons of both monosaccharide units (C1 of glucose and C2 of fructose), leaving no free hemiacetal/hemiketal group."
+    },
+    {
+        "q_num": 37, "year": 2020,
+        "question": "Which of the following vitamins is not stored in adipose (fat) tissue?",
+        "options": [
+            "Vitamin A",
+            "Vitamin B",
+            "Vitamin D",
+            "Vitamin E"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nWater-soluble vitamins like Vitamin B complex and Vitamin C are excreted in urine and not stored in body adipose tissue in significant amounts, whereas fat-soluble vitamins (A, D, E, K) are stored in liver and adipose tissue."
+    },
+    {
+        "q_num": 38, "year": 2021,
+        "question": "Optically active nature of DNA is primarily attributed to",
+        "options": [
+            "chiral bases",
+            "D-sugar (2-deoxy-D-ribose) component",
+            "L-sugar component",
+            "chiral phosphate ester unit"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nThe sugar component in DNA is 2-deoxy-D-ribose, which possesses multiple asymmetric (chiral) carbon centers, imparting optical activity to the nucleic acid backbone."
+    },
+    {
+        "q_num": 39, "year": 2021,
+        "question": "If a sequence of bases in one strand of DNA is $5'-\\text{TAGCTAGC}-3'$, the complementary strand sequence written from $5'$ to $3'$ is",
+        "options": [
+            "$5'-\\text{ATCGATCG}-3'$",
+            "$5'-\\text{GCTAGCTA}-3'$",
+            "$5'-\\text{CTACGATC}-3'$",
+            "$5'-\\text{TTTAGCTA}-3'$"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nFor $5'-\\text{TAGCTAGC}-3'$, the anti-parallel complementary sequence in the $3'\\to 5'$ direction is $3'-\\text{ATCGATCG}-5'$.\nReading this in the standard $5'\\to 3'$ direction gives $5'-\\text{GCTAGCTA}-3'$."
+    },
+    {
+        "q_num": 40, "year": 2022,
+        "question": "Which organisation in India approved the use of 2-deoxy-D-glucose (2-DG) as an adjunct therapy for COVID-19 patients?",
+        "options": [
+            "Ministry of Health and Family Welfare",
+            "Drugs Controller General of India (DCGI)",
+            "Indian Council of Medical Research (ICMR)",
+            "World Health Organisation (WHO)"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nThe Drugs Controller General of India (DCGI) granted emergency use authorization for 2-deoxy-D-glucose (2-DG), developed by INMAS (DRDO) in collaboration with Dr. Reddy's Laboratories, as an adjunct therapy for moderate to severe COVID-19 patients."
+    },
+    {
+        "q_num": 41, "year": 2022,
+        "question": "A nucleic acid (DNA or RNA) gives on complete hydrolysis two purine bases, two pyrimidine bases, a pentose sugar, and phosphoric acid. Nucleotides, which are intermediate units, contain",
+        "options": [
+            "purine or pyrimidine base and ortho-phosphoric acid only",
+            "purine or pyrimidine base and pentose sugar only",
+            "pentose sugar and phosphoric acid only",
+            "purine or pyrimidine base, a pentose sugar, and ortho-phosphoric acid"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\nA nucleotide consists of three structural components: a nitrogenous base (purine or pyrimidine), a five-carbon pentose sugar (ribose or deoxyribose), and a phosphate group (from phosphoric acid)."
+    },
+    {
+        "q_num": 42, "year": 2023,
+        "question": "Match Column X (Vitamins) with Column Y (Deficiency Diseases):\n\n**Column X**\nI. Vitamin A\nII. Vitamin D\nIII. Vitamin E\nIV. Vitamin K\n\n**Column Y**\n(i) Muscular weakness\n(ii) Increased blood clotting time\n(iii) Night blindness\n(iv) Osteomalacia\n\nThe correct match is",
+        "options": [
+            "I-(iv), II-(iii), III-(ii), IV-(i)",
+            "I-(iii), II-(i), III-(ii), IV-(iv)",
+            "I-(iii), II-(ii), III-(iv), IV-(i)",
+            "I-(iii), II-(iv), III-(i), IV-(ii)"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n- Vitamin A $\\to$ Night blindness (iii)\n- Vitamin D $\\to$ Osteomalacia / Rickets (iv)\n- Vitamin E $\\to$ Muscular weakness / Increased fragility of RBCs (i)\n- Vitamin K $\\to$ Increased blood clotting time (ii)\nThus: I-(iii), II-(iv), III-(i), IV-(ii)."
+    },
+    {
+        "q_num": 43, "year": 2023,
+        "question": "Thyroxine produced in the thyroid gland is an iodinated derivative of which amino acid?",
+        "options": [
+            "threonine",
+            "lysine",
+            "tyrosine",
+            "tryptophan"
+        ],
+        "correct_letter": "c",
+        "explanation": "According to the official KCET Answer Key, the correct option is (C).\n\nThyroxine (tetraiodothyronine, $\\text{T}_4$) is synthesized in the thyroid gland by iodination of the phenolic ring of the amino acid tyrosine."
+    },
+    {
+        "q_num": 44, "year": 2024,
+        "question": "$\\alpha$-D-(+)-glucose and $\\beta$-D-(+)-glucose are",
+        "options": [
+            "enantiomers",
+            "conformers",
+            "geometrical isomers",
+            "anomers"
+        ],
+        "correct_letter": "d",
+        "explanation": "According to the official KCET Answer Key, the correct option is (D).\n\n$\\alpha$-D-(+)-glucose and $\\beta$-D-(+)-glucose differ only in the spatial configuration of the $-\\text{OH}$ group at the anomeric carbon (C1) and are therefore anomers (a specific subclass of epimers/diastereomers)."
+    },
+    {
+        "q_num": 45, "year": 2024,
+        "question": "The type of linkage present between consecutive nucleotides in a nucleic acid chain is",
+        "options": [
+            "phosphoester linkage",
+            "phosphodiester linkage",
+            "amide linkage",
+            "glycosidic linkage"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nNucleotides in polynucleotide chains are joined together by $3',5'$-phosphodiester linkages between the phosphate group and the hydroxyl groups of adjacent pentose sugars."
+    },
+    {
+        "q_num": 46, "year": 2024,
+        "question": "Biologically active adrenaline and ephedrine used to increase blood pressure contain a",
+        "options": [
+            "primary amino group",
+            "secondary amino group",
+            "tertiary amino group",
+            "quaternary ammonium salt"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nBoth adrenaline (epinephrine, $(\\text{HO})_2\\text{C}_6\\text{H}_3-\\text{CH}(\\text{OH})-\\text{CH}_2-\\text{NH}-\\text{CH}_3$) and ephedrine ($\\text{C}_6\\text{H}_5-\\text{CH}(\\text{OH})-\\text{CH}(\\text{CH}_3)-\\text{NH}-\\text{CH}_3$) contain a secondary amine functional group ($-\\text{NH}-\\text{CH}_3$)."
+    },
+    {
+        "q_num": 47, "year": 2024,
+        "question": "The female sex hormone which is responsible for the development of secondary female sexual characteristics and participates in the control of the menstrual cycle is",
+        "options": [
+            "testosterone",
+            "estradiol (estrogen)",
+            "insulin",
+            "thyroxine"
+        ],
+        "correct_letter": "b",
+        "explanation": "According to the official KCET Answer Key, the correct option is (B).\n\nEstradiol (the principal estrogen hormone produced by the ovaries) is responsible for the development and maintenance of secondary female sexual characteristics and regulation of the menstrual cycle."
+    }
+]
+
+# Verify against official answer key
+mismatches = []
+json_output = []
+
+for q in questions:
+    qn = q['q_num']
+    expected_letter = key_dict.get(str(qn), '').lower()
+    actual_letter = q['correct_letter'].lower()
+    
+    if expected_letter != actual_letter:
+        mismatches.append(f"Q{qn}: expected {expected_letter}, got {actual_letter}")
+        
+    correct_idx = letter_to_idx(actual_letter)
+    
+    json_output.append({
+        "id": f"kcet-chemistry-ch19-{qn}",
+        "subject": "Chemistry",
+        "chapter": "Biomolecules",
+        "chapter_number": 19,
+        "year": q["year"],
+        "question": q["question"],
+        "options": q["options"],
+        "correct_answer": correct_idx,
+        "explanation": q["explanation"],
+        "needs_image": False,
+        "image_url": None
+    })
+
+print(f"Total processed questions: {len(json_output)}")
+if mismatches:
+    print(f"ERROR: {len(mismatches)} answer key mismatches:")
+    for m in mismatches:
+        print("  ", m)
+else:
+    print("✓ 100% OFFICIAL ANSWER KEY MATCH ACROSS ALL 47 QUESTIONS!")
+
+with open('src/data/pyq_chemistry_ch19.json', 'w', encoding='utf-8') as f:
+    json.dump(json_output, f, indent=2, ensure_ascii=False)
+
+print("Saved src/data/pyq_chemistry_ch19.json")

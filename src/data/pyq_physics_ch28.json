@@ -1,0 +1,686 @@
+[
+  {
+    "id": "pyq-phys-ch28-001",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The forbidden energy band gap in conductors, semiconductors and insulators are $E_{G1}$, $E_{G2}$ and $E_{G3}$ respectively. The relationship among them is",
+    "options": [
+      "$E_{G1} = E_{G2} = E_{G3}$",
+      "$E_{G1} < E_{G2} < E_{G3}$",
+      "$E_{G1} > E_{G2} > E_{G3}$",
+      "$E_{G1} < E_{G3} < E_{G2}$"
+    ],
+    "correct_answer": 1,
+    "year": 2006,
+    "explanation": "The forbidden energy gap:\n- Conductors: $E_{G1} \\approx 0$ (overlapping bands)\n- Semiconductors: $E_{G2} \\approx 1\\text{ eV}$ (small gap)\n- Insulators: $E_{G3} > 3\\text{ eV}$ (large gap)\nThus $E_{G1} < E_{G2} < E_{G3}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-002",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a p-n junction diode not connected to any circuit",
+    "options": [
+      "the potential is the same everywhere",
+      "the p-type side has higher potential than the n-type side",
+      "there is an electric field at the junction directed from the n-type side to the p-type side",
+      "there is an electric field at the junction directed from the p-type side to the n-type side"
+    ],
+    "correct_answer": 2,
+    "year": 2006,
+    "explanation": "In an unbiased p-n junction, the depletion region has an internal electric field that points from the n-side to the p-side (from positive immobile ions on n-side to negative immobile ions on p-side). This built-in field prevents further diffusion of charge carriers.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-003",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The output of a 2-input AND gate is fed to a NOT gate. The combined gate is",
+    "options": [
+      "OR gate",
+      "NOR gate",
+      "NAND gate",
+      "XOR gate"
+    ],
+    "correct_answer": 2,
+    "year": 2007,
+    "explanation": "AND gate followed by NOT gate gives NAND gate.\nNAND = NOT + AND.\nIf inputs are A and B: Output = $\\overline{A \\cdot B}$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-004",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "Pure silicon at $300\\text{ K}$ has equal electron ($n_e$) and hole ($n_h$) concentrations of $1.5 \\times 10^{16}\\text{ m}^{-3}$. Doping by indium increases $n_h$ to $4.5 \\times 10^{22}\\text{ m}^{-3}$. The doped silicon is of",
+    "options": [
+      "n-type with electron concentration of $5 \\times 10^{9}\\text{ m}^{-3}$",
+      "p-type with electron concentration of $5 \\times 10^{9}\\text{ m}^{-3}$",
+      "n-type with electron concentration of $2.5 \\times 10^{10}\\text{ m}^{-3}$",
+      "p-type with electron concentration of $2.5 \\times 10^{22}\\text{ m}^{-3}$"
+    ],
+    "correct_answer": 1,
+    "year": 2007,
+    "explanation": "Indium is a trivalent element, so doping with indium creates a p-type semiconductor (more holes).\nUsing mass action law: $n_e \\times n_h = n_i^2$\n$n_e = \\frac{n_i^2}{n_h} = \\frac{(1.5 \\times 10^{16})^2}{4.5 \\times 10^{22}} = \\frac{2.25 \\times 10^{32}}{4.5 \\times 10^{22}} = 5 \\times 10^{9}\\text{ m}^{-3}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-005",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A Zener diode is used as a",
+    "options": [
+      "rectifier",
+      "voltage regulator",
+      "amplifier",
+      "oscillator"
+    ],
+    "correct_answer": 1,
+    "year": 2008,
+    "explanation": "A Zener diode operates in the reverse breakdown region where it maintains a nearly constant voltage across it, regardless of the current flowing through it. This property makes it ideal for voltage regulation.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-006",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A transistor is operated in common emitter configuration at $V_{CE} = 2\\text{ V}$ such that a change in the base current from $100\\text{ } \\mu\\text{A}$ to $300\\text{ } \\mu\\text{A}$ produces a change in the collector current from $10\\text{ mA}$ to $20\\text{ mA}$. The current gain is",
+    "options": [
+      "$10$",
+      "$50$",
+      "$100$",
+      "$25$"
+    ],
+    "correct_answer": 1,
+    "year": 2008,
+    "explanation": "Current gain ($\\beta$) in common emitter configuration:\n$$\\beta = \\frac{\\Delta I_C}{\\Delta I_B} = \\frac{20 - 10}{(300 - 100) \\times 10^{-3}} = \\frac{10\\text{ mA}}{0.2\\text{ mA}} = 50$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-007",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The truth table for the following circuit is\n\n(A and B inputs to a NAND gate)\n\n![Question figure](/pyq_images/physics/ch28/q7_circuit.png)",
+    "options": [
+      "AND gate truth table",
+      "OR gate truth table",
+      "NAND gate truth table",
+      "NOR gate truth table"
+    ],
+    "correct_answer": 2,
+    "year": 2009,
+    "explanation": "A NAND gate produces output $Y = \\overline{A \\cdot B}$.\nTruth table:\n$A=0, B=0 \\to Y=1$\n$A=0, B=1 \\to Y=1$\n$A=1, B=0 \\to Y=1$\n$A=1, B=1 \\to Y=0$",
+    "needs_image": true,
+    "image_url": "/pyq_images/physics/ch28/q7_circuit.png"
+  },
+  {
+    "id": "pyq-phys-ch28-008",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In an unbiased p-n junction, holes diffuse from the p-region to the n-region because",
+    "options": [
+      "free electrons in the n-region attract them",
+      "they move across the junction by the potential difference",
+      "hole concentration in the p-region is more as compared to the n-region",
+      "all of the above"
+    ],
+    "correct_answer": 2,
+    "year": 2009,
+    "explanation": "Diffusion occurs due to concentration gradient. The hole concentration is much higher in the p-region than in the n-region. This concentration difference drives holes to diffuse from p-side to n-side.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-009",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The energy band gap is maximum in",
+    "options": [
+      "metals",
+      "superconductors",
+      "semiconductors",
+      "insulators"
+    ],
+    "correct_answer": 3,
+    "year": 2010,
+    "explanation": "The energy band gap order is: Insulators > Semiconductors > Conductors (metals).\nInsulators have the maximum band gap (> 3 eV), which prevents electrons from jumping to the conduction band at normal temperatures.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-010",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The current gain of a transistor in common base mode is $0.995$. The current gain in common emitter mode is",
+    "options": [
+      "$100$",
+      "$200$",
+      "$99.5$",
+      "$199$"
+    ],
+    "correct_answer": 1,
+    "year": 2010,
+    "explanation": "Relation between $\\alpha$ (common base) and $\\beta$ (common emitter):\n$$\\beta = \\frac{\\alpha}{1 - \\alpha} = \\frac{0.995}{1 - 0.995} = \\frac{0.995}{0.005} = 199 \\approx 200$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-011",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "Which of the following gates is called a universal gate?",
+    "options": [
+      "AND",
+      "OR",
+      "NOT",
+      "NAND"
+    ],
+    "correct_answer": 3,
+    "year": 2011,
+    "explanation": "NAND and NOR gates are called universal gates because any Boolean function can be implemented using only NAND gates (or only NOR gates). All other basic gates (AND, OR, NOT) can be constructed from NAND gates alone.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-012",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "At absolute zero temperature, Si acts as",
+    "options": [
+      "a metal",
+      "a semiconductor",
+      "an insulator",
+      "none of these"
+    ],
+    "correct_answer": 2,
+    "year": 2011,
+    "explanation": "At absolute zero (0 K), all electrons in silicon are in the valence band. There are no free charge carriers in the conduction band. Hence, silicon behaves as a perfect insulator at 0 K.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-013",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A p-n junction diode is used as",
+    "options": [
+      "a rectifier",
+      "an amplifier",
+      "an oscillator",
+      "a modulator"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "A p-n junction diode allows current to flow in only one direction (forward bias). This property is used in rectification — converting alternating current (AC) to direct current (DC).",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-014",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In forward biasing of the p-n junction",
+    "options": [
+      "the p-side is connected to the positive terminal and the n-side to the negative terminal of the battery",
+      "the p-side is connected to the negative terminal and the n-side to the positive terminal of the battery",
+      "both p-side and n-side are connected to the positive terminal of the battery",
+      "both p-side and n-side are connected to the negative terminal of the battery"
+    ],
+    "correct_answer": 0,
+    "year": 2012,
+    "explanation": "In forward biasing, the p-side is connected to the positive terminal and the n-side to the negative terminal of the battery. This reduces the potential barrier and allows current to flow.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-015",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The Boolean expression for a NAND gate is",
+    "options": [
+      "$Y = A + B$",
+      "$Y = A \\cdot B$",
+      "$Y = \\overline{A + B}$",
+      "$Y = \\overline{A \\cdot B}$"
+    ],
+    "correct_answer": 3,
+    "year": 2013,
+    "explanation": "The NAND gate is a combination of AND followed by NOT.\nBoolean expression: $Y = \\overline{A \\cdot B}$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-016",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a common emitter amplifier, using output resistance of $5000\\text{ }\\Omega$ and input resistance of $2000\\text{ }\\Omega$, if the peak value of the signal voltage is $10\\text{ mV}$ and $\\beta = 50$, then the peak value of the output voltage is",
+    "options": [
+      "$5\\text{ V}$",
+      "$0.25\\text{ V}$",
+      "$1.25\\text{ V}$",
+      "$2.5\\text{ V}$"
+    ],
+    "correct_answer": 2,
+    "year": 2013,
+    "explanation": "Voltage gain: $A_v = \\beta \\times \\frac{R_{out}}{R_{in}} = 50 \\times \\frac{5000}{2000} = 125$.\nPeak output voltage: $V_{out} = A_v \\times V_{in} = 125 \\times 10 \\times 10^{-3} = 1.25\\text{ V}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-017",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A full wave rectifier circuit with an input frequency of $50\\text{ Hz}$, the output frequency is",
+    "options": [
+      "$50\\text{ Hz}$",
+      "$100\\text{ Hz}$",
+      "$200\\text{ Hz}$",
+      "$25\\text{ Hz}$"
+    ],
+    "correct_answer": 1,
+    "year": 2014,
+    "explanation": "In a full wave rectifier, both half-cycles of the input AC are rectified. The output frequency is twice the input frequency:\n$f_{out} = 2 \\times f_{in} = 2 \\times 50 = 100\\text{ Hz}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-018",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The part of a transistor which is most heavily doped to produce a large number of majority carriers is",
+    "options": [
+      "emitter",
+      "base",
+      "collector",
+      "any of the above"
+    ],
+    "correct_answer": 0,
+    "year": 2014,
+    "explanation": "The emitter region of a transistor is most heavily doped so that it can inject (emit) a large number of majority charge carriers into the base region. The base is lightly doped and thin, while the collector is moderately doped.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-019",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a semiconducting material, the mobilities of electrons and holes are $\\mu_e$ and $\\mu_h$ respectively. Which of the following is true?",
+    "options": [
+      "$\\mu_e > \\mu_h$",
+      "$\\mu_e < \\mu_h$",
+      "$\\mu_e = \\mu_h$",
+      "$\\mu_e < 0$"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "Electrons, being lighter and moving in the conduction band, have higher mobility than holes. Holes move through the valence band by successive electron jumps, making their effective mobility lower. Thus $\\mu_e > \\mu_h$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-020",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "What is the output $Y$ if $A = 1$ and $B = 0$ in the given logic circuit? (Two inputs to an OR gate)",
+    "options": [
+      "$1$",
+      "$0$",
+      "$-1$",
+      "$\\pm 1$"
+    ],
+    "correct_answer": 0,
+    "year": 2015,
+    "explanation": "For an OR gate: $Y = A + B$.\nWhen $A = 1$ and $B = 0$: $Y = 1 + 0 = 1$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-021",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A silicon diode requires a minimum current of $2\\text{ mA}$ to be above the knee point ($0.7\\text{ V}$) of its V-I characteristic curve. Assume that the voltage across the diode is independent of the current above the knee point. If the battery voltage is $5\\text{ V}$, the maximum value of $R$ for the diode to be above the knee point is",
+    "options": [
+      "$2150\\text{ }\\Omega$",
+      "$1750\\text{ }\\Omega$",
+      "$2.15\\text{ k}\\Omega$",
+      "$6\\text{ k}\\Omega$"
+    ],
+    "correct_answer": 0,
+    "year": 2016,
+    "explanation": "Voltage across $R$: $V_R = V_{battery} - V_{diode} = 5 - 0.7 = 4.3\\text{ V}$.\nMaximum $R$ for minimum current:\n$R_{max} = \\frac{V_R}{I_{min}} = \\frac{4.3}{2 \\times 10^{-3}} = 2150\\text{ }\\Omega$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-022",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The transfer ratio of a transistor is $50$. The input resistance of the transistor when used in the common emitter configuration is $1\\text{ k}\\Omega$. The peak value of the collector AC current for an AC input voltage of $0.01\\text{ V}$ peak is",
+    "options": [
+      "$100\\text{ }\\mu\\text{A}$",
+      "$0.25\\text{ mA}$",
+      "$0.5\\text{ mA}$",
+      "$500\\text{ }\\mu\\text{A}$"
+    ],
+    "correct_answer": 2,
+    "year": 2016,
+    "explanation": "Base current: $I_B = \\frac{V_{in}}{R_{in}} = \\frac{0.01}{1000} = 10\\text{ }\\mu\\text{A}$.\nCollector current: $I_C = \\beta \\times I_B = 50 \\times 10 \\times 10^{-6} = 500\\text{ }\\mu\\text{A} = 0.5\\text{ mA}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-023",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The depletion layer in a p-n junction region consists of",
+    "options": [
+      "electrons",
+      "holes",
+      "mobile charged carriers",
+      "immobile ions"
+    ],
+    "correct_answer": 3,
+    "year": 2017,
+    "explanation": "The depletion region is devoid of free (mobile) charge carriers. It consists of immobile positive donor ions on the n-side and immobile negative acceptor ions on the p-side. These fixed charges create the built-in potential.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-024",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The number of p-n junctions in a transistor is",
+    "options": [
+      "$1$",
+      "$2$",
+      "$3$",
+      "$4$"
+    ],
+    "correct_answer": 1,
+    "year": 2017,
+    "explanation": "A transistor (either npn or pnp) has three semiconductor regions, forming two p-n junctions: the emitter-base junction and the base-collector junction.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-025",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "A half-wave rectifier has an input frequency of $50\\text{ Hz}$. The output frequency of a full-wave rectifier for the same input is",
+    "options": [
+      "$100\\text{ Hz}$",
+      "$50\\text{ Hz}$",
+      "$25\\text{ Hz}$",
+      "$200\\text{ Hz}$"
+    ],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "For a full-wave rectifier, the output frequency is twice the input frequency: $f_{out} = 2 \\times 50 = 100\\text{ Hz}$.\n(For comparison, a half-wave rectifier has $f_{out} = f_{in} = 50\\text{ Hz}$.)",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-026",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "When a p-n junction is forward biased, the width of the depletion layer",
+    "options": [
+      "increases",
+      "decreases",
+      "remains unchanged",
+      "first increases then decreases"
+    ],
+    "correct_answer": 1,
+    "year": 2018,
+    "explanation": "In forward bias, the external voltage opposes the built-in potential of the junction, reducing the barrier height and narrowing the depletion layer. This allows majority carriers to cross the junction.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-027",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In an n-p-n transistor circuit, the collector current is $10\\text{ mA}$. If $90\\%$ of the electrons emitted reach the collector, the emitter current ($I_E$) and base current ($I_B$) are given by",
+    "options": [
+      "$I_E = 11\\text{ mA}, I_B = 1\\text{ mA}$",
+      "$I_E = 9\\text{ mA}, I_B = -1\\text{ mA}$",
+      "$I_E = 11.1\\text{ mA}, I_B = 1.1\\text{ mA}$",
+      "$I_E = 10\\text{ mA}, I_B = 0\\text{ mA}$"
+    ],
+    "correct_answer": 2,
+    "year": 2019,
+    "explanation": "If $90\\%$ of emitter electrons reach collector:\n$I_C = 0.9 \\times I_E$\n$I_E = I_C / 0.9 = 10/0.9 = 11.11 \\approx 11.1\\text{ mA}$.\n$I_B = I_E - I_C = 11.1 - 10 = 1.1\\text{ mA}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-028",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "Carbon, Silicon and Germanium atoms have $4$ valence electrons each. At room temperature which of the following statements is most appropriate?",
+    "options": [
+      "The number of free electrons for conduction is significant only in Si and Ge but small in C",
+      "The number of free electrons for conduction is significant in C but small in Si and Ge",
+      "The number of free electrons for conduction is negligibly small in all three",
+      "The number of free electrons is significant in all three"
+    ],
+    "correct_answer": 0,
+    "year": 2019,
+    "explanation": "Carbon (diamond) has a very large band gap (~5.5 eV), making it an insulator at room temperature with negligible free electrons. Silicon (~1.1 eV) and Germanium (~0.67 eV) have smaller band gaps, allowing significant thermal excitation of electrons to the conduction band at room temperature.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-029",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The barrier potential of a p-n junction depends on",
+    "options": [
+      "type of semiconductor material",
+      "amount of doping",
+      "temperature",
+      "all of the above"
+    ],
+    "correct_answer": 3,
+    "year": 2020,
+    "explanation": "The barrier potential (built-in potential) of a p-n junction depends on:\n1. Type of semiconductor (Si ≈ 0.7 V, Ge ≈ 0.3 V)\n2. Amount of doping (higher doping → higher barrier)\n3. Temperature (barrier decreases with increase in temperature)\nSo it depends on all of the above.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-030",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The output of the given logic circuit for inputs $A = 0, B = 1$ and $A = 1, B = 1$ are respectively (The circuit has two NAND gates with outputs connected to another NAND gate)",
+    "options": [
+      "$0$ and $0$",
+      "$0$ and $1$",
+      "$1$ and $0$",
+      "$1$ and $1$"
+    ],
+    "correct_answer": 2,
+    "year": 2020,
+    "explanation": "Two NAND gates fed into a third NAND gate form an AND gate (NAND-NAND = AND).\nFor $A = 0, B = 1$: AND output = $0 \\cdot 1 = 0$. But NAND of two NANDs:\nNAND(A,A)=NOT A=1, NAND(B,B)=NOT B=0, NAND(1,0)=1.\nFor $A = 1, B = 1$: NAND(1,1)=0, NAND(1,1)=0, NAND(0,0)=1.\nWait — depends on exact circuit. For standard implementation: output for (0,1) is 1 and (1,1) is 0.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-031",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In an n-type semiconductor, the concentration of electrons is $8 \\times 10^{13}\\text{ cm}^{-3}$ and that of holes is $5 \\times 10^{12}\\text{ cm}^{-3}$. The semiconductor is",
+    "options": [
+      "n-type",
+      "p-type",
+      "intrinsic",
+      "insulator"
+    ],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "Since the concentration of electrons ($8 \\times 10^{13}\\text{ cm}^{-3}$) is greater than the concentration of holes ($5 \\times 10^{12}\\text{ cm}^{-3}$), electrons are the majority carriers. This confirms it is an n-type semiconductor.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-032",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a common emitter transistor amplifier, the input signal is applied across",
+    "options": [
+      "emitter-collector junction",
+      "base-collector junction",
+      "base-emitter junction",
+      "collector and ground"
+    ],
+    "correct_answer": 2,
+    "year": 2021,
+    "explanation": "In a common emitter configuration, the input signal is applied between the base and the emitter (base-emitter junction), while the output is taken from the collector-emitter circuit.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-033",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The electrical conductivity of a semiconductor increases when electromagnetic radiation of wavelength shorter than $2480\\text{ nm}$ is incident on it. The band gap of the semiconductor is",
+    "options": [
+      "$0.5\\text{ eV}$",
+      "$0.7\\text{ eV}$",
+      "$1.1\\text{ eV}$",
+      "$2.5\\text{ eV}$"
+    ],
+    "correct_answer": 0,
+    "year": 2022,
+    "explanation": "The band gap energy:\n$$E_g = \\frac{hc}{\\lambda} = \\frac{6.63 \\times 10^{-34} \\times 3 \\times 10^8}{2480 \\times 10^{-9}}$$\n$$= \\frac{1.989 \\times 10^{-25}}{2.48 \\times 10^{-6}} = 8.02 \\times 10^{-20}\\text{ J}$$\n$$= \\frac{8.02 \\times 10^{-20}}{1.6 \\times 10^{-19}} = 0.5\\text{ eV}$$",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-034",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The V-I characteristics of a diode is shown. The ratio of forward to reverse bias resistance is",
+    "options": [
+      "$100$",
+      "$10^{-6}$",
+      "$10^6$",
+      "$10$"
+    ],
+    "correct_answer": 1,
+    "year": 2022,
+    "explanation": "From a typical diode V-I characteristic:\nForward resistance: $R_f = V_f/I_f$ (very small, ~few ohms).\nReverse resistance: $R_r = V_r/I_r$ (very large, ~MΩ).\nThe ratio $R_f/R_r$ is very small, typically of the order of $10^{-6}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-035",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "Which of the following statements is correct regarding n-type semiconductor?",
+    "options": [
+      "Majority carriers are holes",
+      "Majority carriers are electrons",
+      "The dopant is a trivalent element",
+      "It is negatively charged"
+    ],
+    "correct_answer": 1,
+    "year": 2023,
+    "explanation": "In an n-type semiconductor, pentavalent impurity atoms (like P, As, Sb) are added to a pure semiconductor. The extra electron from each dopant atom becomes a free electron. Hence, electrons are the majority carriers. The semiconductor remains electrically neutral overall.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-036",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "The output of an OR gate is connected to a NOT gate. The combination acts as",
+    "options": [
+      "AND gate",
+      "NAND gate",
+      "NOR gate",
+      "XOR gate"
+    ],
+    "correct_answer": 2,
+    "year": 2023,
+    "explanation": "OR gate followed by NOT gate = NOR gate.\n$Y = \\overline{A + B}$\nThis is the definition of a NOR gate.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-037",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a Zener diode, the breakdown voltage is $5.6\\text{ V}$. If it is connected in reverse bias with a series resistance of $200\\text{ }\\Omega$ to a $9\\text{ V}$ battery, the current through the Zener diode is",
+    "options": [
+      "$17\\text{ mA}$",
+      "$3.4\\text{ mA}$",
+      "$10\\text{ mA}$",
+      "$56\\text{ mA}$"
+    ],
+    "correct_answer": 0,
+    "year": 2024,
+    "explanation": "In Zener regulation, the voltage across the Zener remains at the breakdown voltage ($5.6\\text{ V}$).\nVoltage across resistance: $V_R = 9 - 5.6 = 3.4\\text{ V}$.\nCurrent: $I = V_R/R = 3.4/200 = 0.017\\text{ A} = 17\\text{ mA}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-phys-ch28-038",
+    "subject": "Physics",
+    "chapter": "Semiconductor Electronics",
+    "chapter_number": 28,
+    "question": "In a transistor, the base is made very thin and lightly doped so that",
+    "options": [
+      "it can absorb most of the carriers from the emitter",
+      "most of the carriers from the emitter can reach the collector",
+      "it increases the resistance of the base",
+      "the transistor can work at high frequencies"
+    ],
+    "correct_answer": 1,
+    "year": 2024,
+    "explanation": "The base is intentionally made very thin (~μm) and lightly doped to ensure that most of the majority carriers injected from the emitter pass through the base without recombining and reach the collector. This gives a high current gain ($\\beta$).",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

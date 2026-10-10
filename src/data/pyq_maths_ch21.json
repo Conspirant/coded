@@ -1,0 +1,206 @@
+[
+  {
+    "id": "pyq-math-ch21-001",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "If $x + y \\leq 2$, $x \\geq 0$, $y \\geq 0$, the point at which the maximum value of $Z = 3x + 2y$ occurs is",
+    "options": ["$(0, 2)$", "$(0, 0)$", "$(2, 0)$", "$\\left(\\frac{1}{2}, \\frac{1}{2}\\right)$"],
+    "correct_answer": 2,
+    "year": 2014,
+    "explanation": "The feasible region is bounded by $x = 0, y = 0$ and $x + y = 2$ in the first quadrant.\nThe corner points are $O(0, 0), A(2, 0)$, and $B(0, 2)$.\nEvaluating $Z = 3x + 2y$ at each vertex:\n- At $O(0, 0)$: $Z = 0$\n- At $B(0, 2)$: $Z = 3(0) + 2(2) = 4$\n- At $A(2, 0)$: $Z = 3(2) + 2(0) = 6$\n\nHence, the maximum value of $Z$ is 6 and it occurs at $(2, 0)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-002",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "If an LPP admits optimal solution at two consecutive vertices of a feasible region, then",
+    "options": [
+      "the required optimal solution is at the midpoint of the line joining two points",
+      "the optimal solution occurs at every point on the line segment joining these two points",
+      "the LPP under consideration is not solvable",
+      "the LPP under consideration must be reconstructed"
+    ],
+    "correct_answer": 1,
+    "year": 2017,
+    "explanation": "If the objective function attains the same optimal (maximum or minimum) value at two consecutive corner points of the feasible region, then it attains the same optimal value at every point on the line segment joining those two points. Therefore, there are infinitely many optimal solutions.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-003",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "For the LPP, maximise $Z = x + 4y$ subject to the constraints $x + 2y \\leq 2$, $x + 2y \\geq 8$, $x \\geq 0, y \\geq 0$.",
+    "options": [
+      "$Z_{\\max} = 4$",
+      "$Z_{\\max} = 8$",
+      "$Z_{\\max} = 16$",
+      "Has no feasible solution"
+    ],
+    "correct_answer": 3,
+    "year": 2018,
+    "explanation": "The constraints are $x + 2y \\leq 2$ and $x + 2y \\geq 8$ with $x, y \\geq 0$.\nSince the region $x + 2y \\leq 2$ lies towards the origin and $x + 2y \\geq 8$ lies away from the line $x + 2y = 8$, these two half-planes do not intersect.\nHence, there is no common feasible region, and the LPP has no feasible solution.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-004",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "The corner points of the feasible region of an LPP are $(0, 10), (0, 20), (5, 5)$, and $(15, 15)$. If $Z = 3x + 9y$, then the minimum value of $Z$ occurs at",
+    "options": ["$(5, 5)$", "$(0, 10)$", "$(0, 20)$", "$(15, 15)$"],
+    "correct_answer": 0,
+    "year": 2018,
+    "explanation": "Evaluating $Z = 3x + 9y$ at each corner point:\n- At $(0, 10)$: $Z = 3(0) + 9(10) = 90$\n- At $(0, 20)$: $Z = 3(0) + 9(20) = 180$\n- At $(5, 5)$: $Z = 3(5) + 9(5) = 15 + 45 = 60$\n- At $(15, 15)$: $Z = 3(15) + 9(15) = 45 + 135 = 180$\n\nThe minimum value of $Z$ is 60, which occurs at $(5, 5)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-005",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "The corner points of the feasible region determined by the constraints $x + y \\leq 5$, $x + 3y \\geq 9$, $x \\geq 0, y \\geq 0$ are $(3, 2), (0, 5)$, and $(0, 3)$. If $Z = 11x + 7y$, then the maximum value of $Z$ occurs at",
+    "options": ["$(3, 3)$", "$(5, 0)$", "$(3, 2)$", "$(0, 5)$"],
+    "correct_answer": 2,
+    "year": 2020,
+    "explanation": "Evaluating $Z = 11x + 7y$ at the corner points:\n- At $(3, 2)$: $Z = 11(3) + 7(2) = 33 + 14 = 47$\n- At $(0, 5)$: $Z = 11(0) + 7(5) = 35$\n- At $(0, 3)$: $Z = 11(0) + 7(3) = 21$\n\nThe maximum value is 47, which occurs at $(3, 2)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-006",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "Let $Z = px + qy$ where $p, q > 0$. The condition on $p$ and $q$ so that the minimum of $Z$ occurs at $(3, 0)$ and $(1, 1)$ is",
+    "options": ["$p = \\frac{q}{2}$", "$p = 3q$", "$p = q$", "$p = 2q$"],
+    "correct_answer": 0,
+    "year": 2020,
+    "explanation": "Since the minimum occurs at both $(3, 0)$ and $(1, 1)$, the values of $Z$ at both points must be equal:\n$Z(3, 0) = Z(1, 1)$\n$p(3) + q(0) = p(1) + q(1)$\n$3p = p + q$\n$2p = q \\implies p = \\frac{q}{2}$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-007",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "A manufacturer produces items with revenue function $R(x) = 60x + 2000$ and cost function $C(x) = 20x + 4000$. The minimum number of items $x$ that must be sold to earn profit is",
+    "options": ["$x > 50$", "$x > 60$", "$x > 80$", "$x > 40$"],
+    "correct_answer": 0,
+    "year": 2021,
+    "explanation": "To earn a profit, Revenue > Cost:\n$R(x) - C(x) > 0$\n$(60x + 2000) - (20x + 4000) > 0$\n$40x - 2000 > 0$\n$40x > 2000 \\implies x > 50$.\n\nHence, $x > 50$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-008",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "The region bounded by lines $5x + 4y = 20$, $x = 6$, $y = 3$ in the first quadrant away from the origin on $5x + 4y = 20$ is represented by the inequalities",
+    "options": [
+      "$5x + 4y \\geq 20, x \\leq 6, y \\geq 3, x \\geq 0, y \\geq 0$",
+      "$5x + 4y \\leq 20, x \\leq 6, y \\leq 3, x \\geq 0, y \\geq 0$",
+      "$5x + 4y \\geq 20, x \\leq 6, y \\leq 3, x \\geq 0, y \\geq 0$",
+      "$5x + 4y \\leq 20, x \\geq 6, y \\geq 3, x \\geq 0, y \\geq 0$"
+    ],
+    "correct_answer": 2,
+    "year": 2021,
+    "explanation": "Testing point $(0,0)$ on $5x + 4y \\geq 20$: $0 \\geq 20$ is false, so it excludes the origin (lies above/right of the line).\n$x \\leq 6$ and $y \\leq 3$ bound the region from above and right in the first quadrant ($x \\geq 0, y \\geq 0$).\nThus, the correct system of inequalities is $5x + 4y \\geq 20, x \\leq 6, y \\leq 3, x \\geq 0, y \\geq 0$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-009",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "Corner points of the feasible region for an LPP are $(0, 2), (3, 0), (6, 0), (6, 8)$, and $(0, 5)$. If $Z = 4x + 6y$, then the minimum value of $Z$ occurs at",
+    "options": [
+      "only one point",
+      "only two points",
+      "finite number of points",
+      "infinite number of points"
+    ],
+    "correct_answer": 3,
+    "year": 2022,
+    "explanation": "Evaluating $Z = 4x + 6y$ at each corner point:\n- At $(0, 2)$: $Z = 4(0) + 6(2) = 12$\n- At $(3, 0)$: $Z = 4(3) + 6(0) = 12$\n- At $(6, 0)$: $Z = 4(6) + 6(0) = 24$\n- At $(6, 8)$: $Z = 4(6) + 6(8) = 24 + 48 = 72$\n- At $(0, 5)$: $Z = 4(0) + 6(5) = 30$\n\nThe minimum value of 12 occurs at both consecutive vertices $(0, 2)$ and $(3, 0)$.\nTherefore, the minimum value occurs at all points along the line segment joining $(0, 2)$ and $(3, 0)$, which has an infinite number of points.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-010",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "The inequalities representing the region bounded by lines $x + y = 7$ and $2x - 3y + 6 = 0$ in the first quadrant containing the origin are",
+    "options": [
+      "$x + y \\geq 7, 2x - 3y + 6 \\geq 0, x \\geq 0, y \\geq 0$",
+      "$x + y \\leq 7, 2x - 3y + 6 \\geq 0, x \\geq 0, y \\geq 0$",
+      "$x + y \\geq 7, 2x - 3y + 6 \\leq 0, x \\geq 0, y \\geq 0$",
+      "$x + y \\leq 7, 2x - 3y + 6 \\leq 0, x \\geq 0, y \\geq 0$"
+    ],
+    "correct_answer": 1,
+    "year": 2022,
+    "explanation": "Testing $(0, 0)$:\n- For $x + y \\leq 7$: $0 + 0 = 0 \\leq 7$ (True, contains origin)\n- For $2x - 3y + 6 \\geq 0$: $2(0) - 3(0) + 6 = 6 \\geq 0$ (True, contains origin)\n\nAlong with non-negativity $x \\geq 0, y \\geq 0$, the correct set of inequalities is $x + y \\leq 7, 2x - 3y + 6 \\geq 0, x \\geq 0, y \\geq 0$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-011",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "Corner points of the feasible region for an LPP are $(0, 2), (3, 0), (6, 0), (6, 8)$, and $(0, 5)$. If $Z = 4x + 6y$, the minimum value of $Z$ occurs at",
+    "options": [
+      "only $(0, 2)$",
+      "only $(3, 0)$",
+      "the midpoint of $(0, 2)$ and $(3, 0)$",
+      "any point on the line segment joining $(0, 2)$ and $(3, 0)$"
+    ],
+    "correct_answer": 3,
+    "year": 2023,
+    "explanation": "Evaluating $Z = 4x + 6y$ at the corner points:\n$Z(0, 2) = 12$\n$Z(3, 0) = 12$\n$Z(6, 0) = 24$\n$Z(6, 8) = 72$\n$Z(0, 5) = 30$\n\nSince the minimum value 12 is attained at two vertices $(0, 2)$ and $(3, 0)$, it is also attained at any point on the line segment joining $(0, 2)$ and $(3, 0)$.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-012",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "The maximum value of $Z = 2x + 3y$ subject to $x + y \\leq 1$, $x \\geq 0, y \\geq 0$ is",
+    "options": ["2", "3", "5", "0"],
+    "correct_answer": 1,
+    "year": 2024,
+    "explanation": "Corner points are $(0, 0), (1, 0)$, and $(0, 1)$.\n- At $(0, 0)$: $Z = 0$\n- At $(1, 0)$: $Z = 2(1) + 3(0) = 2$\n- At $(0, 1)$: $Z = 2(0) + 3(1) = 3$\n\nHence, maximum value of $Z$ is 3.",
+    "needs_image": false,
+    "image_url": ""
+  },
+  {
+    "id": "pyq-math-ch21-013",
+    "subject": "Mathematics",
+    "chapter": "Linear Programming",
+    "chapter_number": 21,
+    "question": "Which of the following is not a convex set?",
+    "options": [
+      "$\\{(x, y) : x^2 + y^2 \\leq 1\\}$",
+      "$\\{(x, y) : y \\geq x^2\\}$",
+      "$\\{(x, y) : x^2 + y^2 \\geq 1\\}$",
+      "$\\{(x, y) : 2x + 3y \\leq 6\\}$"
+    ],
+    "correct_answer": 2,
+    "year": 2024,
+    "explanation": "A set is convex if the line segment joining any two points in the set also lies entirely within the set.\nFor $x^2 + y^2 \\geq 1$ (the region outside a circle), consider points $(1, 0)$ and $(-1, 0)$ which belong to the set. The midpoint $(0, 0)$ has $0^2 + 0^2 = 0 < 1$, which does not belong to the set. Hence, it is not a convex set.",
+    "needs_image": false,
+    "image_url": ""
+  }
+]

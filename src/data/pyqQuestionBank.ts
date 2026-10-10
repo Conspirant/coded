@@ -63,7 +63,7 @@ export const MATHS_CHAPTERS: Record<number, string> = {
     13: "Matrices and Determinants", 14: "Limits and Derivatives",
     15: "Continuity and Differentiability", 16: "Application of Derivatives",
     17: "Integrals", 18: "Differential Equations", 19: "Vector Algebra",
-    20: "Three Dimensional Geometry", 21: "Linear Programming", 22: "Probability"
+    20: "Three Dimensional Geometry", 21: "Linear Programming"
 }
 
 export function getChaptersForSubject(subject: string): Record<number, string> {
@@ -94,6 +94,11 @@ import fallbackPhysicsCh20Json from './pyq_physics_ch20.json'
 import fallbackPhysicsCh21Json from './pyq_physics_ch21.json'
 import fallbackPhysicsCh22Json from './pyq_physics_ch22.json'
 import fallbackPhysicsCh23Json from './pyq_physics_ch23.json'
+import fallbackPhysicsCh24Json from './pyq_physics_ch24.json'
+import fallbackPhysicsCh25Json from './pyq_physics_ch25.json'
+import fallbackPhysicsCh26Json from './pyq_physics_ch26.json'
+import fallbackPhysicsCh27Json from './pyq_physics_ch27.json'
+import fallbackPhysicsCh28Json from './pyq_physics_ch28.json'
 import fallbackChemJson from './pyq_chemistry_ch1.json'
 import fallbackChemCh2Json from './pyq_chemistry_ch2.json'
 import fallbackChemCh3Json from './pyq_chemistry_ch3.json'
@@ -117,6 +122,7 @@ import fallbackMathJson from './pyq_maths_ch1.json'
 import fallbackMathCh2Json from './pyq_maths_ch2.json'
 import fallbackMathCh3Json from './pyq_maths_ch3.json'
 import fallbackMathCh4Json from './pyq_maths_ch4.json'
+import fallbackMathCh5Json from './pyq_maths_ch5.json'
 import fallbackMathCh6Json from './pyq_maths_ch6.json'
 import fallbackMathCh7Json from './pyq_maths_ch7.json'
 import fallbackMathCh8Json from './pyq_maths_ch8.json'
@@ -131,6 +137,8 @@ import fallbackMathCh16Json from './pyq_maths_ch16.json'
 import fallbackMathCh17Json from './pyq_maths_ch17.json'
 import fallbackMathCh18Json from './pyq_maths_ch18.json'
 import fallbackMathCh19Json from './pyq_maths_ch19.json'
+import fallbackMathCh20Json from './pyq_maths_ch20.json'
+import fallbackMathCh21Json from './pyq_maths_ch21.json'
 
 export let cachedChapterData: ChapterInfo[] = []
 
@@ -157,6 +165,11 @@ const allFallbackRaw = [
   ...(fallbackPhysicsCh21Json as any[]),
   ...(fallbackPhysicsCh22Json as any[]),
   ...(fallbackPhysicsCh23Json as any[]),
+  ...(fallbackPhysicsCh24Json as any[]),
+  ...(fallbackPhysicsCh25Json as any[]),
+  ...(fallbackPhysicsCh26Json as any[]),
+  ...(fallbackPhysicsCh27Json as any[]),
+  ...(fallbackPhysicsCh28Json as any[]),
   ...(fallbackChemJson as any[]),
   ...(fallbackChemCh2Json as any[]),
   ...(fallbackChemCh3Json as any[]),
@@ -180,6 +193,7 @@ const allFallbackRaw = [
   ...(fallbackMathCh2Json as any[]),
   ...(fallbackMathCh3Json as any[]),
   ...(fallbackMathCh4Json as any[]),
+  ...(fallbackMathCh5Json as any[]),
   ...(fallbackMathCh6Json as any[]),
   ...(fallbackMathCh7Json as any[]),
   ...(fallbackMathCh8Json as any[]),
@@ -193,7 +207,9 @@ const allFallbackRaw = [
   ...(fallbackMathCh16Json as any[]),
   ...(fallbackMathCh17Json as any[]),
   ...(fallbackMathCh18Json as any[]),
-  ...(fallbackMathCh19Json as any[])
+  ...(fallbackMathCh19Json as any[]),
+  ...(fallbackMathCh20Json as any[]),
+  ...(fallbackMathCh21Json as any[])
 ]
 
 const FALLBACK_QUESTIONS: PYQQuestion[] = allFallbackRaw.map((q, idx) => ({

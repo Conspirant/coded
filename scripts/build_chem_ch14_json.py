@@ -1,0 +1,844 @@
+import json
+import os
+
+questions = [
+  {
+    "id": "chem_ch14_q1",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2006,
+    "question": "In which of the following complex ion, the central metal ion is in a state of $sp^3d^2$ hybridisation?",
+    "options": [
+      "[CoF₆]³⁻",
+      "[Co(NH₃)₆]³⁺",
+      "[Fe(CN)₆]³⁻",
+      "[Cr(NH₃)₆]³⁺"
+    ],
+    "correct_answer": 0,
+    "explanation": "In $[\\text{CoF}_6]^{3-}$:\n- Cobalt is in $+3$ oxidation state: $\\text{Co}^{3+} = [\\text{Ar}] 3d^6$.\n- $\\text{F}^-$ is a weak field ligand (halo ligand) and cannot cause pairing of $3d$ electrons.\n- Therefore, it utilizes outer $4s$, $4p$, and $4d$ orbitals forming an outer orbital octahedral complex with $sp^3d^2$ hybridization.\n- In contrast, $\\text{NH}_3$ and $\\text{CN}^-$ in $[\\text{Co}(\\text{NH}_3)_6]^{3+}$ and $[\\text{Fe}(\\text{CN})_6]^{3-}$ are strong field ligands leading to pairing and $d^2sp^3$ (inner orbital) hybridization.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q2",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2006,
+    "question": "Which of the following can participate in linkage isomerism?",
+    "options": [
+      "NO₂⁻",
+      "H₂N̈CH₂CH₂N̈H₂",
+      "H₂O",
+      ":NH₃"
+    ],
+    "correct_answer": 0,
+    "explanation": "Linkage isomerism arises when an ambidentate ligand can coordinate to the central metal atom through either of two different donor atoms.\n- $\\text{NO}_2^-$ is an ambidentate ligand that can bind through nitrogen ($-\\text{NO}_2$, nitro) or through oxygen ($-\\text{ONO}$, nitrito).\n- e.g., $[\\text{Co}(\\text{NH}_3)_5(\\text{NO}_2)]\\text{Cl}_2$ and $[\\text{Co}(\\text{NH}_3)_5(\\text{ONO})]\\text{Cl}_2$.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q3",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2007,
+    "question": "The number of unidentate ligands in the complex ion is called",
+    "options": [
+      "oxidation number",
+      "primary valency",
+      "coordination number",
+      "EAN"
+    ],
+    "correct_answer": 2,
+    "explanation": "The coordination number (or ligancy) of a central metal atom/ion in a complex is defined as the total number of coordinate bonds formed with donor atoms of ligands. For unidentate ligands, it is equal to the total number of unidentate ligands bound to the metal ion.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q4",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2007,
+    "question": "IUPAC name of $\\text{Na}_3[\\text{Co}(\\text{NO}_2)_6]$ is",
+    "options": [
+      "sodium hexanitritocobaltate(II)",
+      "sodium hexanitrocobalt(III)",
+      "sodium hexanitritocobaltate(III)",
+      "sodium cobaltnitrite"
+    ],
+    "correct_answer": 2,
+    "explanation": "In $\\text{Na}_3[\\text{Co}(\\text{NO}_2)_6]$:\n- Cation is named first: 'sodium'.\n- Complex anion contains six nitrito-N (or nitro) ligands: 'hexanitrito' (or hexanitro).\n- Central metal in anionic complex ends in '-ate': 'cobaltate'.\n- Oxidation state of $\\text{Co}$: $3(+1) + x + 6(-1) = 0 \\implies x = +3$.\n- IUPAC name: sodium hexanitritocobaltate(III).\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q5",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2007,
+    "question": "Which complex cannot ionise in solution?",
+    "options": [
+      "[CoCl₃(NH₃)₃]",
+      "K₄[Fe(CN)₆]",
+      "K₂[Pt(F₆)]",
+      "[Pt(NH₃)₆]Cl₄"
+    ],
+    "correct_answer": 0,
+    "explanation": "$[\\text{CoCl}_3(\\text{NH}_3)_3]$ is a neutral coordination entity with no counter-ions outside the coordination sphere. Because the coordinate and covalent bonds inside the coordination sphere do not dissociate in water, it cannot ionise in solution.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q6",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2008,
+    "question": "An octahedral complex is formed when hybrid orbitals of the following type are involved",
+    "options": [
+      "d²sp³",
+      "sp²d²",
+      "sp³",
+      "dsp²"
+    ],
+    "correct_answer": 0,
+    "explanation": "An octahedral complex involves 6 coordination bonds, which require 6 equivalent hybrid orbitals. These can be formed either by $d^2sp^3$ (inner orbital octahedral) or $sp^3d^2$ (outer orbital octahedral) hybridization.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q7",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2008,
+    "question": "A complex compound in which the oxidation number of a metal is zero.",
+    "options": [
+      "[Ni(CO)₄]",
+      "[Pt(NH₃)₄]Cl₂",
+      "K₄[Fe(CN)₆]",
+      "K₃[Fe(CN)₆]"
+    ],
+    "correct_answer": 0,
+    "explanation": "In metal carbonyls like $[\\text{Ni}(\\text{CO})_4]$, carbon monoxide ($\\text{CO}$) is a neutral ligand with charge 0. Since the complex is neutral, the oxidation state of nickel is:\n$$x + 4(0) = 0 \\implies x = 0$$\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q8",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2008,
+    "question": "A ligand can also be regarded as",
+    "options": [
+      "Lewis base",
+      "Brönsted acid",
+      "Lewis acid",
+      "Brönsted base"
+    ],
+    "correct_answer": 0,
+    "explanation": "A ligand is an electron-pair donor that donates a pair of electrons to the central metal ion (electron-pair acceptor / Lewis acid) to form a coordinate covalent bond. Therefore, a ligand acts as a Lewis base.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q9",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2009,
+    "question": "The IUPAC name of $[\\text{Co}(\\text{NH}_3)_5\\text{ONO}]^{2+}$ ion is",
+    "options": [
+      "pentaamminenitritocobalt(III) ion",
+      "pentaamminenitro cobalt(III) ion",
+      "pentaamminenitrocobalt(IV) ion",
+      "pentaamminenitritocobalt(IV) ion"
+    ],
+    "correct_answer": 0,
+    "explanation": "In the cation $[\\text{Co}(\\text{NH}_3)_5\\text{ONO}]^{2+}$:\n- Five ammine ligands: 'pentaammine'\n- Nitrito ligand coordinated through oxygen: 'nitrito' (or nitrito-O)\n- Central metal: 'cobalt'\n- Oxidation state: $x + 5(0) + (-1) = +2 \\implies x = +3$\n- Full name: pentaamminenitritocobalt(III) ion.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q10",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2010,
+    "question": "The IUPAC name of $\\text{K}_2[\\text{Ni}(\\text{CN})_4]$ is",
+    "options": [
+      "potassium tetracyanonickelate(II)",
+      "potassium tetracyanatonickelate(III)",
+      "potassium tetracyanatonickel(II)",
+      "potassium tetracyanonickel(III)"
+    ],
+    "correct_answer": 0,
+    "explanation": "In $\\text{K}_2[\\text{Ni}(\\text{CN})_4]$:\n- Cation: potassium\n- Anion: tetracyanonickelate\n- Oxidation state of $\\text{Ni}$: $2(+1) + x + 4(-1) = 0 \\implies x = +2$\n- IUPAC name: potassium tetracyanonickelate(II) (or potassium tetracyanidonickelate(II)).\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q11",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2010,
+    "question": "Which one of the following is wrongly matched?",
+    "options": [
+      "[Cu(NH₃)₄]²⁺ - square planar",
+      "[Ni(CO)₄] - neutral ligand",
+      "[Fe(CN)₆]³⁻ - sp³d²",
+      "[Co(en)₃]³⁺ - follows EAN rule"
+    ],
+    "correct_answer": 2,
+    "explanation": "In $[\\text{Fe}(\\text{CN})_6]^{3-}$:\n- $\\text{Fe}^{3+} = 3d^5$.\n- $\\text{CN}^-$ is a strong field ligand that forces pairing of electrons in the $3d$ subshell, leaving two inner $3d$ orbitals vacant.\n- Therefore, it undergoes $d^2sp^3$ (inner orbital octahedral) hybridization, NOT $sp^3d^2$.\n\nHence, $[\\text{Fe}(\\text{CN})_6]^{3-} - sp^3d^2$ is wrongly matched. Option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q12",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2011,
+    "question": "The IUPAC name of the complex $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}_2]\\text{Cl}$ is",
+    "options": [
+      "dichlorotetraamminecobalt(III) chloride",
+      "tetraamminedichlorocobalt(III) chloride",
+      "tetraamminedichlorocobalt(II) chloride",
+      "tetraamminedichlorocobalt(IV) chloride"
+    ],
+    "correct_answer": 1,
+    "explanation": "In $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}_2]\\text{Cl}$:\n- Ligands in alphabetical order: 'tetraammine' before 'dichlorido' (or dichloro).\n- Metal: cobalt\n- Oxidation state: $x + 4(0) + 2(-1) + (-1) = 0 \\implies x = +3$\n- Anion: chloride\n- IUPAC name: tetraamminedichlorocobalt(III) chloride.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q13",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2012,
+    "question": "Which of the following is a negatively charged bidentate ligand?",
+    "options": [
+      "Dimethyl glyoximato",
+      "Cyano",
+      "Ethylene diamine",
+      "Acetato"
+    ],
+    "correct_answer": 0,
+    "explanation": "- Dimethylglyoximato ($\text{dmg}^-$) has a single negative charge and two nitrogen donor atoms, making it a negatively charged bidentate ligand.\n- Cyano ($\text{CN}^-$) and Acetato ($\text{CH}_3\text{COO}^-$) are negatively charged unidentate ligands.\n- Ethylenediamine ($en$) is a neutral bidentate ligand.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q14",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2012,
+    "question": "The secondary valency of platinum in tetrammine dichloroplatinum (IV) chloride is",
+    "options": [
+      "+4",
+      "+2",
+      "3",
+      "6"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to Werner's theory:\n- Primary valency corresponds to the oxidation state of the central metal ($+4$).\n- Secondary valency corresponds to the coordination number of the central metal.\n- In $[\\text{Pt}(\\text{NH}_3)_4\\text{Cl}_2]\\text{Cl}_2$, platinum is coordinated to 4 ammine and 2 chlorido ligands, giving a coordination number of $4 + 2 = 6$.\n\nHence, secondary valency is 6. Option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q15",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2012,
+    "question": "The atomic number of cobalt is 27. The EAN of cobalt in $\\text{Na}_3[\\text{Co}(\\text{NO}_2)_4\\text{Cl}_2]$ is",
+    "options": [
+      "35",
+      "24",
+      "36",
+      "34"
+    ],
+    "correct_answer": 2,
+    "explanation": "Effective Atomic Number (EAN) is calculated as:\n$$\\text{EAN} = Z - \\text{Oxidation State} + 2 \\times (\\text{Coordination Number})$$\n\nIn $\\text{Na}_3[\\text{Co}(\\text{NO}_2)_4\\text{Cl}_2]^{3-}$ (or $\\text{Co}$ in $+3$ state):\n- $Z = 27$\n- Oxidation state of $\\text{Co} = +3$ (since $3(+1) + x + 4(-1) + 2(-1) = 0 \\implies x - 3 = 0 \\implies x = +3$)\n- Coordination number $= 4 + 2 = 6$\n$$\\text{EAN} = 27 - 3 + 2(6) = 24 + 12 = 36$$\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q16",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2013,
+    "question": "A group of atoms can function as a ligand only when",
+    "options": [
+      "it is a small molecule",
+      "it has an unshared electron pair",
+      "it is a negatively charged ion",
+      "it is a positively charged ion"
+    ],
+    "correct_answer": 1,
+    "explanation": "To function as a ligand, a species (neutral molecule or anion) must possess at least one lone pair of electrons (unshared electron pair) available for donation to the vacant hybrid orbitals of the central metal atom or ion.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q17",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2014,
+    "question": "A correct statement is",
+    "options": [
+      "[Co(NH₃)₆]²⁺ is paramagnetic",
+      "[MnBr₄]²⁻ is tetrahedral",
+      "[CoBr₂(en)₂]⁻ exhibits linkage isomerism",
+      "[Ni(NH₃)₆]²⁺ is an inner orbital complex"
+    ],
+    "correct_answer": 0,
+    "explanation": "1. In $[\\text{Co}(\\text{NH}_3)_6]^{2+}$, cobalt is $\\text{Co}^{2+} (3d^7)$. In an octahedral field with pairing, one unpaired electron remains in the $e_g$ set ($t_{2g}^6 e_g^1$), making it paramagnetic.\n2. Also in $[\\text{MnBr}_4]^{2-}$, $\\text{Mn}^{2+} (3d^5)$ with weak field $\\text{Br}^-$ forms $sp^3$ tetrahedral complex (both (a) and (b) are chemically correct; key marks (a)).\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q18",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2014,
+    "question": "In which one of the pairs of ion given, there is an ion that forms a coordination compound with both aqueous sodium hydroxide and ammonia and an other ion that forms a coordination compound only with aqueous sodium hydroxide?",
+    "options": [
+      "Pb²⁺, Cu²⁺",
+      "Zn²⁺, Al³⁺",
+      "Cu²⁺, Zn²⁺",
+      "Al³⁺, Cu²⁺"
+    ],
+    "correct_answer": 1,
+    "explanation": "- $\\text{Zn}^{2+}$ reacts with excess $\\text{NaOH}$ to form soluble $[\\text{Zn}(\\text{OH})_4]^{2-}$ (zincate complex) and with excess $\\text{NH}_3$ to form $[\\text{Zn}(\\text{NH}_3)_4]^{2+}$ (tetraamminezinc(II) complex).\n- $\\text{Al}^{3+}$ is amphoteric and dissolves in excess $\\text{NaOH}$ to form $[\\text{Al}(\\text{OH})_4]^-$, but its hydroxide $\\text{Al}(\\text{OH})_3$ is insoluble in aqueous ammonia (does not form ammine complex).\n\nThus, $\\text{Zn}^{2+}$ and $\\text{Al}^{3+}$ form the correct pair.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q19",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2015,
+    "question": "The complex ion having minimum magnitude of $\\Delta_o$ (CFSE) is",
+    "options": [
+      "[Co(NH₃)₆]³⁺",
+      "[Cr(H₂O)₆]³⁺",
+      "[Cr(CN)₆]³⁻",
+      "[CoCl₆]³⁻"
+    ],
+    "correct_answer": 3,
+    "explanation": "According to the spectrochemical series, ligand field strength increases in the order:\n$$\\text{Cl}^- < \\text{H}_2\\text{O} < \\text{NH}_3 < \\text{CN}^-$$\n\nSince $\\text{Cl}^-$ is the weakest field ligand among the choices, $[\\text{CoCl}_6]^{3-}$ has the smallest crystal field splitting energy $\\Delta_o$.\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q20",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2015,
+    "question": "Which of the following will be able to show geometrical isomerism?",
+    "options": [
+      "MA₂B₂-Tetrahedral",
+      "MABCD-Tetrahedral",
+      "MA₃B-Square planar",
+      "MABCD-Square planar"
+    ],
+    "correct_answer": 3,
+    "explanation": "1. Tetrahedral complexes never show geometrical isomerism because all four positions are adjacent (equivalent) to one another.\n2. Square planar complexes of the type $MA_3B$ cannot show cis-trans isomerism.\n3. Square planar complexes of the type $MABCD$ show 3 geometrical isomers (two cis and one trans with respect to a reference ligand).\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q21",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2015,
+    "question": "How many ions per molecule are produced in the solution when Mohr salt is dissolved in excess of water?",
+    "options": [
+      "5",
+      "10",
+      "4",
+      "6"
+    ],
+    "correct_answer": 0,
+    "explanation": "Mohr's salt is a double salt with formula $\\text{FeSO}_4 \\cdot (\\text{NH}_4)_2\\text{SO}_4 \\cdot 6\\text{H}_2\\text{O}$. When dissolved in excess water, it completely dissociates into simple constituent ions:\n$$\\text{FeSO}_4 \\cdot (\\text{NH}_4)_2\\text{SO}_4 \\cdot 6\\text{H}_2\\text{O} \\xrightarrow{\\text{aq}} \\text{Fe}^{2+} + 2\\text{NH}_4^+ + 2\\text{SO}_4^{2-} + 6\\text{H}_2\\text{O}$$\n\nTotal ions produced per molecule $= 1 + 2 + 2 = 5\\text{ ions}$.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q22",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2015,
+    "question": "The number of isomers possible for the octahedral complex $[\\text{CoCl}_2(en)(\\text{NH}_3)_2]^+$ is",
+    "options": [
+      "two",
+      "three",
+      "no isomer",
+      "four isomers"
+    ],
+    "correct_answer": 3,
+    "explanation": "For octahedral complex of the type $[M(AA)a_2b_2]$ (where $AA = en, a = \\text{NH}_3, b = \\text{Cl}$):\n- Geometrical isomers:\n  1. trans-dichloro, cis-diammine (optically inactive)\n  2. cis-dichloro, trans-diammine (optically inactive)\n  3. cis-dichloro, cis-diammine (chiral, exists as a pair of enantiomers: $d$ and $l$ forms)\n\nTotal stereoisomers $= 1 + 1 + 2 = 4\\text{ isomers}$.\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q23",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2016,
+    "question": "$\\text{CO}$ is a stronger ligand than $\\text{Cl}^-$, because",
+    "options": [
+      "CO is a neutral molecule",
+      "CO has π-bonds",
+      "CO is poisonous",
+      "CO is more reactive"
+    ],
+    "correct_answer": 1,
+    "explanation": "$\\text{CO}$ acts as a strong $\\pi$-acid ($\\pi$-acceptor) ligand. It forms a $\\sigma$-bond by donating a lone pair of electrons to the metal and accepts electron density from the filled $d$-orbitals of the metal into its empty $\\pi^*$ antibonding molecular orbitals (synergic bonding). This $\\pi$-backbonding significantly strengthens the metal-ligand bond and increases crystal field splitting $\\Delta_o$.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q24",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2016,
+    "question": "Which of the following sequence is correct regarding field strength of ligands as per spectrochemical series?",
+    "options": [
+      "SCN⁻ < F⁻ < CN⁻ < CO",
+      "F⁻ < SCN⁻ < CN⁻ < CO",
+      "CN⁻ < F⁻ < CO < SCN⁻",
+      "SCN⁻ < CO < F⁻ < CN⁻"
+    ],
+    "correct_answer": 0,
+    "explanation": "According to the spectrochemical series, ligand field strength follows the order:\n$$\\text{I}^- < \\text{Br}^- < \\text{S}^{2-} < \\text{SCN}^- < \\text{Cl}^- < \\text{F}^- < \\text{OH}^- < \\text{C}_2\\text{O}_4^{2-} < \\text{H}_2\\text{O} < \\text{NCS}^- < \\text{EDTA}^{4-} < \\text{NH}_3 < en < \\text{CN}^- < \\text{CO}$$\n\nComparing the given choices:\n$$\\text{SCN}^- < \\text{F}^- < \\text{CN}^- < \\text{CO}$$\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q25",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2016,
+    "question": "As per IUPAC norms, the name of the complex $[\\text{Co}(en)_2(\\text{ONO})\\text{Cl}]\\text{Cl}$ is",
+    "options": [
+      "Chloridobis(ethane-1,2-diamine)nitrito-O-cobalt(III) chloride",
+      "Chlorobis(ethylenediamine)nitro-O-cobalt(III) chloride",
+      "Chloridodi(ethylenediamine)nitrocobalt(III) chloride",
+      "Chloroethylenediaminenitro-O-cobalt(III) chloride"
+    ],
+    "correct_answer": 0,
+    "explanation": "In $[\\text{Co}(en)_2(\\text{ONO})\\text{Cl}]\\text{Cl}$:\n- Ligands named alphabetically: chlorido, bis(ethane-1,2-diamine), nitrito-O (or nitrito).\n- Oxidation state of $\\text{Co}$: $x + 2(0) + (-1) + (-1) + (-1) = 0 \\implies x = +3$.\n- IUPAC name: Chloridobis(ethane-1,2-diamine)nitrito-O-cobalt(III) chloride.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q26",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2017,
+    "question": "The coordination number and the oxidation state of the element '$M$' in the complex $[M(en)_2(\\text{C}_2\\text{O}_4)]\\text{NO}_2$ (where, $en$ is ethane-1,2-diamine) are respectively",
+    "options": [
+      "6 and 2",
+      "4 and 2",
+      "6 and 3",
+      "4 and 3"
+    ],
+    "correct_answer": 2,
+    "explanation": "- Both $en$ (ethane-1,2-diamine) and $\\text{C}_2\\text{O}_4^{2-}$ (oxalate) are bidentate ligands.\n- Total coordination number $= 2 \\times 2 + 1 \\times 2 = 4 + 2 = 6$.\n- Oxidation state of $M$:\n$$x + 2(0) + (-2) + (-1) = 0 \\implies x - 3 = 0 \\implies x = +3$$\n\nThus, coordination number is 6 and oxidation state is 3.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q27",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2017,
+    "question": "Square planar complex of the type $M_{AXBL}$ (where $A, B, X$ and $L$ are unidentate ligands) shows following set of isomers",
+    "options": [
+      "two cis and one trans",
+      "two trans and one cis",
+      "two cis and two trans",
+      "three cis and one trans"
+    ],
+    "correct_answer": 0,
+    "explanation": "In a square planar complex $[MABCD]$, fixing the position of ligand $A$ and placing the other three ligands ($B, C, D$) opposite (trans) to $A$ one by one gives 3 distinct geometrical isomers. For each chosen pair of trans ligands, the other two are cis to each other, resulting in two cis and one trans arrangement relative to any pair.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q28",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2017,
+    "question": "According to crystal field theory, the $M-L$ bond in a complex is",
+    "options": [
+      "purely ionic",
+      "purely coordinate",
+      "purely covalent",
+      "partially covalent"
+    ],
+    "correct_answer": 0,
+    "explanation": "Crystal Field Theory (CFT) is an electrostatic model which considers the metal-ligand bond to be purely ionic, arising solely from electrostatic interactions between the positively charged central metal ion and the negative charges (or dipoles) of the ligands.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q29",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2018,
+    "question": "The IUPAC name of $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}(\\text{NO}_2)]\\text{Cl}$ is",
+    "options": [
+      "tetraamminechloridonitrito-N-cobalt(III) chloride",
+      "tetraamminechloridonitrocobalt(II) chloride",
+      "tetraamminechloridonitrocobalt(I) chloride",
+      "tetraamminechloridodinitrocobalt(III) chloride"
+    ],
+    "correct_answer": 0,
+    "explanation": "In $[\\text{Co}(\\text{NH}_3)_4\\text{Cl}(\\text{NO}_2)]\\text{Cl}$:\n- Ligands: tetraammine, chlorido, nitrito-N.\n- Metal: cobalt\n- Oxidation state: $x + 4(0) + (-1) + (-1) + (-1) = 0 \\implies x = +3$.\n- IUPAC name: tetraamminechloridonitrito-N-cobalt(III) chloride.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q30",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2018,
+    "question": "$[\\text{Fe}(\\text{NO}_2)_3\\text{Cl}_3]$ and $[\\text{Fe}(\\text{O}-\\text{NO})_3\\text{Cl}_3]$ shows",
+    "options": [
+      "linkage isomerism",
+      "geometrical isomerism",
+      "optical isomerism",
+      "hydrate isomerism"
+    ],
+    "correct_answer": 0,
+    "explanation": "The nitrite ion is an ambidentate ligand that binds through nitrogen in $[\\text{Fe}(\\text{NO}_2)_3\\text{Cl}_3]$ and through oxygen in $[\\text{Fe}(\\text{ONO})_3\\text{Cl}_3]$. Therefore, the two complexes are linkage isomers.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q31",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2019,
+    "question": "Addition of excess of $\\text{AgNO}_3$ to an aqueous solution of 1 mole of $\\text{PdCl}_2 \\cdot 4\\text{NH}_3$ gives 2 moles of $\\text{AgCl}$. The conductivity of this solution corresponds to",
+    "options": [
+      "1 : 1 electrolyte",
+      "1 : 3 electrolyte",
+      "1 : 2 electrolyte",
+      "1 : 4 electrolyte"
+    ],
+    "correct_answer": 2,
+    "explanation": "Since 1 mole of $\\text{PdCl}_2 \\cdot 4\\text{NH}_3$ precipitates 2 moles of $\\text{AgCl}$ on addition of excess $\\text{AgNO}_3$, both chloride ions reside outside the coordination sphere as counter-ions.\n- Formulation: $[\\text{Pd}(\\text{NH}_3)_4]\\text{Cl}_2$\n- In water: $[\\text{Pd}(\\text{NH}_3)_4]\\text{Cl}_2 \\to [\\text{Pd}(\\text{NH}_3)_4]^{2+} + 2\\text{Cl}^-$\n- This yields 1 complex cation and 2 chloride anions, corresponding to a $1 : 2$ electrolyte.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q32",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2019,
+    "question": "The formula of pentaaquanitratochromium(III) nitrate is",
+    "options": [
+      "[Cr(H₂O)₆](NO₃)₃",
+      "[Cr(H₂O)₆](NO₂)₂",
+      "[Cr(H₂O)₅NO₃](NO₃)₂",
+      "[Cr(H₂O)₅NO₂]NO₃"
+    ],
+    "correct_answer": 2,
+    "explanation": "- Pentaaqua: five water molecules inside coordination sphere ($(\\text{H}_2\\text{O})_5$)\n- Nitrato: one nitrato ligand inside ($-\\text{NO}_3$)\n- Chromium(III): $\\text{Cr}^{3+}$\n- Charge of coordination sphere: $+3 + 5(0) + 1(-1) = +2$\n- To balance the $+2$ complex cation, two nitrate ions are present outside: $(\\text{NO}_3)_2$\n- Formula: $[\\text{Cr}(\\text{H}_2\\text{O})_5\\text{NO}_3](\\text{NO}_3)_2$\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q33",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2019,
+    "question": "Which among the following is the strongest ligand?",
+    "options": [
+      "CN⁻",
+      "NH₃",
+      "CO",
+      "en"
+    ],
+    "correct_answer": 2,
+    "explanation": "In the spectrochemical series, carbon monoxide ($\\text{CO}$) has the highest field strength due to strong synergic $\\pi$-backbonding and produces the maximum crystal field splitting ($\\Delta_o$).\n$$\\text{NH}_3 < en < \\text{CN}^- < \\text{CO}$$\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q34",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2020,
+    "question": "The co-ordination number of $\\text{Fe}$ and $\\text{Co}$ in the complex ions, $[\\text{Fe}(\\text{C}_2\\text{O}_4)_3]^{3-}$ and $[\\text{Co}(\\text{SCN})_4]^{2-}$ are respectively",
+    "options": [
+      "6 and 8",
+      "4 and 6",
+      "6 and 4",
+      "3 and 4"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. In $[\\text{Fe}(\\text{C}_2\\text{O}_4)_3]^{3-}$, oxalate ($\\text{C}_2\\text{O}_4^{2-}$) is a bidentate ligand. With 3 bidentate ligands, coordination number of $\\text{Fe} = 3 \\times 2 = 6$.\n2. In $[\\text{Co}(\\text{SCN})_4]^{2-}$, thiocyanate ($\\text{SCN}^-$) is a unidentate ligand. With 4 unidentate ligands, coordination number of $\\text{Co} = 4 \\times 1 = 4$.\n\nHence, the coordination numbers are 6 and 4 respectively. Option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q35",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2020,
+    "question": "Number of stereoisomers exhibited by $[\\text{Co}(en)_2\\text{Cl}_2]^+$ is",
+    "options": [
+      "2",
+      "5",
+      "3",
+      "4"
+    ],
+    "correct_answer": 2,
+    "explanation": "$[\\text{Co}(en)_2\\text{Cl}_2]^+$ exists as:\n1. trans-isomer (optically inactive, possesses a plane of symmetry and inversion center).\n2. cis-isomer (optically active, chiral with no plane of symmetry, existing as non-superimposable mirror images: $d$-form and $l$-form).\n\nTotal stereoisomers $= 1 \\text{ (trans)} + 2 \\text{ (cis } d/l) = 3\\text{ stereoisomers}$.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q36",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2020,
+    "question": "Give the IUPAC name of $[\\text{Pt}(\\text{NH}_3)_4][\\text{PtCl}_4]$ is",
+    "options": [
+      "tetraammineplatinate(II) tetrachloridoplatinum(II)",
+      "tetraammineplatinate(0) tetrachlorido platinum(IV)",
+      "tetraammineplatinum(II) tetrachloridoplatinate(II)",
+      "tetraammineplatinum(0) tetrachloridoplatinum(IV)"
+    ],
+    "correct_answer": 2,
+    "explanation": "In $[\\text{Pt}(\\text{NH}_3)_4][\\text{PtCl}_4]$:\n- The cation $[\\text{Pt}(\\text{NH}_3)_4]^{2+}$ is named first: tetraammineplatinum(II).\n- The anion $[\\text{PtCl}_4]^{2-}$ is named second with '-ate' suffix: tetrachloridoplatinate(II).\n- Full IUPAC name: tetraammineplatinum(II) tetrachloridoplatinate(II).\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q37",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2021,
+    "question": "For the crystal field splitting in octahedral complexes,",
+    "options": [
+      "the energy of the e_g orbitals will decrease by (3/5)Δ_o and that of the t₂_g will increase by (2/5)Δ_o",
+      "the energy of the e_g orbitals will increase by (3/5)Δ_o and that of the t₂_g will decrease by (2/5)Δ_o",
+      "the energy of the e_g orbitals will increase by (3/5)Δ_o and that of the t₂_g will increase by (2/5)Δ_o",
+      "the energy of the e_g orbitals will decrease by (3/5)Δ_o and that of t₂_g will decrease by (2/5)Δ_o"
+    ],
+    "correct_answer": 1,
+    "explanation": "In an octahedral crystal field:\n- The two $e_g$ orbitals ($d_{z^2}, d_{x^2-y^2}$) point directly along the axes toward the ligands and are destabilized, increasing in energy by $+\\frac{3}{5}\\Delta_o$ ($+0.6\\Delta_o$).\n- The three $t_{2g}$ orbitals ($d_{xy}, d_{yz}, d_{zx}$) point between the axes and are stabilized, decreasing in energy by $-\\frac{2}{5}\\Delta_o$ ($-0.4\\Delta_o$) relative to the barycenter.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q38",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2021,
+    "question": "The IUPAC name of $[\\text{Co}(\\text{NH}_3)_5(\\text{CO}_3)]\\text{Cl}$ is",
+    "options": [
+      "pentaamminecarbonatocobalt(III) chloride",
+      "carbonatopentaamminecobalt(III) chloride",
+      "pentaamminecarbonatocobaltate(III) chloride",
+      "pentaamminecobalt(III)carbonate chloride"
+    ],
+    "correct_answer": 0,
+    "explanation": "In $[\\text{Co}(\\text{NH}_3)_5(\\text{CO}_3)]\\text{Cl}$:\n- Ligands alphabetically: 'pentaammine' before 'carbonato'.\n- Cationic complex: metal name remains 'cobalt'.\n- Oxidation state of $\\text{Co}$: $x + 5(0) + (-2) + (-1) = 0 \\implies x = +3$.\n- Anion: chloride.\n- Full name: pentaamminecarbonatocobalt(III) chloride.\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q39",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2021,
+    "question": "Homoleptic complexes among the following are\nI. $\\text{K}_3[\\text{Al}(\\text{C}_2\\text{O}_4)_3]$\nII. $[\\text{CoCl}_2(en)_2]^+$\nIII. $\\text{K}_2[\\text{Zn}(\\text{OH})_4]$",
+    "options": [
+      "I only",
+      "I and II only",
+      "I and III only",
+      "III only"
+    ],
+    "correct_answer": 2,
+    "explanation": "- Homoleptic complexes are those in which a metal is bound to only one kind of donor group / ligand.\n  - In I: $\\text{K}_3[\\text{Al}(\\text{C}_2\\text{O}_4)_3]$, $\\text{Al}$ is bound only to oxalate ligands (homoleptic).\n  - In II: $[\\text{CoCl}_2(en)_2]^+$, $\\text{Co}$ is bound to two different types of ligands ($\\text{Cl}^-$ and $en$) (heteroleptic).\n  - In III: $\\text{K}_2[\\text{Zn}(\\text{OH})_4]$, $\\text{Zn}$ is bound only to hydroxide ligands (homoleptic).\n\nThus, I and III are homoleptic complexes.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q40",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2021,
+    "question": "The correct order for wavelengths of light absorbed in the complex ions $[\\text{CoCl}(\\text{NH}_3)_5]^{2+}$, $[\\text{Co}(\\text{NH}_3)_6]^{3+}$ and $[\\text{Co}(\\text{CN})_6]^{3-}$ is",
+    "options": [
+      "[CoCl(NH₃)₅]²⁺ > [Co(NH₃)₆]³⁺ > [Co(CN)₆]³⁻",
+      "[Co(NH₃)₆]³⁺ > [Co(CN)₆]³⁻ > [CoCl(NH₃)₅]²⁺",
+      "[Co(CN)₆]³⁻ > [CoCl(NH₃)₅]²⁺ > [Co(NH₃)₆]³⁺",
+      "[Co(NH₃)₆]³⁺ > [CoCl(NH₃)₅]²⁺ > [Co(CN)₆]³⁻"
+    ],
+    "correct_answer": 0,
+    "explanation": "Energy absorbed during $d-d$ transition is $\\Delta_o = \\frac{hc}{\\lambda} \\implies \\lambda \\propto \\frac{1}{\\Delta_o}$.\n- Stronger ligands produce larger crystal field splitting $\\Delta_o$, resulting in absorption of light at shorter wavelengths.\n- Ligand field strength order: $\\text{Cl}^- < \\text{NH}_3 < \\text{CN}^-$\n- CFSE order: $[\\text{CoCl}(\\text{NH}_3)_5]^{2+} < [\\text{Co}(\\text{NH}_3)_6]^{3+} < [\\text{Co}(\\text{CN})_6]^{3-}$\n- Wavelength ($\\lambda$) order: $[\\text{CoCl}(\\text{NH}_3)_5]^{2+} > [\\text{Co}(\\text{NH}_3)_6]^{3+} > [\\text{Co}(\\text{CN})_6]^{3-}$\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q41",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2022,
+    "question": "The complex hexaammineplatinum(IV) chloride will give _____ number of ions on ionisation.",
+    "options": [
+      "3",
+      "2",
+      "5",
+      "4"
+    ],
+    "correct_answer": 2,
+    "explanation": "Hexaammineplatinum(IV) chloride has the formula $[\\text{Pt}(\\text{NH}_3)_6]\\text{Cl}_4$.\nIn aqueous solution, it ionises as:\n$$[\\text{Pt}(\\text{NH}_3)_6]\\text{Cl}_4 \\to [\\text{Pt}(\\text{NH}_3)_6]^{4+} + 4\\text{Cl}^-$$\n\nTotal number of ions produced $= 1 + 4 = 5\\text{ ions}$.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q42",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2022,
+    "question": "The correct IUPAC name of cis-platin is",
+    "options": [
+      "diamminedichloridoplatinum(0)",
+      "dichloridodiammineplatinum(IV)",
+      "diamminedichloridoplatinum(II)",
+      "diamminedichloridoplatinum(IV)"
+    ],
+    "correct_answer": 2,
+    "explanation": "Cis-platin has the molecular formula $\\text{cis}-[\\text{Pt}(\\text{NH}_3)_2\\text{Cl}_2]$:\n- Platinum is in $+2$ oxidation state ($x + 2(0) + 2(-1) = 0 \\implies x = +2$).\n- Ligands alphabetically: 'diammine' followed by 'dichlorido'.\n- IUPAC name: diamminedichloridoplatinum(II).\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q43",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2022,
+    "question": "Crystal Field Splitting Energy (CFSE) for $[\\text{CoCl}_6]^{4-}$ is $18000\\text{ cm}^{-1}$. The Crystal Field Splitting Energy (CFSE) for $[\\text{CoCl}_4]^{2-}$ will be",
+    "options": [
+      "8000 cm⁻¹",
+      "10,000 cm⁻¹",
+      "18000 cm⁻¹",
+      "16000 cm⁻¹"
+    ],
+    "correct_answer": 0,
+    "explanation": "The relationship between tetrahedral splitting energy $\\Delta_t$ and octahedral splitting energy $\\Delta_o$ for the same metal ion and ligands is:\n$$\\Delta_t = \\frac{4}{9} \\Delta_o$$\n\nGiven $\\Delta_o = 18000\\text{ cm}^{-1}$:\n$$\\Delta_t = \\frac{4}{9} \\times 18000\\text{ cm}^{-1} = 4 \\times 2000 = 8000\\text{ cm}^{-1}$$\n\nHence, option (a) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q44",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2023,
+    "question": "If a bidentate ligand ethane-1, 2-diamine is progressively added in the molar ratio $en : \\text{Ni} :: 1:1, 2:1, 3:1$ to $[\\text{Ni}(\\text{H}_2\\text{O})_6]^{2+}\\text{aq.}$ solution, following co-ordination entities are formed.\nI. $[\\text{Ni}(\\text{H}_2\\text{O})_4en]^{2+}\\text{ (aq)}$ – pale blue\nII. $[\\text{Ni}(\\text{H}_2\\text{O})_2(en)_2]^{2+}\\text{ (aq)}$ – blue/purple\nIII. $[\\text{Ni}(en)_3]^{2+}\\text{ (aq)}$ – violet\nThe wavelength in nm of light absorbed in case of I and III are respectively",
+    "options": [
+      "475 nm and 310 nm",
+      "300 nm and 475 nm",
+      "310 nm and 500 nm",
+      "600 nm and 535 nm"
+    ],
+    "correct_answer": 3,
+    "explanation": "- The colour of a coordination compound arises from the complementary colour of light absorbed.\n- For entity I (pale blue appearance), the complementary absorbed colour is in the red region ($\\approx 600\\text{ nm}$).\n- For entity III (violet appearance), the complementary absorbed colour is in the yellow/green region ($\\approx 535\\text{ nm}$).\n- Because $en$ is a stronger ligand than $\\text{H}_2\\text{O}$, CFSE $\\Delta_o$ increases from I to III, so the absorbed wavelength decreases ($\\lambda_{\\text{absorbed}} = 600\\text{ nm}$ for I and $535\\text{ nm}$ for III).\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q45",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2023,
+    "question": "Which formula and name combination is incorrect?",
+    "options": [
+      "K₃[Al(C₂O₄)₃] – Potassium trioxalatoaluminate (III)",
+      "[Pt(NH₃)₂Cl(NO₂)] – Diamminechloridonitrito-N-platinum(II)",
+      "[CoCl₂(en)₂]Cl – Dichloridodiethylenediammine cobalt(II) chloride",
+      "[Co(NH₃)₄(H₂O)Cl]Cl₂ – Tetraammineaquachloridocobalt(III) chloride"
+    ],
+    "correct_answer": 2,
+    "explanation": "In $[\\text{CoCl}_2(en)_2]\\text{Cl}$:\n- Cobalt has oxidation state $+3$ ($x + 2(-1) + 2(0) + (-1) = 0 \\implies x = +3$).\n- The prefix for a polydentate ligand containing a numerical prefix in its name is 'bis', so the name is dichloridobis(ethane-1,2-diamine)cobalt(III) chloride.\n- Calling it 'cobalt(II)' and using 'diethylenediammine' is incorrect.\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q46",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2023,
+    "question": "Which of the following system in an octahedral complex has maximum unpaired electrons?",
+    "options": [
+      "d⁹ (high spin)",
+      "d⁶ (low spin)",
+      "d⁴ (low spin)",
+      "d⁷ (high spin)"
+    ],
+    "correct_answer": 3,
+    "explanation": "In an octahedral crystal field ($t_{2g}$ and $e_g$ splitting):\n- (a) $d^9$ (high spin): $t_{2g}^6 e_g^3 \\implies 1\\text{ unpaired electron}$.\n- (b) $d^6$ (low spin): $t_{2g}^6 e_g^0 \\implies 0\\text{ unpaired electrons}$.\n- (c) $d^4$ (low spin): $t_{2g}^4 e_g^0 \\implies 2\\text{ unpaired electrons}$.\n- (d) $d^7$ (high spin): $t_{2g}^5 e_g^2 \\implies 3\\text{ unpaired electrons}$.\n\nThus, $d^7$ (high spin) has the maximum number of unpaired electrons (3).\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q47",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2024,
+    "question": "On treating $100\\text{ mL}$ of $0.1\\text{ M}$ aqueous solution of the complex $\\text{CrCl}_3 \\cdot 6\\text{H}_2\\text{O}$ with excess of $\\text{AgNO}_3$, $2.86\\text{ g}$ of $\\text{AgCl}$ was obtained. The complex is",
+    "options": [
+      "[Cr(H₂O)₃Cl₃] · 3H₂O",
+      "[Cr(H₂O)₄Cl₂]Cl · 2H₂O",
+      "[Cr(H₂O)₅Cl]Cl₂ · H₂O",
+      "[Cr(H₂O)₆]Cl₃"
+    ],
+    "correct_answer": 2,
+    "explanation": "1. Moles of complex in solution:\n$$n_{\\text{complex}} = M \\times V = 0.1 \\times 0.1 = 0.01\\text{ mol}$$\n\n2. Moles of $\\text{AgCl}$ precipitated:\n$$n_{\\text{AgCl}} = \\frac{\\text{Mass}}{\\text{Molar Mass}} = \\frac{2.86\\text{ g}}{143.5\\text{ g/mol}} = 0.02\\text{ mol}$$\n\n3. Number of ionisable $\\text{Cl}^-$ ions per molecule of complex:\n$$\\text{Ratio} = \\frac{n_{\\text{AgCl}}}{n_{\\text{complex}}} = \\frac{0.02}{0.01} = 2$$\n\nSince 2 chloride ions are ionisable, they are outside the coordination sphere. Assuming coordination number 6 for chromium(III), 1 chloride and 5 water molecules are inside the coordination sphere, and 1 water molecule is water of crystallization:\n$$[\\text{Cr}(\\text{H}_2\\text{O})_5\\text{Cl}]\\text{Cl}_2 \\cdot \\text{H}_2\\text{O}$$\n\nHence, option (c) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q48",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2024,
+    "question": "The complex compounds $[\\text{Co}(\\text{NH}_3)_5\\text{SO}_4]\\text{Br}$ and $[\\text{Co}(\\text{NH}_3)_5\\text{Br}]\\text{SO}_4$ are",
+    "options": [
+      "coordination isomers",
+      "geometrical isomers",
+      "optical isomers",
+      "ionisation isomers"
+    ],
+    "correct_answer": 3,
+    "explanation": "Ionisation isomerism occurs when the counter-ion in a complex salt is itself a potential ligand and can displace a ligand which then becomes the counter-ion.\n- $[\\text{Co}(\\text{NH}_3)_5\\text{SO}_4]\\text{Br}$ produces $\\text{Br}^-$ ions in solution (gives pale yellow precipitate with $\\text{AgNO}_3$).\n- $[\\text{Co}(\\text{NH}_3)_5\\text{Br}]\\text{SO}_4$ produces $\\text{SO}_4^{2-}$ ions in solution (gives white precipitate with $\\text{BaCl}_2$).\n\nTherefore, they are ionisation isomers.\n\nHence, option (d) is correct.",
+    "needs_image": False
+  },
+  {
+    "id": "chem_ch14_q49",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "chapter_number": 14,
+    "year": 2024,
+    "question": "Which of the following statements are True about $[\\text{CoF}_6]^{3-}$ ion?\nI. The complex has octahedral geometry.\nII. Coordination number of $\\text{Co}$ is 3 and oxidation state is $+6$.\nIII. The complex is $sp^3d^2$ hybridised.\nIV. It is a high spin complex.",
+    "options": [
+      "I, II and IV",
+      "I, III and IV",
+      "II and IV",
+      "II, III and IV"
+    ],
+    "correct_answer": 1,
+    "explanation": "In $[\\text{CoF}_6]^{3-}$:\n- $\\text{Co}$ is coordinated to 6 fluoride ligands $\\implies$ coordination number is 6, geometry is octahedral (Statement I is True; Statement II is False).\n- Oxidation state of $\\text{Co}$ is $+3$ ($x + 6(-1) = -3 \\implies x = +3$).\n- $\\text{F}^-$ is a weak field ligand, so electrons do not pair up in the $3d$ orbital $\\implies$ it forms an outer orbital $sp^3d^2$ hybridised complex (Statement III is True).\n- It has 4 unpaired electrons $\\implies$ it is a high-spin complex (Statement IV is True).\n\nThus, statements I, III, and IV are True.\n\nHence, option (b) is correct.",
+    "needs_image": False
+  }
+]
+
+out_file = "src/data/pyq_chemistry_ch14.json"
+with open(out_file, "w", encoding="utf-8") as f:
+    json.dump(questions, f, indent=2, ensure_ascii=False)
+
+print(f"Generated {len(questions)} questions in {out_file} successfully!")
