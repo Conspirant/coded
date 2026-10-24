@@ -12,10 +12,12 @@ import {
   FileText,
   Printer,
   Loader2,
+  AlertCircle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { downloadFile } from "@/lib/download-helper"
+import { pdfjsLib, configurePDFJS } from "@/lib/pdf-config"
 
 export interface PdfViewerModalProps {
   open: boolean
@@ -28,6 +30,16 @@ export interface PdfViewerModalProps {
   badgeText?: string
   totalPages?: number
   initialPage?: number
+}
+
+// Detect mobile browsers (Android / iOS / Touch)
+function isMobileDevice() {
+  if (typeof window === "undefined") return false
+  return (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth < 768
+  )
 }
 
 export function PdfViewerModal({
@@ -47,7 +59,20 @@ export function PdfViewerModal({
   const [pageInput, setPageInput] = useState<string>(String(initialPage))
   const [zoomLevel, setZoomLevel] = useState<number>(100)
   const [isDownloading, setIsDownloading] = useState(false)
+  const [isMobile] = useState<boolean>(() => isMobileDevice())
+  const [pdfDoc, setPdfDoc] = useState<any>(null)
+  const [pdfTotalPages, setPdfTotalPages] = useState<number>(totalPages || 1)
+  const [isRendering, setIsRendering] = useState<boolean>(false)
+  const [canvasError, setCanvasError] = useState<string | null>(null)
+  
   const containerRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const renderTaskRef = useRef<any>(null)
+
+  // Configure PDF.js once on mount
+  useEffect(() => {
+    configurePDFJS()
+  }, [])
 
   // Sync state when opened with new pdf or initialPage changes
   useEffect(() => {
@@ -56,8 +81,114 @@ export function PdfViewerModal({
       setCurrentPage(pageToUse)
       setPageInput(String(pageToUse))
       setZoomLevel(100)
+      setCanvasError(null)
     }
   }, [open, url, initialPage])
+
+  // Load PDF document using PDF.js for mobile canvas rendering
+  useEffect(() => {
+    if (!open || !url || !isMobile) return
+
+    let isMounted = true
+    setIsRendering(true)
+    setCanvasError(null)
+
+    const loadDoc = async () => {
+      try {
+        const loadingTask = pdfjsLib.getDocument({
+          url,
+          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.149/cmaps/',
+          cMapPacked: true,
+        })
+        const doc = await loadingTask.promise
+        if (isMounted) {
+          setPdfDoc(doc)
+          setPdfTotalPages(doc.numPages)
+        }
+      } catch (err: any) {
+        console.warn("⚠️ PDF.js direct load failed:", err)
+        if (isMounted) {
+          setCanvasError("Could not render page canvas. You can download or open in new tab.")
+        }
+      } finally {
+        if (isMounted) {
+          setIsRendering(false)
+        }
+      }
+    }
+
+    loadDoc()
+
+    return () => {
+      isMounted = false
+    }
+  }, [open, url, isMobile])
+
+  // Render current page onto HTML5 canvas when currentPage, zoomLevel or pdfDoc changes
+  useEffect(() => {
+    if (!open || !pdfDoc || !canvasRef.current || !isMobile) return
+
+    let isMounted = true
+
+    const renderPage = async () => {
+      try {
+        // Cancel any active render task
+        if (renderTaskRef.current) {
+          renderTaskRef.current.cancel()
+        }
+
+        setIsRendering(true)
+        const page = await pdfDoc.getPage(currentPage)
+        if (!isMounted) return
+
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const ctx = canvas.getContext("2d")
+        if (!ctx) return
+
+        // Compute viewport scaled to device pixel ratio for crystal clear rendering
+        const dpr = window.devicePixelRatio || 1
+        const scale = (zoomLevel / 100) * 1.5
+        const viewport = page.getViewport({ scale })
+
+        canvas.width = Math.floor(viewport.width * dpr)
+        canvas.height = Math.floor(viewport.height * dpr)
+        canvas.style.width = `${Math.floor(viewport.width)}px`
+        canvas.style.height = `${Math.floor(viewport.height)}px`
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport,
+        }
+
+        const task = page.render(renderContext)
+        renderTaskRef.current = task
+        await task.promise
+
+        if (isMounted) {
+          setIsRendering(false)
+        }
+      } catch (err: any) {
+        if (err?.name !== "RenderingCancelledException") {
+          console.warn("PDF Page render error:", err)
+          if (isMounted) {
+            setIsRendering(false)
+          }
+        }
+      }
+    }
+
+    renderPage()
+
+    return () => {
+      isMounted = false
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel()
+      }
+    }
+  }, [pdfDoc, currentPage, zoomLevel, open, isMobile])
 
   // Sync with browser native fullscreen change events
   useEffect(() => {
@@ -86,7 +217,6 @@ export function PdfViewerModal({
         }
       }
     } catch {
-      // Fallback to CSS fullscreen if permissions or browser blocks requestFullscreen
       setIsFullscreen((prev) => !prev)
     }
   }
@@ -111,8 +241,11 @@ export function PdfViewerModal({
 
   if (!open) return null
 
+  const effectiveTotalPages = isMobile ? (pdfTotalPages || totalPages) : totalPages
+
   const handlePageChange = (page: number) => {
-    const safePage = Math.max(1, totalPages ? Math.min(page, totalPages) : page)
+    const maxP = effectiveTotalPages || 999
+    const safePage = Math.max(1, Math.min(page, maxP))
     setCurrentPage(safePage)
     setPageInput(String(safePage))
   }
@@ -320,9 +453,9 @@ export function PdfViewerModal({
                 onBlur={handlePageSubmit}
                 className="w-9 sm:w-10 h-7 text-center text-xs font-mono rounded border border-border bg-background px-1 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
               />
-              {totalPages && (
+              {effectiveTotalPages && (
                 <span className="text-[10px] sm:text-[11px] text-muted-foreground font-mono">
-                  /{totalPages}
+                  /{effectiveTotalPages}
                 </span>
               )}
             </form>
@@ -331,7 +464,7 @@ export function PdfViewerModal({
               variant="ghost"
               size="icon"
               className="h-7 w-7 text-foreground cursor-pointer"
-              disabled={totalPages ? currentPage >= totalPages : false}
+              disabled={effectiveTotalPages ? currentPage >= effectiveTotalPages : false}
               onClick={() => handlePageChange(currentPage + 1)}
               title="Next Page"
             >
@@ -393,12 +526,45 @@ export function PdfViewerModal({
 
         {/* Embedded PDF Canvas Container */}
         <div className="relative flex-1 w-full h-full min-h-0 bg-neutral-900 overflow-hidden flex flex-col p-0 m-0">
-          <iframe
-            key={`${url}-${currentPage}-${zoomLevel}`}
-            src={iframeSrc}
-            title={title}
-            className="w-full h-full border-0 bg-neutral-900 block"
-          />
+          {isMobile ? (
+            <div className="w-full h-full overflow-auto flex flex-col items-center justify-start p-2 sm:p-4 bg-neutral-950/90 relative">
+              {isRendering && (
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full text-xs text-white border border-white/20 shadow-lg">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+                  <span>Loading Page {currentPage}...</span>
+                </div>
+              )}
+
+              {canvasError ? (
+                <div className="my-auto text-center p-6 max-w-sm space-y-3">
+                  <AlertCircle className="h-10 w-10 text-amber-500 mx-auto" />
+                  <p className="text-sm font-semibold text-foreground">Mobile PDF Preview Notice</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    This browser does not support embedded PDF rendering directly. You can open or download the complete PDF below.
+                  </p>
+                  <div className="flex gap-2 justify-center pt-2">
+                    <Button size="sm" onClick={handleDownload} className="text-xs gap-1.5">
+                      <Download className="h-3.5 w-3.5" /> Download PDF
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={handleOpenInNewTab} className="text-xs gap-1.5">
+                      <ExternalLink className="h-3.5 w-3.5" /> Open Tab
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center shadow-2xl rounded-sm overflow-hidden my-auto">
+                  <canvas ref={canvasRef} className="max-w-none bg-white rounded-sm shadow-xl" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <iframe
+              key={`${url}-${currentPage}-${zoomLevel}`}
+              src={iframeSrc}
+              title={title}
+              className="w-full h-full border-0 bg-neutral-900 block"
+            />
+          )}
         </div>
       </div>
     </div>
