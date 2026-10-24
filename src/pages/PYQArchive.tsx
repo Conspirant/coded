@@ -509,7 +509,7 @@ export default function PYQArchive() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 animate-fade-in p-4 sm:p-6 pb-20">
+    <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 animate-fade-in px-3 sm:px-6 py-3 sm:py-6 pb-24 sm:pb-20">
       <SEO
         title="2nd PUC 2026 & 2025 Official Question Papers & Key Answers (PCM Exam 1 & 2)"
         description="Download official KSEAB 2nd PUC 2026 and 2025 Physics, Chemistry, and Mathematics Question Papers and step-by-step Schemes of Evaluation / Answer Keys for Exam 1 & Exam 2."
@@ -518,71 +518,71 @@ export default function PYQArchive() {
       />
 
       {/* Header Banner */}
-      <div className="relative rounded-2xl bg-gradient-to-br from-card via-card/90 to-primary/5 p-6 sm:p-8 border border-border shadow-xs overflow-hidden">
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="font-mono text-xs border-primary/40 text-primary bg-primary/10 px-2.5 py-0.5">
+      <div className="relative rounded-xl sm:rounded-2xl bg-gradient-to-br from-card via-card/90 to-primary/5 p-4 sm:p-8 border border-border shadow-xs overflow-hidden">
+        <div className="relative z-10 max-w-3xl space-y-2 sm:space-y-3">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <Badge variant="outline" className="font-mono text-[10px] sm:text-xs border-primary/40 text-primary bg-primary/10 px-2 sm:px-2.5 py-0.5">
               OFFICIAL KSEAB 2ND PUC ARCHIVE
             </Badge>
-            <Badge variant="secondary" className="font-mono text-xs">
+            <Badge variant="secondary" className="font-mono text-[10px] sm:text-xs">
               2026 & 2025 BATCHES
             </Badge>
-            <Badge variant="outline" className="font-mono text-xs text-emerald-500 border-emerald-500/30 bg-emerald-500/10">
-              SOLVED SCHEMES INCLUDED
+            <Badge variant="outline" className="font-mono text-[10px] sm:text-xs text-emerald-500 border-emerald-500/30 bg-emerald-500/10">
+              SOLVED SCHEMES
             </Badge>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+          <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
             2nd PUC Official Question Papers & Schemes of Evaluation
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Direct access to official KSEAB board question papers alongside official Schemes of Evaluation (step-wise marking keys, formula points, and complete answers) for Physics, Chemistry, and Mathematics across 2026 and 2025 (Exam 1 & Exam 2).
+          <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
+            Official KSEAB board question papers alongside official Schemes of Evaluation (step-wise marking keys, formulas, and verified answers) for Physics, Chemistry, and Mathematics (Exam 1 & Exam 2).
           </p>
         </div>
       </div>
 
       {/* Quick Statistics Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card className="border border-border/70 bg-card/60 p-3.5 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-              <Atom className="h-5 w-5" />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+        <Card className="border border-border/70 bg-card/60 p-2.5 sm:p-3.5 shadow-2xs">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-blue-500/10 text-blue-500 shrink-0">
+              <Atom className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Physics (33)</div>
-              <div className="text-sm font-bold font-mono">2026 & 2025 (8 Files)</div>
-            </div>
-          </div>
-        </Card>
-        <Card className="border border-border/70 bg-card/60 p-3.5 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500">
-              <FlaskConical className="h-5 w-5" />
-            </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Chemistry (34)</div>
-              <div className="text-sm font-bold font-mono">2026 & 2025 (8 Files)</div>
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs text-muted-foreground truncate">Physics (33)</div>
+              <div className="text-xs sm:text-sm font-bold font-mono">8 Files</div>
             </div>
           </div>
         </Card>
-        <Card className="border border-border/70 bg-card/60 p-3.5 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-500">
-              <Calculator className="h-5 w-5" />
+        <Card className="border border-border/70 bg-card/60 p-2.5 sm:p-3.5 shadow-2xs">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-purple-500/10 text-purple-500 shrink-0">
+              <FlaskConical className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Mathematics (35)</div>
-              <div className="text-sm font-bold font-mono">2026 & 2025 (8 Files)</div>
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs text-muted-foreground truncate">Chemistry (34)</div>
+              <div className="text-xs sm:text-sm font-bold font-mono">8 Files</div>
             </div>
           </div>
         </Card>
-        <Card className="border border-border/70 bg-card/60 p-3.5 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
-              <FileCheck className="h-5 w-5" />
+        <Card className="border border-border/70 bg-card/60 p-2.5 sm:p-3.5 shadow-2xs">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-amber-500/10 text-amber-500 shrink-0">
+              <Calculator className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Total Verified PDFs</div>
-              <div className="text-sm font-bold font-mono text-emerald-500">24 Documents</div>
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs text-muted-foreground truncate">Maths (35)</div>
+              <div className="text-xs sm:text-sm font-bold font-mono">8 Files</div>
+            </div>
+          </div>
+        </Card>
+        <Card className="border border-border/70 bg-card/60 p-2.5 sm:p-3.5 shadow-2xs">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 text-emerald-500 shrink-0">
+              <FileCheck className="h-4 w-4 sm:h-5 sm:w-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] sm:text-xs text-muted-foreground truncate">Total PDFs</div>
+              <div className="text-xs sm:text-sm font-bold font-mono text-emerald-500">24 Files</div>
             </div>
           </div>
         </Card>
@@ -590,23 +590,24 @@ export default function PYQArchive() {
 
       {/* Filters and Search Bar */}
       <Card className="border border-border bg-card shadow-xs">
-        <CardContent className="p-4 space-y-3.5">
-          <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-            <div className="relative w-full md:w-72">
+        <CardContent className="p-3 sm:p-4 space-y-3">
+          <div className="flex flex-col gap-3">
+            {/* Search Input */}
+            <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search subject, exam, or topic..."
+                placeholder="Search by subject, year, exam, or title..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 h-9 text-xs"
+                className="pl-9 h-10 text-xs sm:text-sm"
               />
             </div>
 
-            {/* Quick Pills */}
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            {/* Mobile Scrollable Filter Groups */}
+            <div className="flex flex-col gap-2 pt-1 border-t border-border/50">
               {/* Year Filter */}
-              <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border text-xs">
-                <span className="text-[11px] font-semibold text-muted-foreground px-2">Year:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                <span className="text-[11px] font-semibold text-muted-foreground shrink-0 w-16">Year:</span>
                 {[
                   { label: "All Years", val: "all" },
                   { label: "2026", val: "2026" },
@@ -615,10 +616,10 @@ export default function PYQArchive() {
                   <button
                     key={yr.val}
                     onClick={() => setSelectedYear(yr.val)}
-                    className={`px-2.5 py-1 rounded text-xs transition-colors font-medium ${
+                    className={`px-3 py-1.5 rounded-full text-xs transition-colors shrink-0 font-medium ${
                       selectedYear === yr.val
                         ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "bg-muted/60 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {yr.label}
@@ -627,16 +628,16 @@ export default function PYQArchive() {
               </div>
 
               {/* Subject Filter */}
-              <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border text-xs">
-                <span className="text-[11px] font-semibold text-muted-foreground px-2">Subject:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                <span className="text-[11px] font-semibold text-muted-foreground shrink-0 w-16">Subject:</span>
                 {["all", "Physics", "Chemistry", "Mathematics"].map((sub) => (
                   <button
                     key={sub}
                     onClick={() => setSelectedSubject(sub)}
-                    className={`px-2.5 py-1 rounded text-xs transition-colors font-medium ${
+                    className={`px-3 py-1.5 rounded-full text-xs transition-colors shrink-0 font-medium ${
                       selectedSubject === sub
                         ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "bg-muted/60 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {sub === "all" ? "All PCM" : sub}
@@ -645,20 +646,20 @@ export default function PYQArchive() {
               </div>
 
               {/* Exam Number Filter */}
-              <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border text-xs">
-                <span className="text-[11px] font-semibold text-muted-foreground px-2">Exam:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                <span className="text-[11px] font-semibold text-muted-foreground shrink-0 w-16">Exam:</span>
                 {[
-                  { label: "All", val: "all" },
+                  { label: "All Exams", val: "all" },
                   { label: "Exam 1", val: "1" },
                   { label: "Exam 2", val: "2" }
                 ].map((ex) => (
                   <button
                     key={ex.val}
                     onClick={() => setSelectedExam(ex.val)}
-                    className={`px-2.5 py-1 rounded text-xs transition-colors font-medium ${
+                    className={`px-3 py-1.5 rounded-full text-xs transition-colors shrink-0 font-medium ${
                       selectedExam === ex.val
                         ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "bg-muted/60 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {ex.label}
@@ -667,20 +668,20 @@ export default function PYQArchive() {
               </div>
 
               {/* Type Filter */}
-              <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-lg border border-border text-xs">
-                <span className="text-[11px] font-semibold text-muted-foreground px-2">Type:</span>
+              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                <span className="text-[11px] font-semibold text-muted-foreground shrink-0 w-16">Type:</span>
                 {[
-                  { label: "All", val: "all" },
-                  { label: "Papers", val: "qp" },
-                  { label: "Answers", val: "scheme" }
+                  { label: "All Formats", val: "all" },
+                  { label: "Question Papers", val: "qp" },
+                  { label: "Answer Schemes", val: "scheme" }
                 ].map((t) => (
                   <button
                     key={t.val}
                     onClick={() => setSelectedType(t.val)}
-                    className={`px-2.5 py-1 rounded text-xs transition-colors font-medium ${
+                    className={`px-3 py-1.5 rounded-full text-xs transition-colors shrink-0 font-medium ${
                       selectedType === t.val
                         ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "bg-muted/60 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {t.label}
