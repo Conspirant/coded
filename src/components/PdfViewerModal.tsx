@@ -132,9 +132,10 @@ export function PdfViewerModal({
 
     const renderPage = async () => {
       try {
-        // Cancel any active render task
         if (renderTaskRef.current) {
-          renderTaskRef.current.cancel()
+          try {
+            renderTaskRef.current.cancel()
+          } catch { }
         }
 
         setIsRendering(true)
@@ -146,10 +147,20 @@ export function PdfViewerModal({
         const ctx = canvas.getContext("2d")
         if (!ctx) return
 
-        // Compute viewport scaled to device pixel ratio for crystal clear rendering
-        const dpr = window.devicePixelRatio || 1
-        const scale = (zoomLevel / 100) * 1.5
-        const viewport = page.getViewport({ scale })
+        // Compute available screen width to make default zoom (100%) fit screen nicely
+        const screenWidth = window.innerWidth > 0 ? window.innerWidth : 360
+        // Padding offset inside modal container
+        const availableWidth = Math.max(280, screenWidth - (isFullscreen ? 16 : 32))
+
+        const unscaledViewport = page.getViewport({ scale: 1.0 })
+        const fitScale = availableWidth / unscaledViewport.width
+        
+        // Multiplied by user zoom level (100% = fit screen width)
+        const userScale = (zoomLevel / 100) * fitScale
+
+        // Cap DPR to 2 for performance and battery on mobile
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        const viewport = page.getViewport({ scale: userScale })
 
         canvas.width = Math.floor(viewport.width * dpr)
         canvas.height = Math.floor(viewport.height * dpr)
@@ -185,10 +196,12 @@ export function PdfViewerModal({
     return () => {
       isMounted = false
       if (renderTaskRef.current) {
-        renderTaskRef.current.cancel()
+        try {
+          renderTaskRef.current.cancel()
+        } catch { }
       }
     }
-  }, [pdfDoc, currentPage, zoomLevel, open, isMobile])
+  }, [pdfDoc, currentPage, zoomLevel, open, isMobile, isFullscreen])
 
   // Sync with browser native fullscreen change events
   useEffect(() => {
@@ -261,7 +274,73 @@ export function PdfViewerModal({
   }
 
   const handleZoom = (delta: number) => {
-    setZoomLevel((prev) => Math.min(200, Math.max(50, prev + delta)))
+    setZoomLevel((prev) => Math.min(250, Math.max(70, prev + delta)))
+  }
+
+  // Touch gesture support: Pinch-to-zoom & Swipe left/right for page turn
+  const touchStartRef = useRef<{ x: number; y: number; distance: number; initialZoom: number } | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Pinch start
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      const distance = Math.hypot(dx, dy)
+      touchStartRef.current = {
+        x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+        distance,
+        initialZoom: zoomLevel,
+      }
+    } else if (e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+        distance: 0,
+        initialZoom: zoomLevel,
+      }
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return
+
+    // Pinch zoom handling
+    if (e.touches.length === 2 && touchStartRef.current.distance > 0) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX
+      const dy = e.touches[0].clientY - e.touches[1].clientY
+      const currentDistance = Math.hypot(dx, dy)
+      const ratio = currentDistance / touchStartRef.current.distance
+      const newZoom = Math.min(250, Math.max(70, Math.round(touchStartRef.current.initialZoom * ratio)))
+      if (Math.abs(newZoom - zoomLevel) >= 5) {
+        setZoomLevel(newZoom)
+      }
+    }
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return
+
+    // Single finger swipe left/right for page turn (only if not heavily zoomed)
+    if (touchStartRef.current.distance === 0 && e.changedTouches.length === 1 && zoomLevel <= 130) {
+      const endX = e.changedTouches[0].clientX
+      const endY = e.changedTouches[0].clientY
+      const deltaX = endX - touchStartRef.current.x
+      const deltaY = endY - touchStartRef.current.y
+
+      // Horizontal swipe detected (threshold 60px, mostly horizontal)
+      if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+        if (deltaX < 0) {
+          // Swiped left -> Next page
+          handlePageChange(currentPage + 1)
+        } else {
+          // Swiped right -> Previous page
+          handlePageChange(currentPage - 1)
+        }
+      }
+    }
+
+    touchStartRef.current = null
   }
 
   const handleDownload = async (e: React.MouseEvent) => {
@@ -527,11 +606,20 @@ export function PdfViewerModal({
         {/* Embedded PDF Canvas Container */}
         <div className="relative flex-1 w-full h-full min-h-0 bg-neutral-900 overflow-hidden flex flex-col p-0 m-0">
           {isMobile ? (
-            <div className="w-full h-full overflow-auto flex flex-col items-center justify-start p-2 sm:p-4 bg-neutral-950/90 relative">
-              {isRendering && (
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full text-xs text-white border border-white/20 shadow-lg">
+            <div 
+              className="w-full h-full overflow-auto flex flex-col items-center justify-start p-2 sm:p-4 bg-neutral-950/90 relative touch-pan-x touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {isRendering ? (
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full text-xs text-white border border-white/20 shadow-lg">
                   <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                   <span>Loading Page {currentPage}...</span>
+                </div>
+              ) : (
+                <div className="absolute top-2 right-3 z-10 pointer-events-none opacity-60 text-[10px] font-mono text-white/70 bg-black/50 px-2 py-0.5 rounded-full">
+                  Swipe ← / → • Pinch to zoom
                 </div>
               )}
 
@@ -552,8 +640,8 @@ export function PdfViewerModal({
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center shadow-2xl rounded-sm overflow-hidden my-auto">
-                  <canvas ref={canvasRef} className="max-w-none bg-white rounded-sm shadow-xl" />
+                <div className="flex flex-col items-center shadow-2xl rounded-sm overflow-visible my-auto transition-transform duration-75">
+                  <canvas ref={canvasRef} className="max-w-none bg-white rounded-sm shadow-2xl" />
                 </div>
               )}
             </div>
