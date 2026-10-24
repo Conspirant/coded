@@ -1,23 +1,23 @@
 # Graph Report - coded-main  (2026-10-24)
 
 ## Corpus Check
-- 903 files · ~61,373,714 words
+- 903 files · ~61,699,610 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 37 file(s) not represented in the graph (top: .dat 12, .csv 12, (none) 2)
 
 ## Summary
-- 5234 nodes · 12218 edges · 202 communities (183 shown, 19 thin omitted)
+- 5242 nodes · 12229 edges · 215 communities (194 shown, 21 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 162 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `006daa3c`
+- Built from commit: `b7b1ac4c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - CollegePredictor.tsx
-- react
+- lucide-react
 - os
 - json
 - hooks/use-toast.ts
@@ -31,7 +31,7 @@
 - kcet-2025-mock-round1-cutoffs_dd752064.md
 - vite.config.ts
 - pyqQuestionBank.ts
-- CollegeDetail.tsx
+- react
 - Input
 - re
 - cn
@@ -65,7 +65,7 @@
 - cutoff-predictor.ts
 - AdminSuggestionsService
 - AdminCutoffs
-- CollegeCompare.tsx
+- round-drift-predictor.ts
 - 📰 News Automation System
 - Donate.tsx
 - collections
@@ -109,14 +109,14 @@
 - compilerOptions
 - components.json
 - manifest.json
-- test_extract_vision.mjs
+- parse-comedk.js
 - steps
 - PopupService
 - CutoffClash.tsx
 - compilerOptions
 - KCETCoded
 - merge_missing_into_master.mjs
-- XLSXLoader
+- college-service.ts
 - KCETCoded Platform Documentation
 - predictorStore.ts
 - extract-2023-2024-aggressive.mjs
@@ -132,7 +132,7 @@
 - docs/README.md
 - fetch-reddit-data.mjs
 - xlsx
-- toast.tsx
+- DiscussionBoard.tsx
 - CollegePredictor.tsx
 - CollegeCutoffs.tsx
 - extract-cutoffs.mjs
@@ -143,8 +143,8 @@
 - KCET Coded – Brand & Visual Identity Guidelines
 - KCETCoded Operations Runbook
 - build-google-favicons.mjs
-- xlsx
-- MockSimulator.tsx
+- extract-excel-structured.mjs
+- Layout.tsx
 - extract_2026_precise.py
 - scrape_reddit_kcet.py
 - validate_cutoffs.py
@@ -156,9 +156,9 @@
 - sheet.tsx
 - create-icons.cjs
 - 7. Global Product Experience
-- create-clean-dataset.mjs
+- xlsx
 - fetch-kcet-news.mjs
-- collegeDatabase.ts
+- test-db-count.ts
 - getQuestionPool
 - add-presidency-r3-corrected.mjs
 - news-webhook.mjs
@@ -167,33 +167,35 @@
 - fix-presidency-corrected.mjs
 - neet-rank-predictor.ts
 - Archived Features: NEET Hub & COMEDK
-- pages/CutoffExplorer.tsx
+- courses.ts
 - 9. Data Architecture and Core Logic
 - FeatureRequestService
 - I got so fed up with KEA's website and PDFs that I built my own KCET platform (Free & Open Source)
 - add-presidency-correct.mjs
 - clean-cutoffs-data.mjs
 - 4. Feature Atlas
-- drawer.tsx
+- extract-2025-excel.mjs
 - og.tsx
 - 10. Local Development
-- scrape_full_reddit_kcet.mjs
+- 15. Security, privacy, and governance assessment
 - sonner.tsx
 - 11. Data Pipeline, Scripts, and Automation
 - 13. Deployment, Performance, and Operational Posture
-- check-institutes.cjs
+- ref_path
 - fetch-news-advanced.mjs
 - 🎯 Customization Ideas
 - test_extract_vision.mjs
-- reddit-tools.ts
+- 13. Company operational procedures
 - blog.ts
 - neetMedicalData.ts
-- createRawList.cjs
+- 🛠️ Setup Instructions
 - 9. Database and Supabase integration
 - 11. Payments, donors, and access-code flow
 - 17. Release, data-refresh, and rollback procedures
 - Logo
-- visitor-service.ts
+- 6. Data Foundation and Coverage
+- LiveVisitorCounter.tsx
+- cross-ref-placements.ts
 - share.ts
 - sw.js
 - vercel.json
@@ -204,8 +206,19 @@
 - FeeCalculator.tsx
 - PDFParser
 - ai-mass-importer.mjs
+- 14. Hosting, headers, PWA, SEO, and analytics
+- 8. Static data, sources, and data pipeline
 - 1. Product summary and scope
-- pdf-parser.ts
+- KCETCoded
+- Button
+- 12. Security, Privacy, and Trust Model
+- 2. Vision, Motivation, and Scope
+- add-presidency-r3.mjs
+- parse_shifts.js
+- puc-blueprints.ts
+- metro-colleges.ts
+- 7. Core business logic and browser state
+- cmdk
 - bmtc-colleges.ts
 - @radix-ui/react-aspect-ratio
 - @radix-ui/react-collapsible
@@ -227,25 +240,25 @@
   docs/PLATFORM_DOCUMENTATION.md → src/components/Layout.tsx
 - `7.6 SEO, analytics, and social sharing` --references--> `SEO()`  [INFERRED]
   PROJECT_DOCUMENTATION.md → src/components/SEO.tsx
-- `Server-Side XLSX Processing (Implemented)` --references--> `XLSXLoader`  [INFERRED]
-  XLSX_INTEGRATION_GUIDE.md → src/lib/xlsx-loader.ts
 - `5.5 Administrative tooling` --references--> `AdminHub()`  [INFERRED]
   OFFICIAL_PROJECT_DOCUMENTATION.md → src/pages/AdminHub.tsx
 - `12. Admin and Operations` --references--> `AdminHub()`  [INFERRED]
   README.md → src/pages/AdminHub.tsx
+- `15. Roadmap Direction` --references--> `CollegeCompare()`  [INFERRED]
+  README.md → src/pages/CollegeCompare.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (202 total, 19 thin omitted)
+## Communities (215 total, 21 thin omitted)
 
 ### Community 0 - "CollegePredictor.tsx"
-Cohesion: 0.13
-Nodes (40): buildSearchBlob(), cleanCourseForDisplay(), ComedkCutoffRow, ComedkExplorer(), ComedkResponse, getCategoryColor(), getCourseCodeFromText(), getRoundDisplayName() (+32 more)
+Cohesion: 0.11
+Nodes (49): buildSearchBlob(), cleanCourseForDisplay(), ComedkCutoffRow, ComedkExplorer(), ComedkResponse, getCategoryColor(), getCourseCodeFromText(), getRoundDisplayName() (+41 more)
 
-### Community 1 - "react"
-Cohesion: 0.05
-Nodes (65): NeetChoiceSimulatorPage(), NeetComparePage(), NeetHub(), PREMIER_COLLEGES, NeetOptionBuilderPage(), NeetQuotasPage(), NeetTrendsPage(), framer-motion (+57 more)
+### Community 1 - "lucide-react"
+Cohesion: 0.08
+Nodes (25): framer-motion, lucide-react, CollegeReviewCard(), CommandItem, COMMANDS, DinoGameModal(), DinoGameModalProps, PopupContent (+17 more)
 
 ### Community 3 - "json"
 Cohesion: 0.04
@@ -253,7 +266,7 @@ Nodes (31): extract_answer_key(), extract_slice_questions(), process_chapter(), 
 
 ### Community 4 - "hooks/use-toast.ts"
 Cohesion: 0.12
-Nodes (21): Comment, DiscussionBoard(), DiscussionBoardProps, MentorList(), MentorListProps, Avatar, AvatarFallback, AvatarImage (+13 more)
+Nodes (23): Toast, ToastAction, ToastActionElement, ToastClose, ToastDescription, ToastProps, ToastTitle, toastVariants (+15 more)
 
 ### Community 5 - "kcet-2025-round3-cutoffs_2ae825a7.md"
 Cohesion: 0.02
@@ -273,7 +286,7 @@ Nodes (94): Sheet: Table 1, Sheet: Table 10, Sheet: Table 11, Sheet: Table 12, S
 
 ### Community 9 - "Badge"
 Cohesion: 0.06
-Nodes (122): clampMarks(), ComedkRankPredictor(), SHIFT_LABELS, ChoiceSimulator(), QuotaMatrix(), NeetRankPredictor(), 2.2 Key page responsibilities, 4. Complete active route catalogue (+114 more)
+Nodes (102): clampMarks(), ComedkRankPredictor(), SHIFT_LABELS, QuotaMatrix(), 2.2 Key page responsibilities, 4. Complete active route catalogue, 5.2 Counselling and informational surfaces, 5.4 Transport, discovery, and specialist utilities (+94 more)
 
 ### Community 10 - "kcet-2025-round1-cutoffs_ef1e34c7.md"
 Cohesion: 0.02
@@ -295,13 +308,13 @@ Nodes (8): @testing-library/jest-dom@^6.8.0, vite@^5.4.19, @vitejs/plugin-react-
 Cohesion: 0.03
 Nodes (7): allFallbackRaw, cachedChapterData, CHEMISTRY_CHAPTERS, FALLBACK_QUESTIONS, MATHS_CHAPTERS, PHYSICS_CHAPTERS, QuestionFilters
 
-### Community 15 - "CollegeDetail.tsx"
-Cohesion: 0.13
-Nodes (20): CollegeLogo(), CollegeLogoProps, getDomain(), getInitials(), TIER_GRADIENTS, BOUNDS, computeROI(), getArcPath() (+12 more)
+### Community 15 - "react"
+Cohesion: 0.05
+Nodes (99): CollegeComparator(), OptionEntryBuilder(), OptionItem, NeetChoiceSimulatorPage(), CollegeMatchItem, NeetCollegePredictor(), NeetComparePage(), NeetExplorer() (+91 more)
 
 ### Community 16 - "Input"
-Cohesion: 0.08
-Nodes (77): CollegeComparator(), OptionEntryBuilder(), OptionItem, CollegeMatchItem, NeetCollegePredictor(), NeetExplorer(), NeetFeeCalculator(), CATEGORY_PRESETS (+69 more)
+Cohesion: 0.09
+Nodes (66): sonner, AdminAIExtractor(), AdminCollegeEditor(), AdminMusicManager(), extractYouTubeId(), getActiveTracks(), saveActiveTracks(), AdminPollManager() (+58 more)
 
 ### Community 17 - "re"
 Cohesion: 0.04
@@ -309,7 +322,7 @@ Nodes (15): clean_text(), parse_line_based(), clean_latex(), parse_bullet_text()
 
 ### Community 18 - "cn"
 Cohesion: 0.06
-Nodes (52): AccordionContent, AccordionItem, AccordionTrigger, Breadcrumb, BreadcrumbEllipsis(), BreadcrumbItem, BreadcrumbLink, BreadcrumbList (+44 more)
+Nodes (51): AccordionContent, AccordionItem, AccordionTrigger, Breadcrumb, BreadcrumbEllipsis(), BreadcrumbItem, BreadcrumbLink, BreadcrumbList (+43 more)
 
 ### Community 19 - "rebuild_kcet_final.py"
 Cohesion: 0.05
@@ -320,8 +333,8 @@ Cohesion: 0.06
 Nodes (23): extract_sheet(), find_college_code(), generate_id(), is_category_header(), main(), parse_course(), parse_filename(), process_file() (+15 more)
 
 ### Community 21 - "CollegeReviewModal.tsx"
-Cohesion: 0.08
-Nodes (45): AdminReviewModeration(), TabMode, CollegeReviewCardProps, CategoryRatingInput(), CollegeReviewModal(), CollegeReviewModalProps, RatingBar(), StarRating() (+37 more)
+Cohesion: 0.14
+Nodes (29): CollegeReviewCardProps, CategoryRatingInput(), CollegeReviewModal(), CollegeReviewModalProps, RatingBar(), StarRating(), College, CollegeReview (+21 more)
 
 ### Community 22 - "kcet-2024-mock-round1-cutoffs_5a3766c2.md"
 Cohesion: 0.04
@@ -356,8 +369,8 @@ Cohesion: 0.04
 Nodes (51): Sheet: Table 1, Sheet: Table 10, Sheet: Table 11, Sheet: Table 12, Sheet: Table 13, Sheet: Table 14, Sheet: Table 15, Sheet: Table 16 (+43 more)
 
 ### Community 30 - "katex"
-Cohesion: 0.18
-Nodes (7): katex@^0.18.6, react-dom@^18.3.1, katex, react-dom, parts, text, questions
+Cohesion: 0.29
+Nodes (5): katex@^0.18.6, katex, parts, text, questions
 
 ### Community 31 - "kcet-2024-round3(extended)-cutoffs_c483affa.md"
 Cohesion: 0.04
@@ -377,7 +390,7 @@ Nodes (45): Sheet: Table 1, Sheet: Table 10, Sheet: Table 11, Sheet: Table 12, S
 
 ### Community 35 - "package.json"
 Cohesion: 0.03
-Nodes (109): dependencies, clsx@^2.1.1, cmdk@^1.1.1, date-fns@^3.6.0, dompurify@^3.2.7, embla-carousel-react@^8.6.0, fflate@^0.8.3, framer-motion@^12.29.0 (+101 more)
+Nodes (110): dependencies, clsx@^2.1.1, date-fns@^3.6.0, dompurify@^3.2.7, embla-carousel-react@^8.6.0, fflate@^0.8.3, framer-motion@^12.29.0, @google/generative-ai@^0.24.1 (+102 more)
 
 ### Community 36 - "kcet-2023-round3(extended)-cutoffs_454a4f58.md"
 Cohesion: 0.04
@@ -404,44 +417,44 @@ Cohesion: 0.04
 Nodes (44): Sheet: Table 1, Sheet: Table 10, Sheet: Table 11, Sheet: Table 12, Sheet: Table 13, Sheet: Table 14, Sheet: Table 15, Sheet: Table 16 (+36 more)
 
 ### Community 42 - "XLSXLoader"
-Cohesion: 0.07
-Nodes (29): 1. Load All XLSX Files Automatically, 2. Load Single XLSX File from Server, 3. Integration with Existing Components, Advanced Features, Automatic XLSX Reading Implementation, Browser Compatibility, Common Issues, Conclusion (+21 more)
+Cohesion: 0.06
+Nodes (32): XLSXData, XLSXLoader, 1. Load All XLSX Files Automatically, 2. Load Single XLSX File from Server, 3. Integration with Existing Components, Advanced Features, Automatic XLSX Reading Implementation, Browser Compatibility (+24 more)
 
 ### Community 43 - "ref_path"
-Cohesion: 0.03
-Nodes (44): filePath, __dirname, __filename, __dirname, __filename, __dirname, __filename, __dirname (+36 more)
+Cohesion: 0.04
+Nodes (31): __dirname, __filename, __dirname, __filename, __dirname, __filename, __dirname, __filename (+23 more)
 
 ### Community 44 - "KCETCoded: Strategic Growth, SEO, Financial Economics & Student-First Impact Proposal"
 Cohesion: 0.05
 Nodes (43): 10. Institutional Brand ROI & Direct Admissions Pipeline for SVIT, 11. Traditional Advertising vs. KCETCoded Sponsorship Economics, 12. Comprehensive Business Model & Sustainable Unit Economics, 13. Academic Accreditation & Institutional Dividends, 14. Implementation Roadmap, Governance & SLA Framework, 15. Actionable Next Steps & Formal Onboarding, 1. Executive Summary, 1. Programmatic SEO URL Structure (+35 more)
 
 ### Community 45 - "sidebar.tsx"
-Cohesion: 0.10
-Nodes (34): AppSidebar(), getKcetSections(), getKseabSections(), NavItem, NavSection, SidebarNavItem(), CollegeSidebar(), LiveVisitorCounterProps (+26 more)
+Cohesion: 0.11
+Nodes (33): AppSidebar(), getKcetSections(), getKseabSections(), NavItem, NavSection, SidebarNavItem(), CollegeSidebar(), Separator (+25 more)
 
 ### Community 46 - "cutoff-predictor.ts"
 Cohesion: 0.11
-Nodes (40): normalizeCourseName(), backtestAccuracy(), branchCatRoundKey(), BranchOption, buildIndex(), CANDIDATE_COUNTS, collegeBranchRoundKey(), CollegeOption (+32 more)
+Nodes (39): backtestAccuracy(), branchCatRoundKey(), BranchOption, buildIndex(), CANDIDATE_COUNTS, collegeBranchRoundKey(), CollegeOption, collegeRoundKey() (+31 more)
 
 ### Community 47 - "AdminSuggestionsService"
-Cohesion: 0.13
-Nodes (3): GlobalDonationPopup(), PresenceAndBlockProvider(), AdminSuggestionsService
+Cohesion: 0.15
+Nodes (3): PresenceAndBlockProvider(), AdminSuggestionsService, AdminSystemSettingsSection()
 
 ### Community 48 - "AdminCutoffs"
-Cohesion: 0.08
-Nodes (13): AdminCutoffEntry, AdminCutoffService, AdminOperation, makeKey(), AdminFeedbackService, RankFeedbackEntry, CutoffData, CutoffQueryFilter (+5 more)
+Cohesion: 0.10
+Nodes (12): AdminCutoffEntry, AdminCutoffService, AdminOperation, makeKey(), CutoffData, CutoffQueryFilter, MockAllotmentResult, DataVault (+4 more)
 
-### Community 49 - "CollegeCompare.tsx"
-Cohesion: 0.29
-Nodes (10): recharts, CATEGORIES, CutoffData, CutoffTrendsProps, cleanCourseName(), CollegeCompare(), getCourseKey(), getRoundDisplayName() (+2 more)
+### Community 49 - "round-drift-predictor.ts"
+Cohesion: 0.14
+Nodes (25): branchCatKey(), BranchOption, buildDriftIndex(), checkRoundEligibility(), coefficientOfVariation(), CollegeOption, comboKey(), DriftEvidence (+17 more)
 
 ### Community 50 - "📰 News Automation System"
-Cohesion: 0.06
-Nodes (31): 1. Basic News Fetching, 1. Basic Setup (Reddit Only), **1. Reddit Integration (Recommended)**, **2. Advanced Multi-Source Integration**, 2. Advanced Setup (Multi-source), 2. Webhook Server (Real-time updates), **3. GitHub Actions (Automatic Daily Updates)**, 3. GitHub Actions Setup (+23 more)
+Cohesion: 0.08
+Nodes (26): 1. Basic News Fetching, **1. Reddit Integration (Recommended)**, **2. Advanced Multi-Source Integration**, 2. Webhook Server (Real-time updates), **3. GitHub Actions (Automatic Daily Updates)**, **4. Webhook Server (Real-time)**, 🔄 Automation Options, 📋 Available Solutions (+18 more)
 
 ### Community 51 - "Donate.tsx"
-Cohesion: 0.22
-Nodes (20): PAGE_INFO, PageDetails, ResourceLimitModal(), AuthContext, AuthContextType, AuthProvider(), UserProfile, fetchProStatusFromCloud() (+12 more)
+Cohesion: 0.21
+Nodes (21): PAGE_INFO, PageDetails, ResourceLimitModal(), AuthContext, AuthContextType, AuthProvider(), UserProfile, fetchProStatusFromCloud() (+13 more)
 
 ### Community 52 - "collections"
 Cohesion: 0.08
@@ -464,16 +477,16 @@ Cohesion: 0.11
 Nodes (30): ActivityCategory, DailyTask, EngagementState, generateDailyTasks(), getDefaultState(), getEngagementState(), getTodayStr(), getYesterdayStr() (+22 more)
 
 ### Community 57 - "OFFICIAL_PROJECT_DOCUMENTATION.md"
-Cohesion: 0.06
-Nodes (33): 10.1 API rules, 10. Serverless API reference, 12. AI and external-service integrations, 13. Configuration and environment variables, 14.1 Vercel configuration, 14.2 PWA and static assets, 14.3 Analytics, 14. Hosting, headers, PWA, SEO, and analytics (+25 more)
+Cohesion: 0.20
+Nodes (9): 10.1 API rules, 10. Serverless API reference, 12. AI and external-service integrations, 13. Configuration and environment variables, 18. Incident response, 19. Known limitations and required remediation, 20. Ownership and change management, 3. Technology stack (+1 more)
 
 ### Community 58 - "ThreadDetailPage.tsx"
-Cohesion: 0.21
-Nodes (27): CreateThreadModalProps, ThreadCardProps, ThreadDetailModalProps, useAuth(), addReplyToPost(), broadcastForumUpdate(), checkIsAdmin(), createForumPost() (+19 more)
+Cohesion: 0.20
+Nodes (28): AdminForumControlSection(), CreateThreadModalProps, ThreadCard(), ThreadCardProps, ThreadDetailModalProps, addReplyToPost(), broadcastForumUpdate(), checkIsAdmin() (+20 more)
 
 ### Community 59 - "mock-simulator.ts"
-Cohesion: 0.11
-Nodes (30): cleanCourseName(), INVALID_COURSE_NOISE, NORMALIZE_COURSE, CANONICAL_COURSES, COURSE_PATTERNS, getCanonicalCourseKey(), getUniqueCourses(), isSameCourse() (+22 more)
+Cohesion: 0.09
+Nodes (36): cleanCourseName(), getCourseCategoryGroup(), INVALID_COURSE_NOISE, NORMALIZE_COURSE, normalizeCourseName(), CANONICAL_COURSES, COURSE_PATTERNS, getCanonicalCourseKey() (+28 more)
 
 ### Community 60 - "8.4 Page-by-page documentation"
 Cohesion: 0.07
@@ -488,12 +501,12 @@ Cohesion: 0.07
 Nodes (15): ALL_CATEGORIES, CATEGORY_LABELS, CollegeInfo, DENTAL_COLLEGES, DENTAL_FINAL_CUTOFFS, DENTAL_MOCK_CUTOFFS, FEE_BY_CODE, FEE_STRUCTURE (+7 more)
 
 ### Community 63 - "KCETCoded"
-Cohesion: 0.06
-Nodes (32): 11. Script Reference, 12. Admin and Operations, 13. Security, Privacy, and Trust, 14. Known Limitations and Caveats, 15. Roadmap Direction, 16. Additional Documentation, 17. Contributing, 18. License (+24 more)
+Cohesion: 0.09
+Nodes (23): 11. Script Reference, 12. Admin and Operations, 13. Security, Privacy, and Trust, 14. Known Limitations and Caveats, 15. Roadmap Direction, 16. Additional Documentation, 17. Contributing, 18. License (+15 more)
 
 ### Community 64 - "MobileNav.tsx"
-Cohesion: 0.27
-Nodes (9): DockIcon(), DockItem, dockItems, FloatingActionButton(), getFabActions(), MobileDock(), MoreItem, moreItems (+1 more)
+Cohesion: 0.21
+Nodes (11): DockIcon(), DockItem, FloatingActionButton(), getFabActions(), kcetDockItems, kcetMoreItems, MobileDock(), MoreItem (+3 more)
 
 ### Community 65 - "integrate-extracted-data.mjs"
 Cohesion: 0.10
@@ -516,12 +529,12 @@ Cohesion: 0.14
 Nodes (16): clean_location(), extract_from_pdf(), main(), parse_filename(), clean_location(), extract_from_excel(), main(), parse_filename() (+8 more)
 
 ### Community 70 - "KCETCoded"
-Cohesion: 0.08
-Nodes (25): 10. Regulatory and commercial statements, 11. Commercial model, 12. Governance and responsibility matrix, 13. Company operational procedures, 14. Listing-ready company description, 15. Pre-listing checklist, 16. Reference documents, 1. Company identity (+17 more)
+Cohesion: 0.10
+Nodes (20): 10. Regulatory and commercial statements, 11. Commercial model, 12. Governance and responsibility matrix, 14. Listing-ready company description, 15. Pre-listing checklist, 16. Reference documents, 1. Company identity, 2. Company overview (+12 more)
 
 ### Community 71 - "gemini.ts"
-Cohesion: 0.14
-Nodes (23): RecommendationCardData, matchCollegeFromDatabase(), matchesCourseBranch(), normalizeCourseText(), parseQueryForTools(), StudentProfileFilters, ToolResult, buildActionChips() (+15 more)
+Cohesion: 0.15
+Nodes (22): RecommendationCardData, matchCollegeFromDatabase(), matchesCourseBranch(), normalizeCourseText(), StudentProfileFilters, ToolResult, buildActionChips(), cleanAiResponse() (+14 more)
 
 ### Community 72 - "check-result.ts"
 Cohesion: 0.11
@@ -544,16 +557,16 @@ Cohesion: 0.33
 Nodes (6): 16.1 Prerequisites, 16.2 Local setup, 16.3 Package-script reference, 16.4 Current test posture, 16.5 Required quality gates, 16. Development, testing, and quality assurance
 
 ### Community 77 - "ai-tools.ts"
-Cohesion: 0.13
-Nodes (20): KCET_FAQ_DATABASE, KCETFAQItem, searchKCETFAQ(), ALIAS_MAP, cleanStr(), CutoffEntry, executeToolsForQuery(), GENERIC_COLLEGE_WORDS (+12 more)
+Cohesion: 0.14
+Nodes (22): KCET_FAQ_DATABASE, KCETFAQItem, searchKCETFAQ(), ALIAS_MAP, cleanStr(), CutoffEntry, executeToolsForQuery(), GENERIC_COLLEGE_WORDS (+14 more)
 
 ### Community 78 - "rank-predictor.ts"
-Cohesion: 0.14
-Nodes (21): toolPredictRank(), calculatePercentile(), calibratedRankTable2025, cutoffEstimates2025, getCompetitionLevel(), getPercentile(), getRankAnalysis(), getRankBand() (+13 more)
+Cohesion: 0.10
+Nodes (35): TabsContent, TabsList, TabsTrigger, calculatePercentile(), calibratedRankTable2025, calibratedRankTable2026, cutoffEstimates2025, cutoffEstimates2027 (+27 more)
 
 ### Community 79 - "MusicPlayer.tsx"
-Cohesion: 0.21
-Nodes (13): getActiveTracks(), defaults, ensureYTApi(), load(), MusicPlayer(), QualityOption, save(), Saved (+5 more)
+Cohesion: 0.22
+Nodes (12): defaults, ensureYTApi(), load(), MusicPlayer(), QualityOption, save(), Saved, ytReadyCbs (+4 more)
 
 ### Community 80 - "fetch-news.mjs"
 Cohesion: 0.48
@@ -592,7 +605,7 @@ Cohesion: 0.11
 Nodes (18): 1. Scope and baseline, 2.1 Client modules, 2. Application composition, 3.1 AI functions, 3.2 Payment functions, 3.3 Result-check function, 3.4 Social endpoints, 3. API implementation notes (+10 more)
 
 ### Community 89 - "extract-pyq-ocr.mjs"
-Cohesion: 0.15
+Cohesion: 0.14
 Nodes (12): pdfjs-dist@^5.4.149, tesseract.js@^7.0.0, pdfjs-dist, tesseract.js, __dirname, main(), __dirname, extractPageImages() (+4 more)
 
 ### Community 90 - "compilerOptions"
@@ -607,37 +620,37 @@ Nodes (16): aliases, components, hooks, lib, ui, utils, rsc, $schema (+8 more)
 Cohesion: 0.12
 Nodes (16): background_color, categories, description, display, icons, lang, name, orientation (+8 more)
 
-### Community 93 - "test_extract_vision.mjs"
-Cohesion: 0.10
-Nodes (8): lines, points, CATEGORIES, PRESIDENCY_R2_DATA, CATEGORIES, PRESIDENCY_R3_DATA, lines, results
+### Community 93 - "parse-comedk.js"
+Cohesion: 0.21
+Nodes (4): lines, points, CATEGORIES, PRESIDENCY_R2_DATA
 
 ### Community 94 - "steps"
 Cohesion: 0.12
 Nodes (15): jobs, update-news, name, cron, name, run, uses, with (+7 more)
 
 ### Community 95 - "PopupService"
-Cohesion: 0.33
+Cohesion: 0.30
 Nodes (5): DEFAULT_INITIAL_POPUPS, formatPopupsList(), PopupService, PopupType, SitePopup
 
 ### Community 96 - "CutoffClash.tsx"
-Cohesion: 0.19
-Nodes (15): buildGamePool(), CATEGORY_PRIORITY, cleanCourseDisplay(), CollegeCard, COLOR_POOL, DATA_URLS, getRandomPair(), hashString() (+7 more)
+Cohesion: 0.20
+Nodes (16): buildGamePool(), CATEGORY_PRIORITY, cleanCourseDisplay(), CollegeCard, COLOR_POOL, CutoffClash(), DATA_URLS, getRandomPair() (+8 more)
 
 ### Community 97 - "compilerOptions"
 Cohesion: 0.12
 Nodes (15): compilerOptions, allowImportingTsExtensions, isolatedModules, lib, module, moduleDetection, moduleResolution, noEmit (+7 more)
 
 ### Community 98 - "KCETCoded"
-Cohesion: 0.09
-Nodes (23): 12.1 Trust-positive choices, 12.2 Review protection logic, 12.3 Weak or limited security areas, 12. Security, Privacy, and Trust Model, 14. Pros: What KCETCoded Does Very Well, 15. Cons, Limitations, and Weak Spots, 16. Future Prospects, 17. Final Assessment (+15 more)
+Cohesion: 0.11
+Nodes (19): 14. Pros: What KCETCoded Does Very Well, 15. Cons, Limitations, and Weak Spots, 16. Future Prospects, 17. Final Assessment, 18. Maintenance Notes for Contributors, 1. What This Document Is, 2. Executive Summary, 3.1 Why this project exists (+11 more)
 
 ### Community 99 - "merge_missing_into_master.mjs"
 Cohesion: 0.25
 Nodes (14): buildStats(), canonicalize(), clean(), CSV_SOURCES, dedupeKey(), JSON_SOURCES, main(), MOTHER_FILE (+6 more)
 
-### Community 100 - "XLSXLoader"
-Cohesion: 0.23
-Nodes (3): XLSXData, XLSXLoader, XLSXLoader Class
+### Community 100 - "college-service.ts"
+Cohesion: 0.20
+Nodes (19): AdminReviewModeration(), TabMode, deleteFromLocalStorage(), deleteReviewFromSupabase(), dismissReport(), getAllReviewsForAdmin(), getCollegesWithReviews(), getReviewReports() (+11 more)
 
 ### Community 101 - "KCETCoded Platform Documentation"
 Cohesion: 0.13
@@ -664,8 +677,8 @@ Cohesion: 0.25
 Nodes (13): ALL_CATEGORIES, cleanText(), __dirname, extractFromSheet(), __filename, findCategoryHeaderRow(), findCourseColumn(), findInstituteInfo() (+5 more)
 
 ### Community 107 - "client.ts"
-Cohesion: 0.27
-Nodes (6): PresenceAndBlockContext, PresenceAndBlockContextValue, supabase, ActualRankSubmission, SiteShutdownConfig, SuggestionEntry
+Cohesion: 0.33
+Nodes (4): PresenceAndBlockContext, PresenceAndBlockContextValue, SiteShutdownConfig, SuggestionEntry
 
 ### Community 108 - "carousel.tsx"
 Cohesion: 0.19
@@ -699,17 +712,17 @@ Nodes (11): cleanText(), COLLEGE_MAP, detectCategory(), detectCollegeCodes(), __
 Cohesion: 0.32
 Nodes (11): CATEGORY_MAPPING, cleanCourseNameFinalPush(), cleanText(), determineYearAndRoundFinalPush(), __dirname, extractCollegeInfoFinalPush(), extractFromExcelFinalPush(), __filename (+3 more)
 
-### Community 116 - "toast.tsx"
-Cohesion: 0.29
-Nodes (10): Toast, ToastAction, ToastActionElement, ToastClose, ToastDescription, ToastProps, ToastTitle, toastVariants (+2 more)
+### Community 116 - "DiscussionBoard.tsx"
+Cohesion: 0.15
+Nodes (15): Comment, DiscussionBoard(), DiscussionBoardProps, Avatar, AvatarFallback, AvatarImage, DropdownMenuCheckboxItem, DropdownMenuContent (+7 more)
 
 ### Community 117 - "CollegePredictor.tsx"
 Cohesion: 0.10
-Nodes (28): AdUnit(), AdUnitProps, Command, CommandDialog(), CommandDialogProps, CommandEmpty, CommandGroup, CommandInput (+20 more)
+Nodes (32): sizeMap, TesselAvatar(), TesselAvatarProps, Command, CommandDialog(), CommandDialogProps, CommandEmpty, CommandGroup (+24 more)
 
 ### Community 118 - "CollegeCutoffs.tsx"
-Cohesion: 0.27
-Nodes (11): cleanCourseName(), CollegeMatrix(), CollegeMatrixProps, CutoffData, getCategoryColor(), getCourseKey(), getRoundDisplayName(), normalizeRound() (+3 more)
+Cohesion: 0.20
+Nodes (16): 5.1 Admission and college intelligence, 5.3 Community and engagement surfaces, 5.5 Administrative tooling, 5. Feature and page inventory, cleanCourseName(), CollegeCutoffs(), CollegeMatrix(), CollegeMatrixProps (+8 more)
 
 ### Community 119 - "extract-cutoffs.mjs"
 Cohesion: 0.16
@@ -743,13 +756,13 @@ Nodes (10): 1. Local setup, 2. Release checklist, 3. Production smoke check, 4. 
 Cohesion: 0.27
 Nodes (7): createIcoFromPngs(), generateMasterSvg(), main(), publicDir, buildAll(), generateMasterSvg(), publicDir
 
-### Community 127 - "xlsx"
-Cohesion: 0.09
-Nodes (27): xlsx@^0.18.5, xlsx, examineExcel(), main(), __dirname, examineExcelStructure(), __filename, main() (+19 more)
+### Community 127 - "extract-excel-structured.mjs"
+Cohesion: 0.29
+Nodes (10): CATEGORY_MAPPING, determineRound(), __dirname, extractCollegeInfo(), extractFromExcel(), extractYear(), __filename, findHeaderRow() (+2 more)
 
-### Community 128 - "MockSimulator.tsx"
-Cohesion: 0.08
-Nodes (54): jspdf, sonner, CounselorRecommendationCard(), CounselorRecommendationCardProps, DonationCertificateModal(), DonationCertificateModalProps, ThreadDetailModal(), Layout() (+46 more)
+### Community 128 - "Layout.tsx"
+Cohesion: 0.17
+Nodes (14): GlobalDonationPopup(), Layout(), LayoutProps, SidebarHint(), SidebarProvider, SidebarTrigger, StoredUserProfile, applyRuntimeSettings() (+6 more)
 
 ### Community 129 - "extract_2026_precise.py"
 Cohesion: 0.36
@@ -791,17 +804,17 @@ Nodes (4): canvas@^3.2.1, sizes, sizes, canvas
 Cohesion: 0.25
 Nodes (8): 7.1 Layout and navigation, 7.2 Standalone pages outside the main shell, 7.3 Settings and personalization, 7.4 Keyboard and discovery features, 7.5 Countdown and urgency framing, 7.6 SEO, analytics, and social sharing, 7.7 PWA posture, 7. Global Product Experience
 
-### Community 141 - "create-clean-dataset.mjs"
-Cohesion: 0.40
-Nodes (9): cleanText(), __dirname, extractRoundFromFilename(), extractYearFromFilename(), __filename, main(), parseExcelFile(), parseExcelFile2023_2024() (+1 more)
+### Community 141 - "xlsx"
+Cohesion: 0.16
+Nodes (17): xlsx@^0.18.5, xlsx, cleanText(), __dirname, extractRoundFromFilename(), extractYearFromFilename(), __filename, main() (+9 more)
 
 ### Community 142 - "fetch-kcet-news.mjs"
 Cohesion: 0.36
 Nodes (7): fetchEducationNews(), fetchRedditKCETPosts(), KCET_REDDIT_SOURCES, main(), NEWS_SOURCES, saveNews(), STATIC_KCET_NEWS
 
-### Community 143 - "collegeDatabase.ts"
-Cohesion: 0.12
-Nodes (15): missingCodes, dbCodes, missingInDb, nullFieldsCount, rawCodes, _collegeMap, generateCollegeDetails(), getCollegeInfo() (+7 more)
+### Community 143 - "test-db-count.ts"
+Cohesion: 0.29
+Nodes (6): dbCodes, missingInDb, nullFieldsCount, rawCodes, RAW_COLLEGES_LIST, RawCollege
 
 ### Community 144 - "getQuestionPool"
 Cohesion: 0.25
@@ -816,8 +829,8 @@ Cohesion: 0.38
 Nodes (3): execAsync, server, updateNews()
 
 ### Community 147 - "refresh-news.mjs"
-Cohesion: 0.27
-Nodes (9): mergeDataSources(), normalizeCourseName(), normalizeCutoffEntry(), normalizeInstituteName(), fetchEducationNews(), fetchRedditPosts(), main(), REDDIT_SUBREDDITS (+1 more)
+Cohesion: 0.53
+Nodes (5): fetchEducationNews(), fetchRedditPosts(), main(), REDDIT_SUBREDDITS, saveNews()
 
 ### Community 148 - "pyqPdfManifest.ts"
 Cohesion: 0.33
@@ -835,13 +848,17 @@ Nodes (5): calculateNeetPrediction(), NeetPredictionResult, predictKarnatakaStat
 Cohesion: 0.33
 Nodes (5): 1. `neethub/`, 2. `comedk/`, Archived Features: NEET Hub & COMEDK, Directory Structure, How to Restore
 
-### Community 152 - "pages/CutoffExplorer.tsx"
-Cohesion: 0.11
-Nodes (25): SidebarProvider, useIsMobile(), Course, COURSE_CODE_TO_NAME, COURSE_NAME_TO_CODE, COURSES, getTrustMeta(), hasPdfReference() (+17 more)
+### Community 152 - "courses.ts"
+Cohesion: 0.29
+Nodes (4): Course, COURSE_CODE_TO_NAME, COURSE_NAME_TO_CODE, COURSES
 
 ### Community 153 - "9. Data Architecture and Core Logic"
 Cohesion: 0.33
 Nodes (6): 9.1 Main source-of-truth flow, 9.2 The cutoff dataset, 9.3 Data provenance and trust mechanics, 9.4 Business-logic modules that define the product, 9.5 Shared data versus browser-local data, 9. Data Architecture and Core Logic
+
+### Community 154 - "FeatureRequestService"
+Cohesion: 0.21
+Nodes (3): AdminFeedbackService, RankFeedbackEntry, FeatureRequestService
 
 ### Community 155 - "I got so fed up with KEA's website and PDFs that I built my own KCET platform (Free & Open Source)"
 Cohesion: 0.33
@@ -859,9 +876,9 @@ Nodes (5): cleanCutoffsData(), cleanInstituteName(), extractInstituteCode(), mai
 Cohesion: 0.25
 Nodes (8): 4.1 Admission intelligence, 4.2 Planning and execution support, 4.3 Knowledge and guidance, 4.4 Community and quality loops, 4.5 Practice and engagement, 4.6 Labs and practical decision surfaces, 4.7 Platform layer, 4. Feature Atlas
 
-### Community 159 - "drawer.tsx"
-Cohesion: 0.29
-Nodes (6): DrawerContent, DrawerDescription, DrawerFooter(), DrawerHeader(), DrawerOverlay, DrawerTitle
+### Community 159 - "extract-2025-excel.mjs"
+Cohesion: 0.31
+Nodes (9): CATEGORY_MAPPING, determineRound(), __dirname, extractCollegeInfo2025(), extractFromExcel2025(), __filename, findHeaderRow2025(), main() (+1 more)
 
 ### Community 160 - "og.tsx"
 Cohesion: 0.40
@@ -871,9 +888,9 @@ Nodes (3): config, @vercel/og@^0.11.1, @vercel/og
 Cohesion: 0.33
 Nodes (6): 10.1 Prerequisites, 10.2 Install, 10.3 Environment setup, 10.4 Run locally, 10.5 Build and preview, 10. Local Development
 
-### Community 162 - "scrape_full_reddit_kcet.mjs"
-Cohesion: 0.60
-Nodes (4): fetchJson(), harvestMultiSubreddit(), RAW_OUTPUT, sleep()
+### Community 162 - "15. Security, privacy, and governance assessment"
+Cohesion: 0.33
+Nodes (6): 15.1 Data inventory, 15.2 Trust boundaries, 15.3 Controls visible in the repository, 15.4 Material findings, 15.5 Required operating rules, 15. Security, privacy, and governance assessment
 
 ### Community 163 - "sonner.tsx"
 Cohesion: 0.40
@@ -887,9 +904,9 @@ Nodes (5): 11.1 What the script layer does, 11.2 Script categories visible in th
 Cohesion: 0.40
 Nodes (5): 13.1 Build and run model, 13.2 `vercel.json` posture, 13.3 Manifest and service worker reality, 13.4 Testing posture, 13. Deployment, Performance, and Operational Posture
 
-### Community 166 - "check-institutes.cjs"
-Cohesion: 0.33
-Nodes (5): data, dataPath, institutes, rawData, sortedInstitutes
+### Community 166 - "ref_path"
+Cohesion: 0.05
+Nodes (30): filePath, data, dataPath, institutes, rawData, sortedInstitutes, sizes, mergeDataSources() (+22 more)
 
 ### Community 167 - "fetch-news-advanced.mjs"
 Cohesion: 0.39
@@ -903,9 +920,9 @@ Nodes (5): 1. Add More Sources, 2. Content Filtering, 3. Image Enhancement, 4. N
 Cohesion: 0.50
 Nodes (4): env, envText, extractQuestionsFromImage(), main()
 
-### Community 170 - "reddit-tools.ts"
-Cohesion: 0.47
-Nodes (5): toolQueryRedditReviews(), formatInsightsForAI(), loadRedditInsights(), RedditInsight, searchRedditInsights()
+### Community 170 - "13. Company operational procedures"
+Cohesion: 0.40
+Nodes (5): 13. Company operational procedures, Data release, Incident response, Product release, Vendor management
 
 ### Community 171 - "blog.ts"
 Cohesion: 0.40
@@ -915,9 +932,9 @@ Nodes (4): BlogAuthor, BlogCategory, BlogPost, BlogTocItem
 Cohesion: 0.50
 Nodes (3): KARNATAKA_MEDICAL_COLLEGES, NEET_CATEGORY_LIST, NeetCollegeRecord
 
-### Community 173 - "createRawList.cjs"
+### Community 173 - "🛠️ Setup Instructions"
 Cohesion: 0.40
-Nodes (4): colleges, jsonPath, outputPath, rawData
+Nodes (5): 1. Basic Setup (Reddit Only), 2. Advanced Setup (Multi-source), 3. GitHub Actions Setup, 4. Webhook Setup, 🛠️ Setup Instructions
 
 ### Community 174 - "9. Database and Supabase integration"
 Cohesion: 0.50
@@ -935,13 +952,21 @@ Nodes (4): 17.1 General release checklist, 17.2 Production smoke checks, 17.3 Ro
 Cohesion: 0.43
 Nodes (5): Navbar(), Logo(), LogoProps, getSessionId(), PausedNotice()
 
-### Community 179 - "visitor-service.ts"
-Cohesion: 0.39
-Nodes (4): INITIAL_VISITOR_OFFSET, useVisitorCounter(), VisitorService, VisitorStats
+### Community 178 - "6. Data Foundation and Coverage"
+Cohesion: 0.40
+Nodes (5): 6.1 KCET cutoff dataset, 6.2 COMEDK cutoff dataset, 6.3 Additional datasets, 6.4 Data philosophy, 6. Data Foundation and Coverage
+
+### Community 179 - "LiveVisitorCounter.tsx"
+Cohesion: 0.19
+Nodes (7): LiveVisitorCounter(), LiveVisitorCounterProps, TooltipContent, INITIAL_VISITOR_OFFSET, useVisitorCounter(), VisitorService, VisitorStats
+
+### Community 180 - "cross-ref-placements.ts"
+Cohesion: 0.50
+Nodes (3): missingCodes, CollegePlacement, PLACEMENT_DATA
 
 ### Community 184 - "round-drift-predictor.ts"
-Cohesion: 0.08
-Nodes (52): PopoverContent, SelectLabel, SelectSeparator, Slider, isValidCourseName(), backtestRoundDrift(), branchCatKey(), BranchOption (+44 more)
+Cohesion: 0.14
+Nodes (27): PopoverContent, SelectLabel, SelectSeparator, Slider, isValidCourseName(), backtestRoundDrift(), ensureIndex(), get2026ForecastSamples() (+19 more)
 
 ### Community 186 - "CutoffService"
 Cohesion: 0.29
@@ -959,34 +984,66 @@ Nodes (7): ENGINEERING_FEE_STRUCTURE_2026, EngineeringFeeItem, FARM_SCIENCE_FEE_
 Cohesion: 0.50
 Nodes (4): envFile, extractQuestionsWithAI(), main(), supabase
 
+### Community 199 - "14. Hosting, headers, PWA, SEO, and analytics"
+Cohesion: 0.50
+Nodes (4): 14.1 Vercel configuration, 14.2 PWA and static assets, 14.3 Analytics, 14. Hosting, headers, PWA, SEO, and analytics
+
+### Community 200 - "8. Static data, sources, and data pipeline"
+Cohesion: 0.50
+Nodes (4): 8.1 Delivered data, 8.2 Script categories, 8.3 Mandatory data-release procedure, 8. Static data, sources, and data pipeline
+
 ### Community 201 - "1. Product summary and scope"
 Cohesion: 0.40
 Nodes (5): 1.1 What the system is, 1.2 Product domains, 1.3 Product modes, 1.4 What the system must not claim, 1. Product summary and scope
 
-### Community 203 - "pdf-parser.ts"
-Cohesion: 0.33
-Nodes (3): configurePDFJS(), ParsedOption, TextItem
+### Community 202 - "KCETCoded"
+Cohesion: 0.50
+Nodes (4): Contents, Document purpose, KCETCoded, Official Project Documentation
+
+### Community 203 - "Button"
+Cohesion: 0.12
+Nodes (35): ChoiceSimulator(), NeetHub(), NeetRankPredictor(), AdminCollegeEditor(), MentorList(), MentorListProps, CounselorRecommendationCard(), PopupCardContent() (+27 more)
+
+### Community 204 - "12. Security, Privacy, and Trust Model"
+Cohesion: 0.50
+Nodes (4): 12.1 Trust-positive choices, 12.2 Review protection logic, 12.3 Weak or limited security areas, 12. Security, Privacy, and Trust Model
+
+### Community 205 - "2. Vision, Motivation, and Scope"
+Cohesion: 0.50
+Nodes (4): 2. Vision, Motivation, and Scope, Problem framing, Product scope, Why this exists
+
+### Community 208 - "puc-blueprints.ts"
+Cohesion: 0.50
+Nodes (3): BlueprintRow, pucBlueprintsData, SubjectBlueprint
+
+### Community 209 - "metro-colleges.ts"
+Cohesion: 0.50
+Nodes (3): METRO_LINES, MetroCollege, MetroLine
+
+### Community 210 - "7. Core business logic and browser state"
+Cohesion: 0.67
+Nodes (3): 7.1 Main logic modules, 7.2 Browser storage, 7. Core business logic and browser state
 
 ### Community 213 - "bmtc-colleges.ts"
 Cohesion: 0.50
 Nodes (3): BMTC_COLLEGES, BmtcCollege, BmtcRoute
 
 ## Knowledge Gaps
-- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@supabase/supabase-js` connect `ref_fs` to `package.json`, `ai-mass-importer.mjs`, `check-result.ts`, `ref_path`, `client.ts`, `vite.config.ts`, `Donate.tsx`, `reseed_all_cleaned_chapters.mjs`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
+- **Why does `@supabase/supabase-js` connect `ref_fs` to `package.json`, `ref_path`, `ai-mass-importer.mjs`, `check-result.ts`, `ref_path`, `vite.config.ts`, `Input`, `Donate.tsx`, `reseed_all_cleaned_chapters.mjs`?**
+  _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Should `CollegePredictor.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.12917271407837447 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `react` to `CollegePredictor.tsx`, `MockSimulator.tsx`, `hooks/use-toast.ts`, `form.tsx`, `Badge`, `InteractiveEffects.tsx`, `sheet.tsx`, `CollegeDetail.tsx`, `Input`, `cn`, `CollegeReviewModal.tsx`, `pages/CutoffExplorer.tsx`, `drawer.tsx`, `package.json`, `pagination.tsx`, `sidebar.tsx`, `CollegeCompare.tsx`, `Logo`, `Donate.tsx`, `visitor-service.ts`, `round-drift-predictor.ts`, `DailyChallenge.tsx`, `ThreadDetailPage.tsx`, `MobileNav.tsx`, `ErrorBoundary`, `navigation-menu.tsx`, `FeeCalculator.tsx`, `MusicPlayer.tsx`, `PYQTest.tsx`, `CutoffClash.tsx`, `client.ts`, `carousel.tsx`, `toast.tsx`, `CollegePredictor.tsx`, `CollegeCutoffs.tsx`, `chart.tsx`?**
+  _Cohesion score 0.10664682539682539 - nodes in this community are weakly interconnected._
+- **Why does `react` connect `react` to `CollegePredictor.tsx`, `lucide-react`, `Layout.tsx`, `hooks/use-toast.ts`, `form.tsx`, `Badge`, `InteractiveEffects.tsx`, `sheet.tsx`, `Input`, `cn`, `CollegeReviewModal.tsx`, `package.json`, `pagination.tsx`, `sidebar.tsx`, `Logo`, `LiveVisitorCounter.tsx`, `Donate.tsx`, `round-drift-predictor.ts`, `DailyChallenge.tsx`, `ThreadDetailPage.tsx`, `mock-simulator.ts`, `MobileNav.tsx`, `ErrorBoundary`, `navigation-menu.tsx`, `FeeCalculator.tsx`, `Button`, `rank-predictor.ts`, `MusicPlayer.tsx`, `PYQTest.tsx`, `CutoffClash.tsx`, `college-service.ts`, `client.ts`, `carousel.tsx`, `DiscussionBoard.tsx`, `CollegePredictor.tsx`, `CollegeCutoffs.tsx`, `chart.tsx`?**
   _High betweenness centrality (0.060) - this node is a cross-community bridge._
-- **Should `react` be split into smaller, more focused modules?**
-  _Cohesion score 0.04937400811144419 - nodes in this community are weakly interconnected._
-- **Why does `xlsx` connect `xlsx` to `package.json`, `XLSXLoader`, `extract-2023-2024-ultra.mjs`, `extract-2023-2024-aggressive.mjs`, `extract-2023-2024-final.mjs`, `extract-2023-2024-precise.mjs`, `extract-xlsx-comprehensive.mjs`, `create-clean-dataset.mjs`, `extract-2023-2024-excel.mjs`, `extract-all-data-aggressive.mjs`, `extract-all-excel.mjs`, `xlsx`, `extract-cutoffs.mjs`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **Should `lucide-react` be split into smaller, more focused modules?**
+  _Cohesion score 0.07948717948717948 - nodes in this community are weakly interconnected._
+- **Why does `xlsx` connect `xlsx` to `package.json`, `extract-2023-2024-ultra.mjs`, `extract-2023-2024-aggressive.mjs`, `extract-2023-2024-final.mjs`, `extract-2023-2024-precise.mjs`, `extract-xlsx-comprehensive.mjs`, `XLSXLoader`, `extract-2023-2024-excel.mjs`, `extract-all-data-aggressive.mjs`, `extract-all-excel.mjs`, `xlsx`, `extract-cutoffs.mjs`, `extract-excel-structured.mjs`, `extract-2025-excel.mjs`?**
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
 - **Should `os` be split into smaller, more focused modules?**
   _Cohesion score 0.02731067382230173 - nodes in this community are weakly interconnected._
 - **Should `json` be split into smaller, more focused modules?**

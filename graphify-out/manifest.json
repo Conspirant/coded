@@ -3138,8 +3138,8 @@
     "semantic_hash": ""
   },
   "src/components/Layout.tsx": {
-    "mtime": 1788617770.7157834,
-    "seen": 1792840610.583093,
+    "mtime": 1792857810.7249048,
+    "seen": 1792861497.1516695,
     "ast_hash": "0d251c3b7d037c799b8d5dfbad0199ec",
     "semantic_hash": ""
   },
@@ -3156,9 +3156,9 @@
     "semantic_hash": ""
   },
   "src/components/MobileNav.tsx": {
-    "mtime": 1788617722.2544253,
-    "seen": 1792840610.5830977,
-    "ast_hash": "f0ae13ddeeed11fe878d5bf5bde45078",
+    "mtime": 1792856805.6949096,
+    "seen": 1792861497.1519482,
+    "ast_hash": "f20a77cc1b0607bce05c61d26164dcfc",
     "semantic_hash": ""
   },
   "src/components/MusicPlayer.tsx": {
@@ -4404,9 +4404,9 @@
     "semantic_hash": ""
   },
   "src/lib/rank-predictor.ts": {
-    "mtime": 1782806037.0,
-    "seen": 1792840610.5835934,
-    "ast_hash": "f2cb3b4ac024ffb8a1b197947b8d18b9",
+    "mtime": 1792861853.9361658,
+    "seen": 1792861985.1502125,
+    "ast_hash": "ec9a5611ad758dd3f1f6a5a013e2bb61",
     "semantic_hash": ""
   },
   "src/lib/reddit-tools.ts": {
@@ -4728,21 +4728,21 @@
     "semantic_hash": ""
   },
   "src/pages/PucHub.tsx": {
-    "mtime": 1792848602.7097838,
-    "seen": 1792848822.0504813,
-    "ast_hash": "154e029fa759f35b1f65bf6dca3af87c",
+    "mtime": 1792856838.2529905,
+    "seen": 1792861497.1896913,
+    "ast_hash": "89435c3da1922beff3ea70a36390bdf5",
     "semantic_hash": ""
   },
   "src/pages/PucPages.tsx": {
-    "mtime": 1792854483.0699756,
-    "seen": 1792854659.1729674,
-    "ast_hash": "4d78d1df8965e3be6e64dfbc2c6bc16f",
+    "mtime": 1792857065.6859076,
+    "seen": 1792861497.1896942,
+    "ast_hash": "7bd4193349c8f6a828683f2b81c06c3b",
     "semantic_hash": ""
   },
   "src/pages/RankPredictor.tsx": {
-    "mtime": 1791663328.3589778,
-    "seen": 1792840610.5837042,
-    "ast_hash": "d4103bd956110be7cd22e6a9c0a0fdac",
+    "mtime": 1792861836.210799,
+    "seen": 1792861985.1892366,
+    "ast_hash": "7314e0a46bc1e616e3a9634c30f36874",
     "semantic_hash": ""
   },
   "src/pages/Reviews.tsx": {
@@ -7781,34 +7781,400 @@
     "ast_hash": "30adbfa8bbf0382da2b417bbf987ce62",
     "semantic_hash": ""
   },
-  "math_q_cropped.png": {
-    "mtime": 1792844372.0726185,
-    "seen": 1792846117.6466227,
-    "ast_hash": "f0a3a55c46a2b0309ffcb237ae4efec2",
-    "semantic_hash": ""
-  },
-  "page_5_test.png": {
-    "mtime": 1792844314.4510677,
-    "seen": 1792846117.646633,
-    "ast_hash": "99e016f2eaf35ab3019512b44e08b082",
-    "semantic_hash": ""
-  },
-  "page_q22_test.png": {
-    "mtime": 1792844322.0954926,
-    "seen": 1792846117.6466413,
-    "ast_hash": "837d70f2b4a73f7e03194f2ddc7516d9",
-    "semantic_hash": ""
-  },
   "src/components/PdfViewerModal.tsx": {
-    "mtime": 1792856253.6805103,
-    "seen": 1792856336.97904,
-    "ast_hash": "27180c0f65715d1812db129074a43e3c",
+    "mtime": 1792859892.4930036,
+    "seen": 1792861497.1527848,
+    "ast_hash": "9e81330547661395d69f6007c227c8f6",
     "semantic_hash": ""
   },
   "src/lib/download-helper.ts": {
     "mtime": 1792854119.3486497,
     "seen": 1792854659.1026554,
     "ast_hash": "b50774de3e47f29326665ed0fea4b30e",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/2021-22/KSEAB_2ndPUC_Chemistry_2021-22_MQP_01_Blueprint.pdf": {
+    "mtime": 1792837947.0832865,
+    "seen": 1792861497.2168267,
+    "ast_hash": "cd7114d3d990d0b97f38344d1da581dd",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/2021-22/KSEAB_2ndPUC_Mathematics_2021-22_MQP_01.pdf": {
+    "mtime": 1792837938.1406498,
+    "seen": 1792861497.2168305,
+    "ast_hash": "5d91e3053adb8369dfcd6ca6bb7857a5",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/2021-22/KSEAB_2ndPUC_Physics_2021-22_MQP_01.pdf": {
+    "mtime": 1792837941.5397453,
+    "seen": 1792861497.216833,
+    "ast_hash": "3731b347ffd509ff2c375cc43f12a8b4",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Chemistry_2026-27_Official_Blueprint.pdf": {
+    "mtime": 1792840047.0715218,
+    "seen": 1792861497.2168353,
+    "ast_hash": "b1275de36cae9646fa0a1682945718d2",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Chemistry_Practical_Scheme_2025-26.pdf": {
+    "mtime": 1792841272.1829157,
+    "seen": 1792861497.216838,
+    "ast_hash": "11a9a223a4d5d15208b44417f7178e5f",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Chemistry_Question_Bank_2025-26.pdf": {
+    "mtime": 1792841867.5967193,
+    "seen": 1792861497.2168398,
+    "ast_hash": "109258fe17ee69e3c5ef3f2490ab782f",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Mathematics_2026-27_Official_Blueprint.pdf": {
+    "mtime": 1792840052.2301881,
+    "seen": 1792861497.2168417,
+    "ast_hash": "c550e692d677b3ecea3a3197c19ec584",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Mathematics_Question_Bank_2025-26.pdf": {
+    "mtime": 1792841865.961957,
+    "seen": 1792861497.2168443,
+    "ast_hash": "d668648894cadea9d750439bff25fa2e",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Physics_2026-27_Official_Blueprint.pdf": {
+    "mtime": 1792840054.5316954,
+    "seen": 1792861497.2168462,
+    "ast_hash": "10bc7f57104b21ffcab1ea7fe349c702",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Physics_Practical_Scheme_2025-26.pdf": {
+    "mtime": 1792841269.0835574,
+    "seen": 1792861497.2168484,
+    "ast_hash": "b5b676a252eda62aa34e2bd79612c1b6",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/KSEAB_2ndPUC_Physics_Question_Bank_2025-26.pdf": {
+    "mtime": 1792841865.1961994,
+    "seen": 1792861497.2168581,
+    "ast_hash": "d6ea85843b3fac72e2bd0c2a32e1eac9",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2022-23/KSEAB_2ndPUC_Chemistry_2022-23_MQP_2334.pdf": {
+    "mtime": 1792837989.368883,
+    "seen": 1792861497.2168605,
+    "ast_hash": "248c5d6acfffd7129f9d44f69dde81d2",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2022-23/KSEAB_2ndPUC_Mathematics_2022-23_MQP_2335.pdf": {
+    "mtime": 1792837986.0424407,
+    "seen": 1792861497.2168622,
+    "ast_hash": "093469a8e598eecd49d638af38d0689a",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2022-23/KSEAB_2ndPUC_Physics_2022-23_MQP_2333.pdf": {
+    "mtime": 1792837992.1504507,
+    "seen": 1792861497.2168648,
+    "ast_hash": "31ef2c2491fac42a8d663cc2e20e7bd4",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2023-24/KSEAB_2ndPUC_Chemistry_2023-24_MQP_01.pdf": {
+    "mtime": 1792838042.8611906,
+    "seen": 1792861497.2168667,
+    "ast_hash": "07845d2a49dec76034003b620ca18133",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2023-24/KSEAB_2ndPUC_Mathematics_2023-24_MQP_01.pdf": {
+    "mtime": 1792838044.7102418,
+    "seen": 1792861497.2168684,
+    "ast_hash": "ff39721c9edab264abb6ce6854988b3c",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 2023-24/KSEAB_2ndPUC_Physics_2023-24_MQP_01.pdf": {
+    "mtime": 1792838040.955912,
+    "seen": 1792861497.21687,
+    "ast_hash": "1fc21dc2ef2a3ff6546a6cff1916b41c",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Chemistry_2025-26_MQP_01.pdf": {
+    "mtime": 1792838272.5400572,
+    "seen": 1792861497.2168717,
+    "ast_hash": "9a422bad24bf8dc84529929547f9d7b8",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Chemistry_2025-26_MQP_03.pdf": {
+    "mtime": 1792838275.6437995,
+    "seen": 1792861497.2168734,
+    "ast_hash": "0aeb84cfd90eb86d93bfda0f92ca9571",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_English_2025-26_MQP_01.pdf": {
+    "mtime": 1792838326.278818,
+    "seen": 1792861497.2168756,
+    "ast_hash": "f959b6cbcd792bd268f66ac72b8e2d50",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_English_2025-26_MQP_02.pdf": {
+    "mtime": 1792838328.9000702,
+    "seen": 1792861497.2168772,
+    "ast_hash": "95bf6e9873903f9da049aeff6fbf814b",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_English_2025-26_MQP_03.pdf": {
+    "mtime": 1792838332.30985,
+    "seen": 1792861497.2168791,
+    "ast_hash": "117ddb2c6580a55505d9911ac09ba722",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Hindi_2025-26_MQP_01.pdf": {
+    "mtime": 1792838342.8537161,
+    "seen": 1792861497.216881,
+    "ast_hash": "3a72102a8c89c9edbd78e2b4d03ed2b5",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Hindi_2025-26_MQP_02.pdf": {
+    "mtime": 1792838345.230643,
+    "seen": 1792861497.2168827,
+    "ast_hash": "5d1a37deca814b5c9c35dd122c8a9c87",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Hindi_2025-26_MQP_03.pdf": {
+    "mtime": 1792838348.418445,
+    "seen": 1792861497.216885,
+    "ast_hash": "c7eb51307c3d00e238b47883d059944d",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Kannada_2025-26_MQP_01.pdf": {
+    "mtime": 1792838334.8933427,
+    "seen": 1792861497.2168877,
+    "ast_hash": "5ec70b36c4276c4bdd081ca7881cc714",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Kannada_2025-26_MQP_02.pdf": {
+    "mtime": 1792838337.419652,
+    "seen": 1792861497.2168896,
+    "ast_hash": "d8a015fc57a3422d48631c6d3f53ef30",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Kannada_2025-26_MQP_03.pdf": {
+    "mtime": 1792838339.4450622,
+    "seen": 1792861497.2168913,
+    "ast_hash": "e6e86c96f2c07078af61834196769cfe",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Mathematics_2025-26_MQP_01.pdf": {
+    "mtime": 1792838313.0363123,
+    "seen": 1792861497.2168934,
+    "ast_hash": "313b5ca32c9811e113152f5dc1560c00",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Mathematics_2025-26_MQP_02.pdf": {
+    "mtime": 1792838314.8650453,
+    "seen": 1792861497.2168949,
+    "ast_hash": "e9fdf7f90fa91c1157b2b37f23d8472a",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Mathematics_2025-26_MQP_03.pdf": {
+    "mtime": 1792838318.288726,
+    "seen": 1792861497.216897,
+    "ast_hash": "59108d9af6813b0242885e11b9682234",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Physics_2025-26_MQP_01.pdf": {
+    "mtime": 1792838264.7121787,
+    "seen": 1792861497.2168984,
+    "ast_hash": "ea9b6b5e5eb8aa2485f84e0fe15be793",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Physics_2025-26_MQP_02.pdf": {
+    "mtime": 1792838266.6165645,
+    "seen": 1792861497.2169003,
+    "ast_hash": "3f480bda4dcb50f1f26fb14c2a1434ac",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 25-26/KSEAB_2ndPUC_Physics_2025-26_MQP_03.pdf": {
+    "mtime": 1792838267.8767655,
+    "seen": 1792861497.2169023,
+    "ast_hash": "cfee95164e8d90dff6cf6b838b76f17e",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Chemistry_2026-27_MQP_01.pdf": {
+    "mtime": 1792838795.898079,
+    "seen": 1792861497.216904,
+    "ast_hash": "1facc4b5bcd6030103dee0ccfad3340c",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Chemistry_2026-27_MQP_02.pdf": {
+    "mtime": 1792838798.9502919,
+    "seen": 1792861497.2169058,
+    "ast_hash": "341587d80df1313199b79ce45c667941",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Chemistry_2026-27_MQP_03.pdf": {
+    "mtime": 1792838828.7201214,
+    "seen": 1792861497.2169077,
+    "ast_hash": "8a2202ec673c738dcd40f3e9553c16cb",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Chemistry_2026-27_MQP_04.pdf": {
+    "mtime": 1792838800.8758307,
+    "seen": 1792861497.21691,
+    "ast_hash": "bbceb61d5d9e52cf800953374b2fb045",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Chemistry_2026-27_MQP_05.pdf": {
+    "mtime": 1792838803.5142965,
+    "seen": 1792861497.2169118,
+    "ast_hash": "84a8a0f0c4426ef9e25793cbb7d18a82",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Mathematics_2026-27_MQP_01.pdf": {
+    "mtime": 1792838836.985239,
+    "seen": 1792861497.216914,
+    "ast_hash": "939d07754edd1acb5006c75152d662a4",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Mathematics_2026-27_MQP_02.pdf": {
+    "mtime": 1792838834.8223011,
+    "seen": 1792861497.2169156,
+    "ast_hash": "f6ff84b8a3c5df546412d4c01f759a7f",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Mathematics_2026-27_MQP_03.pdf": {
+    "mtime": 1792838832.8785312,
+    "seen": 1792861497.2169175,
+    "ast_hash": "a91297cabd3cd52e45f542e526d87e1a",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Mathematics_2026-27_MQP_04.pdf": {
+    "mtime": 1792838839.833087,
+    "seen": 1792861497.2169192,
+    "ast_hash": "f27b79bde7e6ec4857da708f18e5c054",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Mathematics_2026-27_MQP_05.pdf": {
+    "mtime": 1792838809.168818,
+    "seen": 1792861497.2169218,
+    "ast_hash": "6f01fe0a52fc79cef2ee47e938c96438",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Physics_2026-27_MQP_01.pdf": {
+    "mtime": 1792838850.9873092,
+    "seen": 1792861497.2169235,
+    "ast_hash": "1078898378919b4bada5c7209a1435a9",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Physics_2026-27_MQP_02.pdf": {
+    "mtime": 1792838806.2788944,
+    "seen": 1792861497.2169256,
+    "ast_hash": "d50cd9ccdb6ac3361466ebb984e42931",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Physics_2026-27_MQP_03.pdf": {
+    "mtime": 1792838848.7110603,
+    "seen": 1792861497.216928,
+    "ast_hash": "7cac119b6abd7bc712b33c4bb709a961",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Physics_2026-27_MQP_04.pdf": {
+    "mtime": 1792838826.0155554,
+    "seen": 1792861497.2169302,
+    "ast_hash": "f82aa70fff600c07643d1fabd93ee78e",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp 26-27/KSEAB_2ndPUC_Physics_2026-27_MQP_05.pdf": {
+    "mtime": 1792838847.0956664,
+    "seen": 1792861497.2169318,
+    "ast_hash": "9217768cfd51b0ff4d545968e77d7895",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Chemistry_2024-25_MQP_01.pdf": {
+    "mtime": 1792838105.7456746,
+    "seen": 1792861497.2169337,
+    "ast_hash": "48e6963e9722eca657467d5666aa4c04",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Chemistry_2024-25_MQP_02.pdf": {
+    "mtime": 1792838174.0718822,
+    "seen": 1792861497.2169354,
+    "ast_hash": "48e016b6431ce9ba47a556ba340e063f",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Chemistry_2024-25_MQP_03.pdf": {
+    "mtime": 1792838216.6144776,
+    "seen": 1792861497.216937,
+    "ast_hash": "c7939def6fd38261dc738ba503dbd581",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_English_2024-25_MQP_01.pdf": {
+    "mtime": 1792838116.2467365,
+    "seen": 1792861497.2169387,
+    "ast_hash": "0a5f4644e8a4da60986d59ad5c7a3317",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_English_2024-25_MQP_02.pdf": {
+    "mtime": 1792838172.193277,
+    "seen": 1792861497.2169409,
+    "ast_hash": "1afab350933530642da742825b26f473",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_English_2024-25_MQP_03.pdf": {
+    "mtime": 1792838215.4361482,
+    "seen": 1792861497.2169425,
+    "ast_hash": "bc92f8a319ac111251fa59be0ea9d5fe",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Hindi_2024-25_MQP_01.pdf": {
+    "mtime": 1792838119.3605757,
+    "seen": 1792861497.2169442,
+    "ast_hash": "c767f7f0bfaed1595ad8b78fcde9e2e4",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Hindi_2024-25_MQP_02.pdf": {
+    "mtime": 1792838172.2202735,
+    "seen": 1792861497.216946,
+    "ast_hash": "125031d94fdf501ea2ab77edc39b981e",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Hindi_2024-25_MQP_03.pdf": {
+    "mtime": 1792838215.5068398,
+    "seen": 1792861497.2169478,
+    "ast_hash": "e7204a54cad5d8056e0cc0f5720b29ee",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Mathematics_2024-25_MQP_01.pdf": {
+    "mtime": 1792838108.8589303,
+    "seen": 1792861497.2169495,
+    "ast_hash": "6a6cc9e78f454a5fe03003c62a8b54f7",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Mathematics_2024-25_MQP_02.pdf": {
+    "mtime": 1792838176.142726,
+    "seen": 1792861497.2169511,
+    "ast_hash": "5d708f74c26a26630d01153db5071607",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Mathematics_2024-25_MQP_03.pdf": {
+    "mtime": 1792838216.662018,
+    "seen": 1792861497.2169528,
+    "ast_hash": "a2d88eecc6e1faa767f02aeab661c690",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Physics_2024-25_MQP_01.pdf": {
+    "mtime": 1792838103.076142,
+    "seen": 1792861497.2169547,
+    "ast_hash": "fc799b6fe299e321291c76f860bf7c99",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Physics_2024-25_MQP_02.pdf": {
+    "mtime": 1792838172.2622924,
+    "seen": 1792861497.2169564,
+    "ast_hash": "8c4a014bf36538575e006e0b7a9d8428",
+    "semantic_hash": ""
+  },
+  "public/puc-papers/mqp01 2024/KSEAB_2ndPUC_Physics_2024-25_MQP_03.pdf": {
+    "mtime": 1792838215.5528512,
+    "seen": 1792861497.2169583,
+    "ast_hash": "ca4c2747139c67b0c775d24098d7d860",
     "semantic_hash": ""
   }
 }

@@ -16,13 +16,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Calculator, Database, Target, TrendingUp, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, ArrowRight, Info, Shield, Table, Share2, Download, FileText, AlertCircle, Sparkles } from 'lucide-react'
+import { Calculator, Database, Target, TrendingUp, BarChart3, PieChart, LineChart as LineChartIcon, CheckCircle2, Search, ArrowRight, Info, Shield, Table, Share2, Download, FileText, AlertCircle } from 'lucide-react'
 import { AdminFeedbackService } from "@/lib/admin-feedback-service"
 import { ActualRankService } from "@/lib/actual-rank-service"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts"
+
 import {
   predictKCETRankBothYears,
   calculatePercentile,
@@ -30,9 +30,8 @@ import {
   getCollegeSuggestions,
   getRankGapAnalysis,
   getCutoffEstimates,
-  kcet2025RankTable,
   rankGapAnalysis,
-  type Rank2026Prediction
+  type Rank2027Prediction
 } from "@/lib/rank-predictor"
 import { validateKCETMarks, validatePUCPercentage } from "@/lib/security"
 
@@ -105,7 +104,7 @@ const useAnimatedCounter = (value: number, duration: number = 300) => {
 const RankPredictor = () => {
   const [kcetMarks, setKcetMarks] = useState(110)
   const [pucPercentage, setPucPercentage] = useState(85)
-  const [prediction, setPrediction] = useState<Rank2026Prediction | null>(null)
+  const [prediction, setPrediction] = useState<Rank2027Prediction | null>(null)
   const [activeTab, setActiveTab] = useState("predictor")
   const [savedResults, setSavedResults] = useState<any[]>([])
   const [boardMarksMode, setBoardMarksMode] = useState(false)
@@ -113,8 +112,8 @@ const RankPredictor = () => {
   const { toast } = useToast()
   const navigate = useNavigate()
 
-  const animatedRank2025 = useAnimatedCounter(prediction?.rank2025 || 0, 300)
   const animatedRank2026 = useAnimatedCounter(prediction?.rank2026 || 0, 300)
+  const animatedRank2027 = useAnimatedCounter(prediction?.rank2027 || 0, 300)
 
   const [feedbackRank, setFeedbackRank] = useState("")
   const [feedbackKcet, setFeedbackKcet] = useState("")
@@ -246,8 +245,8 @@ const RankPredictor = () => {
 
   const shareResult = async () => {
     if (!prediction) return
-    const title = 'My KCET 2026 Rank Prediction'
-    const text = `Predicted KCET 2026 Rank: ~${prediction.medium.toLocaleString('en-IN')} (Range: ${prediction.low.toLocaleString('en-IN')} - ${prediction.high.toLocaleString('en-IN')}). Explore KCET Coded:`
+    const title = 'My KCET 2027 Rank Prediction'
+    const text = `Predicted KCET 2027 Rank: ~${prediction.medium.toLocaleString('en-IN')} (Range: ${prediction.low.toLocaleString('en-IN')} - ${prediction.high.toLocaleString('en-IN')}). Explore KCET Coded:`
     const shareUrl = `${window.location.origin}/rank-predictor`
 
     if (navigator.share) {
@@ -264,7 +263,7 @@ const RankPredictor = () => {
 
   const findColleges = () => {
     if (!prediction) return
-    navigate(`/college-predictor?rank=${prediction.rank2026}`)
+    navigate(`/college-predictor?rank=${prediction.rank2027}`)
   }
 
   const downloadPNG = () => {
@@ -290,7 +289,7 @@ const RankPredictor = () => {
     ctx.fillStyle = '#94A3B8'
     ctx.font = '600 14px "Plus Jakarta Sans", sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('KCET 2026 RANK PREDICTION CARD', 300, 50)
+    ctx.fillText('KCET 2027 RANK PREDICTION CARD', 300, 50)
 
     // Rank
     ctx.fillStyle = '#3B82F6'
@@ -322,7 +321,7 @@ const RankPredictor = () => {
 
     const link = document.createElement('a')
     link.href = canvas.toDataURL('image/png')
-    link.download = `KCET_2026_Rank_${prediction.medium}.png`
+    link.download = `KCET_2027_Rank_${prediction.medium}.png`
     link.click()
 
     toast({
@@ -334,10 +333,10 @@ const RankPredictor = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
       <SEO
-        title="KCET 2026 Rank Predictor – Marks vs Rank Calculator"
-        description="Estimate your KCET 2026 rank from KCET and board marks using a transparent historical model. See the assumptions, range, and limitations before using the estimate for college planning."
+        title="KCET 2027 Rank Predictor – Marks vs Rank Calculator"
+        description="Estimate your KCET 2027 rank from KCET and board marks using a model calibrated with 612 verified 2026 data points. See the assumptions, range, and limitations before using the estimate."
         url="https://kcetcoded.dev/rank-predictor"
-        keywords="KCET rank predictor 2026, KCET marks vs rank, KCET rank calculator, KCET expected rank, Karnataka CET rank prediction"
+        keywords="KCET rank predictor 2027, KCET marks vs rank, KCET rank calculator, KCET expected rank, Karnataka CET rank prediction"
       />
 
       {/* Header Banner */}
@@ -351,10 +350,10 @@ const RankPredictor = () => {
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              KCET 2026 Rank & Aggregate Predictor
+              KCET 2027 Rank & Aggregate Predictor
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
-              Estimate your rank based on 50% CET marks + 50% 12th/PUC PCM board percentage, benchmarked against 3.12 lakh verified candidate records.
+              Estimate your 2027 rank based on 50% CET marks + 50% 12th/PUC PCM board percentage, calibrated from 612 verified KCET 2026 data points blended with historical baselines.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 shrink-0">
@@ -415,9 +414,6 @@ const RankPredictor = () => {
           </TabsTrigger>
           <TabsTrigger value="analysis" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
             <BarChart3 className="h-3.5 w-3.5" /> Competition & Gap
-          </TabsTrigger>
-          <TabsTrigger value="methodology" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
-            <Database className="h-3.5 w-3.5" /> Historical Benchmarks
           </TabsTrigger>
           <TabsTrigger value="progress" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5">
             <LineChartIcon className="h-3.5 w-3.5" /> Saved History
@@ -579,7 +575,7 @@ const RankPredictor = () => {
               {prediction && (
                 <div className="flex flex-wrap gap-2.5">
                   <Button onClick={findColleges} className="flex-1 min-w-[200px] h-9 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs">
-                    <Search className="h-3.5 w-3.5 mr-1.5" /> Find Matching Colleges for Rank {prediction.rank2026.toLocaleString('en-IN')}
+                    <Search className="h-3.5 w-3.5 mr-1.5" /> Find Matching Colleges for Rank {prediction.rank2027.toLocaleString('en-IN')}
                   </Button>
                   <Button onClick={downloadPNG} variant="outline" className="h-9 text-xs border-border">
                     <Download className="h-3.5 w-3.5 mr-1.5" /> Export PNG Card
@@ -603,7 +599,7 @@ const RankPredictor = () => {
                       ESTIMATED OUTPUT
                     </span>
                     <Badge variant="secondary" className="font-mono text-[10px] bg-primary/10 text-primary border-primary/20">
-                      2026 PROJECTION
+                      2027 PROJECTION
                     </Badge>
                   </div>
                 </CardHeader>
@@ -617,16 +613,25 @@ const RankPredictor = () => {
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-md bg-muted/40 border border-border grid grid-cols-2 gap-2 text-xs">
-                        <div>
-                          <span className="text-muted-foreground block text-[11px]">Median Estimate</span>
-                          <span className="font-mono font-bold text-foreground text-sm">~{animatedRank2026.toLocaleString('en-IN')}</span>
+                      {/* Highlighted Median Estimate Box */}
+                      <div className="p-3.5 rounded-lg bg-primary/10 border-2 border-primary/40 shadow-xs relative overflow-hidden">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs font-semibold text-primary">
+                            Median Estimate
+                          </span>
+                          <Badge variant="default" className="text-[10px] font-mono px-1.5 py-0 bg-primary text-primary-foreground">
+                            MOST LIKELY
+                          </Badge>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground block text-[11px]">2025 Baseline</span>
-                          <span className="font-mono font-semibold text-muted-foreground text-sm">~{animatedRank2025.toLocaleString('en-IN')}</span>
+                        <div className="flex items-baseline justify-between">
+                          <span className="text-2xl sm:text-3xl font-mono font-extrabold text-foreground tracking-tight">
+                            ~{animatedRank2027.toLocaleString('en-IN')}
+                          </span>
+                          <span className="text-[11px] text-muted-foreground font-mono">
+                            2026 Ref: ~{animatedRank2026.toLocaleString('en-IN')}
+                          </span>
                         </div>
-                        <div className="col-span-2 pt-2 border-t border-border/60 flex items-center justify-between text-[11px]">
+                        <div className="mt-2 pt-2 border-t border-primary/20 flex items-center justify-between text-[11px]">
                           <span className="text-muted-foreground">Expected Percentile</span>
                           <span className="font-mono font-bold text-emerald-500">{calculatePercentile(prediction.medium)}</span>
                         </div>
@@ -791,51 +796,6 @@ const RankPredictor = () => {
           )}
         </TabsContent>
 
-        {/* Tab 4: Historical Benchmarks */}
-        <TabsContent value="methodology" className="space-y-6">
-          <Card className="border border-border bg-card">
-            <CardHeader className="pb-3 border-b border-border/60">
-              <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <LineChartIcon className="h-4 w-4 text-primary" /> Aggregate Score vs Rank Curve (Historical KEA)
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Derived from verified candidate records across Karnataka CET 2023–2025.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <div className="h-[320px] w-full bg-background rounded border border-border p-3">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={kcet2025RankTable.filter(d => d.rank <= 100000)} margin={{ top: 10, right: 20, bottom: 20, left: 10 }}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} vertical={false} />
-                    <XAxis
-                      dataKey="score"
-                      type="number"
-                      domain={['dataMin - 1', 'dataMax + 1']}
-                      label={{ value: 'Aggregate %', position: 'bottom', offset: 0, fill: 'currentColor', opacity: 0.6, fontSize: 11 }}
-                      tickFormatter={(v) => `${v}%`}
-                      tick={{ fill: 'currentColor', opacity: 0.6, fontSize: 10 }}
-                    />
-                    <YAxis
-                      dataKey="rank"
-                      domain={[0, 100000]}
-                      label={{ value: 'Rank', angle: -90, position: 'insideLeft', offset: -5, fill: 'currentColor', opacity: 0.6, fontSize: 11 }}
-                      reversed={true}
-                      tickFormatter={(v) => v.toLocaleString('en-IN')}
-                      tick={{ fill: 'currentColor', opacity: 0.6, fontSize: 10 }}
-                    />
-                    <RechartsTooltip
-                      formatter={(value: any) => [value.toLocaleString('en-IN'), "Expected Rank"]}
-                      labelFormatter={(label) => `Aggregate: ${label}%`}
-                      contentStyle={{ borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--card)', color: 'var(--foreground)', fontSize: '12px' }}
-                    />
-                    <Line type="monotone" dataKey="rank" stroke="#2563eb" strokeWidth={2} dot={{ r: 1.5, fill: "#2563eb" }} activeDot={{ r: 5 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         {/* Tab 5: Saved History */}
         <TabsContent value="progress" className="space-y-4">
           {savedResults.length > 0 ? (
@@ -888,7 +848,7 @@ const RankPredictor = () => {
               <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
                 <strong className="text-foreground block">Independent Statistical Model</strong>
                 <p className="leading-relaxed">
-                  KCET Coded rank projections are mathematical estimates derived from historical KEA cutoff patterns (2023–2025). Actual ranks published by Karnataka Examination Authority (cetonline.karnataka.gov.in) depend on overall candidate volume, question paper difficulty variance, and official Board normalization rules.
+                  KCET Coded rank projections are mathematical estimates derived from 612 verified KCET 2026 calibration records blended with historical KEA cutoff patterns (2023–2026). Actual ranks published by Karnataka Examination Authority (cetonline.karnataka.gov.in) depend on overall candidate volume, question paper difficulty variance, and official Board normalization rules.
                 </p>
               </div>
               <div className="p-3 rounded bg-muted/30 border border-border space-y-1">
