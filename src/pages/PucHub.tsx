@@ -13,6 +13,13 @@ const tools = [
     badge: "565+ Pages Live"
   },
   { 
+    title: "PYQs with Schemes of Evaluation", 
+    description: "Official KSEAB 2nd PUC 2026 & 2025 Physics, Chemistry & Mathematics Exam 1 & 2 Question Papers with official model answer keys.", 
+    href: "/puc/pyq", 
+    icon: FileText,
+    badge: "2025-26 Solved"
+  },
+  { 
     title: "Question Papers Library", 
     description: `Browse & download ${rawPapers.length} official KSEAB Model Question Papers (MQPs) with in-browser preview.`, 
     href: "/puc/question-papers", 

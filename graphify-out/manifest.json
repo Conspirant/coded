@@ -2964,9 +2964,9 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1792848592.0791109,
-    "seen": 1792848821.8161101,
-    "ast_hash": "c7cb16f9e68765318bb1ff27f047eac6",
+    "mtime": 1792865209.0056155,
+    "seen": 1792865317.0541544,
+    "ast_hash": "28032f0b9759ea1632b688a1e6c11abe",
     "semantic_hash": ""
   },
   "src/components/AdUnit.tsx": {
@@ -3012,9 +3012,9 @@
     "semantic_hash": ""
   },
   "src/components/AppSidebar.tsx": {
-    "mtime": 1792856046.525422,
-    "seen": 1792856115.8107233,
-    "ast_hash": "7a1e58a24ed895545f9bc9ea4f9f1336",
+    "mtime": 1792865475.074968,
+    "seen": 1792866169.6647294,
+    "ast_hash": "83ab89305fad9294cec62ccf3de08c34",
     "semantic_hash": ""
   },
   "src/components/Calibrate2027Modal.tsx": {
@@ -3156,9 +3156,9 @@
     "semantic_hash": ""
   },
   "src/components/MobileNav.tsx": {
-    "mtime": 1792856805.6949096,
-    "seen": 1792861497.1519482,
-    "ast_hash": "f20a77cc1b0607bce05c61d26164dcfc",
+    "mtime": 1792865209.0106192,
+    "seen": 1792865317.0591621,
+    "ast_hash": "13a82ebb44b5efabd55f2dbe2835132f",
     "semantic_hash": ""
   },
   "src/components/MusicPlayer.tsx": {
@@ -4728,9 +4728,9 @@
     "semantic_hash": ""
   },
   "src/pages/PucHub.tsx": {
-    "mtime": 1792856838.2529905,
-    "seen": 1792861497.1896913,
-    "ast_hash": "89435c3da1922beff3ea70a36390bdf5",
+    "mtime": 1792865209.00869,
+    "seen": 1792865317.1100953,
+    "ast_hash": "99ae859b822cc510e0781c754aacffdd",
     "semantic_hash": ""
   },
   "src/pages/PucPages.tsx": {
@@ -8175,6 +8175,12 @@
     "mtime": 1792838215.5528512,
     "seen": 1792861497.2169583,
     "ast_hash": "ca4c2747139c67b0c775d24098d7d860",
+    "semantic_hash": ""
+  },
+  "src/pages/PYQArchive.tsx": {
+    "mtime": 1792866024.4868398,
+    "seen": 1792866169.709434,
+    "ast_hash": "6800c9e07bc4d0b145b2f75da514b9cc",
     "semantic_hash": ""
   }
 }

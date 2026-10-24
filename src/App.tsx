@@ -52,6 +52,7 @@ import CollegeInfoHub from "./pages/CollegeInfoHub";
 import About from "./pages/About";
 import FeatureRequest from "./pages/FeatureRequest";
 import PYQTest from "./pages/PYQTest";
+import PYQArchive from "./pages/PYQArchive";
 import CutoffTrends from "./pages/CutoffTrends";
 import RoundPredictor from "./pages/RoundPredictor";
 import Donate from "./pages/Donate";
@@ -152,6 +153,10 @@ const App = () => (
                   <Route path="/about" element={<Layout><About /></Layout>} />
                   <Route path="/request-feature" element={<Layout><FeatureRequest /></Layout>} />
                   <Route path="/pyq-test" element={<Layout><PYQTest /></Layout>} />
+                  <Route path="/puc/pyq" element={<Layout><PYQArchive /></Layout>} />
+                  <Route path="/puc/pyq-archive" element={<Layout><PYQArchive /></Layout>} />
+                  <Route path="/pyq" element={<Navigate to="/puc/pyq" replace />} />
+                  <Route path="/pyqs" element={<Navigate to="/puc/pyq" replace />} />
                   <Route path="/donate" element={<Layout><Donate /></Layout>} />
                   <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
                   <Route path="/squad-finder" element={<Layout><SquadFinder /></Layout>} />
