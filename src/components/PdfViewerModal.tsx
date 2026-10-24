@@ -68,6 +68,7 @@ export function PdfViewerModal({
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const renderTaskRef = useRef<any>(null)
+  const touchStartRef = useRef<{ x: number; y: number; distance: number; initialZoom: number } | null>(null)
 
   // Configure PDF.js once on mount
   useEffect(() => {
@@ -276,9 +277,6 @@ export function PdfViewerModal({
   const handleZoom = (delta: number) => {
     setZoomLevel((prev) => Math.min(250, Math.max(70, prev + delta)))
   }
-
-  // Touch gesture support: Pinch-to-zoom & Swipe left/right for page turn
-  const touchStartRef = useRef<{ x: number; y: number; distance: number; initialZoom: number } | null>(null)
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
