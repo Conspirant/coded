@@ -107,8 +107,8 @@ export function MobileDock() {
     const { examMode } = useExamMode()
     const sheetRef = useRef<HTMLDivElement>(null)
 
-    // Determine if we should show 2nd PUC navigation (either KSEAB examMode or /puc routes)
-    const isPuc = examMode === "KSEAB" || location.pathname.startsWith("/puc")
+    // Determine if we should show 2nd PUC navigation (only on /puc routes or explicit KSEAB selection on /puc)
+    const isPuc = location.pathname.startsWith("/puc")
     const activeDockItems = isPuc ? pucDockItems : kcetDockItems
     const activeMoreItems = isPuc ? pucMoreItems : kcetMoreItems
 

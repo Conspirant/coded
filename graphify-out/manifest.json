@@ -3012,9 +3012,9 @@
     "semantic_hash": ""
   },
   "src/components/AppSidebar.tsx": {
-    "mtime": 1792865475.074968,
-    "seen": 1792866169.6647294,
-    "ast_hash": "83ab89305fad9294cec62ccf3de08c34",
+    "mtime": 1792866220.5940304,
+    "seen": 1792868404.8137646,
+    "ast_hash": "e475f2b3de87d802d4dcfde9d399b6dd",
     "semantic_hash": ""
   },
   "src/components/Calibrate2027Modal.tsx": {
@@ -4728,9 +4728,9 @@
     "semantic_hash": ""
   },
   "src/pages/PucHub.tsx": {
-    "mtime": 1792865209.00869,
-    "seen": 1792865317.1100953,
-    "ast_hash": "99ae859b822cc510e0781c754aacffdd",
+    "mtime": 1792866229.7617886,
+    "seen": 1792868404.8553822,
+    "ast_hash": "8b043bd6a5c9c17bce8ec825f4514df1",
     "semantic_hash": ""
   },
   "src/pages/PucPages.tsx": {
@@ -8178,9 +8178,153 @@
     "semantic_hash": ""
   },
   "src/pages/PYQArchive.tsx": {
-    "mtime": 1792866024.4868398,
-    "seen": 1792866169.709434,
-    "ast_hash": "6800c9e07bc4d0b145b2f75da514b9cc",
+    "mtime": 1792866495.2954867,
+    "seen": 1792868404.8547986,
+    "ast_hash": "c350a36eed2729926535e9af6fbb6b5f",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Chemistry_2025_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792865824.3058476,
+    "seen": 1792868404.891074,
+    "ast_hash": "a25bf54636eacb982d1cc0ec7d049209",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Chemistry_2025_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865784.6787643,
+    "seen": 1792868404.8910773,
+    "ast_hash": "1dcef814091dad9a79ca206eb506478d",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Chemistry_2025_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792865822.4198782,
+    "seen": 1792868404.891115,
+    "ast_hash": "3c24d51923d79cb5e12192dc0c410b12",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Chemistry_2025_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865799.011125,
+    "seen": 1792868404.8911169,
+    "ast_hash": "0591d9e5c7e9770dbc295cdd979cabd2",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Mathematics_2025_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792865777.9034097,
+    "seen": 1792868404.8911188,
+    "ast_hash": "121ce9c3a924ad03485cdf2d3c05a883",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Mathematics_2025_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865787.9657924,
+    "seen": 1792868404.891121,
+    "ast_hash": "8dba954e24c86094420726c52218abe5",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Mathematics_2025_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792865805.2068522,
+    "seen": 1792868404.8911226,
+    "ast_hash": "ff7ec2d32dcce1997a01685911982584",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Mathematics_2025_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865780.2359324,
+    "seen": 1792868404.891125,
+    "ast_hash": "bea6b9546c034eb3cdc1c75577ccbea9",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Physics_2025_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792865801.7849145,
+    "seen": 1792868404.8911269,
+    "ast_hash": "d97367aca982f50264270ffe6babb954",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Physics_2025_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865826.5259743,
+    "seen": 1792868404.8911288,
+    "ast_hash": "e412a4e4e3f44714e1021bb1de2773a4",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Physics_2025_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792865828.4566576,
+    "seen": 1792868404.8911307,
+    "ast_hash": "d7f9f56cb6bc0146c30782f5d63079b6",
+    "semantic_hash": ""
+  },
+  "public/pyq/2025/Physics_2025_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792865807.032391,
+    "seen": 1792868404.8911324,
+    "ast_hash": "4c21415c2ce15d22d334f4e8bcb3195a",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Chemistry_2026_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792864469.5234358,
+    "seen": 1792868404.8911343,
+    "ast_hash": "3c6f28fd0a1ac0d5ddc54aa3d65facc8",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Chemistry_2026_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864464.1129832,
+    "seen": 1792868404.8911357,
+    "ast_hash": "fad5a7054d66dc4547c0d8655688c1e5",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Chemistry_2026_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792864466.7379043,
+    "seen": 1792868404.8911376,
+    "ast_hash": "477124a41c25c5a944cfabc0953b5587",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Chemistry_2026_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864421.091682,
+    "seen": 1792868404.8911393,
+    "ast_hash": "e62a277a85c01233b9af81db7f330d83",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Mathematics_2026_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792864472.1583562,
+    "seen": 1792868404.8911412,
+    "ast_hash": "610e11e2a41b1ca8eea8324e1900609d",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Mathematics_2026_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864427.1133728,
+    "seen": 1792868404.8911428,
+    "ast_hash": "c57bd001598f1b2c791d335a88d4ec9d",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Mathematics_2026_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792864415.8798099,
+    "seen": 1792868404.8911448,
+    "ast_hash": "1634f1880101f1ff886f2ee8ce357591",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Mathematics_2026_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864424.4410014,
+    "seen": 1792868404.8911464,
+    "ast_hash": "3a1a2dcd799894f599061cd5fee4b8fb",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Physics_2026_Exam1_QuestionPaper.pdf": {
+    "mtime": 1792864461.3892808,
+    "seen": 1792868404.891148,
+    "ast_hash": "9da96f62429cbd1b9b39628fdc34185f",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Physics_2026_Exam1_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864413.72636,
+    "seen": 1792868404.8911498,
+    "ast_hash": "2335e7c92721da1f46c944871262dd87",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Physics_2026_Exam2_QuestionPaper.pdf": {
+    "mtime": 1792864418.1319306,
+    "seen": 1792868404.8911514,
+    "ast_hash": "152249b47873b76c0f9e9b611bf114f7",
+    "semantic_hash": ""
+  },
+  "public/pyq/2026/Physics_2026_Exam2_SchemeOfEvaluation_Answers.pdf": {
+    "mtime": 1792864454.2116387,
+    "seen": 1792868404.891153,
+    "ast_hash": "009d35ae0f50fe4b72604457b0992a9a",
     "semantic_hash": ""
   }
 }

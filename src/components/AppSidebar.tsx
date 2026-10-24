@@ -41,7 +41,7 @@ import {
   IndianRupee,
   Grid3X3,
 } from "lucide-react"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
@@ -286,13 +286,26 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
   const { state, setOpenMobile, isMobile } = useSidebar()
   const { examMode, setExamMode } = useExamMode()
   const navigate = useNavigate()
+  const location = useLocation()
   const [unlocked, setUnlocked] = useState(isUnlocked())
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
-  const sections = examMode === "KSEAB" ? getKseabSections() : getKcetSections(unlocked, onUnlockClick)
+  const isPucRoute = location.pathname.startsWith("/puc")
+
+  // Auto-align examMode with route: If user visits /dashboard or non-puc route, default to KCET
+  useEffect(() => {
+    if (isPucRoute && examMode !== "KSEAB") {
+      setExamMode("KSEAB")
+    } else if (!isPucRoute && examMode === "KSEAB") {
+      setExamMode("KCET")
+    }
+  }, [location.pathname, isPucRoute, examMode, setExamMode])
+
+  const effectiveMode = isPucRoute ? "KSEAB" : examMode
+  const sections = effectiveMode === "KSEAB" ? getKseabSections() : getKcetSections(unlocked, onUnlockClick)
 
   return (
     <Sidebar
@@ -303,7 +316,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
         {/* Brand Header */}
         <div className="px-3.5 pb-3 border-b border-border/60 mb-2 flex items-center">
           <Logo
-            mode={examMode}
+            mode={effectiveMode}
             showText={state !== "collapsed"}
             iconSize={24}
             textSize="text-sm font-bold tracking-tight text-slate-100"
@@ -319,7 +332,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
                   setExamMode(mode)
                   navigate(mode === "KSEAB" ? "/puc" : "/dashboard")
                 }}
-                className={`rounded-md px-2 py-1.5 text-[10px] font-bold tracking-wide transition-colors ${examMode === mode ? "bg-primary/15 text-primary border border-primary/30" : "text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent"}`}
+                className={`rounded-md px-2 py-1.5 text-[10px] font-bold tracking-wide transition-colors ${effectiveMode === mode ? "bg-primary/15 text-primary border border-primary/30" : "text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent"}`}
               >
                 {mode === "KSEAB" ? "2nd PUC" : mode}
               </button>

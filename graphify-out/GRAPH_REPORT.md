@@ -1,17 +1,17 @@
-# Graph Report - coded-main  (2026-10-24)
+# Graph Report - coded-main  (2026-10-25)
 
 ## Corpus Check
-- 904 files · ~61,702,534 words
+- 904 files · ~61,772,617 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 37 file(s) not represented in the graph (top: .dat 12, .csv 12, (none) 2)
 
 ## Summary
-- 5246 nodes · 12265 edges · 222 communities (197 shown, 25 thin omitted)
+- 5246 nodes · 12271 edges · 221 communities (196 shown, 25 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 162 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `507663e3`
+- Built from commit: `b0e08804`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -116,7 +116,6 @@
 - compilerOptions
 - KCETCoded
 - merge_missing_into_master.mjs
-- RankPredictor.tsx
 - KCETCoded Platform Documentation
 - predictorStore.ts
 - extract-2023-2024-aggressive.mjs
@@ -256,7 +255,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (222 total, 25 thin omitted)
+## Communities (221 total, 25 thin omitted)
 
 ### Community 0 - "CollegePredictor.tsx"
 Cohesion: 0.06
@@ -292,7 +291,7 @@ Nodes (94): Sheet: Table 1, Sheet: Table 10, Sheet: Table 11, Sheet: Table 12, S
 
 ### Community 9 - "App.tsx"
 Cohesion: 0.06
-Nodes (85): 2.2 Key page responsibilities, 4. Complete active route catalogue, 5.1 Admission and college intelligence, 5.2 Counselling and informational surfaces, 5.4 Transport, discovery, and specialist utilities, 5.1 Active unique routes, App(), queryClient (+77 more)
+Nodes (86): 2.2 Key page responsibilities, 4. Complete active route catalogue, 5.1 Admission and college intelligence, 5.2 Counselling and informational surfaces, 5.4 Transport, discovery, and specialist utilities, 5.1 Active unique routes, App(), queryClient (+78 more)
 
 ### Community 10 - "kcet-2025-round1-cutoffs_ef1e34c7.md"
 Cohesion: 0.02
@@ -315,12 +314,12 @@ Cohesion: 0.03
 Nodes (9): allFallbackRaw, cachedChapterData, ChapterInfo, CHEMISTRY_CHAPTERS, FALLBACK_QUESTIONS, getCachedChapters(), MATHS_CHAPTERS, PHYSICS_CHAPTERS (+1 more)
 
 ### Community 15 - "react"
-Cohesion: 0.06
-Nodes (45): NeetChoiceSimulatorPage(), CollegeMatchItem, NeetComparePage(), NeetHub(), PREMIER_COLLEGES, CATEGORY_PRESETS, NeetOptionBuilderPage(), NeetQuotasPage() (+37 more)
+Cohesion: 0.07
+Nodes (43): NeetChoiceSimulatorPage(), CollegeMatchItem, NeetComparePage(), NeetHub(), PREMIER_COLLEGES, CATEGORY_PRESETS, NeetOptionBuilderPage(), NeetQuotasPage() (+35 more)
 
 ### Community 16 - "Input"
-Cohesion: 0.09
-Nodes (83): CollegeComparator(), OptionEntryBuilder(), OptionItem, NeetCollegePredictor(), NeetExplorer(), NeetFeeCalculator(), NeetMatrixView(), NeetTrendsPage() (+75 more)
+Cohesion: 0.08
+Nodes (92): CollegeComparator(), OptionEntryBuilder(), OptionItem, NeetCollegePredictor(), NeetExplorer(), NeetFeeCalculator(), NeetMatrixView(), NeetTrendsPage() (+84 more)
 
 ### Community 17 - "re"
 Cohesion: 0.04
@@ -653,10 +652,6 @@ Nodes (12): 14. Pros: What KCETCoded Does Very Well, 15. Cons, Limitations, and 
 ### Community 99 - "merge_missing_into_master.mjs"
 Cohesion: 0.25
 Nodes (14): buildStats(), canonicalize(), clean(), CSV_SOURCES, dedupeKey(), JSON_SOURCES, main(), MOTHER_FILE (+6 more)
-
-### Community 100 - "RankPredictor.tsx"
-Cohesion: 0.33
-Nodes (8): TabsContent, TabsList, TabsTrigger, PYQ_DOCUMENTS, PYQDocument, KCET_CATEGORIES, RankPredictor(), useAnimatedCounter()
 
 ### Community 101 - "KCETCoded Platform Documentation"
 Cohesion: 0.13
@@ -1056,7 +1051,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Should `CollegePredictor.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.06164527666736798 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `react` to `CollegePredictor.tsx`, `CollegeDetail.tsx`, `Layout.tsx`, `toast.tsx`, `form.tsx`, `App.tsx`, `InteractiveEffects.tsx`, `sheet.tsx`, `Input`, `cn`, `CollegeReviewModal.tsx`, `package.json`, `pagination.tsx`, `sidebar.tsx`, `Logo`, `Donate.tsx`, `LiveVisitorCounter.tsx`, `round-drift-predictor.ts`, `DailyChallenge.tsx`, `ThreadDetailPage.tsx`, `MobileNav.tsx`, `ErrorBoundary`, `navigation-menu.tsx`, `FeeCalculator.tsx`, `Button`, `MusicPlayer.tsx`, `PYQTest.tsx`, `OfficialResourcesBanner.tsx`, `CutoffClash.tsx`, `RankPredictor.tsx`, `carousel.tsx`, `drawer.tsx`, `CollegeCutoffs.tsx`, `chart.tsx`, `client.ts`?**
+- **Why does `react` connect `react` to `CollegePredictor.tsx`, `CollegeDetail.tsx`, `Layout.tsx`, `toast.tsx`, `form.tsx`, `App.tsx`, `InteractiveEffects.tsx`, `sheet.tsx`, `Input`, `cn`, `CollegeReviewModal.tsx`, `package.json`, `pagination.tsx`, `sidebar.tsx`, `Logo`, `Donate.tsx`, `LiveVisitorCounter.tsx`, `round-drift-predictor.ts`, `DailyChallenge.tsx`, `ThreadDetailPage.tsx`, `MobileNav.tsx`, `ErrorBoundary`, `navigation-menu.tsx`, `FeeCalculator.tsx`, `Button`, `MusicPlayer.tsx`, `PYQTest.tsx`, `OfficialResourcesBanner.tsx`, `CutoffClash.tsx`, `carousel.tsx`, `drawer.tsx`, `CollegeCutoffs.tsx`, `chart.tsx`, `client.ts`?**
   _High betweenness centrality (0.059) - this node is a cross-community bridge._
 - **Should `CollegeDetail.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.12962962962962962 - nodes in this community are weakly interconnected._
