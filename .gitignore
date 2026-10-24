@@ -108,8 +108,8 @@ backup/
 *.backup
 
 # Excel files (if you want to exclude them)
-# *.xlsx
-# *.xls
+*.xlsx
+*.xls
 
 # Python
 __pycache__/

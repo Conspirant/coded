@@ -28,7 +28,12 @@ import {
     ExternalLink,
     TrendingUp,
     Stethoscope,
-    Grid3X3
+    Grid3X3,
+    BookOpenCheck,
+    FlaskConical,
+    BookOpen,
+    GraduationCap,
+    ListTodo
 } from "lucide-react"
 import { useExamMode, ExamMode } from "@/contexts/ExamModeContext"
 
@@ -47,14 +52,23 @@ interface MoreItem extends DockItem {
     external?: boolean
 }
 
-const dockItems: DockItem[] = [
+const kcetDockItems: DockItem[] = [
     { icon: Home, label: "Home", href: "/" },
     { icon: Search, label: "Predictor", href: "/college-predictor" },
     { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
     { icon: Calculator, label: "Predict", href: "/rank-predictor" },
 ]
 
-const moreItems: MoreItem[] = [
+const pucDockItems: DockItem[] = [
+    { icon: GraduationCap, label: "PUC Hub", href: "/puc" },
+    { icon: BookOpenCheck, label: "Q-Banks", href: "/puc/question-banks" },
+    { icon: FileText, label: "Papers", href: "/puc/question-papers" },
+    { icon: Calculator, label: "Marks Calc", href: "/puc/marks-calculator" },
+]
+
+const kcetMoreItems: MoreItem[] = [
+    { icon: GraduationCap, label: "2nd PUC Hub", href: "/puc" },
+    { icon: BookOpenCheck, label: "PUC Banks", href: "/puc/question-banks" },
     { icon: MessageSquare, label: "Forum", href: "/forum" },
     { icon: Calculator, label: "Fee Calc", href: "/fee-calculator" },
     { icon: Flame, label: "Daily Quiz", href: "/daily-challenge" },
@@ -73,10 +87,29 @@ const moreItems: MoreItem[] = [
     { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
 ]
 
+const pucMoreItems: MoreItem[] = [
+    { icon: BookOpen, label: "Blueprints", href: "/puc/subjects" },
+    { icon: FlaskConical, label: "Practicals", href: "/puc/practicals" },
+    { icon: ListTodo, label: "Planner", href: "/puc/study-planner" },
+    { icon: LayoutDashboard, label: "KCET Home", href: "/dashboard" },
+    { icon: Search, label: "Predictor", href: "/college-predictor" },
+    { icon: BarChart3, label: "Cutoffs", href: "/cutoff-explorer" },
+    { icon: Calculator, label: "KCET Predict", href: "/rank-predictor" },
+    { icon: MessageSquare, label: "Forum", href: "/forum" },
+    { icon: Bot, label: "TesselBot", href: "/ai-counselor" },
+    { icon: ExternalLink, label: "KCETards", href: "https://www.reddit.com/r/KCETards/", external: true },
+]
+
 export function MobileDock() {
     const [moreOpen, setMoreOpen] = useState(false)
     const location = useLocation()
+    const { examMode } = useExamMode()
     const sheetRef = useRef<HTMLDivElement>(null)
+
+    // Determine if we should show 2nd PUC navigation (either KSEAB examMode or /puc routes)
+    const isPuc = examMode === "KSEAB" || location.pathname.startsWith("/puc")
+    const activeDockItems = isPuc ? pucDockItems : kcetDockItems
+    const activeMoreItems = isPuc ? pucMoreItems : kcetMoreItems
 
     // Close sheet on route change
     useEffect(() => {
@@ -124,7 +157,7 @@ export function MobileDock() {
 
                                 {/* Header */}
                                 <div className="px-5 pb-4 flex items-center justify-between">
-                                    <h3 className="font-bold text-lg">All Tools</h3>
+                                    <h3 className="font-bold text-lg">{isPuc ? "2nd PUC & KCET Tools" : "All Tools"}</h3>
                                     <button
                                         onClick={() => setMoreOpen(false)}
                                         className="p-2 rounded-xl hover:bg-white/5 transition-colors"
@@ -135,7 +168,7 @@ export function MobileDock() {
 
                                 {/* Grid of tools */}
                                 <div className="grid grid-cols-4 gap-2 px-4">
-                                    {moreItems.map((item, i) => (
+                                    {activeMoreItems.map((item, i) => (
                                         item.external ? (
                                             <a
                                                 key={item.href + i}
@@ -190,7 +223,7 @@ export function MobileDock() {
                 {/* Frosted bar */}
                 <div className="mx-3 mb-3 rounded-2xl glass-strong border border-white/10 shadow-2xl shadow-black/30">
                     <div className="flex items-center justify-around px-2 py-1.5">
-                        {dockItems.map((item) => (
+                        {activeDockItems.map((item) => (
                             <DockIcon key={item.href} item={item} />
                         ))}
                         {/* More button */}

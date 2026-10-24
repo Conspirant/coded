@@ -334,10 +334,10 @@ const RankPredictor = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12">
       <SEO
-        title="KCET 2026 Rank Predictor – Marks vs Rank Calculator (Free)"
-        description="Calculate your predicted Karnataka CET 2026 rank from marks using multi-year KEA normalized data (2023–2025). 50% KCET + 50% Board formula."
+        title="KCET 2026 Rank Predictor – Marks vs Rank Calculator"
+        description="Estimate your KCET 2026 rank from KCET and board marks using a transparent historical model. See the assumptions, range, and limitations before using the estimate for college planning."
         url="https://kcetcoded.dev/rank-predictor"
-        keywords="KCET rank predictor, KCET marks vs rank, KCET 2026 rank calculator, KCET rank prediction"
+        keywords="KCET rank predictor 2026, KCET marks vs rank, KCET rank calculator, KCET expected rank, Karnataka CET rank prediction"
       />
 
       {/* Header Banner */}

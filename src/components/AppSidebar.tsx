@@ -12,6 +12,7 @@ import {
   Info,
   Book,
   BookOpen,
+  FlaskConical,
   Bot,
   LayoutDashboard,
   Building2,
@@ -39,7 +40,7 @@ import {
   IndianRupee,
   Grid3X3,
 } from "lucide-react"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import {
   Sidebar,
   SidebarContent,
@@ -153,6 +154,32 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
   return sections
 }
 
+const getKseabSections = (): NavSection[] => [
+  {
+    label: "KSEAB 2nd PUC",
+    items: [
+      { title: "PUC Overview", url: "/puc", icon: Home },
+      { title: "Subjects & Syllabus", url: "/puc/subjects", icon: BookOpen },
+      { title: "Practical Scheme", url: "/puc/practicals", icon: FlaskConical },
+      { title: "Question Papers", url: "/puc/question-papers", icon: FileText },
+      { title: "Question Banks", url: "/puc/question-banks", icon: BookOpenCheck },
+      { title: "Marks Calculator", url: "/puc/marks-calculator", icon: Calculator },
+    ],
+  },
+  {
+    label: "Plan & Prepare",
+    items: [
+      { title: "Study Planner", url: "/puc/study-planner", icon: LayoutDashboard, underDevelopment: true },
+      { title: "Mock Tests", url: "/puc/mock-tests", icon: Award, underDevelopment: true },
+      { title: "Updates", url: "/puc/updates", icon: Newspaper, underDevelopment: true },
+    ],
+  },
+  {
+    label: "Continue to KCET",
+    items: [{ title: "KCET Rank Predictor", url: "/rank-predictor", icon: Target }],
+  },
+]
+
 
 
 function SidebarNavItem({
@@ -255,14 +282,15 @@ function SidebarNavItem({
 
 export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
   const { state, setOpenMobile, isMobile } = useSidebar()
-  const { examMode } = useExamMode()
+  const { examMode, setExamMode } = useExamMode()
+  const navigate = useNavigate()
   const [unlocked, setUnlocked] = useState(isUnlocked())
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked)
   }, [])
 
-  const sections = getKcetSections(unlocked, onUnlockClick)
+  const sections = examMode === "KSEAB" ? getKseabSections() : getKcetSections(unlocked, onUnlockClick)
 
   return (
     <Sidebar
@@ -279,6 +307,23 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
             textSize="text-sm font-bold tracking-tight text-slate-100"
           />
         </div>
+
+        {state !== "collapsed" && (
+          <div className="px-3 pb-2 grid grid-cols-2 gap-1.5">
+            {(["KCET", "KSEAB"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => {
+                  setExamMode(mode)
+                  navigate(mode === "KSEAB" ? "/puc" : "/dashboard")
+                }}
+                className={`rounded-md px-2 py-1.5 text-[10px] font-bold tracking-wide transition-colors ${examMode === mode ? "bg-primary/15 text-primary border border-primary/30" : "text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent"}`}
+              >
+                {mode === "KSEAB" ? "2nd PUC" : mode}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Organized Navigation Sections */}
         {sections.map((section, idx) => (

@@ -23,6 +23,7 @@ import { UserProfileModal, type StoredUserProfile } from "./UserProfileModal"
 
 import { Logo } from "./ui/Logo"
 import { useLocation } from "react-router-dom"
+import { MobileDock } from "./MobileNav"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -402,6 +403,7 @@ export function Layout({ children }: LayoutProps) {
           </main>
         )}
       </div>
+      <MobileDock />
       <PremiumUpgradeModal open={premiumUpgradeOpen} onOpenChange={setPremiumUpgradeOpen} />
       <UserProfileModal open={userProfileOpen} onOpenChange={setUserProfileOpen} onUpgradeClick={() => setPremiumUpgradeOpen(true)} />
       <GlobalDonationPopup />

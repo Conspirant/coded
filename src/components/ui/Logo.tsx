@@ -5,7 +5,7 @@ export interface LogoProps {
   iconSize?: number
   showText?: boolean
   textSize?: string
-  mode?: "KCET" | "COMEDK" | "NEET" | "default"
+  mode?: "KCET" | "KSEAB" | "COMEDK" | "NEET" | "default"
   variant?: "default" | "badge" | "glyph"
 }
 
@@ -33,6 +33,19 @@ export function Logo({
       core2: "#818CF8",
       dot: "bg-sky-400",
       prefix: "KCET",
+    },
+    KSEAB: {
+      top1: "#A7F3D0",
+      top2: "#34D399",
+      top3: "#059669",
+      spine1: "#059669",
+      spine2: "#064E3B",
+      base1: "#10B981",
+      base2: "#047857",
+      core1: "#6EE7B7",
+      core2: "#34D399",
+      dot: "bg-emerald-400",
+      prefix: "KSEAB",
     },
     COMEDK: {
       top1: "#FEF08A",

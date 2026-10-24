@@ -259,8 +259,28 @@ function mapDbRow(q: any): PYQQuestion {
 
 async function getQuestionPool(): Promise<PYQQuestion[]> {
   try {
-    const { data, error } = await supabase.from('pyq_questions' as any).select('*');
-    if (!error && data) return mergeQuestions(data.map(mapDbRow));
+    const allRows: any[] = [];
+    const pageSize = 1000;
+    let from = 0;
+    let hasMore = true;
+
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('pyq_questions' as any)
+        .select('*')
+        .range(from, from + pageSize - 1);
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        allRows.push(...data);
+        if (data.length < pageSize) hasMore = false;
+        else from += pageSize;
+      } else {
+        hasMore = false;
+      }
+    }
+
+    if (allRows.length > 0) return mergeQuestions(allRows.map(mapDbRow));
   } catch (err) {
     console.warn("Supabase question fetch failed, using bundled questions:", err);
   }
@@ -269,7 +289,7 @@ async function getQuestionPool(): Promise<PYQQuestion[]> {
 
 export async function getQuestionsByChapter(subject: string, chapterNumber: number): Promise<PYQQuestion[]> {
   const pool = await getQuestionPool();
-  return pool.filter(q => q.subject === subject && q.chapterNumber === chapterNumber).sort((a, b) => a.year - b.year);
+  return pool.filter(q => q.subject === subject && q.chapterNumber === chapterNumber);
 }
 
 export async function getRandomQuestions(count: number, subject?: string): Promise<PYQQuestion[]> {

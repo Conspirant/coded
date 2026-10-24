@@ -496,8 +496,8 @@ const CutoffExplorer = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Cutoff Explorer"
-        description="Explore and analyze KCET cutoff data across varying years, colleges, and categories with interactive charts."
+        title="KCET Cutoff 2026 – College & Branch Wise Cutoff Explorer"
+        description="Explore KCET college-wise and branch-wise closing ranks by year, round, quota, and category using historical KEA cutoff records."
         url="https://kcetcoded.dev/cutoff-explorer"
         keywords="KCET cutoff explorer, KCET cutoff trends, KCET cutoff analysis, KCET year wise cutoff, KCET cutoff comparison, KCET 2025 cutoff list"
       />

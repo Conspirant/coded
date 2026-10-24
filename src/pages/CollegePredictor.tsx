@@ -1670,10 +1670,10 @@ const CollegePredictor = () => {
     return (
       <div className="min-h-screen bg-background pb-20 md:pb-0">
         <SEO
-          title="College Predictor"
-          description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
+          title="KCET College Predictor 2026 – Colleges by Rank"
+          description="Find KCET engineering colleges and branches that may fit your rank, category, and preferences using historical KEA closing-rank data. Results are estimates, not admission guarantees."
           url="https://kcetcoded.dev/college-predictor"
-        keywords="KCET college predictor, find colleges by rank, KCET 2026 colleges, best engineering colleges for my rank, KCET rank wise college list"
+        keywords="KCET college predictor 2026, colleges by KCET rank, KCET college list, KCET college prediction, engineering colleges for my rank"
         />
         <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
           <div className="space-y-2">
@@ -1781,8 +1781,8 @@ const CollegePredictor = () => {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <SEO
-        title="College Predictor"
-        description="Find the perfect engineering college based on your KCET rank, category, and preferences with smart filtering."
+        title="KCET College Predictor 2026 – Colleges by Rank"
+        description="Find KCET engineering colleges and branches that may fit your rank, category, and preferences using historical KEA closing-rank data. Results are estimates, not admission guarantees."
         url="https://kcetcoded.dev/college-predictor"
       />
       {/* Animated Background */}

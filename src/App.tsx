@@ -69,6 +69,8 @@ import { WebsiteReviewPrompt } from "@/components/WebsiteReviewPrompt";
 import { GlobalPollPopup } from "./components/GlobalPollPopup";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
+import PucHub from "./pages/PucHub";
+import { PucMarksCalculator, PucQuestionPapers, PucSubjects, PucStudyPlanner, PucPracticals, PucQuestionBanks } from "./pages/PucPages";
 
 const queryClient = new QueryClient();
 
@@ -100,6 +102,14 @@ const App = () => (
 
                 <Routes>
                   <Route path="/" element={<Homepage />} />
+                  <Route path="/puc" element={<Layout><PucHub /></Layout>} />
+                  <Route path="/puc/subjects" element={<Layout><PucSubjects /></Layout>} />
+                  <Route path="/puc/practicals" element={<Layout><PucPracticals /></Layout>} />
+                  <Route path="/puc/question-banks" element={<Layout><PucQuestionBanks /></Layout>} />
+                  <Route path="/puc/question-papers" element={<Layout><PucQuestionPapers /></Layout>} />
+                  <Route path="/puc/marks-calculator" element={<Layout><PucMarksCalculator /></Layout>} />
+                  <Route path="/puc/study-planner" element={<Layout><PucStudyPlanner /></Layout>} />
+                  <Route path="/puc/updates" element={<Layout><PucQuestionPapers /></Layout>} />
                   <Route path="/daily-challenge" element={<DailyChallenge />} />
                   <Route path="/cutoff-clash" element={<CutoffClash />} />
                   <Route path="/dino" element={<DinoGame />} />
