@@ -66,9 +66,18 @@ export function PdfViewerModal({
   const [canvasError, setCanvasError] = useState<string | null>(null)
   
   const containerRef = useRef<HTMLDivElement>(null)
+  const mobileScrollRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const renderTaskRef = useRef<any>(null)
-  const touchStartRef = useRef<{ x: number; y: number; distance: number; initialZoom: number } | null>(null)
+  const touchStartRef = useRef<{
+    x: number
+    y: number
+    distance: number
+    initialZoom: number
+    scrollLeft: number
+    scrollTop: number
+    isPanning: boolean
+  } | null>(null)
 
   // Configure PDF.js once on mount
   useEffect(() => {
@@ -279,8 +288,12 @@ export function PdfViewerModal({
   }
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    const scrollEl = mobileScrollRef.current
+    const scrollLeft = scrollEl ? scrollEl.scrollLeft : 0
+    const scrollTop = scrollEl ? scrollEl.scrollTop : 0
+
     if (e.touches.length === 2) {
-      // Pinch start
+      // Two-finger pinch-to-zoom
       const dx = e.touches[0].clientX - e.touches[1].clientX
       const dy = e.touches[0].clientY - e.touches[1].clientY
       const distance = Math.hypot(dx, dy)
@@ -289,13 +302,21 @@ export function PdfViewerModal({
         y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
         distance,
         initialZoom: zoomLevel,
+        scrollLeft,
+        scrollTop,
+        isPanning: false,
       }
     } else if (e.touches.length === 1) {
+      // Single finger: Drag-pan if zoomed in, or page swipe gesture
+      const isZoomed = zoomLevel > 105
       touchStartRef.current = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
         distance: 0,
         initialZoom: zoomLevel,
+        scrollLeft,
+        scrollTop,
+        isPanning: isZoomed,
       }
     }
   }
@@ -303,7 +324,7 @@ export function PdfViewerModal({
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!touchStartRef.current) return
 
-    // Pinch zoom handling
+    // 1. Two-finger pinch zoom
     if (e.touches.length === 2 && touchStartRef.current.distance > 0) {
       const dx = e.touches[0].clientX - e.touches[1].clientX
       const dy = e.touches[0].clientY - e.touches[1].clientY
@@ -313,26 +334,36 @@ export function PdfViewerModal({
       if (Math.abs(newZoom - zoomLevel) >= 5) {
         setZoomLevel(newZoom)
       }
+      return
+    }
+
+    // 2. Single finger: Smooth active panning across the document if zoomed in
+    if (e.touches.length === 1 && touchStartRef.current.isPanning && mobileScrollRef.current) {
+      const currentX = e.touches[0].clientX
+      const currentY = e.touches[0].clientY
+      const deltaX = currentX - touchStartRef.current.x
+      const deltaY = currentY - touchStartRef.current.y
+
+      mobileScrollRef.current.scrollLeft = touchStartRef.current.scrollLeft - deltaX
+      mobileScrollRef.current.scrollTop = touchStartRef.current.scrollTop - deltaY
     }
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!touchStartRef.current) return
 
-    // Single finger swipe left/right for page turn (only if not heavily zoomed)
-    if (touchStartRef.current.distance === 0 && e.changedTouches.length === 1 && zoomLevel <= 130) {
+    // Page turn swipe when at default zoom (<= 110%)
+    if (touchStartRef.current.distance === 0 && e.changedTouches.length === 1 && zoomLevel <= 110) {
       const endX = e.changedTouches[0].clientX
       const endY = e.changedTouches[0].clientY
       const deltaX = endX - touchStartRef.current.x
       const deltaY = endY - touchStartRef.current.y
 
-      // Horizontal swipe detected (threshold 60px, mostly horizontal)
-      if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      // Horizontal swipe detected (threshold 50px, predominantly horizontal)
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
         if (deltaX < 0) {
-          // Swiped left -> Next page
           handlePageChange(currentPage + 1)
         } else {
-          // Swiped right -> Previous page
           handlePageChange(currentPage - 1)
         }
       }
@@ -605,7 +636,8 @@ export function PdfViewerModal({
         <div className="relative flex-1 w-full h-full min-h-0 bg-neutral-900 overflow-hidden flex flex-col p-0 m-0">
           {isMobile ? (
             <div 
-              className="w-full h-full overflow-auto flex flex-col items-center justify-start p-2 sm:p-4 bg-neutral-950/90 relative touch-pan-x touch-pan-y"
+              ref={mobileScrollRef}
+              className="w-full h-full overflow-x-auto overflow-y-auto flex flex-col items-center justify-start p-2 sm:p-4 bg-neutral-950/90 relative touch-pan-x touch-pan-y overscroll-contain select-none"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
