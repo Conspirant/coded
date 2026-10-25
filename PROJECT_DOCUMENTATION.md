@@ -1,7 +1,7 @@
 # KCETCoded
 ## Complete Project Documentation and Codebase Audit
 
-Last audited against this repository on March 20, 2026.
+Last audited against this repository on October 25, 2026 (Updated post-baseline incorporating 2nd PUC Suite, Full PYQ Bank, Fee Calculator, and 2026 Cutoff Integrations).
 
 > Important: This project is an independent student-built platform. It is not an official KEA product. All critical admission decisions should still be verified against official KEA documents.
 
@@ -23,19 +23,21 @@ All of those names refer to the same project lineage. In this document, the cano
 
 KCETCoded is a frontend-heavy, data-centric counseling and discovery platform for Karnataka engineering aspirants. Its central purpose is to take the messy, intimidating, hard-to-search public admission ecosystem around KCET and turn it into something navigable, searchable, transparent, and student-friendly.
 
-At its core, KCETCoded does five things extremely clearly:
+At its core, KCETCoded does six things extremely clearly:
 
-1. It converts official KEA cutoff data into a structured, queryable product surface.
-2. It helps students estimate rank, shortlist colleges, inspect exact cutoffs, and rehearse option-entry decisions.
-3. It adds student-support layers that official sources do not provide well: reviews, explanatory guides, planning tools, news digestion, and lightweight AI guidance.
-4. It experiments beyond the usual counseling tools with commute-oriented filters, group-college discovery, hidden-value analysis, and gamified learning.
-5. It keeps a strong transparency ethic: source links to official PDFs, visible disclaimers, no required sign-up, and a strong preference for local-first storage where possible.
+1. It converts official KEA cutoff data into a structured, queryable product surface covering over 252,789 cutoff records across 2023–2026.
+2. It helps students estimate rank (calibrated with 2026/2027 percentile data), shortlist colleges, inspect exact cutoffs, and rehearse option-entry decisions.
+3. It provides a complete **2nd PUC Academic Hub** with official 565+ page state question banks, 2025–2026 solved PYQs with official schemes of evaluation, and in-browser touch-friendly PDF canvas rendering.
+4. It integrates official KEA financial planning via the **Fee Calculator**, modeling 4-year tuition across Government, Aided, Unaided Type 1 & 2, Farm Science, and SNQ quota structures.
+5. It adds student-support layers that official sources do not provide well: reviews, explanatory guides, planning tools, news alerts, a real-time discussion forum, and **TesselBot** conversational AI guidance with in-chat college/category cutoff selectors.
+6. It keeps a strong transparency ethic: source links to official PDFs, visible disclaimers, no required sign-up, and a strong preference for local-first storage where possible.
 
-This is not a thin website with one calculator. It is closer to a small counseling operating system built around three ingredients:
+This is not a thin website with one calculator. It is closer to a counseling and academic operating system built around:
 
-- a large static cutoff dataset
-- a React application with many route-level tools
-- a small backend layer for reviews, AI proxying, OG generation, and optional shared content
+- high-volume binary and static cutoff vaults
+- a React application with 50+ route-level tools
+- a Supabase backend layer for reviews, real-time forum discussions, cross-device Pro sync, dynamic popups, and live visitor counting
+- a serverless layer for Razorpay payments, AI proxying, and social OG generation
 
 ## 3. Motivation, Aim, and Philosophy
 
@@ -69,10 +71,11 @@ The codebase and the About page make the philosophy very clear:
 
 - **Free first**: the platform is positioned as 100% free.
 - **No sign-up by default**: most features work without accounts.
-- **No ads identity**: the product tone is anti-gatekeeping and anti-coaching-package posturing.
+- **No ads identity**: sponsored ads were completely removed in favor of a clean, distraction-free environment.
 - **Transparency over black-box polish**: official-source links and disclaimers are surfaced prominently.
 - **Community-shaped development**: subreddit references and feature-request flows are embedded into the product identity.
 - **Student-first practicality**: the project does not stop at cutoffs; it goes into commute, peer grouping, document preparation, and decision rehearsal.
+- **Exclusive focus on KCET & 2nd PUC**: NEET Hub and COMEDK have been cleanly archived, refocusing 100% of the platform's resources on Karnataka CET and 2nd PUC.
 
 ## 4. Current Product Snapshot
 
@@ -80,29 +83,31 @@ The following facts are derived from the repository state currently present in t
 
 | Area | Current state |
 | --- | --- |
-| Route declarations in `src/App.tsx` | 36 declared routes |
-| Unique route paths | 34 unique paths |
-| Duplicate route quirk | `/college-cutoffs` is declared three times |
-| Core cutoff dataset | 216,893 cutoff rows in `public/data/kcet_cutoffs_high_volume.json` |
-| Years covered | 2023, 2024, 2025 |
-| Rounds covered | MOCK, R1, R2, R3 |
-| Reservation categories represented | 24 |
-| Distinct raw institute codes in cutoff rows | 255 |
-| Distinct raw course labels in cutoff rows | 345 |
-| Colleges in `public/colleges-list.json` | 232 |
-| Hardcoded PYQ question bank size | 114 questions |
-| PYQ chapter metadata | 28 chapters |
-| Public serverless endpoints | 3 (`/api/share`, `/api/og`, `/api/nvidia-chat`) |
-| Hidden admin surfaces | `AdminCutoffs`, `AdminPYQ`, plus moderation/admin tabs |
-| PWA state | install prompt exists, offline caching is effectively disabled |
-| Countdown target in UI | April 23, 2026 at 10:30 AM IST |
+| Route declarations in `src/App.tsx` | 55+ declared routes and graceful redirect handlers |
+| Unique route paths | 48 active unique paths (plus alias redirects) |
+| Active Admissions Scope | Exclusively Karnataka CET & 2nd PUC (NEET/COMEDK archived with `ScopeNotification` & `UnsupportedExamRedirect`) |
+| Core cutoff dataset | 252,789 verified cutoff rows in `public/data/` & binary vaults |
+| Years covered | 2023, 2024, 2025, 2026 (including 2026 Mock 1 & 2, Round 1, Round 2, and Round 3 Provisional) |
+| Rounds covered | MOCK, R1, R2, R3 (Extended) |
+| Reservation categories represented | 24 official KEA categories (GM, 1G–1R, 2AG–2AR, 2BG–2BR, 3AG–3AR, 3BG–3BR, SCG–SCR, STG–STR, GMK, GMR, SNQ) |
+| Engineering colleges indexed | 269 institutions (E001 to E280+) |
+| Engineering & Technology branches | 421 distinct branch specializations |
+| 2nd PUC Academic Hub | Dedicated `/puc` space with 6 distinct tool routes (Question Banks, PYQs, Model Papers, Blueprints, Practicals, Marks Calculator) |
+| PYQ Question Bank | 68 full syllabus chapters across Physics (1–28), Chemistry (1–19), and Maths (1–21) with LaTeX/KaTeX rendering |
+| 2nd PUC PYQ Archive | Official 2025 & 2026 Exam 1 & 2 Question Papers + Schemes of Evaluation with integrated client canvas PDF viewer |
+| Fee Calculator | Complete 4-year tuition and living cost calculator with official KEA 2026-27 provisional fee tables |
+| Conversational AI | TesselBot AI counselor with in-chat 269-college & 25-category interactive cutoff wizard |
+| Community Discussion Forum | Real-time Supabase Q&A hub (`kcet-forum-realtime`) with verified student badges and thread voting |
+| Background Music | Floating YouTube music player with curated study tracks and real-time Admin playlist management |
+| Admin Hub Surfaces | AdminHub with Page Access Control, emergency site shutdown, real-time dynamic popups, poll manager, and music manager |
+| Public serverless endpoints | 5 (`/api/share`, `/api/og`, `/api/nvidia-chat`, `/api/create-order`, `/api/verify-payment`) |
 
-### 4.1 Important route quirks
+### 4.1 Architecture and Hygiene Improvements
 
-- `/college-cutoffs` appears multiple times in `src/App.tsx`. React Router will still resolve the first matching declaration, but the duplication is real and should be cleaned.
-- `/college-list` currently renders `CollegeCutoffs`, not `CollegeList.tsx`.
-- A separate `src/pages/CollegeList.tsx` file exists but is not the page users actually reach through `/college-list`.
-- Several page files exist in the repository but are not wired into routing at all.
+- NEET Hub and COMEDK routes have been decoupled and gracefully redirected to `/` with an informative banner clarifying KCET-only scope.
+- College Predictor and Cutoff Explorer utilize high-efficiency binary vault loaders with local fallback.
+- Client PDF viewer implemented using client-side canvas rendering with 2D touch drag-panning, pinch-to-zoom, and fit-to-width responsive scaling for mobile devices.
+- Numbers across cutoff tables and predictors formatted consistently using the Indian numbering system (`en-IN`).
 
 ### 4.2 What the project feels like in practice
 
@@ -396,9 +401,43 @@ This section covers every route currently declared in `src/App.tsx`, plus notabl
 
 #### College Compare (`/college-compare`)
 
-- This route exists and is exposed in navigation, but the page is still under development.
-- In practical terms, it is a promise more than a finished analysis surface.
-- Its presence matters because compare is a natural next step after discovery, but users should not assume the feature is production-complete yet.
+- Comprehensive side-by-side college comparison matrix covering all **24 KEA reservation categories** (General, Kannada Medium, Rural, SC, ST, Categories 1–3B, and SNQ).
+- Evaluates branch cutoffs, median closing ranks, and institutional accreditations across compared colleges.
+
+#### Fee Calculator (`/fee-calculator`)
+
+- Added as a first-class financial planning engine updated with the official **KEA 2026-27 provisional fee structure**.
+- Features two distinct modes: an interactive 4-year cost calculator and official fee reference tables.
+- Covers multiple admission streams: Engineering, Architecture, Farm Science, Veterinary, and Fisheries/Dairy.
+- Calculates exact institutional tuition breakdown:
+  - Government / University engineering colleges (₹43,810/yr)
+  - Aided engineering colleges (Aided & Unaided courses)
+  - Private Unaided Type 1 (₹79,160/yr) & Type 2 (₹88,710/yr) colleges
+  - Farm Science / Agricultural University quotas (General: ₹34,755/yr, Higher fee: ₹68,540/yr)
+  - 100% tuition waiver calculation for SNQ (Supernumerary Quota) eligible candidates
+  - SC/ST post-matric scholarship fee exemption slabs (< ₹2.5L, ₹2.5L–₹10L, and > ₹10L annual income)
+- Incorporates user-customizable living expenses: hostel rent, mess food charges, and city transportation (BMTC/Metro/Auto).
+- Supports 4-year cumulative cost projection, quick summary copy, and direct PDF generation.
+
+#### 2nd PUC Academic Hub (`/puc` and sub-routes)
+
+- A complete academic preparation and syllabus mastery suite bridging Karnataka 2nd PUC Science with KCET engineering admissions:
+  - **PucHub (`/puc`)**: Central portal connecting board preparation to KCET 50% PCM weightage.
+  - **Question Banks (`/puc/question-banks`)**: Direct access to official state-prescribed 565+ page chapter-wise question banks for Physics (300+ pages), Chemistry, and Mathematics.
+  - **PYQ Archive (`/puc/pyq`, `/puc/pyq-archive`)**: Official KSEAB 2nd PUC 2025 & 2026 Physics, Chemistry, and Mathematics Exam 1 & 2 Question Papers with official model answer keys.
+  - **In-Browser PDF Canvas Viewer (`PdfViewerModal`)**: High-performance mobile-optimized viewer featuring touch drag-panning, pinch-to-zoom, fit-to-width canvas rendering, and instant downloads.
+  - **Question Papers Library (`/puc/question-papers`)**: KSEAB Model Question Papers indexed across 6 examination cycles.
+  - **Official Blueprints & Weightage (`/puc/subjects`)**: Unit-wise and chapter-wise mark distributions, teaching hours, and downloadable blueprint PDFs.
+  - **Practical Scheme of Evaluation (`/puc/practicals`)**: Complete 30-mark laboratory rubric breakdown, salt analysis schemes, viva guidelines, and experiment rubrics.
+  - **PUC & KCET Marks Calculator (`/puc/marks-calculator`)**: Normalizes board marks and calculates real-time projected 50% KCET weightage contribution.
+  - **Study Planner (`/puc/study-planner`)**: Structured study timetable organizer for board aspirants.
+
+#### Discussion Forum (`/forum` and `/forum/:postId`)
+
+- A full-featured, real-time community Q&A platform for KCET aspirants.
+- Backed by Supabase Cloud persistence with live broadcast synchronization (`kcet-forum-realtime`).
+- Features category filtering (Cutoffs, Colleges, Counseling, Preparation), upvoting, verified student badges, student author context, and rich markdown thread formatting.
+- Thread Detail view (`/forum/:postId`) allows deep discussion threads, immediate reply broadcasts, and answer upvoting.
 
 #### Mock Simulator (`/mock-simulator`)
 
@@ -418,24 +457,27 @@ This section covers every route currently declared in `src/App.tsx`, plus notabl
 
 #### Round Tracker (`/round-tracker`)
 
-- Round Tracker is a counseling-timeline page for round-based process awareness.
-- It currently appears to be more manual/static than dynamically backend-driven.
-- That means it is useful as a structured reminder page, but it should not be mistaken for a guaranteed live sync with official scheduling changes.
-- It reinforces the platform's "do not miss the process details" mission even if it is not yet a live operations dashboard.
+- Round Tracker is a counseling-timeline page for round-based process awareness updated with verified August 2026 data.
+- Includes step-by-step guidance on KEA Choice 1, Choice 2, Choice 3, and Choice 4 post-allotment options.
+- Details the mandatory college reporting checklist, fee payment schedules, and seat surrender/penalty rules.
 
 #### Documents (`/documents`)
 
 - Documents is a checklist-style counseling support page organized by document category.
-- It covers academic records, KCET/NEET-adjacent materials, identity documents, reservation-related documents, and copy requirements.
+- It covers academic records, KCET identity documents, reservation-related documents, and copy requirements.
 - This page exists because counseling failure is not always about rank; it is often about procedural readiness.
-- The page is simple in concept but highly important in real student workflow.
+
+#### Mock Verification (`/document-verification`)
+
+- Interactive KEA document verification simulator.
+- Validates Rural and Kannada medium 7-year study certificates with BEO countersignatures.
+- Guides candidates through Caste and Income certificate validation (RD numbers, 3A/3B/2A/SC/ST income ceiling rules).
 
 #### Reviews (`/reviews`)
 
 - Reviews is the discovery hub for crowd-sourced college feedback.
 - Users can search, filter, sort, and narrow to colleges that actually have review content.
 - It acts as the bridge between hard admissions data and qualitative lived experience.
-- In the broader KCETCoded product story, this page says: cutoffs tell you whether you can get in; reviews help you decide whether you should.
 
 #### College Review Page (`/reviews/:collegeCode`)
 
@@ -444,35 +486,29 @@ This section covers every route currently declared in `src/App.tsx`, plus notabl
 - Users can submit reviews anonymously, with session tracking rather than full account onboarding.
 - The page supports deleting one's own review, reporting problematic content, and sharing the page.
 - The review pipeline includes sanitization, profanity and spam checks, simple rate limiting, and moderation/report handling.
-- Among all community features in the app, this is one of the most mature shared-data surfaces.
 
 #### Info Centre (`/info-centre`)
 
 - Info Centre is one of the broadest content pages in the project.
 - It contains general KCET guidance, explanatory material, FAQs, fee/process context, and a substantial VTU vs Autonomous comparison.
-- The VTU vs Autonomous section is especially notable because it is structured into tabs such as overview, academics, exams, placements, and verdict.
-- This page represents the "explain the ecosystem" side of KCETCoded, not just the "search the data" side.
+- The VTU vs Autonomous section is structured into tabs such as overview, academics, exams, placements, and verdict.
 
 #### Materials (`/materials`)
 
-- Materials is a resource shelf rather than a computational tool.
-- It includes cards for official cutoff PDFs and placeholder or starter study-material references.
-- It helps centralize relevant documents, though parts of it are still more scaffold than full knowledge base.
+- Materials is a resource shelf with downloadable official cutoff PDFs, formula sheets, and study material references.
 
 #### CET News (`/cet-news`)
 
-- CET News loads a generated `news.json` feed from `public/data`.
-- It also includes a prominent featured official notice object, meaning the page mixes a hand-prioritized headline with feed-driven content.
-- The presence of news automation scripts in the repo shows this page is backed by a broader ingestion workflow, even though the runtime page itself is reading a prepared JSON artifact rather than live-polling news services.
+- CET News loads a curated feed of KCET notices and press notes.
+- Includes category filtering (Deadlines, Verification, Cutoffs, Allotments), official circular download links, and search indexing.
 
-#### AI Counselor (`/ai-counselor`)
+#### TesselBot AI Counselor (`/ai-counselor`)
 
-- AI Counselor provides a chat interface for counseling-related questions.
-- The UX includes disclaimers, quick prompts, markdown rendering, and visible assistant status handling.
-- Under the hood, the system uses `src/lib/gemini.ts` and `src/lib/ai-tools.ts`, despite the name `gemini.ts` now representing a broader orchestration path than a single provider.
-- The primary route appears to be the `/api/nvidia-chat` proxy, with fallback behavior routed through other model-access paths.
-- Importantly, the page is honest about uncertainty and explicitly pushes users back toward deterministic tools such as College Finder and Cutoff Explorer for cutoff-sensitive facts.
-- This page is useful for explanation, brainstorming, and orientation, but it is not framed as a source-of-truth replacement for the data tools.
+- Re-architected as **TesselBot**, a specialized, non-hallucinatory admissions AI counselor.
+- Features an interactive **in-chat 269-college & 25-category dropdown wizard** allowing step-by-step cutoff queries directly within the conversation flow.
+- Grounded strictly in verified 2023–2026 KEA cutoff datasets with no hallucinated rank projections.
+- Employs ultra-fast NVIDIA Nemotron serverless proxy endpoints with local timeout failovers.
+- Deterministically cleans meta-commentary, system lectures, and robotic output for an authoritative, student-friendly tone.
 
 #### Daily Challenge (`/daily-challenge`)
 
@@ -489,29 +525,29 @@ This section covers every route currently declared in `src/App.tsx`, plus notabl
 
 #### PYQ Test (`/pyq-test`)
 
-- PYQ Test combines a structured multiple-choice bank with scanned-PDF support.
-- It includes chapter tests, quick quiz behavior, local performance statistics, and PDF upload/render support via PDF.js.
-- The route sits at an interesting intersection between structured practice and archival reference material.
-- It also contains explicit language acknowledging scan-quality and extraction limitations, which is honest and appropriate.
+- Comprehensive KCET previous-year question practice engine covering the **complete 68-chapter PCM syllabus**:
+  - **Physics (28 chapters)**: Units & Measurements through Semiconductor Electronics
+  - **Chemistry (19 chapters)**: Basic Concepts through Biomolecules
+  - **Mathematics (21 chapters)**: Sets & Relations through Linear Programming
+- Integrates complete mathematical typesetting with KaTeX (`katex.min.css`) for high-fidelity LaTeX equations, formulas, and symbols.
+- Features chapter-level filtering, multi-subject practice tests, real-time timer, answer rationale explanations, and persistent local score metrics.
 
 #### Feature Request (`/request-feature`)
 
 - Feature Request lets users submit ideas, improvements, and bug reports.
-- Requests can be upvoted and administratively reviewed later.
-- However, the important implementation detail is that this system is local-storage based, not a robust cross-user SaaS feedback board.
-- That means it is useful for same-device tracking and local admin review, but not yet a full community-wide shared request database.
+- Requests can be upvoted and administratively reviewed.
+- Integrated with local and Supabase cloud persistence for community-driven feature tracking.
 
 #### About (`/about`)
 
 - About is one of the most important pages for understanding the spirit of the project.
 - It explains the creator motivation, the anti-gatekeeping stance, the data-source policy, the free/no-signup/no-ads identity, and the purpose of major features in plain human language.
-- If someone wants the emotional thesis of KCETCoded rather than its technical architecture, this page is the clearest in-product articulation.
+- Highlights the platform's independent student origins and transparent design ethic.
 
 #### Privacy Policy (`/privacy`)
 
 - The privacy page emphasizes local storage, no mandatory accounts, limited personal-data collection, cookies/preferences, and third-party analytics posture.
-- It frames most user data as browser-local rather than centrally retained.
-- That aligns with the product philosophy and is also structurally true for many app features.
+- Documents student data protection, Google OAuth profile syncing, and the complete absence of ad-tracking networks.
 
 #### Terms of Service (`/terms`)
 
@@ -523,85 +559,60 @@ This section covers every route currently declared in `src/App.tsx`, plus notabl
 
 - Squad Finder is an unusual and distinctly student-centric tool.
 - Users enter their own rank plus up to three friends' ranks and a category to find colleges where the group could plausibly stay together.
-- This is not a generic admissions feature; it shows deep empathy for how students actually think about relocation and social comfort.
+- Shows deep empathy for how students actually think about relocation and social comfort.
 
 #### Metro Mapper (`/metro-mapper`)
 
 - Metro Mapper overlays college choice with Bangalore metro accessibility.
 - It uses curated metro/college mapping data and sorts colleges by station and walkability context.
-- This turns commute into a first-class decision variable rather than an afterthought.
+- Turns commute into a first-class decision variable rather than an afterthought.
 
 #### BMTC Mapper (`/bmtc-mapper`)
 
 - BMTC Mapper does for buses what Metro Mapper does for metro lines.
 - It uses curated stop, route, and hub relationships to help users identify colleges with practical bus connectivity.
-- This is a highly local, highly pragmatic feature and one of the clearest examples of KCETCoded solving "real life" rather than only "exam data" problems.
+- A highly local, pragmatic feature solving everyday commuting logistics for Bengaluru aspirants.
 
 #### Hidden Gems (`/hidden-gems`)
 
 - Hidden Gems combines placement-oriented data with cutoff trends to identify undervalued colleges.
-- It calculates a "Gem Score" style ranking, effectively acting like a return-on-opportunity surface.
-- This is a smart counterweight to rank obsession because it encourages students to look for value, not only prestige.
+- Automatically calculates a "Gem Score" ranking against live KEA cutoff ranks across all 269 institutions.
+- Encourages students to look for institutional quality and ROI, not just prestige.
+
+#### Focus Music Player
+
+- Floating YouTube audio player accessible platform-wide with curated Lo-Fi, Kannada, Hindi, and English study tracks.
+- Includes circular SVG progress indicators, volume controls, language filtering, and mobile-friendly drawer placement.
+- Remotely controllable and synchronizable via Admin Hub with instant mute/kill-switch capabilities.
+
+#### Global Community Polls (`GlobalPollPopup`)
+
+- Real-time student polling engine covering exam difficulty, counseling satisfaction, and cutoff drift.
+- Synchronized with Supabase Cloud with live percentage distribution calculations.
 
 #### Not Found (`*`)
 
-- The 404 page is not a dead-end placeholder.
-- It is styled with a themed "Lost in Space" experience and includes hints that help users recover navigation quickly.
-- Small detail, but it contributes to the sense that the product is intentionally designed rather than merely assembled.
+- Custom styled 404 page with quick recovery routes and an embedded offline-style Dino mini-game (`/dino`).
 
-### 8.5 Hidden admin functionality
+### 8.5 Admin Operations & Command Console (`/admin`)
 
-#### Admin Cutoffs (`/admin` and `/admin-cutoffs`)
+The administration architecture has been consolidated into a unified, high-capability **AdminHub** (`src/pages/AdminHub.tsx`) protected by SHA-256 cryptographic passphrase hashing (`AUTH_KEY`) and real-time Supabase synchronization:
 
-- Admin Cutoffs is a substantial maintenance console hidden from navigation.
-- It uses a client-side passphrase gate with `kcetadmin2026`, stored in session storage under `kcet_admin_auth`.
-- This page is not just a single editor; it is a multi-tab admin workspace.
-- It supports local overlay editing on top of the base cutoff dataset, including add, update, delete, bulk delete, duplicate detection, overwrite confirmation, undo, CSV import, and multiple export modes.
-- It also houses operational views for review moderation, predictor feedback inspection, and feature-request admin handling.
-- The power is real, but so is the limitation: the auth model is lightweight obfuscation, not strong security.
+- **Page Access Control & Maintenance Locks**: Individual switch toggles for each platform tool with instant auto-save to Supabase. Allows placing specific features into maintenance mode or paywall gating.
+- **Emergency Site Shutdown**: Global kill-switch with instant WebSocket broadcast. Renders realistic customizable 404 mockups or maintenance notices while exempting admin controls.
+- **Dynamic Popup Broadcaster**: Real-time modal announcement controller with route-specific targeting, glowing visual themes, action buttons, and live visitor triggers.
+- **Global Music Playlist Manager**: Add, reorder, or delete YouTube track URLs in real-time, adjust default volume, or disable audio playback platform-wide.
+- **Forum & Review Moderation**: Live moderation queue for community reviews, reported content, spam triage, and forum threads.
+- **PYQ Question Management (`AdminPYQSection`)**: Full database CRUD interface for syllabus questions, image attachment URLs, and KaTeX formula validation.
+- **Live Visitor Counter**: Real-time Supabase active connection monitoring tracking platform traffic.
+- **College Database Editor (`AdminCollegeEditor`)**: In-browser metadata editor for institution details, contact info, seat matrix adjustments, and placement records.
 
-#### Admin Review Moderation
+### 8.6 Archived and Unwired Surfaces
 
-- Implemented through `src/components/AdminReviewModeration.tsx`, this view manages review reports and overall review moderation.
-- It includes tabs such as overview, reported, and all.
-- Admin actions include hide, flag, delete, and dismiss-report style behavior.
-- This is one of the few genuinely multi-user-sensitive operational systems in the app because reviews are shared through Supabase.
-
-#### Admin Feature Requests View
-
-- Implemented through `src/components/AdminFeatureRequestsView.tsx`.
-- It can view, status-change, delete, and clear feature requests.
-- The major caveat is architectural: feature requests are local-storage based, so this admin view reflects that local browser data, not a true global product backlog.
-
-#### Admin Feedback View
-
-- Implemented through `src/components/AdminFeedbackView.tsx`.
-- It reads and clears predictor feedback stored by the rank predictor flow.
-- Like feature requests, this is not a server-backed analytics system. It is local-browser admin visibility.
-
-#### Admin PYQ (`/admin-pyq`)
-
-- Admin PYQ uses the same passphrase gate pattern as the cutoff admin.
-- It provides CRUD functionality for `pyq_questions` in Supabase.
-- It also supports OCR text paste/import and parsing preview workflows.
-- Compared to feature requests or predictor feedback, this is a more genuinely centralized admin surface because it edits shared database-backed content.
-
-### 8.6 Dormant, experimental, or unwired page files
-
-These page files exist in `src/pages`, but are not wired into the current route map in a meaningful live-user way:
-
-- `Analytics.tsx`
-- `FeeCalculator.tsx`
-- `Index.tsx`
-- `XLSXDemo.tsx`
-- `CollegeList.tsx` as a truly distinct page implementation
-
-Important nuance:
-
-- `CollegeList.tsx` exists, but `/college-list` does not render it.
-- There is also a `src/components/CollegeList.tsx`, which means "college list" exists both as a component concept and as an unused page concept.
-
-This matters for maintainers because the repo contains more UI surface area than the router currently exposes.
+- **NEET Admissions Suite**: Standalone NEET tools (`/neet`, `/neetcoded`) were cleanly archived into `archived_features/` to maintain strict focus on KCET.
+- **COMEDK Hub**: COMEDK predictors and explorers were decoupled from primary navigation and redirected with informational scope banners.
+- **Unwired Page Residue**: `Analytics.tsx`, `Index.tsx`, and `XLSXDemo.tsx` remain in `src/pages` as experimental or historical scaffolding.
+- `FeeCalculator.tsx` was successfully extracted from dormant status and is now fully wired, production-deployed, and actively maintained at `/fee-calculator`.
 
 ## 9. Data Architecture and Core Logic
 

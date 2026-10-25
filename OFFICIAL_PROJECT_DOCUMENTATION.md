@@ -3,7 +3,7 @@
 
 **Document classification:** Internal / Company operational reference  
 **System:** KCETCoded (`kcet-compass`)  
-**Baseline inspected:** 6 August 2026  
+**Baseline inspected:** 25 October 2026  
 **Status:** Code-grounded implementation documentation  
 **Review requirement:** Review before any production release or changes to data, payments, database policies, APIs, privacy practice, or third-party integrations.
 
@@ -48,25 +48,27 @@ KCETCoded is an independent product. It is not operated by, affiliated with, or 
 
 ## 1.1 What the system is
 
-KCETCoded is a React-based web application intended to help KCET and COMEDK applicants research counselling outcomes and prepare for counselling. It combines historical cutoff data, rank and round estimates, college discovery, planning tools, resource pages, community contribution flows, previous-year-question practice, payments/donations, and selected AI-assisted user experiences.
+KCETCoded is a React-based web application dedicated to helping Karnataka Common Entrance Test (KCET - Engineering & Architecture) aspirants and Karnataka 2nd PUC Science students. It combines 252,789 verified historical cutoffs across 2023–2026, marks-to-rank predictions calibrated with official 2026/2027 percentile reports, a comprehensive 2nd PUC academic hub with official state question banks and solved PYQs, institutional discovery across 269 colleges, official KEA 2026-27 fee calculations, real-time community discussion forums, background focus audio, and conversational admissions AI guidance.
 
-The product is primarily browser-led. Core static data is delivered from the site itself. Supabase provides shared storage for selected features, and Vercel functions provide server-side integrations where secrets or edge rendering are involved.
+The product is primarily browser-led. High-volume cutoff data is delivered through pre-compiled binary vaults and static assets, providing sub-100ms offline-capable search speeds. Supabase provides shared cloud persistence for student forums, verified student profiles, real-time poll responses, dynamic popups, and administrative controls. Vercel serverless functions handle server-side integrations for payment verification and AI proxying.
 
 ## 1.2 Product domains
 
 | Domain | Implemented purpose | Important limitation |
 | --- | --- | --- |
-| Admission intelligence | KCET/COMEDK rank estimates, cutoffs, trends, round estimates, college matching and simulation | Estimates and historical data are not official outcomes or guarantees |
-| College research | College pages, comparison, reviews, placement/ROI-related data and suggestions | Source completeness and community content need ongoing validation/moderation |
-| Counselling support | Documents, round tracking, mock verification, materials and information pages | Informational only; does not replace the authority process |
-| Practice and engagement | PYQ tests, daily challenge, Cutoff Clash, Squad Finder and mapping tools | Coverage and content quality vary by feature/data set |
-| Community | Reviews, comments, reports, suggestions, polls and feedback | Public write policies must be audited and hardened |
-| Payments / access | Razorpay order and verification flow, donor records and access codes | Browser unlock logic is not strong authorization |
-| AI assistance | AI counsellor and AI-assisted college listing | External model reliability, cost and output safety require controls |
+| Admission intelligence | KCET rank estimates, cutoffs (2023–2026), round drift estimates, college matching, and preference simulation | Historical trends and mathematical projections are estimates, not guaranteed official outcomes |
+| 2nd PUC Academic Hub | State question banks (565+ pages), solved 2025/2026 PYQs with official schemes, blueprints, practical rubrics, and 50% KCET weightage calculator | Preparation aid; official syllabus changes are governed by KSEAB |
+| Financial Planning | Comprehensive 4-year tuition & living expense calculator updated with official KEA 2026-27 fee structures | Final fees are subject to official university/college affiliation notices |
+| Counselling support | Document checklists, verification simulator, round tracker with KEA Choice 1–4 guidance | Informational workflow support; does not replace KEA official document verification |
+| Community & Forum | Real-time Supabase Q&A forum (`kcet-forum-realtime`), thread voting, verified student badges | Public posts require continuous automated and manual moderation |
+| Engagement & Practice | 68-chapter PCM question bank with KaTeX math rendering, daily challenge, Cutoff Clash, Dino mini-game | Content serves preparation support and intuition building |
+| Audio Engine | Floating study music player with YouTube API and remote admin playlist control | Relies on YouTube client-side iframe loading and playback |
+| Payments / access | Razorpay order and verification flow, donor records, and cross-device Pro cloud sync | Access codes are convenient user-level gates, not high-assurance entitlement systems |
+| AI assistance | TesselBot AI admissions assistant with in-chat 269-college & 25-category dropdown wizard | Grounded strictly in cutoff data, but answers should always be verified against official PDFs |
 
-## 1.3 Product modes
+## 1.3 Scope Focus & Deprecated Environments
 
-`src/contexts/ExamModeContext.tsx` controls the global KCET/COMEDK mode. The selection is persisted in browser local storage under `kcet.exam-mode.v1`. The selected mode changes the behaviour of shared rank-predictor and cutoff-explorer routes and related navigation language. A dedicated COMEDK explorer route also exists.
+KCETCoded is focused exclusively on **Karnataka CET and 2nd PUC Science**. Former NEET Hub and COMEDK exploration tools have been removed from frontend navigation and archived into `archived_features/`. Any legacy links to `/neet`, `/neetcoded`, or `/comedk` are automatically caught by `UnsupportedExamRedirect` and redirected to `/` with an active `ScopeNotification` banner informing candidates of the focused admissions scope.
 
 ## 1.4 What the system must not claim
 
@@ -128,19 +130,21 @@ There is no single universal state-management system. Feature maintainers must i
 
 | Category | Technology present in the repository |
 | --- | --- |
-| Language | TypeScript, JavaScript, SQL, Python |
-| Frontend | React 18, React DOM, React Router DOM |
+| Language | TypeScript 5, JavaScript, SQL, Python |
+| Frontend | React 18, React DOM, React Router DOM 6 |
 | Build | Vite 5, SWC React plugin, TypeScript |
-| UI | Tailwind CSS, Radix UI, Lucide, Framer Motion, Sonner, cmdk |
-| Forms / validation | React Hook Form, Zod, Hook Form resolvers |
+| UI | Tailwind CSS 3, Radix UI, Lucide, Framer Motion, Sonner, cmdk |
+| Mathematical Typesetting | KaTeX (`katex.min.css`) for high-fidelity LaTeX rendering across 68 PYQ chapters |
+| In-Browser Document Viewer | Custom client HTML5 Canvas PDF viewer modal (`PdfViewerModal`) with 2D touch drag-panning & mobile zoom |
 | Data / charts | TanStack React Query, Recharts, XLSX, PDF.js |
-| Backend | Vercel Node/Edge functions |
-| Database | Supabase PostgreSQL and generated client types |
-| Payments | Razorpay |
-| AI | NVIDIA chat-completions API; OpenRouter-referencing client module |
+| Audio Engine | YouTube IFrame API integration with local and Supabase remote synchronization |
+| Backend | Vercel Node/Edge functions in `api/` |
+| Database | Supabase PostgreSQL, Realtime WebSocket channels, and generated schema types |
+| Payments | Razorpay checkout, server-side HMAC-SHA256 signature verification |
+| AI | NVIDIA Nemotron serverless proxy endpoint (`/api/nvidia-chat`) |
 | Analytics | Vercel Analytics |
 | Testing | Vitest, Testing Library, JSDOM |
-| Extraction tooling | Node scripts, Python scripts, PDF/XLSX/OCR support packages |
+| Extraction tooling | Node scripts, Python scripts, coordinate PDF/XLSX extractors |
 
 The exact package versions are controlled by `package.json` and `package-lock.json`. Do not treat this table as a substitute for dependency vulnerability management.
 
@@ -148,53 +152,54 @@ The exact package versions are controlled by `package.json` and `package-lock.js
 
 # 4. Complete active route catalogue
 
-The following routes are declared in `src/App.tsx` at the baseline date. A “Shell” route uses `Layout`; a “Standalone” route does not.
+The following routes are declared in `src/App.tsx`. A “Shell” route uses `Layout`; a “Standalone” route does not.
 
 | Path | Component / behaviour | Form |
 | --- | --- | --- |
 | `/` | `Homepage` | Standalone |
-| `/daily-challenge` | `DailyChallenge` | Standalone |
-| `/cutoff-clash` | `CutoffClash` | Standalone |
-| `/dashboard` | `Dashboard` | Shell |
-| `/rank-predictor` | Mode-aware KCET or COMEDK rank predictor | Shell |
-| `/cutoff-explorer` | Mode-aware KCET or COMEDK cutoff explorer | Shell |
-| `/comedk-explorer` | `ComedkExplorer` | Shell |
-| `/college-predictor` | `CollegePredictor` | Shell |
+| `/dashboard` | `Dashboard` central command view | Shell |
+| `/puc` | `PucHub` 2nd PUC Study Space central portal | Shell |
+| `/puc/subjects` | `PucSubjects` blueprints & weightages | Shell |
+| `/puc/practicals` | `PucPracticals` 30-mark lab evaluation rubrics | Shell |
+| `/puc/question-banks` | `PucQuestionBanks` official 565+ page state question banks | Shell |
+| `/puc/question-papers` | `PucQuestionPapers` KSEAB Model Question Papers library | Shell |
+| `/puc/marks-calculator` | `PucMarksCalculator` 50% KCET weightage calculator | Shell |
+| `/puc/study-planner` | `PucStudyPlanner` board study planner | Shell |
+| `/puc/pyq`, `/puc/pyq-archive` | `PYQArchive` 2025 & 2026 solved PYQs with official schemes | Shell |
+| `/pyq`, `/pyqs` | Redirects to `/puc/pyq` | Redirect |
+| `/pyq-test` | `PYQTest` 68-chapter complete PCM practice test engine | Shell |
+| `/rank-predictor` | `RankPredictor` calibrated marks-to-rank predictor | Shell |
+| `/cutoff-explorer` | `CutoffExplorer` 2023–2026 cutoff search engine | Shell |
+| `/college-predictor` | `CollegePredictor` rank/category college matching | Shell |
 | `/college-finder` | Redirects to `/college-predictor` | Redirect |
-| `/cutoff-trends` | `CutoffTrends` | Shell |
-| `/cutoff-predictor` | `RoundPredictor` | Shell |
-| `/round-predictor` | `RoundPredictor` | Shell |
-| `/mock-simulator` | `MockSimulator` | Shell |
-| `/round-tracker` | `RoundTracker` | Shell |
-| `/college-compare` | `CollegeCompare` | Shell |
-| `/documents` | `Documents` | Shell |
-| `/document-verification` | `MockVerification` | Shell |
-| `/reviews` | `Reviews` | Shell |
-| `/reviews/:collegeCode` | `CollegeReviewPage` | Shell |
-| `/colleges` | `CollegeInfoHub` | Shell |
-| `/college-list` | `CollegeInfoHub` | Shell |
-| `/college-cutoffs` | `CollegeCutoffs` | Shell |
-| `/info-centre` | `InfoCentre` | Shell |
-| `/materials` | `Materials` | Shell |
-| `/cet-news` | `CETNews` | Shell |
-| `/ai-counselor` | `AICounselor` | Shell |
-| `/college/:collegeCode` | `CollegeDetail` | Shell |
-| `/privacy` | `PrivacyPolicy` | Shell |
-| `/terms` | `Terms` | Shell |
-| `/payment-policy` | `PaymentPolicy` | Shell |
-| `/about` | `About` | Shell |
-| `/request-feature` | `FeatureRequest` | Shell |
-| `/pyq-test` | `PYQTest` | Shell |
-| `/donate` | `Donate` | Shell |
-| `/supporters` | `Supporters` | Shell |
-| `/squad-finder` | `SquadFinder` | Standalone |
-| `/metro-mapper` | `MetroMapper` | Standalone |
-| `/bmtc-mapper` | `BmtcMapper` | Standalone |
-| `/hidden-gems` | `HiddenGems` | Standalone |
-| `/admin` | `AdminHub` | Standalone |
-| `*` | `NotFound` | Standalone |
-
-Route-level files may exist without an active route declaration, including `Analytics.tsx`, `FeeCalculator.tsx`, `Planner.tsx`, and `XLSXDemo.tsx`. Presence in the source tree must not be described as an active public feature without verifying the route and navigation wiring.
+| `/cutoff-trends` | `CutoffTrends` multi-year historical graphs | Shell |
+| `/cutoff-predictor`, `/round-predictor` | `RoundPredictor` round drift predictor | Shell |
+| `/fee-calculator` | `FeeCalculator` official KEA 2026-27 fee calculator | Shell |
+| `/mock-simulator` | `MockSimulator` option-entry rehearsal tool | Shell |
+| `/round-tracker` | `RoundTracker` counseling timeline & reporting checklists | Shell |
+| `/college-compare` | `CollegeCompare` 24-category side-by-side college matrix | Shell |
+| `/documents` | `Documents` verification checklist | Shell |
+| `/document-verification` | `MockVerification` simulator | Shell |
+| `/reviews`, `/reviews/:collegeCode` | `Reviews` / `CollegeReviewPage` | Shell |
+| `/colleges`, `/college-list` | `CollegeInfoHub` 269+ college directory | Shell |
+| `/college-cutoffs` | `CollegeCutoffs` college-first matrix view | Shell |
+| `/college/:collegeCode` | `CollegeDetail` institutional profile & cutoff history | Shell |
+| `/info-centre` | `InfoCentre` long-form counseling rules | Shell |
+| `/materials` | `Materials` downloadable resources | Shell |
+| `/cet-news` | `CETNews` curated announcements feed | Shell |
+| `/blog`, `/blog/:slug` | `BlogList` / `BlogPostDetail` admissions journal | Shell |
+| `/ai-counselor` | `AICounselor` TesselBot admissions assistant | Shell |
+| `/forum`, `/forum/:postId` | `Forum` / `ThreadDetailPage` realtime discussion hub | Shell |
+| `/donate`, `/supporters` | `Donate` / `Supporters` contributor recognition | Shell |
+| `/privacy`, `/terms`, `/payment-policy`, `/about` | Policy and informational pages | Shell |
+| `/request-feature` | `FeatureRequest` intake form | Shell |
+| `/daily-challenge`, `/cutoff-clash` | Gamified learning and intuition tools | Standalone |
+| `/dino`, `/game` | Study break runner mini-game | Standalone |
+| `/squad-finder`, `/metro-mapper`, `/bmtc-mapper`, `/hidden-gems` | Specialized research & commute tools | Shell |
+| `/admin` | `AdminHub` unified operations console | Standalone |
+| `/neet`, `/neetcoded`, `/neet-*` | `UnsupportedExamRedirect` to homepage with scope notice | Redirect |
+| `/comedk`, `/comedk-*` | `UnsupportedExamRedirect` to homepage with scope notice | Redirect |
+| `*` | `NotFound` fallback page | Standalone |
 
 ---
 

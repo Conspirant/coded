@@ -85,199 +85,190 @@ KCETCoded is not a single calculator. It is a multi-surface counseling operating
 
 ---
 
-## 3. Product Modes (KCET and COMEDK)
+## 3. Dedicated Admissions Scope & Focus
 
-`src/contexts/ExamModeContext.tsx` drives the global exam mode and persists the selected mode in local storage using:
-
-- `kcet.exam-mode.v1`
-
-Mode changes:
-
-- `/rank-predictor` behavior (KCET predictor vs COMEDK predictor)
-- `/cutoff-explorer` behavior (KCET explorer vs COMEDK explorer)
-- dashboard copy/actions
-- sidebar command labels and community links
-
-Dedicated COMEDK route also exists:
-
-- `/comedk-explorer`
+KCETCoded is currently dedicated **exclusively to Karnataka CET (Engineering & Architecture) admissions and Karnataka 2nd PUC academic excellence**.
+- NEET and COMEDK admissions suites have been archived and gracefully handled with an active admissions scope notification banner (`ScopeNotification.tsx`) and redirect handler (`UnsupportedExamRedirect.tsx`).
+- Legacy routes (`/neet`, `/neetcoded`, `/comedk`, `/comedk-*`) automatically redirect to `/` with an informative banner clarifying our focused KCET mission.
+- The interface defaults to KCET across all dashboard, prediction, and counseling exploration tools.
 
 ---
 
 ## 4. Feature Atlas
 
-### 4.1 Admission intelligence
+### 4.1 Admission Intelligence & Cutoff Engineering
 
 | Feature | Purpose | Notes |
 | --- | --- | --- |
-| Rank Predictor | KCET expected-rank modeling from marks + PUC% | Share/download workflows included |
-| COMEDK Rank Predictor | COMEDK marks-to-rank model | Community point driven (2025 set) |
-| Cutoff Predictor (`/cutoff-predictor`, `/round-predictor`) | Mathematical round-by-round cutoff drift predictor | Simulates cutoff shifts from Mock to Round 1, Round 2, and Extended Round |
-| Cutoff Trends (`/cutoff-trends`) | Multi-year cutoff trend visualization | Interactive Recharts multi-year (2023–2025) progression graphs |
-| Cutoff Explorer | High-volume KCET cutoff search/filter | Source-linked PDF mapping support |
-| COMEDK Explorer | COMEDK-focused cutoff exploration | GM/HKR/KKR + round/year filtering |
-| College Predictor (`/college-predictor`) | Rank/category based college-branch matching | Probability sorting, bookmarking, and export |
-| College Cutoffs | College-first matrix view | Category group filtering |
-| College Info Hub (`/colleges`) | Directory of 232+ engineering institutions | Accreditations, contact info, and cutoff sheets |
-| College Detail | Per-college trend context | Branch/cutoff detail surface |
+| Rank Predictor (`/rank-predictor`) | KCET expected-rank modeling from marks + PUC% with calibrated 2027 engine | Calibrated against official 2026 percentile distributions; highlights median confidence estimate & gap analysis |
+| Cutoff Predictor & Round Drift (`/cutoff-predictor`, `/round-predictor`) | Mathematical round-by-round cutoff drift predictor | Simulates cutoff shifts from Mock to Round 1, Round 2, and Extended Round (Round 3) |
+| Cutoff Trends (`/cutoff-trends`) | Multi-year cutoff trend visualization | Interactive Recharts multi-year (2023–2026) progression graphs with whitespace/branch normalization |
+| Cutoff Explorer (`/cutoff-explorer`) | High-volume KCET cutoff search and filter engine | Source-linked PDF mapping, 269 institutions, 24 reservation categories, fast binary DataVault loading |
+| College Predictor (`/college-predictor`) | Rank/category based college-branch matching | Probability sorting (Safe, Moderate, Ambitious), bookmarking, Indian numbering format, and PDF export |
+| College Cutoffs (`/college-cutoffs`) | College-first matrix view | Category group filtering with live Indian number formatting (`en-IN`) |
+| College Info Hub (`/colleges`) | Directory of 269+ engineering institutions | Accreditations, contact info, cutoff sheets, and dynamically calculated Hidden Gems |
+| College Detail (`/college/:collegeCode`) | Per-college trend context | Branch roster, cutoff history across 2023–2026, and verified student reviews |
+| College Compare (`/college-compare`) | Side-by-side college matrix | Full 24 KEA reservation categories comparative view |
 
-### 4.2 Planning and execution support
+### 4.2 Planning, Cost, & Official Workflow
 
 | Feature | Purpose | Notes |
 | --- | --- | --- |
-| Fee Calculator (`/fee-calculator`) | Comprehensive 4-year tuition & living expense calculator | CET vs Management vs COMEDK fee structures + hostel/mess estimates |
-| Mock Simulator | Preference-order simulation | Beta-toned, uses historical data |
-| Planner | Option-entry PDF parse + handoff | Wrapped in error boundary |
-| Round Tracker | Process timeline guidance | Planning support |
-| Documents (`/documents`) | Counseling checklist | Readiness support |
-| Mock Verification (`/document-verification`) | Interactive KEA document verification simulator | Validates Rural/Kannada BEO seals, caste/income certificates |
+| Official Fee Calculator (`/fee-calculator`) | Comprehensive 4-year tuition & living expense calculator | Updated with official KEA 2026-27 provisional fee structure; covers Govt/Aided, Unaided Type 1 & 2, Farm Science, SNQ 100% waiver, SC/ST income slabs, and hostel/mess costs |
+| Mock Simulator (`/mock-simulator`) | Preference-order simulation | Simulates likely allotment outcomes using multi-year cutoffs and user priority lists |
+| Round Tracker (`/round-tracker`) | Process timeline guidance & reporting checklists | Verified August 2026 dates, Choice 1–4 decision guide, and mandatory document submission checklists |
+| Documents Guide (`/documents`) | Counseling checklist & verification manual | Step-by-step document readiness guidelines |
+| Mock Verification (`/document-verification`) | Interactive KEA document verification simulator | Validates Rural/Kannada BEO countersignatures, study certificates, caste/income formats |
 
-### 4.3 Knowledge and guidance
+### 4.3 2nd PUC Academic Hub & Practice Suite (NEW)
 
-| Feature | Purpose |
-| --- | --- |
-| Blog & Insights (`/blog`, `/blog/:slug`) | In-depth counseling articles, branch reviews, and admission guidance |
-| Info Centre | Long-form counseling explanations |
-| CET News | Curated/generated KCET update feed |
-| Materials | Resource shelf |
-| AI Counselor | Exploratory guidance with disclaimers |
+| Feature | Purpose | Notes |
+| --- | --- | --- |
+| 2nd PUC Study Space (`/puc`) | Dedicated central hub for Karnataka 2nd PUC Science | Connects board preparation directly to KCET rank weightage |
+| Official Question Banks (`/puc/question-banks`) | State-prescribed 565+ page chapter-wise question banks | Complete official question banks for Physics, Chemistry, and Mathematics |
+| PYQs & Schemes of Evaluation (`/puc/pyq`, `/puc/pyq-archive`) | Official KSEAB 2nd PUC 2026 & 2025 question papers | Physics, Chemistry, and Mathematics Exam 1 & 2 papers with official model answer keys |
+| In-Browser PDF Canvas Viewer | High-performance client-side PDF viewer modal | Touch drag-panning, pinch-to-zoom, fit-to-width mobile rendering, and direct downloads |
+| Question Papers Library (`/puc/question-papers`) | KSEAB Model Question Papers (MQPs) archive | Indexed across multiple academic cycles with in-browser preview |
+| Blueprints & Weightage (`/puc/subjects`) | Official unit & chapter-wise blueprint distributions | Teaching hours, mark distributions, and downloadable blueprint PDFs |
+| Practical Scheme of Evaluation (`/puc/practicals`) | Complete 30-mark lab evaluation rubrics | Experiment rubrics, salt analysis breakdown, and viva evaluation schemes |
+| PUC & KCET Marks Calculator (`/puc/marks-calculator`) | 50% KCET PCM weightage normalizer | Calculates board aggregate and projects KCET weightage contribution in real-time |
+| Complete PYQ Bank (`/pyq-test`) | 68 full syllabus chapters across PCM | Physics (Ch 1–28), Chemistry (Ch 1–19), Mathematics (Ch 1–21) with LaTeX/KaTeX equation rendering |
 
-### 4.4 Community and quality loops
+### 4.4 AI Guidance & Knowledge Hub
+
+| Feature | Purpose | Notes |
+| --- | --- | --- |
+| TesselBot AI Counselor (`/ai-counselor`) | Conversational admissions AI counselor | Integrated 269-college & 25-category in-chat dropdown wizard; grounded strictly in 2023–2026 cutoffs with zero hallucinations |
+| Blog & Admissions Journal (`/blog`, `/blog/:slug`) | In-depth counseling articles and branch reviews | GFM table support, Round 2 & Extended Round decision guides |
+| Info Centre (`/info-centre`) | Long-form counseling explanations | Clarifies quota rules, HK reservation, and option entry rules |
+| CET News (`/cet-news`) | Curated KCET update feed | Real-time news alerts, press release summaries, and category filters |
+| Materials Shelf (`/materials`) | Resource repository | Curated notes, formulas, and syllabus checklists |
+
+### 4.5 Community, Realtime Sync, & Engagement
 
 | Feature | Purpose | Notes |
 | --- | --- | --- |
 | Discussion Forum (`/forum`) | Realtime community Q&A hub for aspirants | Supabase Cloud persistence + Realtime broadcast (`kcet-forum-realtime`), verified student badges, upvoting, categories |
 | Thread Detail (`/forum/thread/:id`) | Deep thread view with realtime answers | Upvoting, verified answers, student author context |
 | Student Profile Hub | Cloud-synced candidate profile & cross-device Pro sync | Google OAuth + Magic Link, saves rank/PCM marks/target colleges |
-| Supporters Wall (`/supporters`) | Public recognition wall for contributors | Realtime cloud list of donors and community backers |
-| Reviews | College reviews, ratings, filtering | Community insights & verified student opinions |
-| Review Reports | Community moderation intake | Operational triage |
-| Feature Request | Product feedback channel | Student-submitted suggestions |
-| Admin moderation views | Operational triage and cleanup | Cloud database moderation |
-| Admin Dynamic Popups | Live announcement broadcast engine | Glassmorphic popup manager with route targeting & real-time trigger |
+| Supporters Wall (`/supporters`) | Public recognition wall for contributors | Realtime cloud list of donors and community backers with Certificate of Appreciation |
+| Focus Music Player | Floating audio player with curated tracks | YouTube streaming engine, Kannada/Hindi/English study tracks, admin playlist manager with real-time sync |
+| Global Community Polls | Live student voting engine | Admin-created polls for cutoff difficulty, rank inflation, and counseling experience |
+| Daily Challenge & Cutoff Clash (`/daily-challenge`, `/cutoff-clash`) | Gamified learning and cutoff intuition | Daily streak tracking and higher/lower cutoff guessing challenges |
+| Dino Game (`/dino`, `/game`) | Offline-style runner mini-game | Built-in relaxation mini-game for study breaks |
 
-### 4.5 Practice and engagement
+### 4.6 Decision Labs & Commute Tools
 
-| Feature | Purpose |
-| --- | --- |
-| Daily Challenge | Daily question flow with streak persistence |
-| PYQ Test | Chapter/quiz-based previous-year practice |
-| Cutoff Clash | Higher/lower style cutoff intuition game |
-| Calibrate 2027 Simulator | Early marks-to-rank calibration for next-gen aspirants |
-| Focus Music Player | Built-in Lo-Fi and ambient study audio player |
-| Global Community Polls | Live student voting on cutoffs, rank inflation, and exam difficulty |
+| Feature | Purpose | Notes |
+| --- | --- | --- |
+| Squad Finder (`/squad-finder`) | Group-fit college discovery for friends | Finds common college-branch options for friend groups |
+| Metro Mapper (`/metro-mapper`) | Namma Metro accessibility college filtering | Identifies colleges within walking or feeder distance of Metro stations |
+| BMTC Mapper (`/bmtc-mapper`) | Bus-route accessibility filtering | Bengaluru bus connectivity analysis |
+| Hidden Gems (`/hidden-gems`) | Underrated/high-ROI college surfacing | High NIRF/placement value vs accessible cutoff ranks |
 
-### 4.6 Labs and practical decision surfaces
+### 4.7 Platform, Administration, & Governance
 
-| Feature | Purpose |
-| --- | --- |
-| College Compare (`/college-compare`) | Side-by-side college matrix with all 24 KEA categories |
-| Squad Finder | Group-fit college discovery for friends |
-| Metro Mapper | Metro-accessibility college filtering |
-| BMTC Mapper | Bus-route accessibility filtering |
-| Hidden Gems | Underrated/value-oriented college surfacing |
-
-### 4.7 Platform layer
-
-| Component | Purpose |
-| --- | --- |
-| Command Palette (`Ctrl/Cmd + K`) | Fast navigation and command search |
-| Keyboard HUD (`?`) | Shortcut discoverability |
-| Cross-Device Pro Sync | Auto-restores Pro status across mobile, tablet, and PC |
-| Developer Support & Bug Reports | Direct Reddit channel (`u/Elegant_Compote9073`) |
-| Presence & Abuse Shield | Realtime visitor counts and security protection |
-| Donation surfaces | `Donate` page + floating support button |
-| PWA install banner | Installability support |
-| Disclaimer banner | Continuous verification reminder |
+| Component | Purpose | Notes |
+| --- | --- | --- |
+| Command Palette (`Ctrl/Cmd + K`) | Universal quick-search | Instantly navigates across all routes, tools, and colleges |
+| Live Visitor Counter | Database-backed real-time traffic counter | Transparent active visitor counts synced with Supabase |
+| Admin Hub (`/admin`) | Central operations and moderation console | Real-time page access controls, maintenance locks, site shutdown manager, music playlist manager, popup broadcaster, and poll manager |
+| Dynamic Popups | Live announcement broadcast engine | Glassmorphic popup manager with route targeting and realtime trigger |
+| Calibrate 2027 Modal | Next-cycle calibration interface | Helps prospective 2027 aspirants benchmark scores |
 
 ---
 
 ## 5. Complete Route Map
 
-### 5.1 Active unique routes
+### 5.1 Active Routes
 
-| Route | Component | Context |
-| --- | --- | --- |
-| `/` | `Homepage` | Standalone |
-| `/dashboard` | `Dashboard` | Layout |
-| `/forum` | `Forum` | Layout (Realtime Cloud Q&A) |
-| `/forum/:postId` | `ThreadDetailPage` | Layout (Thread details & replies) |
-| `/rank-predictor` | `ExamAwareRankPredictor` | Mode-aware |
-| `/cutoff-explorer` | `ExamAwareCutoffExplorer` | Mode-aware |
-| `/comedk-explorer` | `ComedkExplorer` | Layout |
-| `/college-predictor` | `CollegePredictor` | Layout |
-| `/cutoff-predictor` | `RoundPredictor` | Layout (Round drift modeling) |
-| `/round-predictor` | `RoundPredictor` | Layout (Alias) |
-| `/cutoff-trends` | `CutoffTrends` | Layout (Multi-year graph) |
-| `/college-compare` | `CollegeCompare` | Layout (24 KEA categories) |
-| `/fee-calculator` | `FeeCalculator` | Layout (4-year cost model) |
-| `/mock-simulator` | `MockSimulator` | Layout |
-| `/round-tracker` | `RoundTracker` | Layout |
-| `/planner` | `Planner` | Layout |
-| `/documents` | `Documents` | Layout |
-| `/document-verification` | `MockVerification` | Layout (KEA verification checklist) |
-| `/colleges` | `CollegeInfoHub` | Layout (232+ college directory) |
-| `/college-cutoffs` | `CollegeCutoffs` | Layout |
-| `/college/:collegeCode` | `CollegeDetail` | Layout |
-| `/reviews` | `Reviews` | Layout |
-| `/reviews/:collegeCode` | `CollegeReviewPage` | Layout |
-| `/blog` | `BlogList` | Layout (Counseling articles) |
-| `/blog/:slug` | `BlogPostDetail` | Layout |
-| `/info-centre` | `InfoCentre` | Layout |
-| `/materials` | `Materials` | Layout |
-| `/cet-news` | `CETNews` | Layout |
-| `/ai-counselor` | `AICounselor` | Layout |
-| `/daily-challenge` | `DailyChallenge` | Standalone |
-| `/cutoff-clash` | `CutoffClash` | Standalone |
-| `/squad-finder` | `SquadFinder` | Standalone |
-| `/metro-mapper` | `MetroMapper` | Standalone |
-| `/bmtc-mapper` | `BmtcMapper` | Standalone |
-| `/hidden-gems` | `HiddenGems` | Standalone |
-| `/pyq-test` | `PYQTest` | Layout |
-| `/supporters` | `Supporters` | Layout (Supporter recognition) |
-| `/donate` | `Donate` | Layout |
-| `/privacy` | `PrivacyPolicy` | Layout |
-| `/terms` | `Terms` | Layout |
-| `/payment-policy` | `PaymentPolicy` | Layout |
-| `/about` | `About` | Layout |
-| `/request-feature` | `FeatureRequest` | Layout |
-| `/admin` | `AdminHub` | Hidden/admin |
-| `*` | `NotFound` | Fallback |
+| Route | Component | Context | Description |
+| --- | --- | --- | --- |
+| `/` | `Homepage` | Standalone | Landing page with hero tools and quick discovery |
+| `/dashboard` | `Dashboard` | Layout | Central command center with quick-action tools |
+| `/puc` | `PucHub` | Layout | 2nd PUC Study Space central landing hub |
+| `/puc/subjects` | `PucSubjects` | Layout | Blueprints, chapter weightages, and teaching hours |
+| `/puc/practicals` | `PucPracticals` | Layout | 30-mark lab evaluation scheme and viva rubrics |
+| `/puc/question-banks` | `PucQuestionBanks` | Layout | Official 565+ page state question banks (PCM) |
+| `/puc/question-papers` | `PucQuestionPapers` | Layout | KSEAB Model Question Papers library |
+| `/puc/marks-calculator` | `PucMarksCalculator` | Layout | PUC 50% KCET weightage projector |
+| `/puc/study-planner` | `PucStudyPlanner` | Layout | Board study timetable planner |
+| `/puc/pyq`, `/puc/pyq-archive` | `PYQArchive` | Layout | 2025 & 2026 solved PYQs with official schemes |
+| `/pyq`, `/pyqs` | Redirect | — | Redirects to `/puc/pyq` |
+| `/pyq-test` | `PYQTest` | Layout | Complete 68-chapter KCET PYQ practice test engine |
+| `/rank-predictor` | `RankPredictor` | Layout | Marks-to-rank engine calibrated for 2026/2027 |
+| `/cutoff-explorer` | `CutoffExplorer` | Layout | High-volume 2023–2026 cutoff search engine |
+| `/cutoff-trends` | `CutoffTrends` | Layout | Multi-year historical cutoff graph visualizer |
+| `/cutoff-predictor`, `/round-predictor` | `RoundPredictor` | Layout | Round drift simulation engine |
+| `/college-predictor` | `CollegePredictor` | Layout | Rank and category college matching tool |
+| `/college-finder` | Redirect | — | Redirects to `/college-predictor` |
+| `/college-cutoffs` | `CollegeCutoffs` | Layout | College-first cutoff matrix |
+| `/colleges`, `/college-list` | `CollegeInfoHub` | Layout | Directory of 269+ engineering colleges |
+| `/college/:collegeCode` | `CollegeDetail` | Layout | College profile, branches, and cutoff history |
+| `/college-compare` | `CollegeCompare` | Layout | Side-by-side comparison across 24 categories |
+| `/fee-calculator` | `FeeCalculator` | Layout | KEA 2026-27 tuition and hostel fee calculator |
+| `/mock-simulator` | `MockSimulator` | Layout | Option-entry allocation simulator |
+| `/round-tracker` | `RoundTracker` | Layout | Live counseling timeline and reporting guidelines |
+| `/documents` | `Documents` | Layout | Mandatory verification documents checklist |
+| `/document-verification` | `MockVerification` | Layout | Interactive document verification checklist |
+| `/reviews` | `Reviews` | Layout | Student college reviews and ratings |
+| `/reviews/:collegeCode` | `CollegeReviewPage` | Layout | College-specific review list and submission |
+| `/blog` | `BlogList` | Layout | Counseling admissions journal & guides |
+| `/blog/:slug` | `BlogPostDetail` | Layout | Full blog article detail view |
+| `/info-centre` | `InfoCentre` | Layout | Long-form KCET rules and quota guides |
+| `/materials` | `Materials` | Layout | Downloadable preparation materials |
+| `/cet-news` | `CETNews` | Layout | Curated KCET news updates and press releases |
+| `/ai-counselor` | `AICounselor` | Layout | TesselBot AI admissions assistant |
+| `/forum` | `Forum` | Layout | Realtime community Q&A discussion forum |
+| `/forum/:postId` | `ThreadDetailPage` | Layout | Thread details, upvoting, and responses |
+| `/squad-finder` | `SquadFinder` | Layout | Peer group college compatibility tool |
+| `/metro-mapper` | `MetroMapper` | Layout | Namma Metro accessibility college search |
+| `/bmtc-mapper` | `BmtcMapper` | Layout | BMTC bus accessibility explorer |
+| `/hidden-gems` | `HiddenGems` | Layout | High-placement value college discovery |
+| `/daily-challenge` | `DailyChallenge` | Standalone | Daily PCM challenge question |
+| `/cutoff-clash` | `CutoffClash` | Standalone | Higher/lower cutoff guessing game |
+| `/dino`, `/game` | `DinoGame` | Standalone | Study break mini-game |
+| `/donate` | `Donate` | Layout | Community contribution and support page |
+| `/supporters` | `Supporters` | Layout | Donor recognition wall with certificates |
+| `/request-feature` | `FeatureRequest` | Layout | Student feature request submission form |
+| `/privacy` | `PrivacyPolicy` | Layout | Platform privacy and data governance policy |
+| `/terms` | `Terms` | Layout | Terms of service |
+| `/payment-policy` | `PaymentPolicy` | Layout | Donation and access terms |
+| `/about` | `About` | Layout | Project background, philosophy, and mission |
+| `/admin` | `AdminHub` | Standalone | Operations, moderation, and broadcast panel |
+| `/neet`, `/neetcoded`, `/neet-*` | `UnsupportedExamRedirect` | — | Graceful redirect to homepage with scope notice |
+| `/comedk`, `/comedk-*` | `UnsupportedExamRedirect` | — | Graceful redirect to homepage with scope notice |
+| `*` | `NotFound` | Standalone | Custom 404 page |
 
 ---
 
 ## 6. Data Foundation and Coverage
 
-### 6.1 KCET cutoff dataset
+### 6.1 KCET Cutoff Dataset
 
-- Source file: `public/data/kcet_cutoffs_high_volume.json`
-- Rows: `216,893`
-- Years: `2023`, `2024`, `2025`
-- Rounds: `MOCK`, `R1`, `R2`, `R3`
-- Category labels: `24`
+- Total Records: **252,789 verified cutoff rows** (indexed across `2023`, `2024`, `2025`, and `2026`)
+- Year Distribution:
+  - `2026`: 87,057 rows (Mock Round 1, Mock Round 2, Round 1, Round 2, Round 3 Provisional)
+  - `2025`: 61,532 rows (Mock, Round 1, Round 2, Round 3)
+  - `2024`: 64,098 rows (Mock, Round 1, Round 2, Round 3 Extended)
+  - `2023`: 40,102 rows (Round 1, Round 2, Round 3 Extended)
+- Institutions Indexed: **269 colleges** (E001 through E280+)
+- Engineering & Tech Branches: **421 distinct branch specializations**
+- Reservation Categories: **24 KEA reservation categories** (GM, 1G, 1K, 1R, 2AG, 2AK, 2AR, 2BG, 2BK, 2BR, 3AG, 3AK, 3AR, 3BG, 3BK, 3BR, SCG, SCK, SCR, STG, STK, STR, GMK, GMR, plus special categories)
+- Storage & Delivery: Delivered through high-performance binary/dat vault chunks (`kcet_cutoffs_high_volume.dat`, `vault_core.bin`) with local storage caching for sub-100ms querying.
 
-### 6.2 COMEDK cutoff dataset
+### 6.2 2nd PUC & Academic Datasets
 
-- Source file: `public/data/comedk_cutoffs.json`
-- Rows: `12,237`
-- Years: `2022`, `2023`, `2024`, `2025`
-- Rounds: `MOCK`, `R1`, `R2`, `R2P1`, `R2P2`, `R3`, `R4`
-- Categories: `GM`, `HKR`, `KKR`
+- 2nd PUC PYQs: 2025 & 2026 Official KSEAB Exam 1 & 2 Question Papers with official Schemes of Evaluation
+- 2nd PUC Model Question Papers: Complete KSEAB MQP library across 6 cycles
+- State Question Banks: 565+ page official state question banks for Physics (300+ pages), Chemistry, and Mathematics
+- Full KCET PYQ Question Bank: **68 chapters across Physics (Ch 1–28), Chemistry (Ch 1–19), and Mathematics (Ch 1–21)** with KaTeX math rendering
 
-### 6.3 Additional datasets
+### 6.3 Additional Data Assets
 
-- College list: `public/colleges-list.json` (`232` records)
-- PYQ bank: `src/data/pyqQuestionBank.ts` (`114` built-in questions, `28` chapters)
-- News feed artifact: `public/data/news.json`
-- PDF page index and source mapping artifacts: `public/data/*`, `src/lib/pdf-*`
-
-### 6.4 Data philosophy
-
-The app emphasizes traceability and practical trust:
-
-- source-linked PDF paths where available
-- explicit disclaimers for uncertainty-sensitive flows
-- "verify with official source" posture across key pages
+- Official Fee Structures: KEA 2026-27 Engineering, Architecture, Farm Science, and SNQ schedules
+- News Feed: Curated KEA press notes and counseling announcements (`public/data/news.json`)
+- PDF Source Page Index: Direct coordinate and page mapping to official KEA source documents (`public/data/pdf-page-index.json`)
 
 ---
 

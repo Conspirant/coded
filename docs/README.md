@@ -16,7 +16,7 @@ This directory is the maintained, code-grounded documentation set for KCETCoded.
 | System | KCETCoded |
 | Repository package | `kcet-compass` |
 | Documentation status | Internal / official operational documentation |
-| Baseline | Repository inspected on 6 August 2026 |
+| Baseline | Repository inspected on 25 October 2026 |
 | Owner | Project maintainers |
 | Review cadence | Before every production release and after any database, API, payment or data-pipeline change |
 

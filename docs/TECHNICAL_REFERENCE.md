@@ -2,7 +2,7 @@
 
 ## 1. Scope and baseline
 
-This reference records the current codebase baseline inspected on 6 August 2026. It is intended to be read with the [Platform Documentation](PLATFORM_DOCUMENTATION.md), [Security and Data Governance](SECURITY_AND_DATA_GOVERNANCE.md), and [Operations Runbook](OPERATIONS_RUNBOOK.md). It does not imply that every source file is publicly routed, production-ready, or currently used.
+This reference records the current codebase baseline inspected on 25 October 2026. It is intended to be read with the [Platform Documentation](PLATFORM_DOCUMENTATION.md), [Security and Data Governance](SECURITY_AND_DATA_GOVERNANCE.md), and [Operations Runbook](OPERATIONS_RUNBOOK.md).
 
 ## 2. Application composition
 
@@ -10,28 +10,34 @@ This reference records the current codebase baseline inspected on 6 August 2026.
 
 | Area | Main modules | Role |
 | --- | --- | --- |
-| Bootstrap and navigation | `main.tsx`, `App.tsx`, `Layout.tsx`, `AppSidebar.tsx`, `MobileNav.tsx`, `Navbar.tsx`, `CommandPalette.tsx` | Mounting, route rendering and navigation |
-| Global context | `ExamModeContext.tsx`, `PresenceAndBlockProvider.tsx` | Exam selection and availability/presence state |
-| Admission calculation | `rank-predictor.ts`, `comedk-rank-predictor.ts`, `cutoff-predictor.ts`, `round-drift-predictor.ts`, `mock-simulator.ts` | Model and simulation logic |
-| Cutoff and college data | `cutoff-service.ts`, `college-service.ts`, `course-normalizer.ts`, `pdf-*`, `xlsx-loader.ts` | Data fetch, normalisation, source mapping and parsing |
-| Community / feedback | `college-service.ts`, `feature-request-service.ts`, `poll-service.ts`, `popup-service.ts`, `actual-rank-service.ts` | Shared-data workflows |
-| Payments / access | `unlock.ts`, `settings.ts`, `DonationButton.tsx`, `PremiumUpgradeModal.tsx` | Checkout, access-code and browser unlock state |
-| AI | `AICounselor.tsx`, `ai-tools.ts`, `gemini.ts` | UI and AI request support |
-| Practice | `pyqQuestionBank.ts`, `pyqPdfManifest.ts`, `PYQTest.tsx`, `DailyChallenge.tsx` | Question bank and practice flows |
+| Bootstrap and navigation | `main.tsx`, `App.tsx`, `Layout.tsx`, `AppSidebar.tsx`, `MobileNav.tsx`, `Navbar.tsx`, `CommandPalette.tsx`, `ScopeNotification.tsx`, `UnsupportedExamRedirect.tsx` | Mounting, route rendering, navigation and scope enforcement |
+| Global context & Auth | `ExamModeContext.tsx`, `AuthContext.tsx`, `PresenceAndBlockProvider.tsx` | User authentication, exam scope, and site availability/presence state |
+| Admission calculation | `rank-predictor.ts`, `cutoff-predictor.ts`, `round-drift-predictor.ts`, `mock-simulator.ts` | Mathematical prediction, percentile interpolation, and drift simulation |
+| 2nd PUC Academic Hub | `PucHub.tsx`, `PucPages.tsx`, `PYQArchive.tsx`, `PdfViewerModal.tsx`, `puc-practicals.ts`, `puc-papers.json` | 2nd PUC question banks, MQPs, solved PYQs, marks calculation, and canvas PDF viewer |
+| Fee & Financial Planning | `FeeCalculator.tsx`, `kcetFeeStructure2026.ts` | 4-year tuition, SNQ quota, SC/ST income exemptions, and hostel cost modeling |
+| Cutoff and college data | `cutoff-service.ts`, `college-service.ts`, `course-normalizer.ts`, `data-vault.ts`, `pdf-*`, `xlsx-loader.ts` | Data fetch, binary vault loading, normalisation, source mapping and parsing |
+| Community & Forum | `forum-service.ts`, `Forum.tsx`, `ThreadDetailPage.tsx`, `poll-service.ts`, `popup-service.ts`, `site-review-service.ts` | Real-time Supabase Q&A, thread voting, poll response aggregation, and reviews |
+| Audio Engine | `MusicPlayer.tsx`, `musicPlayerData.ts`, `AdminMusicManager.tsx` | Background study music player with YouTube API and remote admin playlist control |
+| Payments / access | `unlock.ts`, `settings.ts`, `DonationButton.tsx`, `PremiumUpgradeModal.tsx`, `DonationCertificateModal.tsx` | Razorpay checkout, access codes, donor certificates, and browser unlock state |
+| AI Guidance | `AICounselor.tsx`, `ai-tools.ts`, `gemini.ts`, `TesselAvatar.tsx`, `CounselorRecommendationCard.tsx` | TesselBot AI counseling with in-chat 269-college & 25-category dropdown wizard |
+| Practice & Gamification | `pyqQuestionBank.ts`, `PYQTest.tsx`, `DailyChallenge.tsx`, `CutoffClash.tsx`, `DinoGame.tsx` | 68-chapter PCM question bank with KaTeX math rendering, daily challenges, and mini-games |
 
 ### 2.2 Key page responsibilities
 
 | Page | Responsibility |
 | --- | --- |
-| `Homepage` / `Dashboard` | Entry, summary and navigation surfaces |
-| `RankPredictor` / `ComedkRankPredictor` | Marks-to-rank estimates |
-| `CutoffExplorer` / `ComedkExplorer` / `CollegeCutoffs` | Historical cutoff search/filtering |
-| `CollegePredictor` / `CollegeDetail` / `CollegeCompare` / `CollegeInfoHub` | College matching and research |
-| `CutoffTrends` / `RoundPredictor` / `MockSimulator` | Trend, round and preference analysis |
-| `Documents` / `MockVerification` / `RoundTracker` | Counselling guidance and preparation |
-| `Reviews` / `CollegeReviewPage` | Community review display and submissions |
-| `CETNews` / `InfoCentre` / `Materials` | Curated information and published resources |
-| `AdminHub` / `AdminPYQ` and admin components | Operational tooling, management and moderation |
+| `Homepage` / `Dashboard` | Entry, quick discovery, tools launcher, live visitor count, and developer announcements |
+| `PucHub` / `PucPages` / `PYQArchive` | 2nd PUC state question banks, 2025/2026 solved PYQs, blueprints, 30-mark practical rubrics, and marks calculator |
+| `RankPredictor` | Marks-to-rank estimates with calibrated 2026/2027 percentile engine and gap analysis |
+| `CutoffExplorer` / `CollegeCutoffs` | 2023–2026 high-volume cutoff search/filtering with Indian numbering formatting (`en-IN`) |
+| `CollegePredictor` / `CollegeDetail` / `CollegeCompare` / `CollegeInfoHub` | College matching, detailed institution profile, and 24-category side-by-side comparison |
+| `CutoffTrends` / `RoundPredictor` / `MockSimulator` | Multi-year historical graphs, round drift modeling, and option preference simulation |
+| `FeeCalculator` | KEA 2026-27 provisional fee tables, quota-specific tuition calculation, and living cost projections |
+| `Forum` / `ThreadDetailPage` | Real-time community discussion forum with verified badges and answer upvoting |
+| `Documents` / `MockVerification` / `RoundTracker` | Mandatory counseling checklists, verification simulator, and KEA Choice 1–4 reporting guidance |
+| `Reviews` / `CollegeReviewPage` | Verified student reviews and moderation triage |
+| `CETNews` / `InfoCentre` / `Materials` / `BlogList` | Curated news feeds, in-depth articles, VTU vs Autonomous guide, and downloadable resources |
+| `AdminHub` | Unified operations console: individual page access switches, emergency shutdown, music playlist manager, dynamic popups, poll manager, and PYQ editor |
 
 ## 3. API implementation notes
 
