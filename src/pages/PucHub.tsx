@@ -6,6 +6,13 @@ import rawPapers from "@/data/puc-papers.json"
 
 const tools = [
   { 
+    title: "Study Guides & Jeevith Notes", 
+    description: "Curated Jeevith Publications Physics & Chemistry comprehensive theory and revision materials.", 
+    href: "/guides", 
+    icon: BookOpenCheck,
+    badge: "Jeevith Notes"
+  },
+  { 
     title: "Official Question Banks", 
     description: "State-prescribed 565+ page chapter-wise question banks for Physics, Chemistry, and Mathematics.", 
     href: "/puc/question-banks", 

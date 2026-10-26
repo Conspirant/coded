@@ -2964,9 +2964,9 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1792865209.0056155,
-    "seen": 1792865317.0541544,
-    "ast_hash": "28032f0b9759ea1632b688a1e6c11abe",
+    "mtime": 1793040422.5721874,
+    "seen": 1793040650.86252,
+    "ast_hash": "14249752ab3184339ed7e988936b67ea",
     "semantic_hash": ""
   },
   "src/components/AdUnit.tsx": {
@@ -3012,9 +3012,9 @@
     "semantic_hash": ""
   },
   "src/components/AppSidebar.tsx": {
-    "mtime": 1792866220.5940304,
-    "seen": 1792868404.8137646,
-    "ast_hash": "e475f2b3de87d802d4dcfde9d399b6dd",
+    "mtime": 1793040455.3039215,
+    "seen": 1793040650.8635566,
+    "ast_hash": "e97154a7279c09f2e745bceb3bf5961b",
     "semantic_hash": ""
   },
   "src/components/Calibrate2027Modal.tsx": {
@@ -3042,9 +3042,9 @@
     "semantic_hash": ""
   },
   "src/components/CommandPalette.tsx": {
-    "mtime": 1788617743.7143972,
-    "seen": 1792840610.5830674,
-    "ast_hash": "97b89d09b6aebc42fb2cff2498fd043d",
+    "mtime": 1793040509.7387936,
+    "seen": 1793040650.8641114,
+    "ast_hash": "f61051c1c9dedc55c7251943a8ba14e7",
     "semantic_hash": ""
   },
   "src/components/CommunityPollWidget.tsx": {
@@ -3138,9 +3138,9 @@
     "semantic_hash": ""
   },
   "src/components/Layout.tsx": {
-    "mtime": 1792857810.7249048,
-    "seen": 1792861497.1516695,
-    "ast_hash": "0d251c3b7d037c799b8d5dfbad0199ec",
+    "mtime": 1792868983.2665637,
+    "seen": 1793040650.8662946,
+    "ast_hash": "861e61124a0aa908b7da4a4c6534db17",
     "semantic_hash": ""
   },
   "src/components/LiveVisitorCounter.tsx": {
@@ -3156,9 +3156,9 @@
     "semantic_hash": ""
   },
   "src/components/MobileNav.tsx": {
-    "mtime": 1792865209.0106192,
-    "seen": 1792865317.0591621,
-    "ast_hash": "13a82ebb44b5efabd55f2dbe2835132f",
+    "mtime": 1792868998.4482687,
+    "seen": 1793040650.8665826,
+    "ast_hash": "a8eb39b081799a6ccd32d4b7116e46ad",
     "semantic_hash": ""
   },
   "src/components/MusicPlayer.tsx": {
@@ -4674,9 +4674,9 @@
     "semantic_hash": ""
   },
   "src/pages/Materials.tsx": {
-    "mtime": 1788551960.9549804,
-    "seen": 1792840610.583679,
-    "ast_hash": "49358cea08bce3331ef0d96c844011cf",
+    "mtime": 1793040479.584259,
+    "seen": 1793040650.9060156,
+    "ast_hash": "464a20235bfcd2c482ebba34f2c44c11",
     "semantic_hash": ""
   },
   "src/pages/MetroMapper.tsx": {
@@ -4728,9 +4728,9 @@
     "semantic_hash": ""
   },
   "src/pages/PucHub.tsx": {
-    "mtime": 1792866229.7617886,
-    "seen": 1792868404.8553822,
-    "ast_hash": "8b043bd6a5c9c17bce8ec825f4514df1",
+    "mtime": 1793040466.9737747,
+    "seen": 1793040650.9072783,
+    "ast_hash": "e840453578edf69a954b1af40c8c6b47",
     "semantic_hash": ""
   },
   "src/pages/PucPages.tsx": {
@@ -4992,15 +4992,15 @@
     "semantic_hash": ""
   },
   "OFFICIAL_PROJECT_DOCUMENTATION.md": {
-    "mtime": 1786014863.7189171,
-    "seen": 1792840610.5837793,
-    "ast_hash": "73aeff2fccfb941c8561c6ae150f240a",
+    "mtime": 1792927818.5515685,
+    "seen": 1793040650.9133725,
+    "ast_hash": "898da75d8afa8f7425441937a149381a",
     "semantic_hash": ""
   },
   "PROJECT_DOCUMENTATION.md": {
-    "mtime": 1782806037.0,
-    "seen": 1792840610.5837815,
-    "ast_hash": "1ac8b506bc523bfe2023dbe4367acd34",
+    "mtime": 1792927538.1377513,
+    "seen": 1793040650.913376,
+    "ast_hash": "15819dea3d58c453b64e648ba4166a59",
     "semantic_hash": ""
   },
   "RANK_PREDICTOR_UPDATE.md": {
@@ -5010,9 +5010,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1786949330.5503578,
-    "seen": 1792840610.5837843,
-    "ast_hash": "5eaa1f806fcffed4d93e75c046c5bf72",
+    "mtime": 1792927353.0460937,
+    "seen": 1793040650.913526,
+    "ast_hash": "23054e14072e74d36a01d850cae53652",
     "semantic_hash": ""
   },
   "REDDIT_POST.md": {
@@ -5070,15 +5070,15 @@
     "semantic_hash": ""
   },
   "docs/PLATFORM_DOCUMENTATION.md": {
-    "mtime": 1786013496.5161355,
-    "seen": 1792840610.5838075,
-    "ast_hash": "0f3eb2dc639483bea6f32534661ba6c6",
+    "mtime": 1792927600.4028182,
+    "seen": 1793040650.9147859,
+    "ast_hash": "6cd1600285804bed8b9fe2e6729c2f0b",
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1786014087.0088887,
-    "seen": 1792840610.5838106,
-    "ast_hash": "59fc16a4fa3ddfa7ac4c4e28362ebab3",
+    "mtime": 1792927680.7331555,
+    "seen": 1793040650.9147887,
+    "ast_hash": "4e0c6330000264fd3df349003ff035e3",
     "semantic_hash": ""
   },
   "docs/SECURITY_AND_DATA_GOVERNANCE.md": {
@@ -5088,9 +5088,9 @@
     "semantic_hash": ""
   },
   "docs/TECHNICAL_REFERENCE.md": {
-    "mtime": 1786014080.491541,
-    "seen": 1792840610.5838156,
-    "ast_hash": "bb8843c6624bdc2082a6fe271f4f0ba3",
+    "mtime": 1792927657.4545534,
+    "seen": 1793040650.9149399,
+    "ast_hash": "98bc4746b843837ecbe0a6d01dcf370b",
     "semantic_hash": ""
   },
   "graphify-out/converted/kcet-2023-round1-cutoffs_3b0369aa.md": {
@@ -8325,6 +8325,12 @@
     "mtime": 1792864454.2116387,
     "seen": 1792868404.891153,
     "ast_hash": "009d35ae0f50fe4b72604457b0992a9a",
+    "semantic_hash": ""
+  },
+  "src/pages/Guides.tsx": {
+    "mtime": 1793040362.2599316,
+    "seen": 1793040650.9054122,
+    "ast_hash": "e49d9fa70016c6088959c93897fe2a0c",
     "semantic_hash": ""
   }
 }

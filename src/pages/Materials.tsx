@@ -29,17 +29,27 @@ const Materials = () => {
             }))
         },
         {
-            title: "Study Material",
-            description: "Handpicked notes and resources.",
+            title: "Study Material & Guides",
+            description: "Handpicked notes, publications, and reference resources.",
             icon: <BookOpen className="h-6 w-6 text-green-500" />,
             items: [
                 {
-                    label: "Physics Formula Sheet",
-                    links: [{ name: "Download PDF", url: "#" }]
+                    label: "Jeevith Publications Physics Material",
+                    links: [
+                        { name: "View Online", url: "https://drive.google.com/file/d/1yC5G9DP1RTbmFCELan1O-5TwCh2S0dbN/view?usp=sharing" },
+                        { name: "Download", url: "https://drive.google.com/uc?export=download&id=1yC5G9DP1RTbmFCELan1O-5TwCh2S0dbN" }
+                    ]
                 },
                 {
-                    label: "Maths Short Notes",
-                    links: [{ name: "Download PDF", url: "#" }]
+                    label: "Jeevith Publications Chemistry Material",
+                    links: [
+                        { name: "View Online", url: "https://drive.google.com/file/d/1oa8nNBaRuYSTykM5q2K7zEcj5OpdIdgS/view?usp=sharing" },
+                        { name: "Download", url: "https://drive.google.com/uc?export=download&id=1oa8nNBaRuYSTykM5q2K7zEcj5OpdIdgS" }
+                    ]
+                },
+                {
+                    label: "All Guides & Notes Hub",
+                    links: [{ name: "Open Guides Page", url: "/guides" }]
                 }
             ]
         }

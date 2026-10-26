@@ -70,6 +70,7 @@ import { WebsiteReviewPrompt } from "@/components/WebsiteReviewPrompt";
 import { GlobalPollPopup } from "./components/GlobalPollPopup";
 import { MusicPlayer } from "./components/MusicPlayer";
 import { PresenceAndBlockProvider } from "./contexts/PresenceAndBlockProvider";
+import Guides from "./pages/Guides";
 import PucHub from "./pages/PucHub";
 import { PucMarksCalculator, PucQuestionPapers, PucSubjects, PucStudyPlanner, PucPracticals, PucQuestionBanks } from "./pages/PucPages";
 
@@ -142,6 +143,8 @@ const App = () => (
                   <Route path="/college-cutoffs" element={<Layout><CollegeCutoffs /></Layout>} />
                   <Route path="/info-centre" element={<Layout><InfoCentre /></Layout>} />
                   <Route path="/materials" element={<Layout><Materials /></Layout>} />
+                  <Route path="/guides" element={<Layout><Guides /></Layout>} />
+                  <Route path="/puc/guides" element={<Layout><Guides /></Layout>} />
                   <Route path="/cet-news" element={<Layout><CETNews /></Layout>} />
                   <Route path="/blog" element={<Layout><BlogList /></Layout>} />
                   <Route path="/blog/:slug" element={<Layout><BlogPostDetail /></Layout>} />
