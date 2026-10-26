@@ -118,7 +118,6 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
         { title: "Cutoff Clash", url: "/cutoff-clash", icon: Sword },
         { title: "PYQ Mock Test", url: "/pyq-test", icon: Award, isNew: true },
         { title: "Study Materials", url: "/materials", icon: Book },
-        { title: "Guides & Jeevith Notes", url: "/guides", icon: BookOpenCheck, isNew: true },
       ]
     },
     {
@@ -161,7 +160,7 @@ const getKseabSections = (): NavSection[] => [
     label: "KSEAB 2nd PUC",
     items: [
       { title: "PUC Overview", url: "/puc", icon: Home },
-      { title: "Guides & Reference", url: "/guides", icon: BookOpenCheck, isNew: true },
+      { title: "Guides & Jeevith Notes", url: "/puc/guides", icon: BookOpenCheck, isNew: true },
       { title: "Subjects & Syllabus", url: "/puc/subjects", icon: BookOpen },
       { title: "Practical Scheme", url: "/puc/practicals", icon: FlaskConical },
       { title: "PYQs with Answers", url: "/puc/pyq", icon: FileCheck, isNew: true },

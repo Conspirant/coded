@@ -48,8 +48,8 @@ const Materials = () => {
                     ]
                 },
                 {
-                    label: "All Guides & Notes Hub",
-                    links: [{ name: "Open Guides Page", url: "/guides" }]
+                    label: "All 2nd PUC Guides & Notes",
+                    links: [{ name: "Open 2nd PUC Guides", url: "/puc/guides" }]
                 }
             ]
         }

@@ -8,7 +8,7 @@ const tools = [
   { 
     title: "Study Guides & Jeevith Notes", 
     description: "Curated Jeevith Publications Physics & Chemistry comprehensive theory and revision materials.", 
-    href: "/guides", 
+    href: "/puc/guides", 
     icon: BookOpenCheck,
     badge: "Jeevith Notes"
   },
