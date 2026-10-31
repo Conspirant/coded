@@ -57,6 +57,7 @@ import CutoffTrends from "./pages/CutoffTrends";
 import RoundPredictor from "./pages/RoundPredictor";
 import Donate from "./pages/Donate";
 import Supporters from "./pages/Supporters";
+import StudentReviews from "./pages/StudentReviews";
 import Forum from "./pages/Forum";
 import ThreadDetailPage from "./pages/ThreadDetailPage";
 import AdminHub from "./pages/AdminHub";
@@ -162,6 +163,9 @@ const App = () => (
                   <Route path="/pyqs" element={<Navigate to="/puc/pyq" replace />} />
                   <Route path="/donate" element={<Layout><Donate /></Layout>} />
                   <Route path="/supporters" element={<Layout><Supporters /></Layout>} />
+                  <Route path="/student-reviews" element={<Layout><StudentReviews /></Layout>} />
+                  <Route path="/puc/student-reviews" element={<Layout><StudentReviews /></Layout>} />
+                  <Route path="/reddit-reviews" element={<Navigate to="/student-reviews" replace />} />
                   <Route path="/squad-finder" element={<Layout><SquadFinder /></Layout>} />
                   <Route path="/forum" element={<Layout><Forum /></Layout>} />
                   <Route path="/forum/:postId" element={<Layout><ThreadDetailPage /></Layout>} />

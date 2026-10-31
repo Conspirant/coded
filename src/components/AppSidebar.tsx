@@ -134,6 +134,7 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
     {
       label: "Community & Support",
       items: [
+        { title: "Student Reviews (Reddit)", url: "/student-reviews", icon: Heart, isNew: true },
         { title: "Supporters Wall", url: "/supporters", icon: Award },
         { title: "Support Us (Donate)", url: "/donate", icon: Heart },
         { title: "Feature Request", url: "/request-feature", icon: Lightbulb },
@@ -167,6 +168,7 @@ const getKseabSections = (): NavSection[] => [
       { title: "Question Papers Library", url: "/puc/question-papers", icon: FileText },
       { title: "Question Banks", url: "/puc/question-banks", icon: BookOpenCheck },
       { title: "Marks Calculator", url: "/puc/marks-calculator", icon: Calculator },
+      { title: "Student Reviews & Love", url: "/student-reviews", icon: Heart, isNew: true },
     ],
   },
   {

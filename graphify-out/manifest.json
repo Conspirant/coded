@@ -2964,9 +2964,9 @@
     "semantic_hash": ""
   },
   "src/App.tsx": {
-    "mtime": 1793040422.5721874,
-    "seen": 1793040650.86252,
-    "ast_hash": "14249752ab3184339ed7e988936b67ea",
+    "mtime": 1793451223.5999212,
+    "seen": 1793451524.2905502,
+    "ast_hash": "25b0549818ff719791de7951ee49257c",
     "semantic_hash": ""
   },
   "src/components/AdUnit.tsx": {
@@ -3012,9 +3012,9 @@
     "semantic_hash": ""
   },
   "src/components/AppSidebar.tsx": {
-    "mtime": 1793040455.3039215,
-    "seen": 1793040650.8635566,
-    "ast_hash": "e97154a7279c09f2e745bceb3bf5961b",
+    "mtime": 1793451223.6062021,
+    "seen": 1793451524.2917285,
+    "ast_hash": "c4695c8f812a4ea884648e8fa57fdf57",
     "semantic_hash": ""
   },
   "src/components/Calibrate2027Modal.tsx": {
@@ -3042,9 +3042,9 @@
     "semantic_hash": ""
   },
   "src/components/CommandPalette.tsx": {
-    "mtime": 1793040509.7387936,
-    "seen": 1793040650.8641114,
-    "ast_hash": "f61051c1c9dedc55c7251943a8ba14e7",
+    "mtime": 1793040986.7505326,
+    "seen": 1793041110.698197,
+    "ast_hash": "77bf22fb2d9a641f88d3419068a11a8f",
     "semantic_hash": ""
   },
   "src/components/CommunityPollWidget.tsx": {
@@ -4674,9 +4674,9 @@
     "semantic_hash": ""
   },
   "src/pages/Materials.tsx": {
-    "mtime": 1793040479.584259,
-    "seen": 1793040650.9060156,
-    "ast_hash": "464a20235bfcd2c482ebba34f2c44c11",
+    "mtime": 1793040974.981931,
+    "seen": 1793041110.7371082,
+    "ast_hash": "0f9b522f0bea09db76f5fa70a304ce5f",
     "semantic_hash": ""
   },
   "src/pages/MetroMapper.tsx": {
@@ -4728,9 +4728,9 @@
     "semantic_hash": ""
   },
   "src/pages/PucHub.tsx": {
-    "mtime": 1793040466.9737747,
-    "seen": 1793040650.9072783,
-    "ast_hash": "e840453578edf69a954b1af40c8c6b47",
+    "mtime": 1793040963.6959703,
+    "seen": 1793041110.7387338,
+    "ast_hash": "90342992ab8e971b17becd907de2b887",
     "semantic_hash": ""
   },
   "src/pages/PucPages.tsx": {
@@ -8328,9 +8328,15 @@
     "semantic_hash": ""
   },
   "src/pages/Guides.tsx": {
-    "mtime": 1793040362.2599316,
-    "seen": 1793040650.9054122,
-    "ast_hash": "e49d9fa70016c6088959c93897fe2a0c",
+    "mtime": 1793040933.18328,
+    "seen": 1793041110.7364929,
+    "ast_hash": "33062b63c501cac682881772be8bb252",
+    "semantic_hash": ""
+  },
+  "src/pages/StudentReviews.tsx": {
+    "mtime": 1793451908.2880023,
+    "seen": 1793451915.7632627,
+    "ast_hash": "c2560aba2269d3a95ab10a4bdefbd383",
     "semantic_hash": ""
   }
 }
