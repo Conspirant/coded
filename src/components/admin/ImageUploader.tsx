@@ -151,7 +151,7 @@ export function ImageUploader({
 
     if (compact) {
         return (
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 max-w-full">
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -160,7 +160,7 @@ export function ImageUploader({
                     className="hidden"
                 />
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
                     {value ? (
                         <div className="flex items-center gap-2 bg-slate-900/80 p-1.5 px-2 rounded-lg border border-emerald-500/30 flex-1 min-w-0">
                             <img
@@ -183,7 +183,7 @@ export function ImageUploader({
                             </Button>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center gap-1">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -215,7 +215,7 @@ export function ImageUploader({
     }
 
     return (
-        <div className="space-y-2 rounded-xl bg-white/[0.02] border border-white/10 p-3.5">
+        <div className="space-y-2 rounded-xl bg-white/[0.02] border border-white/10 p-3 max-w-full overflow-hidden">
             <input
                 type="file"
                 ref={fileInputRef}
@@ -224,17 +224,19 @@ export function ImageUploader({
                 className="hidden"
             />
 
-            <div className="flex items-center justify-between">
-                <div>
-                    {label && <Label className="text-xs text-slate-200 font-semibold">{label}</Label>}
-                    {description && <p className="text-[11px] text-slate-400">{description}</p>}
+            {(label || description || value) && (
+                <div className="flex flex-wrap items-center justify-between gap-1.5">
+                    <div>
+                        {label && <Label className="text-xs text-slate-200 font-semibold">{label}</Label>}
+                        {description && <p className="text-[11px] text-slate-400">{description}</p>}
+                    </div>
+                    {value && (
+                        <Badge className="bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-[10px] flex items-center gap-1">
+                            <Check className="h-3 w-3" /> Image Active
+                        </Badge>
+                    )}
                 </div>
-                {value && (
-                    <Badge className="bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-[10px] flex items-center gap-1">
-                        <Check className="h-3 w-3" /> Image Active
-                    </Badge>
-                )}
-            </div>
+            )}
 
             {value ? (
                 <div className="space-y-3">
@@ -249,7 +251,7 @@ export function ImageUploader({
                     </div>
 
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                        <span className="text-[11px] text-slate-400 truncate max-w-xs font-mono">
+                        <span className="text-[11px] text-slate-400 truncate max-w-full sm:max-w-xs font-mono">
                             {value.startsWith("data:") ? "Embedded Data Image (Synced with DB)" : value}
                         </span>
 
@@ -270,7 +272,7 @@ export function ImageUploader({
                                 onClick={handleDeleteImage}
                                 className="h-7 text-xs bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30"
                             >
-                                <Trash2 className="h-3 w-3 mr-1.5" /> Delete Image
+                                <Trash2 className="h-3 w-3 mr-1.5" /> Delete
                             </Button>
                         </div>
                     </div>
@@ -297,31 +299,31 @@ export function ImageUploader({
                             }
                         }
                     }}
-                    className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-white/15 rounded-xl hover:border-indigo-500/50 hover:bg-indigo-500/[0.02] transition-colors cursor-pointer group"
+                    className="flex flex-col items-center justify-center p-4 sm:p-5 border-2 border-dashed border-white/15 rounded-xl hover:border-indigo-500/50 hover:bg-indigo-500/[0.02] transition-colors cursor-pointer group text-center max-w-full"
                     onClick={() => fileInputRef.current?.click()}
                 >
-                    <div className="p-3 rounded-full bg-white/5 text-slate-400 group-hover:text-indigo-400 group-hover:bg-indigo-500/10 transition-colors mb-2">
-                        {isProcessing ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImageIcon className="h-6 w-6" />}
+                    <div className="p-2.5 rounded-full bg-white/5 text-slate-400 group-hover:text-indigo-400 group-hover:bg-indigo-500/10 transition-colors mb-2">
+                        {isProcessing ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImageIcon className="h-5 w-5" />}
                     </div>
-                    <div className="text-center space-y-1">
+                    <div className="space-y-0.5">
                         <p className="text-xs font-semibold text-slate-200">
-                            Click to upload, or paste (Ctrl+V) image here
+                            Click to upload, or paste (Ctrl+V)
                         </p>
-                        <p className="text-[11px] text-slate-500">
-                            Supports PNG, JPG, WebP, SVG (Auto-compressed for fast loading on web)
+                        <p className="text-[10px] text-slate-500 max-w-xs mx-auto">
+                            PNG, JPG, WebP, SVG (Auto-compressed)
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 mt-4" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex flex-wrap items-center justify-center gap-1.5 mt-3 w-full max-w-full" onClick={(e) => e.stopPropagation()}>
                         <Button
                             type="button"
                             variant="secondary"
                             size="sm"
                             disabled={isProcessing}
                             onClick={() => fileInputRef.current?.click()}
-                            className="h-7 text-xs bg-white/10 hover:bg-white/15 text-white"
+                            className="h-7 text-[11px] px-2.5 bg-white/10 hover:bg-white/15 text-white"
                         >
-                            <Upload className="h-3.5 w-3.5 mr-1.5" /> Choose File
+                            <Upload className="h-3 w-3 mr-1" /> Choose File
                         </Button>
                         <Button
                             type="button"
@@ -329,18 +331,18 @@ export function ImageUploader({
                             size="sm"
                             disabled={isPasting}
                             onClick={handlePasteFromClipboard}
-                            className="h-7 text-xs border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10"
+                            className="h-7 text-[11px] px-2.5 border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10"
                         >
-                            <Clipboard className="h-3.5 w-3.5 mr-1.5" /> Paste from Clipboard
+                            <Clipboard className="h-3 w-3 mr-1" /> Paste
                         </Button>
                         <Button
                             type="button"
                             variant="ghost"
                             size="sm"
                             onClick={() => setIsUrlInputOpen(!isUrlInputOpen)}
-                            className="h-7 text-xs text-slate-400 hover:text-white"
+                            className="h-7 text-[11px] px-2 text-slate-400 hover:text-white"
                         >
-                            <Link2 className="h-3.5 w-3.5 mr-1" /> URL
+                            <Link2 className="h-3 w-3 mr-1" /> URL
                         </Button>
                     </div>
 

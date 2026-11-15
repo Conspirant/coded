@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,10 +16,26 @@ import {
     Database, ClipboardPaste, Filter, CheckCircle2, AlertCircle,
     ArrowUpDown, ChevronDown, ChevronRight, ChevronLeft, Copy, Check, Sparkles,
     RefreshCw, Layers, BookOpen, Calendar, HelpCircle, FileJson,
-    CheckSquare, Square, Eye, EyeOff, LayoutGrid, List
+    CheckSquare, Square, Eye, EyeOff, LayoutGrid, List, ArrowLeft,
+    Flag, AlertTriangle
 } from "lucide-react"
 import { SUBJECTS, Subject, getChaptersForSubject } from "@/data/pyqQuestionBank"
 import { ImageUploader } from "@/components/admin/ImageUploader"
+
+export interface PYQStudentReport {
+    id: string;
+    question_id: string;
+    subject?: string;
+    chapter_number?: number;
+    chapter?: string;
+    year?: number;
+    reason: string;
+    reason_label: string;
+    comment: string;
+    reported_at?: string;
+    created_at?: string;
+    status: 'pending' | 'approved' | 'rejected';
+}
 
 export interface AdminPYQQuestion {
     id?: string;
@@ -78,9 +94,12 @@ export function AdminPYQSection() {
 
     // Modals
     const [showOCRModal, setShowOCRModal] = useState(false)
-    const [showEditModal, setShowEditModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)  // Only used for "Add New Question"
     const [editingQ, setEditingQ] = useState<AdminPYQQuestion | null>(null)
     const [showMathLivePreview, setShowMathLivePreview] = useState(true)
+
+    // Fullscreen edit mode (replaces question list with editor + navigation)
+    const [fullscreenEditIndex, setFullscreenEditIndex] = useState<number | null>(null)
 
     // Quick single-field inline edit / quick question editor
     const [quickEditId, setQuickEditId] = useState<string | null>(null)
@@ -91,6 +110,10 @@ export function AdminPYQSection() {
     const [ocrChapter, setOcrChapter] = useState("1")
     const [parsedPreview, setParsedPreview] = useState<AdminPYQQuestion[]>([])
     const [activeOcrTab, setActiveOcrTab] = useState<"paste" | "preview">("paste")
+
+    // Student reported questions
+    const [studentReports, setStudentReports] = useState<PYQStudentReport[]>([])
+    const [loadingReports, setLoadingReports] = useState(false)
 
     const { toast } = useToast()
 
@@ -112,7 +135,7 @@ export function AdminPYQSection() {
 
                 if (error) throw error
                 if (data && data.length > 0) {
-                    allFetched.push(...(data as AdminPYQQuestion[]))
+                    allFetched.push(...(data as unknown as AdminPYQQuestion[]))
                     if (data.length < pageSize) {
                         hasMore = false
                     } else {
@@ -124,6 +147,7 @@ export function AdminPYQSection() {
             }
 
             setQuestions(allFetched)
+            fetchStudentReports()
         } catch (err: any) {
             toast({ title: "Error loading questions", description: err.message, variant: "destructive" })
         } finally {
@@ -131,9 +155,85 @@ export function AdminPYQSection() {
         }
     }
 
+    const fetchStudentReports = async () => {
+        try {
+            setLoadingReports(true)
+            const { data, error } = await supabase
+                .from('college_suggestions' as any)
+                .select('*')
+                .eq('college_code', 'PYQ_REPORT')
+                .eq('status', 'pending')
+                .order('created_at', { ascending: false })
+
+            if (error) throw error
+            if (data) {
+                const mapped: PYQStudentReport[] = data.map((d: any) => ({
+                    id: d.id,
+                    question_id: d.suggested_data?.question_id || d.current_data?.question_id || "",
+                    subject: d.suggested_data?.subject || d.current_data?.subject,
+                    chapter_number: d.suggested_data?.chapter_number || d.current_data?.chapter_number,
+                    chapter: d.suggested_data?.chapter || d.current_data?.chapter,
+                    year: d.suggested_data?.year || d.current_data?.year,
+                    reason: d.suggested_data?.reason || "other",
+                    reason_label: d.suggested_data?.reason_label || "Discrepancy Reported",
+                    comment: d.suggested_data?.comment || "",
+                    reported_at: d.suggested_data?.reported_at || d.created_at,
+                    created_at: d.created_at,
+                    status: d.status
+                }))
+                setStudentReports(mapped)
+            }
+        } catch (err: any) {
+            console.warn("Could not load student reports:", err.message)
+        } finally {
+            setLoadingReports(false)
+        }
+    }
+
+    const markReportResolved = async (reportId: string) => {
+        try {
+            const { error } = await supabase
+                .from('college_suggestions' as any)
+                .update({ status: 'approved' })
+                .eq('id', reportId)
+            if (error) throw error
+            toast({ title: "Report Resolved", description: "Student flag marked resolved." })
+            setStudentReports(prev => prev.filter(r => r.id !== reportId))
+        } catch (err: any) {
+            toast({ title: "Failed to resolve report", description: err.message, variant: "destructive" })
+        }
+    }
+
+    const markReportDismissed = async (reportId: string) => {
+        try {
+            const { error } = await supabase
+                .from('college_suggestions' as any)
+                .update({ status: 'rejected' })
+                .eq('id', reportId)
+            if (error) throw error
+            toast({ title: "Report Dismissed", description: "Flag removed from pending list." })
+            setStudentReports(prev => prev.filter(r => r.id !== reportId))
+        } catch (err: any) {
+            toast({ title: "Failed to dismiss report", description: err.message, variant: "destructive" })
+        }
+    }
+
     useEffect(() => {
         fetchQuestions()
+        fetchStudentReports()
     }, [])
+
+    const reportsByQuestionId = useMemo(() => {
+        const map = new Map<string, PYQStudentReport[]>()
+        studentReports.forEach(r => {
+            if (r.question_id) {
+                const list = map.get(r.question_id) || []
+                list.push(r)
+                map.set(r.question_id, list)
+            }
+        })
+        return map
+    }, [studentReports])
 
     // ─── Unique years list for filter ───
     const availableYears = useMemo(() => {
@@ -142,6 +242,13 @@ export function AdminPYQSection() {
         return Array.from(years).sort((a, b) => b - a)
     }, [questions])
 
+    // ─── Diagram Anomaly Detector ───
+    const DIAGRAM_KEYWORDS = /\b(figure|diagram|circuit|graph|shown below|in the adjacent|as shown|ray diagram|schematic)\b/i
+    const isQuestionMissingDiagram = (q: AdminPYQQuestion) => {
+        const hasImage = !!q.image_url && q.image_url.trim() !== ""
+        return !hasImage && (!!q.needs_image || DIAGRAM_KEYWORDS.test(q.question || ""))
+    }
+
     // ─── Stats summary ───
     const stats = useMemo(() => {
         const total = questions.length
@@ -149,8 +256,10 @@ export function AdminPYQSection() {
         const chemistry = questions.filter(q => q.subject === "Chemistry").length
         const math = questions.filter(q => q.subject === "Mathematics").length
         const needsImage = questions.filter(q => q.needs_image).length
-        return { total, physics, chemistry, math, needsImage }
-    }, [questions])
+        const missingDiagrams = questions.filter(isQuestionMissingDiagram).length
+        const studentFlagged = studentReports.length
+        return { total, physics, chemistry, math, needsImage, missingDiagrams, studentFlagged }
+    }, [questions, studentReports])
 
     // ─── Filter & Sort ───
     const filteredQuestions = useMemo(() => {
@@ -175,9 +284,12 @@ export function AdminPYQSection() {
             // Year filter
             if (filterYear !== "all" && String(q.year) !== filterYear) return false
 
-            // Needs image filter
+            // Needs image / Student Flag filter
+            if (filterNeedsImage === "flagged_by_students" && !reportsByQuestionId.has(q.id!)) return false
+            if (filterNeedsImage === "missing_or_needed" && !isQuestionMissingDiagram(q)) return false
+            if (filterNeedsImage === "has_image" && (!q.image_url || q.image_url.trim() === "")) return false
             if (filterNeedsImage === "yes" && !q.needs_image) return false
-            if (filterNeedsImage === "no" && q.needs_image) return false
+            if (filterNeedsImage === "no" && (q.needs_image || isQuestionMissingDiagram(q))) return false
 
             return true
         }).sort((a, b) => {
@@ -252,6 +364,9 @@ export function AdminPYQSection() {
                 next.delete(id)
                 return next
             })
+            if (fullscreenEditIndex !== null) {
+                exitFullscreenEdit()
+            }
         } catch (err: any) {
             toast({ title: "Failed to delete", description: err.message, variant: "destructive" })
         }
@@ -293,12 +408,14 @@ export function AdminPYQSection() {
     }
 
     const openEditQuestion = (q: AdminPYQQuestion) => {
+        // Find index in filteredQuestions for prev/next navigation
+        const idx = filteredQuestions.findIndex(fq => fq.id === q.id)
         setEditingQ({
             ...q,
             options: [...(q.options || ["", "", "", ""])],
             option_images: [...(q.option_images || ["", "", "", ""])]
         })
-        setShowEditModal(true)
+        setFullscreenEditIndex(idx !== -1 ? idx : 0)
     }
 
     const handleDuplicateQuestion = (q: AdminPYQQuestion) => {
@@ -319,29 +436,148 @@ export function AdminPYQSection() {
             return
         }
 
+        const isNewDraft = !editingQ.id || editingQ.id.startsWith("draft-new-")
         const { id, created_at, ...payload } = editingQ as any
 
         try {
-            if (id) {
+            if (!isNewDraft) {
                 const { error } = await supabase.from('pyq_questions' as any).update(payload).eq('id', id)
                 if (error) throw error
                 toast({ title: "Question updated successfully" })
                 setQuestions(prev => prev.map(q => q.id === id ? { ...editingQ } : q))
             } else {
-                const { data, error } = await supabase.from('pyq_questions' as any).insert([payload]).select()
+                const insertPayload = {
+                    ...payload,
+                    created_at: editingQ.created_at || new Date().toISOString()
+                }
+                const { data, error } = await supabase.from('pyq_questions' as any).insert([insertPayload]).select()
                 if (error) throw error
-                toast({ title: "Question added successfully" })
+                toast({ title: "Question inserted successfully in sequence!" })
                 if (data && data[0]) {
-                    setQuestions(prev => [data[0], ...prev])
+                    const insertedQ = data[0] as unknown as AdminPYQQuestion
+                    setQuestions(prev => prev.map(q => q.id === editingQ.id ? insertedQ : q))
+                    setEditingQ(insertedQ)
                 } else {
                     fetchQuestions()
                 }
             }
+            // Close dialog only (fullscreen stays open for continued editing)
             setShowEditModal(false)
         } catch (err: any) {
             toast({ title: "Save failed", description: err.message, variant: "destructive" })
         }
     }
+
+    // ─── Fullscreen navigation helpers ───
+    const navigateToQuestion = (index: number) => {
+        if (index < 0 || index >= filteredQuestions.length) return
+        const q = filteredQuestions[index]
+        setEditingQ({
+            ...q,
+            options: [...(q.options || ["", "", "", ""])],
+            option_images: [...(q.option_images || ["", "", "", ""])]
+        })
+        setFullscreenEditIndex(index)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    const exitFullscreenEdit = () => {
+        // Clean up unsaved empty drafts when exiting fullscreen
+        setQuestions(prev => prev.filter(q => !q.id?.startsWith("draft-new-") || !!q.question?.trim()))
+        setFullscreenEditIndex(null)
+        setEditingQ(null)
+    }
+
+    // ─── Insert Question in the Middle ───
+    const handleInsertQuestionAfter = (targetQ: AdminPYQQuestion, afterIndex?: number) => {
+        const targetIdx = afterIndex !== undefined && afterIndex >= 0 
+            ? afterIndex 
+            : filteredQuestions.findIndex(q => q.id === targetQ.id)
+
+        let insertCreatedAt: string = new Date().toISOString()
+        const currentCreated = targetQ.created_at ? new Date(targetQ.created_at).getTime() : Date.now()
+        
+        const nextQ = targetIdx !== -1 && targetIdx < filteredQuestions.length - 1 
+            ? filteredQuestions[targetIdx + 1] 
+            : null
+        
+        if (nextQ && nextQ.created_at) {
+            const nextCreated = new Date(nextQ.created_at).getTime()
+            if (currentCreated !== nextCreated) {
+                insertCreatedAt = new Date(Math.floor((currentCreated + nextCreated) / 2)).toISOString()
+            } else {
+                insertCreatedAt = new Date(currentCreated - 500).toISOString()
+            }
+        } else {
+            insertCreatedAt = new Date(currentCreated - 1000).toISOString()
+        }
+
+        const draftQ: AdminPYQQuestion = {
+            id: `draft-new-${Date.now()}`,
+            subject: targetQ.subject,
+            chapter: targetQ.chapter,
+            chapter_number: targetQ.chapter_number,
+            year: targetQ.year,
+            question: "",
+            options: ["", "", "", ""],
+            correct_answer: 0,
+            explanation: "",
+            needs_image: false,
+            image_url: "",
+            option_images: ["", "", "", ""],
+            created_at: insertCreatedAt
+        }
+
+        // Insert draft directly into questions array right after target question
+        const qIndexInMain = questions.findIndex(q => q.id === targetQ.id)
+        const insertPos = qIndexInMain !== -1 ? qIndexInMain + 1 : 0
+
+        setQuestions(prev => {
+            const clean = prev.filter(q => !q.id?.startsWith("draft-new-"))
+            const next = [...clean]
+            next.splice(insertPos, 0, draftQ)
+            return next
+        })
+
+        setEditingQ(draftQ)
+        const newFilteredIndex = targetIdx !== -1 ? targetIdx + 1 : 0
+        setFullscreenEditIndex(newFilteredIndex)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        toast({
+            title: "Insert Mode Active",
+            description: `Adding missed question after #${targetIdx + 1} (${targetQ.subject} CH ${targetQ.chapter_number}, KCET ${targetQ.year}). Fill details and click Save Changes.`
+        })
+    }
+
+    // Keyboard shortcuts for fullscreen navigation (Alt+Left/Right, Ctrl+S, Esc)
+    useEffect(() => {
+        if (fullscreenEditIndex === null) return
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                e.preventDefault()
+                handleSaveEdit()
+            } else if (e.altKey && e.key === 'ArrowLeft') {
+                e.preventDefault()
+                if (fullscreenEditIndex > 0) {
+                    navigateToQuestion(fullscreenEditIndex - 1)
+                }
+            } else if (e.altKey && e.key === 'ArrowRight') {
+                e.preventDefault()
+                if (fullscreenEditIndex < filteredQuestions.length - 1) {
+                    navigateToQuestion(fullscreenEditIndex + 1)
+                }
+            } else if (e.key === 'Escape') {
+                const target = e.target as HTMLElement
+                if (!target?.closest('[role="listbox"]') && !target?.closest('[role="dialog"]')) {
+                    exitFullscreenEdit()
+                }
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [fullscreenEditIndex, filteredQuestions, editingQ])
 
     // ─── Intelligent OCR & Text Parser ───
     const parseOCR = () => {
@@ -594,6 +830,636 @@ export function AdminPYQSection() {
 
     return (
         <div className="space-y-6 pb-12">
+
+            {/* ═══════════════════════════════════════════════════════════════════
+                FULLSCREEN QUESTION EDITOR (shown when editing an existing question)
+                ═══════════════════════════════════════════════════════════════════ */}
+            {fullscreenEditIndex !== null && editingQ && (
+                <div className="space-y-4">
+                    {/* ─── Navigation Bar ─── */}
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-3 border-b border-white/5">
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={exitFullscreenEdit}
+                                className="h-9 px-3 border-white/10 rounded-xl text-xs text-muted-foreground hover:text-white hover:bg-white/5 flex items-center gap-1.5"
+                            >
+                                <ArrowLeft className="w-3.5 h-3.5" />
+                                Back to Question List
+                            </Button>
+
+                            <div className="flex items-center border border-white/10 rounded-xl overflow-hidden bg-white/5 h-9">
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    disabled={fullscreenEditIndex === 0}
+                                    onClick={() => navigateToQuestion(fullscreenEditIndex - 1)}
+                                    className="h-full px-2.5 rounded-none border-r border-white/10 hover:bg-white/5 text-[11px] text-muted-foreground hover:text-white disabled:opacity-30 flex items-center justify-center font-bold"
+                                    title="Previous Question (Alt+Left)"
+                                >
+                                    ◀ Prev
+                                </Button>
+                                <span className="text-[10px] text-muted-foreground px-2.5 font-bold font-mono select-none whitespace-nowrap shrink-0">
+                                    {fullscreenEditIndex + 1} / {filteredQuestions.length}
+                                </span>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    disabled={fullscreenEditIndex === filteredQuestions.length - 1}
+                                    onClick={() => navigateToQuestion(fullscreenEditIndex + 1)}
+                                    className="h-full px-2.5 rounded-none hover:bg-white/5 text-[11px] text-muted-foreground hover:text-white disabled:opacity-30 flex items-center justify-center font-bold"
+                                    title="Next Question (Alt+Right)"
+                                >
+                                    Next ▶
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 justify-between sm:justify-start">
+                            <Badge variant="outline" className="font-mono text-indigo-400 border-indigo-500/20 bg-indigo-500/5 px-2.5 py-1.5 text-xs font-bold hidden md:inline-flex items-center gap-1.5">
+                                Active: KCET {editingQ.year} • {editingQ.subject} (CH {editingQ.chapter_number})
+                            </Badge>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowMathLivePreview(!showMathLivePreview)}
+                                className="h-9 px-3 rounded-xl border-white/10 text-xs text-indigo-300 hover:bg-indigo-500/10 flex items-center gap-1.5"
+                            >
+                                {showMathLivePreview ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                                <span className="hidden sm:inline">{showMathLivePreview ? "Hide Preview" : "Show Preview"}</span>
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleInsertQuestionAfter(editingQ, fullscreenEditIndex)}
+                                className="h-9 px-3 rounded-xl border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/10 hover:text-white flex items-center gap-1.5"
+                                title="Insert a missed question directly after this one"
+                            >
+                                <Plus className="h-3.5 w-3.5 text-indigo-400" />
+                                <span className="hidden sm:inline">Insert Question After</span>
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDelete(editingQ.id!)}
+                                className="h-9 px-3 rounded-xl border-red-500/20 text-xs text-red-400 hover:bg-red-500/10 flex items-center gap-1.5"
+                            >
+                                <Trash2 className="h-3.5 w-3.5" />
+                                <span className="hidden sm:inline">Delete</span>
+                            </Button>
+                            <Button
+                                onClick={handleSaveEdit}
+                                size="sm"
+                                className="h-9 px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-md shadow-indigo-500/20 flex items-center gap-1.5"
+                            >
+                                <Save className="h-4 w-4" />
+                                Save Changes
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* ─── Editor Title ─── */}
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
+                            <Edit3 className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                                Edit Question
+                                <Badge variant="outline" className="text-[10px] font-mono bg-white/5 border-white/10 text-slate-300">
+                                    KCET {editingQ.year}
+                                </Badge>
+                                <Badge className="bg-indigo-500/10 text-indigo-400 border-0 text-[10px]">
+                                    CH {editingQ.chapter_number}
+                                </Badge>
+                                {isQuestionMissingDiagram(editingQ) && (
+                                    <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] flex items-center gap-1 font-semibold">
+                                        <ImageIcon className="h-3 w-3" /> Missing Diagram
+                                    </Badge>
+                                )}
+                                {reportsByQuestionId.has(editingQ.id!) && (
+                                    <Badge className="bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] flex items-center gap-1 font-semibold animate-pulse">
+                                        <Flag className="h-3 w-3" /> Flagged by Student
+                                    </Badge>
+                                )}
+                            </h2>
+                            <p className="text-xs text-slate-400 mt-0.5">
+                                Format with standard text or LaTeX math (e.g. $F = ma$ or $E = mc^2$). Click any option radio to select the correct answer.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* ─── Student Report Banner inside Editor if Flagged ─── */}
+                    {reportsByQuestionId.has(editingQ.id!) && (
+                        <div className="p-4 rounded-2xl bg-rose-950/40 border border-rose-500/40 space-y-3 shadow-lg shadow-rose-950/50">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-1.5 rounded-lg bg-rose-500/20 text-rose-300">
+                                        <Flag className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-bold text-rose-200">
+                                            Student Discrepancy Reported ({reportsByQuestionId.get(editingQ.id!)?.length})
+                                        </h3>
+                                        <p className="text-[11px] text-rose-300/80">
+                                            Students reported an issue while taking or reviewing tests on this question.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    {reportsByQuestionId.get(editingQ.id!)?.map(rep => (
+                                        <Button
+                                            key={rep.id}
+                                            size="sm"
+                                            onClick={() => markReportResolved(rep.id)}
+                                            className="h-7 text-xs bg-rose-500 hover:bg-rose-600 text-white font-semibold shadow-sm"
+                                        >
+                                            Mark Resolved
+                                        </Button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
+                                {reportsByQuestionId.get(editingQ.id!)?.map(rep => (
+                                    <div key={rep.id} className="p-2.5 rounded-xl bg-slate-900/60 border border-rose-500/20 text-xs space-y-1">
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-semibold text-rose-300 capitalize flex items-center gap-1.5">
+                                                <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
+                                                {rep.reason_label || rep.reason || "Discrepancy"}
+                                            </span>
+                                            <span className="text-[10px] text-slate-400">
+                                                {new Date(rep.created_at || rep.reported_at || Date.now()).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        {rep.comment && (
+                                            <p className="text-slate-300 italic pl-5">
+                                                "{rep.comment}"
+                                            </p>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ─── Editor Form ─── */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                        {/* Main Editor Column (Left 7-8 cols) */}
+                        <div className="lg:col-span-7 xl:col-span-8 space-y-5 min-w-0">
+                            {/* Card 1: Question Statement & Subject Details */}
+                            <Card className="bg-slate-900/60 border-white/10 shadow-lg">
+                                <CardHeader className="pb-3 border-b border-white/5">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                                            <Sparkles className="h-4 w-4 text-indigo-400" />
+                                            Question Statement & Metadata
+                                        </CardTitle>
+                                        <div className="flex items-center gap-1.5">
+                                            <Badge variant="outline" className="text-[10px] font-mono bg-white/5 border-white/10 text-slate-300">
+                                                KCET {editingQ.year}
+                                            </Badge>
+                                            <Badge className="bg-indigo-500/10 text-indigo-400 border-0 text-[10px]">
+                                                CH {editingQ.chapter_number}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="p-4 sm:p-5 space-y-4">
+                                    {/* Metadata Row: Subject, Chapter, Year */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs text-slate-300 font-semibold">Subject</Label>
+                                            <Select
+                                                value={editingQ.subject || "Physics"}
+                                                onValueChange={v => {
+                                                    const sub = v as Subject
+                                                    const chapters = getChaptersForSubject(sub)
+                                                    setEditingQ({
+                                                        ...editingQ,
+                                                        subject: sub,
+                                                        chapter_number: 1,
+                                                        chapter: chapters[1] || ""
+                                                    })
+                                                }}
+                                            >
+                                                <SelectTrigger className="bg-white/5 border-white/10 text-xs">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {SUBJECTS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs text-slate-300 font-semibold">Chapter</Label>
+                                            <Select
+                                                value={String(editingQ.chapter_number || 1)}
+                                                onValueChange={v => {
+                                                    const chNum = parseInt(v)
+                                                    const chapters = getChaptersForSubject((editingQ.subject || "Physics") as Subject)
+                                                    setEditingQ({
+                                                        ...editingQ,
+                                                        chapter_number: chNum,
+                                                        chapter: chapters[chNum] || ""
+                                                    })
+                                                }}
+                                            >
+                                                <SelectTrigger className="bg-white/5 border-white/10 text-xs">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent className="max-h-64">
+                                                    {Object.entries(getChaptersForSubject((editingQ.subject || "Physics") as Subject)).map(([n, name]) => (
+                                                        <SelectItem key={n} value={n}>CH {n}: {name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <div className="space-y-1.5">
+                                            <Label className="text-xs text-slate-300 font-semibold">KCET Exam Year</Label>
+                                            <Input
+                                                type="number"
+                                                value={editingQ.year || 2024}
+                                                onChange={e => setEditingQ({ ...editingQ, year: parseInt(e.target.value) || 2024 })}
+                                                className="bg-white/5 border-white/10 text-xs text-white"
+                                                placeholder="2024"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Question Text */}
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <Label className="text-xs text-slate-300 font-semibold">Question Statement (LaTeX supported)</Label>
+                                            <span className="text-[11px] text-slate-500 font-mono">Wrap math in $...$</span>
+                                        </div>
+                                        <Textarea
+                                            value={editingQ.question}
+                                            onChange={e => setEditingQ({ ...editingQ, question: e.target.value })}
+                                            className="min-h-[120px] bg-white/5 border-white/10 text-xs sm:text-sm font-mono text-white placeholder:text-slate-500 focus:border-indigo-500/50"
+                                            placeholder="Enter question statement here. E.g. The dimensional formula for universal gravitational constant $G$ is..."
+                                        />
+                                        {showMathLivePreview && editingQ.question && (
+                                            <div className="p-3.5 rounded-xl bg-indigo-950/20 border border-indigo-500/30 text-xs sm:text-sm text-slate-200 space-y-1">
+                                                <div className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                                                    <Sparkles className="h-3 w-3" /> Live LaTeX Render
+                                                </div>
+                                                <div className="overflow-x-auto pt-0.5">
+                                                    <MathRenderer content={editingQ.question} />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {/* Card 2: 4 Options Grid */}
+                            <Card className="bg-slate-900/60 border-white/10 shadow-lg">
+                                <CardHeader className="pb-3 border-b border-white/5">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <div>
+                                            <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                                                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                                                Answer Options
+                                            </CardTitle>
+                                            <CardDescription className="text-xs text-slate-400 mt-0.5">
+                                                Select the radio button on the verified answer key.
+                                            </CardDescription>
+                                        </div>
+                                        <Badge className="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-semibold px-2.5 py-1">
+                                            Verified Key: Option {String.fromCharCode(65 + (editingQ.correct_answer || 0))}
+                                        </Badge>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="p-4 sm:p-5">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                        {[0, 1, 2, 3].map(i => {
+                                            const isCorrect = editingQ.correct_answer === i
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className={`p-3.5 rounded-xl border transition-all ${
+                                                        isCorrect
+                                                            ? 'bg-emerald-500/10 border-emerald-500/40 ring-1 ring-emerald-500/30'
+                                                            : 'bg-white/[0.02] border-white/10 hover:border-white/20'
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setEditingQ({ ...editingQ, correct_answer: i })}
+                                                            className={`h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                                                                isCorrect
+                                                                    ? 'border-emerald-400 bg-emerald-500 text-slate-950 font-bold'
+                                                                    : 'border-white/30 hover:border-white/60'
+                                                            }`}
+                                                        >
+                                                            {isCorrect && <Check className="h-3 w-3 stroke-[3]" />}
+                                                        </button>
+                                                        <span className="text-xs font-bold text-slate-200">
+                                                            Option {String.fromCharCode(65 + i)}
+                                                        </span>
+                                                        {isCorrect && (
+                                                            <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-[10px] ml-auto">
+                                                                Correct Answer
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+
+                                                    <Textarea
+                                                        value={editingQ.options?.[i] || ""}
+                                                        onChange={e => {
+                                                            const opts = [...(editingQ.options || ["", "", "", ""])]
+                                                            opts[i] = e.target.value
+                                                            setEditingQ({ ...editingQ, options: opts })
+                                                        }}
+                                                        placeholder={`Option ${String.fromCharCode(65 + i)} text / LaTeX`}
+                                                        className="bg-white/5 border-white/10 text-xs min-h-[55px] font-mono focus:border-indigo-500/50"
+                                                    />
+
+                                                    {/* Distinct, sleek LaTeX preview strip */}
+                                                    {showMathLivePreview && editingQ.options?.[i] && (
+                                                        <div className="mt-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/30 border border-indigo-500/20 text-xs text-indigo-200 flex items-center gap-1.5 overflow-hidden">
+                                                            <span className="text-[9px] uppercase font-bold text-indigo-400 font-mono shrink-0 select-none">LaTeX:</span>
+                                                            <div className="overflow-x-auto min-w-0">
+                                                                <MathRenderer content={editingQ.options[i]} inline />
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Option Image Uploader */}
+                                                    <div className="mt-2.5 pt-2 border-t border-white/5">
+                                                        <ImageUploader
+                                                            value={editingQ.option_images?.[i] || ""}
+                                                            onChange={url => {
+                                                                const imgs = [...(editingQ.option_images || ["", "", "", ""])]
+                                                                imgs[i] = url
+                                                                setEditingQ({ ...editingQ, option_images: imgs })
+                                                            }}
+                                                            compact
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+
+                        {/* Right Sidebar Column (Right 4-5 cols) */}
+                        <div className="lg:col-span-5 xl:col-span-4 space-y-5 min-w-0">
+                            {/* Card 3: Question Graphic / Diagram */}
+                            <Card className="bg-slate-900/60 border-white/10 shadow-lg">
+                                <CardHeader className="pb-3 border-b border-white/5">
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                                            <ImageIcon className="h-4 w-4 text-amber-400" />
+                                            Question Graphic / Diagram
+                                        </CardTitle>
+                                        <label className="flex items-center gap-1.5 cursor-pointer text-xs text-amber-300">
+                                            <Checkbox
+                                                checked={editingQ.needs_image}
+                                                onCheckedChange={c => setEditingQ({ ...editingQ, needs_image: !!c })}
+                                                className="border-white/30"
+                                            />
+                                            <span className="text-[11px] font-medium">Needs Diagram</span>
+                                        </label>
+                                    </div>
+                                    <CardDescription className="text-[11px] text-slate-400 mt-0.5">
+                                        Attach circuit diagram, graph, or optics ray diagram.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-4">
+                                    <ImageUploader
+                                        value={editingQ.image_url || ""}
+                                        onChange={url => setEditingQ({
+                                            ...editingQ,
+                                            image_url: url,
+                                            needs_image: !!url ? false : editingQ.needs_image
+                                        })}
+                                        previewHeight="max-h-48"
+                                    />
+                                </CardContent>
+                            </Card>
+
+                            {/* Card 4: Explanation & Solution */}
+                            <Card className="bg-slate-900/60 border-white/10 shadow-lg">
+                                <CardHeader className="pb-3 border-b border-white/5">
+                                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                                        <Sparkles className="h-4 w-4 text-purple-400" />
+                                        Explanation & Solution (Optional)
+                                    </CardTitle>
+                                    <CardDescription className="text-[11px] text-slate-400 mt-0.5">
+                                        Step-by-step mathematical derivation or reasoning.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-4 space-y-3">
+                                    <Textarea
+                                        value={editingQ.explanation || ""}
+                                        onChange={e => setEditingQ({ ...editingQ, explanation: e.target.value })}
+                                        className="min-h-[90px] bg-white/5 border-white/10 text-xs text-white placeholder:text-slate-500 font-mono focus:border-indigo-500/50"
+                                        placeholder="Provide step-by-step derivation or reasoning..."
+                                    />
+                                    {showMathLivePreview && editingQ.explanation && (
+                                        <div className="p-2.5 rounded-lg bg-purple-950/20 border border-purple-500/20 text-xs text-slate-300 overflow-x-auto">
+                                            <div className="text-[10px] text-purple-400 font-semibold mb-1">Preview:</div>
+                                            <MathRenderer content={editingQ.explanation} />
+                                        </div>
+                                    )}
+
+                                    <div className="pt-2 border-t border-white/5">
+                                        <Label className="text-[11px] text-slate-400 font-semibold mb-1.5 block">
+                                            Solution Diagram / Working (Optional)
+                                        </Label>
+                                        <ImageUploader
+                                            value={editingQ.explanation_image_url || ""}
+                                            onChange={url => {
+                                                const cleanUrl = url.trim()
+                                                let updatedExpl = editingQ.explanation || ""
+                                                if (!cleanUrl) {
+                                                    updatedExpl = updatedExpl.replace(/\n*!\[Solution Diagram\]\([^\)]+\)/g, "").trim()
+                                                } else if (!updatedExpl.includes(cleanUrl)) {
+                                                    updatedExpl = updatedExpl ? `${updatedExpl}\n\n![Solution Diagram](${cleanUrl})` : `![Solution Diagram](${cleanUrl})`
+                                                }
+                                                setEditingQ({
+                                                    ...editingQ,
+                                                    explanation: updatedExpl,
+                                                    explanation_image_url: cleanUrl
+                                                })
+                                            }}
+                                            previewHeight="max-h-40"
+                                        />
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {/* Card 5: Navigation & Quick Actions */}
+                            <Card className="bg-slate-900/60 border-white/10 shadow-lg">
+                                <CardHeader className="pb-2.5 border-b border-white/5">
+                                    <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+                                        <Layers className="h-4 w-4 text-indigo-400" />
+                                        Navigation & Quick Actions
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-4 space-y-3">
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            disabled={fullscreenEditIndex === 0}
+                                            onClick={() => navigateToQuestion(fullscreenEditIndex - 1)}
+                                            className="border-white/10 text-xs text-slate-300 h-8 justify-center"
+                                        >
+                                            <ChevronLeft className="h-3.5 w-3.5 mr-1" /> Prev (Alt+←)
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            disabled={fullscreenEditIndex >= filteredQuestions.length - 1}
+                                            onClick={() => navigateToQuestion(fullscreenEditIndex + 1)}
+                                            className="border-white/10 text-xs text-slate-300 h-8 justify-center"
+                                        >
+                                            Next (Alt+→) <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                                        </Button>
+                                    </div>
+
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleInsertQuestionAfter(editingQ, fullscreenEditIndex)}
+                                        className="w-full border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 font-semibold text-xs h-8 justify-center"
+                                    >
+                                        <Plus className="h-3.5 w-3.5 mr-1.5 text-indigo-400" /> Insert Question After This
+                                    </Button>
+
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                            handleDuplicateQuestion(editingQ)
+                                            exitFullscreenEdit()
+                                        }}
+                                        className="w-full border-white/10 text-xs text-slate-300 h-8 justify-center"
+                                    >
+                                        <Copy className="h-3.5 w-3.5 mr-1.5" /> Duplicate as Template
+                                    </Button>
+
+                                    {/* Jump to specific question */}
+                                    <div className="pt-2 border-t border-white/5 space-y-1">
+                                        <Label className="text-[11px] text-slate-400 font-medium">Jump Directly to Question #</Label>
+                                        <div className="flex items-center gap-1.5">
+                                            <Input
+                                                type="number"
+                                                min={1}
+                                                max={filteredQuestions.length}
+                                                placeholder={`1 - ${filteredQuestions.length}`}
+                                                className="h-8 text-xs bg-white/5 border-white/10 text-white"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        const val = parseInt((e.target as HTMLInputElement).value)
+                                                        if (!isNaN(val) && val >= 1 && val <= filteredQuestions.length) {
+                                                            navigateToQuestion(val - 1)
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                className="h-8 text-xs px-3 shrink-0"
+                                                onClick={(e) => {
+                                                    const input = (e.currentTarget.previousElementSibling as HTMLInputElement)
+                                                    const val = parseInt(input?.value)
+                                                    if (!isNaN(val) && val >= 1 && val <= filteredQuestions.length) {
+                                                        navigateToQuestion(val - 1)
+                                                    }
+                                                }}
+                                            >
+                                                Jump
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-2 border-t border-white/5 text-[10px] text-slate-500 space-y-0.5 font-mono">
+                                        <div><kbd className="bg-white/10 px-1 py-0.5 rounded text-[9px] text-slate-300">Ctrl+S</kbd> Save changes</div>
+                                        <div><kbd className="bg-white/10 px-1 py-0.5 rounded text-[9px] text-slate-300">Alt+← / →</kbd> Prev / Next</div>
+                                        <div><kbd className="bg-white/10 px-1 py-0.5 rounded text-[9px] text-slate-300">Esc</kbd> Back to question list</div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </div>
+
+                    {/* ─── Bottom Navigation Bar ─── */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:p-3.5 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-white/10 sticky bottom-4 z-20 shadow-2xl">
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={exitFullscreenEdit}
+                                className="h-9 px-3 border-white/10 rounded-xl text-xs text-muted-foreground hover:text-white"
+                            >
+                                <ArrowLeft className="h-3.5 w-3.5 mr-1.5" /> Back to List
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={fullscreenEditIndex === 0}
+                                onClick={() => navigateToQuestion(fullscreenEditIndex - 1)}
+                                className="h-9 border-white/10 rounded-xl text-xs text-slate-300 disabled:opacity-30"
+                            >
+                                <ChevronLeft className="h-3.5 w-3.5 mr-1" /> Previous
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="text-xs text-muted-foreground font-mono">
+                                Question <span className="text-indigo-400 font-bold">{fullscreenEditIndex + 1}</span> of {filteredQuestions.length}
+                            </span>
+                            <Button
+                                onClick={handleSaveEdit}
+                                size="sm"
+                                className="h-9 px-5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-indigo-500/20"
+                            >
+                                <Save className="h-4 w-4 mr-1.5" />
+                                Save Changes
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleInsertQuestionAfter(editingQ, fullscreenEditIndex)}
+                                className="h-9 px-3 border-indigo-500/30 rounded-xl text-xs text-indigo-300 hover:bg-indigo-500/10 flex items-center gap-1.5"
+                                title="Insert a missed question directly after this one"
+                            >
+                                <Plus className="h-3.5 w-3.5 text-indigo-400" />
+                                <span className="hidden sm:inline">Insert After</span>
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={fullscreenEditIndex >= filteredQuestions.length - 1}
+                                onClick={() => navigateToQuestion(fullscreenEditIndex + 1)}
+                                className="h-9 border-white/10 rounded-xl text-xs text-slate-300 disabled:opacity-30"
+                            >
+                                Next <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════════════════
+                QUESTION LIST VIEW (hidden when fullscreen editor is open)
+                ═══════════════════════════════════════════════════════════════════ */}
+            {fullscreenEditIndex === null && (<>
             {/* ─── Top Control Bar ─── */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-gradient-to-r from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-5 rounded-2xl border border-white/10 shadow-xl backdrop-blur-xl">
                 <div>
@@ -808,7 +1674,10 @@ export function AdminPYQSection() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All Questions</SelectItem>
-                                    <SelectItem value="yes">📷 Needs Image ({stats.needsImage})</SelectItem>
+                                    <SelectItem value="flagged_by_students">🚩 Student Reports ({studentReports.length})</SelectItem>
+                                    <SelectItem value="missing_or_needed">⚠️ Needs Diagram Audit ({stats.missingDiagrams})</SelectItem>
+                                    <SelectItem value="has_image">🖼️ Has Image Attached</SelectItem>
+                                    <SelectItem value="yes">📷 Marked 'Needs Image' ({stats.needsImage})</SelectItem>
                                     <SelectItem value="no">Text-only Questions</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -837,6 +1706,61 @@ export function AdminPYQSection() {
                             <span className="text-slate-400">
                                 Showing <strong className="text-white">{filteredQuestions.length}</strong> of {questions.length} questions
                             </span>
+
+                            {/* One-Click Quick Audit Button */}
+                            <Button
+                                variant={filterNeedsImage === "missing_or_needed" ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => {
+                                    if (filterNeedsImage === "missing_or_needed") {
+                                        setFilterNeedsImage("all")
+                                    } else {
+                                        setFilterNeedsImage("missing_or_needed")
+                                        setFilterSubject("all")
+                                        setFilterChapter("all")
+                                        setFilterYear("all")
+                                        setSearch("")
+                                    }
+                                }}
+                                className={`h-7 px-2.5 text-xs rounded-lg font-medium transition-all ${
+                                    filterNeedsImage === "missing_or_needed"
+                                        ? 'bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-md shadow-amber-500/20'
+                                        : 'border-amber-500/30 text-amber-300 hover:bg-amber-500/10'
+                                }`}
+                                title="Filter questions that mention a diagram/circuit/figure but have no image"
+                            >
+                                <ImageIcon className="h-3.5 w-3.5 mr-1.5" />
+                                Needs Diagram ({stats.missingDiagrams})
+                            </Button>
+
+                            {/* One-Click Student Reports Filter Button */}
+                            {studentReports.length > 0 && (
+                                <Button
+                                    variant={filterNeedsImage === "flagged_by_students" ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => {
+                                        if (filterNeedsImage === "flagged_by_students") {
+                                            setFilterNeedsImage("all")
+                                        } else {
+                                            setFilterNeedsImage("flagged_by_students")
+                                            setFilterSubject("all")
+                                            setFilterChapter("all")
+                                            setFilterYear("all")
+                                            setSearch("")
+                                        }
+                                    }}
+                                    className={`h-7 px-2.5 text-xs rounded-lg font-medium transition-all ${
+                                        filterNeedsImage === "flagged_by_students"
+                                            ? 'bg-rose-500 hover:bg-rose-600 text-white font-bold shadow-md shadow-rose-500/20'
+                                            : 'border-rose-500/30 text-rose-300 hover:bg-rose-500/10'
+                                    }`}
+                                    title="Filter questions flagged with discrepancies by students taking tests"
+                                >
+                                    <Flag className="h-3.5 w-3.5 mr-1.5 text-rose-400" />
+                                    Student Reports ({studentReports.length})
+                                </Button>
+                            )}
+
                             {(search || filterSubject !== "all" || filterChapter !== "all" || filterYear !== "all" || filterNeedsImage !== "all") && (
                                 <Button
                                     variant="ghost"
@@ -964,9 +1888,19 @@ export function AdminPYQSection() {
                                                     <Badge className="bg-emerald-500/10 text-emerald-400 border-0 text-[10px] shrink-0 font-mono">
                                                         Ans: {String.fromCharCode(65 + (q.correct_answer || 0))}
                                                     </Badge>
-                                                    {q.needs_image && (
-                                                        <Badge className="bg-amber-500/10 text-amber-300 border-0 text-[10px] shrink-0">
-                                                            📷
+                                                    {isQuestionMissingDiagram(q) && (
+                                                        <Badge className="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] shrink-0 flex items-center gap-1 font-mono">
+                                                            <ImageIcon className="h-2.5 w-2.5" /> Needs Diagram
+                                                        </Badge>
+                                                    )}
+                                                    {reportsByQuestionId.has(q.id!) && (
+                                                        <Badge className="bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] shrink-0 flex items-center gap-1 font-mono font-semibold animate-pulse">
+                                                            <Flag className="h-2.5 w-2.5" /> Flagged ({reportsByQuestionId.get(q.id!)?.length})
+                                                        </Badge>
+                                                    )}
+                                                    {q.image_url && (
+                                                        <Badge className="bg-emerald-500/10 text-emerald-300 border-0 text-[10px] shrink-0 font-mono">
+                                                            🖼️
                                                         </Badge>
                                                     )}
                                                 </div>
@@ -979,6 +1913,15 @@ export function AdminPYQSection() {
                                                         title="Edit Question"
                                                     >
                                                         <Edit3 className="h-3.5 w-3.5" />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10"
+                                                        onClick={() => handleInsertQuestionAfter(q)}
+                                                        title="Insert Question After This"
+                                                    >
+                                                        <Plus className="h-3.5 w-3.5" />
                                                     </Button>
                                                     <Button
                                                         variant="ghost"
@@ -1031,8 +1974,8 @@ export function AdminPYQSection() {
                                                                 <Badge className="bg-indigo-500/10 text-indigo-400 border-0 text-[10px]">
                                                                     CH {q.chapter_number}
                                                                 </Badge>
-                                                                {q.needs_image && (
-                                                                    <Badge className="bg-amber-500/15 text-amber-300 border-amber-500/30 text-[10px] flex items-center gap-1">
+                                                                {isQuestionMissingDiagram(q) && (
+                                                                    <Badge className="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] flex items-center gap-1 font-semibold animate-pulse">
                                                                         <ImageIcon className="h-3 w-3" /> Needs Diagram
                                                                     </Badge>
                                                                 )}
@@ -1041,7 +1984,54 @@ export function AdminPYQSection() {
                                                                         ✓ Diagram Linked
                                                                     </Badge>
                                                                 )}
+                                                                {reportsByQuestionId.has(q.id!) && (
+                                                                    <Badge className="bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] flex items-center gap-1 font-semibold animate-pulse">
+                                                                        <Flag className="h-3 w-3" /> Flagged by Student ({reportsByQuestionId.get(q.id!)?.length})
+                                                                    </Badge>
+                                                                )}
                                                             </div>
+
+                                                            {/* Student Flagged Discrepancy Card */}
+                                                            {reportsByQuestionId.has(q.id!) && (
+                                                                <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 space-y-2">
+                                                                    <div className="flex items-center justify-between gap-2">
+                                                                        <div className="flex items-center gap-1.5 text-xs font-bold text-rose-300">
+                                                                            <Flag className="h-3.5 w-3.5 text-rose-400" />
+                                                                            Student Report ({reportsByQuestionId.get(q.id!)?.length})
+                                                                        </div>
+                                                                        <div className="flex items-center gap-1.5">
+                                                                            {reportsByQuestionId.get(q.id!)?.map(rep => (
+                                                                                <Button
+                                                                                    key={rep.id}
+                                                                                    size="sm"
+                                                                                    variant="ghost"
+                                                                                    onClick={() => markReportResolved(rep.id)}
+                                                                                    className="h-6 px-2 text-[10px] bg-rose-500/20 hover:bg-rose-500/40 text-rose-200 border border-rose-500/30"
+                                                                                >
+                                                                                    Mark Resolved
+                                                                                </Button>
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="space-y-1">
+                                                                        {reportsByQuestionId.get(q.id!)?.map(rep => (
+                                                                            <div key={rep.id} className="text-xs text-rose-200/90 flex flex-wrap items-center gap-2 bg-rose-900/20 p-2 rounded-lg">
+                                                                                <span className="font-semibold text-rose-300">
+                                                                                    {rep.reason_label || rep.reason || "Discrepancy"}:
+                                                                                </span>
+                                                                                {rep.comment && (
+                                                                                    <span className="text-slate-200 italic">
+                                                                                        "{rep.comment}"
+                                                                                    </span>
+                                                                                )}
+                                                                                <span className="text-[10px] text-slate-400 ml-auto">
+                                                                                    {new Date(rep.created_at || rep.reported_at || Date.now()).toLocaleDateString()}
+                                                                                </span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
 
                                                             {/* Question text with KaTeX preview */}
                                                             <div className="text-sm font-medium text-slate-100 leading-relaxed overflow-x-auto">
@@ -1120,6 +2110,15 @@ export function AdminPYQSection() {
                                                             title="Edit question"
                                                         >
                                                             <Edit3 className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            className="h-8 w-8 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10"
+                                                            onClick={() => handleInsertQuestionAfter(q)}
+                                                            title="Insert question after this"
+                                                        >
+                                                            <Plus className="h-4 w-4" />
                                                         </Button>
                                                         <Button
                                                             variant="ghost"
@@ -1209,6 +2208,7 @@ export function AdminPYQSection() {
                     </div>
                 </div>
             )}
+            </>)}
 
             {/* ─── Add / Edit Modal ─── */}
             <Dialog open={showEditModal} onOpenChange={setShowEditModal}>

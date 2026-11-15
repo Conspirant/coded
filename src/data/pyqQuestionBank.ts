@@ -280,7 +280,15 @@ async function getQuestionPool(): Promise<PYQQuestion[]> {
       }
     }
 
-    if (allRows.length > 0) return mergeQuestions(allRows.map(mapDbRow));
+    if (allRows.length > 0) {
+      // Live database records take 100% priority.
+      // If DB contains the full question bank (500+ questions), return live rows directly
+      // to ensure all admin edits (question text, options, keys, diagrams) apply without stale JSON duplicates.
+      if (allRows.length >= 500) {
+        return allRows.map(mapDbRow);
+      }
+      return mergeQuestions(allRows.map(mapDbRow));
+    }
   } catch (err) {
     console.warn("Supabase question fetch failed, using bundled questions:", err);
   }
