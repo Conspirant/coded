@@ -34,6 +34,7 @@ import { AdminPopupControllerSection } from "@/components/admin/AdminPopupContro
 import { AdminPollManager } from "@/components/admin/AdminPollManager"
 import { AdminMusicManager } from "@/components/admin/AdminMusicManager"
 import { AdminForumControlSection } from "@/components/admin/AdminForumControlSection"
+import { AdminCounsellorRecruitmentSection } from "@/components/admin/AdminCounsellorRecruitmentSection"
 import { AdminPYQSection } from "@/components/admin/AdminPYQSection"
 import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
@@ -1887,6 +1888,7 @@ const ADMIN_SECTIONS = [
     { id: "music", label: "Music Playlist", icon: Music },
     { id: "polls", label: "Community Polls", icon: Vote },
     { id: "popups", label: "Popups & Alerts", icon: Megaphone },
+    { id: "counsellor-recruitment", label: "Counsellor Drive", icon: Users },
     { id: "ai-extractor", label: "AI Extractor", icon: BrainCircuit },
     { id: "cutoffs", label: "Cutoffs", icon: BarChart3 },
     { id: "reviews", label: "Reviews", icon: Star },
@@ -1960,6 +1962,7 @@ export default function AdminHub() {
                     {activeSection === "music" && <AdminMusicManager />}
                     {activeSection === "polls" && <AdminPollManager />}
                     {activeSection === "popups" && <AdminPopupControllerSection />}
+                    {activeSection === "counsellor-recruitment" && <AdminCounsellorRecruitmentSection />}
                     {activeSection === "ai-extractor" && <AdminAIExtractor />}
                     {activeSection === "cutoffs" && <AdminCutoffsPage />}
                     {activeSection === "reviews" && <AdminReviewModeration />}

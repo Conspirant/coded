@@ -47,15 +47,27 @@ export class PopupService {
 
       if (error) throw error;
 
-      if (data && (data as any).results_json?.popups) {
+      if (data && Array.isArray((data as any).results_json?.popups)) {
         const parsed = formatPopupsList((data as any).results_json.popups);
         localPopupsMemoryCache = parsed;
+        if (parsed.length > 0) {
+          localStorage.setItem("kcetcoded_admin_popups_backup", JSON.stringify(parsed));
+        }
         return parsed;
       }
 
-      // If no config found in DB yet, initialize with default list
-      await this.saveAllPopups(DEFAULT_INITIAL_POPUPS);
-      localPopupsMemoryCache = DEFAULT_INITIAL_POPUPS;
+      // Never overwrite DB or localStorage with [] when DB read is empty;
+      // fall back to local cache/backup if present.
+      if (localPopupsMemoryCache && localPopupsMemoryCache.length > 0) {
+        return localPopupsMemoryCache;
+      }
+      const stored = localStorage.getItem("kcetcoded_admin_popups_backup");
+      if (stored) {
+        try {
+          const parsedBackup = formatPopupsList(JSON.parse(stored));
+          if (parsedBackup.length > 0) return parsedBackup;
+        } catch {}
+      }
       return DEFAULT_INITIAL_POPUPS;
     } catch (e) {
       console.warn("⚠️ PopupService: Error loading popups from Supabase, returning local fallback:", e);

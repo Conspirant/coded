@@ -109,6 +109,7 @@ const getKcetSections = (unlocked: boolean, onUnlockClick?: () => void): NavSect
         { title: "Info Centre", url: "/info-centre", icon: Info },
         { title: "Reviews & Ratings", url: "/reviews", icon: Star },
         { title: "Official CET News", url: "/cet-news", icon: Newspaper },
+        { title: "1-on-1 Counsellor Drive", url: "/counsellor-apply", icon: Users, isNew: true },
       ]
     },
     {
@@ -207,12 +208,12 @@ function SidebarNavItem({
             if (isMobile) setOpenMobile(false)
           }}
           className={`flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors w-full text-left group ${item.isPremiumTrigger
-              ? "bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-semibold border border-emerald-500/20"
-              : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-100"
+              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-700 dark:hover:text-emerald-300 font-semibold border border-emerald-500/20"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground"
             }`}
         >
           <item.icon
-            className={`h-4 w-4 flex-shrink-0 transition-colors ${item.isPremiumTrigger ? "text-emerald-400" : "text-slate-400 group-hover:text-slate-200"
+            className={`h-4 w-4 flex-shrink-0 transition-colors ${item.isPremiumTrigger ? "text-emerald-600 dark:text-emerald-400" : "text-sidebar-foreground/60 group-hover:text-sidebar-foreground"
               }`}
           />
           {state !== "collapsed" && (
@@ -231,13 +232,13 @@ function SidebarNavItem({
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors text-slate-400 hover:bg-slate-800/60 hover:text-slate-100 group"
+            className="flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground group"
           >
-            <item.icon className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors" />
+            <item.icon className="h-4 w-4 flex-shrink-0 text-sidebar-foreground/60 group-hover:text-sidebar-foreground transition-colors" />
             {state !== "collapsed" && (
               <div className="flex items-center justify-between w-full min-w-0">
                 <span className="truncate text-xs font-medium">{item.title}</span>
-                <ExternalLink className="h-3 w-3 text-slate-500 shrink-0" />
+                <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
               </div>
             )}
           </a>
@@ -257,23 +258,23 @@ function SidebarNavItem({
             if (isMobile) setOpenMobile(false)
           }}
           className={({ isActive }) =>
-            `flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-colors group relative ${isActive
-              ? "pill-indicator bg-slate-800/90 text-slate-100 font-semibold"
-              : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-100"
+            `flex items-center gap-2.5 rounded-md px-3 py-1.5 transition-all duration-150 group relative ${isActive
+              ? "pill-indicator bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+              : "text-sidebar-foreground/75 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground"
             }`
           }
         >
-          <item.icon className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-slate-200 transition-colors" />
+          <item.icon className="h-4 w-4 flex-shrink-0 text-sidebar-foreground/60 group-hover:text-sidebar-foreground transition-colors duration-150" />
           {state !== "collapsed" && (
             <div className="flex items-center justify-between w-full min-w-0 gap-1.5">
               <span className="truncate text-xs font-medium">{item.title}</span>
               {item.underDevelopment && (
-                <Badge variant="secondary" className="text-[9px] px-1 py-0 h-3.5 bg-amber-500/10 text-amber-400 border-amber-500/20 font-mono shrink-0">
+                <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 bg-muted text-muted-foreground border-border/80 font-mono shrink-0">
                   BETA
                 </Badge>
               )}
               {item.isNew && (
-                <Badge className="text-[9px] px-1 py-0 h-3.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-mono shrink-0">
+                <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 bg-primary/10 text-primary border border-primary/20 font-mono shrink-0">
                   NEW
                 </Badge>
               )}
@@ -322,24 +323,37 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
             mode={effectiveMode}
             showText={state !== "collapsed"}
             iconSize={24}
-            textSize="text-sm font-bold tracking-tight text-slate-100"
+            textSize="text-sm font-bold tracking-tight text-foreground"
           />
         </div>
 
         {state !== "collapsed" && (
-          <div className="px-3 pb-2 grid grid-cols-2 gap-1.5">
-            {(["KCET", "KSEAB"] as const).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => {
-                  setExamMode(mode)
-                  navigate(mode === "KSEAB" ? "/puc" : "/dashboard")
-                }}
-                className={`rounded-md px-2 py-1.5 text-[10px] font-bold tracking-wide transition-colors ${effectiveMode === mode ? "bg-primary/15 text-primary border border-primary/30" : "text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent"}`}
-              >
-                {mode === "KSEAB" ? "2nd PUC" : mode}
-              </button>
-            ))}
+          <div className="px-3 pb-2 space-y-2">
+            <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-muted/60 border border-border/60">
+              {(["KCET", "KSEAB"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => {
+                    setExamMode(mode)
+                    navigate(mode === "KSEAB" ? "/puc" : "/dashboard")
+                  }}
+                  className={`rounded-md px-2 py-1 text-[11px] font-semibold tracking-tight transition-all ${effectiveMode === mode ? "bg-background text-foreground shadow-[var(--shadow-subtle)] border border-border/60" : "text-muted-foreground hover:text-foreground border border-transparent"}`}
+                >
+                  {mode === "KSEAB" ? "2nd PUC" : mode}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, metaKey: true }))}
+              className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md border border-border/70 bg-background/50 hover:bg-muted/70 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <Search className="h-3.5 w-3.5" />
+                <span>Jump to…</span>
+              </span>
+              <kbd className="text-[10px] font-mono text-muted-foreground/80">⌘K</kbd>
+            </button>
           </div>
         )}
 
@@ -348,7 +362,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
           <SidebarGroup key={section.label} className="py-1">
             {state !== "collapsed" && (
               <SidebarGroupLabel className="px-3 py-1 mb-0.5">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider font-mono">
                   {section.label}
                 </span>
               </SidebarGroupLabel>
@@ -375,7 +389,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
         {/* Disclaimer Footer Note */}
         {state !== "collapsed" && (
           <div className="px-3.5 pt-4 pb-2 mt-auto border-t border-border/40">
-            <p className="text-[10px] leading-relaxed text-slate-400">
+            <p className="text-[10px] leading-relaxed text-muted-foreground">
               Independent student platform. Not affiliated with KEA or official examination authorities.
             </p>
           </div>
