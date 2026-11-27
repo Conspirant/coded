@@ -88,8 +88,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ content: geminiResult.text });
     }
 
+    if (GEMINI_API_KEY) {
+      return res.status(502).json({ error: `Gemini error: ${geminiResult.error || 'unknown'}` });
+    }
+
     if (!NVIDIA_API_KEY) {
-      return res.status(502).json({ error: `Gemini failed (${geminiResult.error}) and NVIDIA_API_KEY is not configured` });
+      return res.status(502).json({ error: 'No AI API key configured' });
     }
 
     // Call NVIDIA API with streaming (fallback to Llama 3.3 70B if primary model is 404/410)
