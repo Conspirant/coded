@@ -6,8 +6,10 @@ const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const PRIMARY_MODEL = 'nvidia/nemotron-3-super-120b-a12b';
 const FALLBACK_MODEL = 'meta/llama-3.3-70b-instruct';
 
-async function callGemini(messages: Array<{ role: string; content: string }>) {
-  if (!GEMINI_API_KEY) return null;
+async function callGemini(
+  messages: Array<{ role: string; content: string }>
+): Promise<{ text: string | null; error?: string }> {
+  if (!GEMINI_API_KEY) return { text: null, error: 'GEMINI_API_KEY not set' };
   const systemMsg = messages.find((m) => m.role === 'system')?.content;
   const contents = messages
     .filter((m) => m.role !== 'system')
@@ -16,22 +18,32 @@ async function callGemini(messages: Array<{ role: string; content: string }>) {
       parts: [{ text: m.content }],
     }));
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...(systemMsg ? { systemInstruction: { parts: [{ text: systemMsg }] } } : {}),
-        contents,
-        generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
-      }),
+  const errors: string[] = [];
+  for (const model of ['gemini-2.5-flash', 'gemini-2.0-flash']) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...(systemMsg ? { systemInstruction: { parts: [{ text: systemMsg }] } } : {}),
+          contents,
+          generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
+        }),
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const text =
+        data?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text || '').join('') || '';
+      if (text.trim()) return { text: text.trim() };
+      errors.push(`${model}: empty`);
+    } else {
+      const errBody = await res.text().catch(() => '');
+      errors.push(`${model}: HTTP ${res.status} ${errBody.slice(0, 120)}`);
     }
-  );
-  if (!res.ok) return null;
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text || '').join('') || '';
-  return text.trim() || null;
+  }
+  return { text: null, error: errors.join(' | ') };
 }
 
 async function callNvidia(messages: unknown[], model: string, withThinking: boolean) {
@@ -70,14 +82,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'messages array is required' });
     }
 
-    // Prefer Gemini 2.5 Flash when GEMINI_API_KEY is configured
-    const geminiContent = await callGemini(messages);
-    if (geminiContent) {
-      return res.status(200).json({ content: geminiContent });
+    // Prefer Gemini Flash when GEMINI_API_KEY is configured
+    const geminiResult = await callGemini(messages);
+    if (geminiResult.text) {
+      return res.status(200).json({ content: geminiResult.text });
     }
 
     if (!NVIDIA_API_KEY) {
-      return res.status(502).json({ error: 'Gemini request failed and NVIDIA_API_KEY is not configured' });
+      return res.status(502).json({ error: `Gemini failed (${geminiResult.error}) and NVIDIA_API_KEY is not configured` });
     }
 
     // Call NVIDIA API with streaming (fallback to Llama 3.3 70B if primary model is 404/410)
