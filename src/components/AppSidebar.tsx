@@ -40,6 +40,7 @@ import {
   HelpCircle,
   IndianRupee,
   Grid3X3,
+  X,
 } from "lucide-react"
 import { NavLink, useNavigate, useLocation } from "react-router-dom"
 import {
@@ -293,6 +294,7 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
   const navigate = useNavigate()
   const location = useLocation()
   const [unlocked, setUnlocked] = useState(isUnlocked())
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     return subscribeToUnlockState(setUnlocked)
@@ -310,7 +312,23 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
   }, [location.pathname, isPucRoute, examMode, setExamMode])
 
   const effectiveMode = isPucRoute ? "KSEAB" : examMode
-  const sections = effectiveMode === "KSEAB" ? getKseabSections() : getKcetSections(unlocked, onUnlockClick)
+  const allKcetSections = getKcetSections(unlocked, onUnlockClick)
+  const allKseabSections = getKseabSections()
+  const baseSections = effectiveMode === "KSEAB" ? allKseabSections : allKcetSections
+  const trimmedSearch = searchQuery.trim().toLowerCase()
+  const sections: NavSection[] = trimmedSearch
+    ? [...allKcetSections, ...allKseabSections]
+        .map((sec) => ({
+          ...sec,
+          items: sec.items.filter(
+            (item) =>
+              item.title.toLowerCase().includes(trimmedSearch) ||
+              sec.label.toLowerCase().includes(trimmedSearch) ||
+              (item.url && item.url.toLowerCase().includes(trimmedSearch))
+          ),
+        }))
+        .filter((sec) => sec.items.length > 0)
+    : baseSections
 
   return (
     <Sidebar
@@ -344,22 +362,46 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, metaKey: true }))}
-              className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-md border border-border/70 bg-background/50 hover:bg-muted/70 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <Search className="h-3.5 w-3.5" />
-                <span>Jump to…</span>
-              </span>
-              <kbd className="text-[10px] font-mono text-muted-foreground/80">⌘K</kbd>
-            </button>
+            <div className="relative">
+              <Search className="h-3.5 w-3.5 text-muted-foreground absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search features..."
+                aria-label="Search sidebar features"
+                className="w-full h-8 pl-8 pr-7 rounded-md border border-border/70 bg-background/60 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/60 transition-colors"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Clear sidebar search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
           </div>
         )}
 
         {/* Organized Navigation Sections */}
-        {sections.map((section, idx) => (
+        {sections.length === 0 && state !== "collapsed" ? (
+          <div className="px-4 py-6 text-center space-y-2">
+            <p className="text-xs text-muted-foreground">
+              No features match &ldquo;{searchQuery.trim()}&rdquo;
+            </p>
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="text-xs font-medium text-primary hover:underline"
+            >
+              Clear search
+            </button>
+          </div>
+        ) : (
+          sections.map((section, idx) => (
           <SidebarGroup key={section.label} className="py-1">
             {state !== "collapsed" && (
               <SidebarGroupLabel className="px-3 py-1 mb-0.5">
@@ -385,7 +427,8 @@ export function AppSidebar({ onUnlockClick }: { onUnlockClick?: () => void }) {
               <div className="mx-3 mt-2 mb-1 h-px bg-border/40" />
             )}
           </SidebarGroup>
-        ))}
+          ))
+        )}
 
         {/* Disclaimer Footer Note */}
         {state !== "collapsed" && (

@@ -2,7 +2,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2, Copy, MessageSquare, ExternalLink } from "lucide-react"
+import { User, Settings, Sparkles, Key, Lock, Unlock, CheckCircle, Eye, EyeOff, Crown, Loader2, Copy, MessageSquare, ExternalLink, Sun, Moon } from "lucide-react"
+import { motion, useScroll, useSpring } from "framer-motion"
 import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Switch } from '@/components/ui/switch'
@@ -20,6 +21,7 @@ import { PremiumUpgradeModal } from "./PremiumUpgradeModal"
 import { GlobalDonationPopup } from "./GlobalDonationPopup"
 import { LiveVisitorCounter } from "./LiveVisitorCounter"
 import { UserProfileModal, type StoredUserProfile } from "./UserProfileModal"
+import { ShortlistPinboard } from "./ShortlistPinboard"
 
 import { Logo } from "./ui/Logo"
 import { useLocation } from "react-router-dom"
@@ -31,6 +33,8 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const isAiCounselor = location.pathname === "/ai-counselor"
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 260, damping: 32, restDelta: 0.001 })
   const [settings, setSettings] = useState<AppSettings>(defaultSettings)
   const [open, setOpen] = useState(false)
   const { examMode, setExamMode } = useExamMode()
@@ -126,24 +130,44 @@ export function Layout({ children }: LayoutProps) {
       <div className="flex-1 flex flex-col min-w-0 min-h-screen bg-background text-foreground">
         {/* Header (Hidden on Tessel AI /ai-counselor) */}
         {!isAiCounselor && (
-          <header className="h-14 border-b border-border bg-background/90 backdrop-blur-md flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 shrink-0">
-            <div className="flex items-center gap-2 sm:gap-4 min-w-0 relative">
-              <SidebarTrigger />
+          <header className="h-14 border-b border-border/80 bg-background/80 backdrop-blur-xl flex items-center justify-between gap-2 px-2.5 sm:px-6 sticky top-0 z-40 shrink-0 transition-colors">
+            <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 flex-1 overflow-hidden relative">
+              <SidebarTrigger className="shrink-0" />
               <SidebarHint />
-              <div className="flex flex-col min-w-0 ml-1">
-                <div className="flex items-center gap-2">
-                  <Logo mode={location.pathname.startsWith("/puc") ? "KSEAB" : "KCET"} iconSize={26} textSize="text-sm sm:text-base font-bold text-foreground" />
-                  <Badge variant="secondary" className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[9px] sm:text-[10px] px-1.5 font-semibold tracking-wider font-mono">
-                    BETA
-                  </Badge>
-                </div>
-                <p className="text-xs text-muted-foreground hidden sm:block">
-                  {location.pathname.startsWith("/puc") ? "KSEAB 2nd PUC Reference" : "KCET Counseling Reference"}
-                </p>
+              <div className="flex items-center gap-1.5 min-w-0 overflow-hidden md:hidden">
+                <Logo mode={location.pathname.startsWith("/puc") ? "KSEAB" : "KCET"} iconSize={20} textSize="text-xs sm:text-sm font-bold text-foreground truncate" />
+              </div>
+              <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground min-w-0">
+                <span className="font-mono text-[11px] uppercase tracking-wider">
+                  {location.pathname.startsWith("/puc") ? "KSEAB" : "KCET"}
+                </span>
+                <span className="text-border">/</span>
+                <span className="text-foreground font-medium capitalize truncate">
+                  {location.pathname === "/"
+                    ? "Overview"
+                    : location.pathname.replace(/^\//, "").split("/")[0].replace(/-/g, " ")}
+                </span>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <LiveVisitorCounter variant="compact" />
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <ShortlistPinboard />
+              <div className="hidden min-[430px]:flex items-center">
+                <LiveVisitorCounter variant="compact" />
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 hover:bg-muted"
+                aria-label="Toggle theme"
+                title="Switch theme"
+                onClick={() => {
+                  const isDark = document.documentElement.classList.contains("dark")
+                  update({ theme: isDark ? "light" : "dark" })
+                }}
+              >
+                <Sun className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors hidden dark:block" />
+                <Moon className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors block dark:hidden" />
+              </Button>
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted" aria-label="Settings" onClick={() => setOpen(true)}>
@@ -274,7 +298,7 @@ export function Layout({ children }: LayoutProps) {
                       )}
 
                       {unlocked ? (
-                        <div className="flex items-center justify-between p-3 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                        <div className="flex items-center justify-between p-3 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                           <div className="flex items-center gap-2">
                             <CheckCircle className="h-4 w-4" />
                             <span className="text-xs font-semibold">Pro Tier Unlocked</span>
@@ -283,7 +307,7 @@ export function Layout({ children }: LayoutProps) {
                             onClick={handleLockFeatures}
                             variant="outline"
                             size="sm"
-                            className="h-7 text-xs border-rose-500/20 text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 rounded shrink-0"
+                            className="h-7 text-xs border-rose-500/25 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 hover:text-rose-700 dark:hover:text-rose-300 rounded shrink-0"
                           >
                             <Lock className="h-3 w-3 mr-1" />
                             Lock
@@ -343,10 +367,10 @@ export function Layout({ children }: LayoutProps) {
                           href="https://www.reddit.com/user/Elegant_Compote9073/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full p-2.5 rounded-md border border-orange-500/25 bg-orange-950/20 hover:bg-orange-950/40 transition-colors flex items-center justify-between text-xs group cursor-pointer"
+                          className="w-full p-2.5 rounded-md border border-orange-500/25 bg-orange-500/10 dark:bg-orange-950/20 hover:bg-orange-500/15 dark:hover:bg-orange-950/40 transition-colors flex items-center justify-between text-xs group cursor-pointer"
                         >
                           <div className="flex items-center gap-2">
-                            <MessageSquare className="h-4 w-4 text-orange-400" />
+                            <MessageSquare className="h-4 w-4 text-orange-500 dark:text-orange-400" />
                             <div className="text-left">
                               <span className="font-semibold text-foreground text-[11px] block">
                                 Report Bugs & Contact Developer
@@ -356,7 +380,7 @@ export function Layout({ children }: LayoutProps) {
                               </span>
                             </div>
                           </div>
-                          <ExternalLink className="h-3.5 w-3.5 text-orange-400 group-hover:translate-x-0.5 transition-transform" />
+                          <ExternalLink className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400 group-hover:translate-x-0.5 transition-transform" />
                         </a>
                       </div>
                     </div>
@@ -388,10 +412,28 @@ export function Layout({ children }: LayoutProps) {
             {children}
           </main>
         ) : (
-          <main className="flex-1 p-3 sm:p-4 md:p-6 pb-24 md:pb-12 w-full min-w-0 overflow-x-hidden">
-            <div className="max-w-7xl mx-auto w-full min-w-0">
+          <main className="relative flex-1 p-3 sm:p-4 md:p-6 pb-24 md:pb-12 w-full min-w-0 overflow-x-hidden">
+            {/* Razor-thin scroll progress indicator */}
+            {!settings.reduceMotion && (
+              <motion.div
+                style={{ scaleX }}
+                className="fixed top-0 left-0 right-0 h-[2px] bg-primary origin-left z-50 pointer-events-none opacity-80"
+              />
+            )}
+            {/* Subtle atmospheric top-light */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_70%_50%_at_50%_-20%,hsl(var(--primary)/0.045),transparent)] -z-10"
+            />
+            <motion.div
+              key={location.pathname}
+              initial={settings.reduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-7xl mx-auto w-full min-w-0"
+            >
               {children}
-            </div>
+            </motion.div>
 
             {/* Minimalist Footer Credit */}
             <div className="mt-16 pt-6 border-t border-border/60 text-center w-full">
