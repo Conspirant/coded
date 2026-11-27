@@ -359,16 +359,20 @@ export default function PucQuestionBankTest() {
       });
       window.clearTimeout(timeoutId);
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = data?.error || data?.message || `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
       const content = (data?.content || "").trim();
-      if (!content) throw new Error("Empty response");
+      if (!content) throw new Error("Empty response from AI");
 
       setAiExplanations((prev) => ({ ...prev, [q.id]: content }));
-    } catch {
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : "Unknown error";
       setAiError((prev) => ({
         ...prev,
-        [q.id]: "Could not reach Nemotron AI right now. Try again or use Search Google.",
+        [q.id]: `AI Explain error (${detail}). Try again or use Search Google.`,
       }));
     } finally {
       setAiLoadingId(null);
