@@ -137,6 +137,11 @@ export default function PucQuestionBankTest() {
   const [stats, setStats] = useState<PucQbStats>(loadStats);
   const [reviewFilter, setReviewFilter] = useState<"all" | "incorrect" | "flagged">("all");
 
+  // On-spot AI Explanation (NVIDIA Nemotron)
+  const [aiExplanations, setAiExplanations] = useState<Record<string, string>>({});
+  const [aiLoadingId, setAiLoadingId] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<Record<string, string>>({});
+
   // Load selected subject bank dynamically
   useEffect(() => {
     let active = true;
@@ -313,6 +318,62 @@ export default function PucQuestionBankTest() {
     ? Math.round((stats.totalCorrect / stats.totalAttempted) * 100)
     : 0;
   const subjectLabel = SUBJECT_META.find((s) => s.key === subject)?.label || "Physics";
+
+  const handleExplainWithAI = async (q: PucQuestion) => {
+    if (aiExplanations[q.id] || aiLoadingId === q.id) return;
+    setAiLoadingId(q.id);
+    setAiError((prev) => {
+      const next = { ...prev };
+      delete next[q.id];
+      return next;
+    });
+
+    const officialAns =
+      q.type === "mcq"
+        ? `${String.fromCharCode(65 + q.correctIndex)}) ${q.options[q.correctIndex] || ""}`
+        : q.answer;
+    const optionsBlock =
+      q.type === "mcq"
+        ? `\nOptions:\n${q.options.map((o, i) => `${String.fromCharCode(65 + i)}) ${o}`).join("\n")}`
+        : "";
+
+    const messages = [
+      {
+        role: "system",
+        content: `You are an expert Karnataka 2nd PUC (KSEAB) ${subjectLabel} teacher. Give a clear, concise, step-by-step explanation for why the official answer is correct. Use proper LaTeX ($...$ for inline math/formulas/chemical equations and $$...$$ for display equations). Keep it well-structured and easy for a Class 12 student to follow.`,
+      },
+      {
+        role: "user",
+        content: `Chapter ${q.chapterNumber}: ${q.chapterName}\nQuestion: ${q.question}${optionsBlock}\nOfficial Answer: ${officialAns}`,
+      },
+    ];
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 25000);
+      const res = await fetch("/api/nvidia-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages }),
+        signal: controller.signal,
+      });
+      window.clearTimeout(timeoutId);
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const content = (data?.content || "").trim();
+      if (!content) throw new Error("Empty response");
+
+      setAiExplanations((prev) => ({ ...prev, [q.id]: content }));
+    } catch {
+      setAiError((prev) => ({
+        ...prev,
+        [q.id]: "Could not reach Nemotron AI right now. Try again or use Search Google.",
+      }));
+    } finally {
+      setAiLoadingId(null);
+    }
+  };
 
   // ==================== VIEW 1: SETUP (HOME) ====================
   const renderSetup = () => (
@@ -678,12 +739,28 @@ export default function PucQuestionBankTest() {
                     <Badge variant="outline" className="opacity-80">{currentQuestion.difficulty}</Badge>
                   )}
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-1.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
+                <div className="flex flex-wrap items-center justify-between sm:justify-end gap-1.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={aiLoadingId === currentQuestion.id}
+                    onClick={() => handleExplainWithAI(currentQuestion)}
+                    className="h-8 sm:h-7 px-2 text-xs text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 flex items-center gap-1"
+                    title="Generate step-by-step explanation using NVIDIA Nemotron AI"
+                  >
+                    {aiLoadingId === currentQuestion.id ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3.5 w-3.5" />
+                    )}
+                    <span>{aiExplanations[currentQuestion.id] ? "Explained" : "AI Explain"}</span>
+                  </Button>
                   <Button
                     asChild
                     variant="ghost"
                     size="sm"
-                    className="h-8 sm:h-7 px-2 text-xs text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 flex items-center gap-1.5"
+                    className="h-8 sm:h-7 px-2 text-xs text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 flex items-center gap-1"
                     title="Search this question on Google for explanation and answer"
                   >
                     <a
@@ -692,7 +769,8 @@ export default function PucQuestionBankTest() {
                       rel="noopener noreferrer"
                     >
                       <Search className="h-3.5 w-3.5" />
-                      <span>Search Google</span>
+                      <span className="sm:hidden">Google</span>
+                      <span className="hidden sm:inline">Search Google</span>
                       <ExternalLink className="h-3 w-3 opacity-70" />
                     </a>
                   </Button>
@@ -700,10 +778,12 @@ export default function PucQuestionBankTest() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setReportingQuestion(currentQuestion)}
-                    className="h-8 sm:h-7 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 flex items-center gap-1.5"
+                    className="h-8 sm:h-7 px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 flex items-center gap-1"
                     title="Report an issue with this question to the developer"
                   >
-                    <Flag className="h-3.5 w-3.5" /> Report Discrepancy
+                    <Flag className="h-3.5 w-3.5" />
+                    <span className="sm:hidden">Report</span>
+                    <span className="hidden sm:inline">Report Discrepancy</span>
                   </Button>
                 </div>
               </div>
@@ -915,6 +995,22 @@ export default function PucQuestionBankTest() {
                 </div>
               )}
 
+              {/* On-spot AI Explanation */}
+              {(aiExplanations[currentQuestion.id] || aiError[currentQuestion.id]) && (
+                <div className="mt-3 rounded-lg border border-violet-500/30 bg-violet-500/5 p-3.5 sm:p-4 space-y-1.5">
+                  <p className="text-xs font-semibold text-violet-400 flex items-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5" /> AI Explanation (Nemotron)
+                  </p>
+                  {aiExplanations[currentQuestion.id] ? (
+                    <div className="text-sm leading-6 overflow-x-auto max-w-full">
+                      <MathRenderer content={aiExplanations[currentQuestion.id]} />
+                    </div>
+                  ) : (
+                    <p className="text-xs text-rose-400">{aiError[currentQuestion.id]}</p>
+                  )}
+                </div>
+              )}
+
               {/* Prev / Flag / Next Row */}
               <div className="flex justify-between gap-2 pt-4">
                 <Button
@@ -1081,6 +1177,21 @@ export default function PucQuestionBankTest() {
                         <Badge variant="destructive">Review</Badge>
                       )}
                       <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        disabled={aiLoadingId === q.id}
+                        onClick={() => handleExplainWithAI(q)}
+                        className="h-7 px-2 text-xs text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 flex items-center gap-1"
+                      >
+                        {aiLoadingId === q.id ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <Sparkles className="h-3 w-3" />
+                        )}
+                        AI Explain
+                      </Button>
+                      <Button
                         asChild
                         variant="ghost"
                         size="sm"
@@ -1167,6 +1278,20 @@ export default function PucQuestionBankTest() {
                           <span>Correct answer:</span>
                           <MathRenderer content={q.answer} inline />
                         </div>
+                      )}
+                    </div>
+                  )}
+                  {(aiExplanations[q.id] || aiError[q.id]) && (
+                    <div className="mt-2 rounded-lg border border-violet-500/30 bg-violet-500/5 p-3 space-y-1">
+                      <p className="text-[11px] font-semibold text-violet-400 flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" /> AI Explanation (Nemotron)
+                      </p>
+                      {aiExplanations[q.id] ? (
+                        <div className="text-xs sm:text-sm leading-6 overflow-x-auto max-w-full">
+                          <MathRenderer content={aiExplanations[q.id]} />
+                        </div>
+                      ) : (
+                        <p className="text-xs text-rose-400">{aiError[q.id]}</p>
                       )}
                     </div>
                   )}
