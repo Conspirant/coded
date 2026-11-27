@@ -16,7 +16,7 @@ import {
     Image as ImageIcon, Download, FileJson, ChevronRight,
     BarChart3, MessageSquare, Lightbulb, Star, Settings, BrainCircuit,
     Building2, Key, Loader2, Heart, Activity, Users, Monitor, ShieldAlert, StopCircle,
-    Megaphone, Vote, Power, Sparkles, Music, Award
+    Megaphone, Vote, Power, Sparkles, Music, Award, Flag
 } from "lucide-react"
 import { DonationCertificateModal } from "@/components/DonationCertificateModal"
 
@@ -36,6 +36,7 @@ import { AdminMusicManager } from "@/components/admin/AdminMusicManager"
 import { AdminForumControlSection } from "@/components/admin/AdminForumControlSection"
 import { AdminCounsellorRecruitmentSection } from "@/components/admin/AdminCounsellorRecruitmentSection"
 import { AdminPYQSection } from "@/components/admin/AdminPYQSection"
+import { AdminPucDiscrepanciesSection } from "@/components/admin/AdminPucDiscrepanciesSection"
 import { COLLEGE_DATABASE } from "@/data/collegeDatabase"
 
 import { Switch } from "@/components/ui/switch"
@@ -1884,6 +1885,7 @@ function AdminCertificateGeneratorSection() {
 const ADMIN_SECTIONS = [
     { id: "forum-control", label: "Forum Control 💬", icon: MessageSquare },
     { id: "pyq", label: "PYQ Manager", icon: BookOpenCheck },
+    { id: "puc-discrepancies", label: "PUC QB Reports", icon: Flag },
     { id: "certificates", label: "Certificate Generator", icon: Award },
     { id: "music", label: "Music Playlist", icon: Music },
     { id: "polls", label: "Community Polls", icon: Vote },
@@ -1958,6 +1960,7 @@ export default function AdminHub() {
                 <main className="flex-1 p-3.5 sm:p-6 md:p-8 max-w-7xl min-w-0 w-full overflow-x-hidden">
                     {activeSection === "forum-control" && <AdminForumControlSection />}
                     {activeSection === "pyq" && <AdminPYQSection />}
+                    {activeSection === "puc-discrepancies" && <AdminPucDiscrepanciesSection />}
                     {activeSection === "certificates" && <AdminCertificateGeneratorSection />}
                     {activeSection === "music" && <AdminMusicManager />}
                     {activeSection === "polls" && <AdminPollManager />}

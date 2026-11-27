@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
+  ExternalLink,
   Eye,
   Flag,
   Keyboard,
@@ -14,6 +15,7 @@ import {
   Loader2,
   Play,
   RefreshCcw,
+  Search,
   Sparkles,
   Target,
   XCircle,
@@ -25,6 +27,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { MathRenderer } from "@/components/MathRenderer";
+import { ReportPucQuestionModal } from "@/components/ReportPucQuestionModal";
 import {
   isFibCorrect,
   loadPucSubjectBank,
@@ -84,6 +87,21 @@ const SUBJECT_META: { key: PucSubjectKey; label: string; code: string }[] = [
   { key: "mathematics", label: "Mathematics", code: "35" },
 ];
 
+function buildGoogleSearchUrl(q: PucQuestion, subjectKey: PucSubjectKey): string {
+  const subjectLabel = subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1);
+  const cleanedStem = q.question
+    .replace(/\\begin\{[^}]+\}|\\end\{[^}]+\}/g, " ")
+    .replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, "$1/$2")
+    .replace(/\\text\{([^}]*)\}/g, "$1")
+    .replace(/\\([a-zA-Z]+)/g, "$1")
+    .replace(/[$&{}]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 320);
+  const query = `${cleanedStem} 2nd PUC ${subjectLabel} answer explanation`;
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
 export default function PucQuestionBankTest() {
   const [searchParams] = useSearchParams();
   const initialSubject = (searchParams.get("subject") as PucSubjectKey) || "physics";
@@ -116,6 +134,7 @@ export default function PucQuestionBankTest() {
   const [timerActive, setTimerActive] = useState(false);
   const [showPalette, setShowPalette] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [reportingQuestion, setReportingQuestion] = useState<PucQuestion | null>(null);
 
   // Results & Stats
   const [stats, setStats] = useState<PucQbStats>(loadStats);
@@ -320,7 +339,7 @@ export default function PucQuestionBankTest() {
   // ==================== VIEW 1: SETUP ====================
   if (view === "setup") {
     return (
-      <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto px-2 sm:px-4 md:px-0 pb-10">
+      <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto px-3 sm:px-4 md:px-0 pb-24 sm:pb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
             <Link
@@ -353,19 +372,20 @@ export default function PucQuestionBankTest() {
         </div>
 
         {/* Subject Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border/60 pb-3">
+        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-2 border-b border-border/60 pb-3">
           {SUBJECT_META.map((s) => (
             <Button
               key={s.key}
               variant={subject === s.key ? "default" : "outline"}
               size="sm"
-              className="h-8 text-xs font-semibold"
+              className="h-9 sm:h-8 text-xs font-semibold px-2 sm:px-3 truncate"
               onClick={() => {
                 setSubject(s.key);
                 setSelectedChapters([]);
               }}
             >
-              {s.label} <span className="opacity-70 ml-1 text-[10px]">({s.code})</span>
+              <span className="truncate">{s.label}</span>
+              <span className="hidden sm:inline opacity-70 ml-1 text-[10px]">({s.code})</span>
             </Button>
           ))}
         </div>
@@ -411,29 +431,29 @@ export default function PucQuestionBankTest() {
               </CardHeader>
               <CardContent className="p-4 pt-0 space-y-4">
                 {/* Filter Pills */}
-                <div className="flex flex-wrap gap-3 items-center text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground font-medium">Type:</span>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2.5 sm:gap-3 items-start sm:items-center text-xs">
+                  <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
+                    <span className="text-muted-foreground font-medium mr-0.5">Type:</span>
                     {(["mcq", "fib", "all"] as QuestionTypeFilter[]).map((t) => (
                       <Button
                         key={t}
                         size="sm"
                         variant={typeFilter === t ? "secondary" : "outline"}
-                        className="h-7 text-[11px] px-2.5"
+                        className="h-8 sm:h-7 text-[11px] px-2.5"
                         onClick={() => setTypeFilter(t)}
                       >
                         {t === "all" ? "All (MCQ + Blanks)" : t === "mcq" ? "MCQs Only" : "Fill in the Blanks"}
                       </Button>
                     ))}
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-muted-foreground font-medium">Difficulty:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
+                    <span className="text-muted-foreground font-medium mr-0.5">Difficulty:</span>
                     {(["All", "Easy", "Average", "Difficult"] as DifficultyFilter[]).map((d) => (
                       <Button
                         key={d}
                         size="sm"
                         variant={diffFilter === d ? "secondary" : "outline"}
-                        className="h-7 text-[11px] px-2.5"
+                        className="h-8 sm:h-7 text-[11px] px-2.5"
                         onClick={() => setDiffFilter(d)}
                       >
                         {d}
@@ -443,28 +463,30 @@ export default function PucQuestionBankTest() {
                 </div>
 
                 {/* Launch Buttons */}
-                <div className="flex flex-wrap gap-2">
-                  <Button size="sm" className="gap-1.5 text-xs" onClick={handleStartPartAMock}>
+                <div className="grid grid-cols-1 sm:flex sm:flex-wrap gap-2">
+                  <Button size="sm" className="h-9 sm:h-8 gap-1.5 text-xs w-full sm:w-auto justify-center" onClick={handleStartPartAMock}>
                     <Sparkles className="h-3.5 w-3.5" /> KSEAB Part-A Mock (15 MCQ + 5 Blanks)
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="gap-1.5 text-xs"
-                    disabled={filteredPool.length === 0}
-                    onClick={handleStartQuick10}
-                  >
-                    <Play className="h-3.5 w-3.5" /> Quick 10-Q Sprint
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="gap-1.5 text-xs"
-                    disabled={filteredPool.length === 0}
-                    onClick={handleStartAllFiltered}
-                  >
-                    <Layers className="h-3.5 w-3.5" /> Practice Filtered ({Math.min(50, filteredPool.length)} Qs)
-                  </Button>
+                  <div className="grid grid-cols-2 sm:flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-9 sm:h-8 gap-1.5 text-xs w-full sm:w-auto justify-center"
+                      disabled={filteredPool.length === 0}
+                      onClick={handleStartQuick10}
+                    >
+                      <Play className="h-3.5 w-3.5" /> Quick 10-Q
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-9 sm:h-8 gap-1.5 text-xs w-full sm:w-auto justify-center"
+                      disabled={filteredPool.length === 0}
+                      onClick={handleStartAllFiltered}
+                    >
+                      <Layers className="h-3.5 w-3.5" /> Filtered ({Math.min(50, filteredPool.length)})
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -541,14 +563,14 @@ export default function PucQuestionBankTest() {
     const currentCorrect = isQuestionCorrect(currentQuestion, currentAnswer);
 
     return (
-      <div className="space-y-4 max-w-4xl mx-auto px-2 sm:px-4 md:px-0 pb-12">
+      <div className="space-y-4 max-w-4xl mx-auto px-3 sm:px-4 md:px-0 pb-28 sm:pb-12">
         {/* Top Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-border/60 pb-3">
           <div className="flex items-center gap-2 min-w-0">
-            <Button variant="ghost" size="sm" className="h-8 px-2 text-xs" onClick={() => setView("setup")}>
+            <Button variant="ghost" size="sm" className="h-8 px-2 text-xs shrink-0" onClick={() => setView("setup")}>
               <ArrowLeft className="h-3.5 w-3.5 mr-1" /> Exit
             </Button>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm font-semibold truncate">{testTitle}</p>
               <p className="text-[11px] text-muted-foreground">
                 Question {currentIndex + 1} of {questions.length} · {answeredCount} answered
@@ -556,21 +578,23 @@ export default function PucQuestionBankTest() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="font-mono text-xs gap-1 py-1">
+          <div className="flex items-center justify-between sm:justify-end gap-2">
+            <Badge variant="outline" className="font-mono text-xs gap-1 py-1 h-8 px-2.5">
               <Clock3 className="h-3.5 w-3.5 text-primary" /> {formatTime(elapsedSeconds)}
             </Badge>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs"
-              onClick={() => setShowPalette((v) => !v)}
-            >
-              Palette
-            </Button>
-            <Button size="sm" className="h-8 text-xs" onClick={finishQuiz}>
-              Submit Test
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 text-xs px-3"
+                onClick={() => setShowPalette((v) => !v)}
+              >
+                Palette
+              </Button>
+              <Button size="sm" className="h-8 text-xs px-3" onClick={finishQuiz}>
+                Submit Test
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -610,14 +634,14 @@ export default function PucQuestionBankTest() {
         )}
 
         {/* Question Card */}
-        <Card className="border-border/80 shadow-sm">
-          <CardHeader className="p-4 pb-3 border-b border-border/40 bg-muted/20">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
+        <Card className="border-border/80 shadow-sm overflow-hidden">
+          <CardHeader className="p-3.5 sm:p-4 pb-3 border-b border-border/40 bg-muted/20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <Badge variant="secondary" className="text-[11px] font-mono">
-                  PDF Q.{currentQuestion.questionNumber} · {isMcq ? "MCQ · 1 Mark" : "Fill in the Blank · 1 Mark"}
+                  PDF Q.{currentQuestion.questionNumber} · {isMcq ? "MCQ" : "FIB"}
                 </Badge>
-                <Badge variant="outline" className="text-[11px]">
+                <Badge variant="outline" className="text-[11px] max-w-full truncate">
                   Ch.{currentQuestion.chapterNumber}: {currentQuestion.chapterName}
                 </Badge>
                 {currentQuestion.difficulty && (
@@ -626,35 +650,66 @@ export default function PucQuestionBankTest() {
                   </Badge>
                 )}
               </div>
-              <Button
-                variant={flagged.includes(currentIndex) ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 text-xs gap-1"
-                onClick={() => toggleFlag(currentIndex)}
-              >
-                <Flag className={`h-3.5 w-3.5 ${flagged.includes(currentIndex) ? "text-amber-500 fill-amber-500" : ""}`} />
-                {flagged.includes(currentIndex) ? "Flagged" : "Flag"}
-              </Button>
+              <div className="flex items-center justify-between sm:justify-end gap-1.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/30">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 sm:h-7 px-2.5 sm:px-2 text-xs text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 flex items-center gap-1.5"
+                  title="Search this question on Google for explanation and answer"
+                >
+                  <a
+                    href={buildGoogleSearchUrl(currentQuestion, subject)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Search className="h-3.5 w-3.5" />
+                    <span className="sm:hidden">Google</span>
+                    <span className="hidden sm:inline">Search Google</span>
+                    <ExternalLink className="h-3 w-3 opacity-70" />
+                  </a>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setReportingQuestion(currentQuestion)}
+                  className="h-8 sm:h-7 px-2.5 sm:px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 flex items-center gap-1.5"
+                  title="Report an issue with this question to the developer"
+                >
+                  <Flag className="h-3.5 w-3.5" />
+                  <span className="sm:hidden">Report</span>
+                  <span className="hidden sm:inline">Report Discrepancy</span>
+                </Button>
+                <Button
+                  variant={flagged.includes(currentIndex) ? "secondary" : "ghost"}
+                  size="sm"
+                  className="h-8 sm:h-7 px-2.5 sm:px-2 text-xs gap-1"
+                  onClick={() => toggleFlag(currentIndex)}
+                >
+                  <Flag className={`h-3.5 w-3.5 ${flagged.includes(currentIndex) ? "text-amber-500 fill-amber-500" : ""}`} />
+                  {flagged.includes(currentIndex) ? "Flagged" : "Flag"}
+                </Button>
+              </div>
             </div>
           </CardHeader>
 
-          <CardContent className="p-4 sm:p-5 space-y-5">
+          <CardContent className="p-3.5 sm:p-5 space-y-4 sm:space-y-5">
             {/* Stem */}
-            <div className="text-sm sm:text-base leading-relaxed font-medium text-foreground">
+            <div className="text-[15px] sm:text-base leading-relaxed font-medium text-foreground overflow-x-auto max-w-full">
               <MathRenderer content={currentQuestion.question} />
             </div>
 
             {/* Optional Question Diagram */}
             {currentQuestion.imageUrl && (
-              <div className="rounded-lg border border-border bg-white p-3 inline-flex flex-col items-center gap-2 max-w-full">
+              <div className="rounded-lg border border-border bg-white p-2.5 sm:p-3 w-full sm:w-fit inline-flex flex-col items-center gap-2 max-w-full">
                 <img
                   src={currentQuestion.imageUrl}
                   alt={`Question ${currentQuestion.questionNumber} diagram`}
-                  className="max-h-64 object-contain cursor-zoom-in"
+                  className="max-h-56 sm:max-h-64 max-w-full object-contain cursor-zoom-in"
                   onClick={() => setZoomedImage(currentQuestion.imageUrl!)}
                 />
                 <span className="text-[10px] text-slate-500 flex items-center gap-1">
-                  <ZoomIn className="h-3 w-3" /> Click diagram to zoom
+                  <ZoomIn className="h-3 w-3" /> Tap diagram to zoom
                 </span>
               </div>
             )}
@@ -689,7 +744,7 @@ export default function PucQuestionBankTest() {
                           return next;
                         });
                       }}
-                      className={`text-left p-3 sm:p-3.5 rounded-lg border transition-all flex items-start gap-3 ${cardStyle}`}
+                      className={`text-left p-3 sm:p-3.5 min-h-[52px] rounded-lg border transition-all active:scale-[0.99] touch-manipulation flex items-start gap-3 ${cardStyle}`}
                     >
                       <span
                         className={`h-6 w-6 rounded-full text-xs font-mono font-bold flex items-center justify-center shrink-0 border ${
@@ -700,13 +755,13 @@ export default function PucQuestionBankTest() {
                       >
                         {letter}
                       </span>
-                      <div className="min-w-0 flex-1 text-xs sm:text-sm leading-snug">
+                      <div className="min-w-0 flex-1 text-xs sm:text-sm leading-snug overflow-x-auto">
                         <MathRenderer content={optText} />
                         {optImg && (
                           <img
                             src={optImg}
                             alt={`Option ${letter}`}
-                            className="mt-2 max-h-32 rounded bg-white p-1 object-contain"
+                            className="mt-2 max-h-32 max-w-full rounded bg-white p-1 object-contain"
                           />
                         )}
                       </div>
@@ -848,13 +903,13 @@ export default function PucQuestionBankTest() {
         </Card>
 
         {/* Prev / Next Footer */}
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-between gap-2.5">
           <Button
             variant="outline"
             size="sm"
             disabled={currentIndex === 0}
             onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
-            className="gap-1 text-xs"
+            className="h-10 sm:h-9 gap-1 text-xs w-full sm:w-auto justify-center"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </Button>
@@ -862,12 +917,12 @@ export default function PucQuestionBankTest() {
             <Button
               size="sm"
               onClick={() => setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))}
-              className="gap-1 text-xs"
+              className="h-10 sm:h-9 gap-1 text-xs w-full sm:w-auto justify-center"
             >
               Next <ChevronRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button size="sm" onClick={finishQuiz} className="gap-1 text-xs">
+            <Button size="sm" onClick={finishQuiz} className="h-10 sm:h-9 gap-1 text-xs w-full sm:w-auto justify-center">
               Finish & View Results
             </Button>
           )}
@@ -875,7 +930,7 @@ export default function PucQuestionBankTest() {
 
         {/* Diagram Zoom Dialog */}
         <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-          <DialogContent className="max-w-2xl bg-white">
+          <DialogContent className="w-[95vw] max-w-2xl p-3 sm:p-6 bg-white rounded-xl">
             <DialogHeader>
               <DialogTitle className="text-slate-900 text-sm">Question Diagram</DialogTitle>
             </DialogHeader>
@@ -884,6 +939,15 @@ export default function PucQuestionBankTest() {
             )}
           </DialogContent>
         </Dialog>
+
+        <ReportPucQuestionModal
+          question={reportingQuestion}
+          subject={subject}
+          open={!!reportingQuestion}
+          onOpenChange={(open) => {
+            if (!open) setReportingQuestion(null);
+          }}
+        />
       </div>
     );
   }
@@ -914,7 +978,7 @@ export default function PucQuestionBankTest() {
     });
 
   return (
-    <div className="space-y-5 max-w-4xl mx-auto px-2 sm:px-4 md:px-0 pb-12">
+    <div className="space-y-5 max-w-4xl mx-auto px-3 sm:px-4 md:px-0 pb-24 sm:pb-12">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold">Test Results</h1>
@@ -1004,7 +1068,7 @@ export default function PucQuestionBankTest() {
                 )}
               </div>
 
-              <div className="text-xs sm:text-sm font-medium">
+              <div className="text-xs sm:text-sm font-medium overflow-x-auto max-w-full">
                 <MathRenderer content={q.question} />
               </div>
 
@@ -1065,10 +1129,44 @@ export default function PucQuestionBankTest() {
                   )}
                 </div>
               )}
+
+              <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 pt-2 border-t border-border/40">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 sm:h-7 px-2.5 sm:px-2 text-xs text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 flex items-center gap-1.5"
+                >
+                  <a
+                    href={buildGoogleSearchUrl(q, subject)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Search className="h-3.5 w-3.5" /> Search Google <ExternalLink className="h-3 w-3 opacity-70" />
+                  </a>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setReportingQuestion(q)}
+                  className="h-8 sm:h-7 px-2.5 sm:px-2 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 flex items-center gap-1.5"
+                >
+                  <Flag className="h-3.5 w-3.5" /> Report Discrepancy
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ))}
       </div>
+
+      <ReportPucQuestionModal
+        question={reportingQuestion}
+        subject={subject}
+        open={!!reportingQuestion}
+        onOpenChange={(open) => {
+          if (!open) setReportingQuestion(null);
+        }}
+      />
     </div>
   );
 }
