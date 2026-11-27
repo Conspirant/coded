@@ -88,6 +88,7 @@ const kcetMoreItems: MoreItem[] = [
 ]
 
 const pucMoreItems: MoreItem[] = [
+    { icon: Target, label: "MCQ Tests", href: "/puc/practice-tests" },
     { icon: FileText, label: "2026 PYQs", href: "/puc/pyq" },
     { icon: BookOpen, label: "Blueprints", href: "/puc/subjects" },
     { icon: FlaskConical, label: "Practicals", href: "/puc/practicals" },

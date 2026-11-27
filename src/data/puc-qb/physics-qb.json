@@ -68,7 +68,7 @@
           "question": "The electrostatic force between the two charges in vacuum is given by F= k $\\frac{q_{1} q_{2}}{r^{2}}$ where k is",
           "options": [
             "9 × $10^{9}$ $Nm^{2}$ / $C^{2}$",
-            "9 × $10^{9}$ $NC^{2}$\n/ $m^{2}$",
+            "9 × $10^{9}$ $NC^{2}$ / $m^{2}$",
             "9 × $10^{−9}$ $Nm^{2}$ /$C^{2}$",
             "9 × $10^{9}$ N"
           ],
@@ -306,9 +306,9 @@
           "question": "Two identical point charges of +1 C separated by a distance 1 m in air experience repulsive force\nof magnitude",
           "options": [
             "1 N",
-            "9 × $10^{9}$\nN",
+            "9 × $10^{9}$ N",
             "9 × $10^{−9}$ N",
-            "$10^{9}$ N\nHOTS QUESTIONS"
+            "$10^{9}$ N"
           ],
           "correctIndex": 1,
           "difficulty": "Easy"
@@ -1149,7 +1149,7 @@
             "the nature of the medium present between the plates of the capacitor.",
             "the area of the plates of the capacitor.",
             "the potential difference applied between the plates of the capacitor.",
-            "the distance of separation between the plates of the capacitor.\nHOTS QUESTIONS"
+            "the distance of separation between the plates of the capacitor."
           ],
           "correctIndex": 2,
           "difficulty": "Easy"
@@ -2100,7 +2100,7 @@
           "question": "Current density is a _______ and its SI unit is __________.",
           "options": [
             "scalar, ampere.",
-            "scalar, $Am^{−2}$\n.",
+            "scalar, $Am^{-2}$.",
             "vector, ampere.",
             "vector, $Am^{−2}$ ."
           ],
@@ -2469,7 +2469,27 @@
           ],
           "questionNumber": 6,
           "question": "Resistance of a conductor is _________ proportional to its length.",
-          "answer": "directly 7 zero",
+          "answer": "directly",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch3-fib-7",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 3,
+          "chapterName": "Current Electricity",
+          "setNumber": 2,
+          "wordBank": [
+            "galvanometer",
+            "inversely",
+            "less",
+            "directly",
+            "zero",
+            "drift velocity"
+          ],
+          "questionNumber": 7,
+          "question": "Maximum current flows in a cell present in a circuit when the external resistance is __________.",
+          "answer": "zero",
           "difficulty": null
         },
         {
@@ -2549,7 +2569,27 @@
           ],
           "questionNumber": 11,
           "question": "Electric current is a __________ quantity.",
-          "answer": "scalar 12 opposite",
+          "answer": "scalar",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch3-fib-12",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 3,
+          "chapterName": "Current Electricity",
+          "setNumber": 3,
+          "wordBank": [
+            "decreases",
+            "directly",
+            "emf",
+            "inversely",
+            "opposite",
+            "scalar"
+          ],
+          "questionNumber": 12,
+          "question": "The free electrons in a conductor drift in the direction ________ to the electric field present along the length of conductor.",
+          "answer": "opposite",
           "difficulty": null
         },
         {
@@ -2747,7 +2787,7 @@
           "question": "The value of permeability of free space is",
           "options": [
             "4π× $10^{–7}$ H/m",
-            "9 ×$10^{9}$ $Nm^{2}$\n/$C^{2}$",
+            "9 × $10^{9}$ $Nm^{2}$/$C^{2}$",
             "8.854 × $10^{–12}$ F/m",
             "3 × $10^{8}$ m/s"
           ],
@@ -3052,10 +3092,10 @@
           "questionNumber": 26,
           "question": "Which of the following relation represent Ampere circuital law?",
           "options": [
-            "∫ B . dA=0",
-            "∫ B . dl=μI\n0",
-            "∫ E . dA=$\\frac{q}{ε 0}$",
-            "∫ E . dl=- $\\frac{dφ B}{dt}$"
+            "$\\oint \\vec{B} \\cdot d\\vec{A} = 0$",
+            "$\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 I$",
+            "$\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{q}{\\varepsilon_0}$",
+            "$\\oint \\vec{E} \\cdot d\\vec{l} = -\\frac{d\\phi_B}{dt}$"
           ],
           "correctIndex": 1,
           "difficulty": "Easy"
@@ -3310,7 +3350,12 @@
           "chapterName": "Moving Charges and Magnetism",
           "setNumber": 1,
           "wordBank": [
-            "E"
+            "Ampere's circuital law",
+            "high",
+            "Lorentz force",
+            "Laplace's law",
+            "Right hand thumb rule",
+            "magnetic dipole"
           ],
           "questionNumber": 1,
           "question": "When the charged particles move in a combined magnetic and electric field, then the force acting is known\nas _________.",
@@ -3325,11 +3370,36 @@
           "chapterName": "Moving Charges and Magnetism",
           "setNumber": 1,
           "wordBank": [
-            "E"
+            "Ampere's circuital law",
+            "high",
+            "Lorentz force",
+            "Laplace's law",
+            "Right hand thumb rule",
+            "magnetic dipole"
           ],
           "questionNumber": 2,
           "question": "The direction of the magnetic field due to a current loop is found using the_________.",
           "answer": "Right hand thumb rule",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch4-fib-3",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 4,
+          "chapterName": "Moving Charges and Magnetism",
+          "setNumber": 1,
+          "wordBank": [
+            "Ampere's circuital law",
+            "high",
+            "Lorentz force",
+            "Laplace's law",
+            "Right hand thumb rule",
+            "magnetic dipole"
+          ],
+          "questionNumber": 3,
+          "question": "The alternative form of Biot-Savart's law is ________.",
+          "answer": "Ampere's circuital law",
           "difficulty": null
         },
         {
@@ -3340,7 +3410,12 @@
           "chapterName": "Moving Charges and Magnetism",
           "setNumber": 1,
           "wordBank": [
-            "E"
+            "Ampere's circuital law",
+            "high",
+            "Lorentz force",
+            "Laplace's law",
+            "Right hand thumb rule",
+            "magnetic dipole"
           ],
           "questionNumber": 4,
           "question": "Current carrying circular coil is equivalent to _________.",
@@ -3355,7 +3430,12 @@
           "chapterName": "Moving Charges and Magnetism",
           "setNumber": 1,
           "wordBank": [
-            "E"
+            "Ampere's circuital law",
+            "high",
+            "Lorentz force",
+            "Laplace's law",
+            "Right hand thumb rule",
+            "magnetic dipole"
           ],
           "questionNumber": 5,
           "question": "Resistance of an voltmeter is _________.",
@@ -3419,7 +3499,27 @@
           ],
           "questionNumber": 8,
           "question": "A charged particle entering a uniform magnetic field traces a circular path if velocity and magnetic field\nare _____________ to each other.",
-          "answer": "perpendicular 9 attract",
+          "answer": "perpendicular",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch4-fib-9",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 4,
+          "chapterName": "Moving Charges and Magnetism",
+          "setNumber": 2,
+          "wordBank": [
+            "perpendicular",
+            "attract",
+            "opposite",
+            "repel",
+            "ammeter",
+            "magnetic field"
+          ],
+          "questionNumber": 9,
+          "question": "Two infinitely long conductors carrying currents in the same direction ____________ each other.",
+          "answer": "attract",
           "difficulty": null
         },
         {
@@ -3665,7 +3765,7 @@
             "is called permeability",
             "is called relative permeability",
             "is a dimensionless quantity",
-            "is the reciprocal of susceptibility\n$\\frac{HOTS QUESTIONS}{m}$"
+            "is the reciprocal of susceptibility"
           ],
           "correctIndex": 2,
           "difficulty": "Easy"
@@ -3714,7 +3814,7 @@
           "questionNumber": 16,
           "question": "Needles N1, N2 and N3 are made of a ferromagnetic, a paramagnetic and a diamagnetic substance\nrespectively. A magnet when brought close to them will:",
           "options": [
-            "Attract N1 strongly but repel N2 and N3\nweakly.",
+            "Attract N1 strongly but repel N2 and N3 weakly.",
             "Attract N1 and N2 strongly but repel N3",
             "Attract N1 strongly, N2 weakly & repel N3 weakly",
             "Attract all 3 of them."
@@ -3731,7 +3831,14 @@
           "chapterNumber": 5,
           "chapterName": "Magnetism and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "perfect-diamagnetic",
+            "paramagnetic",
+            "diamagnetic",
+            "ferromagnetic",
+            "non-magnetic",
+            "hard ferromagnetic"
+          ],
           "questionNumber": 1,
           "question": "_________ property is present in all materials.",
           "answer": "Diamagnetic",
@@ -3744,7 +3851,14 @@
           "chapterNumber": 5,
           "chapterName": "Magnetism and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "perfect-diamagnetic",
+            "paramagnetic",
+            "diamagnetic",
+            "ferromagnetic",
+            "non-magnetic",
+            "hard ferromagnetic"
+          ],
           "questionNumber": 2,
           "question": "When a material is placed in a magnetic field, the field inside it is slightly enhanced. The material is a\n_____________ substance.",
           "answer": "Paramagnetic",
@@ -3757,7 +3871,14 @@
           "chapterNumber": 5,
           "chapterName": "Magnetism and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "perfect-diamagnetic",
+            "paramagnetic",
+            "diamagnetic",
+            "ferromagnetic",
+            "non-magnetic",
+            "hard ferromagnetic"
+          ],
           "questionNumber": 3,
           "question": "A substance has a relative permeability of 1000. The material is _____________.",
           "answer": "Ferromagnetic",
@@ -3770,11 +3891,38 @@
           "chapterNumber": 5,
           "chapterName": "Magnetism and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "perfect-diamagnetic",
+            "paramagnetic",
+            "diamagnetic",
+            "ferromagnetic",
+            "non-magnetic",
+            "hard ferromagnetic"
+          ],
           "questionNumber": 4,
           "question": "Super-conductors show ___________ behavior.",
           "answer": "Perfect-diamagnetic",
           "difficulty": "Easy"
+        },
+        {
+          "id": "phy-ch5-fib-5",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 5,
+          "chapterName": "Magnetism and Matter",
+          "setNumber": 1,
+          "wordBank": [
+            "perfect-diamagnetic",
+            "paramagnetic",
+            "diamagnetic",
+            "ferromagnetic",
+            "non-magnetic",
+            "hard ferromagnetic"
+          ],
+          "questionNumber": 5,
+          "question": "In some materials the magnetization persists even after the external field is removed. Such materials are called ___________ substances.",
+          "answer": "Hard ferromagnetic",
+          "difficulty": null
         }
       ]
     },
@@ -3860,7 +4008,7 @@
           "question": "The dimensional formula of inductance is:",
           "options": [
             "[$ML^{2}$ $T^{2}$ $A^{-2}$ ]",
-            "[$ML^{2}$ $T^{-2}$\n$A^{-2}$ ]",
+            "$[M L^{2} T^{-2} A^{-2}]$",
             "[$ML^{2}$ $T^{-2}$ $A^{2}$ ]",
             "[$ML^{2}$ $T^{2}$ $A^{2}$ ]"
           ],
@@ -3942,12 +4090,12 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "questionNumber": 10,
-          "question": "Match column – I with appropriate options in column – II.\nCOLUMN – I COLUMN – II\n(a) Self-induced emf (p) Motional emf\n(b) EMF induced in a rod moving in a magnetic field\n(c) AC generator (r) Mutual induction\n(d) Transformer (s) Back emf\n(A) (a) → (s); (b) → (p); (c) → (q); (d) → (r)\n(C)",
+          "question": "Match column – I with appropriate options in column – II.",
           "options": [
-            "→ (p);",
-            "→ (q);",
-            "→ (r);",
-            "→ (s)"
+            "(a) → (s); (b) → (p); (c) → (q); (d) → (r)",
+            "(a) → (r); (b) → (p); (c) → (q); (d) → (s)",
+            "(a) → (p); (b) → (q); (c) → (r); (d) → (s)",
+            "(a) → (s); (b) → (p); (c) → (r); (d) → (q)"
           ],
           "correctIndex": 0,
           "difficulty": "Average",
@@ -3965,7 +4113,7 @@
             "both the magnetic flux and emf are maximum.",
             "both magnetic flux and emf are zero.",
             "the magnetic flux is zero and emf is maximum.",
-            "magnetic flux is maximum and emf is zero\nHOTS QUESTIONS"
+            "magnetic flux is maximum and emf is zero"
           ],
           "correctIndex": 2,
           "difficulty": "Average"
@@ -4049,7 +4197,14 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "increases",
+            "remains the same",
+            "decreases",
+            "electric field",
+            "magnetic field",
+            "becomes zero"
+          ],
           "questionNumber": 1,
           "question": "According to the phenomena of electromagnetic induction, a time varying magnetic field induces a/an\n__________.",
           "answer": "Electric Field",
@@ -4062,7 +4217,14 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "increases",
+            "remains the same",
+            "decreases",
+            "electric field",
+            "magnetic field",
+            "becomes zero"
+          ],
           "questionNumber": 2,
           "question": "As the speed of a conducting rod moving perpendicular to a uniform magnetic field decreases, the\nmotional emf induced across it ___________.",
           "answer": "decreases",
@@ -4075,7 +4237,14 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "increases",
+            "remains the same",
+            "decreases",
+            "electric field",
+            "magnetic field",
+            "becomes zero"
+          ],
           "questionNumber": 3,
           "question": "If the current through a coil increases, its self-inductance _____________.",
           "answer": "remains the same",
@@ -4088,7 +4257,14 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "increases",
+            "remains the same",
+            "decreases",
+            "electric field",
+            "magnetic field",
+            "becomes zero"
+          ],
           "questionNumber": 4,
           "question": "When an iron rod is inserted inside a coil, its self-inductance ____________.",
           "answer": "increases",
@@ -4101,7 +4277,14 @@
           "chapterNumber": 6,
           "chapterName": "Electromagnetic Induction",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "increases",
+            "remains the same",
+            "decreases",
+            "electric field",
+            "magnetic field",
+            "becomes zero"
+          ],
           "questionNumber": 5,
           "question": "A current carrying coil stores energy in the form of ___________.",
           "answer": "magnetic field",
@@ -4312,7 +4495,7 @@
             "the output current is 100 times the input current",
             "the transformer is a step-down transformer",
             "the output power is 100 times the input power.",
-            "the input current is 100 times the output current.\nHOTS QUESTIONS"
+            "the input current is 100 times the output current."
           ],
           "correctIndex": 3,
           "difficulty": "Easy"
@@ -4324,12 +4507,12 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "questionNumber": 13,
-          "question": "The column – I lists the component through which alternating current is passed. The column – II\nlists quantities related column – I.\nMatch column – I with appropriate options form column – II:",
+          "question": "The column – I lists the component through which alternating current is passed. The column – II lists quantities related to column – I.\nMatch column – I with appropriate options from column – II:",
           "options": [
-            "→ (s);",
-            "→ (q);",
-            "→ (p);",
-            "→ (r)"
+            "(a) → (r); (b) → (q); (c) → (p); (d) → (s)",
+            "(a) → (r, s); (b) → (p); (c) → (q); (d) → (s)",
+            "(a) → (s); (b) → (p); (c) → (q); (d) → (r)",
+            "(a) → (s); (b) → (q); (c) → (p); (d) → (r)"
           ],
           "correctIndex": 1,
           "difficulty": "Difficult",
@@ -4380,7 +4563,14 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "equal to unity",
+            "less than unity",
+            "greater than unity",
+            "zero",
+            "π/2",
+            "π"
+          ],
           "questionNumber": 1,
           "question": "The phase difference between voltage and current in the case of ac through a pure capacitor is\n__________.",
           "answer": "π/2",
@@ -4393,7 +4583,14 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "equal to unity",
+            "less than unity",
+            "greater than unity",
+            "zero",
+            "π/2",
+            "π"
+          ],
           "questionNumber": 2,
           "question": "The power factor of a series LCR circuit at resonance is ____________.",
           "answer": "equal to unity",
@@ -4406,7 +4603,14 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "equal to unity",
+            "less than unity",
+            "greater than unity",
+            "zero",
+            "π/2",
+            "π"
+          ],
           "questionNumber": 3,
           "question": "At resonance of series LCR circuit, the voltage across combination of L and C is ______.",
           "answer": "zero",
@@ -4419,7 +4623,14 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "equal to unity",
+            "less than unity",
+            "greater than unity",
+            "zero",
+            "π/2",
+            "π"
+          ],
           "questionNumber": 4,
           "question": "In a series LCR ac circuit, the current leads the voltage by π/3. The ratio between the capacitive reactance\nand the inductive reactance for the circuit is ____________.",
           "answer": "greater than unity",
@@ -4432,7 +4643,14 @@
           "chapterNumber": 7,
           "chapterName": "Alternating Current",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "equal to unity",
+            "less than unity",
+            "greater than unity",
+            "zero",
+            "π/2",
+            "π"
+          ],
           "questionNumber": 5,
           "question": "For a step-down transformer, the ratio of primary current to secondary current is ________.",
           "answer": "less than unity",
@@ -4470,10 +4688,10 @@
           "questionNumber": 2,
           "question": "The expression for displacement is",
           "options": [
-            "id = ε 2 $\\frac{d∅_{E}}{dt}$",
-            "id = μ0 ε\n$\\frac{d∅_{E}}{dt}$",
-            "id = μ0 $\\frac{d∅_{E}}{dt}$",
-            "id = ε $\\frac{d∅_{E}}{dt}$\n0 0 0"
+            "$i_d = \\varepsilon_0^2 \\frac{d\\phi_E}{dt}$",
+            "$i_d = \\mu_0 \\varepsilon_0 \\frac{d\\phi_E}{dt}$",
+            "$i_d = \\mu_0 \\frac{d\\phi_E}{dt}$",
+            "$i_d = \\varepsilon_0 \\frac{d\\phi_E}{dt}$"
           ],
           "correctIndex": 3,
           "difficulty": "Easy"
@@ -4522,7 +4740,7 @@
           "question": "An electromagnetic wave going through vacuum is described by E = E0 sin (kx – ωt), and\nB = B0 sin (kx – ωt) then",
           "options": [
             "E0 B0 = ωk",
-            "E0 ω = B0\nk",
+            "$E_0 \\omega = B_0 k$",
             "E0 k = B0 ω",
             "E0 B0 =1/ωk"
           ],
@@ -4607,7 +4825,7 @@
           "question": "The wavelength range of x-rays is",
           "options": [
             "< $10^{–3}$ nm",
-            "1 nm - $10^{–3}$\nnm",
+            "1 nm - $10^{-3}$ nm",
             "400 nm to 1 nm",
             "0.1 m to 1 mm"
           ],
@@ -4626,7 +4844,7 @@
             "Gamma rays",
             "Ultraviolet rays",
             "Microwaves",
-            "Infrared waves\nHOTS QUESTIONS"
+            "Infrared waves"
           ],
           "correctIndex": 2,
           "difficulty": "Easy"
@@ -4725,7 +4943,14 @@
           "chapterNumber": 8,
           "chapterName": "Electromagnetic Waves",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "radio waves",
+            "X-rays",
+            "gamma rays",
+            "infrared waves",
+            "microwaves",
+            "ultraviolet rays"
+          ],
           "questionNumber": 1,
           "question": "__________ are produced using magnetron valves.",
           "answer": "Microwaves",
@@ -4738,7 +4963,14 @@
           "chapterNumber": 8,
           "chapterName": "Electromagnetic Waves",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "radio waves",
+            "X-rays",
+            "gamma rays",
+            "infrared waves",
+            "microwaves",
+            "ultraviolet rays"
+          ],
           "questionNumber": 2,
           "question": "Cellular phones use _______ to transmit voice communication in the UHF band.",
           "answer": "Radio waves",
@@ -4751,7 +4983,14 @@
           "chapterNumber": 8,
           "chapterName": "Electromagnetic Waves",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "radio waves",
+            "X-rays",
+            "gamma rays",
+            "infrared waves",
+            "microwaves",
+            "ultraviolet rays"
+          ],
           "questionNumber": 3,
           "question": "___________ maintain the earth’s warmth.",
           "answer": "Infrared waves",
@@ -4764,7 +5003,14 @@
           "chapterNumber": 8,
           "chapterName": "Electromagnetic Waves",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "radio waves",
+            "X-rays",
+            "gamma rays",
+            "infrared waves",
+            "microwaves",
+            "ultraviolet rays"
+          ],
           "questionNumber": 4,
           "question": "The electromagnetic waves which have the least wavelength are_________.",
           "answer": "Gamma rays",
@@ -4777,7 +5023,14 @@
           "chapterNumber": 8,
           "chapterName": "Electromagnetic Waves",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "radio waves",
+            "X-rays",
+            "gamma rays",
+            "infrared waves",
+            "microwaves",
+            "ultraviolet rays"
+          ],
           "questionNumber": 5,
           "question": "Ozone layer absorbs ______________.",
           "answer": "Ultraviolet rays",
@@ -5107,7 +5360,7 @@
             "only (i) and (ii)",
             "only (ii) and (iii)",
             "only (i) and (iii)",
-            "(i), (ii) and (iii)\nHOTS QUESTIONS"
+            "(i), (ii) and (iii)"
           ],
           "correctIndex": 3,
           "difficulty": "Easy"
@@ -5240,7 +5493,14 @@
           "chapterNumber": 9,
           "chapterName": "Ray Optics and Optical Instruments",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "inversely proportional",
+            "refraction",
+            "parallel",
+            "critical angle",
+            "total internal reflection",
+            "reflection"
+          ],
           "questionNumber": 1,
           "question": "The bottom of a swimming pool appears to be raised above is due to ____________.",
           "answer": "Refraction",
@@ -5253,7 +5513,14 @@
           "chapterNumber": 9,
           "chapterName": "Ray Optics and Optical Instruments",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "inversely proportional",
+            "refraction",
+            "parallel",
+            "critical angle",
+            "total internal reflection",
+            "reflection"
+          ],
           "questionNumber": 2,
           "question": "Optical fibres are working on the principle of _________.",
           "answer": "Total internal reflection",
@@ -5266,7 +5533,14 @@
           "chapterNumber": 9,
           "chapterName": "Ray Optics and Optical Instruments",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "inversely proportional",
+            "refraction",
+            "parallel",
+            "critical angle",
+            "total internal reflection",
+            "reflection"
+          ],
           "questionNumber": 3,
           "question": "For total internal reflection of light, the angle of incident must be greater than ___________.",
           "answer": "Critical angle",
@@ -5279,7 +5553,14 @@
           "chapterNumber": 9,
           "chapterName": "Ray Optics and Optical Instruments",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "inversely proportional",
+            "refraction",
+            "parallel",
+            "critical angle",
+            "total internal reflection",
+            "reflection"
+          ],
           "questionNumber": 4,
           "question": "At minimum deviation position, the refracted ray inside the prism is ______ to the base of the prism.",
           "answer": "Parallel",
@@ -5292,7 +5573,14 @@
           "chapterNumber": 9,
           "chapterName": "Ray Optics and Optical Instruments",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "inversely proportional",
+            "refraction",
+            "parallel",
+            "critical angle",
+            "total internal reflection",
+            "reflection"
+          ],
           "questionNumber": 5,
           "question": "The magnification of compound microscope is ____________ to focal length of eye lens.",
           "answer": "Inversely proportional",
@@ -5486,7 +5774,7 @@
             "Descartes",
             "Christian Huygens",
             "Maxwell",
-            "Newton\nHOTS QUESTIONS"
+            "Newton"
           ],
           "correctIndex": 2,
           "difficulty": null
@@ -5585,7 +5873,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 1,
           "question": "A wavefront coming from a point source of light is a __________ wavefront.",
           "answer": "spherical",
@@ -5598,7 +5894,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 2,
           "question": "When a wave gets refracted into a denser medium, __________ remains the same.",
           "answer": "frequency",
@@ -5611,7 +5915,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 3,
           "question": "The modification in the distribution of light intensity due to superposition of two or more\nlight waves is called ______________ of light.",
           "answer": "interference",
@@ -5624,7 +5936,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 4,
           "question": "The colours on a compact disc (CD) is due to _____________ of light.",
           "answer": "diffraction",
@@ -5637,7 +5957,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 5,
           "question": "Interference and diffraction are consistent with law ofconservation of ____________.",
           "answer": "energy",
@@ -5650,7 +5978,15 @@
           "chapterNumber": 10,
           "chapterName": "Wave Optics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "diffraction",
+            "half",
+            "wavelength",
+            "energy",
+            "spherical",
+            "interference",
+            "frequency"
+          ],
           "questionNumber": 6,
           "question": "If light from an ordinary sodium lamp is passed through a polaroid sheet, then the intensity\nof emergent light becomes ______________ of the incident intensity.",
           "answer": "Half",
@@ -5997,7 +6333,7 @@
             "Heinrich Hertz",
             "Max Planck",
             "J J Thomson",
-            "R A Millikan\nHOTS QUESTIONS"
+            "R A Millikan"
           ],
           "correctIndex": 3,
           "difficulty": "Easy"
@@ -6097,7 +6433,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 1,
           "question": "The phenomenon of photoelectric emission was discovered by ______________",
           "answer": "Heinrich Hertz",
@@ -6110,7 +6455,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 2,
           "question": "Stopping potential is the measure of _________________ of liberated electrons.",
           "answer": "kinetic energy",
@@ -6123,7 +6477,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 3,
           "question": "Wavelength associated with material particles in motion is called as ________ wavelength.",
           "answer": "de-Broglie",
@@ -6136,7 +6499,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 4,
           "question": "The Maxwell’s equations of electromagnetism established the __________ nature of light.",
           "answer": "wave",
@@ -6149,7 +6521,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 5,
           "question": "In interaction with matter, light behaves as if it is made up of packet of energy called _____.",
           "answer": "photon",
@@ -6162,7 +6543,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 6,
           "question": "During photoelectric emission, the number of photoelectron emitted is directly proportional to\n________________of incident light.",
           "answer": "intensity",
@@ -6175,7 +6565,16 @@
           "chapterNumber": 11,
           "chapterName": "Dual Nature of Radiation and Matter",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "kinetic energy",
+            "energy",
+            "de-Broglie",
+            "Heinrich Hertz",
+            "intensity",
+            "wave",
+            "particle",
+            "photon"
+          ],
           "questionNumber": 7,
           "question": "The photoelectric emission is based on the law of conservation of ____________",
           "answer": "energy",
@@ -6248,7 +6647,7 @@
           "question": "The thickness of gold foil in Geiger-Marsden alpha(α)-particle scattering experiment is",
           "options": [
             "2.1 × $10^{–7}$ mm",
-            "1.2 × $10^{–4}$\nmm",
+            "1.2 × $10^{-4}$ mm",
             "2.1 × $10^{–4}$ mm",
             "2.1 cm"
           ],
@@ -6522,7 +6921,7 @@
             "angle of scattering is zero",
             "angle of scattering is $180^{o}$",
             "angle of scattering is equal to $90^{o}$",
-            "alpha particle enters the gold nucleus.\nHOTS QUESTIONS"
+            "alpha particle enters the gold nucleus."
           ],
           "correctIndex": 1,
           "difficulty": "Easy"
@@ -6672,7 +7071,16 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 1,
           "question": "Hydrogen atom always gives a spectrum with ____________ relative position between the lines.",
           "answer": "fixed",
@@ -6685,11 +7093,42 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 2,
           "question": "The entire mass of an atom is concentrated in a small volume called _______________.",
           "answer": "nucleus",
           "difficulty": "Easy"
+        },
+        {
+          "id": "phy-ch12-fib-3",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 12,
+          "chapterName": "Atoms",
+          "setNumber": 1,
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
+          "questionNumber": 3,
+          "question": "Energy of the electron in the first orbit of hydrogen atom is _____________.",
+          "answer": "-13.6 eV",
+          "difficulty": null
         },
         {
           "id": "phy-ch12-fib-4",
@@ -6698,7 +7137,16 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 4,
           "question": "Electron revolve around the nucleus with ____________ energy in different states",
           "answer": "different",
@@ -6711,10 +7159,19 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 5,
           "question": "Ionization energy of the hydrogen atom is _______________.",
-          "answer": "+13.6eV",
+          "answer": "+13.6 eV",
           "difficulty": "Easy"
         },
         {
@@ -6724,7 +7181,16 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 6,
           "question": "Line emission spectrum consist of bright line on a _____________background.",
           "answer": "dark",
@@ -6737,7 +7203,16 @@
           "chapterNumber": 12,
           "chapterName": "Atoms",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "nucleus",
+            "-13.6 eV",
+            "fixed",
+            "+13.6 eV",
+            "different",
+            "dark",
+            "ground state",
+            "bright"
+          ],
           "questionNumber": 7,
           "question": "Line absorption spectrum consist of dark line on a ____________ background.",
           "answer": "Bright",
@@ -6827,7 +7302,7 @@
           "question": "Density of any nucleus is",
           "options": [
             "2.29 × $10^{10}$ kg $m^{–3}$",
-            "2.29 × $10^{17}$\nkg $m^{–3}$",
+            "2.29 × $10^{17}$ kg $m^{-3}$",
             "2.29 × $10^{12}$ kg $m^{–3}$",
             "2.29 × $10^{13}$ kg $m^{–3}$"
           ],
@@ -6860,10 +7335,10 @@
           "questionNumber": 7,
           "question": "The binding energy per nucleon is maximum in the case of",
           "options": [
-            "4 He",
-            "56 Fe",
-            "141 Ba",
-            "235 U\n2 26 56 92"
+            "$^4_2He$",
+            "$^{56}_{26}Fe$",
+            "$^{141}_{56}Ba$",
+            "$^{235}_{92}U$"
           ],
           "correctIndex": 1,
           "difficulty": "Easy"
@@ -6999,7 +7474,7 @@
             "Low temperature",
             "High temperature",
             "Neutrons",
-            "protons\nHOTS QUESTIONS:"
+            "protons"
           ],
           "correctIndex": 1,
           "difficulty": "Easy"
@@ -7047,10 +7522,10 @@
           "questionNumber": 18,
           "question": "Mn and Mp represent mass of neutron and proton respectively. If an element having nuclear mass\nM has N-neutrons and Z-protons, then the correct relation will be",
           "options": [
-            "M<[$NM_{n}$ +$ZM_{P}$ ]",
-            "M >[$NM_{n}$\n+$ZM_{P}$ ]",
-            "M =[$NM_{n}$ +$ZM_{P}$ ]",
-            "M =N[$M_{n}$ +$M_{P}$ ]"
+            "$M < [NM_n + ZM_p]$",
+            "$M > [NM_n + ZM_p]$",
+            "$M = [NM_n + ZM_p]$",
+            "$M = N[M_n + M_p]$"
           ],
           "correctIndex": 0,
           "difficulty": "Difficult"
@@ -7081,10 +7556,10 @@
           "questionNumber": 20,
           "question": "Which of the following is a fusion reaction?",
           "options": [
-            "1 $H^{2}$ +$_{1}$ $H^{2}$ →$_{2}$ $He^{4}$",
-            "0 $n^{1}$ +$_{7}$ $N^{14}$ →$_{6}$ $C^{14}$ +$_{1}$ $H^{1}$",
-            "$n^{1}$ +$_{92}$ $U^{238}$ →$_{93}$ $Np^{239}$ +β−1 +γ",
-            "$H^{3}$ →$_{2}$ $He^{3}$ +β−1 +γ\n0 1"
+            "$_1H^2 + _1H^2 \\to _2He^4$",
+            "$_0n^1 + _7N^{14} \\to _6C^{14} + _1H^1$",
+            "$_0n^1 + _{92}U^{238} \\to _{93}Np^{239} + \\beta^{-1} + \\gamma$",
+            "$_1H^3 \\to _2He^3 + \\beta^{-1} + \\gamma$"
           ],
           "correctIndex": 0,
           "difficulty": "Difficult"
@@ -7098,10 +7573,10 @@
           "questionNumber": 21,
           "question": "Match the following columns:",
           "options": [
-            "a - ii, b - iii, с - i Column-I",
-            "a - iii, b - ii, c - i (a) Isotopes",
-            "a - ii, b- i, c - iii (b) Isobars\n(c) Isotones",
-            "a - iii, b -i, c - ii"
+            "a - ii, b - iii, c - i",
+            "a - iii, b - ii, c - i",
+            "a - ii, b - i, c - iii",
+            "a - iii, b - i, c - ii"
           ],
           "correctIndex": 0,
           "difficulty": "Difficult",
@@ -7116,10 +7591,10 @@
           "questionNumber": 22,
           "question": "Among the following, which set of nuclei are isotopes?",
           "options": [
-            "14 C $and^{14}$ N",
-            "3 He $and^{3}$\nH",
-            "235 U $and^{238}$ U",
-            "28 Si $and^{73}$ Ge\n6 7 2 1 92 92 14 32"
+            "$_{6}^{14}C$ and $_{7}^{14}N$",
+            "$_{2}^{3}He$ and $_{1}^{3}H$",
+            "$_{92}^{235}U$ and $_{92}^{238}U$",
+            "$_{14}^{28}Si$ and $_{32}^{73}Ge$"
           ],
           "correctIndex": 2,
           "difficulty": "Average"
@@ -7133,16 +7608,137 @@
           "questionNumber": 23,
           "question": "Among the following, which set of nuclei are isotones?",
           "options": [
-            "14 C $and^{16}$ O",
-            "3 He $and^{3}$\nH",
-            "235 U $and^{238}$ U",
-            "28 Si $and^{73}$ Ge\n6 8 2 1 92 92 14 32"
+            "$_{6}^{14}C$ and $_{8}^{16}O$",
+            "$_{2}^{3}He$ and $_{1}^{3}H$",
+            "$_{92}^{235}U$ and $_{92}^{238}U$",
+            "$_{14}^{28}Si$ and $_{32}^{73}Ge$"
           ],
           "correctIndex": 0,
           "difficulty": "Average"
         }
       ],
-      "fibs": []
+      "fibs": [
+        {
+          "id": "phy-ch13-fib-1",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 1,
+          "question": "________________ is $(1/12)^{th}$ of mass of the carbon-12 atom in stable state.",
+          "answer": "Atomic mass unit",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch13-fib-2",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 2,
+          "question": "The instrument used to measure the atomic masses is _____________.",
+          "answer": "mass spectrometer",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch13-fib-3",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 3,
+          "question": "The nuclear density is ____________ of its mass number.",
+          "answer": "independent",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch13-fib-4",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 4,
+          "question": "The source of energy in nuclear reactors, which produce electricity is _____________.",
+          "answer": "nuclear fission",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch13-fib-5",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 5,
+          "question": "Four hydrogen atoms combine to form $_2^4He$ atom with a release of _________ of energy.",
+          "answer": "26.7 MeV",
+          "difficulty": null
+        },
+        {
+          "id": "phy-ch13-fib-6",
+          "type": "fib",
+          "subject": "physics",
+          "chapterNumber": 13,
+          "chapterName": "Nuclei",
+          "setNumber": 1,
+          "wordBank": [
+            "nuclear fission",
+            "independent",
+            "26.7 MeV",
+            "atomic mass unit",
+            "mass spectrometer",
+            "nuclear fusion"
+          ],
+          "questionNumber": 6,
+          "question": "The source of energy generation in stars is _____________.",
+          "answer": "nuclear fusion",
+          "difficulty": null
+        }
+      ]
     },
     {
       "chapterNumber": 14,
@@ -7412,9 +8008,9 @@
           "questionNumber": 16,
           "question": "The List - I and List - Il respectively represent materials and energy band gap Eg",
           "options": [
-            "(i) - (q); (ii) - (r); (iii) - (p)\n(i) Conductors (p) Eg > 3eV",
-            "(i) - (r); (ii) - (p); (iii) - (q)\n(ii) Insulators (q) Eg < 3eV",
-            "(i) - (p); (ii) - (r); (iii) - (q)\n(iii) Semiconductors (r) Eg = 0",
+            "(i) - (q); (ii) - (r); (iii) - (p)",
+            "(i) - (r); (ii) - (p); (iii) - (q)",
+            "(i) - (p); (ii) - (r); (iii) - (q)",
             "(i) - (r); (ii) - (q); (iii) - (p)"
           ],
           "correctIndex": 1,
@@ -7484,7 +8080,7 @@
             "Electrons are majority carriers and trivalent atoms are the dopants.",
             "Electrons are minority carriers and pentavalent atoms are the dopants.",
             "Holes are minority carriers and pentavalent atoms are the dopants.",
-            "Holes are majority carriers and trivalent atoms are the dopants.\nHOTS QUESTIONS"
+            "Holes are majority carriers and trivalent atoms are the dopants."
           ],
           "correctIndex": 2,
           "difficulty": "Easy"
@@ -7498,10 +8094,10 @@
           "questionNumber": 21,
           "question": "The forbidden energy band gap in conductors, semiconductors and insulators are\n$Eg_{1}$,$Eg_{2}$ and $Eg_{3}$ respectively. The correct relation among them is",
           "options": [
-            "$Eg_{1}$ =$Eg_{2}$ =$Eg_{3}$",
-            "$Eg_{1}$ <$Eg_{2}$\n<$Eg_{3}$",
-            "$Eg_{1}$ >$Eg_{2}$ >$Eg_{3}$",
-            "$Eg_{1}$ <$Eg_{2}$ >$Eg_{3}$"
+            "$E_{g1} = E_{g2} = E_{g3}$",
+            "$E_{g1} < E_{g2} < E_{g3}$",
+            "$E_{g1} > E_{g2} > E_{g3}$",
+            "$E_{g1} < E_{g2} > E_{g3}$"
           ],
           "correctIndex": 1,
           "difficulty": "Average"
@@ -7585,7 +8181,14 @@
           "chapterNumber": 14,
           "chapterName": "Semiconductor Electronics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "depletion region",
+            "electrons",
+            "saturation current",
+            "one",
+            "valence band",
+            "holes"
+          ],
           "questionNumber": 1,
           "question": "______________is the lower band which is completely occupied by the 4N valence electron at\ntemperature of absolute zero.",
           "answer": "valence band",
@@ -7598,7 +8201,14 @@
           "chapterNumber": 14,
           "chapterName": "Semiconductor Electronics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "depletion region",
+            "electrons",
+            "saturation current",
+            "one",
+            "valence band",
+            "holes"
+          ],
           "questionNumber": 2,
           "question": "The ratio of number of holes to number of electrons in an intrinsic semiconductor is _____.",
           "answer": "one",
@@ -7611,7 +8221,14 @@
           "chapterNumber": 14,
           "chapterName": "Semiconductor Electronics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "depletion region",
+            "electrons",
+            "saturation current",
+            "one",
+            "valence band",
+            "holes"
+          ],
           "questionNumber": 3,
           "question": "In n-type semiconductor, the number of ________ is more than the number of holes.",
           "answer": "electrons",
@@ -7624,7 +8241,14 @@
           "chapterNumber": 14,
           "chapterName": "Semiconductor Electronics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "depletion region",
+            "electrons",
+            "saturation current",
+            "one",
+            "valence band",
+            "holes"
+          ],
           "questionNumber": 4,
           "question": "The space charge region on either side of the junction where no mobile charge carriers\nare present is called as ____________.",
           "answer": "depletion region",
@@ -7637,7 +8261,14 @@
           "chapterNumber": 14,
           "chapterName": "Semiconductor Electronics",
           "setNumber": 1,
-          "wordBank": [],
+          "wordBank": [
+            "depletion region",
+            "electrons",
+            "saturation current",
+            "one",
+            "valence band",
+            "holes"
+          ],
           "questionNumber": 5,
           "question": "In a reverse biased p-n junction, the current through the circuit is called reverse ________.",
           "answer": "saturation current",

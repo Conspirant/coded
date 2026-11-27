@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react"
-import { BookOpen, CalendarDays, CheckCircle2, Download, ExternalLink, Eye, FileText, Filter, Plus, RotateCcw, Search, Sparkles, X } from "lucide-react"
+import { Link } from "react-router-dom"
+import { BookOpen, CalendarDays, CheckCircle2, Download, ExternalLink, Eye, FileText, Filter, Play, Plus, RotateCcw, Search, Sparkles, X } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -951,6 +952,15 @@ export function PucQuestionBanks() {
 
         <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto">
           <Button
+            asChild
+            size="sm"
+            className="h-8 text-xs gap-1.5 cursor-pointer col-span-2 sm:col-span-1 w-full sm:w-auto justify-center"
+          >
+            <Link to={`/puc/question-banks/test?subject=${selectedSubjectKey}`}>
+              <Play className="h-3.5 w-3.5" /> Interactive Test (MCQ & Blanks)
+            </Link>
+          </Button>
+          <Button
             variant="outline"
             size="sm"
             className="h-8 text-xs gap-1.5 cursor-pointer w-full sm:w-auto justify-center"
@@ -959,6 +969,7 @@ export function PucQuestionBanks() {
             <Eye className="h-3.5 w-3.5" /> View PDF ({activeBank.totalPages}p)
           </Button>
           <Button 
+            variant="outline"
             size="sm" 
             className="h-8 text-xs gap-1.5 cursor-pointer w-full sm:w-auto justify-center"
             onClick={handleDownloadTop}
@@ -1055,14 +1066,25 @@ export function PucQuestionBanks() {
                     {ch.name}
                   </p>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 text-xs text-primary hover:text-primary gap-1 shrink-0 px-2.5 cursor-pointer"
-                  onClick={() => setPreviewPdf({ url: activeBank.pdfUrl, title: `${activeBank.subjectName} - ${ch.name}`, fileName: activeBank.pdfFileName, initialPage: ch.startPage })}
-                >
-                  <Eye className="h-3.5 w-3.5" /> View
-                </Button>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <Button
+                    asChild
+                    size="sm"
+                    className="h-8 text-xs gap-1 px-2.5 cursor-pointer"
+                  >
+                    <Link to={`/puc/question-banks/test?subject=${selectedSubjectKey}&chapter=${ch.unitNumber}`}>
+                      <Play className="h-3 w-3" /> Test
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs text-primary hover:text-primary gap-1 px-2.5 cursor-pointer"
+                    onClick={() => setPreviewPdf({ url: activeBank.pdfUrl, title: `${activeBank.subjectName} - ${ch.name}`, fileName: activeBank.pdfFileName, initialPage: ch.startPage })}
+                  >
+                    <Eye className="h-3.5 w-3.5" /> PDF
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
@@ -1087,14 +1109,26 @@ export function PucQuestionBanks() {
                       <span className="inline-block px-2.5 py-0.5 rounded bg-muted/60">{ch.marks} M</span>
                     </td>
                     <td className="py-2 px-4 text-center">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 text-xs text-primary hover:text-primary gap-1 cursor-pointer"
-                        onClick={() => setPreviewPdf({ url: activeBank.pdfUrl, title: `${activeBank.subjectName} - ${ch.name}`, fileName: activeBank.pdfFileName, initialPage: ch.startPage })}
-                      >
-                        <Eye className="h-3 w-3" /> View in PDF
-                      </Button>
+                      <div className="inline-flex items-center gap-1.5">
+                        <Button
+                          asChild
+                          size="sm"
+                          variant="outline"
+                          className="h-7 text-xs gap-1 cursor-pointer"
+                        >
+                          <Link to={`/puc/question-banks/test?subject=${selectedSubjectKey}&chapter=${ch.unitNumber}`}>
+                            <Play className="h-3 w-3" /> Practice Test
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 text-xs text-primary hover:text-primary gap-1 cursor-pointer"
+                          onClick={() => setPreviewPdf({ url: activeBank.pdfUrl, title: `${activeBank.subjectName} - ${ch.name}`, fileName: activeBank.pdfFileName, initialPage: ch.startPage })}
+                        >
+                          <Eye className="h-3 w-3" /> PDF
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}

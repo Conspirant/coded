@@ -84,6 +84,7 @@ const PucSubjects = lazy(() => import("./pages/PucPages").then((m) => ({ default
 const PucStudyPlanner = lazy(() => import("./pages/PucPages").then((m) => ({ default: m.PucStudyPlanner })));
 const PucPracticals = lazy(() => import("./pages/PucPages").then((m) => ({ default: m.PucPracticals })));
 const PucQuestionBanks = lazy(() => import("./pages/PucPages").then((m) => ({ default: m.PucQuestionBanks })));
+const PucQuestionBankTest = lazy(() => import("./pages/PucQuestionBankTest"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -141,6 +142,8 @@ const App = () => (
                       <Route path="/puc/subjects" element={<Layout><PucSubjects /></Layout>} />
                       <Route path="/puc/practicals" element={<Layout><PucPracticals /></Layout>} />
                       <Route path="/puc/question-banks" element={<Layout><PucQuestionBanks /></Layout>} />
+                      <Route path="/puc/practice-tests" element={<Layout><PucQuestionBankTest /></Layout>} />
+                      <Route path="/puc/question-banks/test" element={<Layout><PucQuestionBankTest /></Layout>} />
                       <Route path="/puc/question-papers" element={<Layout><PucQuestionPapers /></Layout>} />
                       <Route path="/puc/marks-calculator" element={<Layout><PucMarksCalculator /></Layout>} />
                       <Route path="/puc/study-planner" element={<Layout><PucStudyPlanner /></Layout>} />

@@ -13,6 +13,13 @@ const tools = [
     badge: "Jeevith Notes"
   },
   { 
+    title: "PUC Practice Tests (MCQs & Blanks)", 
+    description: "Dedicated interactive test page for all chapters — 2,300+ digitized MCQs and Fill-in-the-Blanks with diagrams, LaTeX & KSEAB Part-A mocks.", 
+    href: "/puc/practice-tests", 
+    icon: Sparkles,
+    badge: "2,300+ Qs Live"
+  },
+  { 
     title: "Official Question Banks", 
     description: "State-prescribed 565+ page chapter-wise question banks for Physics, Chemistry, and Mathematics.", 
     href: "/puc/question-banks", 

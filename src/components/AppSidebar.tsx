@@ -168,6 +168,7 @@ const getKseabSections = (): NavSection[] => [
       { title: "PYQs with Answers", url: "/puc/pyq", icon: FileCheck, isNew: true },
       { title: "Question Papers Library", url: "/puc/question-papers", icon: FileText },
       { title: "Question Banks", url: "/puc/question-banks", icon: BookOpenCheck },
+      { title: "MCQ Practice Tests", url: "/puc/practice-tests", icon: Target, isNew: true },
       { title: "Marks Calculator", url: "/puc/marks-calculator", icon: Calculator },
       { title: "Student Reviews & Love", url: "/student-reviews", icon: Heart, isNew: true },
     ],
