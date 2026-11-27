@@ -139,7 +139,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       content: fullContent,
       reasoning: fullReasoning,
-      model: MODEL,
+      model: PRIMARY_MODEL,
     });
   } catch (error) {
     console.error('NVIDIA chat handler error:', error);
