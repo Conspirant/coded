@@ -2,7 +2,27 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 const NVIDIA_API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const MODEL = 'nvidia/nemotron-3-super-120b-a12b';
+const PRIMARY_MODEL = 'nvidia/nemotron-3-super-120b-a12b';
+const FALLBACK_MODEL = 'meta/llama-3.3-70b-instruct';
+
+async function callNvidia(messages: unknown[], model: string, withThinking: boolean) {
+  return fetch(NVIDIA_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${NVIDIA_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature: withThinking ? 1 : 0.4,
+      top_p: 0.95,
+      max_tokens: withThinking ? 16384 : 2048,
+      ...(withThinking ? { chat_template_kwargs: { enable_thinking: true }, reasoning_budget: 16384 } : {}),
+      stream: true,
+    }),
+  });
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow POST
@@ -21,24 +41,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'messages array is required' });
     }
 
-    // Call NVIDIA API with streaming
-    const response = await fetch(NVIDIA_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${NVIDIA_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages,
-        temperature: 1,
-        top_p: 0.95,
-        max_tokens: 16384,
-        chat_template_kwargs: { enable_thinking: true },
-        reasoning_budget: 16384,
-        stream: true,
-      }),
-    });
+    // Call NVIDIA API with streaming (fallback to Llama 3.3 70B if primary model is 404/410)
+    let response = await callNvidia(messages, PRIMARY_MODEL, true);
+    if (response.status === 404 || response.status === 410) {
+      response = await callNvidia(messages, FALLBACK_MODEL, false);
+    }
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
