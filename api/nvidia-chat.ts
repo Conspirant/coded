@@ -19,7 +19,10 @@ async function callGemini(
     }));
 
   const errors: string[] = [];
-  for (const model of ['gemini-2.5-flash', 'gemini-2.0-flash']) {
+  const candidateModels = ['gemini-2.5-flash-lite', 'gemini-3-flash-preview', 'gemini-flash-latest'];
+
+  // Dynamically discover available Flash models if static list fails with 404
+  const tryModel = async (model: string) => {
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`,
       {
@@ -36,13 +39,46 @@ async function callGemini(
       const data = await res.json();
       const text =
         data?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text || '').join('') || '';
-      if (text.trim()) return { text: text.trim() };
+      if (text.trim()) return text.trim();
       errors.push(`${model}: empty`);
-    } else {
-      const errBody = await res.text().catch(() => '');
-      errors.push(`${model}: HTTP ${res.status} ${errBody.slice(0, 120)}`);
+      return null;
     }
+    const errBody = await res.text().catch(() => '');
+    errors.push(`${model}: HTTP ${res.status} ${errBody.slice(0, 120)}`);
+    return null;
+  };
+
+  for (const model of candidateModels) {
+    const out = await tryModel(model);
+    if (out) return { text: out };
   }
+
+  try {
+    const listRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(GEMINI_API_KEY)}`
+    );
+    if (listRes.ok) {
+      const listData = await listRes.json();
+      const models: Array<{ name?: string; supportedGenerationMethods?: string[] }> = listData?.models || [];
+      const dynamicFlash = models
+        .filter(
+          (m) =>
+            m.name &&
+            m.supportedGenerationMethods?.includes('generateContent') &&
+            m.name.toLowerCase().includes('flash')
+        )
+        .map((m) => m.name!.replace(/^models\//, ''))
+        .filter((m) => !candidateModels.includes(m))
+        .slice(0, 3);
+      for (const model of dynamicFlash) {
+        const out = await tryModel(model);
+        if (out) return { text: out };
+      }
+    }
+  } catch {
+    // ignore listModels failure
+  }
+
   return { text: null, error: errors.join(' | ') };
 }
 
