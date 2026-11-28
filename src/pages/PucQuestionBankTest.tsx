@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { getCachedAiExplanation, saveCachedAiExplanation } from "@/lib/puc-ai-cache";
 import { MathRenderer } from "@/components/MathRenderer";
 import { ReportPucQuestionModal } from "@/components/ReportPucQuestionModal";
 import {
@@ -361,6 +362,12 @@ export default function PucQuestionBankTest() {
     ];
 
     try {
+      const cached = await getCachedAiExplanation(q.id);
+      if (cached) {
+        setAiExplanations((prev) => ({ ...prev, [q.id]: cached }));
+        return;
+      }
+
       const controller = new AbortController();
       const timeoutId = window.setTimeout(() => controller.abort(), 25000);
       const res = await fetch("/api/nvidia-chat", {
@@ -380,6 +387,12 @@ export default function PucQuestionBankTest() {
       if (!content) throw new Error("Empty response from AI");
 
       setAiExplanations((prev) => ({ ...prev, [q.id]: content }));
+      void saveCachedAiExplanation({
+        questionId: q.id,
+        subject,
+        chapterNumber: q.chapterNumber,
+        explanation: content,
+      });
     } catch (err) {
       const detail = err instanceof Error ? err.message : "Unknown error";
       setAiError((prev) => ({
