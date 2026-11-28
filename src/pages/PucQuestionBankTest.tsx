@@ -99,6 +99,18 @@ function buildGoogleSearchUrl(q: PucQuestion, subjectKey: PucSubjectKey): string
   return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 }
 
+function cleanAiExplanationText(raw: string): string {
+  return raw
+    .replace(/```[a-z]*\n?/gi, "")
+    .replace(/```/g, "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "• ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export default function PucQuestionBankTest() {
   const [searchParams] = useSearchParams();
   const initialSubject = (searchParams.get("subject") as PucSubjectKey) || "physics";
@@ -340,7 +352,7 @@ export default function PucQuestionBankTest() {
     const messages = [
       {
         role: "system",
-        content: `You are an expert Karnataka 2nd PUC (KSEAB) ${subjectLabel} teacher. Give a clear, concise, step-by-step explanation for why the official answer is correct. Use proper LaTeX ($...$ for inline math/formulas/chemical equations and $$...$$ for display equations). Keep it well-structured and easy for a Class 12 student to follow.`,
+        content: `You are an expert Karnataka 2nd PUC (KSEAB) ${subjectLabel} teacher. Give a clear, concise, step-by-step explanation for why the official answer is correct. Use standard LaTeX ($...$ for inline math/formulas/chemical equations and $$...$$ for display equations). Do NOT use markdown syntax such as ### headings, **bold**, *italics*, or backticks — use plain text and LaTeX only.`,
       },
       {
         role: "user",
@@ -1003,11 +1015,11 @@ export default function PucQuestionBankTest() {
               {(aiExplanations[currentQuestion.id] || aiError[currentQuestion.id]) && (
                 <div className="mt-3 rounded-lg border border-violet-500/30 bg-violet-500/5 p-3.5 sm:p-4 space-y-1.5">
                   <p className="text-xs font-semibold text-violet-400 flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5" /> AI Explanation (Nemotron)
+                    <Sparkles className="h-3.5 w-3.5" /> AI Explanation
                   </p>
                   {aiExplanations[currentQuestion.id] ? (
-                    <div className="text-sm leading-6 overflow-x-auto max-w-full">
-                      <MathRenderer content={aiExplanations[currentQuestion.id]} />
+                    <div className="text-sm leading-6 overflow-x-auto max-w-full whitespace-pre-line">
+                      <MathRenderer content={cleanAiExplanationText(aiExplanations[currentQuestion.id])} />
                     </div>
                   ) : (
                     <p className="text-xs text-rose-400">{aiError[currentQuestion.id]}</p>
@@ -1288,11 +1300,11 @@ export default function PucQuestionBankTest() {
                   {(aiExplanations[q.id] || aiError[q.id]) && (
                     <div className="mt-2 rounded-lg border border-violet-500/30 bg-violet-500/5 p-3 space-y-1">
                       <p className="text-[11px] font-semibold text-violet-400 flex items-center gap-1">
-                        <Sparkles className="h-3 w-3" /> AI Explanation (Nemotron)
+                        <Sparkles className="h-3 w-3" /> AI Explanation
                       </p>
                       {aiExplanations[q.id] ? (
-                        <div className="text-xs sm:text-sm leading-6 overflow-x-auto max-w-full">
-                          <MathRenderer content={aiExplanations[q.id]} />
+                        <div className="text-xs sm:text-sm leading-6 overflow-x-auto max-w-full whitespace-pre-line">
+                          <MathRenderer content={cleanAiExplanationText(aiExplanations[q.id])} />
                         </div>
                       ) : (
                         <p className="text-xs text-rose-400">{aiError[q.id]}</p>
